@@ -1,5 +1,6 @@
 import { clamp01 } from '@buildobjects/catalog';
 import type { SceneAnalysis, SceneType, Surface, SurfaceDetection } from '../types';
+import { wallDistanceFromFloorLine } from './depth';
 import { type CellGrid, gridMean, sobel } from './frame';
 
 /**
@@ -149,6 +150,8 @@ export interface DetectInput {
   /** Vertical focal length in pixels, and the frame height, for the horizon. */
   fy: number;
   height: number;
+  /** Height of the camera above the floor, metres — what turns the floor line into a distance. */
+  cameraHeightM?: number;
 }
 
 /**
@@ -160,7 +163,7 @@ export interface DetectInput {
  * agreement on all three clears the 0.35 the placement code requires.
  */
 export function detectSurfaces(input: DetectInput): SceneAnalysis {
-  const { grid, pitchDeg, fy, height } = input;
+  const { grid, pitchDeg, fy, height, cameraHeightM = 1.4 } = input;
   const regions = segment(grid);
   const meanLuma = gridMean(grid.luma);
 
@@ -231,6 +234,24 @@ export function detectSurfaces(input: DetectInput): SceneAnalysis {
     // Spans the horizon: the flat thing you are looking straight at.
     const tall = clamp01(r.bbox[3] * 2.4);
     push('wall', size * flat * (0.6 + 0.4 * tall), r);
+  }
+
+  /*
+   * Measure the wall, rather than assuming it.
+   *
+   * The highest row the floor reaches is the line where the floor runs into the wall, and that
+   * line is at a distance the camera's own pitch and height determine exactly. Attaching it to
+   * the wall detection is what lets the placement render a product at its true projected size
+   * instead of at whatever a 2.2 m constant implied.
+   */
+  if (pitchDeg !== null) {
+    const floors = surfaces.filter((s2) => s2.type === 'floor' && s2.bbox);
+    const walls = surfaces.filter((s2) => s2.type === 'wall');
+    if (floors.length && walls.length) {
+      const floorTopRow = Math.min(...floors.map((f) => (f.bbox as [number, number, number, number])[1])) * height;
+      const d = wallDistanceFromFloorLine(floorTopRow, pitchDeg, fy, height / 2, cameraHeightM);
+      if (d !== null) for (const w of walls) w.distanceM = d;
+    }
   }
 
   /*

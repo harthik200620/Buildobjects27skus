@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T12:26:12.793Z",
+  "generated_at": "2026-08-25T12:49:58.694Z",
   "assets": {
     "EPX-SIK-SIKADUR31IN": {
       "file": "EPX-SIK-SIKADUR31IN.glb",
@@ -36,9 +36,9 @@
         "warnings": [
           "meshy: aspect mismatch 27 % vs spec (warn > 15 %)",
           "meshy: GLB is 8.3 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -47,7 +47,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "EPX-FOS-CONBEXTRAEP10": {
       "file": "EPX-FOS-CONBEXTRAEP10.glb",
@@ -84,9 +84,9 @@
         "warnings": [
           "meshy: aspect mismatch 15 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -95,7 +95,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "EPX-PID-EPOXYINJGROUT": {
       "file": "EPX-PID-EPOXYINJGROUT.glb",
@@ -133,9 +133,9 @@
           "meshy: aspect mismatch 69 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
           "meshy: GLB is 9.3 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -144,7 +144,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "FIR-CEA-MAP90-4KG": {
       "file": "placeholders/FIR-CEA-MAP90-4KG.glb",
@@ -203,9 +203,9 @@
         "warnings": [
           "meshy: aspect mismatch 23 % vs spec (warn > 15 %)",
           "meshy: GLB is 9.9 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -214,7 +214,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "FIR-NEW-CA-EB-01": {
       "file": "FIR-NEW-CA-EB-01.glb",
@@ -251,9 +251,9 @@
         "warnings": [
           "meshy: aspect mismatch 80 % vs spec (warn > 15 %)",
           "meshy: GLB is 10.1 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -262,7 +262,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "SOL-WAA-BI55-545": {
       "file": "SOL-WAA-BI55-545.glb",
@@ -274,11 +274,11 @@
         "d": 35
       },
       "bbox_m": {
-        "x": 1.823219120502472,
-        "y": 2.2720000743865967,
+        "x": 1.8009637594223022,
+        "y": 2.271999955177307,
         "z": 0.03500000014901161
       },
-      "triangles": 98479,
+      "triangles": 97065,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
@@ -286,8 +286,8 @@
       "source_images": [
         "skus/09/SOL-WAA-BI55-545/img/1-orig.webp"
       ],
-      "job_id": "01a038de-af54-7394-9e47-84d8317a8eb2",
-      "generated_at": "2026-08-25T12:24:58.534Z",
+      "job_id": "01a038e8-086a-75d1-88bd-5ac46ca5226c",
+      "generated_at": "2026-08-25T12:34:48.866Z",
       "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -295,18 +295,15 @@
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.6091960709972877,
+        "aspect_mismatch": 0.5895531734318131,
         "warnings": [
-          "meshy: sheet product: z scaled to 35 mm independently (761 mm under a uniform scale)",
-          "meshy: aspect mismatch 55 % vs spec (warn > 15 %)",
+          "meshy: sheet product: z scaled to 35 mm independently (994 mm under a uniform scale)",
+          "meshy: aspect mismatch 59 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: sheet product: z scaled to 35 mm independently (989 mm under a uniform scale)",
-          "meshy: aspect mismatch 61 % vs spec (warn > 15 %)",
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 10.9 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "meshy: 12.2 MB over the 12 MB budget → compressed to 6.2 MB (97,065 triangles)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -315,7 +312,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "SOL-ADA-ASB-M10-144-575": {
       "file": "placeholders/SOL-ADA-ASB-M10-144-575.glb",
@@ -378,9 +375,9 @@
           "meshy: aspect mismatch 31 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
           "meshy: GLB is 11.5 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -389,7 +386,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TIL-KAJ-GP00215": {
       "file": "TIL-KAJ-GP00215.glb",
@@ -425,10 +422,10 @@
         "aspect_mismatch": 0.7907796826982433,
         "warnings": [
           "meshy: aspect mismatch 79 % vs spec (warn > 15 %)",
-          "meshy: front uncertain: best silhouette IoU 0.06 at 0\u00b0",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "meshy: front uncertain: best silhouette IoU 0.06 at 0°",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -437,51 +434,107 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TIL-SOM-T31F119001859102": {
-      "file": "placeholders/TIL-SOM-T31F119001859102.glb",
+      "file": "TIL-SOM-T31F119001859102.glb",
       "category": "tiles",
-      "placeholder": true,
+      "placeholder": false,
       "dims_mm": {
         "w": 600,
         "h": 1200,
         "d": 9
       },
       "bbox_m": {
-        "x": 0.6000000238418579,
-        "y": 0.008999999612569809,
-        "z": 1.2000000476837158
+        "x": 1.0824434757232666,
+        "y": 1.199999988079071,
+        "z": 0.009000000078231096
       },
-      "triangles": 24,
-      "builder": "tiles",
-      "variant": "slab",
+      "triangles": 95441,
+      "builder": "photoreal",
       "usdz": null,
-      "quality": "placeholder",
-      "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.514Z"
+      "quality": "photoreal",
+      "provider": "meshy",
+      "source_images": [
+        "skus/52/TIL-SOM-T31F119001859102/img/1-orig.jpg"
+      ],
+      "job_id": "01a038f0-6e13-75de-b4b3-68083745e193",
+      "generated_at": "2026-08-25T12:43:46.496Z",
+      "axis_map": "x,y,z",
+      "front_yaw_deg": 0,
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.8040724138508865,
+        "warnings": [
+          "meshy: sheet product: z scaled to 9 mm independently (1186 mm under a uniform scale)",
+          "meshy: sheet product: z scaled to 9 mm independently (1075 mm under a uniform scale)",
+          "meshy: aspect mismatch 80 % vs spec (warn > 15 %)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "textures": {
+        "count": 3,
+        "max_px": 2048,
+        "sources": [
+          "meshy"
+        ]
+      },
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TIL-JOH-YK1FLCR000000PJ": {
-      "file": "placeholders/TIL-JOH-YK1FLCR000000PJ.glb",
+      "file": "TIL-JOH-YK1FLCR000000PJ.glb",
       "category": "tiles",
-      "placeholder": true,
+      "placeholder": false,
       "dims_mm": {
         "w": 600,
         "h": 1200,
         "d": 9
       },
       "bbox_m": {
-        "x": 0.6000000238418579,
-        "y": 0.008999999612569809,
-        "z": 1.2000000476837158
+        "x": 0.9992532432079315,
+        "y": 1.199999988079071,
+        "z": 0.009000000078231096
       },
-      "triangles": 24,
-      "builder": "tiles",
-      "variant": "slab",
+      "triangles": 99948,
+      "builder": "photoreal",
       "usdz": null,
-      "quality": "placeholder",
-      "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.511Z"
+      "quality": "photoreal",
+      "provider": "meshy",
+      "source_images": [
+        "skus/76/TIL-JOH-YK1FLCR000000PJ/img/1-orig.jpg"
+      ],
+      "job_id": "01a038ea-aae1-7697-85b6-79dbe05bfd8e",
+      "generated_at": "2026-08-25T12:37:37.019Z",
+      "axis_map": "-y,x,z",
+      "front_yaw_deg": 0,
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.6654220515134961,
+        "warnings": [
+          "meshy: sheet product: z scaled to 9 mm independently (59 mm under a uniform scale)",
+          "meshy: aspect mismatch 67 % vs spec (warn > 15 %)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 9.3 MB (warn > 8 MB)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "textures": {
+        "count": 3,
+        "max_px": 2048,
+        "sources": [
+          "meshy"
+        ]
+      },
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "BUL-PHI-ACESAVER9WB22": {
       "file": "BUL-PHI-ACESAVER9WB22.glb",
@@ -517,9 +570,9 @@
         "aspect_mismatch": 0.019490056937544048,
         "warnings": [
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -528,7 +581,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "BUL-HAV-LEDPLUS9WB22": {
       "file": "BUL-HAV-LEDPLUS9WB22.glb",
@@ -565,9 +618,9 @@
         "warnings": [
           "meshy: aspect mismatch 64 % vs spec (warn > 15 %)",
           "meshy: GLB is 8.3 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -576,7 +629,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "BUL-WIP-GARNET9WB22": {
       "file": "BUL-WIP-GARNET9WB22.glb",
@@ -612,9 +665,9 @@
         "aspect_mismatch": 0.7902471093666347,
         "warnings": [
           "meshy: aspect mismatch 79 % vs spec (warn > 15 %)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -623,7 +676,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "CEM-ULT-PPC50": {
       "file": "CEM-ULT-PPC50.glb",
@@ -660,9 +713,9 @@
         "warnings": [
           "meshy: aspect mismatch 32 % vs spec (warn > 15 %)",
           "meshy: GLB is 8.5 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -671,7 +724,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "CEM-ACC-SP50": {
       "file": "CEM-ACC-SP50.glb",
@@ -709,9 +762,9 @@
           "meshy: aspect mismatch 53 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
           "meshy: GLB is 8.1 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -720,7 +773,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "CEM-AMB-PLUS50": {
       "file": "CEM-AMB-PLUS50.glb",
@@ -756,11 +809,11 @@
         "aspect_mismatch": 0.6875924761237764,
         "warnings": [
           "meshy: aspect mismatch 69 % vs spec (warn > 15 %)",
-          "meshy: front uncertain: best silhouette IoU 0.49 at 0\u00b0",
+          "meshy: front uncertain: best silhouette IoU 0.49 at 0°",
           "meshy: GLB is 10.0 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -769,7 +822,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "DEMO-BATHTUB": {
       "file": "placeholders/DEMO-BATHTUB.glb",
@@ -827,9 +880,9 @@
         "aspect_mismatch": 0.028469557481775445,
         "warnings": [
           "meshy: GLB is 8.2 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -838,7 +891,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "CCT-DAH-HDW1200TRQP": {
       "file": "placeholders/CCT-DAH-HDW1200TRQP.glb",
@@ -896,9 +949,9 @@
         "aspect_mismatch": 0.06387320680539427,
         "warnings": [
           "meshy: GLB is 9.0 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) \u2014 Quick Look exports from the GLB"
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
       "textures": {
         "count": 3,
@@ -907,7 +960,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "GLS-SGB-SUNBAN-SAPPHIRE5": {
       "file": "placeholders/GLS-SGB-SUNBAN-SAPPHIRE5.glb",
@@ -945,7 +998,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "GLS-AIS-EDGE-NATURAPLUS": {
       "file": "placeholders/GLS-AIS-EDGE-NATURAPLUS.glb",
@@ -983,7 +1036,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "GLS-GUA-CLIMAGUARD-BLUE5": {
       "file": "placeholders/GLS-GUA-CLIMAGUARD-BLUE5.glb",
@@ -1021,29 +1074,54 @@
           "meshy"
         ]
       },
-      "note": "judge skipped \u2014 no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TST-LEI-TS07-2-R500": {
-      "file": "placeholders/TST-LEI-TS07-2-R500.glb",
+      "file": "TST-LEI-TS07-2-R500.glb",
       "category": "total-stations",
-      "placeholder": true,
+      "placeholder": false,
       "dims_mm": {
         "w": 207,
         "h": 350,
         "d": 195
       },
       "bbox_m": {
-        "x": 1.9297155141830444,
-        "y": 1.8504321272484958,
-        "z": 1.6746495962142944
+        "x": 0.20829149335622787,
+        "y": 0.3500000089406967,
+        "z": 0.17230945825576782
       },
-      "triangles": 792,
-      "builder": "total-stations",
-      "variant": "on-tripod",
+      "triangles": 98968,
+      "builder": "photoreal",
       "usdz": null,
-      "quality": "placeholder",
-      "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.553Z"
+      "quality": "photoreal",
+      "provider": "meshy",
+      "source_images": [
+        "skus/ce/TST-LEI-TS07-2-R500/img/1-orig.jpg"
+      ],
+      "job_id": "01a038f2-cda2-789a-aafc-7000fca04c1b",
+      "generated_at": "2026-08-25T12:46:32.521Z",
+      "axis_map": "x,y,z",
+      "front_yaw_deg": 0,
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": 0.8549045424621462,
+        "aspect_mismatch": 0.11636176058027156,
+        "warnings": [
+          "meshy: GLB is 10.1 MB (warn > 8 MB)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "textures": {
+        "count": 3,
+        "max_px": 2048,
+        "sources": [
+          "meshy"
+        ]
+      },
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TST-TRI-C5-2": {
       "file": "placeholders/TST-TRI-C5-2.glb",
@@ -1068,26 +1146,53 @@
       "generated_at": "2026-08-23T15:51:30.545Z"
     },
     "TST-TOP-GM-52": {
-      "file": "placeholders/TST-TOP-GM-52.glb",
+      "file": "TST-TOP-GM-52.glb",
       "category": "total-stations",
-      "placeholder": true,
+      "placeholder": false,
       "dims_mm": {
         "w": 183,
         "h": 348,
         "d": 181
       },
       "bbox_m": {
-        "x": 1.9297155141830444,
-        "y": 1.8488721544854343,
-        "z": 1.6746495962142944
+        "x": 0.2781172841787338,
+        "y": 0.34800000488758087,
+        "z": 0.23659026622772217
       },
-      "triangles": 792,
-      "builder": "total-stations",
-      "variant": "on-tripod",
+      "triangles": 91003,
+      "builder": "photoreal",
       "usdz": null,
-      "quality": "placeholder",
-      "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.549Z"
+      "quality": "photoreal",
+      "provider": "meshy",
+      "source_images": [
+        "skus/e3/TST-TOP-GM-52/img/1-orig.jpg"
+      ],
+      "job_id": "01a038f5-573b-7acb-acad-a4e9adc132d2",
+      "generated_at": "2026-08-25T12:49:58.693Z",
+      "axis_map": "-y,x,z",
+      "front_yaw_deg": 0,
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.5197665494163192,
+        "warnings": [
+          "meshy: aspect mismatch 52 % vs spec (warn > 15 %)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 8.6 MB (warn > 8 MB)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "textures": {
+        "count": 3,
+        "max_px": 2048,
+        "sources": [
+          "meshy"
+        ]
+      },
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     }
   }
 }

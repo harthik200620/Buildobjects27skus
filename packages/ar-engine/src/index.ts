@@ -8,4 +8,4 @@ export * from './surface-guide';
 export * from './tier';
 export * from './types';
 export * from './vision';
-export const AR_ENGINE_VERSION = '0.5.0';
+export const AR_ENGINE_VERSION = '0.6.0';

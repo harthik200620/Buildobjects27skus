@@ -74,7 +74,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           stats={result.facetStats}
           total={result.total}
           categoryFacet={categoryFacet}
-          aboveFacets={<CategorySidebar categories={cats} current={state.category} />}
+          sideNav={<CategorySidebar categories={cats} current={state.category} />}
         />
         <section aria-label="Results">
           {zero ? (

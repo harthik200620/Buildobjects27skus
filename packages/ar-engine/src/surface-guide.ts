@@ -151,6 +151,20 @@ export function surfaceDistanceM(surface: Surface, match: SurfaceMatch): number 
   if (surface === 'floor' || surface === 'ground' || surface === 'ceiling' || surface === 'roof' || surface === 'table') {
     return DEFAULT_SURFACE_DISTANCE_M;
   }
+  /*
+   * A measurement always beats an estimate. When the base of the wall is visible the on-device
+   * analyser has already solved its distance exactly from the floor line (see vision/depth.ts),
+   * and that is the number to use.
+   */
+  const measured = match.detection?.distanceM;
+  if (measured !== undefined && Number.isFinite(measured)) {
+    return Math.max(MIN_SURFACE_DISTANCE_M, Math.min(MAX_SURFACE_DISTANCE_M, measured));
+  }
+  /*
+   * Otherwise fall back to the region's apparent size. This is a genuine guess and it is only
+   * reached when the floor is out of frame — pointing straight at a wall, for instance, where
+   * there is no geometric constraint available at all.
+   */
   const bbox = match.detection?.bbox;
   if (!bbox) return DEFAULT_SURFACE_DISTANCE_M;
   const area = Math.max(0.01, Math.min(1, bbox[2] * bbox[3]));

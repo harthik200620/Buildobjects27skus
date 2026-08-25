@@ -37,6 +37,15 @@ export interface SurfaceDetection {
   type: Surface;
   confidence: number /** normalised [x, y, w, h] of the visible region */;
   bbox?: [number, number, number, number];
+  /**
+   * Horizontal distance to the surface in metres, when it could be measured rather than assumed.
+   *
+   * Only present for a wall whose base is visible — the floor line gives it exactly. Absent means
+   * "not known", and callers must treat it that way: distance sets the projected size of the
+   * product, so substituting a default here is what made a fire extinguisher render at twice life
+   * size against a far wall.
+   */
+  distanceM?: number;
 }
 export interface ReferenceObject {
   kind: 'door' | 'switch_plate' | 'tile_joint' | 'a4_sheet' | 'brick' | 'person' | 'ceiling_fan' | 'window';

@@ -1,6 +1,6 @@
 'use client';
 
-import { detectSurfaces, gridFromRgba, intrinsicsFor, pitchFromQuat, type Quat, type SceneAnalysis } from '@buildobjects/ar-engine';
+import { DEFAULT_CAMERA_HEIGHT_M, detectSurfaces, gridFromRgba, intrinsicsFor, pitchFromQuat, type Quat, type SceneAnalysis } from '@buildobjects/ar-engine';
 
 /**
  * Scene understanding on the device, in the render loop, with no API key.
@@ -63,7 +63,15 @@ export function createLocalVision(): LocalVision {
          * would put the horizon in the wrong place by the ratio of the two heights.
          */
         const K = intrinsicsFor(video.videoWidth, video.videoHeight, 'phone');
-        return detectSurfaces({ grid, pitchDeg: q ? pitchFromQuat(q) : null, fy: K.fy, height: video.videoHeight });
+        return detectSurfaces({
+          grid,
+          pitchDeg: q ? pitchFromQuat(q) : null,
+          fy: K.fy,
+          height: video.videoHeight,
+          /* What turns the floor line into a wall distance. The same value the placement uses,
+             so the two cannot disagree about how high the camera is. */
+          cameraHeightM: DEFAULT_CAMERA_HEIGHT_M.phone,
+        });
       } catch {
         /* A tainted canvas or a frame that vanished mid-draw: skip this tick, keep the last answer. */
         return null;

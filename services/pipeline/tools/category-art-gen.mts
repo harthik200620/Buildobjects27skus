@@ -20,10 +20,13 @@
  * Cost: one image call per category, a few cents for all thirty-seven. Re-runs skip anything
  * already on disk unless --force, so an interrupted run resumes for free.
  */
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { categoryHeroKey, type ImageSize } from '@buildobjects/catalog';
+import { categories, closeDb, getDb } from '@buildobjects/db';
 import { generateImage, resolveModel } from '@buildobjects/llm';
+import { eq } from 'drizzle-orm';
 import sharp from 'sharp';
 import { mediaStore } from '../src/media/store';
 
@@ -119,14 +122,26 @@ function loadOverrides(): Record<string, Override> {
   return doc.categories ?? {};
 }
 
-/** Both renditions from one generated frame, cover-cropped to 16:9 and written to the store. */
-async function writeRenditions(slug: string, source: Buffer): Promise<void> {
+/**
+ * Both renditions from one generated frame, cover-cropped to 16:9, written to the store under a
+ * content-versioned key — and then pointed at from the database.
+ *
+ * Writing the files was never the whole job. The first version of this tool wrote them and
+ * stopped, leaving `categories.hero_image_key` pointing wherever the previous run had left it, so
+ * the store kept rendering older artwork from a URL that had quietly changed underneath it. The
+ * key, the bytes and the row now move together or not at all.
+ */
+async function writeRenditions(slug: string, source: Buffer): Promise<string> {
   const store = mediaStore();
+  const version = createHash('sha1').update(source).digest('hex').slice(0, 10);
   for (const { size, width } of SIZES) {
     const height = Math.round(width * RATIO);
     const buf = await sharp(source).resize(width, height, { fit: 'cover', position: 'centre' }).webp({ quality: 86 }).toBuffer();
-    await store.put(categoryHeroKey(slug, size), buf, 'image/webp');
+    await store.put(categoryHeroKey(slug, size, version), buf, 'image/webp');
   }
+  const cardKey = categoryHeroKey(slug, 'card', version);
+  await getDb().update(categories).set({ heroImageKey: cardKey }).where(eq(categories.slug, slug));
+  return cardKey;
 }
 
 async function main() {
@@ -159,8 +174,11 @@ async function main() {
   for (const c of taxonomy.categories) {
     const slug = c.slug;
     if (only.size && !only.has(slug)) continue;
-    const key = categoryHeroKey(slug, 'gallery');
-    if (!force && (await store.exists(key))) {
+    /* Resume check: has anything been generated for this slug at all? The key is versioned now,
+       so the question is about the directory rather than about one filename. */
+    const dir = path.join(ROOT, 'storage', 'media', 'categories', slug);
+    const already = fs.existsSync(dir) && fs.readdirSync(dir).some((f) => f.startsWith('hero-gallery-'));
+    if (!force && already) {
       skipped += 1;
       done.push({ slug, buf: await store.read(key) });
       console.log(`  ${slug.padEnd(26)} already generated`);
@@ -227,3 +245,4 @@ async function main() {
 }
 
 await main();
+await closeDb();

@@ -20,7 +20,14 @@ export interface RailProps {
    * same column and the same sticky block as the filters, and on a phone the horizontal
    * CategoryStrip already carries it, so the sheet must not repeat it.
    */
-  aboveFacets?: React.ReactNode;
+  /**
+   * Secondary navigation for the rail — the category tree on a listing page.
+   *
+   * Rendered BELOW the facets. It used to be above them, which put thirty-seven category links
+   * between the top of the rail and the first filter: on a category page the filters are the
+   * tool you came for, and they were off-screen until you scrolled past the whole catalogue.
+   */
+  sideNav?: React.ReactNode;
 }
 
 export default function FilterRail(props: RailProps) {
@@ -350,8 +357,8 @@ export default function FilterRail(props: RailProps) {
 
       {/* Desktop: a plain sticky column of lists — no cards, no boxes. */}
       <aside className="hidden lg:block rail-sticky filter-rail" aria-label="Filters" data-rail>
-        {props.aboveFacets}
         {renderContent()}
+        {props.sideNav}
       </aside>
 
       {/* ── Mobile: the same lists in a bottom sheet, applied on dismiss ───── */}

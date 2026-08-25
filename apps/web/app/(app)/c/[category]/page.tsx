@@ -112,7 +112,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
             distribution={result.facetDistribution}
             stats={result.facetStats}
             total={result.total}
-            aboveFacets={<CategorySidebar categories={cats} current={category} />}
+            sideNav={<CategorySidebar categories={cats} current={category} />}
           />
           <section aria-label="Results">
             {result.hits.length === 0 ? (

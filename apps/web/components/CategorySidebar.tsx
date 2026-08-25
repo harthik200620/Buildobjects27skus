@@ -19,40 +19,44 @@ export default function CategorySidebar({ categories, current }: { categories: C
   return (
     <nav className="cat-rail" aria-label="All categories">
       <h2 className="cat-rail-head">Categories</h2>
-      <ul className="cat-rail-list">
-        {live.map((c) => (
-          <li key={c.slug}>
-            <Link
-              href={`/c/${c.slug}`}
-              className={`cat-rail-link${c.slug === current ? ' is-current' : ''}`}
-              aria-current={c.slug === current ? 'page' : undefined}
-            >
-              <CategoryIcon icon={c.icon ?? 'cement'} size={16} className="cat-rail-icon" />
-              <span>{c.name}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {/* Capped and scrollable: thirty-seven links is taller than most viewports, and an
+          uncapped list is what used to push every filter off the bottom of the rail. */}
+      <div className="cat-rail-scroll">
+        <ul className="cat-rail-list">
+          {live.map((c) => (
+            <li key={c.slug}>
+              <Link
+                href={`/c/${c.slug}`}
+                className={`cat-rail-link${c.slug === current ? ' is-current' : ''}`}
+                aria-current={c.slug === current ? 'page' : undefined}
+              >
+                <CategoryIcon icon={c.icon ?? 'cement'} size={16} className="cat-rail-icon" />
+                <span>{c.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
 
-      {byDepartment.map((d) => (
-        <div key={d.key} className="cat-rail-dept">
-          <h3 className="cat-rail-dept-name">{d.name}</h3>
-          <ul className="cat-rail-list">
-            {d.categories.map((c) => (
-              <li key={c.slug}>
-                <Link
-                  href={`/c/${c.slug}`}
-                  className={`cat-rail-link is-soon${c.slug === current ? ' is-current' : ''}`}
-                  aria-current={c.slug === current ? 'page' : undefined}
-                >
-                  <CategoryIcon icon={c.icon ?? 'cement'} size={16} className="cat-rail-icon" />
-                  <span>{c.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+        {byDepartment.map((d) => (
+          <div key={d.key} className="cat-rail-dept">
+            <h3 className="cat-rail-dept-name">{d.name}</h3>
+            <ul className="cat-rail-list">
+              {d.categories.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={`/c/${c.slug}`}
+                    className={`cat-rail-link is-soon${c.slug === current ? ' is-current' : ''}`}
+                    aria-current={c.slug === current ? 'page' : undefined}
+                  >
+                    <CategoryIcon icon={c.icon ?? 'cement'} size={16} className="cat-rail-icon" />
+                    <span>{c.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </nav>
   );
 }

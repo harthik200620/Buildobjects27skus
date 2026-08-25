@@ -525,3 +525,26 @@
     gap: 8px;
   }
 }
+
+@layer components {
+  /*
+   * The category tree in the listing rail.
+   *
+   * Thirty-seven links is taller than most viewports, and when this sat above the facets it
+   * pushed every filter off the bottom of the screen — the rail looked like it had no filters at
+   * all. It sits under them now, and it is capped: a long list scrolls inside its own box rather
+   * than lengthening the rail without limit.
+   */
+  .cat-rail {
+    margin-top: var(--s-5);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--color-line-2);
+  }
+  .cat-rail-scroll {
+    max-height: 42vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line) transparent;
+  }
+}

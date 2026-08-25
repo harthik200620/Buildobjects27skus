@@ -91,7 +91,15 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
      category's surfaces in preference order — cement is ['floor','ground'], CCTV is
      ['wall','ceiling'] — so this is the only line needed to make every category start right. */
   const [surface, setSurface] = React.useState<Surface>(rule.surfaces[0]);
-  const [scaleMult, setScaleMult] = React.useState<number>(1.8);
+  /*
+   * 1.0 — true size.
+   *
+   * This was 1.8, so every product in the live view rendered eighty per cent larger than life.
+   * The whole claim of the feature is that what you see is the real thing at the real size, and a
+   * multiplier applied silently to every SKU broke it for all of them. The +/- control still lets
+   * someone enlarge a small item deliberately, and says so when they have.
+   */
+  const [scaleMult, setScaleMult] = React.useState<number>(1);
   const [yaw, setYaw] = React.useState<number>(0);
   const [facingMode, setFacingMode] = React.useState<'environment' | 'user'>('environment');
   const [match, setMatch] = React.useState<SurfaceMatch>({ surface: null, detection: null, confidence: 0 });

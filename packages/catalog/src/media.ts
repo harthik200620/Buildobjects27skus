@@ -44,8 +44,21 @@ export function docKey(skuCode: string, slug: string): string {
 export function brandLogoKey(brandSlug: string, ext: string): string {
   return `brands/${brandSlug}/logo.${ext}`;
 }
-export function categoryHeroKey(categorySlug: string, size: ImageSize): string {
-  return `categories/${categorySlug}/hero-${SIZE_SEGMENT[size]}.webp`;
+/**
+ * `categories/{slug}/hero-card-{version}.webp`
+ *
+ * The version is a short hash of the image's own bytes, and it exists because /media is served
+ * `immutable, max-age=31536000`. That header is correct for content-derived keys and was a bug
+ * here: the key used to be a stable path, so regenerating the artwork left every browser that had
+ * seen the old file pinned to it for a year — the storefront kept showing drawn placeholder tiles
+ * while the real photographs sat on disk behind the same URL.
+ *
+ * Omitting `version` yields the old unversioned path, which is what any row written before this
+ * change still points at.
+ */
+export function categoryHeroKey(categorySlug: string, size: ImageSize, version?: string | null): string {
+  const v = version ? `-${version}` : '';
+  return `categories/${categorySlug}/hero-${SIZE_SEGMENT[size]}${v}.webp`;
 }
 /** The only URL rule the frontend knows. */
 export function mediaUrl(base: string, key: string): string {
