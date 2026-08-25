@@ -1,0 +1,27 @@
+{
+  "name": "@buildobjects/llm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Gemini platform for Build Objects: lazy client, model discovery + preference lists, strict/grounded JSON generation with citations, segmentation masks, image judges, usage/cost log and call guards. Server-only by convention.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@buildobjects/catalog": "workspace:*",
+    "@google/genai": "^1.52.0",
+    "sharp": "^0.34.5",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

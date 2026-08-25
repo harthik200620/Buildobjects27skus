@@ -1,0 +1,56 @@
+{
+  "generated_at": "2026-08-23T19:18:23.280Z",
+  "dry_run": false,
+  "provider_pref": "auto",
+  "providers": [
+    "meshy: key present",
+    "tripo: no key"
+  ],
+  "max_spend_usd": 30,
+  "estimated_spend_usd": 0.4,
+  "ledger_spend_usd": 2.8,
+  "results": [
+    {
+      "sku": "BUL-PHI-ACESAVER9WB22",
+      "category": "bulbs",
+      "outcome": "photoreal",
+      "provider": "meshy",
+      "job_id": "01a0300d-4b61-799a-a2ee-63e505655796",
+      "mode": "single",
+      "images": [
+        {
+          "key": "skus/1b/BUL-PHI-ACESAVER9WB22/img/1-orig.jpg",
+          "role": "front",
+          "source": "cutout"
+        }
+      ],
+      "cutouts": 2,
+      "est_cost_usd": 0.4,
+      "warnings": [
+        "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+        "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+      ],
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.019490056937544048,
+        "warnings": [
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "file": "BUL-PHI-ACESAVER9WB22.glb",
+      "attempts": 1
+    }
+  ],
+  "totals": {
+    "photoreal": 1,
+    "planned": 0,
+    "skipped": 0,
+    "failed": 0,
+    "rejected": 0
+  }
+}

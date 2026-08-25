@@ -1,0 +1,37 @@
+{
+  "name": "buildobjects-store",
+  "private": true,
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @buildobjects/web dev",
+    "build": "turbo run build",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm contrast && pnpm validate",
+    "lint": "biome check",
+    "format": "biome check --write",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "infra:up": "node infra/local.mjs up",
+    "infra:down": "node infra/local.mjs down",
+    "infra:status": "node infra/local.mjs status",
+    "db:migrate": "pnpm --filter @buildobjects/db migrate",
+    "db:seed": "pnpm --filter @buildobjects/db seed",
+    "db:reset": "pnpm --filter @buildobjects/db reset",
+    "pipeline": "pnpm --filter @buildobjects/pipeline cli",
+    "registry:seed": "pnpm --filter @buildobjects/pipeline registry",
+    "assets:3d": "pnpm --filter @buildobjects/assets3d generate",
+    "assets:3d:photoreal": "pnpm --filter @buildobjects/assets3d photoreal",
+    "scale:seed": "pnpm --filter @buildobjects/db seed:scale",
+    "scale:test": "pnpm --filter @buildobjects/db scale:test",
+    "contrast": "pnpm --filter @buildobjects/web contrast",
+    "validate": "pnpm --filter @buildobjects/pipeline validate"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.10",
+    "tsx": "^4.20.6",
+    "turbo": "^2.5.6",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,610 @@
+{
+  "sku_code": "CCT-CPP-USC-TA24L2C-L",
+  "category": "cctv",
+  "brand": {
+    "slug": "cp-plus",
+    "name": "CP PLUS",
+    "official_domains": [
+      "cpplusworld.com"
+    ],
+    "logo_url": "https://cpplusworld.com/assets/img/logo.png",
+    "intel": {
+      "year_established": {
+        "value": 2007,
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "parent_company": {
+        "value": "Aditya Infotech Ltd. (AIL), F-28 Okhla Industrial Area Phase 1, New Delhi",
+        "provenance": "fetched",
+        "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf"
+      },
+      "product_portfolio": {
+        "value": "Analogue HD cameras (2.4–8 MP), IP network cameras, speed domes, DVR/NVR, EzyKam Wi-Fi cameras, Guard+ and Illumax colour night ranges, body-worn and dash cameras, video door phones, time-attendance, PoE switches, routers, cables and accessories",
+        "provenance": "fetched",
+        "source_url": "https://cpplusworld.com/cp-usc-ta24l2c-l"
+      },
+      "market_coverage": {
+        "value": "Headquartered in Delhi-NCR with a manufacturing facility in Kadapa, Andhra Pradesh, producing at a stated capacity of 2.5 million devices a month; pan-India dealer and partner network",
+        "provenance": "fetched",
+        "source_url": "https://cpplusworld.com/about"
+      },
+      "quality_strength_note": {
+        "value": "Brand claims ISO 9001, ISO 14001, UL, CE, FCC and RoHS accreditation; HDCVI/analogue cameras carry a 24-month carry-in warranty under the AIL service policy; Made-in-India (Kadapa) production",
+        "provenance": "fetched",
+        "source_url": "https://cpplusworld.com/about"
+      },
+      "engineer_user_rating": {
+        "value": "4.1/5 (typical) — rated good value with strong India service reach; image quality a step below Hikvision and Dahua at the same price",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Very high in Andhra Pradesh and Telangana: the local 'made in AP' brand with the widest distributor network in tier-2 and tier-3 towns",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High — the best-known Indian CCTV brand among first-time home and shop buyers, helped by advertising and retail presence",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 900,
+          "highest": 2000,
+          "unit": "₹/unit"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project and distributor pricing for 2.4 MP analogue cameras is 25–35% below marketplace rates; retail buyers pay close to dealer list",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Camera-plus-DVR kit pricing from 4 channels; slabs commonly start at 10 cameras per order",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Dealer margin on analogue cameras is 10–15%; installers earn on DVR, storage, cabling and labour",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "moderate",
+          "roads": "moderate",
+          "bridges": "weak",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Andhra Pradesh, Telangana and North India",
+          "weak": "Large enterprise and IT-park projects that specify global brands",
+          "balanced": "Pan-India",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Outdoor and indoor surveillance of houses, shops, schools and godowns on HD analogue DVR systems",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Colour night-time coverage of gates, parking and compound walls using the warm-light mode",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Government and institutional purchases that prefer an Indian-manufactured brand",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "CP PLUS",
+          "Hikvision",
+          "Dahua",
+          "Godrej",
+          "Honeywell"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "CP PLUS CP-USC-TA24L2C-L 2.4 MP Dual Light Bullet Camera 20 m",
+    "slug": "cp-plus-cp-usc-ta24l2c-l-2-4mp-dual-light-bullet-camera",
+    "model_no": "CP-USC-TA24L2C-L",
+    "status": "active"
+  },
+  "variant_label": "3.6 mm lens (CP-USC-TA24L2C-L-0360), white",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": null,
+    "selling_price": 1230,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html",
+    "fetched_at": "2026-08-23",
+    "note": "IndiaMART listing by Divine Security System (Tiruppur) at ₹1,230/piece, opened 2026-08-23. CP PLUS does not publish an MRP on cpplusworld.com (mrp field is 0), so mrp is left null. Hyderabad dealer rate for the C-L dual-light bullet is typically ₹1,150–1,400."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://cpplusworld.com/cp-usc-ta24l2c-l",
+    "datasheet_urls": [
+      "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf"
+    ],
+    "secondary_urls": [
+      "https://cpplusworld.com/prodassets/usermannual/352863a0-a169-4b1a-b082-9eaf1d76c102.pdf",
+      "https://cpplusworld.com/prodassets/AIL_Service_Policy_Mar2022.pdf",
+      "https://cpplusworld.com/about",
+      "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "CP-USC-TA24L2C-L",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/cp-usc-ta24l2c-l",
+      "confidence": 0.99
+    },
+    "form_factor": {
+      "value": "Bullet",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "resolution_mp": {
+      "value": 2.4,
+      "unit": "MP",
+      "provenance": "verified",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "source_urls": [
+        "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+        "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+      ],
+      "confidence": 0.95
+    },
+    "max_video_resolution": {
+      "value": "1920 × 1080 (1080p); sensor output 1928 × 1088; 960H on CVBS",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/cp-usc-ta24l2c-l",
+      "confidence": 0.9
+    },
+    "signal_technology": {
+      "value": "Multi-standard (TVI/AHD/CVI/CVBS)",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "night_vision_type": {
+      "value": "Smart dual-light (IR + white light)",
+      "provenance": "verified",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "source_urls": [
+        "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+        "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+      ],
+      "confidence": 0.95
+    },
+    "audio_support": {
+      "value": "Built-in microphone",
+      "provenance": "verified",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "source_urls": [
+        "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+        "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+      ],
+      "confidence": 0.9
+    },
+    "housing_material": {
+      "value": "Plastic (ABS / PC)",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.9
+    },
+    "dome_cover_material": {
+      "value": "Flat glass front window with the dual-light LED panel beside the lens",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "lens_assembly_process": {
+      "value": "Factory-focused M12 fixed lens module",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "weatherproof_sealing_process": {
+      "value": "Gasket-sealed bullet housing and cable gland to IP67",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dim_w_mm": {
+      "value": 70,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.9
+    },
+    "dim_h_mm": {
+      "value": 69.7,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.9
+    },
+    "dim_d_mm": {
+      "value": 163.4,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "operating_temperature_min_c": {
+      "value": -40,
+      "unit": "°C",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "operating_temperature_max_c": {
+      "value": 60,
+      "unit": "°C",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "operating_humidity_max_pct": {
+      "value": 95,
+      "unit": "%",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "ik_rating": {
+      "value": "Not rated",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "vandal_resistant": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "adjustment_range": {
+      "value": "Pan 0–360°, tilt 0–90°, rotation 0–360°",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/cp-usc-ta24l2c-l",
+      "confidence": 0.95
+    },
+    "image_sensor": {
+      "value": "2.4 MP PS CMOS",
+      "provenance": "verified",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "source_urls": [
+        "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+        "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+      ],
+      "confidence": 0.95
+    },
+    "lens_focal_length_mm": {
+      "value": 3.6,
+      "unit": "mm",
+      "provenance": "verified",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "source_urls": [
+        "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+        "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+      ],
+      "confidence": 0.95
+    },
+    "lens_type": {
+      "value": "Fixed focal",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/cp-usc-ta24l2c-l",
+      "confidence": 0.95
+    },
+    "horizontal_field_of_view_deg": {
+      "value": 83,
+      "unit": "°",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/cp-usc-ta24l2c-l",
+      "confidence": 0.95
+    },
+    "ir_range_m": {
+      "value": 20,
+      "unit": "m",
+      "provenance": "verified",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "source_urls": [
+        "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+        "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+      ],
+      "confidence": 0.95
+    },
+    "min_illumination_lux": {
+      "value": 0.01,
+      "unit": "lux",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "net_weight_kg": {
+      "value": 0.18,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.9
+    },
+    "connector_type": {
+      "value": "One BNC port (CVI/TVI/AHD/CVBS switchable) + 12 V DC power jack",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/cp-usc-ta24l2c-l",
+      "confidence": 0.85
+    },
+    "indoor_use": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "outdoor_use": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "typical_application": {
+      "value": "House gates, compound walls, shop fronts, parking and school or godown perimeters where colour night video and audio are wanted on an HD analogue DVR",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "max_frame_rate_fps": {
+      "value": 30,
+      "unit": "fps",
+      "provenance": "verified",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "source_urls": [
+        "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+        "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+      ],
+      "confidence": 0.95
+    },
+    "video_compression": {
+      "value": "Analogue (no compression)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "is_standard": {
+      "value": "IS 13252 (Part 1) / IEC 62368-1 (BIS CRS safety standard for CCTV cameras)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "ip_rating": {
+      "value": "IP67",
+      "provenance": "verified",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "source_urls": [
+        "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+        "https://www.indiamart.com/proddetail/cp-plus-2mp-bullet-dual-light-hd-camera-cp-usc-ta24l2c-l-2854845582755.html"
+      ],
+      "confidence": 0.98
+    },
+    "onvif_conformance": {
+      "value": "Not applicable — analogue HD camera with no network interface",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "rohs_compliant": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/about",
+      "confidence": 0.7
+    },
+    "burn_in_test": {
+      "value": "Factory burn-in before dispatch (manufacturer standard practice)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "ingress_protection_test": {
+      "value": "Rated IP67 per datasheet — dust-tight and protected against temporary immersion",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.85
+    },
+    "body_colour": {
+      "value": "White",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/cp-usc-ta24l2c-l",
+      "confidence": 0.9
+    },
+    "surface_finish": {
+      "value": "Matt white moulded plastic with black front bezel",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mounting_type": {
+      "value": "Ceiling or wall",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "power_supply_type": {
+      "value": "12 V DC",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "power_consumption_w": {
+      "value": 2.6,
+      "unit": "W",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "confidence": 0.95
+    },
+    "recommended_installation_height_m": {
+      "value": 3,
+      "unit": "m",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "box_contents": {
+      "value": "Camera with integral bracket, video and power pigtail, mounting screws and wall plugs, drilling template, quick guide",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "packaging_type": {
+      "value": "Single-unit printed carton",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "unit": "piece",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 24,
+      "unit": "months",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/AIL_Service_Policy_Mar2022.pdf",
+      "confidence": 0.9
+    },
+    "warranty_type": {
+      "value": "Carry-in warranty of 24 months for HDCVI/analogue cameras; accessories including the power adapter carry no warranty; onsite installation and service are chargeable",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/AIL_Service_Policy_Mar2022.pdf",
+      "confidence": 0.9
+    },
+    "warranty_coverage": {
+      "value": "Defects in material and workmanship — repair or replacement of the defective part; excludes burnt or tampered units, high-voltage damage, water seepage, transit damage, misuse and fire, flood or earthquake; serial sticker must be intact and the invoice is required",
+      "provenance": "fetched",
+      "source_url": "https://cpplusworld.com/prodassets/AIL_Service_Policy_Mar2022.pdf",
+      "confidence": 0.9
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://cpplusworld.com/prodassets/product/small/ff719133-d999-4d68-9bf1-d0cfa1e42899.png",
+      "alt": "CP PLUS CP-USC-TA24L2C-L 2.4 MP dual-light bullet camera, official render, white body with black front bezel, warm-light LED and integral bracket",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://cpplusworld.com/prodassets/product/small/ae19185a-9508-4340-a03e-7d3a3b67b1bc.png",
+      "alt": "CP PLUS CCT-CPP-USC-TA24L2C-L - CCTV camera angled mounting profile",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://cpplusworld.com/prodassets/category/07098954-08a1-4daa-bf60-310584afbad0.jpg",
+      "alt": "CP PLUS Illumax Dual Light poster showing the CP-USC-TA24L2C-L bullet mounted on a house wall at night beside the matching dual-IR dome and bullet models (CP PLUS poster hosted by the IndiaMART listing)",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://cpplusworld.com/prodassets/category/0ccd0f50-6098-46c0-83d8-0f9eaf6b5d48.png",
+      "alt": "CP PLUS CCT-CPP-USC-TA24L2C-L - High sensitivity sensor and night vision lens detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://cpplusworld.com/prodassets/category/18b15234-2aad-4112-8e5a-af0378617de0.png",
+      "alt": "CP PLUS CCT-CPP-USC-TA24L2C-L - CCTV camera dimension diagram and base mounting plate",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "CP PLUS CP-USC-TA24L2C-L datasheet",
+      "source_url": "https://cpplusworld.com/prodassets/datasheet/CP-USC-TA24L2C-L.pdf",
+      "checked": true
+    },
+    {
+      "type": "manual",
+      "title": "CP PLUS HD camera user manual",
+      "source_url": "https://cpplusworld.com/prodassets/usermannual/352863a0-a169-4b1a-b082-9eaf1d76c102.pdf",
+      "checked": true
+    },
+    {
+      "type": "warranty_card",
+      "title": "Aditya Infotech Ltd (CP PLUS) Service Warranty Policy SVC24_1",
+      "source_url": "https://cpplusworld.com/prodassets/AIL_Service_Policy_Mar2022.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "resolution_mp",
+    "form_factor",
+    "image_sensor",
+    "min_illumination_lux",
+    "ir_range_m",
+    "lens_focal_length_mm",
+    "horizontal_field_of_view_deg",
+    "ip_rating"
+  ],
+  "short_description": "CP PLUS 2.4 MP Illumax dual-light bullet: 20 m IR plus 20 m warm light for colour night video, built-in mic, 3.6 mm lens, IP67, 4-in-1 output, 12 V DC.",
+  "long_description": "## What it is\n\nThe CP PLUS CP-USC-TA24L2C-L is a 2.4 MP HD analogue bullet camera from the Illumax dual-light range, built on the familiar Cosmic bullet body. It is a white plastic bullet with a black front bezel, 163.4 mm long, 70 mm wide and 69.7 mm tall, weighing 0.18 kg, with a 3.6 mm fixed lens giving an 83° horizontal field of view. Beside the lens sit two infrared and two warm-white LEDs, and a microphone is built in. The housing is rated IP67, and the camera is made in India.\n\n## What it's for\n\nIt is the camera for house gates, compound walls, shop fronts, parking areas and school or godown perimeters where the owner wants colour video after dark and sound with it, recorded on an HD analogue DVR. The single BNC output switches between CVI, TVI, AHD and CVBS, so it works with CP PLUS DVRs and with most other 4-in-1 recorders, and it can take the place of an older analogue camera on the same coaxial cable.\n\n## Key specifications\n\nThe 2.4 MP PS CMOS sensor delivers 1920 × 1080 video at up to 30 fps, with 960H available on CVBS. Minimum illumination is 0.01 lux. At night the camera can run in IR mode (black and white to about 20 m), warm-light mode (colour to about 20 m) or a smart mode that switches between the two. The bracket pans 360°, tilts 90° and rotates 360°. Power is 12 V DC at a maximum of 2.6 W. It is rated for −40 °C to 60 °C at up to 95% humidity, which covers a west-facing wall in Vijayawada in May. The Indian safety reference for cameras of this class is IS 13252 (Part 1) / IEC 62368-1. Warranty is 24 months carry-in under the Aditya Infotech service policy; the power adapter is excluded.\n\n## Installation notes\n\nMount on a wall or ceiling at about 3 m using the integral bracket, seal the cable joint against rain, and aim using the three adjustment axes. Run coaxial cable to the DVR and select the CVI, TVI or AHD mode to match the recorder; audio travels on the same cable. Use a regulated 12 V DC supply sized for 2.6 W per camera. Choose the warm-light mode where colour identification matters and the IR mode where a visible light would disturb neighbours. Keep the serial sticker intact and the invoice safe for warranty claims.\n\n## What's in the box\n\nOne camera with integral bracket, video and power pigtail, mounting screws and wall plugs, a drilling template and a quick guide, in a single printed carton.",
+  "seo": {
+    "title": "CP PLUS CP-USC-TA24L2C-L 2.4 MP Dual Light Bullet Camera",
+    "meta_description": "CP PLUS CP-USC-TA24L2C-L 2.4 MP dual-light bullet: 20 m IR + 20 m warm light, built-in mic, IP67, 3.6 mm lens, 24-month warranty. Ships to AP & Telangana.",
+    "keywords": [
+      "cp plus 2.4mp bullet camera",
+      "CP-USC-TA24L2C-L",
+      "cp plus dual light camera price",
+      "cp plus colour night vision camera",
+      "outdoor cctv camera ip67",
+      "cctv camera vijayawada"
+    ],
+    "keywords_te": [
+      "సీపీ ప్లస్ బుల్లెట్ కెమెరా",
+      "సీపీ ప్లస్ 2.4MP కెమెరా ధర",
+      "డ్యూయల్ లైట్ సీసీటీవీ కెమెరా",
+      "అవుట్‌డోర్ సీసీటీవీ కెమెరా"
+    ],
+    "keywords_hi": [
+      "सीपी प्लस बुलेट कैमरा",
+      "सीपी प्लस 2.4MP कैमरा कीमत",
+      "डुअल लाइट सीसीटीवी कैमरा",
+      "आउटडोर सीसीटीवी कैमरा"
+    ]
+  }
+}

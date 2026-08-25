@@ -1,0 +1,30 @@
+{
+  "name": "@buildobjects/assets3d",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Parametric GLBs per SKU at true real-world dimensions (textured with the SKU photo cut-outs when available) + the asset manifest + the Meshy/Tripo photoreal image-to-3D pipeline. Real models drop in by filename.",
+  "scripts": {
+    "generate": "tsx src/build.ts",
+    "photoreal": "tsx src/photoreal/run.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@buildobjects/catalog": "workspace:*",
+    "@buildobjects/db": "workspace:*",
+    "@buildobjects/llm": "workspace:*",
+    "@gltf-transform/core": "^4.4.2",
+    "@gltf-transform/extensions": "^4.4.2",
+    "@gltf-transform/functions": "^4.4.2",
+    "drizzle-orm": "^0.44.5",
+    "meshoptimizer": "~1.0.1",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.7.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

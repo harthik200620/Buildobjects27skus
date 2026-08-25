@@ -1,0 +1,550 @@
+{
+  "sku_code": "EPX-FOS-CONBEXTRAEP10",
+  "category": "epoxy",
+  "brand": {
+    "slug": "fosroc",
+    "name": "Fosroc",
+    "official_domains": [
+      "fosroc.com"
+    ],
+    "logo_url": "https://www.fosroc.com/_resources/themes/fosroc/assets/img/header-logo.svg",
+    "intel": {
+      "year_established": {
+        "value": 1972,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Fosroc"
+      },
+      "parent_company": {
+        "value": "Compagnie de Saint-Gobain — completed its purchase of Fosroc on 2 February 2025; India operations run through Fosroc Chemicals (India) Pvt. Ltd., Bangalore",
+        "provenance": "fetched",
+        "source_url": "https://www.fosroc.com/news/saint-gobain-completes-the-acquisition-of-fosroc"
+      },
+      "product_portfolio": {
+        "value": "Concrete admixtures (Conplast), cementitious and epoxy grouts and anchors (Conbextra, Lokfix), concrete repair mortars (Renderoc, Nitomortar), bonding agents and primers (Nitobond, Nitoprime), waterproofing membranes, joint sealants (Nitoseal, Thioflex), protective and anti-carbonation coatings (Dekguard) and industrial flooring (Nitoflor)",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Fosroc"
+      },
+      "market_coverage": {
+        "value": "Around 25 locations and roughly 3,000 employees worldwide, with its strongest footprint in India, the Middle East and Asia-Pacific; revenue about USD 487 million (2024). In India, head office in Bangalore with regional offices in Chennai, Mumbai, Noida and Kolkata",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Fosroc"
+      },
+      "quality_strength_note": {
+        "value": "Fosroc's strength is the specification: Conbextra, Renderoc and Nitobond are written into Indian tender documents by name, and the India-specific TDS carries the numbers a consultant needs to sign off. Conbextra EP10's own datasheet writes the specification clause for you.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.5/5 (typical among repair and industrial-project engineers)",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "The default for machine-base and base-plate grouting on industrial projects; contractors carry Conbextra on site as a matter of habit and rarely substitute it mid-contract.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Low. This is a project-counter brand — the pack sizes, technical language and price point put it outside the reach of a first-time homeowner buyer.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 750,
+          "highest": 1650,
+          "unit": "₹/kg"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project supply against a Fosroc India rate contract typically runs 15–25 % below the IndiaMART counter quotes, which vary widely by city; Proddatur and Ludhiana quotes sit at the top of the band, Ahmedabad and Mumbai at the bottom.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Larger Conbextra EP10 M and free-flow packs bought by the carton attract 8–12 % off single-pack rate; injection work priced per site rather than per pack.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Roughly 12–18 % at the authorised-dealer level, with wider spreads on low-volume epoxy specialities than on admixtures.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "weak",
+          "low_rise": "moderate",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "moderate",
+          "bridges": "strong",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "South and West India, Middle East",
+          "weak": "Rural retail",
+          "balanced": "North",
+          "rural": "weak",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Grouting and anchoring for industrial plant and structural steel",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Concrete repair, protective coatings and waterproofing",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Crack and honeycomb injection in high-strength concrete, and chemically resistant flooring in refineries and plating works",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Fosroc",
+          "Sika",
+          "BASF Master Builders",
+          "MC-Bauchemie",
+          "Pidilite (Dr. Fixit)"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Fosroc Conbextra EP10 High-Strength Epoxy Resin Grout",
+    "slug": "fosroc-conbextra-ep10-epoxy-resin-grout-1l",
+    "model_no": "Conbextra EP10",
+    "status": "active"
+  },
+  "variant_label": "1 litre pack (base + hardener)",
+  "unit": "kit",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 1450,
+    "selling_price": 1295,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "Fosroc publishes no MRP. Estimated from Indian distributor quotes of ₹750–1,650/kg and a ₹1,450 per-pack quote (Noida) seen on IndiaMART listings in August 2026; ±15 %. The Amazon.in listing for the 1 LTR pack (B097TWV3WR) returned HTTP 500 and could not be opened."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.fosroc.com/product/show/conbextra-ep10",
+    "datasheet_urls": [
+      "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.fosroc.com/news/saint-gobain-completes-the-acquisition-of-fosroc",
+      "https://en.wikipedia.org/wiki/Fosroc",
+      "https://www.indiamart.com/proddetail/fosroc-conbextra-ep10-epoxy-grout-19374340562.html"
+    ]
+  },
+  "attributes": {
+    "epoxy_type": {
+      "value": "Free-flow grout",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.95
+    },
+    "model_number": {
+      "value": "Conbextra EP10",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/product/show/conbextra-ep10",
+      "confidence": 0.98
+    },
+    "series": {
+      "value": "Conbextra",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/product/show/conbextra-ep10",
+      "confidence": 0.95
+    },
+    "application_form": {
+      "value": "Free-flowing liquid",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.96
+    },
+    "solvent_free": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.97
+    },
+    "production_method": {
+      "value": "All-liquid two-can system; base and hardener are supplied in the correct mix proportions and designed for whole-pack mixing on site",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.94
+    },
+    "pre_batched_kit": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.94
+    },
+    "dim_w_mm": {
+      "value": 175,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_h_mm": {
+      "value": 160,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_d_mm": {
+      "value": 110,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "application_thickness_mm": {
+      "value": "Gap thickness 0.25 mm to 10 mm; injectable into cracks and construction joints from 0.25 mm to 9 mm",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.96
+    },
+    "service_temperature_min_c": {
+      "value": -20,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "service_temperature_max_c": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "heat_deflection_temp_c": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "compressive_strength_mpa": {
+      "value": 80,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.96
+    },
+    "tensile_strength_mpa": {
+      "value": 20,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.95
+    },
+    "flexural_strength_mpa": {
+      "value": 40,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.95
+    },
+    "bond_strength_concrete_mpa": {
+      "value": 12,
+      "unit": "MPa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "shear_strength_mpa": {
+      "value": 20,
+      "unit": "MPa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "chemical_resistance": {
+      "value": "Resistant to a wide range of chemicals; specified for heavy industrial areas including steelworks, refineries, chemical plants and electroplating works where chemical spillage occurs",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.94
+    },
+    "chloride_free": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "density_kg_l": {
+      "value": 1.05,
+      "unit": "kg/L",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.94
+    },
+    "solids_content_pct": {
+      "value": 100,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "pot_life_min": {
+      "value": 50,
+      "unit": "min",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.96
+    },
+    "initial_cure_time_h": {
+      "value": 24,
+      "unit": "h",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.88
+    },
+    "full_cure_time_days": {
+      "value": 7,
+      "unit": "days",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "net_weight_kg": {
+      "value": 1.05,
+      "unit": "kg",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "viscosity_mpas": {
+      "value": 500,
+      "unit": "mPa·s",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "bonding_substrates": {
+      "value": "Concrete foundations and steel base plates, crane and transporter rails, turbine and machinery bases; also cracks, honeycombs and construction joints in concrete and masonry",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.94
+    },
+    "open_time_min": {
+      "value": 50,
+      "unit": "min",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "primary_applications": {
+      "value": "Underplate grouting to structural elements, base-plate grouting under dynamic loads such as turbines and reciprocating machinery, heavy industrial grouting in steelworks and refineries, structural infill, rail-track and crane-rail grouting, and low-viscosity injection of cracks, honeycombs and cavities",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.96
+    },
+    "structural_use": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.95
+    },
+    "coverage": {
+      "value": "One 1 litre pack yields about 1 litre of mixed grout — roughly 1 m² of a 1 mm gap, or 0.1 m² of a 10 mm gap",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "usage_area": {
+      "value": "Interior and exterior",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_standard": {
+      "value": "BS EN 1504-3 Class R4 and BS EN 1504-6 (anchoring of reinforcing steel bar) — no BIS/ISI mark declared for this product",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/product/show/conbextra-ep10",
+      "confidence": 0.94
+    },
+    "en_standard": {
+      "value": "BS EN 1504-3 Class R4; BS EN 1504-6",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/product/show/conbextra-ep10",
+      "confidence": 0.94
+    },
+    "iso_9001_certified": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "batch_testing": {
+      "value": "Supplied in whole packs so the mix proportions cannot drift on site; each pack carries a batch code and the India TDS reference INDIA/2020/0314/A",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "application_method": {
+      "value": "Mix the whole pack for 2–3 minutes until a uniform colour is reached. For grouting, pour from one side of the void with a feeding hopper, maintaining a continuous hydrostatic head so no air is trapped. For injection, drill 8–10 mm holes along the crack, fix GI or PVC nipples with epoxy sealing putty and inject at uniform pressure until resin emerges from the adjacent nipple",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.94
+    },
+    "surface_preparation": {
+      "value": "The foundation must be free from oil, grease and loosely adherent material; cut back defective or laitance-covered concrete to a sound base and blow bolt holes and fixing pockets clean. Clean steel base plates to a bright finish to Swedish Standard SA 2½ and prime with Nitoprime 25 if placement is delayed. Formwork must be leak-proof with foam strip or mastic seal",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.94
+    },
+    "application_temperature_range": {
+      "value": "Performance at elevated temperature is assured, but above 35 °C store the unmixed material in a cool place, shade the mixing and placing equipment, avoid midday and direct-sun application, and staff the pour to finish within the pot life",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.93
+    },
+    "pack_size_kg": {
+      "value": 1.05,
+      "unit": "kg",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "pack_type": {
+      "value": "1 litre pack — base container plus a separate hardener can",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.95
+    },
+    "shelf_life_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.96
+    },
+    "storage_conditions": {
+      "value": "Store under warehouse conditions below 35 °C, out of direct sunlight and away from naked flame",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.94
+    },
+    "gst_rate_pct": {
+      "value": 18,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_coverage": {
+      "value": "Fosroc guarantees the product against defective materials and manufacture, sold subject to its standard terms and conditions of sale; it accepts no liability for results, since it has no control over where or how the product is applied",
+      "provenance": "fetched",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "confidence": 0.92
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.fosroc.com/assets/productDetailImages/024-Large-Fosroc-Epoxy-Grout.jpg",
+      "alt": "Fosroc EPX-FOS-CONBEXTRAEP10 - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.fosroc.com/public/_resources/themes/fosroc/assets/img/mobileApp/AppStore.png",
+      "alt": "Fosroc EPX-FOS-CONBEXTRAEP10 - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.fosroc.com/_resources/themes/fosroc/assets/img/column-module/download-column-module-bg.webp",
+      "alt": "Fosroc EPX-FOS-CONBEXTRAEP10 - in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": null,
+      "alt": "Fosroc EPX-FOS-CONBEXTRAEP10 - detail",
+      "content_type": "image/jpeg",
+      "checked": false
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": null,
+      "alt": "Fosroc EPX-FOS-CONBEXTRAEP10 - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": false
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Conbextra EP10 technical data sheet (India, ref INDIA/2020/0314/A)",
+      "source_url": "https://www.fosroc.com/assets/productDatasheets/TDS-Conbextra-EP10-India.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "epoxy_type",
+    "compressive_strength_mpa",
+    "bond_strength_concrete_mpa",
+    "pot_life_min",
+    "full_cure_time_days",
+    "application_thickness_mm",
+    "coverage",
+    "pack_size_kg"
+  ],
+  "short_description": "Fosroc Conbextra EP10 solvent-free epoxy resin free-flow grout, 1 litre pack. 80 MPa at 7 days, fills 0.25-10 mm gaps.",
+  "long_description": "## What it is\n\nConbextra EP10 is Fosroc's high-strength epoxy resin grout: a solvent-free, all-liquid two-can system of base and hardener, supplied in the correct proportions for whole-pack mixing on site. It flows freely into gaps of 0.25 to 10 mm and cures to a non-shrink mass that keeps full surface-to-surface contact with both the foundation and the plate above it.\n\n## What it's for\n\nUnderplate grouting to substantial structural elements, and base-plate grouting where dynamic loads are the problem — turbines, reciprocating machinery, crane and transporter rails. It is written into heavy industrial specifications for steelworks, refineries, chemical plants and electroplating works, where chemical spillage would attack a cementitious grout. The same pack doubles as a low-viscosity injection resin for filling cracks, honeycombs and cavities in high-strength concrete from 0.25 mm upward.\n\n## Key specifications\n\nCompressive strength reaches 45 MPa at one day, 60 MPa at three days and 80 MPa at seven days — the figure Fosroc writes into its own specification clause. Tensile strength is 20 MPa and flexural strength 40 MPa at seven days. Mixed density is about 1.05 kg/L and pot life is 50 minutes at 27 °C. It conforms to BS EN 1504-3 Class R4 and BS EN 1504-6 for anchoring of reinforcing steel bar; no BIS mark is declared. Shelf life is 12 months below 35 °C. The product is suitable for structural use and resists repetitive dynamic loading with low creep under sustained load.\n\n## Application notes\n\nThe foundation must be free of oil, grease and loose material, with laitance cut back to a sound base and bolt pockets blown clean. Take steel base plates to a bright finish (SA 2½) and prime with Nitoprime 25 if placement will be delayed. Formwork must be leak-proof — this is a free-flow grout. Pour the whole hardener can into the base, mix two to three minutes to a uniform colour, then pour from one side through a feeding hopper, holding a continuous hydrostatic head so no air is trapped. For injection work, drill 8-10 mm holes, fix nipples with epoxy putty and inject until resin emerges from the next nipple. Above 35 °C, keep material and equipment cool and avoid midday sun. Do not place in unrestrained situations.\n\n## What's in the box\n\nOne 1 litre pack: base container plus separate hardener can, pre-proportioned for whole-pack mixing.",
+  "seo": {
+    "title": "Fosroc Conbextra EP10 Epoxy Grout 1 L | 80 MPa",
+    "meta_description": "Fosroc Conbextra EP10 solvent-free epoxy resin free-flow grout, 1 litre pack. 80 MPa at 7 days, 0.25-10 mm gaps, EN 1504-3 R4. AP & Telangana delivery.",
+    "keywords": [
+      "fosroc conbextra ep10",
+      "epoxy grout price",
+      "base plate epoxy grout",
+      "crack injection epoxy resin",
+      "high strength epoxy grout india",
+      "conbextra ep10 1 litre",
+      "epoxy grout hyderabad"
+    ],
+    "keywords_te": [
+      "ఫాస్రాక్ ఎపాక్సీ గ్రౌట్",
+      "కాన్‌బెక్స్ట్రా ఈపీ10",
+      "ఎపాక్సీ గ్రౌట్ ధర",
+      "పగుళ్ల ఇంజెక్షన్ గ్రౌట్",
+      "బేస్ ప్లేట్ గ్రౌటింగ్"
+    ],
+    "keywords_hi": [
+      "फॉसरॉक एपॉक्सी ग्राउट",
+      "कॉनबेक्स्ट्रा ईपी10",
+      "एपॉक्सी ग्राउट कीमत",
+      "दरार इंजेक्शन ग्राउट",
+      "बेस प्लेट ग्राउटिंग"
+    ]
+  }
+}

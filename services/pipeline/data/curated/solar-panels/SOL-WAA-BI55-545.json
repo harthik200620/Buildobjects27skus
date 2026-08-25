@@ -1,0 +1,575 @@
+{
+  "sku_code": "SOL-WAA-BI55-545",
+  "category": "solar-panels",
+  "brand": {
+    "slug": "waaree",
+    "name": "Waaree",
+    "official_domains": [
+      "waaree.com",
+      "shop.waaree.com"
+    ],
+    "logo_url": "https://cdn11.bigcommerce.com/s-unnwlv5df8/images/stencil/160x50/logo_final_new_1657128016__75544.original.png",
+    "intel": {
+      "year_established": {
+        "value": 1989,
+        "provenance": "fetched",
+        "source_url": "https://www.waaree.com/about-us"
+      },
+      "parent_company": {
+        "value": "Waaree Group (Waaree Energies Ltd.; founder Hitesh Doshi)",
+        "provenance": "fetched",
+        "source_url": "https://www.waaree.com/about-us"
+      },
+      "product_portfolio": {
+        "value": "Solar PV modules (Mono PERC, n-type TOPCon, bifacial dual-glass), EPC services, project development, rooftop solutions, solar water pumps and independent power production",
+        "provenance": "fetched",
+        "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf"
+      },
+      "market_coverage": {
+        "value": "India's largest solar PV module manufacturing capacity at 12 GW; presence at 350+ locations nationally and in 68 countries globally (corporate site states 20+ countries served)",
+        "provenance": "fetched",
+        "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf"
+      },
+      "quality_strength_note": {
+        "value": "Factories independently assessed by Black & Veatch; ISO 9001:2015, ISO 14001:2015 and ISO 45001:2018 certified manufacturing. Dual-glass construction with a 30-year power-output warranty is the strongest reliability signal in the mainstream Indian retail range.",
+        "provenance": "fetched",
+        "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf"
+      },
+      "engineer_user_rating": {
+        "value": "4.4/5 typical among Indian rooftop EPC engineers — praised for availability and after-sales reach, occasionally marked down on price versus Chinese imports",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "First choice for most AP/Telangana rooftop EPC contractors: the widest franchise and dealer network in India means replacement panels and warranty claims are handled locally rather than through a distant factory.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Very high. Waaree is the brand a first-time household buyer in Andhra Pradesh or Telangana is most likely to have heard of, and its own online store sells single panels with a printed price, which removes the usual quotation guesswork.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 18,
+          "highest": 28,
+          "unit": "₹/Wp"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project/MW-scale supply typically lands 15-25% below the single-panel shop price; the ₹11,499 retail figure for this model is a retail-with-GST rate, not a project rate.",
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Pallet-quantity orders (roughly 30+ modules) usually attract a step discount; container-quantity orders are quoted per Wp and negotiated against the current cell price.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Typical channel margin on modules is thin — around 4-8% for a franchise dealer, with most of the installer's margin coming from structure, inverter and labour rather than the panel.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "moderate",
+          "roads": "moderate",
+          "bridges": "weak",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "West and North India (Gujarat, Maharashtra, Rajasthan)",
+          "weak": "North-East India",
+          "balanced": "South India including Andhra Pradesh and Telangana",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Grid-tied rooftop solar on homes, apartments and commercial buildings",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Ground-mounted captive plants for factories, cold stores and educational campuses",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Solar water-pumping sets for agriculture and off-grid or hybrid battery systems in areas with unreliable supply",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Waaree",
+          "Adani Solar",
+          "Vikram Solar",
+          "Tata Power Solar",
+          "RenewSys"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Waaree Bi-55-545 545 Wp Bifacial Dual-Glass Mono PERC Solar Module",
+    "slug": "waaree-bi-55-545-545wp-bifacial-dual-glass-mono-perc-solar-module",
+    "model_no": "Bi-55-545",
+    "status": "active"
+  },
+  "variant_label": "545 Wp · 144 half-cut cells · framed dual glass",
+  "unit": "panel",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 14907,
+    "selling_price": 11499,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://shop.waaree.com/waaree-545wp-144cells-framed-dual-glass-mono-perc-bifacial-solar-module/",
+    "fetched_at": "2026-08-22",
+    "note": "Manufacturer's own online store price, read 22 Aug 2026. MRP ₹14,907.11 rounded to ₹14,907. Works out to about ₹21.1 per Wp."
+  },
+  "gst_rate": 5,
+  "gst_needs_verification": true,
+  "sources": {
+    "official_product_url": "https://shop.waaree.com/waaree-545wp-144cells-framed-dual-glass-mono-perc-bifacial-solar-module/",
+    "datasheet_urls": [
+      "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.waaree.com/about-us"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "Bi-55-545",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "cell_technology": {
+      "value": "Mono PERC",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "bifacial": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "rated_power_wp": {
+      "value": 545,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "module_efficiency_pct": {
+      "value": 21.17,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "number_of_cells": {
+      "value": 144,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "front_glass_type": {
+      "value": "2 mm low-iron high-transmission anti-reflective (HTAR) semi-tempered glass",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "front_glass_thickness_mm": {
+      "value": 2,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "frame_material": {
+      "value": "Anodised aluminium alloy frame",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "encapsulant_material": {
+      "value": "PID-free, UV-resistant encapsulant film",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.85
+    },
+    "backsheet_material": {
+      "value": "2 mm low-iron printed semi-tempered rear glass (dual-glass construction, no polymer backsheet)",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "cell_interconnection": {
+      "value": "144 half-cut M10 Mono PERC bifacial cells (91 × 182 mm) in a 12×6 || 12×6 layout, multi-busbar (MBB) ribbon interconnection",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.92
+    },
+    "busbar_count": {
+      "value": 10,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_w_mm": {
+      "value": 1133,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "dim_h_mm": {
+      "value": 2272,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "dim_d_mm": {
+      "value": 35,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "cable_length_mm": {
+      "value": 500,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "max_snow_load_pa": {
+      "value": 5400,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.92
+    },
+    "max_wind_load_pa": {
+      "value": 2400,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.92
+    },
+    "temp_coefficient_pmax": {
+      "value": -0.34,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "temp_coefficient_voc": {
+      "value": -0.25,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "noct_c": {
+      "value": 43,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "operating_temperature_range": {
+      "value": "-40 °C to +85 °C",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "hail_impact_resistance": {
+      "value": "25 mm hailstone at 23 m/s impact velocity per IEC 61215",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "salt_mist_corrosion_class": {
+      "value": "Salt-mist corrosion tested to IEC 61701 — suitable for coastal Andhra Pradesh installations",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "net_weight_kg": {
+      "value": 32.5,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "vmp_v": {
+      "value": 41.9,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "imp_a": {
+      "value": 13.02,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "voc_v": {
+      "value": 49.76,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "isc_a": {
+      "value": 13.9,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "power_tolerance": {
+      "value": "0 / +5 Wp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "connector_type": {
+      "value": "MC4-compatible, IP68 rated",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "junction_box_diode_count": {
+      "value": 3,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "cable_cross_section_mm2": {
+      "value": 4,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "application_segment": {
+      "value": "Residential rooftop",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "suitable_for_rooftop": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "max_system_voltage_v": {
+      "value": 1500,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "max_series_fuse_a": {
+      "value": 25,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "is_standard": {
+      "value": "IS 14286 / IEC 61215 & IEC 61730",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iec_61215_certified": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iec_61730_certified": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "almm_listed": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "junction_box_ip_rating": {
+      "value": "IP68",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "fire_safety_class": {
+      "value": "Class C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "el_inspection": {
+      "value": "Electroluminescence imaging before and after lamination to screen micro-cracks and cell defects",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pid_resistance": {
+      "value": "PID-free encapsulant system",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.85
+    },
+    "frame_colour": {
+      "value": "Silver anodised",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "backsheet_colour": {
+      "value": "Transparent",
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.8
+    },
+    "modules_per_pallet": {
+      "value": 31,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "fetched",
+      "source_url": "https://shop.waaree.com/waaree-545wp-144cells-framed-dual-glass-mono-perc-bifacial-solar-module/",
+      "confidence": 0.85
+    },
+    "warranty_months": {
+      "value": 144,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.95
+    },
+    "product_warranty_years": {
+      "value": 12,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "performance_warranty_years": {
+      "value": 30,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.98
+    },
+    "annual_degradation_pct": {
+      "value": 0.55,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "power_output_at_end_pct": {
+      "value": 82.05,
+      "provenance": "fetched",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "confidence": 0.9
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://cdn11.bigcommerce.com/s-unnwlv5df8/images/stencil/original/products/155/5299/Titles__540Wp_144_Cells_24_Volts_Mono_PERC_Solar_Module__86263.1786511438.jpg",
+      "alt": "Waaree SOL-WAA-BI55-545 - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://cdn11.bigcommerce.com/s-unnwlv5df8/products/155/images/5299/Titles__540Wp_144_Cells_24_Volts_Mono_PERC_Solar_Module__86263.1786511438.386.513.jpg",
+      "alt": "Waaree SOL-WAA-BI55-545 - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://cdn11.bigcommerce.com/s-unnwlv5df8/images/stencil/501x440/products/155/5299/Titles__540Wp_144_Cells_24_Volts_Mono_PERC_Solar_Module__86263.1786511438.jpg",
+      "alt": "Waaree SOL-WAA-BI55-545 - in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://cdn11.bigcommerce.com/s-unnwlv5df8/images/stencil/501x440/products/579/5294/Titles__WAAREE_585Wp_144Cells_24_Volts_N-Type_Framed_Dual_Glass_Bifacial_Non-DCR_Solar_Module__14016.1786510478.jpg",
+      "alt": "Waaree SOL-WAA-BI55-545 - detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://cdn11.bigcommerce.com/s-unnwlv5df8/images/stencil/1280x1280/products/155/2015/05__19628.1786511438.jpg",
+      "alt": "Waaree SOL-WAA-BI55-545 - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Waaree AHNAY Series Bi-55-520 to Bi-55-550 framed dual-glass bifacial module datasheet",
+      "source_url": "https://www.waaree.com/upload/media/datasheet_bi_55_520_550_12_03012025_1768193543.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "rated_power_wp",
+    "module_efficiency_pct",
+    "cell_technology",
+    "voc_v",
+    "isc_a",
+    "fill_factor",
+    "temp_coefficient_pmax",
+    "performance_warranty_years"
+  ],
+  "short_description": "545 Wp Waaree bifacial dual-glass Mono PERC module, 144 half-cut cells, 21.17% efficient, 12-year product and 30-year power warranty.",
+  "long_description": "## What it is\n\nThe Waaree Bi-55-545 is a 545 Wp framed dual-glass bifacial solar module from Waaree's AHNAY Series, built from 144 half-cut M10 Mono PERC bifacial cells (91 × 182 mm) laid out 12×6 || 12×6 and interconnected with multi-busbar ribbons. Instead of a polymer backsheet it uses a second sheet of 2 mm low-iron printed semi-tempered glass, so the rear face also collects light. Module efficiency at standard test conditions is 21.17%.\n\n## What it's for\n\nGrid-tied rooftop solar on houses, apartment blocks and commercial buildings, and ground-mounted captive plants where the reflected light off a light-coloured roof or hardstanding can be turned into extra output. The glass-glass sandwich is the more durable of the two common constructions, which is why it carries a 30-year power-output warranty rather than the usual 25.\n\n## Key specifications\n\nAt STC the module delivers 545 Wp at 41.9 V and 13.02 A, with an open-circuit voltage of 49.76 V and a short-circuit current of 13.9 A. Maximum system voltage is 1500 V and the maximum series fuse rating is 25 A. Temperature coefficients are −0.34 %/°C on power and −0.25 %/°C on Voc, with NOCT at 43 °C and an operating range of −40 °C to +85 °C. The laminate is rated for 5400 Pa of front load and 2400 Pa of rear load. The panel measures 2272 mm tall × 1133 mm wide × 35 mm deep and weighs 32.5 kg. The IP68 weatherproof PPO junction box carries three bypass diodes and 500 mm of 4 mm² cable ending in IP68 MC4-compatible connectors.\n\n## Application and installation notes\n\nIt bolts to the mounting structure through eight 14 × 9 mm holes in the frame; clamp mounting is permitted per Waaree's installation manual. Because it is bifacial, leave clearance behind the array and avoid dark or shaded backgrounds if you want the rear-side gain. At 32.5 kg and 2.27 m long it is a two-person lift. Check string length against the 1500 V system limit and the 49.76 V open-circuit voltage before wiring.\n\n## What's in the box\n\nOne 545 Wp module with pre-attached junction box, cables and MC4-compatible connectors. Mounting structure, clamps, earthing hardware and cable are not included. Warranty: 12 years on product and workmanship, 30 years on power output, with 82.05% of rated power guaranteed at year 30.",
+  "seo": {
+    "title": "Waaree Bi-55-545 545W Bifacial Solar Panel Price",
+    "meta_description": "Waaree Bi-55-545 545 Wp bifacial dual-glass Mono PERC solar panel — 21.17% efficient, 144 half-cut cells, 12-yr product and 30-yr power warranty.",
+    "keywords": [
+      "waaree 545w solar panel",
+      "waaree bifacial solar module",
+      "bi-55-545",
+      "545 watt solar panel price",
+      "dual glass mono perc module",
+      "waaree solar panel andhra pradesh",
+      "545 wp bifacial panel hyderabad"
+    ],
+    "keywords_te": [
+      "వారీ సోలార్ ప్యానెల్",
+      "545 వాట్ సోలార్ ప్యానెల్ ధర",
+      "బైఫేషియల్ సోలార్ మాడ్యూల్",
+      "మోనో పెర్క్ సోలార్ ప్యానెల్",
+      "సోలార్ ప్యానెల్ హైదరాబాద్"
+    ],
+    "keywords_hi": [
+      "वारी सोलर पैनल",
+      "545 वाट सोलर पैनल कीमत",
+      "बाइफेशियल सोलर मॉड्यूल",
+      "मोनो पर्क सोलर पैनल",
+      "डबल ग्लास सोलर पैनल"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1787378058352,
+      "tag": "0000_gifted_sally_floyd",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1787447053432,
+      "tag": "0001_sku_category",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1787447844028,
+      "tag": "0002_sku_cat_stock_idx",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1787530000000,
+      "tag": "0003_images_quality_price_note",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1787636789342,
+      "tag": "0004_provenance_derived",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1787636789343,
+      "tag": "0005_category_taxonomy",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,0 +1,646 @@
+{
+  "generated_at": "2026-08-23T19:18:23.276Z",
+  "assets": {
+    "EPX-SIK-SIKADUR31IN": {
+      "file": "placeholders/EPX-SIK-SIKADUR31IN.glb",
+      "category": "epoxy",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 300,
+        "h": 235,
+        "d": 220
+      },
+      "bbox_m": {
+        "x": 0.21118129789829254,
+        "y": 0.23499999940395355,
+        "z": 0.19480600208044052
+      },
+      "triangles": 876,
+      "builder": "epoxy",
+      "variant": "two-part-kit",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.481Z"
+    },
+    "EPX-FOS-CONBEXTRAEP10": {
+      "file": "placeholders/EPX-FOS-CONBEXTRAEP10.glb",
+      "category": "epoxy",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 175,
+        "h": 160,
+        "d": 110
+      },
+      "bbox_m": {
+        "x": 0.10559064894914627,
+        "y": 0.1599999964237213,
+        "z": 0.14000000432133675
+      },
+      "triangles": 876,
+      "builder": "epoxy",
+      "variant": "two-part-kit",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.472Z"
+    },
+    "EPX-PID-EPOXYINJGROUT": {
+      "file": "placeholders/EPX-PID-EPOXYINJGROUT.glb",
+      "category": "epoxy",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 230,
+        "h": 210,
+        "d": 155
+      },
+      "bbox_m": {
+        "x": 0.14878682792186737,
+        "y": 0.20999999344348907,
+        "z": 0.15793149545788765
+      },
+      "triangles": 876,
+      "builder": "epoxy",
+      "variant": "two-part-kit",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.477Z"
+    },
+    "FIR-CEA-MAP90-4KG": {
+      "file": "placeholders/FIR-CEA-MAP90-4KG.glb",
+      "category": "fire-extinguishers",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 140,
+        "h": 445,
+        "d": 190
+      },
+      "bbox_m": {
+        "x": 0.1325399987399578,
+        "y": 0.39673173427581787,
+        "z": 0.12309600040316582
+      },
+      "triangles": 1052,
+      "builder": "fire-extinguishers",
+      "variant": "stored-pressure",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.488Z"
+    },
+    "FIR-SAF-ABC-SP-6KG": {
+      "file": "placeholders/FIR-SAF-ABC-SP-6KG.glb",
+      "category": "fire-extinguishers",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 160,
+        "h": 505,
+        "d": 205
+      },
+      "bbox_m": {
+        "x": 0.14976000040769577,
+        "y": 0.4498317241668701,
+        "z": 0.13982399553060532
+      },
+      "triangles": 1052,
+      "builder": "fire-extinguishers",
+      "variant": "stored-pressure",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.499Z"
+    },
+    "FIR-NEW-CA-EB-01": {
+      "file": "placeholders/FIR-NEW-CA-EB-01.glb",
+      "category": "fire-extinguishers",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 300,
+        "h": 800,
+        "d": 300
+      },
+      "bbox_m": {
+        "x": 0.2703000009059906,
+        "y": 0.7109067440032959,
+        "z": 0.2569199949502945
+      },
+      "triangles": 1052,
+      "builder": "fire-extinguishers",
+      "variant": "stored-pressure",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.494Z"
+    },
+    "SOL-WAA-BI55-545": {
+      "file": "placeholders/SOL-WAA-BI55-545.glb",
+      "category": "solar-panels",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 1133,
+        "h": 2272,
+        "d": 35
+      },
+      "bbox_m": {
+        "x": 1.1330000162124634,
+        "y": 0.795199990272522,
+        "z": 2.2720000743865967
+      },
+      "triangles": 228,
+      "builder": "solar-panels",
+      "variant": "framed-module",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.509Z"
+    },
+    "SOL-ADA-ASB-M10-144-575": {
+      "file": "placeholders/SOL-ADA-ASB-M10-144-575.glb",
+      "category": "solar-panels",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 1133,
+        "h": 2278,
+        "d": 30
+      },
+      "bbox_m": {
+        "x": 1.1330000162124634,
+        "y": 0.7972999811172485,
+        "z": 2.2780001163482666
+      },
+      "triangles": 228,
+      "builder": "solar-panels",
+      "variant": "framed-module",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.502Z"
+    },
+    "SOL-VIK-PARADEA-550": {
+      "file": "placeholders/SOL-VIK-PARADEA-550.glb",
+      "category": "solar-panels",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 1134,
+        "h": 2278,
+        "d": 30
+      },
+      "bbox_m": {
+        "x": 1.1339999437332153,
+        "y": 0.7972999811172485,
+        "z": 2.2780001163482666
+      },
+      "triangles": 228,
+      "builder": "solar-panels",
+      "variant": "framed-module",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.506Z"
+    },
+    "TIL-KAJ-GP00215": {
+      "file": "placeholders/TIL-KAJ-GP00215.glb",
+      "category": "tiles",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 600,
+        "h": 1200,
+        "d": 9
+      },
+      "bbox_m": {
+        "x": 0.6000000238418579,
+        "y": 0.008999999612569809,
+        "z": 1.2000000476837158
+      },
+      "triangles": 24,
+      "builder": "tiles",
+      "variant": "slab",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.515Z"
+    },
+    "TIL-SOM-T31F119001859102": {
+      "file": "placeholders/TIL-SOM-T31F119001859102.glb",
+      "category": "tiles",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 600,
+        "h": 1200,
+        "d": 9
+      },
+      "bbox_m": {
+        "x": 0.6000000238418579,
+        "y": 0.008999999612569809,
+        "z": 1.2000000476837158
+      },
+      "triangles": 24,
+      "builder": "tiles",
+      "variant": "slab",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.514Z"
+    },
+    "TIL-JOH-YK1FLCR000000PJ": {
+      "file": "placeholders/TIL-JOH-YK1FLCR000000PJ.glb",
+      "category": "tiles",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 600,
+        "h": 1200,
+        "d": 9
+      },
+      "bbox_m": {
+        "x": 0.6000000238418579,
+        "y": 0.008999999612569809,
+        "z": 1.2000000476837158
+      },
+      "triangles": 24,
+      "builder": "tiles",
+      "variant": "slab",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.511Z"
+    },
+    "BUL-PHI-ACESAVER9WB22": {
+      "file": "BUL-PHI-ACESAVER9WB22.glb",
+      "category": "bulbs",
+      "placeholder": false,
+      "dims_mm": {
+        "w": 60,
+        "h": 110,
+        "d": 60
+      },
+      "bbox_m": {
+        "x": 0.058983802795410156,
+        "y": 0.10999999940395355,
+        "z": 0.05883059650659561
+      },
+      "triangles": 97477,
+      "builder": "photoreal",
+      "usdz": null,
+      "quality": "photoreal",
+      "provider": "meshy",
+      "source_images": [
+        "skus/1b/BUL-PHI-ACESAVER9WB22/img/1-orig.jpg"
+      ],
+      "job_id": "01a0300d-4b61-799a-a2ee-63e505655796",
+      "generated_at": "2026-08-23T19:18:23.275Z",
+      "axis_map": "x,y,z",
+      "front_yaw_deg": 0,
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.019490056937544048,
+        "warnings": [
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "textures": {
+        "count": 3,
+        "max_px": 2048,
+        "sources": [
+          "meshy"
+        ]
+      },
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+    },
+    "BUL-HAV-LEDPLUS9WB22": {
+      "file": "placeholders/BUL-HAV-LEDPLUS9WB22.glb",
+      "category": "bulbs",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 60,
+        "h": 113,
+        "d": 60
+      },
+      "bbox_m": {
+        "x": 0.05999999865889549,
+        "y": 0.11299999803304672,
+        "z": 0.05999999865889549
+      },
+      "triangles": 1212,
+      "builder": "bulbs",
+      "variant": "a60-b22",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.466Z"
+    },
+    "BUL-WIP-GARNET9WB22": {
+      "file": "placeholders/BUL-WIP-GARNET9WB22.glb",
+      "category": "bulbs",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 60,
+        "h": 110,
+        "d": 60
+      },
+      "bbox_m": {
+        "x": 0.05999999865889549,
+        "y": 0.10999999940395355,
+        "z": 0.05999999865889549
+      },
+      "triangles": 1212,
+      "builder": "bulbs",
+      "variant": "a60-b22",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.455Z"
+    },
+    "CEM-ULT-PPC50": {
+      "file": "placeholders/CEM-ULT-PPC50.glb",
+      "category": "cement",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 450,
+        "h": 700,
+        "d": 140
+      },
+      "bbox_m": {
+        "x": 0.45089998841285706,
+        "y": 0.14000000059604645,
+        "z": 0.699999988079071
+      },
+      "triangles": 36,
+      "builder": "cement",
+      "variant": "bag-flat",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.448Z"
+    },
+    "CEM-ACC-SP50": {
+      "file": "placeholders/CEM-ACC-SP50.glb",
+      "category": "cement",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 450,
+        "h": 700,
+        "d": 140
+      },
+      "bbox_m": {
+        "x": 0.45089998841285706,
+        "y": 0.14000000059604645,
+        "z": 0.699999988079071
+      },
+      "triangles": 36,
+      "builder": "cement",
+      "variant": "bag-flat",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.439Z"
+    },
+    "CEM-AMB-PLUS50": {
+      "file": "placeholders/CEM-AMB-PLUS50.glb",
+      "category": "cement",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 450,
+        "h": 700,
+        "d": 140
+      },
+      "bbox_m": {
+        "x": 0.45089998841285706,
+        "y": 0.14000000059604645,
+        "z": 0.699999988079071
+      },
+      "triangles": 36,
+      "builder": "cement",
+      "variant": "bag-flat",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.445Z"
+    },
+    "DEMO-BATHTUB": {
+      "file": "placeholders/DEMO-BATHTUB.glb",
+      "category": "bathtub",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 1700,
+        "h": 600,
+        "d": 750
+      },
+      "bbox_m": {
+        "x": 1.7680000066757202,
+        "y": 0.6119999885559082,
+        "z": 0.7950000166893005
+      },
+      "triangles": 36,
+      "builder": "bathtub",
+      "variant": "tub",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.556Z"
+    },
+    "CCT-HIK-2CE76D0T-ITPFS": {
+      "file": "placeholders/CCT-HIK-2CE76D0T-ITPFS.glb",
+      "category": "cctv",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 84.6,
+        "h": 78.9,
+        "d": 84.6
+      },
+      "bbox_m": {
+        "x": 0.09136799722909927,
+        "y": 0.06508799642324448,
+        "z": 0.09136799722909927
+      },
+      "triangles": 1728,
+      "builder": "cctv",
+      "variant": "dome",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.531Z"
+    },
+    "CCT-DAH-HDW1200TRQP": {
+      "file": "placeholders/CCT-DAH-HDW1200TRQP.glb",
+      "category": "cctv",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 97.1,
+        "h": 93,
+        "d": 97.1
+      },
+      "bbox_m": {
+        "x": 0.10486800223588943,
+        "y": 0.07460000365972519,
+        "z": 0.10486800223588943
+      },
+      "triangles": 1728,
+      "builder": "cctv",
+      "variant": "dome",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.526Z"
+    },
+    "CCT-CPP-USC-TA24L2C-L": {
+      "file": "placeholders/CCT-CPP-USC-TA24L2C-L.glb",
+      "category": "cctv",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 70,
+        "h": 69.7,
+        "d": 163.4
+      },
+      "bbox_m": {
+        "x": 0.09000000357627869,
+        "y": 0.17018403112888336,
+        "z": 0.27979884669184685
+      },
+      "triangles": 760,
+      "builder": "cctv",
+      "variant": "bullet",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.519Z"
+    },
+    "GLS-SGB-SUNBAN-SAPPHIRE5": {
+      "file": "placeholders/GLS-SGB-SUNBAN-SAPPHIRE5.glb",
+      "category": "glass",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 1200,
+        "h": 1800,
+        "d": 5
+      },
+      "bbox_m": {
+        "x": 1.2000000476837158,
+        "y": 1.7999999523162842,
+        "z": 0.005100000184029341
+      },
+      "triangles": 24,
+      "builder": "glass",
+      "variant": "pane",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.539Z"
+    },
+    "GLS-AIS-EDGE-NATURAPLUS": {
+      "file": "placeholders/GLS-AIS-EDGE-NATURAPLUS.glb",
+      "category": "glass",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 1200,
+        "h": 1800,
+        "d": 6
+      },
+      "bbox_m": {
+        "x": 1.2000000476837158,
+        "y": 1.7999999523162842,
+        "z": 0.006120000034570694
+      },
+      "triangles": 24,
+      "builder": "glass",
+      "variant": "pane",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.534Z"
+    },
+    "GLS-GUA-CLIMAGUARD-BLUE5": {
+      "file": "placeholders/GLS-GUA-CLIMAGUARD-BLUE5.glb",
+      "category": "glass",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 1200,
+        "h": 1800,
+        "d": 5
+      },
+      "bbox_m": {
+        "x": 1.2000000476837158,
+        "y": 1.7999999523162842,
+        "z": 0.005100000184029341
+      },
+      "triangles": 24,
+      "builder": "glass",
+      "variant": "pane",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.537Z"
+    },
+    "TST-LEI-TS07-2-R500": {
+      "file": "placeholders/TST-LEI-TS07-2-R500.glb",
+      "category": "total-stations",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 207,
+        "h": 350,
+        "d": 195
+      },
+      "bbox_m": {
+        "x": 1.9297155141830444,
+        "y": 1.8504321272484958,
+        "z": 1.6746495962142944
+      },
+      "triangles": 792,
+      "builder": "total-stations",
+      "variant": "on-tripod",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.553Z"
+    },
+    "TST-TRI-C5-2": {
+      "file": "placeholders/TST-TRI-C5-2.glb",
+      "category": "total-stations",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 206,
+        "h": 318,
+        "d": 169
+      },
+      "bbox_m": {
+        "x": 1.9297155141830444,
+        "y": 1.8254720862023532,
+        "z": 1.6746495962142944
+      },
+      "triangles": 792,
+      "builder": "total-stations",
+      "variant": "on-tripod",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.545Z"
+    },
+    "TST-TOP-GM-52": {
+      "file": "placeholders/TST-TOP-GM-52.glb",
+      "category": "total-stations",
+      "placeholder": true,
+      "dims_mm": {
+        "w": 183,
+        "h": 348,
+        "d": 181
+      },
+      "bbox_m": {
+        "x": 1.9297155141830444,
+        "y": 1.8488721544854343,
+        "z": 1.6746495962142944
+      },
+      "triangles": 792,
+      "builder": "total-stations",
+      "variant": "on-tripod",
+      "usdz": null,
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-08-23T15:51:30.549Z"
+    }
+  }
+}

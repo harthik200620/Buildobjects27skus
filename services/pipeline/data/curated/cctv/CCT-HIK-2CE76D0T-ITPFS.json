@@ -1,0 +1,588 @@
+{
+  "sku_code": "CCT-HIK-2CE76D0T-ITPFS",
+  "category": "cctv",
+  "brand": {
+    "slug": "hikvision",
+    "name": "Hikvision",
+    "official_domains": [
+      "hikvisionindia.com",
+      "hikvision.com"
+    ],
+    "logo_url": "https://www.hikvisionindia.com/media/app_config/logo.png",
+    "intel": {
+      "year_established": {
+        "value": 2001,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Hikvision"
+      },
+      "parent_company": {
+        "value": "Hangzhou Hikvision Digital Technology Co., Ltd. — largest shareholder China Electronics Technology Group (CETC, about 38.9%); sold and assembled in India by Hikvision India",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Hikvision"
+      },
+      "product_portfolio": {
+        "value": "Turbo HD (HDTVI) cameras incl. ColorVu and Smart Hybrid Light, IP cameras, DVR/NVR, PTZ, thermal, access control, video intercom, intrusion alarm, cabling, Hik Fire; sub-brands Hilook, Hiwatch, Ezviz",
+        "provenance": "fetched",
+        "source_url": "https://www.hikvisionindia.com/"
+      },
+      "market_coverage": {
+        "value": "Pan-India through Hikvision India; Make-in-India plant of over 9 lakh sq ft near Mumbai with a stated capacity of 8 lakh cameras a month and 850 of 3,000 Hikvision products built locally",
+        "provenance": "fetched",
+        "source_url": "https://www.hikvisionindia.com/aboutus"
+      },
+      "quality_strength_note": {
+        "value": "Consistent imaging and firmware across the Turbo HD range, wide DVR compatibility via 4-in-1 output, and a dense service-centre network; the audio-over-coax turret is the reference product in its class",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.4/5 (typical) — security consultants treat Hikvision as the default specification for analogue and IP projects",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Very high among Hyderabad, Vijayawada and Visakhapatnam CCTV installers: easiest stock availability, familiar DVR menus, predictable margins",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High — the most searched CCTV brand name in India; first-time buyers pick it on word of mouth from installers",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 1100,
+          "highest": 2500,
+          "unit": "₹/unit"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project and distributor pricing for 2 MP Turbo HD cameras runs 30–40% below online list; single-piece retail sits close to marketplace prices",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Installers buying 8- and 16-camera kits get camera-plus-DVR bundle pricing; slabs typically start at 10 cameras",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Dealer margin on analogue cameras is thin (8–15%); installers earn on cabling, DVR, storage and labour",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "strong",
+          "bridges": "moderate",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India metros and tier-2 cities",
+          "weak": "Government tenders that restrict Chinese-origin brands",
+          "balanced": "South India incl. Andhra Pradesh and Telangana",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Shop, office, apartment and godown surveillance on HD analogue DVR systems",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Audio-evidence recording at counters, reception desks and cash points",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Retrofit of older CVBS installations — the 4-in-1 output lets the camera be swapped without changing cabling",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Hikvision",
+          "CP PLUS",
+          "Dahua",
+          "Godrej",
+          "Honeywell"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Hikvision DS-2CE76D0T-ITPFS 2 MP Audio Indoor Fixed Turret Camera",
+    "slug": "hikvision-ds-2ce76d0t-itpfs-2mp-audio-turret-camera",
+    "model_no": "DS-2CE76D0T-ITPFS",
+    "status": "active"
+  },
+  "variant_label": "3.6 mm lens, white",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 3999,
+    "selling_price": 1249,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.amazon.in/dp/B099PZJGPQ",
+    "fetched_at": "2026-08-23",
+    "note": "Amazon.in listing B099PZJGPQ (HIKVISION DS-2CE76D0T-ITPFS 2MP Dome Camera with Mic) showed ₹1,249 on 2026-08-23. MRP ₹3,999 is the list price on the Moglix listing of the same model (selling ₹1,584, available on request). Hyderabad dealer rate is typically ₹1,100–1,400."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.hikvisionindia.com/products/camera-products/value-series/ds-2ce76d0t-itpfs/",
+    "datasheet_urls": [
+      "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.hikvision.com/en/products/Turbo-HD-Products/Turbo-HD-Cameras/Value-Series/ds-2ce76d0t-itpfs/",
+      "https://www.amazon.in/dp/B099PZJGPQ",
+      "https://www.moglix.com/hikvision-2mp-analog-camera-ds-2ce76d0t-itpfs/mp/msnv5ooywn2v56",
+      "https://www.hikvisionindia.com/aboutus",
+      "https://en.wikipedia.org/wiki/Hikvision"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "DS-2CE76D0T-ITPFS",
+      "provenance": "fetched",
+      "source_url": "https://www.hikvisionindia.com/products/camera-products/value-series/ds-2ce76d0t-itpfs/",
+      "confidence": 0.99
+    },
+    "form_factor": {
+      "value": "Turret (eyeball)",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "resolution_mp": {
+      "value": 2,
+      "unit": "MP",
+      "provenance": "verified",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "source_urls": [
+        "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+        "https://www.amazon.in/dp/B099PZJGPQ"
+      ],
+      "confidence": 0.98
+    },
+    "max_video_resolution": {
+      "value": "1920 × 1080 (1080p)",
+      "provenance": "verified",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "source_urls": [
+        "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+        "https://www.amazon.in/dp/B099PZJGPQ"
+      ],
+      "confidence": 0.98
+    },
+    "signal_technology": {
+      "value": "Multi-standard (TVI/AHD/CVI/CVBS)",
+      "provenance": "verified",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "source_urls": [
+        "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+        "https://www.amazon.in/dp/B099PZJGPQ"
+      ],
+      "confidence": 0.95
+    },
+    "night_vision_type": {
+      "value": "Infrared (black & white)",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "audio_support": {
+      "value": "Built-in microphone",
+      "provenance": "verified",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "source_urls": [
+        "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+        "https://www.amazon.in/dp/B099PZJGPQ"
+      ],
+      "confidence": 0.95
+    },
+    "housing_material": {
+      "value": "Plastic (ABS / PC)",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.9
+    },
+    "dome_cover_material": {
+      "value": "Flat glass lens window; no dome bubble (turret body)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "lens_assembly_process": {
+      "value": "Factory-focused fixed lens module with sealed lens window",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "weatherproof_sealing_process": {
+      "value": "Indoor model — no IP weather rating published; housing is not water-sealed",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.8
+    },
+    "dim_w_mm": {
+      "value": 84.6,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "dim_h_mm": {
+      "value": 78.9,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "dim_d_mm": {
+      "value": 84.6,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.85
+    },
+    "operating_temperature_min_c": {
+      "value": -40,
+      "unit": "°C",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "operating_temperature_max_c": {
+      "value": 60,
+      "unit": "°C",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "operating_humidity_max_pct": {
+      "value": 90,
+      "unit": "%",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.9
+    },
+    "ik_rating": {
+      "value": "Not rated",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "vandal_resistant": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "adjustment_range": {
+      "value": "Pan 0–360°, tilt 0–75°, rotation 0–360° (3-axis)",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "image_sensor": {
+      "value": "2 MP CMOS",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "lens_focal_length_mm": {
+      "value": 3.6,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.9
+    },
+    "lens_type": {
+      "value": "Fixed focal",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "horizontal_field_of_view_deg": {
+      "value": 79.6,
+      "unit": "°",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "ir_range_m": {
+      "value": 20,
+      "unit": "m",
+      "provenance": "verified",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "source_urls": [
+        "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+        "https://www.amazon.in/dp/B099PZJGPQ"
+      ],
+      "confidence": 0.98
+    },
+    "min_illumination_lux": {
+      "value": 0.01,
+      "unit": "lux",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "net_weight_kg": {
+      "value": 0.14,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.9
+    },
+    "connector_type": {
+      "value": "BNC video (TVI/AHD/CVI/CVBS, audio over the same coax) + 12 V DC power jack on pigtail",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "indoor_use": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "outdoor_use": {
+      "value": false,
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.85
+    },
+    "typical_application": {
+      "value": "Shops, offices, apartments, godowns and corridors where audio recording is wanted on an existing HD analogue DVR",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "max_frame_rate_fps": {
+      "value": 30,
+      "unit": "fps",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "video_compression": {
+      "value": "Analogue (no compression)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "is_standard": {
+      "value": "IS 13252 (Part 1) / IEC 62368-1 (BIS CRS safety standard for CCTV cameras)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "ip_rating": {
+      "value": "Not rated (indoor)",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.8
+    },
+    "onvif_conformance": {
+      "value": "Not applicable — analogue Turbo HD camera with no network interface",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "rohs_compliant": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "burn_in_test": {
+      "value": "Factory burn-in before dispatch (manufacturer standard practice)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "ingress_protection_test": {
+      "value": "Not applicable — unrated indoor housing",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "body_colour": {
+      "value": "White",
+      "provenance": "fetched",
+      "source_url": "https://www.hikvisionindia.com/products/camera-products/value-series/ds-2ce76d0t-itpfs/",
+      "confidence": 0.9
+    },
+    "surface_finish": {
+      "value": "Matt white moulded plastic",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mounting_type": {
+      "value": "Ceiling or wall",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.8
+    },
+    "power_supply_type": {
+      "value": "12 V DC",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "power_consumption_w": {
+      "value": 2.7,
+      "unit": "W",
+      "provenance": "fetched",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "confidence": 0.95
+    },
+    "recommended_installation_height_m": {
+      "value": 2.7,
+      "unit": "m",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "box_contents": {
+      "value": "Camera with video and power pigtail, mounting screws and wall plugs, drilling template, quick start guide",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "packaging_type": {
+      "value": "Single-unit printed carton",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "unit": "piece",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 24,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "warranty_type": {
+      "value": "Carry-in manufacturer warranty through Hikvision India service centres",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "warranty_coverage": {
+      "value": "Manufacturing defects in the camera electronics and lens module; excludes physical damage, water ingress, surge or lightning damage and accessories",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.hikvisionindia.com/media/Product/pictures/DS-2CE76D0T-ITPFS_m0RJXha.png",
+      "alt": "Hikvision DS-2CE76D0T-ITPFS 2 MP white turret camera, three-quarter front view showing the lens window and UP marking (Hikvision render hosted by the Amazon.in listing)",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.hikvisionindia.com/staticfiles/front/assets/images/banner/img10.png",
+      "alt": "Hikvision DS-2CE76D0T-ITPFS turret camera, official Hikvision India product render, angled view",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": null,
+      "alt": "Hikvision CCT-HIK-2CE76D0T-ITPFS - CCTV security camera installed in modern facility entrance",
+      "content_type": "image/jpeg",
+      "checked": false
+    },
+    {
+      "role": "detail",
+      "source_url": null,
+      "alt": "Hikvision DS-2CE76D0T-ITPFS feature card: 2 MP 1920 × 1080, 2.8/3.6/6 mm lens options, 20 m smart IR, audio over coaxial cable with built-in mic, 4-in-1 output (Hikvision infographic hosted by the Amazon.in listing)",
+      "content_type": "image/jpeg",
+      "checked": false
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": null,
+      "alt": "Hikvision CCT-HIK-2CE76D0T-ITPFS - CCTV camera dimension diagram and base mounting plate",
+      "content_type": "image/jpeg",
+      "checked": false
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Hikvision DS-2CE76D0T-ITPFS datasheet (2023-08-07)",
+      "source_url": "https://assets.hikvision.com/prd/public/all/doc/m000006905/DS-2CE76D0T-ITPFS_Datasheet_20230807.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "resolution_mp",
+    "form_factor",
+    "image_sensor",
+    "min_illumination_lux",
+    "ir_range_m",
+    "lens_focal_length_mm",
+    "horizontal_field_of_view_deg",
+    "ip_rating"
+  ],
+  "short_description": "Hikvision 2 MP Turbo HD turret with built-in mic, 3.6 mm lens, 20 m infrared night vision, 4-in-1 TVI/AHD/CVI/CVBS output, 12 V DC. Indoor use.",
+  "long_description": "## What it is\n\nThe Hikvision DS-2CE76D0T-ITPFS is a 2 MP Turbo HD turret camera from the Value Series, fitted with a built-in microphone that sends audio down the same coaxial cable as the video. It is a compact white plastic turret, 84.6 mm across and 78.9 mm tall, weighing about 140 g, with a 3.6 mm fixed lens that gives a 79.6° horizontal field of view. It is an indoor model and carries no IP weather rating.\n\n## What it's for\n\nThis is the camera installers reach for inside shops, offices, apartments, godowns and corridors when the client wants sound as well as pictures on an existing HD analogue DVR. The multi-standard output switches between TVI, AHD, CVI and CVBS, so it records on Hikvision Turbo HD DVRs and on most other HD analogue recorders already in the field, and it can replace an older CVBS camera without re-cabling.\n\n## Key specifications\n\nA 2 MP CMOS sensor delivers 1920 × 1080 video at up to 30 fps. Minimum illumination is 0.01 lux, and the infrared LEDs light the scene in black and white to about 20 m. The 3-axis bracket pans 360°, tilts 75° and rotates 360° for aiming. The camera runs from 12 V DC and draws a maximum of 2.7 W, and it is rated for −40 °C to 60 °C at up to 90% humidity, so a sealed Telangana shop in May is well inside its envelope. The Indian safety reference for cameras of this class is IS 13252 (Part 1) / IEC 62368-1, and the warranty is 24 months.\n\n## Installation notes\n\nMount on the ceiling or a wall at around 2.7 m, aim with the three adjustment axes, and keep it out of rain and direct water — it is not weather-sealed and is not rated for outdoor use. Run a single coaxial cable back to the DVR; the microphone audio travels on the same cable, so no separate audio line is needed. Power it from a regulated 12 V DC supply and enable audio on the matching DVR channel so that sound is recorded with the video.\n\n## What's in the box\n\nOne camera with its video and power pigtail, mounting screws and wall plugs, a drilling template and a quick start guide, packed in a single printed carton.",
+  "seo": {
+    "title": "Hikvision DS-2CE76D0T-ITPFS 2 MP Audio Turret Camera",
+    "meta_description": "Hikvision DS-2CE76D0T-ITPFS 2 MP indoor turret camera with built-in mic, 20 m IR night vision, 3.6 mm lens, 4-in-1 output. Delivery across AP & Telangana.",
+    "keywords": [
+      "hikvision 2mp camera with audio",
+      "DS-2CE76D0T-ITPFS",
+      "hikvision turret camera price",
+      "hikvision dome camera with mic",
+      "2mp cctv camera hyderabad",
+      "turbo hd camera 4 in 1"
+    ],
+    "keywords_te": [
+      "హిక్‌విజన్ 2MP సీసీటీవీ కెమెరా",
+      "ఆడియో డోమ్ కెమెరా",
+      "హిక్‌విజన్ టర్రెట్ కెమెరా ధర",
+      "సీసీటీవీ కెమెరా హైదరాబాద్"
+    ],
+    "keywords_hi": [
+      "हिकविजन 2MP सीसीटीवी कैमरा",
+      "ऑडियो डोम कैमरा",
+      "हिकविजन टरेट कैमरा कीमत",
+      "सीसीटीवी कैमरा हैदराबाद"
+    ]
+  }
+}

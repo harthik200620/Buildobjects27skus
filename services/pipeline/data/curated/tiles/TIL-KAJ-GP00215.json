@@ -1,0 +1,555 @@
+{
+  "sku_code": "TIL-KAJ-GP00215",
+  "category": "tiles",
+  "brand": {
+    "slug": "kajaria",
+    "name": "Kajaria Ceramics",
+    "official_domains": [
+      "kajariaceramics.com"
+    ],
+    "logo_url": "https://www.kajariaceramics.com/images/logo-dark.svg",
+    "intel": {
+      "year_established": {
+        "value": 1985,
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "parent_company": {
+        "value": "None - Kajaria Ceramics Limited is an independent listed company (NSE/BSE), promoted by the Ashok Kajaria family",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "product_portfolio": {
+        "value": "Glazed vitrified tiles, polished vitrified tiles, full-body vitrified tiles, gres tiles, ceramic wall and floor tiles, large slabs (Vitronite, The Ultima, UniTerra, Grestough, Kasamood, Duratech, DuRock), Gresbond tile adhesives, Kerovit faucets and sanitaryware",
+        "provenance": "fetched",
+        "source_url": "https://www.kajariaceramics.com/about?tab=overview"
+      },
+      "market_coverage": {
+        "value": "India's largest tile manufacturer; annual capacity 87.80 million sq. metres across nine plants including Srikalahasti (Andhra Pradesh) and Balanagar (Telangana), plus exports",
+        "provenance": "fetched",
+        "source_url": "https://www.kajariaceramics.com/about?tab=overview"
+      },
+      "quality_strength_note": {
+        "value": "Consistent calibration and shade control on large formats; the 600x1200 mm glazed vitrified range is rectified and nano-polished, and the two South-India plants keep AP/Telangana supply and batch matching reliable",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.5/5 (typical) - rated highly by architects for shade consistency and after-sales replacement of defective lots",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "High. Tilers in Hyderabad and Vijayawada default to Kajaria for 600x1200 polished floors because sizes are square, boxes are consistent and dealer stock is deep",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Very high. Kajaria is the name a first-time home builder in AP/Telangana already knows, so it is the safe default even without spec knowledge",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 45,
+          "highest": 260,
+          "unit": "₹/sqft"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project/bulk rates for 5,000+ sqft typically land 12-18% below retail counter price; retail counter price already includes dealer margin and local freight",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Slab-wise discounts usually start at ~500 sqft; full-truck (about 1,200 sqft per pallet lot) orders attract the best rate plus free delivery within city limits",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Typical dealer margin 12-20% on vitrified tiles, thinner on hero fast-moving designs and wider on premium large formats",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "moderate",
+          "roads": "not applicable",
+          "bridges": "not applicable",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India, with own plants in Andhra Pradesh and Telangana",
+          "weak": "North-East",
+          "balanced": "South and West",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Residential floor tiling - living rooms, bedrooms and corridors in individual houses and apartments",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Wall cladding and feature walls in the same large format, and light-commercial floors such as showrooms and offices",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Countertops, staircase risers and lift-lobby cladding cut from the same 600x1200 mm module",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Kajaria",
+          "Somany",
+          "Johnson (H&R Johnson)",
+          "Nitco",
+          "Orient Bell"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Kajaria Venato Bianco Glazed Vitrified Tile 600x1200 mm Polished",
+    "slug": "kajaria-venato-bianco-gvt-600x1200-polished",
+    "model_no": "GP00215",
+    "status": "active"
+  },
+  "variant_label": "600 x 1200 mm, polished, box of 2 (15.5 sqft)",
+  "unit": "box",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 1450,
+    "selling_price": 1240,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "Kajaria does not publish MRP online. Typical Hyderabad / Vijayawada dealer counter rate for a 600x1200 mm polished GVT in August 2026 is ₹75-95 per sqft; at 15.5 sqft per box that is roughly ₹1,160-1,470 per box. ±10%."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.kajariaceramics.com/products/venato-bianco",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://www.kajariaceramics.com/glazed-vitrified-tiles?size_ids%5B%5D=83",
+      "https://www.kajariaceramics.com/about?tab=overview",
+      "https://www.kajariaceramics.com/catalogo/catalogue/kajaria-infinity-60x120.pdf"
+    ]
+  },
+  "attributes": {
+    "series_name": {
+      "value": "Glazed Vitrified Tiles",
+      "provenance": "fetched",
+      "source_url": "https://www.kajariaceramics.com/products/venato-bianco",
+      "confidence": 0.9
+    },
+    "design_name": {
+      "value": "Venato Bianco",
+      "provenance": "fetched",
+      "source_url": "https://www.kajariaceramics.com/products/venato-bianco",
+      "confidence": 0.98
+    },
+    "body_type": {
+      "value": "Vitrified (porcelain) body",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "body_composition": {
+      "value": "Pressed porcelain body of ball clay, feldspar, quartz and kaolin, fully vitrified through the section",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "manufacturing_process": {
+      "value": "Dry pressed (ISO 13006 Group B)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "printing_technology": {
+      "value": "High-definition digital inkjet printing",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "firing_temperature_c": {
+      "value": 1200,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dim_w_mm": {
+      "value": 600,
+      "provenance": "fetched",
+      "source_url": "https://www.kajariaceramics.com/products/venato-bianco",
+      "confidence": 0.95
+    },
+    "dim_h_mm": {
+      "value": 1200,
+      "provenance": "fetched",
+      "source_url": "https://www.kajariaceramics.com/products/venato-bianco",
+      "confidence": 0.95
+    },
+    "dim_d_mm": {
+      "value": 9,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "rectified": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "dimensional_tolerance_pct": {
+      "value": 0.6,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "frost_resistance": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "thermal_shock_resistance": {
+      "value": "Resistant to thermal shock when tested to ISO 10545-9",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "breaking_strength_n": {
+      "value": 1300,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "modulus_of_rupture_mpa": {
+      "value": 35,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "mohs_hardness": {
+      "value": 6,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pei_abrasion_class": {
+      "value": "PEI IV",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "stain_resistance_class": {
+      "value": "Class 5",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "chemical_resistance_class": {
+      "value": "Resistant to household chemicals and cleaning agents (ISO 10545-13)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "water_absorption_pct": {
+      "value": 0.5,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "net_weight_kg": {
+      "value": 31,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "slip_resistance_class": {
+      "value": "R9",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "usage_area": {
+      "value": "Floor and wall",
+      "provenance": "fetched",
+      "source_url": "https://www.kajariaceramics.com/products/venato-bianco",
+      "confidence": 0.9
+    },
+    "recommended_rooms": {
+      "value": "Living room, bedroom, dining, corridors and feature walls; indoor dry areas",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "residential_suitable": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "commercial_suitable": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "outdoor_suitable": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "antibacterial_surface": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_standard": {
+      "value": "IS 15622 (pressed ceramic tiles)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iso_standard": {
+      "value": "ISO 13006 (classification), ISO 10545 (test methods)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iso_13006_group": {
+      "value": "BIa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "bis_isi_marked": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "green_certification": {
+      "value": "Not stated on the product page",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "quality_grade": {
+      "value": "Premium / first quality",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "test_standard_series": {
+      "value": "ISO 10545 Parts 2 to 14",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "surface_finish": {
+      "value": "Polished",
+      "provenance": "fetched",
+      "source_url": "https://www.kajariaceramics.com/products/venato-bianco",
+      "confidence": 0.95
+    },
+    "design_theme": {
+      "value": "Marble",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "colour_shade": {
+      "value": "White",
+      "provenance": "fetched",
+      "source_url": "https://www.kajariaceramics.com/products/venato-bianco",
+      "confidence": 0.9
+    },
+    "shade_variation_class": {
+      "value": "V2 - slight variation",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "installation_method": {
+      "value": "Thin-bed fixing with polymer-modified tile adhesive over a levelled, cured screed; back-butter large formats for full contact",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "recommended_adhesive": {
+      "value": "Gresbond VX-1 or VX-2 for internal use, Gresbond EX-5 for external use",
+      "provenance": "fetched",
+      "source_url": "https://www.kajariaceramics.com/products/venato-bianco",
+      "confidence": 0.9
+    },
+    "joint_width_mm": {
+      "value": 2,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pieces_per_box": {
+      "value": 2,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "coverage_per_box_sqm": {
+      "value": 1.44,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "coverage_per_box_sqft": {
+      "value": 15.5,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "price_per_sqft": {
+      "value": 80,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "price_per_box": {
+      "value": 1240,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "availability": {
+      "value": "Regularly stocked line; available through the Kajaria dealer network across Andhra Pradesh and Telangana",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "warranty_months": {
+      "value": 12,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_coverage": {
+      "value": "Manufacturing defects only. Shade, size and surface must be checked against the box batch before fixing; claims are not accepted once tiles are laid",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.kajariaceramics.com/storage/product/GP00215e.jpg?v=1758882624",
+      "alt": "Kajaria Venato Bianco 600x1200 mm polished glazed vitrified tile, full face",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.kajariaceramics.com/storage/product/GP00215_b.jpg?v=1758882650",
+      "alt": "Kajaria Venato Bianco tile shown at an angle with surface sheen",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.kajariaceramics.com/storage/product/GP00215a.jpg?v=1758882661",
+      "alt": "Venato Bianco 600x1200 mm tiles laid in a room setting",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.kajariaceramics.com/storage/product/GP00215b.jpg?v=1758882653",
+      "alt": "Close-up of the white marble veining on Kajaria Venato Bianco",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.kajariaceramics.com/storage/product/GP00215c.jpg?v=1758882618",
+      "alt": "Kajaria Venato Bianco tile face variant showing the 600x1200 mm module",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "brochure",
+      "title": "Kajaria 600x1200 mm tile catalogue (Infinity 60x120)",
+      "source_url": "https://www.kajariaceramics.com/catalogo/catalogue/kajaria-infinity-60x120.pdf",
+      "checked": true
+    },
+    {
+      "type": "brochure",
+      "title": "Kajaria Glazed Vitrified Tiles general catalogue, 600x1200 mm and 600x600 mm",
+      "source_url": "https://www.kajariaceramics.com/catalogo/catalogue/nepal-glazed-vitrified-tiles.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "rectified",
+    "dim_w_mm",
+    "pei_abrasion_class",
+    "slip_resistance_class",
+    "modulus_of_rupture_mpa",
+    "water_absorption_pct",
+    "surface_finish",
+    "coverage_per_box_sqft"
+  ],
+  "short_description": "Kajaria Venato Bianco 600x1200 mm polished glazed vitrified tile, white marble look, rectified, 2 tiles per box covering 15.5 sqft.",
+  "long_description": "## What it is\n\nVenato Bianco (model GP00215) is a glazed vitrified tile from Kajaria's 600 x 1200 mm range. It is a dry-pressed porcelain body carrying a digitally printed white marble design under a nano-polished glaze, sold in a rectified 600 x 1200 mm module, 9 mm thick.\n\n## What it's for\n\nKajaria lists it for both floor and wall use, which is how the 2 x 4 ft format is normally specified in Andhra Pradesh and Telangana: a continuous polished floor through living, dining and bedroom areas, with the same tile carried up a feature wall so the veining runs uninterrupted. Its PEI IV abrasion class and vitrified body suit domestic traffic and light-commercial interiors such as showrooms and offices. With an R9 slip class and a polished surface it is an indoor, dry-area tile - not a balcony, terrace or open-parking tile.\n\n## Key specifications\n\nThe body is a Group BIa vitrified porcelain with water absorption at or below 0.5%, which is what keeps a polished large-format tile dimensionally stable and stain-tolerant. Breaking strength is taken at 1300 N with a modulus of rupture of 35 N/mm², both to IS 15622 and the ISO 10545 test series, and surface hardness is around MOHS 6. Dimensional tolerance is held to 0.6%, so the rectified edges close up on a 2 mm joint. Stain resistance is Class 5 and the tile is frost resistant and resistant to thermal shock.\n\n## Application and installation notes\n\nFix thin-bed over a levelled, fully cured screed using polymer-modified adhesive - Kajaria recommends Gresbond VX-1 or VX-2 internally and EX-5 externally. Back-butter each tile so there are no voids under a 1200 mm span, keep joints at 2 mm, and check the shade batch on the box before laying, since shade variation is V2.\n\n## What's in the box\n\nOne box holds 2 tiles, covering 1.44 m² (about 15.5 sqft), and weighs about 31 kg. Sold by the box under HSN 6907 at 18% GST.",
+  "seo": {
+    "title": "Kajaria Venato Bianco 600x1200 GVT Tile Price",
+    "meta_description": "Kajaria Venato Bianco 600x1200 mm polished glazed vitrified tile - white marble look, rectified, 9 mm, 2 tiles per box (15.5 sqft). AP & Telangana.",
+    "keywords": [
+      "kajaria venato bianco",
+      "kajaria 600x1200 tile",
+      "glazed vitrified tile 2x4",
+      "polished GVT floor tile",
+      "white marble tile 600x1200",
+      "kajaria tile price per sqft",
+      "vitrified floor tile Hyderabad"
+    ],
+    "keywords_te": [
+      "కజారియా టైల్స్",
+      "600x1200 విట్రిఫైడ్ టైల్",
+      "పాలిష్డ్ ఫ్లోర్ టైల్",
+      "మార్బుల్ లుక్ టైల్ ధర",
+      "గ్లేజ్డ్ విట్రిఫైడ్ టైల్"
+    ],
+    "keywords_hi": [
+      "कजारिया टाइल्स",
+      "600x1200 विट्रिफाइड टाइल",
+      "पॉलिश्ड फ्लोर टाइल",
+      "मार्बल लुक टाइल कीमत",
+      "ग्लेज़्ड विट्रिफाइड टाइल"
+    ]
+  }
+}

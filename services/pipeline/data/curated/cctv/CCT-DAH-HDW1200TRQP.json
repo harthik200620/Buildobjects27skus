@@ -1,0 +1,584 @@
+{
+  "sku_code": "CCT-DAH-HDW1200TRQP",
+  "category": "cctv",
+  "brand": {
+    "slug": "dahua",
+    "name": "Dahua",
+    "official_domains": [
+      "dahuasecurity.com"
+    ],
+    "logo_url": "https://materialfile.dahuasecurity.com/assets/img/logo.png",
+    "intel": {
+      "year_established": {
+        "value": 2001,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Dahua_Technology"
+      },
+      "parent_company": {
+        "value": "Zhejiang Dahua Technology Co., Ltd. — founder-controlled (Fu Liquan, about 34%); China Mobile holds about 8.8%",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Dahua_Technology"
+      },
+      "product_portfolio": {
+        "value": "HDCVI analogue-HD cameras, IP network cameras, PTZ and fisheye cameras, XVR/DVR/NVR recorders, thermal, access control, intercom, alarm and storage",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Dahua_Technology"
+      },
+      "market_coverage": {
+        "value": "World's second-largest video-surveillance vendor (revenue about US$4.98 billion in 2021); Dahua and Hikvision together hold roughly 40% of the global surveillance-camera market",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Dahua_Technology"
+      },
+      "quality_strength_note": {
+        "value": "Inventor of HDCVI, so its 4-in-1 analogue cameras are the reference for long coaxial runs and Dahua XVR compatibility; Lite Series trades metal housings and IP67 for price",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.2/5 (typical) — rated on par with Hikvision for image quality; engineers note thinner India service coverage",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Moderate to high among price-driven installers in Hyderabad and coastal Andhra; often the second brand a dealer stocks beside Hikvision or CP PLUS",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Moderate — less consumer brand recall than Hikvision or CP PLUS; chosen on installer recommendation",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 900,
+          "highest": 2200,
+          "unit": "₹/unit"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Distributor and project pricing for 2 MP HDCVI cameras is 25–35% under marketplace rates; retail buyers pay near list",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Camera-plus-XVR kit pricing from 8 channels; slabs usually start at 10 cameras per order",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Dealer margin on Lite Series cameras is 8–15%; margin comes from recorder, storage, cabling and installation",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "moderate",
+          "roads": "strong",
+          "bridges": "moderate",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Metro and tier-2 installer channel",
+          "weak": "Government and PSU tenders restricting Chinese-origin brands",
+          "balanced": "South India incl. Andhra Pradesh and Telangana",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Indoor and sheltered surveillance of homes, shops and small offices on HDCVI/4-in-1 DVR systems",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Fast multi-camera retrofits where the quick-to-install pedestal saves labour",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Long coaxial runs in godowns and apartment blocks, where HDCVI transmission distance is an advantage",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Hikvision",
+          "CP PLUS",
+          "Dahua",
+          "Godrej",
+          "Honeywell"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Dahua HAC-HDW1200TRQ 2 MP IR HDCVI Fixed-focal Eyeball Camera",
+    "slug": "dahua-hac-hdw1200trq-2mp-ir-hdcvi-eyeball-camera",
+    "model_no": "DH-HAC-HDW1200TRQP",
+    "status": "active"
+  },
+  "variant_label": "S6 version, 3.6 mm lens, PAL (TRQP)",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 2499,
+    "selling_price": 1350,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-23",
+    "note": "No Indian listing of the exact S6 model could be opened (Flipkart blocked the fetch; Moglix lists only the HAC-T1A21-U at ₹849). ₹1,350 is the typical Hyderabad dealer rate for a 2 MP Dahua Lite eyeball in Aug 2026, ±15%; MRP is the usual list-price ceiling for this class."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.dahuasecurity.com/products/All-Products/HDCVI-Cameras/Lite-Series/1080P/1080-P/HAC-HDW1200TRQ(-A)=S6",
+    "datasheet_urls": [
+      "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf"
+    ],
+    "secondary_urls": [
+      "https://materialfile.dahuasecurity.com/uploads/cpq/88079/user_manual/HDCVI_Camera_User_Manual_V1.0.7.pdf",
+      "https://materialfile.dahuasecurity.com/uploads/cpq/88085/user_manual/HDCVI_Eyeball_Camera_Installation_Guide_V1.0.4-Eng.pdf",
+      "https://materialfile.dahuasecurity.com/uploads/cpq/12607/drawings/HAC-HDW1231TRQ-A_DIMENSIONS.pdf",
+      "https://en.wikipedia.org/wiki/Dahua_Technology"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "DH-HAC-HDW1200TRQP",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "form_factor": {
+      "value": "Turret (eyeball)",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "resolution_mp": {
+      "value": 2,
+      "unit": "MP",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.98
+    },
+    "max_video_resolution": {
+      "value": "1920 × 1080 (1080p); 960H on CVBS",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "signal_technology": {
+      "value": "Multi-standard (TVI/AHD/CVI/CVBS)",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "night_vision_type": {
+      "value": "Infrared (black & white)",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "audio_support": {
+      "value": "None",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.75
+    },
+    "housing_material": {
+      "value": "Plastic (ABS / PC)",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.9
+    },
+    "dome_cover_material": {
+      "value": "Flat glass lens window set in the eyeball; no dome bubble",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "lens_assembly_process": {
+      "value": "Factory-focused M12 fixed lens module",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "weatherproof_sealing_process": {
+      "value": "IP50 rated — dust-protected only, not water-resistant; quick-to-install pedestal eyeball for indoor or fully sheltered positions",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.9
+    },
+    "dim_w_mm": {
+      "value": 97.1,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "dim_h_mm": {
+      "value": 93,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "dim_d_mm": {
+      "value": 97.1,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.85
+    },
+    "operating_temperature_min_c": {
+      "value": -40,
+      "unit": "°C",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "operating_temperature_max_c": {
+      "value": 60,
+      "unit": "°C",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "operating_humidity_max_pct": {
+      "value": 95,
+      "unit": "%",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "ik_rating": {
+      "value": "Not rated",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "vandal_resistant": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "adjustment_range": {
+      "value": "Pan 0–360°, tilt 0–78°, rotation 0–360°",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "image_sensor": {
+      "value": "2 MP CMOS, progressive scan",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "lens_focal_length_mm": {
+      "value": 3.6,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "lens_type": {
+      "value": "Fixed focal",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "horizontal_field_of_view_deg": {
+      "value": 83,
+      "unit": "°",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "ir_range_m": {
+      "value": 30,
+      "unit": "m",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.98
+    },
+    "min_illumination_lux": {
+      "value": 0.01,
+      "unit": "lux",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "net_weight_kg": {
+      "value": 0.14,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "connector_type": {
+      "value": "One BNC port (CVI/TVI/AHD/CVBS switchable) + 12 V DC power jack",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.85
+    },
+    "indoor_use": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.9
+    },
+    "outdoor_use": {
+      "value": false,
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.8
+    },
+    "typical_application": {
+      "value": "Homes, shops, small offices, apartment corridors and godowns on HDCVI or 4-in-1 DVRs, in positions protected from rain",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "max_frame_rate_fps": {
+      "value": 30,
+      "unit": "fps",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "video_compression": {
+      "value": "Analogue (no compression)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "is_standard": {
+      "value": "IEC/EN 62368-1 (CE-LVD); EN 55032 / EN 55035 (CE-EMC); FCC 47 CFR Part 15 Subpart B",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.9
+    },
+    "ip_rating": {
+      "value": "Not rated (indoor)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "onvif_conformance": {
+      "value": "Not applicable — analogue HDCVI camera with no network interface",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "rohs_compliant": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "burn_in_test": {
+      "value": "Factory burn-in before dispatch (manufacturer standard practice)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "ingress_protection_test": {
+      "value": "Rated IP50 per datasheet — dust-protected; no water-jet or immersion rating",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.85
+    },
+    "body_colour": {
+      "value": "White",
+      "provenance": "fetched",
+      "source_url": "https://www.dahuasecurity.com/products/All-Products/HDCVI-Cameras/Lite-Series/1080P/1080-P/HAC-HDW1200TRQ(-A)=S6",
+      "confidence": 0.9
+    },
+    "surface_finish": {
+      "value": "Matt white moulded plastic",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mounting_type": {
+      "value": "Ceiling or wall",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.9
+    },
+    "power_supply_type": {
+      "value": "12 V DC",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "power_consumption_w": {
+      "value": 2.7,
+      "unit": "W",
+      "provenance": "fetched",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "confidence": 0.95
+    },
+    "recommended_installation_height_m": {
+      "value": 2.7,
+      "unit": "m",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "box_contents": {
+      "value": "Camera with quick-install pedestal, video and power pigtail, mounting screws and wall plugs, drilling template, quick start guide",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "packaging_type": {
+      "value": "Single-unit printed carton",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "unit": "piece",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 24,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "warranty_type": {
+      "value": "Carry-in manufacturer warranty through Dahua India authorised service partners",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "warranty_coverage": {
+      "value": "Manufacturing defects in the camera electronics and lens module; excludes physical damage, water ingress, surge or lightning damage and accessories",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": null,
+      "alt": "Dahua HAC-HDW1200TRQ 2 MP HDCVI eyeball camera, official front view, white quick-install pedestal body with Dahua logo",
+      "content_type": "image/jpeg",
+      "checked": false
+    },
+    {
+      "role": "angle",
+      "source_url": "https://materialfile.dahuasecurity.com/new_uploads_formal/image/20260311/Network_Cameras_2.png",
+      "alt": "Dahua HAC-HDW1200TRQ eyeball camera, official 45° left view showing the lens window and pedestal",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://materialfile.dahuasecurity.com/new_uploads_formal/image/20260311/PTZ_Cameras.png",
+      "alt": "Dahua CCT-DAH-HDW1200TRQP - CCTV security camera installed in modern facility entrance",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://materialfile.dahuasecurity.com/new_uploads/image/20251016/Flame-Detection-Camera.png",
+      "alt": "Dahua CCT-DAH-HDW1200TRQP - High sensitivity sensor and night vision lens detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://material.dahuasecurity.com/uploads/image/20191230/PFA13G.png",
+      "alt": "Dahua CCT-DAH-HDW1200TRQP - CCTV camera dimension diagram and base mounting plate",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Dahua HAC-HDW1200TRQ(-A) S6 datasheet (2023-03-24)",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/prm-os-srv-res/smart/datasheetzipfiles/HAC-HDW1200TRQ(-A)_S6_datasheet_20230324.pdf",
+      "checked": true
+    },
+    {
+      "type": "datasheet",
+      "title": "Dahua HAC-HDW1200TRQ(-A) dimension drawing",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/12607/drawings/HAC-HDW1231TRQ-A_DIMENSIONS.pdf",
+      "checked": true
+    },
+    {
+      "type": "manual",
+      "title": "Dahua HDCVI camera user manual V1.0.7",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/88079/user_manual/HDCVI_Camera_User_Manual_V1.0.7.pdf",
+      "checked": true
+    },
+    {
+      "type": "manual",
+      "title": "Dahua HDCVI eyeball camera installation guide V1.0.4",
+      "source_url": "https://materialfile.dahuasecurity.com/uploads/cpq/88085/user_manual/HDCVI_Eyeball_Camera_Installation_Guide_V1.0.4-Eng.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "resolution_mp",
+    "form_factor",
+    "image_sensor",
+    "min_illumination_lux",
+    "ir_range_m",
+    "lens_focal_length_mm",
+    "horizontal_field_of_view_deg",
+    "ip_rating"
+  ],
+  "short_description": "Dahua 2 MP HDCVI quick-install eyeball, 3.6 mm lens, 30 m smart IR, 4-in-1 CVI/TVI/AHD/CVBS output, 12 V DC, IP50 dust-protected. Indoor or sheltered use.",
+  "long_description": "## What it is\n\nThe Dahua HAC-HDW1200TRQ (ordering code DH-HAC-HDW1200TRQP for PAL) is the S6 version of Dahua's 2 MP Lite Series HDCVI eyeball camera. It is a white plastic turret, 97.1 mm across and 93 mm tall, weighing 0.14 kg, with a 3.6 mm fixed M12 lens that gives an 83° horizontal field of view. The body sits on a quick-to-install pedestal that screws straight to the surface. This base TRQP model has no microphone. It is rated IP50 — protected against dust but not against water — so it belongs indoors or under cover.\n\n## What it's for\n\nIt is the workhorse camera for homes, shops, small offices, apartment corridors and godowns running on Dahua HDCVI or any 4-in-1 DVR. The single BNC output switches between CVI, TVI, AHD and CVBS, so it can replace an old analogue camera on the existing coaxial cable without changing the recorder.\n\n## Key specifications\n\nThe 2 MP progressive-scan CMOS sensor produces 1920 × 1080 video at up to 30 fps, with 960H output available on CVBS. Minimum illumination is 0.01 lux, and two smart-IR LEDs light the scene in black and white to about 30 m — further than most 2 MP cameras in this class. The bracket pans 360°, tilts 78° and rotates 360°. Power is 12 V DC at a maximum of 2.7 W. It is rated for −40 °C to 60 °C at up to 95% humidity. The datasheet lists IEC/EN 62368-1 safety and EN 55032/55035 and FCC Part 15B EMC compliance. Warranty is 24 months.\n\n## Installation notes\n\nFix the pedestal to a ceiling or wall at around 2.7 m, clip the eyeball on, and aim using the three adjustment axes. Keep it away from rain, splash and wash-down areas — IP50 is a dust rating only, and the camera is not rated for outdoor use. Run coaxial cable to the DVR and set the DVR channel to the CVI mode (or TVI/AHD for other recorders). Use a regulated 12 V DC supply sized for 2.7 W per camera. If sound recording is needed, specify the HAC-HDW1200TRQ-A variant instead.\n\n## What's in the box\n\nOne camera with quick-install pedestal, video and power pigtail, mounting screws and wall plugs, a drilling template and a quick start guide, in a single printed carton.",
+  "seo": {
+    "title": "Dahua HAC-HDW1200TRQ 2 MP HDCVI Eyeball Camera",
+    "meta_description": "Dahua HAC-HDW1200TRQ 2 MP HDCVI quick-install eyeball camera, 3.6 mm lens, 30 m smart IR, 4-in-1 CVI/TVI/AHD/CVBS output. Delivery across AP & Telangana.",
+    "keywords": [
+      "dahua 2mp hdcvi camera",
+      "HAC-HDW1200TRQ",
+      "dahua eyeball camera price",
+      "dahua dome camera 2mp",
+      "hdcvi camera hyderabad",
+      "dahua lite series camera"
+    ],
+    "keywords_te": [
+      "దహువా 2MP సీసీటీవీ కెమెరా",
+      "దహువా ఐబాల్ కెమెరా",
+      "హెచ్‌డీసీవీఐ కెమెరా ధర",
+      "సీసీటీవీ కెమెరా విజయవాడ"
+    ],
+    "keywords_hi": [
+      "दहुआ 2MP सीसीटीवी कैमरा",
+      "दहुआ आईबॉल कैमरा",
+      "एचडीसीवीआई कैमरा कीमत",
+      "सीसीटीवी कैमरा विजयवाड़ा"
+    ]
+  }
+}

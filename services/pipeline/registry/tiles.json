@@ -1,0 +1,1129 @@
+{
+  "category": "tiles",
+  "version": 2,
+  "attributes": [
+    {
+      "key": "body_type",
+      "group": "product_identity",
+      "label": "Tile body",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Vitrified (porcelain) body",
+        "Double charge body",
+        "Full body / homogeneous",
+        "Ceramic (earthenware) body"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 10,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "body",
+        "double charge",
+        "full body",
+        "బాడీ",
+        "बॉडी"
+      ],
+      "display_order": 0
+    },
+    {
+      "key": "series_name",
+      "group": "product_identity",
+      "label": "Collection / series",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "series",
+        "collection",
+        "range",
+        "సిరీస్",
+        "सीरीज़"
+      ],
+      "display_order": 1
+    },
+    {
+      "key": "design_name",
+      "group": "product_identity",
+      "label": "Design / shade name",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "design name",
+        "shade name",
+        "pattern",
+        "డిజైన్ పేరు",
+        "डिज़ाइन नाम"
+      ],
+      "display_order": 2
+    },
+    {
+      "key": "iso_13006_group",
+      "group": "product_identity",
+      "label": "ISO 13006 / IS 15622 group",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "BIa",
+        "BIb",
+        "BIIa",
+        "BIIb",
+        "BIII",
+        "AIa"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "BIa",
+        "group BIa",
+        "tile class",
+        "గ్రూప్",
+        "ग्रुप"
+      ],
+      "display_order": 3
+    },
+    {
+      "key": "rectified",
+      "group": "product_identity",
+      "label": "Rectified edge",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": true,
+      "filter_widget": "toggle",
+      "filter_order": 11,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "rectified",
+        "square edge",
+        "sharp edge",
+        "రెక్టిఫైడ్",
+        "रेक्टिफाइड"
+      ],
+      "display_order": 4
+    },
+    {
+      "key": "dim_w_mm",
+      "group": "dimensions",
+      "label": "Width",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "width",
+        "వెడల్పు",
+        "चौड़ाई"
+      ],
+      "display_order": 5
+    },
+    {
+      "key": "dim_h_mm",
+      "group": "dimensions",
+      "label": "Length",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "length",
+        "పొడవు",
+        "लंबाई"
+      ],
+      "display_order": 6
+    },
+    {
+      "key": "dim_d_mm",
+      "group": "dimensions",
+      "label": "Thickness",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 5,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "thickness",
+        "depth",
+        "మందం",
+        "मोटाई"
+      ],
+      "display_order": 7
+    },
+    {
+      "key": "dimensional_tolerance_pct",
+      "group": "dimensions",
+      "label": "Dimensional tolerance",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "tolerance",
+        "size deviation",
+        "టాలరెన్స్",
+        "सहनशीलता"
+      ],
+      "display_order": 8
+    },
+    {
+      "key": "net_weight_kg",
+      "group": "dimensions",
+      "label": "Weight per box",
+      "data_type": "number",
+      "unit": "kg",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "box weight",
+        "weight",
+        "బరువు",
+        "वज़न"
+      ],
+      "display_order": 9
+    },
+    {
+      "key": "pei_abrasion_class",
+      "group": "surface",
+      "label": "PEI abrasion class",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "PEI I",
+        "PEI II",
+        "PEI III",
+        "PEI IV",
+        "PEI V"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 8,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "PEI rating",
+        "abrasion",
+        "wear class",
+        "PEI క్లాస్",
+        "PEI क्लास"
+      ],
+      "display_order": 10
+    },
+    {
+      "key": "slip_resistance_class",
+      "group": "surface",
+      "label": "Slip resistance (R rating)",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "R9",
+        "R10",
+        "R11",
+        "R12",
+        "R13"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 9,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "anti skid",
+        "slip resistance",
+        "R11",
+        "జారుడు నిరోధకత",
+        "फिसलन प्रतिरोध"
+      ],
+      "display_order": 11
+    },
+    {
+      "key": "stain_resistance_class",
+      "group": "surface",
+      "label": "Stain resistance class",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Class 1",
+        "Class 2",
+        "Class 3",
+        "Class 4",
+        "Class 5"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "stain proof",
+        "stain resistance",
+        "మరక నిరోధకత",
+        "दाग प्रतिरोध"
+      ],
+      "display_order": 12
+    },
+    {
+      "key": "chemical_resistance_class",
+      "group": "surface",
+      "label": "Chemical resistance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "acid resistance",
+        "alkali resistance",
+        "రసాయన నిరోధకత",
+        "रासायनिक प्रतिरोध"
+      ],
+      "display_order": 13
+    },
+    {
+      "key": "antibacterial_surface",
+      "group": "surface",
+      "label": "Antibacterial / germ-free surface",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "antibacterial",
+        "germ free",
+        "hygiene",
+        "బ్యాక్టీరియా నిరోధకత",
+        "जीवाणुरोधी"
+      ],
+      "display_order": 14
+    },
+    {
+      "key": "modulus_of_rupture_mpa",
+      "group": "strength",
+      "label": "Modulus of rupture",
+      "data_type": "number",
+      "unit": "N/mm²",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "bending strength",
+        "MOR",
+        "మాడ్యులస్",
+        "मॉड्यूलस"
+      ],
+      "display_order": 15
+    },
+    {
+      "key": "breaking_strength_n",
+      "group": "strength",
+      "label": "Breaking strength",
+      "data_type": "number",
+      "unit": "N",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "breaking load",
+        "strength",
+        "బ్రేకింగ్ స్ట్రెంగ్త్",
+        "ब्रेकिंग स्ट्रेंथ"
+      ],
+      "display_order": 16
+    },
+    {
+      "key": "mohs_hardness",
+      "group": "strength",
+      "label": "MOHS surface hardness",
+      "data_type": "number",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "hardness",
+        "scratch resistance",
+        "మోహ్స్ కాఠిన్యం",
+        "मोह्स कठोरता"
+      ],
+      "display_order": 17
+    },
+    {
+      "key": "water_absorption_pct",
+      "group": "physical",
+      "label": "Water absorption",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 7,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "water absorption",
+        "porosity",
+        "నీటి శోషణ",
+        "जल अवशोषण"
+      ],
+      "display_order": 18
+    },
+    {
+      "key": "frost_resistance",
+      "group": "physical",
+      "label": "Frost resistant",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "frost proof",
+        "freeze thaw",
+        "మంచు నిరోధకత",
+        "पाला प्रतिरोध"
+      ],
+      "display_order": 19
+    },
+    {
+      "key": "thermal_shock_resistance",
+      "group": "physical",
+      "label": "Thermal shock resistance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "heat shock",
+        "temperature shock",
+        "ఉష్ణ షాక్",
+        "थर्मल शॉक"
+      ],
+      "display_order": 20
+    },
+    {
+      "key": "body_composition",
+      "group": "composition",
+      "label": "Body composition",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "raw material",
+        "clay body",
+        "మెటీరియల్",
+        "सामग्री"
+      ],
+      "display_order": 21
+    },
+    {
+      "key": "manufacturing_process",
+      "group": "manufacturing",
+      "label": "Manufacturing process",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Dry pressed (ISO 13006 Group B)",
+        "Extruded (ISO 13006 Group A)"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "pressing",
+        "dry pressed",
+        "తయారీ విధానం",
+        "निर्माण प्रक्रिया"
+      ],
+      "display_order": 22
+    },
+    {
+      "key": "printing_technology",
+      "group": "manufacturing",
+      "label": "Printing technology",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "digital printing",
+        "inkjet",
+        "ప్రింటింగ్",
+        "प्रिंटिंग"
+      ],
+      "display_order": 23
+    },
+    {
+      "key": "firing_temperature_c",
+      "group": "manufacturing",
+      "label": "Firing temperature",
+      "data_type": "number",
+      "unit": "°C",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "kiln temperature",
+        "firing",
+        "కాల్చే ఉష్ణోగ్రత",
+        "फायरिंग तापमान"
+      ],
+      "display_order": 24
+    },
+    {
+      "key": "usage_area",
+      "group": "application",
+      "label": "Usage area",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Floor",
+        "Wall",
+        "Floor and wall",
+        "Outdoor / open area",
+        "Facade / elevation"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 4,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "floor tile",
+        "wall tile",
+        "where to use",
+        "ఉపయోగం",
+        "उपयोग क्षेत्र"
+      ],
+      "display_order": 25
+    },
+    {
+      "key": "recommended_rooms",
+      "group": "application",
+      "label": "Recommended rooms",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "living room",
+        "bedroom",
+        "kitchen",
+        "గదులు",
+        "कमरे"
+      ],
+      "display_order": 26
+    },
+    {
+      "key": "residential_suitable",
+      "group": "application",
+      "label": "Suitable for homes",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "residential",
+        "home use",
+        "ఇంటి ఉపయోగం",
+        "घरेलू उपयोग"
+      ],
+      "display_order": 27
+    },
+    {
+      "key": "commercial_suitable",
+      "group": "application",
+      "label": "Suitable for commercial floors",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "commercial",
+        "showroom",
+        "office",
+        "వాణిజ్య",
+        "व्यावसायिक"
+      ],
+      "display_order": 28
+    },
+    {
+      "key": "outdoor_suitable",
+      "group": "application",
+      "label": "Suitable for outdoors",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "outdoor",
+        "balcony",
+        "parking",
+        "బయట",
+        "बाहरी"
+      ],
+      "display_order": 29
+    },
+    {
+      "key": "is_standard",
+      "group": "standards",
+      "label": "IS standard",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IS 15622",
+        "BIS standard",
+        "ఐఎస్ ప్రమాణం",
+        "आईएस मानक"
+      ],
+      "display_order": 30
+    },
+    {
+      "key": "iso_standard",
+      "group": "standards",
+      "label": "ISO standard",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ISO 13006",
+        "ISO 10545",
+        "ఐఎస్ఓ",
+        "आईएसओ"
+      ],
+      "display_order": 31
+    },
+    {
+      "key": "bis_isi_marked",
+      "group": "standards",
+      "label": "BIS / ISI marked",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ISI mark",
+        "BIS certified",
+        "ఐఎస్ఐ మార్క్",
+        "आईएसआई मार्क"
+      ],
+      "display_order": 32
+    },
+    {
+      "key": "green_certification",
+      "group": "standards",
+      "label": "Green / eco certification",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "GreenPro",
+        "IGBC",
+        "eco friendly",
+        "గ్రీన్ సర్టిఫికేషన్",
+        "ग्रीन प्रमाणन"
+      ],
+      "display_order": 33
+    },
+    {
+      "key": "quality_grade",
+      "group": "standards",
+      "label": "Quality grade",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Premium / first quality",
+        "Standard",
+        "Commercial"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "first quality",
+        "grade",
+        "క్వాలిటీ గ్రేడ్",
+        "क्वालिटी ग्रेड"
+      ],
+      "display_order": 34
+    },
+    {
+      "key": "test_standard_series",
+      "group": "standards",
+      "label": "Test method series",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "ISO 10545",
+        "test method",
+        "పరీక్ష ప్రమాణం",
+        "परीक्षण मानक"
+      ],
+      "display_order": 35
+    },
+    {
+      "key": "surface_finish",
+      "group": "appearance",
+      "label": "Surface finish",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Glossy",
+        "Matt",
+        "Satin",
+        "Polished",
+        "Carving / textured",
+        "Rustic",
+        "Sugar",
+        "Lappato / semi-polished"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 3,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "finish",
+        "glossy",
+        "matt",
+        "ఫినిష్",
+        "फिनिश"
+      ],
+      "display_order": 36
+    },
+    {
+      "key": "colour_shade",
+      "group": "appearance",
+      "label": "Colour / shade",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "colour",
+        "color",
+        "shade",
+        "రంగు",
+        "रंग"
+      ],
+      "display_order": 37
+    },
+    {
+      "key": "design_theme",
+      "group": "appearance",
+      "label": "Design theme",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Marble",
+        "Wood",
+        "Stone",
+        "Concrete / cement",
+        "Solid colour",
+        "Terrazzo",
+        "Geometric / pattern",
+        "Metallic"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 6,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "look",
+        "marble look",
+        "wooden tile",
+        "డిజైన్",
+        "डिज़ाइन"
+      ],
+      "display_order": 38
+    },
+    {
+      "key": "shade_variation_class",
+      "group": "appearance",
+      "label": "Shade variation",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "V1 - uniform",
+        "V2 - slight variation",
+        "V3 - moderate variation",
+        "V4 - substantial variation"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "shade variation",
+        "V3",
+        "batch shade",
+        "షేడ్ వ్యత్యాసం",
+        "शेड भिन्नता"
+      ],
+      "display_order": 39
+    },
+    {
+      "key": "installation_method",
+      "group": "installation",
+      "label": "Installation method",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "fixing",
+        "laying",
+        "installation",
+        "అమర్చే విధానం",
+        "स्थापना विधि"
+      ],
+      "display_order": 40
+    },
+    {
+      "key": "recommended_adhesive",
+      "group": "installation",
+      "label": "Recommended adhesive",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "adhesive",
+        "tile fixing gum",
+        "IS 15477",
+        "అంటుకునే పదార్థం",
+        "एडहेसिव"
+      ],
+      "display_order": 41
+    },
+    {
+      "key": "joint_width_mm",
+      "group": "installation",
+      "label": "Recommended joint width",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "grout joint",
+        "spacer",
+        "joint",
+        "జాయింట్",
+        "जॉइंट"
+      ],
+      "display_order": 42
+    },
+    {
+      "key": "pieces_per_box",
+      "group": "packaging",
+      "label": "Pieces per box",
+      "data_type": "number",
+      "unit": "pieces",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "pcs per box",
+        "tiles per box",
+        "బాక్స్‌లో ముక్కలు",
+        "प्रति बॉक्स टाइल"
+      ],
+      "display_order": 43
+    },
+    {
+      "key": "coverage_per_box_sqm",
+      "group": "packaging",
+      "label": "Coverage per box (sq m)",
+      "data_type": "number",
+      "unit": "m²",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "area per box",
+        "sqm per box",
+        "చదరపు మీటర్",
+        "वर्ग मीटर"
+      ],
+      "display_order": 44
+    },
+    {
+      "key": "coverage_per_box_sqft",
+      "group": "packaging",
+      "label": "Coverage per box (sq ft)",
+      "data_type": "number",
+      "unit": "sqft",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "square feet per box",
+        "sqft per box",
+        "చదరపు అడుగులు",
+        "वर्ग फुट"
+      ],
+      "display_order": 45
+    },
+    {
+      "key": "price_per_sqft",
+      "group": "commercial",
+      "label": "Price per sq ft",
+      "data_type": "number",
+      "unit": "₹",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 12,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "rate per sqft",
+        "price",
+        "ధర",
+        "कीमत"
+      ],
+      "display_order": 46
+    },
+    {
+      "key": "price_per_box",
+      "group": "commercial",
+      "label": "Price per box",
+      "data_type": "number",
+      "unit": "₹",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "box rate",
+        "price per box",
+        "బాక్స్ ధర",
+        "बॉक्स कीमत"
+      ],
+      "display_order": 47
+    },
+    {
+      "key": "availability",
+      "group": "commercial",
+      "label": "Availability",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "stock",
+        "availability",
+        "అందుబాటు",
+        "उपलब्धता"
+      ],
+      "display_order": 48
+    },
+    {
+      "key": "warranty_months",
+      "group": "warranty",
+      "label": "Warranty",
+      "data_type": "number",
+      "unit": "months",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "warranty",
+        "guarantee",
+        "వారంటీ",
+        "वारंटी"
+      ],
+      "display_order": 49
+    },
+    {
+      "key": "warranty_coverage",
+      "group": "warranty",
+      "label": "Warranty coverage",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "what is covered",
+        "warranty terms",
+        "వారంటీ పరిధి",
+        "वारंटी कवरेज"
+      ],
+      "display_order": 50
+    }
+  ]
+}

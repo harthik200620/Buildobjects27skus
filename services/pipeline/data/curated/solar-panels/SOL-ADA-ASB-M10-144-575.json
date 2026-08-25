@@ -1,0 +1,574 @@
+{
+  "sku_code": "SOL-ADA-ASB-M10-144-575",
+  "category": "solar-panels",
+  "brand": {
+    "slug": "adani-solar",
+    "name": "Adani Solar",
+    "official_domains": [
+      "adanisolar.com"
+    ],
+    "logo_url": "https://www.adanisolar.com/-/media/project/adanisolar/common/logosolar.png",
+    "intel": {
+      "year_established": {
+        "value": 2017,
+        "provenance": "fetched",
+        "source_url": "https://www.adanisolar.com/about-us"
+      },
+      "parent_company": {
+        "value": "Adani Group (solar PV manufacturing at Mundra through Mundra Solar PV Ltd / Mundra Solar Energy Ltd)",
+        "provenance": "fetched",
+        "source_url": "https://www.adanisolar.com/about-us"
+      },
+      "product_portfolio": {
+        "value": "Monofacial and bifacial PV modules in TOPCon and Mono PERC, M10 and G12 footprints, 535-660 W power class at 21-22% module efficiency; also ingots, wafers and cells",
+        "provenance": "fetched",
+        "source_url": "https://www.adanisolar.com/about-us"
+      },
+      "market_coverage": {
+        "value": "India's first and largest vertically integrated solar PV manufacturer — 4 GW cell and module capacity plus 2 GW ingot and wafer capacity at Mundra, over 10 GW of modules shipped to India and the USA",
+        "provenance": "fetched",
+        "source_url": "https://www.adanisolar.com/about-us"
+      },
+      "quality_strength_note": {
+        "value": "Only Indian module maker ranked a Kiwa PVEL Top Performer seven years running and a consistent Bloomberg Tier-1 manufacturer. The Gen-II TOPCon datasheet lists IEC 61215, IEC 61730, UL 61730, BIS, IEC 61853-1/2, IEC 62782, IEC 61701, IEC 60068-2-68 and IEC 62716 approvals.",
+        "provenance": "fetched",
+        "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf"
+      },
+      "engineer_user_rating": {
+        "value": "4.5/5 typical among Indian utility and C&I design engineers — rated highly for cell-to-module traceability and PVEL results, with lead time the usual complaint",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Preferred by larger EPC contractors and by anyone building for a tender that specifies domestic cells, because Adani makes its own ingots, wafers and cells rather than importing them.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High on brand recognition thanks to the Adani name, but low on practical access — Adani sells through project channels rather than single-panel retail, so a household buyer usually meets it via an installer's quotation.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 19,
+          "highest": 30,
+          "unit": "₹/Wp"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Adani is priced as a project product: MW-scale supply is quoted per Wp and can sit 20-30% under any single-panel retail figure. Domestic-content (DCR) variants for subsidy-linked work carry a clear premium over non-DCR.",
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Container-quantity buying is the norm; pallet-quantity orders through a distributor attract a modest step discount, single panels almost none.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Distributor margins on Adani modules are thin — roughly 3-6% — because most volume moves on project contracts negotiated close to factory price.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "moderate",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "moderate",
+          "bridges": "weak",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Gujarat, Rajasthan and the western utility-scale belt",
+          "weak": "Small-ticket rural retail across India",
+          "balanced": "South India including Andhra Pradesh and Telangana",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Utility-scale and large commercial and industrial solar plants",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Large rooftop installations on factories, warehouses, hospitals and institutional campuses",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Tender and PSU work that requires domestic-content-requirement cells and modules",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Waaree",
+          "Adani Solar",
+          "Vikram Solar",
+          "Tata Power Solar",
+          "Premier Energies"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Adani Solar ELAN Shine TOPCon Gen-II ASB-M10-144-575 575 Wp Bifacial Module",
+    "slug": "adani-solar-elan-shine-topcon-asb-m10-144-575-575wp-bifacial-module",
+    "model_no": "ASB-M10-144-575",
+    "status": "active"
+  },
+  "variant_label": "575 Wp · 144 half-cut n-type cells · dual glass",
+  "unit": "panel",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 15800,
+    "selling_price": 12300,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "Adani publishes no MRP or retail price on adanisolar.com. Estimated at about ₹21.4/Wp for non-DCR n-type TOPCon, benchmarked against Waaree's own published ₹21.1/Wp retail rate for a comparable bifacial module in Aug 2026; typical Hyderabad / Vijayawada distributor rate, ±10%."
+  },
+  "gst_rate": 5,
+  "gst_needs_verification": true,
+  "sources": {
+    "official_product_url": "https://www.adanisolar.com/product-topcon-shine-series",
+    "datasheet_urls": [
+      "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.adanisolar.com/about-us"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "ASB-M10-144-575",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.9
+    },
+    "cell_technology": {
+      "value": "N-type TOPCon",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.98
+    },
+    "bifacial": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.98
+    },
+    "rated_power_wp": {
+      "value": 575,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.98
+    },
+    "module_efficiency_pct": {
+      "value": 22.3,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.92
+    },
+    "number_of_cells": {
+      "value": 144,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.98
+    },
+    "front_glass_type": {
+      "value": "2.0 mm high-transmission anti-reflective coated glass",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "front_glass_thickness_mm": {
+      "value": 2,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "frame_material": {
+      "value": "Anodised aluminium frame",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.9
+    },
+    "encapsulant_material": {
+      "value": "High volume-resistivity, low-MVTR encapsulant film (POE class)",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.85
+    },
+    "backsheet_material": {
+      "value": "2.0 mm semi-tempered rear glass (glass-to-glass construction, no polymer backsheet)",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "cell_interconnection": {
+      "value": "144 half-cut M10 n-type bifacial cells, multi-busbar ribbon interconnection",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.9
+    },
+    "busbar_count": {
+      "value": 16,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_w_mm": {
+      "value": 1133,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "dim_h_mm": {
+      "value": 2278,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "dim_d_mm": {
+      "value": 30,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "cable_length_mm": {
+      "value": 300,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "max_snow_load_pa": {
+      "value": 3600,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "max_wind_load_pa": {
+      "value": 1600,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "temp_coefficient_pmax": {
+      "value": -0.32,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "temp_coefficient_voc": {
+      "value": -0.24,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "noct_c": {
+      "value": 45,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "operating_temperature_range": {
+      "value": "-40 °C to +85 °C",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "hail_impact_resistance": {
+      "value": "25 mm hailstone at 23 m/s impact velocity per IEC 61215",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "salt_mist_corrosion_class": {
+      "value": "Salt-mist corrosion certified to IEC 61701 and ammonia corrosion certified to IEC 62716; sand and dust tested to IEC 60068-2-68",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.9
+    },
+    "net_weight_kg": {
+      "value": 33.5,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "vmp_v": {
+      "value": 43.78,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.92
+    },
+    "imp_a": {
+      "value": 13.14,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.92
+    },
+    "voc_v": {
+      "value": 52.3,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.92
+    },
+    "isc_a": {
+      "value": 13.89,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.92
+    },
+    "power_tolerance": {
+      "value": "0 / +4.99 Wp",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.92
+    },
+    "connector_type": {
+      "value": "MC4-compatible connectors",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "junction_box_diode_count": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "cable_cross_section_mm2": {
+      "value": 4,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "application_segment": {
+      "value": "Utility-scale ground mount",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "suitable_for_rooftop": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "max_system_voltage_v": {
+      "value": 1500,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "max_series_fuse_a": {
+      "value": 30,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "is_standard": {
+      "value": "IEC 61215 / IEC 61730, BIS registered (IS 14286)",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.85
+    },
+    "iec_61215_certified": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "iec_61730_certified": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "almm_listed": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "junction_box_ip_rating": {
+      "value": "IP68",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "fire_safety_class": {
+      "value": "Class C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "el_inspection": {
+      "value": "Electroluminescence imaging on a fully automated line to screen micro-cracks and cell defects",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pid_resistance": {
+      "value": "N-type TOPCon cells with no light-induced degradation loss; dynamic mechanical load tested to IEC 62782",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.8
+    },
+    "frame_colour": {
+      "value": "Silver anodised",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "backsheet_colour": {
+      "value": "Transparent",
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.8
+    },
+    "modules_per_pallet": {
+      "value": 31,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 144,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "product_warranty_years": {
+      "value": 12,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.98
+    },
+    "performance_warranty_years": {
+      "value": 30,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "annual_degradation_pct": {
+      "value": 0.4,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.95
+    },
+    "power_output_at_end_pct": {
+      "value": 87.4,
+      "provenance": "fetched",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "confidence": 0.9
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.adanisolar.com/-/media/project/adanisolar/product/topconshine/adani-m10-16-bars.png",
+      "alt": "Adani Solar SOL-ADA-ASB-M10-144-575 - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.adanisolar.com/-/media/project/adanisolar/product/circle-shine.png",
+      "alt": "Adani Solar SOL-ADA-ASB-M10-144-575 - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.adanisolar.com/-/media/project/adanisolar/product/topconshine/adani-m10-16-bars-_v2.png",
+      "alt": "Adani Solar SOL-ADA-ASB-M10-144-575 - in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.adanisolar.com/-/media/project/adanisolar/product/topconshine/mask-group-2.png",
+      "alt": "Adani Solar SOL-ADA-ASB-M10-144-575 - detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.adanisolar.com/-/media/project/adanisolar/product/solar_plate.png",
+      "alt": "Adani Solar SOL-ADA-ASB-M10-144-575 - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Adani Solar ELAN Shine TOPCon Series n-type dual-glass modules, Gen-II datasheet",
+      "source_url": "https://www.adanisolar.com/-/media/Project/AdaniSolar/Downloads/pdf/newdatasheet1/Shine-TOPCon-G2G-modules-Gen-II.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "rated_power_wp",
+    "module_efficiency_pct",
+    "cell_technology",
+    "voc_v",
+    "isc_a",
+    "fill_factor",
+    "temp_coefficient_pmax",
+    "performance_warranty_years"
+  ],
+  "short_description": "575 Wp Adani ELAN Shine n-type TOPCon bifacial dual-glass module, 22.3% efficient, 144 half-cut cells, 12-yr product and 30-yr power warranty.",
+  "long_description": "## What it is\n\nThe Adani Solar ASB-M10-144-575 is a 575 Wp glass-to-glass bifacial module from the ELAN Shine TOPCon Gen-II range, built from 144 half-cut M10 n-type bifacial cells with multi-busbar interconnection. Both faces are glass — 2.0 mm anti-reflective coated high-transmission glass in front, 2.0 mm semi-tempered glass behind — laminated with a high volume-resistivity, low-MVTR encapsulant. At 22.3% module efficiency it is the most efficient of the three flagship panels in this catalogue.\n\n## What it's for\n\nUtility-scale ground-mounted plants and large commercial and industrial rooftops, where the higher efficiency means fewer modules, less structure and less cable for the same plant size. N-type cells hold their output better in the heat of the Deccan summer and carry no light-induced degradation loss, so the first-year drop is smaller than on a P-type module.\n\n## Key specifications\n\nAt STC the module gives 575 Wp at 43.78 V and 13.14 A, with 52.3 V open-circuit and 13.89 A short-circuit. Power tolerance is 0 to +4.99 Wp. Temperature coefficients are −0.32 %/°C on power and −0.24 %/°C on Voc, with NOCT at 45 °C and an operating range of −40 °C to +85 °C. Maximum system voltage is 1500 V and the maximum series fuse rating is 30 A. The laminate is rated for 3600 Pa downward and 1600 Pa upward load at a design safety factor of 1.5. The panel measures 2278 mm × 1133 mm × 30 mm and weighs 33.5 kg. The IP68 junction box feeds 300 mm leads terminated in MC4-compatible connectors. Approvals listed on the datasheet cover IEC 61215, IEC 61730, IEC 61701 salt mist, IEC 62716 ammonia and IEC 60068-2-68 sand and dust, alongside BIS registration.\n\n## Application and installation notes\n\nBolt it through the frame mounting holes or clamp it to the rail, keeping within the 3600 Pa / 1600 Pa load ratings. Note the higher 52.3 V open-circuit voltage — check string length against the 1500 V system limit and against your inverter's cold-morning window. Leave clearance and a light-coloured surface behind the array to collect the rear-side gain. At 33.5 kg it is a two-person lift.\n\n## What's in the box\n\nOne 575 Wp module with junction box, 300 mm leads and MC4-compatible connectors fitted. Structure, clamps, earthing hardware and DC cable are supplied separately. Warranty: 12 years on product, 30 years on performance, with degradation under 1.0% in the first year and under 0.40% a year thereafter, reaching 87.4% of rated power at year 30.",
+  "seo": {
+    "title": "Adani Solar 575W TOPCon Bifacial Panel ASB-M10-144",
+    "meta_description": "Adani ELAN Shine TOPCon 575 Wp n-type bifacial dual-glass solar panel — 22.3% efficient, 144 half-cut cells, 12-yr product and 30-yr power warranty.",
+    "keywords": [
+      "adani solar 575w panel",
+      "adani topcon solar module",
+      "elan shine topcon",
+      "n type bifacial solar panel india",
+      "575 wp solar panel price",
+      "adani solar panel hyderabad",
+      "asb-m10-144-575"
+    ],
+    "keywords_te": [
+      "అదానీ సోలార్ ప్యానెల్",
+      "575 వాట్ సోలార్ ప్యానెల్",
+      "టాప్‌కాన్ సోలార్ మాడ్యూల్",
+      "ఎన్ టైప్ బైఫేషియల్ ప్యానెల్",
+      "సోలార్ ప్యానెల్ ధర తెలంగాణ"
+    ],
+    "keywords_hi": [
+      "अडानी सोलर पैनल",
+      "575 वाट सोलर पैनल कीमत",
+      "टॉपकॉन सोलर मॉड्यूल",
+      "एन टाइप बाइफेशियल पैनल",
+      "अडानी सोलर 575w"
+    ]
+  }
+}

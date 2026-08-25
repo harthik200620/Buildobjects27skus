@@ -1,0 +1,544 @@
+{
+  "sku_code": "EPX-SIK-SIKADUR31IN",
+  "category": "epoxy",
+  "brand": {
+    "slug": "sika",
+    "name": "Sika",
+    "official_domains": [
+      "ind.sika.com",
+      "sika.com"
+    ],
+    "logo_url": "https://sika.scene7.com/is/content/sika/Sika_ClaimU_pos_rgb",
+    "intel": {
+      "year_established": {
+        "value": 1910,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Sika_AG"
+      },
+      "parent_company": {
+        "value": "Sika AG, Baar, Switzerland (listed on SIX Swiss Exchange; India operations through Sika India Pvt. Ltd., Kolkata)",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Sika_AG"
+      },
+      "product_portfolio": {
+        "value": "Concrete admixtures, structural epoxy adhesives and anchors (Sikadur), repair mortars (SikaTop, Sika MonoTop), waterproofing membranes and liquid systems (Sikalastic, SikaProof), sealants (Sikaflex), industrial and decorative flooring (Sikafloor), roofing and tile-fixing systems",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Sika_AG"
+      },
+      "market_coverage": {
+        "value": "Subsidiaries in 103 countries and over 400 factories; ~33,700 employees and CHF 11.2 bn revenue (2025). In India, national dealer coverage with a strong presence in metro infrastructure, industrial and repair contracting",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Sika_AG"
+      },
+      "quality_strength_note": {
+        "value": "Datasheet-led brand: every product ships with a full technical data sheet and an India-specific formulation where the climate demands it. Sikadur-31 IN is rated to +40 °C rather than the +30 °C global variant, which is why it holds up on South Indian sites.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.6/5 (typical among structural and repair consultants)",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "First choice for specified structural repair, retrofitting and strengthening work; contractors trust the Sikadur name on tender submissions even where a cheaper local epoxy would pass.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Low. Rarely bought by homeowners — sold through project counters and specialist repair dealers rather than hardware shops, and the pack sizes start at 3 kg.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 330,
+          "highest": 440,
+          "unit": "₹/kg"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project-rate supply on a Sika India schedule typically lands 12–18 % under counter rate for orders above ~100 kg; retail counter buyers in Hyderabad and Vijayawada pay the top of the band.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "30 kg units carry the best per-kg rate; a further 5–8 % is normal on multi-unit site orders released against a single project code.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Roughly 10–15 % on construction-chemical lines, thinner than on cement but supported by higher ticket value per pack.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "moderate",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "moderate",
+          "bridges": "strong",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India, led by metro and industrial corridors",
+          "weak": "Deep rural retail",
+          "balanced": "South",
+          "rural": "weak",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Structural bonding and epoxy repair in concrete rehabilitation",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Waterproofing, sealants and industrial flooring",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Segmental bridge adhesives, carbon-fibre plate bonding and metro tunnel segment sealing",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Sika",
+          "Fosroc",
+          "MC-Bauchemie",
+          "BASF Master Builders",
+          "Pidilite (Dr. Fixit)"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Sika Sikadur-31 IN Structural Epoxy Adhesive",
+    "slug": "sika-sikadur-31-in-structural-epoxy-adhesive-6kg",
+    "model_no": "Sikadur-31 IN",
+    "status": "active"
+  },
+  "variant_label": "6 kg pre-batched unit (Part A 4 kg + Part B 2 kg)",
+  "unit": "kit",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 2450,
+    "selling_price": 2190,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "Sika publishes no MRP for Sikadur-31 IN. Estimated from Indian distributor quotes of ₹345–425/kg seen on IndiaMART listings in August 2026 (≈ ₹2,070–2,550 for the 6 kg unit); ±10 %. Sika India's own storefront lists a 'Sikadur-31, 6 kg x 2' pack at ₹1,639 but the listing image dates from 2017 and the price is treated as stale."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://ind.sika.com/en/construction/concrete-repair/bonding-primers/sikadur-31-in.html",
+    "datasheet_urls": [
+      "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf"
+    ],
+    "secondary_urls": [
+      "https://sikaindia-in.myshopify.com/products/sikadur-31",
+      "https://www.indiamart.com/proddetail/sikadur-31-in-epoxy-adhesives-2852802779597.html",
+      "https://en.wikipedia.org/wiki/Sika_AG"
+    ]
+  },
+  "attributes": {
+    "epoxy_type": {
+      "value": "Structural adhesive",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.95
+    },
+    "model_number": {
+      "value": "Sikadur-31 IN",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.98
+    },
+    "series": {
+      "value": "Sikadur",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/en/construction/concrete-repair/bonding-primers/sikadur-31-in.html",
+      "confidence": 0.95
+    },
+    "application_form": {
+      "value": "Thixotropic paste (non-sag)",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.96
+    },
+    "solvent_free": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.97
+    },
+    "production_method": {
+      "value": "Factory pre-batched two-component unit; Part A resin and Part B hardener are supplied in the correct proportions for whole-unit site mixing",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.9
+    },
+    "pre_batched_kit": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.95
+    },
+    "dim_w_mm": {
+      "value": 300,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_h_mm": {
+      "value": 235,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_d_mm": {
+      "value": 220,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "application_thickness_mm": {
+      "value": "30 mm maximum per layer; thicker sections built up in successive 30 mm layers once the previous layer has hardened",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.95
+    },
+    "service_temperature_min_c": {
+      "value": -20,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "service_temperature_max_c": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "heat_deflection_temp_c": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "compressive_strength_mpa": {
+      "value": 55,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.95
+    },
+    "tensile_strength_mpa": {
+      "value": 8,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.93
+    },
+    "flexural_strength_mpa": {
+      "value": 20,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.93
+    },
+    "bond_strength_concrete_mpa": {
+      "value": 10,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.93
+    },
+    "shear_strength_mpa": {
+      "value": 18,
+      "unit": "MPa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "chemical_resistance": {
+      "value": "Good abrasion and chemical resistance; impermeable to liquids and water vapour",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.9
+    },
+    "chloride_free": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "density_kg_l": {
+      "value": 1.8,
+      "unit": "kg/L",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.96
+    },
+    "solids_content_pct": {
+      "value": 100,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "pot_life_min": {
+      "value": 40,
+      "unit": "min",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.95
+    },
+    "initial_cure_time_h": {
+      "value": 24,
+      "unit": "h",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "full_cure_time_days": {
+      "value": 7,
+      "unit": "days",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "net_weight_kg": {
+      "value": 6,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.96
+    },
+    "bonding_substrates": {
+      "value": "Concrete, hard natural stone, ceramics, fibre cement, mortar, bricks, blocks and masonry, steel, iron, aluminium, wood, polyester, epoxy and glass",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.96
+    },
+    "open_time_min": {
+      "value": 40,
+      "unit": "min",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "primary_applications": {
+      "value": "Structural bonding of concrete elements, stone, steel and timber; fast-setting repair mortar for corners, edges, holes and voids; rigid joint filling and sealing of non-moving cracks",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.95
+    },
+    "structural_use": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.95
+    },
+    "coverage": {
+      "value": "Approximately 2.0 kg per m² for every 1 mm of layer thickness; a 6 kg unit covers about 3 m² at 1 mm",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.9
+    },
+    "usage_area": {
+      "value": "Interior and exterior",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "is_standard": {
+      "value": "ASTM C 881 Type I, Grade 3, Class B+C — no BIS/ISI mark declared for this product",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.93
+    },
+    "astm_standard": {
+      "value": "ASTM C 881, Type I, Grade 3, Class B+C; strengths tested to ASTM C 579, ASTM C 882, ASTM D 2730, DIN EN 196 and ISO 527",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.94
+    },
+    "iso_9001_certified": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "batch_testing": {
+      "value": "All published technical data are laboratory-test values; each pre-batched unit carries a production date and batch code on the pack",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "application_method": {
+      "value": "Stir Part A briefly, add Part B and mix continuously for at least 3 minutes with a spindle on a slow-speed drill (max. 300 rpm), then decant and mix a further minute; apply with spatula, trowel, notched trowel or gloved hand to both faces to be bonded",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.94
+    },
+    "surface_preparation": {
+      "value": "Concrete and mortar must be at least 28 days old, sound, clean and dry or matt damp, free from standing water, laitance, efflorescence, oil, grease and loose particles; prepare mechanically by abrasive blasting, needle gunning, scabbling or grinding, and remove all dust by vacuum. Steel to a bright metal finish; wood planed or sanded",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.94
+    },
+    "application_temperature_range": {
+      "value": "+10 °C to +40 °C for product, ambient air and substrate; the substrate must stay at least 3 °C above dew point",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.95
+    },
+    "pack_size_kg": {
+      "value": 6,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.96
+    },
+    "pack_type": {
+      "value": "Pre-batched unit — Part A 4 kg plus Part B 2 kg; also supplied as 3 kg (2 + 1) and 30 kg (20 + 10) units",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.96
+    },
+    "shelf_life_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.96
+    },
+    "storage_conditions": {
+      "value": "Store in the original unopened, sealed and undamaged packaging in dry conditions between +5 °C and +40 °C; protect from direct sunlight",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.96
+    },
+    "gst_rate_pct": {
+      "value": 18,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_coverage": {
+      "value": "Sika's product data sheet expressly gives no warranty of merchantability or fitness for a particular purpose; cover in practice is limited to replacement of material shown to be defective on manufacture within its shelf life. The user must test suitability for the intended application",
+      "provenance": "fetched",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "confidence": 0.9
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://ind.sika.com/content/dam/sika-dam/corporate/public/website/images/glo-product-no-image-03351033.jpg",
+      "alt": "Sika Sikadur-31 IN two-part structural epoxy adhesive pack, front",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://nucons.in/wp-content/uploads/2024/10/dr-fixit-206-epoxy-injection-grout-3-kg-500x500-2.webp",
+      "alt": "Sikadur-31 IN epoxy adhesive pail shown at an angle with the label visible",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://sikaindia-in.myshopify.com/cdn/shop/products/Sikadur-31.jpg?v=1508683071",
+      "alt": "Sika EPX-SIK-SIKADUR31IN - Structural epoxy injection application in concrete reinforcement",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": null,
+      "alt": "Sika EPX-SIK-SIKADUR31IN - Epoxy mixing instructions and technical properties specification",
+      "content_type": "image/jpeg",
+      "checked": false
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": null,
+      "alt": "Sikadur-31 pre-batched unit — Part A resin tin and Part B hardener tin",
+      "content_type": "image/jpeg",
+      "checked": false
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Sikadur-31 IN product data sheet (India, December 2019, version 01.01)",
+      "source_url": "https://ind.sika.com/dam/dms/in01/i/sikadur_-31_in.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "epoxy_type",
+    "compressive_strength_mpa",
+    "bond_strength_concrete_mpa",
+    "pot_life_min",
+    "full_cure_time_days",
+    "application_thickness_mm",
+    "coverage",
+    "pack_size_kg"
+  ],
+  "short_description": "Sikadur-31 IN two-part thixotropic structural epoxy adhesive and repair mortar, 6 kg pre-batched unit. Mix 2:1, 40 min pot life.",
+  "long_description": "## What it is\n\nSikadur-31 IN is Sika's India formulation of its best-known structural epoxy: a solvent-free, moisture-tolerant, thixotropic two-part adhesive and repair mortar based on epoxy resin with special fillers. It is supplied as a factory pre-batched unit — Part A resin and Part B hardener in different colours, so a streak-free grey mix is your own proof that the blend is right. Rated for use between +10 °C and +40 °C, it is built for Indian site temperatures rather than European ones.\n\n## What it's for\n\nThree jobs in one pack. As a structural adhesive it bonds concrete elements, hard natural stone, ceramics, fibre cement, mortar, brick, block and masonry, steel, iron, aluminium, wood, polyester, epoxy and glass. As a fast-setting repair mortar it rebuilds corners, edges, joint arises and fills holes and voids. As a filler it seals rigid joints and non-moving cracks. It is suitable for structural use, indoors and out.\n\n## Key specifications\n\nMix Part A to Part B at 2:1 by weight and you get roughly 40 minutes of pot life at +30 °C. Mixed density is 1.80 kg/L and the paste is non-sag up to 10 mm on a vertical face, so it stays where you put it overhead. Cured strengths reach 55 MPa in compression and 20 MPa in flexure at seven days, with tensile strength of 8 MPa and a tensile adhesion strength to concrete of 10 MPa — a bond that fails in the concrete, not the glue line. Build up to 30 mm in a single layer. Conformity is declared to ASTM C 881 Type I, Grade 3, Class B+C; no BIS mark is claimed. Shelf life is 12 months.\n\n## Application notes\n\nConcrete must be at least 28 days old, sound, clean, and dry or matt damp — never under standing water. Prepare mechanically by blasting, scabbling or grinding to an open gripping profile and vacuum off all dust; take steel to bright metal. Mix Part A briefly, add Part B, and mix at most 300 rpm for three minutes plus a further minute after decanting. Apply to both faces with a spatula or trowel. Keep the substrate 3 °C above dew point and support heavy components until cure. Consumption is about 2.0 kg/m² per mm of thickness.\n\n## What's in the box\n\nOne 6 kg pre-batched unit: Part A resin 4 kg and Part B hardener 2 kg. Also stocked in 3 kg and 30 kg units.",
+  "seo": {
+    "title": "Sika Sikadur-31 IN Epoxy Adhesive 6 kg | ASTM C 881",
+    "meta_description": "Sikadur-31 IN two-part thixotropic structural epoxy adhesive and repair mortar, 6 kg unit. 2:1 mix, 40 min pot life, 55 MPa. Delivered in AP & Telangana.",
+    "keywords": [
+      "sikadur 31 in",
+      "sika epoxy adhesive",
+      "structural epoxy adhesive india",
+      "epoxy repair mortar",
+      "concrete bonding epoxy",
+      "sikadur 31 price",
+      "epoxy adhesive hyderabad"
+    ],
+    "keywords_te": [
+      "సికా ఎపాక్సీ",
+      "సికాడూర్ 31",
+      "ఎపాక్సీ అంటుకునే పదార్థం",
+      "కాంక్రీట్ మరమ్మతు ఎపాక్సీ",
+      "నిర్మాణ ఎపాక్సీ ధర"
+    ],
+    "keywords_hi": [
+      "सिका एपॉक्सी",
+      "सिकाडुर 31",
+      "एपॉक्सी एडहेसिव",
+      "कंक्रीट रिपेयर एपॉक्सी",
+      "स्ट्रक्चरल एपॉक्सी कीमत"
+    ]
+  }
+}

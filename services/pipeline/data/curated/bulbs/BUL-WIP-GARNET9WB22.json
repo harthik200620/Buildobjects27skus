@@ -1,0 +1,850 @@
+{
+  "sku_code": "BUL-WIP-GARNET9WB22",
+  "category": "bulbs",
+  "brand": {
+    "slug": "wipro",
+    "name": "Wipro Lighting",
+    "official_domains": [
+      "wiproconsumerlighting.com",
+      "wiprolighting.com"
+    ],
+    "logo_url": null,
+    "intel": {
+      "year_established": {
+        "value": 2013,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Wipro_Enterprises"
+      },
+      "parent_company": {
+        "value": "Wipro Enterprises Private Limited — the 2013 demerger of Wipro Limited's non-IT businesses, predominantly owned by Azim Premji, his associates and Premji family charitable trusts; lighting is one of its sectors",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Wipro_Enterprises"
+      },
+      "product_portfolio": {
+        "value": "Fast-moving consumer goods, lighting, hydraulic cylinders, industrial automation, 3D printing, aerospace component manufacturing and industrial water treatment; in lighting, the Garnet consumer range of LED bulbs, battens, panels and emergency lamps alongside professional luminaires under Wipro Lighting",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Wipro_Enterprises"
+      },
+      "market_coverage": {
+        "value": "Pan-India, with a genuine second-tier presence in South India where Wipro's Bangalore base gives it dealer depth; in AP and Telangana it is stocked widely in electrical shops and is strong on e-commerce and its own D2C store",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "quality_strength_note": {
+        "value": "Wipro sells the Garnet range on electrical robustness rather than photometrics: LM-80 tested LEDs so brightness holds over life, a 240° beam for wide glare-free spread, a 100-300 V AC operating window and 400 V high-voltage plus 4 kV surge protection — a good fit for feeders that swing",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.1/5 (typical) — well regarded for surviving voltage fluctuation, less so for published photometric detail",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Moderate to high. Often the value pick when a contractor wants a national brand at a lower landed cost than Philips or Havells",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High. The Wipro name carries trust from consumer care products, so a first-time buyer accepts it without checking the specification",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 65,
+          "highest": 240,
+          "unit": "₹/piece (9 W B22 LED bulb)"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Wipro's own D2C store price for the 9 W bulb sits far below printed MRP, which sets a low reference for retail; project supply is negotiated per carton and lands lower again",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Carton and multi-carton slabs are the usual mechanism; combination orders with battens and panels get the better rate",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Roughly 20-30 % at the counter on LED bulbs, with the brand's own online pricing capping what a dealer can hold",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "moderate",
+          "roads": "weak",
+          "bridges": "weak",
+          "dams_metro": "weak"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "South India",
+          "weak": "North-East",
+          "balanced": "West and North India",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "General indoor lighting in homes — bedrooms, living rooms, kitchens and passages",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Small offices, shops and workshops running on existing B22 holders",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Locations with poor supply quality, where the 100-300 V operating window and 400 V protection matter more than the last few lumens",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Philips",
+          "Havells",
+          "Wipro",
+          "Syska",
+          "Bajaj"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Wipro Garnet 9 W B22 Cool Day White LED Bulb",
+    "slug": "wipro-garnet-9w-b22-cool-day-white-led-bulb",
+    "model_no": "N96101",
+    "status": "active"
+  },
+  "variant_label": "9 W · B22 · 6500 K cool day white · single lamp",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 240,
+    "selling_price": 65,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+    "fetched_at": "2026-08-22",
+    "note": "MRP ₹240 and store price ₹65 for variant N96101 (B22 / Cool White / 9 W) read from the Wipro Consumer Lighting store's public product feed on 22 Aug 2026; Moglix lists the same ₹240 MRP for the 9 W Garnet."
+  },
+  "gst_rate": 12,
+  "sources": {
+    "official_product_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://wiproconsumerlighting.myshopify.com/products.json",
+      "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp",
+      "https://en.wikipedia.org/wiki/Wipro_Enterprises"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "N96101",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.95
+    },
+    "bulb_type": {
+      "value": "Round GLS / A-shape LED lamp",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "led_type": {
+      "value": "LM-80 tested SMD LEDs",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.8
+    },
+    "base_type": {
+      "value": "B22",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.98
+    },
+    "wattage": {
+      "value": 9,
+      "unit": "W",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.98
+    },
+    "voltage": {
+      "value": "220-240 V AC rated; wide operating range 100-300 V AC with 400 V high-voltage protection",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "frequency": {
+      "value": 50,
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.9,
+      "unit": "Hz"
+    },
+    "lumens": {
+      "value": 900,
+      "unit": "lm",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.95
+    },
+    "colour_temperature": {
+      "value": 6500,
+      "unit": "K",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.95
+    },
+    "beam_angle": {
+      "value": 240,
+      "unit": "°",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.9
+    },
+    "colour_rendering_index": {
+      "value": 80,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dimmability": {
+      "value": false,
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.95
+    },
+    "shape": {
+      "value": "Round / A-shape",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp",
+      "confidence": 0.8
+    },
+    "size": {
+      "value": "Approximately 60 mm diameter × 110 mm height, standard A-shape lamp envelope",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "power_factor": {
+      "value": 0.9,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "energy_rating": {
+      "value": "No BEE star label printed on the Garnet carton — star labelling is voluntary for LED bulbs; measured efficacy is about 100 lm/W",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "application_category": {
+      "value": "Indoor general lighting for home and office",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.9
+    },
+    "operating_type": {
+      "value": "Mains-operated, holder-mounted, non-dimmable",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "smart_compatibility": {
+      "value": "Not a smart lamp — Wipro's 9 W B22 Wi-Fi smart bulb is a separate model (NS9100)",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "aluminium_housing": {
+      "value": "No external aluminium housing — polycarbonate body over an internal heat path",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "polycarbonate_diffuser": {
+      "value": "Yes — frosted polycarbonate diffuser",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp",
+      "confidence": 0.8
+    },
+    "led_chip_material": {
+      "value": "InGaN blue LED die with phosphor conversion to white",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pcb_material": {
+      "value": "Metal-core (aluminium-backed) PCB carrying the LED array",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "diffuser_material": {
+      "value": "Polycarbonate",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp",
+      "confidence": 0.85
+    },
+    "aluminium_heat_sink": {
+      "value": "Internal aluminium heat spreader under the polycarbonate body",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "brass_base": {
+      "value": "Nickel-plated B22 bayonet cap",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "flame_retardant_plastic": {
+      "value": "Flame-retardant polycarbonate body and diffuser",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "led_chip_mounting": {
+      "value": "Automated SMT placement of SMD LEDs, reflow soldered onto the board",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "driver_assembly": {
+      "value": "Integrated driver inside the lamp body, built for a wide input window with high-voltage and surge protection",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.75
+    },
+    "lumen_testing": {
+      "value": "LM-80 tested LEDs are used so that brightness is held over the lamp's life",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.8
+    },
+    "burn_in_testing": {
+      "value": "Powered ageing run before packing to weed out infant failures",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "overall_diameter": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "bulb_diameter": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "base_diameter": {
+      "value": 22,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "product_weight": {
+      "value": 50,
+      "unit": "g",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "package_dimensions": {
+      "value": "One lamp in a printed carton, net quantity 1 N",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.7
+    },
+    "dim_w_mm": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_h_mm": {
+      "value": 110,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dim_d_mm": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "operating_temperature": {
+      "value": "Normal indoor ambient, roughly 0-45 °C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "storage_temperature": {
+      "value": "-20 °C to 60 °C in dry storage",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "led_junction_temperature": {
+      "value": "Typically 80-90 °C at the top of the indoor ambient range",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "impact_resistance": {
+      "value": "Polycarbonate body and diffuser — will not shatter like a glass lamp if dropped from holder height",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "luminous_flux": {
+      "value": 900,
+      "unit": "lm",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.95
+    },
+    "efficacy": {
+      "value": 100,
+      "unit": "lm/W",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "operating_life": {
+      "value": 15000,
+      "unit": "h",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "switching_cycles": {
+      "value": 10000,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "flicker_level": {
+      "value": "Low flicker at rated voltage; no flicker figure is published for this lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "power_consumption": {
+      "value": 9,
+      "unit": "W",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.95
+    },
+    "heat_dissipation": {
+      "value": "Passive conduction from the LED board into the lamp body; no fan",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "net_weight_kg": {
+      "value": 0.05,
+      "unit": "kg",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "screw_base_connection": {
+      "value": "Not a screw base — B22 bayonet cap, push and twist a quarter turn to lock",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.9
+    },
+    "residential": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.9
+    },
+    "commercial": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp",
+      "confidence": 0.85
+    },
+    "rated_current": {
+      "value": 40,
+      "unit": "mA",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "input_current": {
+      "value": 40,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45,
+      "unit": "mA"
+    },
+    "inrush_current": {
+      "value": "Short capacitive inrush typical of a compact LED driver; matters only when many lamps share one switch",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "dust_resistance": {
+      "value": "Indoor-rated enclosure; no IP figure is declared for this lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "is_16102": {
+      "value": "IS 16102 (Part 1) — printed on the Garnet B22 carton",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.9
+    },
+    "is_16103": {
+      "value": "IS 16103 (Part 1) — LED modules for general lighting, safety, applies to the module inside the lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "iec_62560": {
+      "value": "IEC 62560 — the international standard that IS 16102 (Part 1) is aligned to",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "bis": {
+      "value": "BIS standard mark shown on the Garnet carton under compulsory registration; the registration number on the carton artwork belongs to another wattage in the range and is deliberately not recorded here",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "isi": {
+      "value": "Not an ISI-licence category — LED bulbs are covered by BIS compulsory registration (CRS), not the ISI mark scheme",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bee": {
+      "value": "No BEE star label appears on the Garnet carton; BEE star labelling of LED bulbs is a voluntary scheme",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "rohs": {
+      "value": "RoHS-style construction; the carton declares no UV or IR radiation and the lamp contains no mercury",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "lm_79": {
+      "value": "LM-79 photometric measurement is the industry basis for the declared 900 lm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "lm_80": {
+      "value": "LM-80 tested LEDs — stated by the brand as the reason brightness holds over life",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "ip_rating": {
+      "value": "Not declared; the carton restricts the lamp to indoor applications",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "is_standard": {
+      "value": "IS 16102 (Part 1)",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.9
+    },
+    "lumen_test": {
+      "value": "Integrating-sphere lumen check against the 900 lm declaration",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "flicker_test": {
+      "value": "Ripple / flicker check on the driver output",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "endurance_test": {
+      "value": "Life and switching endurance testing, supported by LM-80 lumen-maintenance data on the LEDs",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "surface_finish": {
+      "value": "Matt white polycarbonate body with the wipro wordmark on the neck",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.8
+    },
+    "colour_uniformity": {
+      "value": "Single 6500 K bin per lamp; the frosted diffuser evens out the individual LEDs",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "diffuser_clarity": {
+      "value": "Frosted opal finish — the LED array is not visible through the diffuser",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "socket_compatibility": {
+      "value": "Fits any standard B22 bayonet holder — the common Indian pin-type holder",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.9
+    },
+    "voltage_compatibility": {
+      "value": "220-240 V AC nominal, operates across 100-300 V AC with 400 V high-voltage protection and 4 kV surge protection",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "mounting_orientation": {
+      "value": "Holder mounted, any orientation; not for totally enclosed fixtures",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "dimmer_compatibility": {
+      "value": "Non-dimmable — marked on the carton; do not wire onto a dimmer or regulator",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.9
+    },
+    "installation_height": {
+      "value": "Normal ceiling or wall holder heights, 2.4-3.2 m for a room of this lumen output",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "individual_packaging": {
+      "value": "One lamp per printed carton, net quantity 1 N",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "carton_box": {
+      "value": "Trade packing is a master carton of printed single cartons",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "barcode_labeling": {
+      "value": "EAN-13 barcode printed on the individual carton alongside the catalogue number and MRP/MFD block",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.8
+    },
+    "product_price": {
+      "value": 65,
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.9,
+      "unit": "₹"
+    },
+    "bulk_price": {
+      "value": "Roughly ₹50-60 per lamp on a full-carton purchase in Hyderabad",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.8
+    },
+    "availability": {
+      "value": "Listed on the Wipro Consumer Lighting store as a live variant of the Garnet LED Bulb",
+      "provenance": "fetched",
+      "source_url": "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+      "confidence": 0.85
+    },
+    "delivery_time": {
+      "value": "Typically 3-7 days to Hyderabad, Vijayawada and Visakhapatnam",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "retail_price": {
+      "value": 240,
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.wiproconsumerlighting.com/products/garnet/led-bulb/garnet-9w-led-bulb",
+        "https://www.moglix.com/wipro-garnet-9w-900lm-cool-day-white-led-bulb-for-home-office-pc-077/mp/msng9vnm2wz6kp"
+      ],
+      "confidence": 0.9,
+      "unit": "₹"
+    },
+    "warranty_period": {
+      "value": "1 year from date of purchase",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "led_warranty": {
+      "value": "The LED board is covered by the same 1-year lamp warranty; there is no separate LED term",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_claim_procedure": {
+      "value": "Through the seller or Wipro Consumer Care (Doddakannelli, Sarjapur Road, Bangalore) with the invoice and the failed lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_coverage": {
+      "value": "Manufacturing defects only; excludes use in totally enclosed fixtures, outdoor use and physical breakage",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://cdn.shopify.com/s/files/1/0648/5478/6148/files/61UqZsLW26L._SL1080.jpg?v=1723206119",
+      "alt": "Wipro Garnet 9 W B22 cool day white LED bulb beside its carton marked 900 lm, 6500 K",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://cdn.shopify.com/s/files/1/0648/5478/6148/files/71jaKmwWq_L._SL1500.jpg?v=1727086280",
+      "alt": "Wipro Garnet 9 W 6500 K LED bulb, product view on white",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://cdn.shopify.com/s/files/1/0648/5478/6148/files/GARNET_9W_LED_BULB_6500K_1.jpg?v=1723204894",
+      "alt": "Modern reading room and study illuminated with Wipro Garnet 6500 K cool day white light",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://cdn.shopify.com/s/files/1/0648/5478/6148/files/715qqCz77jL._SL1460.jpg?v=1723203374",
+      "alt": "Wipro Garnet feature panel: LM-80 tested LEDs, 240 degree wide coverage, 100-300 V AC wide voltage range, no UV or IR radiation",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": null,
+      "alt": "Wipro Garnet B22 LED bulb carton showing the declaration panel with base cap B22, 220-240 V AC 50 Hz, IS 16102 (Part 1) and the BIS mark",
+      "content_type": "image/jpeg",
+      "checked": false
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "base_type",
+    "luminous_flux",
+    "luminous_intensity",
+    "colour_temperature",
+    "colour_rendering_index",
+    "beam_angle",
+    "wattage",
+    "operating_life"
+  ],
+  "short_description": "Wipro Garnet 9 W B22 LED bulb, 900 lm cool day white 6500 K, 240° spread, works from 100-300 V AC with 4 kV surge protection.",
+  "long_description": "## What it is\n\nThe Wipro Garnet 9 W B22 Cool Day White LED bulb (catalogue number N96101) is the 9-watt bayonet-cap node of Wipro's mainstream Garnet household LED range. It is a round A-shape lamp in a polycarbonate body with a frosted diffuser and a B22 cap, and it puts out 900 lumens of 6500 K cool day white — about 100 lumens per watt.\n\n## What it's for\n\nEveryday indoor lighting: bedrooms, living rooms, kitchens, passages, and small offices and shops running on existing B22 holders. Wipro sells it for home and office use, and the carton restricts it to indoor applications. At 900 lm it is a like-for-like replacement for an ordinary incandescent bulb in the same holder.\n\n## Key specifications\n\nRated 220-240 V AC at 50 Hz, the lamp is built around a wide operating window: it keeps running from 100 V to 300 V AC, carries 400 V high-voltage protection and 4 kV of surge protection, which is the reason to reach for it on a feeder that swings. The LEDs are LM-80 tested so the brightness holds over the lamp's life, and the 240° beam gives a wide, glare-free spread rather than a narrow pool. The carton declares base cap B22, IS 16102 (Part 1) with the BIS standard mark, no UV or IR radiation, non-dimmable operation, and net quantity 1 N. The lamp is made in India by Wipro Enterprises (P) Ltd.\n\n## Application and installation notes\n\nPush the cap into the B22 holder and twist a quarter turn. It is not dimmable, so keep it off dimmer and regulator circuits. Do not fit it in a totally enclosed fixture — the carton says so explicitly, and a sealed fitting traps the heat the lamp needs to shed. Indoor use only; it has no declared IP rating and is not intended for open verandas or outdoor fittings. Being polycarbonate rather than glass it will survive a knock that would shatter a filament bulb.\n\n## What's in the box\n\nOne lamp in a printed Garnet carton, net quantity 1 N, with the catalogue number, base cap, voltage, IS standard, BIS mark and MRP block printed on the declaration panel. Wipro's usual lamp warranty is one year from date of purchase.",
+  "seo": {
+    "title": "Wipro Garnet 9W B22 LED Bulb 900lm 6500K Cool Day",
+    "meta_description": "Wipro Garnet 9 W B22 cool day white LED bulb: 900 lm, 6500 K, 240° spread, LM-80 LEDs, 100-300 V AC range, 4 kV surge, IS 16102 Part 1, made in India.",
+    "keywords": [
+      "wipro 9w led bulb",
+      "wipro garnet b22 bulb",
+      "9 watt led bulb 900 lumens",
+      "wipro garnet n96101",
+      "cool day white led bulb 6500k",
+      "led bulb price hyderabad",
+      "b22 led bulb"
+    ],
+    "keywords_te": [
+      "విప్రో గార్నెట్ 9 వాట్ బల్బు",
+      "బి22 ఎల్ఈడీ బల్బు",
+      "900 ల్యూమెన్ బల్బు",
+      "కూల్ డే వైట్ బల్బు",
+      "ఎల్ఈడీ బల్బు ధర"
+    ],
+    "keywords_hi": [
+      "विप्रो गार्नेट 9 वाट बल्ब",
+      "बी22 एलईडी बल्ब",
+      "900 लुमेन एलईडी बल्ब",
+      "कूल डे व्हाइट बल्ब",
+      "एलईडी बल्ब कीमत"
+    ]
+  }
+}

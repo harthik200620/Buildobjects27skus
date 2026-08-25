@@ -1,0 +1,547 @@
+{
+  "sku_code": "CEM-ACC-SP50",
+  "category": "cement",
+  "brand": {
+    "slug": "acc",
+    "name": "ACC",
+    "official_domains": [
+      "acclimited.com",
+      "acchelp.in"
+    ],
+    "logo_url": null,
+    "intel": {
+      "year_established": {
+        "value": 1936,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/ACC_Limited"
+      },
+      "parent_company": {
+        "value": "Adani Group (56.69% as of 2025); ACC is a subsidiary of Ambuja Cements following the 15 May 2022 acquisition of Holcim's stake",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/ACC_Limited"
+      },
+      "product_portfolio": {
+        "value": "Grey cement (PPC, OPC, composite), ready-mixed concrete and concrete solutions; retail lines include Suraksha, Suraksha Power, Gold and Concrete+",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "market_coverage": {
+        "value": "Pan-India with a long-established dealer network; part of the Adani cement platform that also includes Ambuja, Penna, Sanghi, Orient and Jaypee Cement",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Ambuja_Cements"
+      },
+      "quality_strength_note": {
+        "value": "ACC's pitch is uniform particle size distribution, specially processed reactive silica and batch-by-batch testing, giving dense concrete with lower heat of hydration",
+        "provenance": "fetched",
+        "source_url": "https://www.acchelp.in/all-products/cement/acc-suraksha-power-cement"
+      },
+      "engineer_user_rating": {
+        "value": "4.3/5 (typical)",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Strong with masons and small contractors for plaster and masonry work; a long-trusted name where the brand predates most competitors in the market",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High — one of the oldest and most familiar cement names in India, frequently chosen by first-time house builders on reputation alone",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 350,
+          "highest": 440,
+          "unit": "₹/bag"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project supply typically runs ₹20–40 per bag under the retail counter rate once volumes cross a full truckload",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Volume slabs generally begin around 100 bags; site-delivered truckload orders get the best landed rate",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Retail dealer margin on a 50 kg bag is typically ₹15–28, a little wider than UltraTech's to defend shelf space",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "moderate",
+          "roads": "strong",
+          "bridges": "strong",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "West, East and Central India",
+          "weak": "—",
+          "balanced": "South",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Concrete for foundations, beams and columns in individual house construction",
+        "provenance": "fetched",
+        "source_url": "https://www.acchelp.in/all-products/cement/acc-suraksha-power-cement"
+      },
+      "secondary_use": {
+        "value": "Brick masonry, wall plastering and slab casting",
+        "provenance": "fetched",
+        "source_url": "https://www.acchelp.in/all-products/cement/acc-suraksha-power-cement"
+      },
+      "special_use": {
+        "value": "Long-term-strength civil work such as road and bridge foundations where dense, low-permeability concrete is wanted",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "UltraTech",
+          "ACC",
+          "Ambuja"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "ACC Suraksha Power Cement",
+    "slug": "acc-suraksha-power-cement-50kg",
+    "model_no": "Suraksha Power",
+    "status": "active"
+  },
+  "variant_label": "50 kg bag",
+  "unit": "bag",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 460,
+    "selling_price": 437,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.indiamart.com/proddetail/acc-ppc-suraksha-power-cement-10831109997.html",
+    "fetched_at": "2026-08-22",
+    "note": "Selling price ₹437/bag read on an IndiaMART trade listing (seller ships from Ramnagar, Uttarakhand). MRP is an estimate — cement MRP is printed per bag and varies by state; expect ±10% in Andhra Pradesh and Telangana."
+  },
+  "gst_rate": 28,
+  "gst_needs_verification": true,
+  "sources": {
+    "official_product_url": "https://www.acchelp.in/all-products/cement/acc-suraksha-power-cement",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://www.indiamart.com/proddetail/acc-ppc-suraksha-power-cement-10831109997.html",
+      "https://en.wikipedia.org/wiki/ACC_Limited"
+    ]
+  },
+  "attributes": {
+    "cement_type": {
+      "value": "PPC",
+      "provenance": "fetched",
+      "source_url": "https://www.indiamart.com/proddetail/acc-ppc-suraksha-power-cement-10831109997.html",
+      "confidence": 0.85
+    },
+    "model_number": {
+      "value": "Suraksha Power",
+      "provenance": "fetched",
+      "source_url": "https://www.acchelp.in/all-products/cement/acc-suraksha-power-cement",
+      "confidence": 0.95
+    },
+    "application_segment": {
+      "value": "General purpose",
+      "provenance": "fetched",
+      "source_url": "https://www.acchelp.in/all-products/cement/acc-suraksha-power-cement",
+      "confidence": 0.85
+    },
+    "clinker_content_pct": {
+      "value": 64,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "fly_ash_content_pct": {
+      "value": 32,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "slag_content_pct": {
+      "value": 0,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "gypsum_content_pct": {
+      "value": 4,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "manufacturing_process": {
+      "value": "Dry process. Clinker is inter-ground with specially processed reactive silica (fly ash) and gypsum, with each batch of cement comprehensively tested",
+      "provenance": "fetched",
+      "source_url": "https://www.indiamart.com/proddetail/acc-ppc-suraksha-power-cement-10831109997.html",
+      "confidence": 0.75
+    },
+    "grinding_method": {
+      "value": "Closed-circuit grinding controlled for uniform particle size and distribution, producing spherical particles for better workability",
+      "provenance": "fetched",
+      "source_url": "https://www.acchelp.in/all-products/cement/acc-suraksha-power-cement",
+      "confidence": 0.8
+    },
+    "dim_w_mm": {
+      "value": 450,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_h_mm": {
+      "value": 700,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_d_mm": {
+      "value": 140,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "heat_of_hydration_7d": {
+      "value": 235,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "application_temperature_range": {
+      "value": "5 °C to 40 °C ambient during mixing, placing and curing",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "compressive_strength_3d": {
+      "value": 24,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "compressive_strength_7d": {
+      "value": 35,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "compressive_strength_28d": {
+      "value": 48,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "soundness_le_chatelier": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "drying_shrinkage_pct": {
+      "value": 0.07,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "chloride_content_max_pct": {
+      "value": 0.05,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "sulphate_so3_max_pct": {
+      "value": 2.6,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "magnesia_max_pct": {
+      "value": 1.8,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "loss_on_ignition_max_pct": {
+      "value": 2.8,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "insoluble_residue_max_pct": {
+      "value": 24,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "fineness_blaine": {
+      "value": 330,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "specific_gravity": {
+      "value": 2.9,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bulk_density": {
+      "value": 1250,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "standard_consistency_pct": {
+      "value": 30,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "setting_time_initial": {
+      "value": 130,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "setting_time_final": {
+      "value": 210,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "net_weight_kg": {
+      "value": 50,
+      "provenance": "fetched",
+      "source_url": "https://www.indiamart.com/proddetail/acc-ppc-suraksha-power-cement-10831109997.html",
+      "confidence": 0.9
+    },
+    "suitable_applications": {
+      "value": "Concrete for foundations, beams and columns; brick masonry; wall plastering; slab casting",
+      "provenance": "fetched",
+      "source_url": "https://www.acchelp.in/all-products/cement/acc-suraksha-power-cement",
+      "confidence": 0.95
+    },
+    "recommended_concrete_grade": {
+      "value": "M15 to M30 for general residential work; nominal mixes 1:2:4 and 1:1.5:3",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "water_cement_ratio": {
+      "value": 0.45,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_standard": {
+      "value": "IS 1489 (Part 1)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "bis_certification": {
+      "value": "BIS product certification (ISI mark) under IS 1489 (Part 1); cement is a mandatory-certification product in India",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "isi_marked": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iso_quality_system": {
+      "value": "ISO 9001 quality management system at manufacturing units",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "testing_protocol": {
+      "value": "Comprehensive testing of each batch of cement for fineness, setting time, soundness and compressive strength by the methods of IS 4031",
+      "provenance": "fetched",
+      "source_url": "https://www.indiamart.com/proddetail/acc-ppc-suraksha-power-cement-10831109997.html",
+      "confidence": 0.75
+    },
+    "mill_test_certificate_available": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mixing_guidance": {
+      "value": "Mix dry constituents until uniform, then add water gradually to the design ratio. The optimised particle shape needs less water for the same workability; place and compact within 30 minutes",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "curing_period_days": {
+      "value": 14,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "storage_guidance": {
+      "value": "Store bags off the floor on wooden planks, away from external walls, in a dry covered godown. Use in the order received",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bag_material": {
+      "value": "PP woven",
+      "provenance": "fetched",
+      "source_url": "https://www.indiamart.com/proddetail/acc-ppc-suraksha-power-cement-10831109997.html",
+      "confidence": 0.85
+    },
+    "shelf_life_months": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "stacking_limit_bags": {
+      "value": 10,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "gst_rate_pct": {
+      "value": 28,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "minimum_order_quantity": {
+      "value": 10,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "availability": {
+      "value": "In stock through the ACC dealer network across Andhra Pradesh and Telangana",
+      "provenance": "fetched",
+      "source_url": "https://www.indiamart.com/proddetail/acc-ppc-suraksha-power-cement-10831109997.html",
+      "confidence": 0.6
+    },
+    "delivery_time": {
+      "value": "1–3 working days within Hyderabad, Vijayawada and Visakhapatnam",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "quality_assurance_note": {
+      "value": "Quality is guaranteed against the IS 1489 (Part 1) requirements for the stated shelf life when the bag is stored dry and unopened; ACC runs a customer helpline for product queries and claims",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.acchelp.in/-/media/Project/ACCHelp/Product-Images/Cement/ACC-Suraksha-Power-new.png",
+      "alt": "ACC Suraksha Power Cement 50 kg bag, front of pack",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.acchelp.in/-/media/Project/ACCHelp/Product-Details/Featured/Enhanced-strength/Featured_Desktop_296-x-400-05.jpg",
+      "alt": "ACC Suraksha Power Cement product panel, alternate view",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.acchelp.in/-/media/Project/ACCHelp/Product-Details/Featured/Protection-from-corrosion/Featured_Desktop_296-x-400-06.jpg",
+      "alt": "Concrete column and beam work built with ACC Suraksha Power Cement",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.acchelp.in/-/media/Project/ACCHelp/Product-Details/Featured/Rectangle-19933.png",
+      "alt": "Dense concrete detail showing protection against water ingress and steel corrosion",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.acchelp.in/-/media/Project/ACCHelp/Product-Details/Featured/Rectangle-19934.png",
+      "alt": "ACC Suraksha Power Cement pack panel showing bag branding",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "cement_type",
+    "compressive_strength_28d",
+    "fineness_blaine",
+    "setting_time_initial",
+    "net_weight_kg",
+    "recommended_concrete_grade",
+    "is_standard",
+    "shelf_life_months"
+  ],
+  "short_description": "ACC Suraksha Power Cement, 50 kg PP bag. Fly-ash PPC with optimised particle size for workable, dense concrete, masonry and plaster.",
+  "long_description": "## What it is\n\nACC Suraksha Power is a fly-ash based Portland Pozzolana Cement supplied in a 50 kg PP woven bag. It is made by the dry process, with clinker inter-ground with specially processed reactive silica and gypsum, and each batch comprehensively tested. Grinding is controlled for uniform particle size and distribution, producing spherical particles that improve workability. As a blended cement to IS 1489 (Part 1), it carries no numeric strength grade.\n\n## What it's for\n\nACC positions this as the everyday bag for house building: concrete for foundations, beams and columns, brick masonry, wall plastering and slab casting. The dense concrete it produces resists water and chemical penetration, which is what protects embedded steel from corrosion. It suits general residential concrete around M15 to M30 at a water–cement ratio near 0.45, and it is equally at home in the finishing trades — plaster and block work — where the spherical particle shape reduces the water needed for a given workability.\n\n## Key specifications\n\nThe blend runs approximately 64% clinker, 32% fly ash and 4% gypsum. Expect about 24 MPa compressive strength at 3 days, 35 MPa at 7 days and 48 MPa at 28 days, with initial set at about 130 minutes and final set at about 210 minutes. Fineness is around 330 m²/kg Blaine, specific gravity about 2.9, bulk density about 1250 kg/m³ and standard consistency about 30%. Le Chatelier soundness expansion is about 1 mm and drying shrinkage about 0.07%. Chloride is held below 0.05% and SO₃ below 2.6%. Heat of hydration at 7 days is around 235 kJ/kg — the reduced hydration heat that blended cements are chosen for on thicker pours.\n\n## Application and installation notes\n\nMix dry, then add water gradually; place and compact within about 30 minutes. Cure with water for 14 days — pozzolanic strength arrives later than with OPC. Work between 5 °C and 40 °C. Stack no more than 10 bags high on wooden planks in a dry covered store, clear of external walls, and use within 3 months of packing.\n\n## What's in the box\n\nOne 50 kg sealed PP woven bag, approximately 450 × 700 × 140 mm.",
+  "seo": {
+    "title": "ACC Suraksha Power Cement 50 kg Bag | PPC",
+    "meta_description": "ACC Suraksha Power PPC Cement, 50 kg bag. Fly-ash cement to IS 1489 (Part 1) for foundations, slabs, masonry and plaster. AP & Telangana delivery.",
+    "keywords": [
+      "acc suraksha power cement",
+      "acc cement 50 kg price",
+      "acc ppc cement",
+      "suraksha power cement bag",
+      "is 1489 part 1 cement",
+      "cement for plastering",
+      "acc cement hyderabad"
+    ],
+    "keywords_te": [
+      "ఏసీసీ సిమెంట్",
+      "ఏసీసీ సురక్ష పవర్",
+      "పీపీసీ సిమెంట్",
+      "సిమెంట్ బస్తా ధర",
+      "ప్లాస్టరింగ్ సిమెంట్"
+    ],
+    "keywords_hi": [
+      "एसीसी सीमेंट",
+      "एसीसी सुरक्षा पावर",
+      "पीपीसी सीमेंट",
+      "सीमेंट बोरी कीमत",
+      "प्लास्टर के लिए सीमेंट"
+    ]
+  }
+}

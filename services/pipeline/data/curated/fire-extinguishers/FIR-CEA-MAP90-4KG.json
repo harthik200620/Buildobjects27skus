@@ -1,0 +1,579 @@
+{
+  "sku_code": "FIR-CEA-MAP90-4KG",
+  "category": "fire-extinguishers",
+  "brand": {
+    "slug": "ceasefire",
+    "name": "Ceasefire",
+    "official_domains": [
+      "ceasefire.in",
+      "ceasefireonlineshop.com"
+    ],
+    "logo_url": null,
+    "intel": {
+      "year_established": {
+        "value": 2002,
+        "provenance": "fetched",
+        "source_url": "https://www.ceasefire.in/about"
+      },
+      "parent_company": {
+        "value": "Ceasefire Industries Pvt. Ltd.",
+        "provenance": "fetched",
+        "source_url": "https://www.ceasefireonlineshop.com/products/abc-powder-map90-4kg"
+      },
+      "product_portfolio": {
+        "value": "Portable fire extinguishers (ABC powder, CO2, clean agent, foam, water), fire suppression systems, hydrant systems, fire alarm and detection systems",
+        "provenance": "fetched",
+        "source_url": "https://www.ceasefire.in/about"
+      },
+      "market_coverage": {
+        "value": "Pan-India direct sales, service and refilling network with a large branded retail and e-commerce presence; strong urban penetration in Hyderabad, Vijayawada and Visakhapatnam",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "quality_strength_note": {
+        "value": "MAP 90 range carries dual certification — IS 15683 (BIS/ISI) plus EN 3 and PED, with LPCB approval, BSI Kitemark and CE marking; helium leak detection on every cylinder",
+        "provenance": "fetched",
+        "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers"
+      },
+      "engineer_user_rating": {
+        "value": "4.4/5 — consistently rated the best-known consumer fire-safety brand in India; engineers cite build quality and the 10-year warranty",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "High for offices, retail, hospitality and residential towers where a certified brand name is specified; less common on price-driven industrial tenders",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Very high — the most recognised extinguisher brand for first-time home and car buyers, largely because of retail availability and advertising",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 1500,
+          "highest": 25000,
+          "unit": "₹/unit"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project and bulk institutional supply is typically 25–35% below the online-shop MRP; retail single-piece buyers pay close to list price",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Volume slabs generally start at 10 units; AMC and refill contracts are bundled with large orders",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Dealer margins on branded portable extinguishers typically run 15–25%, with additional margin on annual refilling and servicing",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "moderate",
+          "bridges": "weak",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India, especially metro and tier-1 cities",
+          "weak": "Deep rural markets",
+          "balanced": "South India including Andhra Pradesh and Telangana",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "First-aid firefighting in homes, offices, shops, showrooms and vehicles",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Statutory fire-safety compliance for occupancy certificates and fire NOC in AP/Telangana",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Server rooms and electrical panel rooms, where the clean-agent variants of the same range are specified instead of powder",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Ceasefire",
+          "Safex",
+          "Kanex",
+          "Minimax",
+          "Omex"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Ceasefire ABC Powder MAP 90 Fire Extinguisher 4 kg",
+    "slug": "ceasefire-abc-powder-map-90-fire-extinguisher-4-kg",
+    "model_no": "CF-001144",
+    "status": "active"
+  },
+  "variant_label": "4 kg stored pressure",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 10230,
+    "selling_price": 10230,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.ceasefireonlineshop.com/products/abc-powder-map90-4kg",
+    "fetched_at": "2026-08-22",
+    "note": "Listed price on the official Ceasefire online shop for CF-001144 (dual-certified IS 15683 + EN 3 / PED unit). Trade and project pricing in Hyderabad is materially lower."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://www.ceasefireonlineshop.com/products/abc-powder-map90-4kg",
+      "https://www.ceasefire.in/about"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "CF-001144",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.98
+    },
+    "extinguishing_agent": {
+      "value": "Mono ammonium phosphate (MAP 90)",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.98
+    },
+    "capacity_kg": {
+      "value": 4,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.98,
+      "unit": "kg"
+    },
+    "operating_mechanism": {
+      "value": "Stored pressure",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.92
+    },
+    "suitable_fire_classes": {
+      "value": "Class A, Class B, Class C and electrically started fires",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95
+    },
+    "refillable": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "cylinder_material": {
+      "value": "Deep-drawn CRCA steel",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "valve_material": {
+      "value": "Forged brass",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.85
+    },
+    "hose_material": {
+      "value": "Reinforced rubber discharge hose with brass swivel connection",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "cylinder_construction": {
+      "value": "Two-piece welded",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.8
+    },
+    "surface_treatment_process": {
+      "value": "Epoxy polyester powder coating over pre-treated steel",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.9
+    },
+    "dim_w_mm": {
+      "value": 140,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95,
+      "unit": "mm"
+    },
+    "dim_h_mm": {
+      "value": 445,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95,
+      "unit": "mm"
+    },
+    "dim_d_mm": {
+      "value": 190,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55,
+      "unit": "mm"
+    },
+    "hose_length_mm": {
+      "value": 400,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5,
+      "unit": "mm"
+    },
+    "working_pressure_bar": {
+      "value": 15,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95,
+      "unit": "bar"
+    },
+    "test_pressure_bar": {
+      "value": 35,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95,
+      "unit": "bar"
+    },
+    "pressure_gauge_fitted": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95
+    },
+    "operating_temperature_min_c": {
+      "value": -30,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95,
+      "unit": "°C"
+    },
+    "operating_temperature_max_c": {
+      "value": 60,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95,
+      "unit": "°C"
+    },
+    "valve_type": {
+      "value": "Squeeze grip lever",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.9
+    },
+    "safety_pin_fitted": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "agent_composition": {
+      "value": "90% mono ammonium phosphate dry chemical powder",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95
+    },
+    "residue_type": {
+      "value": "Fine non-conductive powder residue; requires vacuuming and wipe-down after discharge",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "fire_rating": {
+      "value": "4A 144B (IS 15683); 21A 144B (EN 3)",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95
+    },
+    "discharge_time_s": {
+      "value": 15,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55,
+      "unit": "s"
+    },
+    "discharge_range_m": {
+      "value": 2,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.75,
+      "unit": "m"
+    },
+    "net_weight_kg": {
+      "value": 6.5,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.85,
+      "unit": "kg"
+    },
+    "shelf_life_years": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6,
+      "unit": "years"
+    },
+    "valve_thread_size": {
+      "value": "M30 x 1.5 brass valve neck thread",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "application_areas": {
+      "value": "Homes, apartments, offices, shops and showrooms, godowns, workshops, electrical panel rooms and cars",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "suitable_for_electrical": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95
+    },
+    "recommended_coverage_sqm": {
+      "value": 55,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5,
+      "unit": "m²"
+    },
+    "discharge_rate_kg_s": {
+      "value": 0.27,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5,
+      "unit": "kg/s"
+    },
+    "is_standard": {
+      "value": "IS 15683",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.95
+    },
+    "is_2190_reference": {
+      "value": "IS 2190 — code of practice for selection, installation and maintenance of portable first-aid fire appliances",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "isi_marked": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.85
+    },
+    "bis_certification": {
+      "value": "BIS certified to IS 15683; additionally certified to EN 3 and PED with LPCB approval, BSI Kitemark and CE marking",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.9
+    },
+    "iso_quality_system": {
+      "value": "ISO 9001 quality management system",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "hydraulic_test_interval_years": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65,
+      "unit": "years"
+    },
+    "refill_inspection_interval_months": {
+      "value": 12,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65,
+      "unit": "months"
+    },
+    "body_colour": {
+      "value": "Signal red (RAL 3000)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "surface_finish": {
+      "value": "Epoxy polyester powder coated",
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.9
+    },
+    "mounting_type": {
+      "value": "Wall bracket",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "bracket_included": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "installation_height_mm": {
+      "value": 1000,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6,
+      "unit": "mm"
+    },
+    "packaging_type": {
+      "value": "Single unit in a corrugated carton with wall bracket, safety pin seal and instruction manual",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "units_per_carton": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7,
+      "unit": "pieces"
+    },
+    "gst_rate_pct": {
+      "value": 18,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7,
+      "unit": "%"
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7,
+      "unit": "pieces"
+    },
+    "availability": {
+      "value": "Stocked by Ceasefire dealers and service partners across Hyderabad, Vijayawada and Visakhapatnam; typical delivery 2–5 days",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 120,
+      "provenance": "fetched",
+      "source_url": "https://www.ceasefire.in/product-page/abc-powder-portable-map-90-extinguishers",
+      "confidence": 0.9,
+      "unit": "months"
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against defects in cylinder, valve and coating; consumables, discharge, refilling and physical damage are excluded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "refill_service_note": {
+      "value": "Refilling and annual inspection available through Ceasefire service centres; refill after any discharge, however brief",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://static.wixstatic.com/media/cf66d3_b15294dcfd06481e97fcb8308eaa0eb3~mv2.png",
+      "alt": "Ceasefire ABC MAP 90 4 kg stored-pressure fire extinguisher, front view with 4 KILOGRAMS label, hose and pressure gauge",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://static.wixstatic.com/media/cf66d3_0db7a0708f464f16aa2b377fcdc0aeaa~mv2.png",
+      "alt": "Ceasefire ABC MAP 90 portable range — 4 kg unit in front, 6 kg unit behind, showing the squeeze-grip valve head from an angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://static.wixstatic.com/media/cf66d3_6fe8e56f85214c2ba76adaeedfe2ef61~mv2.png",
+      "alt": "Ceasefire FIR-CEA-MAP90-4KG - Fire extinguisher installed in commercial building exit corridor",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://static.wixstatic.com/media/cf66d3_bf2e03976e704b66a6e25d66ba600ed6~mv2.png",
+      "alt": "Close view of the Ceasefire ABC MAP 90 valve head, pressure gauge, safety pin and squeeze-grip lever (compact 2 kg unit of the same range shown)",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://static.wixstatic.com/media/cf66d3_c54c5e3dbe4649988694d9f9bb50c45e~mv2.png",
+      "alt": "Ceasefire FIR-CEA-MAP90-4KG - Wall bracket mounting template and height dimensions",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "extinguishing_agent",
+    "capacity_kg",
+    "suitable_fire_classes",
+    "fire_rating",
+    "discharge_time_s",
+    "discharge_range_m",
+    "working_pressure_bar",
+    "is_standard"
+  ],
+  "short_description": "Ceasefire 4 kg ABC MAP 90 stored-pressure extinguisher. 4A 144B rating, 15 bar working pressure, IS 15683 and EN 3 certified.",
+  "long_description": "## What it is\n\nThe Ceasefire ABC Powder MAP 90 4 kg (product code CF-001144) is a stored-pressure portable fire extinguisher charged with 90% mono ammonium phosphate dry chemical powder. The shell is a two-piece welded deep-drawn steel cylinder, 140 mm across and 445 mm tall, finished in epoxy-polyester powder coating and fitted with a forged brass squeeze-grip valve, a pressure gauge and a discharge hose. Charged, the unit weighs about 6.5 kg.\n\n## What it's for\n\nOne extinguisher covers Class A (wood, paper, textiles), Class B (flammable liquids), Class C (flammable gases) and electrically started fires, so the user does not have to identify the fire class before acting. That makes it the default first-aid appliance for homes, apartments, offices, shops and showrooms, godowns, workshops, electrical panel rooms and cars — roughly 55 m² of protected floor area per unit.\n\n## Key specifications\n\nIt carries a 4A 144B rating under IS 15683 and 21A 144B under EN 3, works at 15 bar and is hydraulically tested at 35 bar. Rated service range is −30 °C to 60 °C, so it stays usable in an unventilated Telangana warehouse in May. Throw range is over 2 m and the charge empties in roughly 15 seconds of continuous discharge. Beyond the BIS certification to IS 15683, this range is dual-certified to EN 3 and PED and carries LPCB approval, the BSI Kitemark and CE marking. The manufacturer warranty runs 120 months.\n\n## Application and installation notes\n\nFollow IS 2190 for siting: mount on the supplied wall bracket with the carrying handle about 1 m above finished floor, on an escape route and clear of the hazard it protects. Keep the safety pin sealed until use. Inspect the gauge monthly — the needle must sit in the green band — and have the unit inspected every 12 months. Hydraulic re-testing is due every 3 years, and the extinguisher must be refilled after any discharge, however brief. Powder residue is non-conductive but fine, and needs vacuuming and wiping afterwards.\n\n## What's in the box\n\nOne charged 4 kg extinguisher with hose and pressure gauge, a wall-mounting bracket, a sealed safety pin and the instruction manual, in a single corrugated carton.",
+  "seo": {
+    "title": "Ceasefire 4 kg ABC MAP 90 Fire Extinguisher",
+    "meta_description": "Ceasefire CF-001144 ABC MAP 90 4 kg stored-pressure extinguisher. 4A 144B, 15 bar, IS 15683 and EN 3 certified, 10-year warranty. Ships across AP.",
+    "keywords": [
+      "ceasefire fire extinguisher 4 kg",
+      "abc dry powder fire extinguisher",
+      "map 90 extinguisher",
+      "IS 15683 fire extinguisher",
+      "stored pressure fire extinguisher",
+      "fire extinguisher price hyderabad"
+    ],
+    "keywords_te": [
+      "అగ్నిమాపక యంత్రం 4 కేజీ",
+      "ఏబీసీ డ్రై పౌడర్ అగ్నిమాపకం",
+      "సీజ్‌ఫైర్ అగ్నిమాపక యంత్రం",
+      "ఐఎస్ 15683 అగ్నిమాపకం"
+    ],
+    "keywords_hi": [
+      "अग्निशामक यंत्र 4 किलो",
+      "एबीसी ड्राई पाउडर अग्निशामक",
+      "सीजफायर फायर एक्सटिंग्विशर",
+      "आईएस 15683 अग्निशामक यंत्र"
+    ]
+  }
+}

@@ -1,0 +1,590 @@
+{
+  "sku_code": "FIR-SAF-ABC-SP-6KG",
+  "category": "fire-extinguishers",
+  "brand": {
+    "slug": "safex-fire",
+    "name": "Safex Fire",
+    "official_domains": [
+      "safexfire.com"
+    ],
+    "logo_url": "https://safexfire.com/wp-content/uploads/2021/02/Untitled-design-2-e1757091048266.png",
+    "intel": {
+      "year_established": {
+        "value": 1972,
+        "provenance": "fetched",
+        "source_url": "https://safexfire.com/company-profile/"
+      },
+      "parent_company": {
+        "value": "Safex Fire Services Limited (independent, Mumbai)",
+        "provenance": "fetched",
+        "source_url": "https://safexfire.com/company-profile/"
+      },
+      "product_portfolio": {
+        "value": "ABC, BC, CO2, clean agent, foam, water, water-mist, Li-ion battery, MRI and modular fire extinguishers (portable and trolley); inert gas, clean agent, CO2, kitchen and panel suppression systems; valves, hydrants and accessories; sprinklers and flexible drops",
+        "provenance": "fetched",
+        "source_url": "https://safexfire.com/company-profile/"
+      },
+      "market_coverage": {
+        "value": "7 branch offices and over 75 distributors across India, with sales offices at Secunderabad, Bengaluru, Ahmedabad, Baroda, Pune, New Delhi, Kolkata and Mumbai; company describes itself as the largest fire extinguisher manufacturer in India",
+        "provenance": "fetched",
+        "source_url": "https://safexfire.com/company-profile/"
+      },
+      "quality_strength_note": {
+        "value": "ISI-certified stored-pressure extinguishers built to IS 15683 with laboratory-tested MAP powder to IS 4308; MAP 90 available on request in place of the standard MAP 40 charge",
+        "provenance": "fetched",
+        "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/"
+      },
+      "engineer_user_rating": {
+        "value": "4.2/5 — respected among fire consultants and safety officers for consistent ISI compliance and industrial availability, with less consumer brand recall than Ceasefire",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Very high on industrial, warehouse and institutional tenders in AP/Telangana, where ISI compliance at a competitive rate matters more than brand name",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Moderate — a first-time home buyer is less likely to know the name, but distributor reach means it is often what a local safety shop stocks",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 900,
+          "highest": 18000,
+          "unit": "₹/unit"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Distributor and project rates typically run 40–55% below the website list price; retailers commonly list the same 6 kg unit near ₹1,900–2,500",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Distributor slabs from 25 units; large factory and warehouse orders are usually quoted with installation and first-year AMC included",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Distributor margins are wide on ISI portable extinguishers — commonly 30–45% off list — with servicing and refilling as the recurring earner",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "moderate",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "moderate",
+          "bridges": "moderate",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "West and South India",
+          "weak": "North-east India",
+          "balanced": "Andhra Pradesh and Telangana, served from the Secunderabad office",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Statutory first-aid firefighting cover in factories, warehouses, offices and commercial buildings",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Fire NOC and factory-inspector compliance for industrial premises",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Vehicle and transport-hub mounting, where the compact capacities of the same range are used",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Safex",
+          "Ceasefire",
+          "Kanex",
+          "Minimax",
+          "Omex"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Safex 6 kg ABC Portable Stored Pressure Fire Extinguisher",
+    "slug": "safex-6-kg-abc-portable-stored-pressure-fire-extinguisher",
+    "model_no": "6Kg ABC Portable Stored Pressure",
+    "status": "active"
+  },
+  "variant_label": "6 kg stored pressure, MS body",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 4999,
+    "selling_price": 4399,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+    "fetched_at": "2026-08-22",
+    "note": "List and offer price on the manufacturer's own store. Retail listings for the same unit sit far lower (₹1,914 at esafeworld.com); Hyderabad trade rates are usually in that lower band."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "https://safexfire.com/company-profile/"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "6Kg ABC Portable Stored Pressure",
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+      "confidence": 0.8
+    },
+    "extinguishing_agent": {
+      "value": "Mono ammonium phosphate (MAP 40)",
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+      "confidence": 0.92
+    },
+    "capacity_kg": {
+      "value": 6,
+      "provenance": "verified",
+      "source_urls": [
+        "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+        "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895"
+      ],
+      "confidence": 0.98,
+      "unit": "kg"
+    },
+    "operating_mechanism": {
+      "value": "Stored pressure",
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+      "confidence": 0.97
+    },
+    "suitable_fire_classes": {
+      "value": "Class A, Class B, Class C and electrical fires",
+      "provenance": "verified",
+      "source_urls": [
+        "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+        "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895"
+      ],
+      "confidence": 0.96
+    },
+    "refillable": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+      "confidence": 0.8
+    },
+    "cylinder_material": {
+      "value": "Welded mild steel (EN 10120)",
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+      "confidence": 0.7
+    },
+    "valve_material": {
+      "value": "Forged brass",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "hose_material": {
+      "value": "Reinforced rubber discharge hose with brass swivel nozzle",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "cylinder_construction": {
+      "value": "Two-piece welded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "surface_treatment_process": {
+      "value": "Polyester powder coating on pre-treated mild steel, inside and outside",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_w_mm": {
+      "value": 160,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55,
+      "unit": "mm"
+    },
+    "dim_h_mm": {
+      "value": 505,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55,
+      "unit": "mm"
+    },
+    "dim_d_mm": {
+      "value": 205,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5,
+      "unit": "mm"
+    },
+    "hose_length_mm": {
+      "value": 450,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5,
+      "unit": "mm"
+    },
+    "working_pressure_bar": {
+      "value": 15,
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.9,
+      "unit": "bar"
+    },
+    "test_pressure_bar": {
+      "value": 35,
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.9,
+      "unit": "bar"
+    },
+    "pressure_gauge_fitted": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "operating_temperature_min_c": {
+      "value": -20,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55,
+      "unit": "°C"
+    },
+    "operating_temperature_max_c": {
+      "value": 55,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55,
+      "unit": "°C"
+    },
+    "valve_type": {
+      "value": "Squeeze grip lever with controllable discharge",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "safety_pin_fitted": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "agent_composition": {
+      "value": "MAP 40% mono ammonium phosphate dry chemical powder, laboratory tested to IS 4308; MAP 90% available on request",
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+      "confidence": 0.92
+    },
+    "residue_type": {
+      "value": "Fine non-conductive powder residue; requires vacuuming and wipe-down after discharge",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "fire_rating": {
+      "value": "4A:55B",
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.85
+    },
+    "discharge_time_s": {
+      "value": 25,
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.88,
+      "unit": "s"
+    },
+    "discharge_range_m": {
+      "value": 6,
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.88,
+      "unit": "m"
+    },
+    "net_weight_kg": {
+      "value": 9.3,
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.85,
+      "unit": "kg"
+    },
+    "shelf_life_years": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6,
+      "unit": "years"
+    },
+    "valve_thread_size": {
+      "value": "M30 x 1.5 brass valve neck thread",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "application_areas": {
+      "value": "Homes and residential buildings, offices and commercial shops, industrial warehouses, vehicles and transport hubs",
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+      "confidence": 0.95
+    },
+    "suitable_for_electrical": {
+      "value": true,
+      "provenance": "verified",
+      "source_urls": [
+        "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+        "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895"
+      ],
+      "confidence": 0.95
+    },
+    "recommended_coverage_sqm": {
+      "value": 75,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5,
+      "unit": "m²"
+    },
+    "discharge_rate_kg_s": {
+      "value": 0.24,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5,
+      "unit": "kg/s"
+    },
+    "is_standard": {
+      "value": "IS 15683",
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.92
+    },
+    "is_2190_reference": {
+      "value": "IS 2190 — code of practice for selection, installation and maintenance of portable first-aid fire appliances",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "isi_marked": {
+      "value": true,
+      "provenance": "verified",
+      "source_urls": [
+        "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+        "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895"
+      ],
+      "confidence": 0.95
+    },
+    "bis_certification": {
+      "value": "ISI marked under BIS certification to IS 15683",
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.85
+    },
+    "iso_quality_system": {
+      "value": "ISO 9001 quality management system",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "hydraulic_test_interval_years": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65,
+      "unit": "years"
+    },
+    "refill_inspection_interval_months": {
+      "value": 12,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65,
+      "unit": "months"
+    },
+    "body_colour": {
+      "value": "Signal red (RAL 3000)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "surface_finish": {
+      "value": "Polyester powder coated",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mounting_type": {
+      "value": "Wall bracket",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "bracket_included": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "installation_height_mm": {
+      "value": 1000,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6,
+      "unit": "mm"
+    },
+    "packaging_type": {
+      "value": "Single unit in a corrugated carton with wall bracket and instruction manual",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "units_per_carton": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7,
+      "unit": "pieces"
+    },
+    "gst_rate_pct": {
+      "value": 18,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7,
+      "unit": "%"
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7,
+      "unit": "pieces"
+    },
+    "availability": {
+      "value": "Sold direct online and through the distributor network; the Secunderabad sales office serves Andhra Pradesh and Telangana",
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/company-profile/",
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 12,
+      "provenance": "fetched",
+      "source_url": "https://www.esafeworld.com/shop/abc-6kg-fire-extinguisher-stored-pressure-map-40-safex-6895",
+      "confidence": 0.65,
+      "unit": "months"
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against manufacturing defects in cylinder and valve; discharge, refilling and physical damage excluded. The Safex product page also advertises a 5-year comprehensive warranty on the adjacent modular range, so confirm the term on the invoice.",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "refill_service_note": {
+      "value": "Designed for easy maintenance and refilling; refilling handled through Safex branch offices and distributors",
+      "provenance": "fetched",
+      "source_url": "https://safexfire.com/product/6kg-abc-portable-stored-pressure/",
+      "confidence": 0.7
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://safexfire.com/wp-content/uploads/2025/09/7.png",
+      "alt": "Safex ABC dry chemical powder stored-pressure fire extinguisher, front view with hose, squeeze-grip valve and POWDER label",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://safexfire.com/wp-content/uploads/2021/02/Untitled-design-2-e1757091048266.png",
+      "alt": "Safex ABC dry chemical powder extinguisher of the same range, showing the valve head, safety pin and hose routing",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://safexfire.com/wp-content/uploads/2025/09/2.png",
+      "alt": "Safex Fire FIR-SAF-ABC-SP-6KG - Fire extinguisher installed in commercial building exit corridor",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://static.wixstatic.com/media/cf66d3_6fe8e56f85214c2ba76adaeedfe2ef61~mv2.png",
+      "alt": "Safex Fire FIR-SAF-ABC-SP-6KG - Pressure gauge indicator and safety squeeze lever detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": null,
+      "alt": "Safex Fire FIR-SAF-ABC-SP-6KG - Wall bracket mounting template and height dimensions",
+      "content_type": "image/jpeg",
+      "checked": false
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "extinguishing_agent",
+    "capacity_kg",
+    "suitable_fire_classes",
+    "fire_rating",
+    "discharge_time_s",
+    "discharge_range_m",
+    "working_pressure_bar",
+    "is_standard"
+  ],
+  "short_description": "Safex 6 kg ABC stored-pressure extinguisher, ISI marked to IS 15683. 4A:55B rating, 25 s discharge, 6 m jet range, MS body.",
+  "long_description": "## What it is\n\nThe Safex 6 kg ABC Portable Stored Pressure extinguisher is the mainstream ISI-marked unit from Safex Fire Services, in production since the company was founded in 1972. It is a welded mild-steel cylinder, polyester powder coated inside and out, charged with 6 kg of MAP 40% mono ammonium phosphate powder tested to IS 4308; a MAP 90% charge is available on request. Charged weight is about 9.3 kg.\n\n## What it's for\n\nSafex lists it for homes and residential buildings, offices and commercial shops, industrial warehouses, and vehicles and transport hubs. Being an ABC unit it handles Class A, Class B, Class C and electrical fires from one cylinder, which is why it is the standard fit-out for factory floors and godowns where a single appliance has to cover mixed risk. At 6 kg it suits roughly 75 m² of protected area — a size up from the 4 kg unit typically used in homes.\n\n## Key specifications\n\nRated 4A:55B, it works at 15 bar and is hydraulically tested at 35 bar. Discharge lasts about 25 seconds with a jet range of 6 m, which is a genuinely useful reach for warehouse aisles. It is ISI marked under BIS certification to IS 15683. Estimated envelope is roughly 160 mm across and 505 mm tall, so it fits a standard wall bracket or extinguisher cabinet.\n\n## Application and installation notes\n\nSite it per IS 2190: on the wall bracket, handle about 1 m above floor level, on an escape route and away from the hazard itself. Check the pressure gauge monthly and have the unit serviced every 12 months; hydraulic re-testing falls due every 3 years, and the cylinder must be refilled after any discharge. Safex designs the unit for easy refilling through its branch and distributor network, with the Secunderabad office covering Andhra Pradesh and Telangana. Powder residue is non-conductive but fine and needs vacuuming afterwards.\n\n## What's in the box\n\nOne charged 6 kg extinguisher with hose and squeeze-grip valve, a wall bracket and the instruction manual, in a single corrugated carton.",
+  "seo": {
+    "title": "Safex 6 kg ABC Fire Extinguisher, ISI Marked",
+    "meta_description": "Safex 6 kg ABC stored-pressure extinguisher, ISI marked to IS 15683. 4A:55B rating, 25 s discharge, 6 m jet range, MS body. Ships across AP and Telangana.",
+    "keywords": [
+      "safex fire extinguisher 6 kg",
+      "abc stored pressure fire extinguisher",
+      "ISI marked fire extinguisher",
+      "IS 15683 extinguisher",
+      "MAP 40 dry powder extinguisher",
+      "warehouse fire extinguisher"
+    ],
+    "keywords_te": [
+      "సేఫెక్స్ అగ్నిమాపక యంత్రం",
+      "6 కేజీ ఏబీసీ అగ్నిమాపకం",
+      "ఐఎస్‌ఐ మార్క్ అగ్నిమాపక యంత్రం",
+      "గోదాము అగ్నిమాపకం"
+    ],
+    "keywords_hi": [
+      "सेफेक्स अग्निशामक यंत्र",
+      "6 किलो एबीसी फायर एक्सटिंग्विशर",
+      "आईएसआई मार्क अग्निशामक",
+      "गोदाम अग्निशामक यंत्र"
+    ]
+  }
+}

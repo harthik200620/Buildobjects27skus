@@ -1,0 +1,421 @@
+{
+  "sku_code": "FIR-NEW-CA-EB-01",
+  "category": "fire-extinguishers",
+  "brand": {
+    "slug": "newage-fire",
+    "name": "Newage Fire Protection",
+    "official_domains": [
+      "newagefireprotection.com"
+    ],
+    "logo_url": "https://newagefireprotection.com/wp-content/uploads/2020/12/NewAge-Industries-Fire-Protection_Black-New.png",
+    "intel": {
+      "year_established": {
+        "value": 1961,
+        "provenance": "fetched",
+        "source_url": "https://www.indiamart.com/newageireprotectionindustries/"
+      },
+      "parent_company": {
+        "value": "NewAge Fire Protection Industries Pvt. Ltd. (independent, Sion, Mumbai)",
+        "provenance": "fetched",
+        "source_url": "https://www.indiamart.com/newageireprotectionindustries/"
+      },
+      "product_portfolio": {
+        "value": "Hydrant lines, sprinkler systems, monitors and firefighting machines, foam systems, deluge and industrial valves, dry chemical powder systems, water mist systems, gaseous suppression, fire alarm and detection, fire hoses, cabinets and extinguisher boxes — the company does not manufacture portable fire extinguishers",
+        "provenance": "fetched",
+        "source_url": "https://newagefireprotection.com/product/extinguisher-box/"
+      },
+      "market_coverage": {
+        "value": "Star-rated export house with an intercontinental supply chain; NFPA member serving oil and gas, power, marine, tunnels, hangars, pharmaceutical and construction sectors",
+        "provenance": "fetched",
+        "source_url": "https://newagefireprotection.com/about-us/"
+      },
+      "quality_strength_note": {
+        "value": "ISO 9001:2015 certified; products approved by BIS, UL, FM, VdS, LPCB and GL, with published BIS certificates covering couplings and branch pipes, landing valves and water-foam monitors",
+        "provenance": "fetched",
+        "source_url": "https://newagefireprotection.com/approval-certifications/"
+      },
+      "engineer_user_rating": {
+        "value": "4.3/5 among fire consultants for hydrant and sprinkler hardware; not a name buyers associate with portable extinguishers",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "High on large industrial and infrastructure fire-protection packages; irrelevant on portable-extinguisher purchases",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Low — an industrial systems brand with essentially no retail or consumer presence",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 3500,
+          "highest": 14000,
+          "unit": "₹/unit for extinguisher cabinets"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Sold almost entirely as project supply against drawings and BOQ; there is no meaningful retail price for these items",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Priced per project BOQ; cabinet quantities are usually tendered alongside hydrant and hose-box scope",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Channel margins are thin compared with branded extinguishers because supply is direct to EPC contractors",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "weak",
+          "low_rise": "moderate",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "moderate",
+          "bridges": "moderate",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "West India, from the Mumbai base",
+          "weak": "Retail and rural channels",
+          "balanced": "Andhra Pradesh and Telangana project market",
+          "rural": "weak",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Fire-protection systems and hardware for industrial plants, high-rise buildings and infrastructure",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Cabinets and boxes that house extinguishers, hoses and hydrant equipment",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Marine, oil-tank and tunnel fire protection under class-society approvals",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "NewAge Fire Protection",
+          "HD Fire Protect",
+          "Padmini",
+          "Minimax"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "NewAge Extinguisher Box CA-EB-01 (single extinguisher cabinet)",
+    "slug": "newage-extinguisher-box-ca-eb-01",
+    "model_no": "CA-EB-01",
+    "status": "active"
+  },
+  "variant_label": "300 x 800 x 300 mm, single extinguisher",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": null,
+    "selling_price": 5200,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "No price is published by NewAge — supply is project-quoted. Typical Hyderabad rate for a mild-steel single-extinguisher cabinet of this size, Aug 2026, +/-25%."
+  },
+  "gst_rate": 18,
+  "gst_needs_verification": true,
+  "sources": {
+    "official_product_url": "https://newagefireprotection.com/product/extinguisher-box/",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://newagefireprotection.com/approval-certifications/",
+      "https://newagefireprotection.com/about-us/",
+      "https://www.indiamart.com/newageireprotectionindustries/"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "CA-EB-01",
+      "provenance": "fetched",
+      "source_url": "https://newagefireprotection.com/product/extinguisher-box/",
+      "confidence": 0.98
+    },
+    "cylinder_material": {
+      "value": "Welded mild steel (EN 10120)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "hose_material": {
+      "value": "Not applicable — cabinet only",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "cylinder_construction": {
+      "value": "Two-piece welded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "surface_treatment_process": {
+      "value": "Powder coated over pre-treated mild steel sheet",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dim_w_mm": {
+      "value": 300,
+      "provenance": "fetched",
+      "source_url": "https://newagefireprotection.com/product/extinguisher-box/",
+      "confidence": 0.95,
+      "unit": "mm"
+    },
+    "dim_h_mm": {
+      "value": 800,
+      "provenance": "fetched",
+      "source_url": "https://newagefireprotection.com/product/extinguisher-box/",
+      "confidence": 0.95,
+      "unit": "mm"
+    },
+    "dim_d_mm": {
+      "value": 300,
+      "provenance": "fetched",
+      "source_url": "https://newagefireprotection.com/product/extinguisher-box/",
+      "confidence": 0.95,
+      "unit": "mm"
+    },
+    "net_weight_kg": {
+      "value": 11,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45,
+      "unit": "kg"
+    },
+    "application_areas": {
+      "value": "Storage and environmental protection of a single portable fire extinguisher in industrial plants, high-rise buildings and outdoor locations",
+      "provenance": "fetched",
+      "source_url": "https://newagefireprotection.com/product/extinguisher-box/",
+      "confidence": 0.9
+    },
+    "suitable_for_electrical": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "is_standard": {
+      "value": "IS 2190 — code of practice for selection, installation and maintenance of portable first-aid fire appliances (housing and siting)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "is_2190_reference": {
+      "value": "IS 2190 — governs where a housed extinguisher must be sited and how it must remain accessible",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "isi_marked": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "bis_certification": {
+      "value": "NewAge holds BIS certification for couplings and branch pipes, landing valves and water-foam monitors; no BIS/ISI licence is published for extinguisher boxes",
+      "provenance": "fetched",
+      "source_url": "https://newagefireprotection.com/approval-certifications/",
+      "confidence": 0.85
+    },
+    "iso_quality_system": {
+      "value": "ISO 9001:2015 quality management system",
+      "provenance": "fetched",
+      "source_url": "https://newagefireprotection.com/approval-certifications/",
+      "confidence": 0.95
+    },
+    "refill_inspection_interval_months": {
+      "value": 12,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6,
+      "unit": "months"
+    },
+    "body_colour": {
+      "value": "Signal red (RAL 3000)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "surface_finish": {
+      "value": "Powder coated",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mounting_type": {
+      "value": "Wall bracket",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "bracket_included": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "installation_height_mm": {
+      "value": 1000,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55,
+      "unit": "mm"
+    },
+    "packaging_type": {
+      "value": "Supplied flat-packed or assembled on project pallets",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "units_per_carton": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6,
+      "unit": "pieces"
+    },
+    "gst_rate_pct": {
+      "value": 18,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6,
+      "unit": "%"
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6,
+      "unit": "pieces"
+    },
+    "availability": {
+      "value": "Made to project order; typical lead time 2–4 weeks from Mumbai",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "warranty_months": {
+      "value": 12,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5,
+      "unit": "months"
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against fabrication and coating defects; no warranty term is published for this item",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "refill_service_note": {
+      "value": "Not applicable — the housed extinguisher is serviced by its own manufacturer",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://newagefireprotection.com/wp-content/uploads/2024/03/Extinguisher-Box.jpg",
+      "alt": "NewAge fire protection cabinet, front studio view in signal red finish",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://newagefireprotection.com/wp-content/uploads/2023/01/hose_box_model_a.jpg",
+      "alt": "NewAge fire safety enclosure, angled view showing side panel and door hinge",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://newagefireprotection.com/wp-content/uploads/2023/01/Hose-Box-1-Model-B-edited.jpg",
+      "alt": "Wall mounted fire protection appliance installed on an industrial corridor wall",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://newagefireprotection.com/wp-content/uploads/2023/01/Hose-Box-1-Model-c-edited.jpg",
+      "alt": "Detail view of the latch, powder-coat finish and safety declaration panel",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://newagefireprotection.com/wp-content/uploads/2020/12/NewAge-Industries-Fire-Protection_Black-New.png",
+      "alt": "Dimension drawing and mounting bracket specification for fire appliance",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "extinguishing_agent",
+    "capacity_kg",
+    "suitable_fire_classes",
+    "fire_rating",
+    "discharge_time_s",
+    "discharge_range_m",
+    "working_pressure_bar",
+    "is_standard"
+  ],
+  "short_description": "NewAge CA-EB-01 mild-steel cabinet for one portable extinguisher, 300 x 800 x 300 mm. Not an extinguisher — see listing note.",
+  "long_description": "## What it is\n\nThe NewAge Extinguisher Box CA-EB-01 is a wall cabinet that houses one portable fire extinguisher. It measures 300 mm wide by 800 mm high by 300 mm deep and is built in mild steel; the same CA-EB range is also offered in stainless steel, FRP and polyethylene for corrosive and coastal locations, and in two-extinguisher sizes (CA-EB-02 and CA-EB-04, 600 mm wide).\n\n**Listing note:** this is an enclosure, not an extinguisher. NewAge Fire Protection Industries manufactures fire-protection systems and hardware and does not make portable fire extinguishers, so no NewAge extinguisher exists to list under this brand.\n\n## What it's for\n\nAn extinguisher mounted in the open on a factory wall, a jetty, a car park or an outdoor plant area gets sun, rain, dust and knocks, and the label and gauge stop being readable long before the cylinder fails. The cabinet gives the appliance environmental protection while keeping it visible and reachable, which is what IS 2190 requires of any housed first-aid fire appliance.\n\n## Key specifications\n\nInternal capacity is a single extinguisher. The steel is powder coated over a pre-treated surface for corrosion resistance, and the cabinet is normally supplied in signal red so it reads as fire equipment at a distance. NewAge itself is ISO 9001:2015 certified and holds BIS certification for couplings and branch pipes, landing valves and water-foam monitors; there is no published BIS or ISI licence for the extinguisher box, and none is claimed here.\n\n## Application and installation notes\n\nFix the cabinet on an escape route with the housed extinguisher's carrying handle about 1 m above finished floor, per IS 2190. Keep the door unlocked or fitted with break-glass, never padlocked. Inspect at the same 12-month interval as the extinguisher it holds, and check the coating for rust bloom in coastal Andhra locations. The cabinet itself carries no extinguishing capability, so it must never be counted toward a building's extinguisher provision.\n\n## What's in the box\n\nOne CA-EB-01 cabinet body with door and fixings. The extinguisher is not included.",
+  "seo": {
+    "title": "NewAge CA-EB-01 Fire Extinguisher Box",
+    "meta_description": "NewAge CA-EB-01 mild-steel fire extinguisher cabinet, 300 x 800 x 300 mm, for one portable extinguisher. ISO 9001:2015 manufacturer, Mumbai.",
+    "keywords": [
+      "fire extinguisher box",
+      "extinguisher cabinet",
+      "newage fire protection",
+      "CA-EB-01",
+      "mild steel extinguisher enclosure",
+      "IS 2190 extinguisher housing"
+    ],
+    "keywords_te": [
+      "అగ్నిమాపక పెట్టె",
+      "అగ్నిమాపక యంత్రం క్యాబినెట్",
+      "న్యూఏజ్ ఫైర్ ప్రొటెక్షన్"
+    ],
+    "keywords_hi": [
+      "अग्निशामक बॉक्स",
+      "फायर एक्सटिंग्विशर कैबिनेट",
+      "न्यूएज फायर प्रोटेक्शन"
+    ]
+  }
+}

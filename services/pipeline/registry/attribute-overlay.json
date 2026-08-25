@@ -1,0 +1,4308 @@
+{
+  "$comment": "Faceting and search metadata per category, merged onto the registry that from-sheet.ts builds from WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx. The workbook owns what a product IS; this owns how it is filtered and found. Generated once by tools/build_calendar_workbook.py; edit by hand thereafter.",
+  "categories": {
+    "epoxy": {
+      "epoxy_type": {
+        "filter_widget": "chips",
+        "filter_order": 1,
+        "enum_values": [
+          "Structural adhesive",
+          "Bonding agent",
+          "Injection resin",
+          "Repair mortar",
+          "Anchoring grout",
+          "Free-flow grout",
+          "Floor coating",
+          "Crack filler",
+          "Tile joint filler"
+        ],
+        "synonyms": [
+          "epoxy type",
+          "adhesive or grout",
+          "kind of epoxy",
+          "ఎపాక్సీ రకం",
+          "एपॉक्सी प्रकार"
+        ]
+      },
+      "application_form": {
+        "filter_widget": "checkbox",
+        "filter_order": 2,
+        "enum_values": [
+          "Thixotropic paste (non-sag)",
+          "Trowelable mortar",
+          "Free-flowing liquid",
+          "Low-viscosity injection liquid",
+          "Brushable coating"
+        ],
+        "synonyms": [
+          "paste or liquid",
+          "consistency",
+          "form",
+          "రూపం",
+          "रूप"
+        ]
+      },
+      "model_number": {
+        "synonyms": [
+          "model no",
+          "product code",
+          "article number",
+          "మోడల్ నంబర్",
+          "मॉडल नंबर"
+        ]
+      },
+      "series": {
+        "synonyms": [
+          "range",
+          "family",
+          "series",
+          "శ్రేణి",
+          "श्रृंखला"
+        ]
+      },
+      "pre_batched_kit": {
+        "synonyms": [
+          "pre measured",
+          "ready to mix",
+          "no site weighing",
+          "ముందుగా కొలిచిన",
+          "पूर्व-मापित"
+        ]
+      },
+      "solvent_free": {
+        "filter_widget": "toggle",
+        "filter_order": 9,
+        "synonyms": [
+          "no solvent",
+          "100% solids",
+          "low odour",
+          "ద్రావకం రహితం",
+          "सॉल्वेंट रहित"
+        ]
+      },
+      "compressive_strength_mpa": {
+        "filter_widget": "range",
+        "filter_order": 5,
+        "synonyms": [
+          "crushing strength",
+          "compression",
+          "N/mm2",
+          "సంపీడన బలం",
+          "संपीड़न शक्ति"
+        ]
+      },
+      "tensile_strength_mpa": {
+        "synonyms": [
+          "tension strength",
+          "pull strength",
+          "తన్యత బలం",
+          "तन्य शक्ति"
+        ]
+      },
+      "flexural_strength_mpa": {
+        "synonyms": [
+          "bending strength",
+          "flexure",
+          "వంపు బలం",
+          "बंकन शक्ति"
+        ]
+      },
+      "bond_strength_concrete_mpa": {
+        "synonyms": [
+          "adhesion strength",
+          "pull off strength",
+          "bonding strength",
+          "బంధన బలం",
+          "बंधन शक्ति"
+        ]
+      },
+      "shear_strength_mpa": {
+        "synonyms": [
+          "slant shear",
+          "shear bond",
+          "కోత బలం",
+          "अपरूपण शक्ति"
+        ]
+      },
+      "pot_life_min": {
+        "filter_widget": "range",
+        "filter_order": 6,
+        "synonyms": [
+          "working time",
+          "usable life",
+          "pot life",
+          "పని సమయం",
+          "पॉट लाइफ"
+        ]
+      },
+      "open_time_min": {
+        "synonyms": [
+          "open time",
+          "placing time",
+          "adjust time",
+          "ఓపెన్ టైమ్",
+          "ओपन टाइम"
+        ]
+      },
+      "initial_cure_time_h": {
+        "synonyms": [
+          "setting time",
+          "touch dry",
+          "initial set",
+          "ప్రారంభ క్యూరింగ్",
+          "प्रारंभिक क्योरिंग"
+        ]
+      },
+      "full_cure_time_days": {
+        "synonyms": [
+          "final cure",
+          "full strength",
+          "curing time",
+          "పూర్తి క్యూరింగ్",
+          "पूर्ण क्योरिंग"
+        ]
+      },
+      "application_temperature_range": {
+        "synonyms": [
+          "ambient temperature",
+          "working temperature",
+          "వాతావరణ ఉష్ణోగ్రత",
+          "लगाने का तापमान"
+        ]
+      },
+      "density_kg_l": {
+        "synonyms": [
+          "specific gravity",
+          "density",
+          "సాంద్రత",
+          "घनत्व"
+        ]
+      },
+      "solids_content_pct": {
+        "synonyms": [
+          "solid content",
+          "non volatile",
+          "ఘన పదార్థం",
+          "ठोस अंश"
+        ]
+      },
+      "viscosity_mpas": {
+        "synonyms": [
+          "viscosity",
+          "flowability",
+          "thickness of liquid",
+          "స్నిగ్ధత",
+          "श्यानता"
+        ]
+      },
+      "chloride_free": {
+        "synonyms": [
+          "no chlorides",
+          "rebar safe",
+          "క్లోరైడ్ రహితం",
+          "क्लोराइड मुक्त"
+        ]
+      },
+      "service_temperature_min_c": {
+        "synonyms": [
+          "lowest temperature",
+          "cold service",
+          "కనిష్ఠ ఉష్ణోగ్రత",
+          "न्यूनतम तापमान"
+        ]
+      },
+      "service_temperature_max_c": {
+        "synonyms": [
+          "heat resistance",
+          "max temperature",
+          "గరిష్ఠ ఉష్ణోగ్రత",
+          "अधिकतम तापमान"
+        ]
+      },
+      "heat_deflection_temp_c": {
+        "synonyms": [
+          "HDT",
+          "softening point",
+          "వేడి వైకల్య ఉష్ణోగ్రత",
+          "ऊष्मा विक्षेपण तापमान"
+        ]
+      },
+      "chemical_resistance": {
+        "synonyms": [
+          "acid resistance",
+          "oil resistance",
+          "chemical attack",
+          "రసాయన నిరోధకత",
+          "रासायनिक प्रतिरोध"
+        ]
+      },
+      "production_method": {
+        "synonyms": [
+          "manufacturing process",
+          "production",
+          "తయారీ విధానం",
+          "निर्माण प्रक्रिया"
+        ]
+      },
+      "application_thickness_mm": {
+        "synonyms": [
+          "layer thickness",
+          "build up",
+          "coat thickness",
+          "పొర మందం",
+          "परत मोटाई"
+        ]
+      },
+      "net_weight_kg": {
+        "synonyms": [
+          "weight",
+          "net weight",
+          "kg",
+          "బరువు",
+          "वजन"
+        ]
+      },
+      "dim_w_mm": {
+        "synonyms": [
+          "width",
+          "pack width",
+          "వెడల్పు",
+          "चौड़ाई"
+        ]
+      },
+      "dim_h_mm": {
+        "synonyms": [
+          "height",
+          "pack height",
+          "ఎత్తు",
+          "ऊंचाई"
+        ]
+      },
+      "dim_d_mm": {
+        "synonyms": [
+          "depth",
+          "pack depth",
+          "లోతు",
+          "गहराई"
+        ]
+      },
+      "primary_applications": {
+        "synonyms": [
+          "uses",
+          "where to use",
+          "applications",
+          "ఉపయోగాలు",
+          "उपयोग"
+        ]
+      },
+      "bonding_substrates": {
+        "synonyms": [
+          "substrates",
+          "sticks to",
+          "materials bonded",
+          "అతికే పదార్థాలు",
+          "किन सतहों पर"
+        ]
+      },
+      "structural_use": {
+        "filter_widget": "toggle",
+        "filter_order": 8,
+        "synonyms": [
+          "structural",
+          "load bearing",
+          "నిర్మాణ ఉపయోగం",
+          "संरचनात्मक उपयोग"
+        ]
+      },
+      "usage_area": {
+        "filter_widget": "chips",
+        "filter_order": 7,
+        "enum_values": [
+          "Interior",
+          "Exterior",
+          "Interior and exterior",
+          "Submerged / water-retaining"
+        ],
+        "synonyms": [
+          "indoor outdoor",
+          "where used",
+          "వాడే ప్రాంతం",
+          "उपयोग क्षेत्र"
+        ]
+      },
+      "coverage": {
+        "synonyms": [
+          "coverage",
+          "yield",
+          "how much area",
+          "కవరేజ్",
+          "कवरेज"
+        ]
+      },
+      "is_standard": {
+        "synonyms": [
+          "IS standard",
+          "BIS standard",
+          "IS 9162",
+          "భారతీయ ప్రమాణం",
+          "भारतीय मानक"
+        ]
+      },
+      "astm_standard": {
+        "synonyms": [
+          "ASTM C881",
+          "ASTM type grade class",
+          "ASTM ప్రమాణం",
+          "ASTM मानक"
+        ]
+      },
+      "en_standard": {
+        "synonyms": [
+          "EN 1504",
+          "CE marking",
+          "EN ప్రమాణం",
+          "EN मानक"
+        ]
+      },
+      "iso_9001_certified": {
+        "synonyms": [
+          "ISO 9001",
+          "quality certified",
+          "ISO ధృవీకరణ",
+          "आईएसओ प्रमाणित"
+        ]
+      },
+      "batch_testing": {
+        "synonyms": [
+          "QC",
+          "batch test",
+          "lot testing",
+          "బ్యాచ్ పరీక్ష",
+          "बैच परीक्षण"
+        ]
+      },
+      "surface_preparation": {
+        "synonyms": [
+          "surface prep",
+          "substrate preparation",
+          "cleaning",
+          "ఉపరితల తయారీ",
+          "सतह तैयारी"
+        ]
+      },
+      "application_method": {
+        "synonyms": [
+          "how to apply",
+          "trowel brush pour",
+          "application",
+          "వేసే విధానం",
+          "लगाने की विधि"
+        ]
+      },
+      "pack_size_kg": {
+        "filter_widget": "range",
+        "filter_order": 4,
+        "synonyms": [
+          "pack size",
+          "kit size",
+          "how many kg",
+          "ప్యాక్ సైజు",
+          "पैक साइज"
+        ]
+      },
+      "pack_type": {
+        "synonyms": [
+          "packaging",
+          "container",
+          "tin can pail",
+          "ప్యాకింగ్",
+          "पैकिंग"
+        ]
+      },
+      "shelf_life_months": {
+        "synonyms": [
+          "shelf life",
+          "expiry",
+          "storage life",
+          "నిల్వ కాలం",
+          "शेल्फ लाइफ"
+        ]
+      },
+      "storage_conditions": {
+        "synonyms": [
+          "how to store",
+          "storage",
+          "నిల్వ పరిస్థితులు",
+          "भंडारण"
+        ]
+      },
+      "gst_rate_pct": {
+        "synonyms": [
+          "GST",
+          "tax rate",
+          "జీఎస్టీ",
+          "जीएसटी"
+        ]
+      },
+      "warranty_months": {
+        "synonyms": [
+          "warranty",
+          "guarantee",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      },
+      "warranty_coverage": {
+        "synonyms": [
+          "warranty terms",
+          "coverage",
+          "వారంటీ పరిధి",
+          "वारंटी कवरेज"
+        ]
+      }
+    },
+    "fire-extinguishers": {
+      "extinguishing_agent": {
+        "filter_widget": "checkbox",
+        "filter_order": 3,
+        "enum_values": [
+          "Mono ammonium phosphate (MAP 90)",
+          "Mono ammonium phosphate (MAP 75)",
+          "Mono ammonium phosphate (MAP 40)",
+          "Sodium bicarbonate (BC powder)",
+          "Carbon dioxide",
+          "AFFF foam concentrate",
+          "Water with additive",
+          "Demineralised water mist",
+          "HCFC-123 clean agent",
+          "FK-5-1-12 clean agent",
+          "Potassium acetate solution"
+        ],
+        "synonyms": [
+          "agent",
+          "powder type",
+          "MAP 90",
+          "filling",
+          "ఏజెంట్",
+          "एजेंट"
+        ]
+      },
+      "capacity_kg": {
+        "filter_widget": "range",
+        "filter_order": 2,
+        "synonyms": [
+          "capacity",
+          "size",
+          "weight of agent",
+          "4 kg",
+          "6 kg",
+          "సామర్థ్యం",
+          "क्षमता"
+        ]
+      },
+      "model_number": {
+        "filter_order": 99,
+        "synonyms": [
+          "model no",
+          "model code",
+          "మోడల్ నంబర్",
+          "मॉडल नंबर"
+        ]
+      },
+      "operating_mechanism": {
+        "filter_widget": "chips",
+        "filter_order": 5,
+        "enum_values": [
+          "Stored pressure",
+          "Gas cartridge operated",
+          "Constant pressure"
+        ],
+        "synonyms": [
+          "mechanism",
+          "stored pressure",
+          "cartridge",
+          "ఆపరేటింగ్ విధానం",
+          "संचालन प्रणाली"
+        ]
+      },
+      "refillable": {
+        "filter_widget": "toggle",
+        "filter_order": 9,
+        "synonyms": [
+          "refill",
+          "rechargeable",
+          "తిరిగి నింపదగినది",
+          "रिफिल योग्य"
+        ]
+      },
+      "valve_type": {
+        "filter_order": 99,
+        "enum_values": [
+          "Squeeze grip lever with controllable discharge",
+          "Squeeze grip lever",
+          "Wheel type valve",
+          "Cartridge striker knob"
+        ],
+        "synonyms": [
+          "valve type",
+          "lever",
+          "squeeze grip",
+          "వాల్వ్ రకం",
+          "वाल्व प्रकार"
+        ]
+      },
+      "suitable_fire_classes": {
+        "filter_order": 99,
+        "synonyms": [
+          "class A B C",
+          "fire class",
+          "type of fire",
+          "అగ్ని తరగతి",
+          "आग की श्रेणी"
+        ]
+      },
+      "fire_rating": {
+        "filter_widget": "checkbox",
+        "filter_order": 4,
+        "synonyms": [
+          "rating",
+          "2A 21B",
+          "4A 34B",
+          "fire test rating",
+          "అగ్ని రేటింగ్",
+          "अग्नि रेटिंग"
+        ]
+      },
+      "discharge_time_s": {
+        "filter_order": 99,
+        "synonyms": [
+          "discharge duration",
+          "emptying time",
+          "డిశ్చార్జ్ సమయం",
+          "डिस्चार्ज समय"
+        ]
+      },
+      "discharge_range_m": {
+        "filter_order": 99,
+        "synonyms": [
+          "throw distance",
+          "jet range",
+          "డిశ్చార్జ్ పరిధి",
+          "डिस्चार्ज दूरी"
+        ]
+      },
+      "discharge_rate_kg_s": {
+        "filter_order": 99,
+        "synonyms": [
+          "flow rate",
+          "discharge rate",
+          "డిశ్చార్జ్ రేటు",
+          "डिस्चार्ज दर"
+        ]
+      },
+      "suitable_for_electrical": {
+        "filter_widget": "toggle",
+        "filter_order": 10,
+        "synonyms": [
+          "electrical fire",
+          "class E",
+          "live equipment",
+          "విద్యుత్ మంటలు",
+          "बिजली की आग"
+        ]
+      },
+      "recommended_coverage_sqm": {
+        "filter_order": 99,
+        "synonyms": [
+          "coverage",
+          "area covered",
+          "protection area",
+          "కవరేజ్",
+          "कवरेज"
+        ]
+      },
+      "residue_type": {
+        "filter_order": 99,
+        "synonyms": [
+          "residue",
+          "clean-up",
+          "after use mess",
+          "అవశేషం",
+          "अवशेष"
+        ]
+      },
+      "agent_composition": {
+        "filter_order": 99,
+        "synonyms": [
+          "composition",
+          "powder purity",
+          "MAP percentage",
+          "కూర్పు",
+          "संरचना"
+        ]
+      },
+      "working_pressure_bar": {
+        "filter_order": 99,
+        "synonyms": [
+          "service pressure",
+          "operating pressure",
+          "పని పీడనం",
+          "कार्य दाब"
+        ]
+      },
+      "test_pressure_bar": {
+        "filter_order": 99,
+        "synonyms": [
+          "test pressure",
+          "hydro test",
+          "పరీక్ష పీడనం",
+          "परीक्षण दाब"
+        ]
+      },
+      "pressure_gauge_fitted": {
+        "filter_order": 99,
+        "synonyms": [
+          "gauge",
+          "pressure indicator",
+          "ప్రెషర్ గేజ్",
+          "दाब गेज"
+        ]
+      },
+      "safety_pin_fitted": {
+        "filter_order": 99,
+        "synonyms": [
+          "safety pin",
+          "tamper seal",
+          "lock pin",
+          "భద్రతా పిన్",
+          "सुरक्षा पिन"
+        ]
+      },
+      "valve_thread_size": {
+        "filter_order": 99,
+        "synonyms": [
+          "thread",
+          "neck thread",
+          "valve connection",
+          "థ్రెడ్ సైజు",
+          "थ्रेड आकार"
+        ]
+      },
+      "cylinder_material": {
+        "filter_widget": "checkbox",
+        "filter_order": 6,
+        "enum_values": [
+          "Deep-drawn CRCA steel",
+          "Seamless alloy steel",
+          "Welded mild steel (EN 10120)",
+          "Stainless steel",
+          "Aluminium alloy"
+        ],
+        "synonyms": [
+          "body material",
+          "shell",
+          "cylinder steel",
+          "సిలిండర్ మెటీరియల్",
+          "सिलेंडर सामग्री"
+        ]
+      },
+      "valve_material": {
+        "filter_order": 99,
+        "enum_values": [
+          "Forged brass",
+          "Brass with chrome plating",
+          "Aluminium alloy",
+          "Stainless steel"
+        ],
+        "synonyms": [
+          "valve",
+          "head material",
+          "వాల్వ్ మెటీరియల్",
+          "वाल्व सामग्री"
+        ]
+      },
+      "hose_material": {
+        "filter_order": 99,
+        "synonyms": [
+          "hose",
+          "discharge hose",
+          "nozzle",
+          "హోస్",
+          "होज़"
+        ]
+      },
+      "cylinder_construction": {
+        "filter_order": 99,
+        "enum_values": [
+          "Deep drawn seamless",
+          "Two-piece welded",
+          "Three-piece welded"
+        ],
+        "synonyms": [
+          "construction",
+          "seamless",
+          "welded",
+          "నిర్మాణం",
+          "निर्माण"
+        ]
+      },
+      "surface_treatment_process": {
+        "filter_order": 99,
+        "synonyms": [
+          "coating process",
+          "phosphating",
+          "powder coating",
+          "ఉపరితల చికిత్స",
+          "सतह उपचार"
+        ]
+      },
+      "dim_w_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "diameter",
+          "width",
+          "వెడల్పు",
+          "चौड़ाई"
+        ]
+      },
+      "dim_h_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "height",
+          "overall height",
+          "ఎత్తు",
+          "ऊंचाई"
+        ]
+      },
+      "dim_d_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "depth",
+          "లోతు",
+          "गहराई"
+        ]
+      },
+      "hose_length_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "hose length",
+          "pipe length",
+          "హోస్ పొడవు",
+          "होज़ लंबाई"
+        ]
+      },
+      "net_weight_kg": {
+        "filter_order": 99,
+        "synonyms": [
+          "total weight",
+          "gross weight",
+          "filled weight",
+          "బరువు",
+          "वजन"
+        ]
+      },
+      "operating_temperature_min_c": {
+        "filter_order": 99,
+        "synonyms": [
+          "min temperature",
+          "low temp limit",
+          "కనిష్ట ఉష్ణోగ్రత",
+          "न्यूनतम तापमान"
+        ]
+      },
+      "operating_temperature_max_c": {
+        "filter_order": 99,
+        "synonyms": [
+          "max temperature",
+          "high temp limit",
+          "గరిష్ట ఉష్ణోగ్రత",
+          "अधिकतम तापमान"
+        ]
+      },
+      "shelf_life_years": {
+        "filter_order": 99,
+        "synonyms": [
+          "shelf life",
+          "service life",
+          "life span",
+          "షెల్ఫ్ లైఫ్",
+          "शेल्फ लाइफ"
+        ]
+      },
+      "hydraulic_test_interval_years": {
+        "filter_order": 99,
+        "synonyms": [
+          "hydro test interval",
+          "pressure test frequency",
+          "పరీక్ష విరామం",
+          "परीक्षण अंतराल"
+        ]
+      },
+      "refill_inspection_interval_months": {
+        "filter_order": 99,
+        "synonyms": [
+          "service interval",
+          "refill period",
+          "maintenance",
+          "తనిఖీ విరామం",
+          "निरीक्षण अंतराल"
+        ]
+      },
+      "application_areas": {
+        "filter_order": 99,
+        "synonyms": [
+          "where to use",
+          "application",
+          "usage areas",
+          "ఉపయోగ ప్రాంతాలు",
+          "उपयोग क्षेत्र"
+        ]
+      },
+      "is_standard": {
+        "filter_order": 99,
+        "synonyms": [
+          "IS 15683",
+          "BIS standard",
+          "standard",
+          "ప్రమాణం",
+          "मानक"
+        ]
+      },
+      "is_2190_reference": {
+        "filter_order": 99,
+        "synonyms": [
+          "IS 2190",
+          "installation code",
+          "selection code",
+          "స్థాపన కోడ్",
+          "स्थापना कोड"
+        ]
+      },
+      "isi_marked": {
+        "filter_widget": "toggle",
+        "filter_order": 7,
+        "synonyms": [
+          "ISI",
+          "BIS mark",
+          "certified",
+          "ఐఎస్ఐ మార్క్",
+          "आईएसआई मार्क"
+        ]
+      },
+      "bis_certification": {
+        "filter_order": 99,
+        "synonyms": [
+          "BIS licence",
+          "certification",
+          "CM/L",
+          "బిఐఎస్",
+          "बीआईएस"
+        ]
+      },
+      "iso_quality_system": {
+        "filter_order": 99,
+        "synonyms": [
+          "ISO 9001",
+          "quality system",
+          "నాణ్యత వ్యవస్థ",
+          "गुणवत्ता प्रणाली"
+        ]
+      },
+      "body_colour": {
+        "filter_order": 99,
+        "enum_values": [
+          "Signal red (RAL 3000)",
+          "Fire red",
+          "Red with black band",
+          "Red with cream band",
+          "Stainless steel finish"
+        ],
+        "synonyms": [
+          "colour",
+          "color",
+          "red",
+          "రంగు",
+          "रंग"
+        ]
+      },
+      "surface_finish": {
+        "filter_order": 99,
+        "synonyms": [
+          "finish",
+          "paint",
+          "coating",
+          "ఉపరితలం",
+          "फिनिश"
+        ]
+      },
+      "mounting_type": {
+        "filter_widget": "checkbox",
+        "filter_order": 8,
+        "enum_values": [
+          "Wall bracket",
+          "Wall hook",
+          "Floor stand",
+          "Vehicle bracket",
+          "Trolley mounted"
+        ],
+        "synonyms": [
+          "mounting",
+          "bracket",
+          "wall mount",
+          "మౌంటింగ్",
+          "माउंटिंग"
+        ]
+      },
+      "bracket_included": {
+        "filter_order": 99,
+        "synonyms": [
+          "bracket in box",
+          "clamp included",
+          "బ్రాకెట్",
+          "ब्रैकेट"
+        ]
+      },
+      "installation_height_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "mounting height",
+          "fixing height",
+          "స్థాపన ఎత్తు",
+          "स्थापना ऊंचाई"
+        ]
+      },
+      "packaging_type": {
+        "filter_order": 99,
+        "synonyms": [
+          "box",
+          "carton",
+          "packing",
+          "ప్యాకేజింగ్",
+          "पैकेजिंग"
+        ]
+      },
+      "units_per_carton": {
+        "filter_order": 99,
+        "synonyms": [
+          "pack quantity",
+          "per box",
+          "కార్టన్ యూనిట్లు",
+          "प्रति कार्टन"
+        ]
+      },
+      "gst_rate_pct": {
+        "filter_order": 99,
+        "synonyms": [
+          "GST",
+          "tax rate",
+          "జిఎస్టి",
+          "जीएसटी"
+        ]
+      },
+      "availability": {
+        "filter_order": 99,
+        "synonyms": [
+          "stock",
+          "lead time",
+          "availability",
+          "లభ్యత",
+          "उपलब्धता"
+        ]
+      },
+      "minimum_order_quantity": {
+        "filter_order": 99,
+        "synonyms": [
+          "MOQ",
+          "minimum order",
+          "కనీస ఆర్డర్",
+          "न्यूनतम ऑर्डर"
+        ]
+      },
+      "warranty_months": {
+        "filter_widget": "range",
+        "filter_order": 11,
+        "synonyms": [
+          "warranty",
+          "guarantee",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      },
+      "warranty_coverage": {
+        "filter_order": 99,
+        "synonyms": [
+          "what is covered",
+          "coverage",
+          "వారంటీ కవరేజ్",
+          "वारंटी कवरेज"
+        ]
+      },
+      "refill_service_note": {
+        "filter_order": 99,
+        "synonyms": [
+          "refill service",
+          "AMC",
+          "after sales",
+          "రీఫిల్ సేవ",
+          "रिफिल सेवा"
+        ]
+      }
+    },
+    "solar-panels": {
+      "rated_power_wp": {
+        "filter_widget": "range",
+        "filter_order": 1,
+        "synonyms": [
+          "wattage",
+          "watt peak",
+          "panel watts",
+          "Pmax",
+          "వాట్",
+          "वाट"
+        ]
+      },
+      "module_efficiency_pct": {
+        "filter_widget": "range",
+        "filter_order": 3,
+        "synonyms": [
+          "efficiency",
+          "conversion efficiency",
+          "సామర్థ్యం",
+          "दक्षता"
+        ]
+      },
+      "cell_technology": {
+        "filter_widget": "chips",
+        "filter_order": 2,
+        "enum_values": [
+          "Mono PERC",
+          "N-type TOPCon",
+          "HJT",
+          "IBC",
+          "Polycrystalline"
+        ],
+        "synonyms": [
+          "mono perc",
+          "topcon",
+          "n type",
+          "cell type",
+          "సెల్ టెక్నాలజీ",
+          "सेल तकनीक"
+        ]
+      },
+      "bifacial": {
+        "filter_widget": "toggle",
+        "filter_order": 4,
+        "synonyms": [
+          "bifacial module",
+          "glass to glass",
+          "double glass",
+          "బైఫేషియల్",
+          "बाइफेशियल"
+        ]
+      },
+      "model_number": {
+        "synonyms": [
+          "model no",
+          "module code",
+          "part number",
+          "మోడల్ నంబర్",
+          "मॉडल नंबर"
+        ]
+      },
+      "number_of_cells": {
+        "filter_widget": "range",
+        "filter_order": 6,
+        "synonyms": [
+          "cell count",
+          "144 cells",
+          "132 cells",
+          "సెల్స్ సంఖ్య",
+          "सेल संख्या"
+        ]
+      },
+      "power_tolerance": {
+        "synonyms": [
+          "tolerance",
+          "positive tolerance",
+          "0/+5W",
+          "టాలరెన్స్",
+          "टॉलरेंस"
+        ]
+      },
+      "voc_v": {
+        "synonyms": [
+          "Voc",
+          "open circuit voltage",
+          "ఓపెన్ సర్క్యూట్ వోల్టేజ్",
+          "ओपन सर्किट वोल्टेज"
+        ]
+      },
+      "isc_a": {
+        "synonyms": [
+          "Isc",
+          "short circuit current",
+          "షార్ట్ సర్క్యూట్ కరెంట్",
+          "शॉर्ट सर्किट करंट"
+        ]
+      },
+      "vmp_v": {
+        "synonyms": [
+          "Vmp",
+          "Vmpp",
+          "operating voltage",
+          "వోల్టేజ్",
+          "वोल्टेज"
+        ]
+      },
+      "imp_a": {
+        "synonyms": [
+          "Imp",
+          "Impp",
+          "operating current",
+          "కరెంట్",
+          "करंट"
+        ]
+      },
+      "fill_factor": {
+        "filter_widget": "range"
+      },
+      "max_system_voltage_v": {
+        "synonyms": [
+          "system voltage",
+          "1500V",
+          "DC voltage",
+          "సిస్టమ్ వోల్టేజ్",
+          "सिस्टम वोल्टेज"
+        ]
+      },
+      "max_series_fuse_a": {
+        "synonyms": [
+          "fuse rating",
+          "series fuse",
+          "ఫ్యూజ్",
+          "फ्यूज"
+        ]
+      },
+      "junction_box_diode_count": {
+        "synonyms": [
+          "bypass diode",
+          "diodes",
+          "junction box diodes",
+          "డయోడ్",
+          "डायोड"
+        ]
+      },
+      "connector_type": {
+        "synonyms": [
+          "MC4",
+          "connector",
+          "plug",
+          "కనెక్టర్",
+          "कनेक्टर"
+        ]
+      },
+      "cable_cross_section_mm2": {
+        "synonyms": [
+          "cable size",
+          "4 sq mm",
+          "wire gauge",
+          "కేబుల్ సైజు",
+          "केबल साइज"
+        ]
+      },
+      "cable_length_mm": {
+        "synonyms": [
+          "cable length",
+          "lead length",
+          "కేబుల్ పొడవు",
+          "केबल लंबाई"
+        ]
+      },
+      "temp_coefficient_pmax": {
+        "synonyms": [
+          "temp coefficient",
+          "power temperature coefficient",
+          "ఉష్ణోగ్రత గుణకం",
+          "तापमान गुणांक"
+        ]
+      },
+      "temp_coefficient_voc": {
+        "synonyms": [
+          "voc coefficient",
+          "voltage temperature coefficient",
+          "वोल्टेज तापमान गुणांक"
+        ]
+      },
+      "noct_c": {
+        "synonyms": [
+          "NOCT",
+          "NMOT",
+          "nominal operating cell temperature",
+          "एनओसीटी"
+        ]
+      },
+      "operating_temperature_range": {
+        "synonyms": [
+          "working temperature",
+          "ambient range",
+          "ఉష్ణోగ్రత పరిధి",
+          "तापमान सीमा"
+        ]
+      },
+      "max_snow_load_pa": {
+        "synonyms": [
+          "front load",
+          "snow load",
+          "static load",
+          "మంచు లోడ్",
+          "स्नो लोड"
+        ]
+      },
+      "max_wind_load_pa": {
+        "synonyms": [
+          "wind load",
+          "rear load",
+          "గాలి లోడ్",
+          "विंड लोड"
+        ]
+      },
+      "hail_impact_resistance": {
+        "synonyms": [
+          "hail test",
+          "impact resistance",
+          "వడగళ్ళ నిరోధకత",
+          "ओला प्रतिरोध"
+        ]
+      },
+      "salt_mist_corrosion_class": {
+        "synonyms": [
+          "salt mist",
+          "IEC 61701",
+          "coastal",
+          "ఉప్పు తుప్పు",
+          "नमक धुंध"
+        ]
+      },
+      "pid_resistance": {
+        "synonyms": [
+          "PID free",
+          "potential induced degradation",
+          "IEC 62804",
+          "पीआईडी"
+        ]
+      },
+      "annual_degradation_pct": {
+        "synonyms": [
+          "degradation",
+          "annual loss",
+          "0.55%",
+          "క్షీణత",
+          "गिरावट"
+        ]
+      },
+      "power_output_at_end_pct": {
+        "synonyms": [
+          "end of life power",
+          "84.8%",
+          "power retention",
+          "अंतिम पावर"
+        ]
+      },
+      "frame_material": {
+        "synonyms": [
+          "aluminium frame",
+          "anodised frame",
+          "ఫ్రేమ్",
+          "फ्रेम"
+        ]
+      },
+      "front_glass_type": {
+        "synonyms": [
+          "tempered glass",
+          "AR coated glass",
+          "toughened glass",
+          "గ్లాస్",
+          "ग्लास"
+        ]
+      },
+      "front_glass_thickness_mm": {
+        "synonyms": [
+          "glass thickness",
+          "3.2 mm glass",
+          "గ్లాస్ మందం",
+          "कांच की मोटाई"
+        ]
+      },
+      "backsheet_material": {
+        "synonyms": [
+          "backsheet",
+          "rear glass",
+          "back cover",
+          "బ్యాక్ షీట్",
+          "बैक शीट"
+        ]
+      },
+      "encapsulant_material": {
+        "synonyms": [
+          "EVA",
+          "POE",
+          "encapsulation film",
+          "ఎన్‌క్యాప్సులెంట్",
+          "एनकैप्सुलेंट"
+        ]
+      },
+      "cell_interconnection": {
+        "synonyms": [
+          "half cut",
+          "half-cut cells",
+          "ribbon soldering",
+          "సెల్ కటింగ్",
+          "हाफ कट सेल"
+        ]
+      },
+      "busbar_count": {
+        "synonyms": [
+          "busbar",
+          "9BB",
+          "16BB",
+          "multi busbar",
+          "బస్‌బార్",
+          "बसबार"
+        ]
+      },
+      "dim_w_mm": {
+        "synonyms": [
+          "width",
+          "panel width",
+          "వెడల్పు",
+          "चौड़ाई"
+        ]
+      },
+      "dim_h_mm": {
+        "synonyms": [
+          "length",
+          "panel length",
+          "height",
+          "పొడవు",
+          "लंबाई"
+        ]
+      },
+      "dim_d_mm": {
+        "synonyms": [
+          "thickness",
+          "frame depth",
+          "మందం",
+          "मोटाई"
+        ]
+      },
+      "net_weight_kg": {
+        "synonyms": [
+          "weight",
+          "panel weight",
+          "బరువు",
+          "वजन"
+        ]
+      },
+      "application_segment": {
+        "filter_widget": "checkbox",
+        "filter_order": 7,
+        "enum_values": [
+          "Residential rooftop",
+          "Commercial & industrial rooftop",
+          "Utility-scale ground mount",
+          "Solar water pump",
+          "Off-grid / hybrid"
+        ],
+        "synonyms": [
+          "use case",
+          "rooftop",
+          "ground mount",
+          "అనువర్తనం",
+          "उपयोग"
+        ]
+      },
+      "suitable_for_rooftop": {
+        "synonyms": [
+          "rooftop",
+          "terrace",
+          "home solar",
+          "పైకప్పు",
+          "छत"
+        ]
+      },
+      "is_standard": {
+        "synonyms": [
+          "IS 14286",
+          "BIS standard",
+          "IEC 61215",
+          "ప్రమాణం",
+          "मानक"
+        ]
+      },
+      "iec_61215_certified": {
+        "synonyms": [
+          "IEC 61215",
+          "design qualification",
+          "type approval",
+          "आईईसी 61215"
+        ]
+      },
+      "iec_61730_certified": {
+        "synonyms": [
+          "IEC 61730",
+          "safety qualification",
+          "आईईसी 61730"
+        ]
+      },
+      "almm_listed": {
+        "filter_widget": "toggle",
+        "filter_order": 5,
+        "synonyms": [
+          "ALMM",
+          "approved list",
+          "MNRE",
+          "subsidy",
+          "PM Surya Ghar",
+          "ఏఎల్ఎంఎం",
+          "एएलएमएम"
+        ]
+      },
+      "junction_box_ip_rating": {
+        "filter_widget": "chips",
+        "filter_order": 10,
+        "enum_values": [
+          "IP65",
+          "IP67",
+          "IP68"
+        ],
+        "synonyms": [
+          "IP68",
+          "IP67",
+          "junction box",
+          "ingress protection",
+          "जंक्शन बॉक्स"
+        ]
+      },
+      "fire_safety_class": {
+        "synonyms": [
+          "fire class",
+          "fire rating",
+          "Class C",
+          "अग्नि श्रेणी"
+        ]
+      },
+      "el_inspection": {
+        "synonyms": [
+          "EL test",
+          "electroluminescence",
+          "micro crack test",
+          "ईएल टेस्ट"
+        ]
+      },
+      "frame_colour": {
+        "enum_values": [
+          "Silver anodised",
+          "Black anodised",
+          "Frameless"
+        ],
+        "synonyms": [
+          "frame colour",
+          "silver frame",
+          "black frame",
+          "ఫ్రేమ్ రంగు",
+          "फ्रेम रंग"
+        ]
+      },
+      "backsheet_colour": {
+        "enum_values": [
+          "White",
+          "Black",
+          "Transparent"
+        ],
+        "synonyms": [
+          "backsheet colour",
+          "white backsheet",
+          "बैक शीट रंग"
+        ]
+      },
+      "modules_per_pallet": {
+        "synonyms": [
+          "pallet quantity",
+          "packing",
+          "per pallet",
+          "ప్యాలెట్",
+          "पैलेट"
+        ]
+      },
+      "minimum_order_quantity": {
+        "synonyms": [
+          "MOQ",
+          "minimum quantity",
+          "కనీస ఆర్డర్",
+          "न्यूनतम ऑर्डर"
+        ]
+      },
+      "product_warranty_years": {
+        "filter_widget": "range",
+        "filter_order": 8,
+        "synonyms": [
+          "product warranty",
+          "material warranty",
+          "12 years",
+          "ఉత్పత్తి వారంటీ",
+          "उत्पाद वारंटी"
+        ]
+      },
+      "performance_warranty_years": {
+        "filter_widget": "range",
+        "filter_order": 9,
+        "synonyms": [
+          "performance warranty",
+          "power warranty",
+          "25 years",
+          "30 years",
+          "పనితీరు వారంటీ",
+          "प्रदर्शन वारंटी"
+        ]
+      },
+      "warranty_months": {
+        "synonyms": [
+          "warranty",
+          "guarantee",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      }
+    },
+    "cctv": {
+      "resolution_mp": {
+        "filter_widget": "range",
+        "filter_order": 3,
+        "synonyms": [
+          "megapixel",
+          "MP",
+          "2MP",
+          "4MP",
+          "picture quality",
+          "రిజల్యూషన్",
+          "मेगापिक्सल"
+        ]
+      },
+      "form_factor": {
+        "filter_widget": "chips",
+        "filter_order": 2,
+        "enum_values": [
+          "Dome",
+          "Bullet",
+          "Turret (eyeball)",
+          "Cube / indoor",
+          "PTZ",
+          "Fisheye"
+        ],
+        "synonyms": [
+          "shape",
+          "dome",
+          "bullet",
+          "turret",
+          "body type",
+          "ఆకారం",
+          "डोम",
+          "बुलेट"
+        ]
+      },
+      "model_number": {
+        "filter_order": 99,
+        "synonyms": [
+          "model no",
+          "model code",
+          "part number",
+          "మోడల్ నంబర్",
+          "मॉडल नंबर"
+        ]
+      },
+      "signal_technology": {
+        "filter_widget": "checkbox",
+        "filter_order": 4,
+        "enum_values": [
+          "IP (network)",
+          "HDTVI",
+          "HDCVI",
+          "AHD",
+          "Analogue CVBS",
+          "Wi-Fi",
+          "Multi-standard (TVI/AHD/CVI/CVBS)"
+        ],
+        "synonyms": [
+          "IP or analog",
+          "HDTVI",
+          "HDCVI",
+          "network camera",
+          "సిగ్నల్ రకం",
+          "सिग्नल प्रकार"
+        ]
+      },
+      "audio_support": {
+        "filter_widget": "chips",
+        "filter_order": 6,
+        "enum_values": [
+          "None",
+          "Built-in microphone",
+          "Microphone + speaker (two-way talk)",
+          "Audio via separate input"
+        ],
+        "synonyms": [
+          "mic",
+          "sound recording",
+          "two way talk",
+          "ఆడియో",
+          "ऑडियो",
+          "माइक"
+        ]
+      },
+      "night_vision_type": {
+        "filter_widget": "chips",
+        "filter_order": 5,
+        "enum_values": [
+          "Infrared (black & white)",
+          "Full-colour (white light)",
+          "Smart dual-light (IR + white light)",
+          "None"
+        ],
+        "synonyms": [
+          "night vision",
+          "colour night vision",
+          "ColorVu",
+          "Full Color",
+          "IR",
+          "రాత్రి దృష్టి",
+          "नाइट विजन"
+        ]
+      },
+      "image_sensor": {
+        "filter_order": 99,
+        "synonyms": [
+          "sensor",
+          "CMOS",
+          "progressive scan",
+          "సెన్సార్",
+          "सेंसर"
+        ]
+      },
+      "max_video_resolution": {
+        "filter_order": 99,
+        "synonyms": [
+          "pixels",
+          "1080p",
+          "1440p",
+          "image size",
+          "వీడియో రిజల్యూషన్",
+          "वीडियो रिज़ॉल्यूशन"
+        ]
+      },
+      "max_frame_rate_fps": {
+        "filter_order": 99,
+        "synonyms": [
+          "fps",
+          "frame rate",
+          "25fps",
+          "ఫ్రేమ్ రేట్",
+          "फ्रेम रेट"
+        ]
+      },
+      "video_compression": {
+        "filter_widget": "chips",
+        "filter_order": 9,
+        "enum_values": [
+          "H.265+",
+          "H.265",
+          "H.264+",
+          "H.264",
+          "MJPEG",
+          "Analogue (no compression)"
+        ],
+        "synonyms": [
+          "codec",
+          "H.265",
+          "compression",
+          "storage saving",
+          "కోడెక్",
+          "कोडेक"
+        ]
+      },
+      "min_illumination_lux": {
+        "filter_order": 99,
+        "synonyms": [
+          "low light",
+          "lux",
+          "sensitivity",
+          "కనిష్ట వెలుతురు",
+          "न्यूनतम रोशनी"
+        ]
+      },
+      "ir_range_m": {
+        "filter_widget": "range",
+        "filter_order": 8,
+        "synonyms": [
+          "IR distance",
+          "night range",
+          "20 metre",
+          "30 metre",
+          "ఐఆర్ పరిధి",
+          "आईआर रेंज"
+        ]
+      },
+      "lens_focal_length_mm": {
+        "filter_widget": "range",
+        "filter_order": 7,
+        "synonyms": [
+          "lens",
+          "2.8mm",
+          "3.6mm",
+          "focal length",
+          "లెన్స్",
+          "लेंस"
+        ]
+      },
+      "lens_type": {
+        "filter_order": 99,
+        "enum_values": [
+          "Fixed focal",
+          "Varifocal (manual)",
+          "Motorised varifocal",
+          "Zoom"
+        ],
+        "synonyms": [
+          "fixed lens",
+          "varifocal",
+          "zoom lens",
+          "లెన్స్ రకం",
+          "लेंस प्रकार"
+        ]
+      },
+      "horizontal_field_of_view_deg": {
+        "filter_order": 99,
+        "synonyms": [
+          "viewing angle",
+          "FOV",
+          "coverage angle",
+          "వీక్షణ కోణం",
+          "व्यू एंगल"
+        ]
+      },
+      "adjustment_range": {
+        "filter_order": 99,
+        "synonyms": [
+          "angle adjustment",
+          "pan tilt",
+          "3-axis",
+          "కోణం సర్దుబాటు",
+          "एंगल एडजस्टमेंट"
+        ]
+      },
+      "ip_rating": {
+        "filter_widget": "chips",
+        "filter_order": 10,
+        "enum_values": [
+          "IP54",
+          "IP65",
+          "IP66",
+          "IP67",
+          "IP68",
+          "Not rated (indoor)"
+        ],
+        "synonyms": [
+          "IP66",
+          "IP67",
+          "waterproof",
+          "rain proof",
+          "ఐపీ రేటింగ్",
+          "आईपी रेटिंग"
+        ]
+      },
+      "ik_rating": {
+        "filter_order": 99,
+        "synonyms": [
+          "IK10",
+          "impact rating",
+          "vandal proof",
+          "IK రేటింగ్",
+          "आईके रेटिंग"
+        ]
+      },
+      "vandal_resistant": {
+        "filter_order": 99,
+        "synonyms": [
+          "anti vandal",
+          "tamper proof",
+          "వాండల్ ప్రూఫ్",
+          "वैंडल प्रूफ"
+        ]
+      },
+      "operating_temperature_min_c": {
+        "filter_order": 99,
+        "synonyms": [
+          "min temperature",
+          "cold",
+          "కనిష్ట ఉష్ణోగ్రత",
+          "न्यूनतम तापमान"
+        ]
+      },
+      "operating_temperature_max_c": {
+        "filter_order": 99,
+        "synonyms": [
+          "max temperature",
+          "summer heat",
+          "గరిష్ట ఉష్ణోగ్రత",
+          "अधिकतम तापमान"
+        ]
+      },
+      "operating_humidity_max_pct": {
+        "filter_order": 99,
+        "synonyms": [
+          "humidity",
+          "moisture",
+          "తేమ",
+          "आर्द्रता"
+        ]
+      },
+      "power_supply_type": {
+        "filter_widget": "chips",
+        "filter_order": 11,
+        "enum_values": [
+          "PoE (802.3af)",
+          "12 V DC",
+          "PoE + 12 V DC",
+          "24 V AC",
+          "5 V DC adapter"
+        ],
+        "synonyms": [
+          "PoE",
+          "12V DC",
+          "power over ethernet",
+          "adapter",
+          "విద్యుత్ సరఫరా",
+          "पावर सप्लाई"
+        ]
+      },
+      "power_consumption_w": {
+        "filter_order": 99,
+        "synonyms": [
+          "watts",
+          "power draw",
+          "consumption",
+          "విద్యుత్ వినియోగం",
+          "बिजली खपत"
+        ]
+      },
+      "connector_type": {
+        "filter_order": 99,
+        "synonyms": [
+          "RJ45",
+          "BNC",
+          "connector",
+          "pigtail",
+          "కనెక్టర్",
+          "कनेक्टर"
+        ]
+      },
+      "housing_material": {
+        "filter_order": 99,
+        "enum_values": [
+          "Metal (aluminium alloy)",
+          "Plastic (ABS / PC)",
+          "Metal + plastic",
+          "Stainless steel"
+        ],
+        "synonyms": [
+          "body material",
+          "metal body",
+          "plastic body",
+          "బాడీ మెటీరియల్",
+          "बॉडी मटेरियल"
+        ]
+      },
+      "dome_cover_material": {
+        "filter_order": 99,
+        "synonyms": [
+          "bubble",
+          "lens cover",
+          "polycarbonate dome",
+          "డోమ్ కవర్",
+          "डोम कवर"
+        ]
+      },
+      "lens_assembly_process": {
+        "filter_order": 99,
+        "synonyms": [
+          "assembly",
+          "dust free assembly",
+          "అసెంబ్లీ",
+          "असेंबली"
+        ]
+      },
+      "weatherproof_sealing_process": {
+        "filter_order": 99,
+        "synonyms": [
+          "potting",
+          "gasket sealing",
+          "waterproofing",
+          "సీలింగ్",
+          "सीलिंग"
+        ]
+      },
+      "dim_w_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "width",
+          "diameter",
+          "వెడల్పు",
+          "चौड़ाई"
+        ]
+      },
+      "dim_h_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "height",
+          "ఎత్తు",
+          "ऊंचाई"
+        ]
+      },
+      "dim_d_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "depth",
+          "length",
+          "లోతు",
+          "गहराई"
+        ]
+      },
+      "net_weight_kg": {
+        "filter_order": 99,
+        "synonyms": [
+          "weight",
+          "బరువు",
+          "वजन"
+        ]
+      },
+      "indoor_use": {
+        "filter_order": 99,
+        "synonyms": [
+          "indoor",
+          "inside",
+          "లోపల",
+          "इनडोर"
+        ]
+      },
+      "outdoor_use": {
+        "filter_order": 99,
+        "synonyms": [
+          "outdoor",
+          "outside",
+          "weatherproof",
+          "బయట",
+          "आउटडोर"
+        ]
+      },
+      "typical_application": {
+        "filter_order": 99,
+        "synonyms": [
+          "use case",
+          "where to use",
+          "home shop office",
+          "ఉపయోగం",
+          "उपयोग"
+        ]
+      },
+      "is_standard": {
+        "filter_order": 99,
+        "synonyms": [
+          "IS standard",
+          "BIS standard",
+          "IS 13252",
+          "ప్రమాణం",
+          "मानक"
+        ]
+      },
+      "onvif_conformance": {
+        "filter_order": 99,
+        "synonyms": [
+          "ONVIF",
+          "profile S",
+          "profile T",
+          "third party NVR",
+          "ఓఎన్‌వీఐఎఫ్",
+          "ओएनवीआईएफ"
+        ]
+      },
+      "rohs_compliant": {
+        "filter_order": 99,
+        "synonyms": [
+          "RoHS",
+          "lead free",
+          "రోహెచ్‌ఎస్",
+          "आरओएचएस"
+        ]
+      },
+      "burn_in_test": {
+        "filter_order": 99,
+        "synonyms": [
+          "ageing test",
+          "burn in",
+          "బర్న్ ఇన్ టెస్ట్",
+          "बर्न इन टेस्ट"
+        ]
+      },
+      "ingress_protection_test": {
+        "filter_order": 99,
+        "synonyms": [
+          "water test",
+          "IP test",
+          "spray test",
+          "ఐపీ పరీక్ష",
+          "आईपी परीक्षण"
+        ]
+      },
+      "body_colour": {
+        "filter_order": 99,
+        "enum_values": [
+          "White",
+          "Ivory / off-white",
+          "Grey",
+          "Black",
+          "White + grey"
+        ],
+        "synonyms": [
+          "colour",
+          "color",
+          "white",
+          "రంగు",
+          "रंग"
+        ]
+      },
+      "surface_finish": {
+        "filter_order": 99,
+        "synonyms": [
+          "finish",
+          "matte",
+          "powder coated",
+          "ఫినిష్",
+          "फिनिश"
+        ]
+      },
+      "mounting_type": {
+        "filter_order": 99,
+        "enum_values": [
+          "Ceiling",
+          "Wall",
+          "Ceiling or wall",
+          "Pole",
+          "Corner",
+          "Table / shelf"
+        ],
+        "synonyms": [
+          "fitting",
+          "ceiling mount",
+          "wall mount",
+          "అమరిక",
+          "माउंटिंग"
+        ]
+      },
+      "recommended_installation_height_m": {
+        "filter_order": 99,
+        "synonyms": [
+          "mounting height",
+          "fixing height",
+          "అమర్చే ఎత్తు",
+          "स्थापना ऊंचाई"
+        ]
+      },
+      "box_contents": {
+        "filter_order": 99,
+        "synonyms": [
+          "accessories",
+          "included items",
+          "box contents",
+          "బాక్స్‌లో ఏమి ఉంది",
+          "बॉक्स में क्या है"
+        ]
+      },
+      "packaging_type": {
+        "filter_order": 99,
+        "synonyms": [
+          "carton",
+          "packing",
+          "ప్యాకింగ్",
+          "पैकिंग"
+        ]
+      },
+      "minimum_order_quantity": {
+        "filter_order": 99,
+        "synonyms": [
+          "MOQ",
+          "minimum quantity",
+          "కనీస ఆర్డర్",
+          "न्यूनतम ऑर्डर"
+        ]
+      },
+      "warranty_months": {
+        "filter_order": 99,
+        "synonyms": [
+          "warranty",
+          "guarantee",
+          "2 year",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      },
+      "warranty_type": {
+        "filter_order": 99,
+        "synonyms": [
+          "carry in",
+          "replacement warranty",
+          "వారంటీ రకం",
+          "वारंटी प्रकार"
+        ]
+      },
+      "warranty_coverage": {
+        "filter_order": 99,
+        "synonyms": [
+          "what is covered",
+          "warranty terms",
+          "వారంటీ పరిధి",
+          "वारंटी कवरेज"
+        ]
+      }
+    },
+    "tiles": {
+      "body_type": {
+        "filter_widget": "checkbox",
+        "filter_order": 10,
+        "enum_values": [
+          "Vitrified (porcelain) body",
+          "Double charge body",
+          "Full body / homogeneous",
+          "Ceramic (earthenware) body"
+        ],
+        "synonyms": [
+          "body",
+          "double charge",
+          "full body",
+          "బాడీ",
+          "बॉडी"
+        ]
+      },
+      "series_name": {
+        "filter_order": 99,
+        "synonyms": [
+          "series",
+          "collection",
+          "range",
+          "సిరీస్",
+          "सीरीज़"
+        ]
+      },
+      "design_name": {
+        "filter_order": 99,
+        "synonyms": [
+          "design name",
+          "shade name",
+          "pattern",
+          "డిజైన్ పేరు",
+          "डिज़ाइन नाम"
+        ]
+      },
+      "iso_13006_group": {
+        "filter_order": 99,
+        "enum_values": [
+          "BIa",
+          "BIb",
+          "BIIa",
+          "BIIb",
+          "BIII",
+          "AIa"
+        ],
+        "synonyms": [
+          "BIa",
+          "group BIa",
+          "tile class",
+          "గ్రూప్",
+          "ग्रुप"
+        ]
+      },
+      "rectified": {
+        "filter_widget": "toggle",
+        "filter_order": 11,
+        "synonyms": [
+          "rectified",
+          "square edge",
+          "sharp edge",
+          "రెక్టిఫైడ్",
+          "रेक्टिफाइड"
+        ]
+      },
+      "dim_w_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "width",
+          "వెడల్పు",
+          "चौड़ाई"
+        ]
+      },
+      "dim_h_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "length",
+          "పొడవు",
+          "लंबाई"
+        ]
+      },
+      "dim_d_mm": {
+        "filter_widget": "range",
+        "filter_order": 5,
+        "synonyms": [
+          "thickness",
+          "depth",
+          "మందం",
+          "मोटाई"
+        ]
+      },
+      "dimensional_tolerance_pct": {
+        "filter_order": 99,
+        "synonyms": [
+          "tolerance",
+          "size deviation",
+          "టాలరెన్స్",
+          "सहनशीलता"
+        ]
+      },
+      "net_weight_kg": {
+        "filter_order": 99,
+        "synonyms": [
+          "box weight",
+          "weight",
+          "బరువు",
+          "वज़न"
+        ]
+      },
+      "pei_abrasion_class": {
+        "filter_widget": "chips",
+        "filter_order": 8,
+        "enum_values": [
+          "PEI I",
+          "PEI II",
+          "PEI III",
+          "PEI IV",
+          "PEI V"
+        ],
+        "synonyms": [
+          "PEI rating",
+          "abrasion",
+          "wear class",
+          "PEI క్లాస్",
+          "PEI क्लास"
+        ]
+      },
+      "slip_resistance_class": {
+        "filter_widget": "chips",
+        "filter_order": 9,
+        "enum_values": [
+          "R9",
+          "R10",
+          "R11",
+          "R12",
+          "R13"
+        ],
+        "synonyms": [
+          "anti skid",
+          "slip resistance",
+          "R11",
+          "జారుడు నిరోధకత",
+          "फिसलन प्रतिरोध"
+        ]
+      },
+      "stain_resistance_class": {
+        "filter_order": 99,
+        "enum_values": [
+          "Class 1",
+          "Class 2",
+          "Class 3",
+          "Class 4",
+          "Class 5"
+        ],
+        "synonyms": [
+          "stain proof",
+          "stain resistance",
+          "మరక నిరోధకత",
+          "दाग प्रतिरोध"
+        ]
+      },
+      "chemical_resistance_class": {
+        "filter_order": 99,
+        "synonyms": [
+          "acid resistance",
+          "alkali resistance",
+          "రసాయన నిరోధకత",
+          "रासायनिक प्रतिरोध"
+        ]
+      },
+      "antibacterial_surface": {
+        "filter_order": 99,
+        "synonyms": [
+          "antibacterial",
+          "germ free",
+          "hygiene",
+          "బ్యాక్టీరియా నిరోధకత",
+          "जीवाणुरोधी"
+        ]
+      },
+      "modulus_of_rupture_mpa": {
+        "filter_order": 99,
+        "synonyms": [
+          "bending strength",
+          "MOR",
+          "మాడ్యులస్",
+          "मॉड्यूलस"
+        ]
+      },
+      "breaking_strength_n": {
+        "filter_order": 99,
+        "synonyms": [
+          "breaking load",
+          "strength",
+          "బ్రేకింగ్ స్ట్రెంగ్త్",
+          "ब्रेकिंग स्ट्रेंथ"
+        ]
+      },
+      "mohs_hardness": {
+        "filter_order": 99,
+        "synonyms": [
+          "hardness",
+          "scratch resistance",
+          "మోహ్స్ కాఠిన్యం",
+          "मोह्स कठोरता"
+        ]
+      },
+      "water_absorption_pct": {
+        "filter_widget": "range",
+        "filter_order": 7,
+        "synonyms": [
+          "water absorption",
+          "porosity",
+          "నీటి శోషణ",
+          "जल अवशोषण"
+        ]
+      },
+      "frost_resistance": {
+        "filter_order": 99,
+        "synonyms": [
+          "frost proof",
+          "freeze thaw",
+          "మంచు నిరోధకత",
+          "पाला प्रतिरोध"
+        ]
+      },
+      "thermal_shock_resistance": {
+        "filter_order": 99,
+        "synonyms": [
+          "heat shock",
+          "temperature shock",
+          "ఉష్ణ షాక్",
+          "थर्मल शॉक"
+        ]
+      },
+      "body_composition": {
+        "filter_order": 99,
+        "synonyms": [
+          "raw material",
+          "clay body",
+          "మెటీరియల్",
+          "सामग्री"
+        ]
+      },
+      "manufacturing_process": {
+        "filter_order": 99,
+        "enum_values": [
+          "Dry pressed (ISO 13006 Group B)",
+          "Extruded (ISO 13006 Group A)"
+        ],
+        "synonyms": [
+          "pressing",
+          "dry pressed",
+          "తయారీ విధానం",
+          "निर्माण प्रक्रिया"
+        ]
+      },
+      "printing_technology": {
+        "filter_order": 99,
+        "synonyms": [
+          "digital printing",
+          "inkjet",
+          "ప్రింటింగ్",
+          "प्रिंटिंग"
+        ]
+      },
+      "firing_temperature_c": {
+        "filter_order": 99,
+        "synonyms": [
+          "kiln temperature",
+          "firing",
+          "కాల్చే ఉష్ణోగ్రత",
+          "फायरिंग तापमान"
+        ]
+      },
+      "usage_area": {
+        "filter_widget": "checkbox",
+        "filter_order": 4,
+        "enum_values": [
+          "Floor",
+          "Wall",
+          "Floor and wall",
+          "Outdoor / open area",
+          "Facade / elevation"
+        ],
+        "synonyms": [
+          "floor tile",
+          "wall tile",
+          "where to use",
+          "ఉపయోగం",
+          "उपयोग क्षेत्र"
+        ]
+      },
+      "recommended_rooms": {
+        "filter_order": 99,
+        "synonyms": [
+          "living room",
+          "bedroom",
+          "kitchen",
+          "గదులు",
+          "कमरे"
+        ]
+      },
+      "residential_suitable": {
+        "filter_order": 99,
+        "synonyms": [
+          "residential",
+          "home use",
+          "ఇంటి ఉపయోగం",
+          "घरेलू उपयोग"
+        ]
+      },
+      "commercial_suitable": {
+        "filter_order": 99,
+        "synonyms": [
+          "commercial",
+          "showroom",
+          "office",
+          "వాణిజ్య",
+          "व्यावसायिक"
+        ]
+      },
+      "outdoor_suitable": {
+        "filter_order": 99,
+        "synonyms": [
+          "outdoor",
+          "balcony",
+          "parking",
+          "బయట",
+          "बाहरी"
+        ]
+      },
+      "is_standard": {
+        "filter_order": 99,
+        "synonyms": [
+          "IS 15622",
+          "BIS standard",
+          "ఐఎస్ ప్రమాణం",
+          "आईएस मानक"
+        ]
+      },
+      "iso_standard": {
+        "filter_order": 99,
+        "synonyms": [
+          "ISO 13006",
+          "ISO 10545",
+          "ఐఎస్ఓ",
+          "आईएसओ"
+        ]
+      },
+      "bis_isi_marked": {
+        "filter_order": 99,
+        "synonyms": [
+          "ISI mark",
+          "BIS certified",
+          "ఐఎస్ఐ మార్క్",
+          "आईएसआई मार्क"
+        ]
+      },
+      "green_certification": {
+        "filter_order": 99,
+        "synonyms": [
+          "GreenPro",
+          "IGBC",
+          "eco friendly",
+          "గ్రీన్ సర్టిఫికేషన్",
+          "ग्रीन प्रमाणन"
+        ]
+      },
+      "quality_grade": {
+        "filter_order": 99,
+        "enum_values": [
+          "Premium / first quality",
+          "Standard",
+          "Commercial"
+        ],
+        "synonyms": [
+          "first quality",
+          "grade",
+          "క్వాలిటీ గ్రేడ్",
+          "क्वालिटी ग्रेड"
+        ]
+      },
+      "test_standard_series": {
+        "filter_order": 99,
+        "synonyms": [
+          "ISO 10545",
+          "test method",
+          "పరీక్ష ప్రమాణం",
+          "परीक्षण मानक"
+        ]
+      },
+      "surface_finish": {
+        "filter_widget": "checkbox",
+        "filter_order": 3,
+        "enum_values": [
+          "Glossy",
+          "Matt",
+          "Satin",
+          "Polished",
+          "Carving / textured",
+          "Rustic",
+          "Sugar",
+          "Lappato / semi-polished"
+        ],
+        "synonyms": [
+          "finish",
+          "glossy",
+          "matt",
+          "ఫినిష్",
+          "फिनिश"
+        ]
+      },
+      "colour_shade": {
+        "filter_order": 99,
+        "synonyms": [
+          "colour",
+          "color",
+          "shade",
+          "రంగు",
+          "रंग"
+        ]
+      },
+      "design_theme": {
+        "filter_widget": "checkbox",
+        "filter_order": 6,
+        "enum_values": [
+          "Marble",
+          "Wood",
+          "Stone",
+          "Concrete / cement",
+          "Solid colour",
+          "Terrazzo",
+          "Geometric / pattern",
+          "Metallic"
+        ],
+        "synonyms": [
+          "look",
+          "marble look",
+          "wooden tile",
+          "డిజైన్",
+          "डिज़ाइन"
+        ]
+      },
+      "shade_variation_class": {
+        "filter_order": 99,
+        "enum_values": [
+          "V1 - uniform",
+          "V2 - slight variation",
+          "V3 - moderate variation",
+          "V4 - substantial variation"
+        ],
+        "synonyms": [
+          "shade variation",
+          "V3",
+          "batch shade",
+          "షేడ్ వ్యత్యాసం",
+          "शेड भिन्नता"
+        ]
+      },
+      "installation_method": {
+        "filter_order": 99,
+        "synonyms": [
+          "fixing",
+          "laying",
+          "installation",
+          "అమర్చే విధానం",
+          "स्थापना विधि"
+        ]
+      },
+      "recommended_adhesive": {
+        "filter_order": 99,
+        "synonyms": [
+          "adhesive",
+          "tile fixing gum",
+          "IS 15477",
+          "అంటుకునే పదార్థం",
+          "एडहेसिव"
+        ]
+      },
+      "joint_width_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "grout joint",
+          "spacer",
+          "joint",
+          "జాయింట్",
+          "जॉइंट"
+        ]
+      },
+      "pieces_per_box": {
+        "filter_order": 99,
+        "synonyms": [
+          "pcs per box",
+          "tiles per box",
+          "బాక్స్‌లో ముక్కలు",
+          "प्रति बॉक्स टाइल"
+        ]
+      },
+      "coverage_per_box_sqm": {
+        "filter_order": 99,
+        "synonyms": [
+          "area per box",
+          "sqm per box",
+          "చదరపు మీటర్",
+          "वर्ग मीटर"
+        ]
+      },
+      "coverage_per_box_sqft": {
+        "filter_order": 99,
+        "synonyms": [
+          "square feet per box",
+          "sqft per box",
+          "చదరపు అడుగులు",
+          "वर्ग फुट"
+        ]
+      },
+      "price_per_sqft": {
+        "filter_widget": "range",
+        "filter_order": 12,
+        "synonyms": [
+          "rate per sqft",
+          "price",
+          "ధర",
+          "कीमत"
+        ]
+      },
+      "price_per_box": {
+        "filter_order": 99,
+        "synonyms": [
+          "box rate",
+          "price per box",
+          "బాక్స్ ధర",
+          "बॉक्स कीमत"
+        ]
+      },
+      "availability": {
+        "filter_order": 99,
+        "synonyms": [
+          "stock",
+          "availability",
+          "అందుబాటు",
+          "उपलब्धता"
+        ]
+      },
+      "warranty_months": {
+        "filter_order": 99,
+        "synonyms": [
+          "warranty",
+          "guarantee",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      },
+      "warranty_coverage": {
+        "filter_order": 99,
+        "synonyms": [
+          "what is covered",
+          "warranty terms",
+          "వారంటీ పరిధి",
+          "वारंटी कवरेज"
+        ]
+      }
+    },
+    "glass": {
+      "glazing_configuration": {
+        "filter_order": 99,
+        "enum_values": [
+          "Monolithic single glazing",
+          "Laminated (two lites + interlayer)",
+          "Double glazed unit (two lites + cavity)",
+          "Triple glazed unit"
+        ],
+        "synonyms": [
+          "build up",
+          "make up",
+          "single or double glazing",
+          "గ్లేజింగ్ నిర్మాణం",
+          "ग्लेज़िंग बनावट"
+        ]
+      },
+      "product_series": {
+        "filter_order": 99,
+        "synonyms": [
+          "range",
+          "series",
+          "product line",
+          "శ్రేణి",
+          "श्रृंखला"
+        ]
+      },
+      "substrate_glass": {
+        "filter_order": 99,
+        "enum_values": [
+          "Clear float",
+          "Extra-clear low-iron float",
+          "Green tinted float",
+          "Grey tinted float",
+          "Bronze tinted float",
+          "Blue tinted float",
+          "Dark blue / dark grey tinted float"
+        ],
+        "synonyms": [
+          "base glass",
+          "substrate",
+          "body tint",
+          "ఆధార గాజు",
+          "बेस ग्लास"
+        ]
+      },
+      "glass_colour": {
+        "filter_widget": "checkbox",
+        "filter_order": 3,
+        "enum_values": [
+          "Clear",
+          "Extra clear",
+          "Green",
+          "Blue",
+          "Grey",
+          "Bronze",
+          "Neutral / silver",
+          "Neutral grey",
+          "Blue-green",
+          "Gold",
+          "Black"
+        ],
+        "synonyms": [
+          "colour",
+          "color",
+          "tint",
+          "shade",
+          "రంగు",
+          "रंग"
+        ]
+      },
+      "visible_light_transmission_pct": {
+        "filter_widget": "range",
+        "filter_order": 5,
+        "synonyms": [
+          "VLT",
+          "light transmission",
+          "daylight",
+          "కాంతి ప్రసారం",
+          "प्रकाश संचरण"
+        ]
+      },
+      "visible_light_reflectance_out_pct": {
+        "filter_order": 99,
+        "synonyms": [
+          "reflectance",
+          "external reflection",
+          "mirror effect",
+          "కాంతి పరావర్తనం",
+          "प्रकाश परावर्तन"
+        ]
+      },
+      "uv_transmission_pct": {
+        "filter_order": 99,
+        "synonyms": [
+          "UV cut",
+          "ultraviolet",
+          "UV blocking",
+          "UV ప్రసారం",
+          "यूवी संचरण"
+        ]
+      },
+      "light_to_solar_gain": {
+        "filter_widget": "range"
+      },
+      "solar_heat_gain_coefficient": {
+        "filter_widget": "range",
+        "filter_order": 6,
+        "synonyms": [
+          "SHGC",
+          "g value",
+          "solar factor",
+          "heat gain",
+          "సౌర ఉష్ణ లాభం",
+          "सौर ताप गुणांक"
+        ]
+      },
+      "shading_coefficient": {
+        "filter_widget": "range"
+      },
+      "u_value_w_m2k": {
+        "filter_widget": "range",
+        "filter_order": 7,
+        "synonyms": [
+          "U value",
+          "thermal transmittance",
+          "insulation",
+          "యూ విలువ",
+          "यू मान"
+        ]
+      },
+      "emissivity": {
+        "filter_order": 99,
+        "synonyms": [
+          "emissivity",
+          "low e value",
+          "ఉద్గార సామర్థ్యం",
+          "उत्सर्जकता"
+        ]
+      },
+      "max_service_temperature_c": {
+        "filter_order": 99,
+        "synonyms": [
+          "service temperature",
+          "heat limit",
+          "గరిష్ఠ ఉష్ణోగ్రత",
+          "अधिकतम तापमान"
+        ]
+      },
+      "thermal_shock_resistance_c": {
+        "filter_order": 99,
+        "synonyms": [
+          "thermal shock",
+          "temperature differential",
+          "ఉష్ణ ఆఘాత నిరోధం",
+          "थर्मल शॉक प्रतिरोध"
+        ]
+      },
+      "sound_reduction_db": {
+        "filter_widget": "range",
+        "filter_order": 8,
+        "synonyms": [
+          "sound insulation",
+          "acoustic",
+          "Rw",
+          "noise reduction",
+          "ధ్వని నిరోధం",
+          "ध्वनि रोधन"
+        ]
+      },
+      "impact_safety_class": {
+        "filter_widget": "checkbox",
+        "filter_order": 10,
+        "enum_values": [
+          "Not a safety glass",
+          "IS 2553 Type A (toughened)",
+          "IS 2553 Type B (laminated)",
+          "EN 12600 Class 1(B)1",
+          "EN 12600 Class 2(B)2",
+          "EN 12600 Class 3(B)3",
+          "ANSI Z97.1 / CPSC 16 CFR 1201 Cat II"
+        ],
+        "synonyms": [
+          "safety class",
+          "impact class",
+          "safety glazing",
+          "భద్రతా తరగతి",
+          "सुरक्षा श्रेणी"
+        ]
+      },
+      "bending_strength_mpa": {
+        "filter_order": 99,
+        "synonyms": [
+          "flexural strength",
+          "strength",
+          "బెండింగ్ బలం",
+          "बेंडिंग शक्ति"
+        ]
+      },
+      "nominal_thickness_mm": {
+        "filter_widget": "range",
+        "filter_order": 2,
+        "synonyms": [
+          "thickness",
+          "mm",
+          "5mm 6mm 8mm 10mm 12mm",
+          "మందం",
+          "मोटाई"
+        ]
+      },
+      "max_pane_width_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "max width",
+          "jumbo size",
+          "గరిష్ఠ వెడల్పు",
+          "अधिकतम चौड़ाई"
+        ]
+      },
+      "max_pane_height_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "max length",
+          "sheet size",
+          "గరిష్ఠ పొడవు",
+          "अधिकतम लंबाई"
+        ]
+      },
+      "weight_per_sqm_kg": {
+        "filter_order": 99,
+        "synonyms": [
+          "weight per sqm",
+          "areal weight",
+          "చదరపు మీటర్ బరువు",
+          "प्रति वर्ग मीटर वजन"
+        ]
+      },
+      "net_weight_kg": {
+        "filter_order": 99,
+        "synonyms": [
+          "weight",
+          "net weight",
+          "బరువు",
+          "वजन"
+        ]
+      },
+      "dim_w_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "width",
+          "వెడల్పు",
+          "चौड़ाई"
+        ]
+      },
+      "dim_h_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "height",
+          "length",
+          "ఎత్తు",
+          "ऊंचाई"
+        ]
+      },
+      "dim_d_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "depth",
+          "overall thickness",
+          "లోతు",
+          "गहराई"
+        ]
+      },
+      "density_kg_m3": {
+        "filter_order": 99,
+        "synonyms": [
+          "density",
+          "సాంద్రత",
+          "घनत्व"
+        ]
+      },
+      "manufacturing_process": {
+        "filter_order": 99,
+        "synonyms": [
+          "how it is made",
+          "float process",
+          "తయారీ ప్రక్రియ",
+          "निर्माण प्रक्रिया"
+        ]
+      },
+      "coating_deposition_method": {
+        "filter_order": 99,
+        "enum_values": [
+          "Not applicable",
+          "Online pyrolytic (CVD) on the float line",
+          "Offline magnetron sputter vacuum deposition",
+          "Vacuum metallising"
+        ],
+        "synonyms": [
+          "sputtering",
+          "pyrolytic",
+          "coating method",
+          "పూత పద్ధతి",
+          "कोटिंग विधि"
+        ]
+      },
+      "application_area": {
+        "filter_widget": "checkbox",
+        "filter_order": 9,
+        "enum_values": [
+          "Windows and residential glazing",
+          "Commercial facades and curtain walls",
+          "Doors, partitions and shopfronts",
+          "Skylights and overhead glazing",
+          "Railings, balustrades and staircases",
+          "Furniture, shelves and table tops",
+          "Shower cubicles and bathrooms"
+        ],
+        "synonyms": [
+          "use",
+          "application",
+          "where to use",
+          "ఉపయోగం",
+          "उपयोग"
+        ]
+      },
+      "suitable_for_exterior": {
+        "filter_order": 99,
+        "synonyms": [
+          "outdoor",
+          "exterior",
+          "facade",
+          "బాహ్య వినియోగం",
+          "बाहरी उपयोग"
+        ]
+      },
+      "suitable_for_overhead_glazing": {
+        "filter_order": 99,
+        "synonyms": [
+          "skylight",
+          "roof glazing",
+          "overhead",
+          "పైకప్పు గ్లేజింగ్",
+          "ऊपरी ग्लेज़िंग"
+        ]
+      },
+      "is_standard": {
+        "filter_order": 99,
+        "synonyms": [
+          "IS standard",
+          "BIS standard",
+          "specification",
+          "ఐఎస్ ప్రమాణం",
+          "आईएस मानक"
+        ]
+      },
+      "is_14900_float_glass": {
+        "filter_order": 99,
+        "synonyms": [
+          "IS 14900",
+          "float glass standard",
+          "ఫ్లోట్ గాజు ప్రమాణం",
+          "फ्लोट कांच मानक"
+        ]
+      },
+      "is_2553_safety_glass": {
+        "filter_order": 99,
+        "synonyms": [
+          "IS 2553",
+          "safety glass standard",
+          "toughened standard",
+          "భద్రతా గాజు ప్రమాణం",
+          "सुरक्षा कांच मानक"
+        ]
+      },
+      "is_16231_igu": {
+        "filter_order": 99,
+        "synonyms": [
+          "IS 16231",
+          "IGU standard",
+          "DGU standard",
+          "ఐజీయూ ప్రమాణం",
+          "आईजीयू मानक"
+        ]
+      },
+      "fragmentation_test": {
+        "filter_order": 99,
+        "synonyms": [
+          "fragmentation",
+          "dicing test",
+          "breakage pattern",
+          "ఫ్రాగ్మెంటేషన్ పరీక్ష",
+          "फ्रैगमेंटेशन परीक्षण"
+        ]
+      },
+      "surface_finish": {
+        "filter_order": 99,
+        "enum_values": [
+          "Smooth transparent",
+          "Reflective",
+          "Frosted / acid etched",
+          "Patterned / textured",
+          "Ceramic fritted"
+        ],
+        "synonyms": [
+          "finish",
+          "surface",
+          "ఉపరితల ముగింపు",
+          "सतह फिनिश"
+        ]
+      },
+      "glazing_system_compatibility": {
+        "filter_order": 99,
+        "synonyms": [
+          "frame compatibility",
+          "aluminium upvc",
+          "glazing system",
+          "గ్లేజింగ్ వ్యవస్థ",
+          "ग्लेज़िंग सिस्टम"
+        ]
+      },
+      "min_edge_engagement_mm": {
+        "filter_order": 99,
+        "synonyms": [
+          "edge cover",
+          "rebate depth",
+          "frame bite",
+          "అంచు లోతు",
+          "किनारा गहराई"
+        ]
+      },
+      "cuttable_after_processing": {
+        "filter_order": 99,
+        "synonyms": [
+          "site cutting",
+          "can be cut",
+          "drilling",
+          "కత్తిరించవచ్చా",
+          "क्या काटा जा सकता है"
+        ]
+      },
+      "packing_type": {
+        "filter_order": 99,
+        "synonyms": [
+          "packing",
+          "crate",
+          "packaging",
+          "ప్యాకింగ్",
+          "पैकिंग"
+        ]
+      },
+      "minimum_order_quantity_sqft": {
+        "filter_order": 99,
+        "synonyms": [
+          "MOQ",
+          "minimum order",
+          "కనీస ఆర్డర్",
+          "न्यूनतम ऑर्डर"
+        ]
+      },
+      "lead_time_days": {
+        "filter_order": 99,
+        "synonyms": [
+          "delivery time",
+          "lead time",
+          "డెలివరీ సమయం",
+          "डिलीवरी समय"
+        ]
+      },
+      "availability": {
+        "filter_order": 99,
+        "synonyms": [
+          "stock",
+          "availability",
+          "లభ్యత",
+          "उपलब्धता"
+        ]
+      },
+      "warranty_months": {
+        "filter_order": 99,
+        "synonyms": [
+          "warranty",
+          "guarantee",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      },
+      "coating_warranty_months": {
+        "filter_order": 99,
+        "synonyms": [
+          "coating guarantee",
+          "coating warranty",
+          "పూత వారంటీ",
+          "कोटिंग वारंटी"
+        ]
+      },
+      "warranty_coverage": {
+        "filter_order": 99,
+        "synonyms": [
+          "what is covered",
+          "warranty terms",
+          "వారంటీ పరిధి",
+          "वारंटी कवरेज"
+        ]
+      }
+    },
+    "total-stations": {
+      "instrument_class": {
+        "filter_widget": "chips",
+        "filter_order": 1,
+        "enum_values": [
+          "Manual total station",
+          "Motorised total station",
+          "Robotic total station",
+          "Imaging total station"
+        ],
+        "synonyms": [
+          "manual",
+          "robotic",
+          "motorised",
+          "one man station",
+          "ఇన్‌స్ట్రుమెంట్ రకం",
+          "इंस्ट्रूमेंट प्रकार"
+        ]
+      },
+      "model_number": {
+        "synonyms": [
+          "model no",
+          "part number",
+          "instrument model",
+          "మోడల్ నంబర్",
+          "मॉडल नंबर"
+        ]
+      },
+      "onboard_software": {
+        "synonyms": [
+          "field software",
+          "firmware",
+          "onboard programs",
+          "సాఫ్ట్‌వేర్",
+          "सॉफ्टवेयर"
+        ]
+      },
+      "drive_system": {
+        "synonyms": [
+          "tangent screw",
+          "endless drive",
+          "డ్రైవ్",
+          "ड्राइव"
+        ]
+      },
+      "angular_accuracy_arcsec": {
+        "filter_widget": "range",
+        "filter_order": 3,
+        "synonyms": [
+          "angle accuracy",
+          "2 second",
+          "5 second",
+          "seconds accuracy",
+          "కోణ ఖచ్చితత్వం",
+          "कोणीय सटीकता"
+        ]
+      },
+      "angle_display_resolution": {
+        "synonyms": [
+          "least count",
+          "display resolution",
+          "రిజల్యూషన్",
+          "रिज़ॉल्यूशन"
+        ]
+      },
+      "distance_accuracy_prism": {
+        "synonyms": [
+          "EDM accuracy",
+          "mm + ppm",
+          "prism accuracy",
+          "దూర ఖచ్చితత్వం",
+          "दूरी सटीकता"
+        ]
+      },
+      "distance_accuracy_reflectorless": {
+        "synonyms": [
+          "DR accuracy",
+          "reflectorless accuracy",
+          "రిఫ్లెక్టర్‌లెస్ ఖచ్చితత్వం",
+          "रिफ्लेक्टरलेस सटीकता"
+        ]
+      },
+      "prism_range_m": {
+        "filter_widget": "range",
+        "filter_order": 5,
+        "synonyms": [
+          "prism range",
+          "with prism",
+          "ప్రిజం పరిధి",
+          "प्रिज्म रेंज"
+        ]
+      },
+      "reflectorless_range_m": {
+        "filter_widget": "range",
+        "filter_order": 4,
+        "synonyms": [
+          "prismless range",
+          "DR range",
+          "without prism",
+          "రిఫ్లెక్టర్‌లెస్ పరిధి",
+          "रिफ्लेक्टरलेस रेंज"
+        ]
+      },
+      "edm_type": {
+        "synonyms": [
+          "distance meter",
+          "laser type",
+          "coaxial EDM",
+          "ఈడీఎం",
+          "ईडीएम"
+        ]
+      },
+      "compensator_type": {
+        "filter_widget": "chips",
+        "filter_order": 2,
+        "enum_values": [
+          "Single-axis",
+          "Dual-axis",
+          "Quadruple-axis",
+          "None"
+        ],
+        "synonyms": [
+          "dual axis compensator",
+          "tilt sensor",
+          "కంపెన్సేటర్",
+          "कंपनसेटर"
+        ]
+      },
+      "compensator_accuracy_arcsec": {
+        "synonyms": [
+          "tilt accuracy",
+          "setting accuracy",
+          "కంపెన్సేటర్ ఖచ్చితత్వం",
+          "कंपनसेटर सटीकता"
+        ]
+      },
+      "compensator_range": {
+        "synonyms": [
+          "tilt range",
+          "working range",
+          "పని పరిధి",
+          "कार्य सीमा"
+        ]
+      },
+      "telescope_magnification_x": {
+        "synonyms": [
+          "zoom",
+          "30x",
+          "magnification",
+          "మాగ్నిఫికేషన్",
+          "आवर्धन"
+        ]
+      },
+      "telescope_field_of_view": {
+        "synonyms": [
+          "FOV",
+          "view at 100 m",
+          "వ్యూ ఫీల్డ్",
+          "दृश्य क्षेत्र"
+        ]
+      },
+      "objective_aperture_mm": {
+        "synonyms": [
+          "objective diameter",
+          "lens size",
+          "అపెర్చర్",
+          "अपर्चर"
+        ]
+      },
+      "telescope_length_mm": {
+        "synonyms": [
+          "tube length",
+          "టెలిస్కోప్ పొడవు",
+          "टेलीस्कोप लंबाई"
+        ]
+      },
+      "laser_class": {
+        "filter_widget": "chips",
+        "filter_order": 6,
+        "enum_values": [
+          "Class 1",
+          "Class 2",
+          "Class 3R"
+        ],
+        "synonyms": [
+          "laser safety class",
+          "class 3R",
+          "లేజర్ క్లాస్",
+          "लेजर क्लास"
+        ]
+      },
+      "battery_type": {
+        "synonyms": [
+          "li-ion battery",
+          "power pack",
+          "బ్యాటరీ",
+          "बैटरी"
+        ]
+      },
+      "battery_operating_time_h": {
+        "filter_widget": "range",
+        "filter_order": 7,
+        "synonyms": [
+          "battery backup",
+          "working hours",
+          "బ్యాటరీ సమయం",
+          "बैटरी बैकअप"
+        ]
+      },
+      "internal_memory": {
+        "synonyms": [
+          "storage",
+          "points capacity",
+          "మెమరీ",
+          "मेमोरी"
+        ]
+      },
+      "connectivity": {
+        "synonyms": [
+          "ports",
+          "bluetooth wifi usb",
+          "data transfer",
+          "కనెక్టివిటీ",
+          "कनेक्टिविटी"
+        ]
+      },
+      "bluetooth": {
+        "filter_widget": "toggle",
+        "filter_order": 8,
+        "synonyms": [
+          "wireless",
+          "bluetooth enabled",
+          "బ్లూటూత్",
+          "ब्लूटूथ"
+        ]
+      },
+      "ip_rating": {
+        "filter_widget": "chips",
+        "filter_order": 9,
+        "enum_values": [
+          "IP54",
+          "IP55",
+          "IP65",
+          "IP66",
+          "IP67"
+        ],
+        "synonyms": [
+          "ingress protection",
+          "dust water proof",
+          "ఐపీ రేటింగ్",
+          "आईपी रेटिंग"
+        ]
+      },
+      "operating_temp_min_c": {
+        "synonyms": [
+          "min temperature",
+          "cold limit",
+          "కనిష్ట ఉష్ణోగ్రత",
+          "न्यूनतम तापमान"
+        ]
+      },
+      "operating_temp_max_c": {
+        "synonyms": [
+          "max temperature",
+          "heat limit",
+          "గరిష్ట ఉష్ణోగ్రత",
+          "अधिकतम तापमान"
+        ]
+      },
+      "housing_material": {
+        "synonyms": [
+          "body material",
+          "casing",
+          "బాడీ మెటీరియల్",
+          "बॉडी मटेरियल"
+        ]
+      },
+      "optics_coating": {
+        "synonyms": [
+          "lens coating",
+          "optics",
+          "టెలిస్కోప్ లెన్స్",
+          "लेंस कोटिंग"
+        ]
+      },
+      "corrosion_protection": {
+        "synonyms": [
+          "rust protection",
+          "anodised",
+          "తుప్పు నిరోధకత",
+          "जंग प्रतिरोध"
+        ]
+      },
+      "factory_calibration": {
+        "synonyms": [
+          "calibration",
+          "adjustment",
+          "క్యాలిబ్రేషన్",
+          "कैलिब्रेशन"
+        ]
+      },
+      "sealing_process": {
+        "synonyms": [
+          "sealed body",
+          "dust proofing",
+          "సీలింగ్",
+          "सीलिंग"
+        ]
+      },
+      "dim_w_mm": {
+        "synonyms": [
+          "width",
+          "వెడల్పు",
+          "चौड़ाई"
+        ]
+      },
+      "dim_h_mm": {
+        "synonyms": [
+          "height",
+          "ఎత్తు",
+          "ऊंचाई"
+        ]
+      },
+      "dim_d_mm": {
+        "synonyms": [
+          "depth",
+          "లోతు",
+          "गहराई"
+        ]
+      },
+      "net_weight_kg": {
+        "synonyms": [
+          "weight",
+          "బరువు",
+          "वजन"
+        ]
+      },
+      "application_areas": {
+        "synonyms": [
+          "uses",
+          "where used",
+          "ఉపయోగాలు",
+          "उपयोग"
+        ]
+      },
+      "stakeout_support": {
+        "synonyms": [
+          "setting out",
+          "layout",
+          "stake out",
+          "లేఅవుట్",
+          "लेआउट"
+        ]
+      },
+      "is_standard": {
+        "synonyms": [
+          "ISO 17123",
+          "test standard",
+          "ప్రమాణం",
+          "मानक"
+        ]
+      },
+      "laser_safety_standard": {
+        "synonyms": [
+          "IEC 60825",
+          "laser standard",
+          "లేజర్ ప్రమాణం",
+          "लेजर मानक"
+        ]
+      },
+      "calibration_certificate_supplied": {
+        "synonyms": [
+          "calibration report",
+          "test certificate",
+          "క్యాలిబ్రేషన్ సర్టిఫికెట్",
+          "कैलिब्रेशन प्रमाणपत्र"
+        ]
+      },
+      "field_check_routine": {
+        "synonyms": [
+          "field calibration",
+          "check and adjust",
+          "ఫీల్డ్ చెక్",
+          "फील्ड जांच"
+        ]
+      },
+      "display_type": {
+        "synonyms": [
+          "screen",
+          "touchscreen",
+          "colour display",
+          "డిస్‌ప్లే",
+          "डिस्प्ले"
+        ]
+      },
+      "keypad_type": {
+        "synonyms": [
+          "keyboard",
+          "keys",
+          "కీప్యాడ్",
+          "कीपैड"
+        ]
+      },
+      "tripod_thread": {
+        "synonyms": [
+          "5/8 inch",
+          "mounting thread",
+          "ట్రైపాడ్ థ్రెడ్",
+          "ट्राइपॉड थ्रेड"
+        ]
+      },
+      "centring_method": {
+        "synonyms": [
+          "laser plummet",
+          "optical plummet",
+          "సెంట్రింగ్",
+          "सेंटरिंग"
+        ]
+      },
+      "levelling_system": {
+        "synonyms": [
+          "bubble",
+          "electronic level",
+          "లెవలింగ్",
+          "लेवलिंग"
+        ]
+      },
+      "tribrach_included": {
+        "synonyms": [
+          "detachable tribrach",
+          "base plate",
+          "ట్రైబ్రాక్",
+          "ट्राइब्रैक"
+        ]
+      },
+      "transport_case": {
+        "synonyms": [
+          "carry case",
+          "hard case",
+          "కేస్",
+          "केस"
+        ]
+      },
+      "package_contents": {
+        "synonyms": [
+          "box contents",
+          "accessories",
+          "బాక్స్‌లో ఏమి ఉంది",
+          "बॉक्स में क्या है"
+        ]
+      },
+      "minimum_order_quantity": {
+        "synonyms": [
+          "MOQ",
+          "minimum quantity",
+          "కనీస ఆర్డర్",
+          "न्यूनतम ऑर्डर"
+        ]
+      },
+      "warranty_months": {
+        "filter_widget": "range",
+        "filter_order": 10,
+        "synonyms": [
+          "guarantee",
+          "warranty period",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      },
+      "warranty_coverage": {
+        "synonyms": [
+          "what is covered",
+          "warranty terms",
+          "వారంటీ కవరేజ్",
+          "वारंटी कवरेज"
+        ]
+      },
+      "extended_warranty_available": {
+        "synonyms": [
+          "AMC",
+          "care pack",
+          "extended cover",
+          "అదనపు వారంటీ",
+          "विस्तारित वारंटी"
+        ]
+      }
+    },
+    "bulbs": {
+      "shape": {
+        "filter_widget": "checkbox",
+        "filter_order": 10,
+        "enum_values": [
+          "A-shape",
+          "Candle",
+          "Globe",
+          "Golf ball",
+          "Reflector",
+          "T-shape"
+        ]
+      },
+      "base_type": {
+        "filter_widget": "chips",
+        "filter_order": 4,
+        "enum_values": [
+          "B22",
+          "E27",
+          "E14",
+          "GU10",
+          "B15"
+        ],
+        "synonyms": [
+          "holder",
+          "cap",
+          "pin",
+          "b22",
+          "e27"
+        ]
+      },
+      "energy_rating": {
+        "filter_widget": "checkbox",
+        "filter_order": 5,
+        "synonyms": [
+          "bee star",
+          "star rating"
+        ]
+      },
+      "dimmability": {
+        "filter_widget": "toggle",
+        "filter_order": 8,
+        "synonyms": [
+          "dimmable",
+          "dimmer"
+        ]
+      },
+      "lumens": {
+        "filter_widget": "range",
+        "filter_order": 2,
+        "synonyms": [
+          "brightness",
+          "luminous flux",
+          "ప్రకాశం"
+        ]
+      },
+      "luminous_intensity": {
+        "filter_widget": "range"
+      },
+      "colour_temperature": {
+        "filter_widget": "range",
+        "filter_order": 3,
+        "synonyms": [
+          "cct",
+          "warm white",
+          "cool daylight",
+          "color temperature"
+        ]
+      },
+      "colour_rendering_index": {
+        "filter_widget": "range",
+        "filter_order": 6,
+        "synonyms": [
+          "cri"
+        ]
+      },
+      "wattage": {
+        "filter_widget": "range",
+        "filter_order": 1,
+        "synonyms": [
+          "watt",
+          "power",
+          "వాట్",
+          "वाट"
+        ]
+      },
+      "operating_life": {
+        "filter_widget": "range",
+        "filter_order": 7,
+        "synonyms": [
+          "life",
+          "lifespan",
+          "hours",
+          "burning hours"
+        ]
+      },
+      "warranty_months": {
+        "filter_widget": "range",
+        "filter_order": 9,
+        "synonyms": [
+          "warranty",
+          "guarantee",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      }
+    },
+    "cement": {
+      "cement_type": {
+        "filter_widget": "chips",
+        "filter_order": 1,
+        "enum_values": [
+          "OPC 33",
+          "OPC 43",
+          "OPC 53",
+          "PPC",
+          "PSC",
+          "Composite Cement",
+          "White Cement"
+        ],
+        "synonyms": [
+          "grade of cement",
+          "type of cement",
+          "PPC or OPC",
+          "సిమెంట్ రకం",
+          "सीमेंट प्रकार"
+        ]
+      },
+      "model_number": {
+        "synonyms": [
+          "model no",
+          "product code",
+          "మోడల్ నంబర్",
+          "मॉडल नंबर"
+        ]
+      },
+      "application_segment": {
+        "filter_widget": "checkbox",
+        "filter_order": 6,
+        "enum_values": [
+          "General purpose",
+          "Structural / RCC",
+          "Masonry & plaster",
+          "Specialty / waterproof"
+        ],
+        "synonyms": [
+          "use",
+          "purpose",
+          "application",
+          "ఉపయోగం",
+          "उपयोग"
+        ]
+      },
+      "compressive_strength_3d": {
+        "synonyms": [
+          "3 day strength",
+          "early strength",
+          "3 రోజుల బలం",
+          "3 दिन की मजबूती"
+        ]
+      },
+      "compressive_strength_7d": {
+        "synonyms": [
+          "7 day strength",
+          "7 రోజుల బలం",
+          "7 दिन की मजबूती"
+        ]
+      },
+      "compressive_strength_28d": {
+        "filter_widget": "range",
+        "filter_order": 3,
+        "synonyms": [
+          "28 day strength",
+          "strength",
+          "బలం",
+          "मजबूती",
+          "कंप्रेसिव स्ट्रेंथ"
+        ]
+      },
+      "clinker_content_pct": {
+        "synonyms": [
+          "clinker %",
+          "clinker factor",
+          "క్లింకర్ శాతం",
+          "क्लिंकर प्रतिशत"
+        ]
+      },
+      "fly_ash_content_pct": {
+        "synonyms": [
+          "pozzolana",
+          "fly ash %",
+          "బూడిద శాతం",
+          "फ्लाई ऐश"
+        ]
+      },
+      "slag_content_pct": {
+        "synonyms": [
+          "GGBS",
+          "slag %",
+          "స్లాగ్ శాతం",
+          "स्लैग"
+        ]
+      },
+      "gypsum_content_pct": {
+        "synonyms": [
+          "gypsum",
+          "set regulator",
+          "జిప్సం",
+          "जिप्सम"
+        ]
+      },
+      "chloride_content_max_pct": {
+        "synonyms": [
+          "chloride",
+          "Cl content",
+          "క్లోరైడ్",
+          "क्लोराइड"
+        ]
+      },
+      "sulphate_so3_max_pct": {
+        "synonyms": [
+          "SO3",
+          "sulphate",
+          "సల్ఫేట్",
+          "सल्फेट"
+        ]
+      },
+      "magnesia_max_pct": {
+        "synonyms": [
+          "MgO",
+          "magnesia",
+          "మెగ్నీషియా",
+          "मैग्नीशिया"
+        ]
+      },
+      "loss_on_ignition_max_pct": {
+        "synonyms": [
+          "LOI",
+          "loss on ignition",
+          "దహన నష్టం",
+          "इग्निशन हानि"
+        ]
+      },
+      "insoluble_residue_max_pct": {
+        "synonyms": [
+          "insoluble residue",
+          "IR",
+          "కరగని అవశేషం",
+          "अघुलनशील अवशेष"
+        ]
+      },
+      "fineness_blaine": {
+        "filter_widget": "range",
+        "filter_order": 5,
+        "synonyms": [
+          "fineness",
+          "blaine",
+          "surface area",
+          "సూక్ష్మత",
+          "महीनता"
+        ]
+      },
+      "specific_gravity": {
+        "synonyms": [
+          "relative density",
+          "specific gravity",
+          "సాంద్రత",
+          "विशिष्ट गुरुत्व"
+        ]
+      },
+      "bulk_density": {
+        "synonyms": [
+          "density",
+          "bulk density",
+          "సాంద్రత",
+          "घनत्व"
+        ]
+      },
+      "standard_consistency_pct": {
+        "synonyms": [
+          "normal consistency",
+          "water demand",
+          "నీటి అవసరం",
+          "मानक संगति"
+        ]
+      },
+      "soundness_le_chatelier": {
+        "synonyms": [
+          "soundness",
+          "expansion",
+          "వ్యాకోచం",
+          "साउंडनेस"
+        ]
+      },
+      "drying_shrinkage_pct": {
+        "synonyms": [
+          "shrinkage",
+          "crack tendency",
+          "సంకోచం",
+          "सिकुड़न"
+        ]
+      },
+      "setting_time_initial": {
+        "filter_widget": "range",
+        "filter_order": 4,
+        "synonyms": [
+          "setting time",
+          "initial set",
+          "సెట్టింగ్ సమయం",
+          "जमने का समय"
+        ]
+      },
+      "setting_time_final": {
+        "synonyms": [
+          "final set",
+          "hardening time",
+          "తుది సెట్టింగ్ సమయం",
+          "अंतिम जमाव समय"
+        ]
+      },
+      "curing_period_days": {
+        "synonyms": [
+          "curing",
+          "water curing days",
+          "క్యూరింగ్",
+          "क्योरिंग"
+        ]
+      },
+      "water_cement_ratio": {
+        "synonyms": [
+          "w/c ratio",
+          "water cement ratio",
+          "నీరు సిమెంట్ నిష్పత్తి",
+          "जल सीमेंट अनुपात"
+        ]
+      },
+      "heat_of_hydration_7d": {
+        "synonyms": [
+          "heat of hydration",
+          "hydration heat",
+          "హైడ్రేషన్ వేడి",
+          "जलयोजन ऊष्मा"
+        ]
+      },
+      "manufacturing_process": {
+        "synonyms": [
+          "process",
+          "dry process",
+          "తయారీ ప్రక్రియ",
+          "निर्माण प्रक्रिया"
+        ]
+      },
+      "grinding_method": {
+        "synonyms": [
+          "ball mill",
+          "vertical roller mill",
+          "గ్రైండింగ్",
+          "पीसने की विधि"
+        ]
+      },
+      "net_weight_kg": {
+        "filter_widget": "checkbox",
+        "filter_order": 7,
+        "synonyms": [
+          "bag weight",
+          "50 kg",
+          "pack size",
+          "బరువు",
+          "वजन",
+          "बोरी वजन"
+        ]
+      },
+      "dim_w_mm": {
+        "synonyms": [
+          "width",
+          "bag width",
+          "వెడల్పు",
+          "चौड़ाई"
+        ]
+      },
+      "dim_h_mm": {
+        "synonyms": [
+          "height",
+          "bag length",
+          "ఎత్తు",
+          "ऊंचाई"
+        ]
+      },
+      "dim_d_mm": {
+        "synonyms": [
+          "depth",
+          "thickness",
+          "మందం",
+          "मोटाई"
+        ]
+      },
+      "application_temperature_range": {
+        "synonyms": [
+          "working temperature",
+          "placing temperature",
+          "ఉష్ణోగ్రత",
+          "तापमान"
+        ]
+      },
+      "recommended_concrete_grade": {
+        "synonyms": [
+          "M20",
+          "M25",
+          "mix grade",
+          "కాంక్రీట్ గ్రేడ్",
+          "कंक्रीट ग्रेड"
+        ]
+      },
+      "suitable_applications": {
+        "synonyms": [
+          "where to use",
+          "uses",
+          "ఉపయోగాలు",
+          "उपयोग"
+        ]
+      },
+      "is_standard": {
+        "filter_widget": "checkbox",
+        "filter_order": 8,
+        "synonyms": [
+          "IS code",
+          "BIS standard",
+          "IS 1489",
+          "IS 269",
+          "ప్రమాణం",
+          "मानक"
+        ]
+      },
+      "isi_marked": {
+        "filter_widget": "toggle",
+        "filter_order": 9,
+        "synonyms": [
+          "ISI mark",
+          "ISI",
+          "ఐఎస్ఐ ముద్ర",
+          "आईएसआई मार्क"
+        ]
+      },
+      "bis_certification": {
+        "synonyms": [
+          "BIS",
+          "certification",
+          "బీఐఎస్",
+          "बीआईएस"
+        ]
+      },
+      "iso_quality_system": {
+        "synonyms": [
+          "ISO 9001",
+          "quality system",
+          "ఐఎస్ఓ",
+          "आईएसओ"
+        ]
+      },
+      "testing_protocol": {
+        "synonyms": [
+          "QC testing",
+          "lab test",
+          "పరీక్ష",
+          "परीक्षण"
+        ]
+      },
+      "mill_test_certificate_available": {
+        "synonyms": [
+          "test certificate",
+          "MTC",
+          "పరీక్ష ధృవీకరణ పత్రం",
+          "मिल टेस्ट सर्टिफिकेट"
+        ]
+      },
+      "quality_assurance_note": {
+        "synonyms": [
+          "claim",
+          "assurance",
+          "హామీ",
+          "गुणवत्ता आश्वासन"
+        ]
+      },
+      "mixing_guidance": {
+        "synonyms": [
+          "how to mix",
+          "mixing",
+          "మిక్సింగ్",
+          "मिश्रण"
+        ]
+      },
+      "bag_material": {
+        "filter_widget": "checkbox",
+        "filter_order": 10,
+        "enum_values": [
+          "HDPE/PP laminated woven",
+          "Paper (kraft)",
+          "PP woven",
+          "Bulk / silo"
+        ],
+        "synonyms": [
+          "packing",
+          "bag type",
+          "సంచి రకం",
+          "बोरी सामग्री"
+        ]
+      },
+      "shelf_life_months": {
+        "synonyms": [
+          "shelf life",
+          "expiry",
+          "నిల్వ కాలం",
+          "शेल्फ लाइफ"
+        ]
+      },
+      "stacking_limit_bags": {
+        "synonyms": [
+          "stacking",
+          "how many bags stack",
+          "పేర్చడం",
+          "स्टैकिंग"
+        ]
+      },
+      "storage_guidance": {
+        "synonyms": [
+          "how to store",
+          "storage",
+          "నిల్వ",
+          "भंडारण"
+        ]
+      },
+      "gst_rate_pct": {
+        "synonyms": [
+          "GST",
+          "tax",
+          "జీఎస్టీ",
+          "जीएसटी"
+        ]
+      },
+      "minimum_order_quantity": {
+        "synonyms": [
+          "MOQ",
+          "minimum bags",
+          "కనీస ఆర్డర్",
+          "न्यूनतम ऑर्डर"
+        ]
+      },
+      "availability": {
+        "synonyms": [
+          "stock",
+          "in stock",
+          "లభ్యత",
+          "उपलब्धता"
+        ]
+      },
+      "delivery_time": {
+        "synonyms": [
+          "delivery",
+          "lead time",
+          "డెలివరీ సమయం",
+          "डिलीवरी समय"
+        ]
+      },
+      "warranty_months": {
+        "synonyms": [
+          "warranty",
+          "guarantee",
+          "వారంటీ",
+          "वारंटी"
+        ]
+      }
+    }
+  }
+}

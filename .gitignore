@@ -1,0 +1,28 @@
+node_modules/
+.next/
+dist/
+.turbo/
+*.tsbuildinfo
+.env
+.env.local
+
+# local infra (binaries + data live here, never in git)
+infra/bin/
+infra/data/
+infra/run/
+
+# everything under storage/ is produced by a run: media renditions, raw captures, coverage
+# reports, screenshots, lighthouse and scale results. None of it is source.
+storage/
+assets/3d/_selftest/
+
+# scale-test artefacts
+packages/db/scale-report*.json
+
+# generated placeholder models (pnpm assets:3d); real models in assets/3d/{SKU}.glb are kept
+assets/3d/placeholders/
+
+# What Meshy/Tripo returned, byte for byte, before normalisation — 19 MB for one SKU and
+# nothing reads it back. The deliverable is assets/3d/{SKU}.glb; assets/3d/jobs.json is the
+# ledger that stops the provider being paid twice for the same inputs, and that IS tracked.
+assets/3d/photoreal/raw/

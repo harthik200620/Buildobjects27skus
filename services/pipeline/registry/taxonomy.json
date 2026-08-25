@@ -1,0 +1,71 @@
+{
+  "$comment": "The storefront's category tree: thirteen departments, thirty-seven categories, nine of them live. Departments come from column A of the specification workbook, which pairs a department with the category beneath it — Electrical Items / Bulbs, Surveying Equipment / Total Stations. The twenty-eight upcoming categories are the sheets of 'PRODUCTS LIST.xlsx' that no live category already covers (CONCRETING is Cement, FLOORING is Tiles, DOORS & WINDOWS is Glass, ELECTRICALS is Bulbs, FIRE SYSTEM is Fire Extinguishers, SOLAR is Solar Panels, SECURITY SYSTEMS is CCTV). They carry no products yet and say so; every field here is seeded into the categories table so the nav, the sidebar, the homepage and the counts all read one source. `icon` must be a key of CATEGORY_ICONS in apps/web/components/icons.tsx.",
+
+  "departments": [
+    { "key": "construction-materials", "name": "Construction Materials", "display_order": 1 },
+    { "key": "building-materials", "name": "Building Materials", "display_order": 2 },
+    { "key": "construction-chemicals", "name": "Construction Chemicals", "display_order": 3 },
+    { "key": "electrical-items", "name": "Electrical Items", "display_order": 4 },
+    { "key": "solar-energy", "name": "Solar & Energy", "display_order": 5 },
+    { "key": "cctv-security", "name": "CCTV & Security", "display_order": 6 },
+    { "key": "safety-fire", "name": "Safety & Fire", "display_order": 7 },
+    { "key": "surveying-equipment", "name": "Surveying Equipment", "display_order": 8 },
+    { "key": "site-structure", "name": "Site & Structure", "display_order": 9 },
+    { "key": "mep-services", "name": "Plumbing, HVAC & Lifts", "display_order": 10 },
+    { "key": "site-machinery", "name": "Plant & Machinery", "display_order": 11 },
+    { "key": "external-works", "name": "External Works", "display_order": 12 },
+    { "key": "office-administration", "name": "Office & Administration", "display_order": 13 }
+  ],
+
+  "categories": [
+    { "slug": "cement", "department": "construction-materials", "status": "live" },
+    { "slug": "bricks-and-blocks", "department": "construction-materials", "status": "upcoming", "name": "Bricks & Blocks", "icon": "bricks" },
+    { "slug": "steel", "department": "construction-materials", "status": "upcoming", "name": "Steel & Reinforcement", "icon": "steel" },
+
+    { "slug": "tiles", "department": "building-materials", "status": "live" },
+    { "slug": "glass", "department": "building-materials", "status": "live" },
+    { "slug": "roofing", "department": "building-materials", "status": "upcoming", "name": "Roofing", "icon": "roofing" },
+    { "slug": "painting", "department": "building-materials", "status": "upcoming", "name": "Paints & Coatings", "icon": "painting" },
+    { "slug": "internal-works", "department": "building-materials", "status": "upcoming", "name": "Internal Works", "icon": "internal-works" },
+    { "slug": "kitchen-ware", "department": "building-materials", "status": "upcoming", "name": "Kitchen Ware", "icon": "kitchen" },
+
+    { "slug": "epoxy", "department": "construction-chemicals", "status": "live" },
+    { "slug": "waterproofing", "department": "construction-chemicals", "status": "upcoming", "name": "Waterproofing", "icon": "waterproofing" },
+
+    { "slug": "bulbs", "department": "electrical-items", "status": "live" },
+
+    { "slug": "solar-panels", "department": "solar-energy", "status": "live" },
+
+    { "slug": "cctv", "department": "cctv-security", "status": "live" },
+
+    { "slug": "fire-extinguishers", "department": "safety-fire", "status": "live" },
+    { "slug": "safety-equipment", "department": "safety-fire", "status": "upcoming", "name": "Safety Tools & Equipment", "icon": "safety" },
+
+    { "slug": "total-stations", "department": "surveying-equipment", "status": "live" },
+    { "slug": "drafting-measurement", "department": "surveying-equipment", "status": "upcoming", "name": "Drafting & Measurement", "icon": "drafting" },
+
+    { "slug": "excavation", "department": "site-structure", "status": "upcoming", "name": "Excavation", "icon": "excavation" },
+    { "slug": "centering", "department": "site-structure", "status": "upcoming", "name": "Centering & Formwork", "icon": "centering" },
+    { "slug": "railings", "department": "site-structure", "status": "upcoming", "name": "Railings", "icon": "railings" },
+
+    { "slug": "plumbing", "department": "mep-services", "status": "upcoming", "name": "Plumbing", "icon": "plumbing" },
+    { "slug": "hvac-materials", "department": "mep-services", "status": "upcoming", "name": "HVAC Materials", "icon": "hvac" },
+    { "slug": "lift-elevators", "department": "mep-services", "status": "upcoming", "name": "Lifts & Elevators", "icon": "lift" },
+
+    { "slug": "heavy-equipment", "department": "site-machinery", "status": "upcoming", "name": "Heavy Construction Equipment", "icon": "heavy-equipment" },
+    { "slug": "transport-systems", "department": "site-machinery", "status": "upcoming", "name": "Transport Systems", "icon": "transport" },
+    { "slug": "machineries", "department": "site-machinery", "status": "upcoming", "name": "Machineries", "icon": "machinery" },
+
+    { "slug": "external-works", "department": "external-works", "status": "upcoming", "name": "External Works", "icon": "external-works" },
+
+    { "slug": "branding", "department": "office-administration", "status": "upcoming", "name": "Company Identity & Branding", "icon": "branding" },
+    { "slug": "administration", "department": "office-administration", "status": "upcoming", "name": "Administration Items", "icon": "administration" },
+    { "slug": "stationery", "department": "office-administration", "status": "upcoming", "name": "Stationery Items", "icon": "stationery" },
+    { "slug": "paper-sheet", "department": "office-administration", "status": "upcoming", "name": "Paper & Sheet Items", "icon": "paper" },
+    { "slug": "electronic-printing", "department": "office-administration", "status": "upcoming", "name": "Electronic & Printing Items", "icon": "printing" },
+    { "slug": "communication-furniture", "department": "office-administration", "status": "upcoming", "name": "Communication & Furniture", "icon": "furniture" },
+    { "slug": "finance-accounting", "department": "office-administration", "status": "upcoming", "name": "Finance & Accounting Items", "icon": "finance" },
+    { "slug": "storage-packaging", "department": "office-administration", "status": "upcoming", "name": "Storage & Packaging Items", "icon": "storage" },
+    { "slug": "presentation", "department": "office-administration", "status": "upcoming", "name": "Presentation Items", "icon": "presentation" }
+  ]
+}

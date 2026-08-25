@@ -1,0 +1,284 @@
+{
+  "$comment": "The nine categories of this store, in the order of the build spec. code = 3-letter SKU-code prefix. brands[].code = 3-letter brand segment of the SKU code (sku_code = CODE-BRAND-MODEL).",
+  "categories": [
+    {
+      "slug": "epoxy",
+      "code": "EPX",
+      "name": "Epoxy",
+      "name_te": "ఎపాక్సీ",
+      "name_hi": "एपॉक्सी",
+      "icon": "epoxy",
+      "display_order": 1,
+      "unit": "kit",
+      "gst_rate": 18,
+      "brands": [
+        {
+          "slug": "sika",
+          "code": "SIK",
+          "name": "Sika",
+          "domain": "ind.sika.com"
+        },
+        {
+          "slug": "fosroc",
+          "code": "FOS",
+          "name": "Fosroc",
+          "domain": "fosroc.com"
+        },
+        {
+          "slug": "pidilite",
+          "code": "PID",
+          "name": "Pidilite (Dr. Fixit)",
+          "domain": "drfixit.co.in"
+        }
+      ]
+    },
+    {
+      "slug": "fire-extinguishers",
+      "code": "FIR",
+      "name": "Fire Extinguishers",
+      "name_te": "అగ్నిమాపక యంత్రాలు",
+      "name_hi": "अग्निशामक यंत्र",
+      "icon": "extinguisher",
+      "display_order": 2,
+      "unit": "piece",
+      "gst_rate": 18,
+      "brands": [
+        {
+          "slug": "ceasefire",
+          "code": "CEA",
+          "name": "Ceasefire",
+          "domain": "ceasefire.in"
+        },
+        {
+          "slug": "safex-fire",
+          "code": "SAF",
+          "name": "Safex Fire",
+          "domain": "safexfire.com"
+        },
+        {
+          "slug": "newage-fire",
+          "code": "NEW",
+          "name": "Newage Fire Protection",
+          "domain": "newagefireprotection.com"
+        }
+      ]
+    },
+    {
+      "slug": "solar-panels",
+      "code": "SOL",
+      "name": "Solar Panels",
+      "name_te": "సోలార్ ప్యానెల్స్",
+      "name_hi": "सोलर पैनल",
+      "icon": "solar",
+      "display_order": 3,
+      "unit": "panel",
+      "gst_rate": 5,
+      "brands": [
+        {
+          "slug": "waaree",
+          "code": "WAA",
+          "name": "Waaree",
+          "domain": "waaree.com"
+        },
+        {
+          "slug": "adani-solar",
+          "code": "ADA",
+          "name": "Adani Solar",
+          "domain": "adanisolar.com"
+        },
+        {
+          "slug": "vikram-solar",
+          "code": "VIK",
+          "name": "Vikram Solar",
+          "domain": "vikramsolar.com"
+        }
+      ]
+    },
+    {
+      "slug": "cctv",
+      "code": "CCT",
+      "name": "CCTV",
+      "name_te": "సీసీటీవీ కెమెరాలు",
+      "name_hi": "सीसीटीवी कैमरा",
+      "icon": "cctv",
+      "display_order": 4,
+      "unit": "piece",
+      "gst_rate": 18,
+      "brands": [
+        {
+          "slug": "hikvision",
+          "code": "HIK",
+          "name": "Hikvision",
+          "domain": "hikvisionindia.com"
+        },
+        {
+          "slug": "dahua",
+          "code": "DAH",
+          "name": "Dahua",
+          "domain": "dahuasecurity.com"
+        },
+        {
+          "slug": "cp-plus",
+          "code": "CPP",
+          "name": "CP PLUS",
+          "domain": "cpplusworld.com"
+        }
+      ]
+    },
+    {
+      "slug": "tiles",
+      "code": "TIL",
+      "name": "Tiles",
+      "name_te": "టైల్స్",
+      "name_hi": "टाइल्स",
+      "icon": "tiles",
+      "display_order": 5,
+      "unit": "box",
+      "gst_rate": 18,
+      "brands": [
+        {
+          "slug": "kajaria",
+          "code": "KAJ",
+          "name": "Kajaria",
+          "domain": "kajariaceramics.com"
+        },
+        {
+          "slug": "somany",
+          "code": "SOM",
+          "name": "Somany",
+          "domain": "somanyceramics.com"
+        },
+        {
+          "slug": "johnson",
+          "code": "JOH",
+          "name": "Johnson (H&R Johnson)",
+          "domain": "hrjohnsonindia.com"
+        }
+      ]
+    },
+    {
+      "slug": "glass",
+      "code": "GLS",
+      "name": "Glass",
+      "name_te": "గాజు",
+      "name_hi": "कांच",
+      "icon": "glass",
+      "display_order": 6,
+      "unit": "sqft",
+      "gst_rate": 18,
+      "brands": [
+        {
+          "slug": "saint-gobain",
+          "code": "SGB",
+          "name": "Saint-Gobain",
+          "domain": "in.saint-gobain-glass.com"
+        },
+        {
+          "slug": "ais",
+          "code": "AIS",
+          "name": "AIS (Asahi India Glass)",
+          "domain": "aisglass.com"
+        },
+        {
+          "slug": "guardian",
+          "code": "GUA",
+          "name": "Guardian Glass",
+          "domain": "guardianglass.com"
+        }
+      ]
+    },
+    {
+      "slug": "total-stations",
+      "code": "TST",
+      "name": "Total Stations",
+      "name_te": "టోటల్ స్టేషన్లు",
+      "name_hi": "टोटल स्टेशन",
+      "icon": "total-station",
+      "display_order": 7,
+      "unit": "piece",
+      "gst_rate": 18,
+      "brands": [
+        {
+          "slug": "leica",
+          "code": "LEI",
+          "name": "Leica Geosystems",
+          "domain": "leica-geosystems.com"
+        },
+        {
+          "slug": "trimble",
+          "code": "TRI",
+          "name": "Trimble",
+          "domain": "geospatial.trimble.com"
+        },
+        {
+          "slug": "topcon",
+          "code": "TOP",
+          "name": "Topcon",
+          "domain": "topconpositioning.com"
+        }
+      ]
+    },
+    {
+      "slug": "bulbs",
+      "code": "BUL",
+      "name": "Bulbs",
+      "name_te": "బల్బులు",
+      "name_hi": "बल्ब",
+      "icon": "bulb",
+      "display_order": 8,
+      "unit": "piece",
+      "gst_rate": 12,
+      "brands": [
+        {
+          "slug": "philips",
+          "code": "PHI",
+          "name": "Philips (Signify)",
+          "domain": "lighting.philips.co.in"
+        },
+        {
+          "slug": "havells",
+          "code": "HAV",
+          "name": "Havells",
+          "domain": "havells.com"
+        },
+        {
+          "slug": "wipro",
+          "code": "WIP",
+          "name": "Wipro Lighting",
+          "domain": "wiprolighting.com"
+        }
+      ]
+    },
+    {
+      "slug": "cement",
+      "code": "CEM",
+      "name": "Cement",
+      "name_te": "సిమెంట్",
+      "name_hi": "सीमेंट",
+      "icon": "cement",
+      "display_order": 9,
+      "unit": "bag",
+      "gst_rate": 18,
+      "brands": [
+        {
+          "slug": "ultratech",
+          "code": "ULT",
+          "name": "UltraTech Cement",
+          "domain": "ultratechcement.com"
+        },
+        {
+          "slug": "acc",
+          "code": "ACC",
+          "name": "ACC",
+          "domain": "acclimited.com"
+        },
+        {
+          "slug": "ambuja",
+          "code": "AMB",
+          "name": "Ambuja Cements",
+          "domain": "ambujacement.com"
+        }
+      ]
+    }
+  ]
+}

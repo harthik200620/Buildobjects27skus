@@ -1,0 +1,1082 @@
+{
+  "category": "cement",
+  "version": 2,
+  "attributes": [
+    {
+      "key": "cement_type",
+      "group": "product_identity",
+      "label": "Cement type",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "OPC 33",
+        "OPC 43",
+        "OPC 53",
+        "PPC",
+        "PSC",
+        "Composite Cement",
+        "White Cement"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 1,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "grade of cement",
+        "type of cement",
+        "PPC or OPC",
+        "సిమెంట్ రకం",
+        "सीमेंट प्रकार"
+      ],
+      "display_order": 0
+    },
+    {
+      "key": "model_number",
+      "group": "product_identity",
+      "label": "Model / product code",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "model no",
+        "product code",
+        "మోడల్ నంబర్",
+        "मॉडल नंबर"
+      ],
+      "display_order": 1
+    },
+    {
+      "key": "application_segment",
+      "group": "product_identity",
+      "label": "Primary use segment",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "General purpose",
+        "Structural / RCC",
+        "Masonry & plaster",
+        "Specialty / waterproof"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 6,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "use",
+        "purpose",
+        "application",
+        "ఉపయోగం",
+        "उपयोग"
+      ],
+      "display_order": 2
+    },
+    {
+      "key": "compressive_strength_3d",
+      "group": "strength",
+      "label": "Compressive strength (3 days)",
+      "data_type": "number",
+      "unit": "MPa",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "3 day strength",
+        "early strength",
+        "3 రోజుల బలం",
+        "3 दिन की मजबूती"
+      ],
+      "display_order": 3
+    },
+    {
+      "key": "compressive_strength_7d",
+      "group": "strength",
+      "label": "Compressive strength (7 days)",
+      "data_type": "number",
+      "unit": "MPa",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "7 day strength",
+        "7 రోజుల బలం",
+        "7 दिन की मजबूती"
+      ],
+      "display_order": 4
+    },
+    {
+      "key": "compressive_strength_28d",
+      "group": "strength",
+      "label": "Compressive strength (28 days)",
+      "data_type": "number",
+      "unit": "MPa",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 3,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "28 day strength",
+        "strength",
+        "బలం",
+        "मजबूती",
+        "कंप्रेसिव स्ट्रेंथ"
+      ],
+      "display_order": 5
+    },
+    {
+      "key": "clinker_content_pct",
+      "group": "composition",
+      "label": "Clinker content",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "clinker %",
+        "clinker factor",
+        "క్లింకర్ శాతం",
+        "क्लिंकर प्रतिशत"
+      ],
+      "display_order": 6
+    },
+    {
+      "key": "fly_ash_content_pct",
+      "group": "composition",
+      "label": "Fly ash content",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "pozzolana",
+        "fly ash %",
+        "బూడిద శాతం",
+        "फ्लाई ऐश"
+      ],
+      "display_order": 7
+    },
+    {
+      "key": "slag_content_pct",
+      "group": "composition",
+      "label": "Blast furnace slag content",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "GGBS",
+        "slag %",
+        "స్లాగ్ శాతం",
+        "स्लैग"
+      ],
+      "display_order": 8
+    },
+    {
+      "key": "gypsum_content_pct",
+      "group": "composition",
+      "label": "Gypsum content",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "gypsum",
+        "set regulator",
+        "జిప్సం",
+        "जिप्सम"
+      ],
+      "display_order": 9
+    },
+    {
+      "key": "chloride_content_max_pct",
+      "group": "chemical",
+      "label": "Chloride content (max)",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "chloride",
+        "Cl content",
+        "క్లోరైడ్",
+        "क्लोराइड"
+      ],
+      "display_order": 10
+    },
+    {
+      "key": "sulphate_so3_max_pct",
+      "group": "chemical",
+      "label": "Sulphuric anhydride SO3 (max)",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "SO3",
+        "sulphate",
+        "సల్ఫేట్",
+        "सल्फेट"
+      ],
+      "display_order": 11
+    },
+    {
+      "key": "magnesia_max_pct",
+      "group": "chemical",
+      "label": "Magnesia MgO (max)",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "MgO",
+        "magnesia",
+        "మెగ్నీషియా",
+        "मैग्नीशिया"
+      ],
+      "display_order": 12
+    },
+    {
+      "key": "loss_on_ignition_max_pct",
+      "group": "chemical",
+      "label": "Loss on ignition (max)",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "LOI",
+        "loss on ignition",
+        "దహన నష్టం",
+        "इग्निशन हानि"
+      ],
+      "display_order": 13
+    },
+    {
+      "key": "insoluble_residue_max_pct",
+      "group": "chemical",
+      "label": "Insoluble residue",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "insoluble residue",
+        "IR",
+        "కరగని అవశేషం",
+        "अघुलनशील अवशेष"
+      ],
+      "display_order": 14
+    },
+    {
+      "key": "fineness_blaine",
+      "group": "physical",
+      "label": "Fineness (Blaine specific surface)",
+      "data_type": "number",
+      "unit": "m²/kg",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 5,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "fineness",
+        "blaine",
+        "surface area",
+        "సూక్ష్మత",
+        "महीनता"
+      ],
+      "display_order": 15
+    },
+    {
+      "key": "specific_gravity",
+      "group": "physical",
+      "label": "Specific gravity",
+      "data_type": "number",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "relative density",
+        "specific gravity",
+        "సాంద్రత",
+        "विशिष्ट गुरुत्व"
+      ],
+      "display_order": 16
+    },
+    {
+      "key": "bulk_density",
+      "group": "physical",
+      "label": "Bulk density (loose)",
+      "data_type": "number",
+      "unit": "kg/m³",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "density",
+        "bulk density",
+        "సాంద్రత",
+        "घनत्व"
+      ],
+      "display_order": 17
+    },
+    {
+      "key": "standard_consistency_pct",
+      "group": "physical",
+      "label": "Standard consistency",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "normal consistency",
+        "water demand",
+        "నీటి అవసరం",
+        "मानक संगति"
+      ],
+      "display_order": 18
+    },
+    {
+      "key": "soundness_le_chatelier",
+      "group": "physical",
+      "label": "Soundness (Le Chatelier expansion)",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "soundness",
+        "expansion",
+        "వ్యాకోచం",
+        "साउंडनेस"
+      ],
+      "display_order": 19
+    },
+    {
+      "key": "drying_shrinkage_pct",
+      "group": "physical",
+      "label": "Drying shrinkage",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "shrinkage",
+        "crack tendency",
+        "సంకోచం",
+        "सिकुड़न"
+      ],
+      "display_order": 20
+    },
+    {
+      "key": "setting_time_initial",
+      "group": "cure",
+      "label": "Initial setting time",
+      "data_type": "number",
+      "unit": "min",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 4,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "setting time",
+        "initial set",
+        "సెట్టింగ్ సమయం",
+        "जमने का समय"
+      ],
+      "display_order": 21
+    },
+    {
+      "key": "setting_time_final",
+      "group": "cure",
+      "label": "Final setting time",
+      "data_type": "number",
+      "unit": "min",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "final set",
+        "hardening time",
+        "తుది సెట్టింగ్ సమయం",
+        "अंतिम जमाव समय"
+      ],
+      "display_order": 22
+    },
+    {
+      "key": "curing_period_days",
+      "group": "cure",
+      "label": "Recommended curing period",
+      "data_type": "number",
+      "unit": "days",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "curing",
+        "water curing days",
+        "క్యూరింగ్",
+        "क्योरिंग"
+      ],
+      "display_order": 23
+    },
+    {
+      "key": "water_cement_ratio",
+      "group": "cure",
+      "label": "Typical water–cement ratio",
+      "data_type": "number",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "w/c ratio",
+        "water cement ratio",
+        "నీరు సిమెంట్ నిష్పత్తి",
+        "जल सीमेंट अनुपात"
+      ],
+      "display_order": 24
+    },
+    {
+      "key": "heat_of_hydration_7d",
+      "group": "cure",
+      "label": "Heat of hydration (7 days)",
+      "data_type": "number",
+      "unit": "kJ/kg",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "heat of hydration",
+        "hydration heat",
+        "హైడ్రేషన్ వేడి",
+        "जलयोजन ऊष्मा"
+      ],
+      "display_order": 25
+    },
+    {
+      "key": "manufacturing_process",
+      "group": "manufacturing",
+      "label": "Manufacturing process",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "process",
+        "dry process",
+        "తయారీ ప్రక్రియ",
+        "निर्माण प्रक्रिया"
+      ],
+      "display_order": 26
+    },
+    {
+      "key": "grinding_method",
+      "group": "manufacturing",
+      "label": "Grinding / blending method",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "ball mill",
+        "vertical roller mill",
+        "గ్రైండింగ్",
+        "पीसने की विधि"
+      ],
+      "display_order": 27
+    },
+    {
+      "key": "net_weight_kg",
+      "group": "dimensions",
+      "label": "Net weight per bag",
+      "data_type": "number",
+      "unit": "kg",
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 7,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "bag weight",
+        "50 kg",
+        "pack size",
+        "బరువు",
+        "वजन",
+        "बोरी वजन"
+      ],
+      "display_order": 28
+    },
+    {
+      "key": "dim_w_mm",
+      "group": "dimensions",
+      "label": "Bag width",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "width",
+        "bag width",
+        "వెడల్పు",
+        "चौड़ाई"
+      ],
+      "display_order": 29
+    },
+    {
+      "key": "dim_h_mm",
+      "group": "dimensions",
+      "label": "Bag height",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "height",
+        "bag length",
+        "ఎత్తు",
+        "ऊंचाई"
+      ],
+      "display_order": 30
+    },
+    {
+      "key": "dim_d_mm",
+      "group": "dimensions",
+      "label": "Bag depth / thickness",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "depth",
+        "thickness",
+        "మందం",
+        "मोटाई"
+      ],
+      "display_order": 31
+    },
+    {
+      "key": "application_temperature_range",
+      "group": "thermal",
+      "label": "Recommended placing temperature",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "working temperature",
+        "placing temperature",
+        "ఉష్ణోగ్రత",
+        "तापमान"
+      ],
+      "display_order": 32
+    },
+    {
+      "key": "recommended_concrete_grade",
+      "group": "application",
+      "label": "Recommended concrete grades",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "M20",
+        "M25",
+        "mix grade",
+        "కాంక్రీట్ గ్రేడ్",
+        "कंक्रीट ग्रेड"
+      ],
+      "display_order": 33
+    },
+    {
+      "key": "suitable_applications",
+      "group": "application",
+      "label": "Suitable applications",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "where to use",
+        "uses",
+        "ఉపయోగాలు",
+        "उपयोग"
+      ],
+      "display_order": 34
+    },
+    {
+      "key": "is_standard",
+      "group": "standards",
+      "label": "Indian Standard",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 8,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IS code",
+        "BIS standard",
+        "IS 1489",
+        "IS 269",
+        "ప్రమాణం",
+        "मानक"
+      ],
+      "display_order": 35
+    },
+    {
+      "key": "isi_marked",
+      "group": "standards",
+      "label": "ISI marked",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 9,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ISI mark",
+        "ISI",
+        "ఐఎస్ఐ ముద్ర",
+        "आईएसआई मार्क"
+      ],
+      "display_order": 36
+    },
+    {
+      "key": "bis_certification",
+      "group": "standards",
+      "label": "BIS certification scheme",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "BIS",
+        "certification",
+        "బీఐఎస్",
+        "बीआईएस"
+      ],
+      "display_order": 37
+    },
+    {
+      "key": "iso_quality_system",
+      "group": "standards",
+      "label": "Plant quality management system",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "ISO 9001",
+        "quality system",
+        "ఐఎస్ఓ",
+        "आईएसओ"
+      ],
+      "display_order": 38
+    },
+    {
+      "key": "testing_protocol",
+      "group": "quality_control",
+      "label": "Testing protocol",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "QC testing",
+        "lab test",
+        "పరీక్ష",
+        "परीक्षण"
+      ],
+      "display_order": 39
+    },
+    {
+      "key": "mill_test_certificate_available",
+      "group": "quality_control",
+      "label": "Mill test certificate available on request",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "test certificate",
+        "MTC",
+        "పరీక్ష ధృవీకరణ పత్రం",
+        "मिल टेस्ट सर्टिफिकेट"
+      ],
+      "display_order": 40
+    },
+    {
+      "key": "quality_assurance_note",
+      "group": "quality_control",
+      "label": "Quality assurance / claim note",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "claim",
+        "assurance",
+        "హామీ",
+        "गुणवत्ता आश्वासन"
+      ],
+      "display_order": 41
+    },
+    {
+      "key": "mixing_guidance",
+      "group": "installation",
+      "label": "Mixing guidance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "how to mix",
+        "mixing",
+        "మిక్సింగ్",
+        "मिश्रण"
+      ],
+      "display_order": 42
+    },
+    {
+      "key": "bag_material",
+      "group": "packaging",
+      "label": "Bag material",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "HDPE/PP laminated woven",
+        "Paper (kraft)",
+        "PP woven",
+        "Bulk / silo"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 10,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "packing",
+        "bag type",
+        "సంచి రకం",
+        "बोरी सामग्री"
+      ],
+      "display_order": 43
+    },
+    {
+      "key": "shelf_life_months",
+      "group": "packaging",
+      "label": "Shelf life from date of packing",
+      "data_type": "number",
+      "unit": "months",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "shelf life",
+        "expiry",
+        "నిల్వ కాలం",
+        "शेल्फ लाइफ"
+      ],
+      "display_order": 44
+    },
+    {
+      "key": "stacking_limit_bags",
+      "group": "packaging",
+      "label": "Maximum stacking height",
+      "data_type": "number",
+      "unit": "bags",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "stacking",
+        "how many bags stack",
+        "పేర్చడం",
+        "स्टैकिंग"
+      ],
+      "display_order": 45
+    },
+    {
+      "key": "storage_guidance",
+      "group": "packaging",
+      "label": "Storage guidance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "how to store",
+        "storage",
+        "నిల్వ",
+        "भंडारण"
+      ],
+      "display_order": 46
+    },
+    {
+      "key": "gst_rate_pct",
+      "group": "commercial",
+      "label": "GST rate",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "GST",
+        "tax",
+        "జీఎస్టీ",
+        "जीएसटी"
+      ],
+      "display_order": 47
+    },
+    {
+      "key": "minimum_order_quantity",
+      "group": "commercial",
+      "label": "Minimum order quantity",
+      "data_type": "number",
+      "unit": "bags",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "MOQ",
+        "minimum bags",
+        "కనీస ఆర్డర్",
+        "न्यूनतम ऑर्डर"
+      ],
+      "display_order": 48
+    },
+    {
+      "key": "availability",
+      "group": "commercial",
+      "label": "Availability",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "stock",
+        "in stock",
+        "లభ్యత",
+        "उपलब्धता"
+      ],
+      "display_order": 49
+    },
+    {
+      "key": "delivery_time",
+      "group": "commercial",
+      "label": "Typical delivery time",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "delivery",
+        "lead time",
+        "డెలివరీ సమయం",
+        "डिलीवरी समय"
+      ],
+      "display_order": 50
+    },
+    {
+      "key": "warranty_months",
+      "group": "warranty",
+      "label": "Quality guarantee period",
+      "data_type": "number",
+      "unit": "months",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "warranty",
+        "guarantee",
+        "వారంటీ",
+        "वारंटी"
+      ],
+      "display_order": 51
+    }
+  ]
+}

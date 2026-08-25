@@ -1,0 +1,823 @@
+{
+  "sku_code": "BUL-PHI-ACESAVER9WB22",
+  "category": "bulbs",
+  "brand": {
+    "slug": "philips",
+    "name": "Philips (Signify)",
+    "official_domains": [
+      "lighting.philips.co.in",
+      "in.shop.lighting.philips.com",
+      "signify.com"
+    ],
+    "logo_url": null,
+    "intel": {
+      "year_established": {
+        "value": 1891,
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "parent_company": {
+        "value": "Signify N.V., formerly Philips Lighting N.V. — the Dutch lighting company formed in 2016 by the spin-off of Royal Philips' lighting division, which still produces lights under the Philips brand; the Indian manufacturing and packing entity on this lamp is Philips India Ltd",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Signify_N.V."
+      },
+      "product_portfolio": {
+        "value": "Electric lights, light fixtures and control systems for consumers, professionals and the IoT — in India, LED bulbs, T-bulbs, battens, downlighters, panels, street and industrial luminaires and the WiZ smart-lighting range",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Signify_N.V."
+      },
+      "market_coverage": {
+        "value": "Pan-India and the most widely recognised lamp brand in the country; in AP and Telangana it is stocked in effectively every electrical shop, with Philips Smart Light Hub outlets in Hyderabad and the larger district towns",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "quality_strength_note": {
+        "value": "The reference brand for lamp quality in India. Ace Saver is the value tier — the pitch is EyeComfort (reduced glare and minimised flicker), no UV or IR in the beam, and consistent colour, rather than the deepest published spec sheet",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.5/5 (typical) — the default benchmark other lamp brands are compared against",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "High. When a client specifies a brand by name for lamping, Philips is the name they say; contractors keep it for the rooms the owner will inspect",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Very high. A first-time buyer with no specification in mind asks for a Philips bulb by default",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 99,
+          "highest": 180,
+          "unit": "₹/piece (9 W B22 LED bulb)"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Philips carries a visible price premium over Wipro and a modest one over Havells at single-piece retail; on project quantities the gap narrows because the brand discounts hard on carton lots",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Multipacks (2, 3, 4, 6 and 10 lamps) are the brand's own bulk mechanism and price well below single-piece MRP; beyond that, carton slabs through the dealer",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Typically 15-25 % on lamps, the thinnest of the three brands because the name sells itself and online pricing is tight",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "moderate",
+          "bridges": "moderate",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India",
+          "weak": "—",
+          "balanced": "South India including AP/Telangana",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "General indoor lighting in homes — living rooms, bedrooms, kitchens and passages",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Offices, shops and hospitality spaces running on existing B22 holders",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Rooms where glare and flicker matter — study desks and children's rooms — which is what the EyeComfort positioning is aimed at",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Philips",
+          "Havells",
+          "Wipro",
+          "Syska",
+          "Bajaj"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Philips Ace Saver 9 W B22 Cool Day Light LED Bulb",
+    "slug": "philips-ace-saver-9w-b22-cool-day-light-led-bulb",
+    "model_no": "929001198414",
+    "status": "active"
+  },
+  "variant_label": "9 W · B22 · 6500 K cool day light · single lamp",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 180,
+    "selling_price": 129,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+    "fetched_at": "2026-08-22",
+    "note": "MRP ₹180 and selling price ₹129 inclusive of GST, read on the Moglix listing for Philips part 929001198414 on 22 Aug 2026. Signify no longer publishes a page or MRP for this model on its own Indian sites."
+  },
+  "gst_rate": 12,
+  "sources": {
+    "official_product_url": "https://www.lighting.philips.co.in/consumer/led-lights/led-bulbs",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "https://en.wikipedia.org/wiki/Signify_N.V."
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "929001198414",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.95
+    },
+    "bulb_type": {
+      "value": "Round GLS / A-shape LED lamp with a frosted envelope",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.85
+    },
+    "led_type": {
+      "value": "SMD LEDs behind a frosted diffuser",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "base_type": {
+      "value": "B22",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.95
+    },
+    "wattage": {
+      "value": 9,
+      "unit": "W",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.95
+    },
+    "voltage": {
+      "value": "220-240 V AC",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9
+    },
+    "frequency": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65,
+      "unit": "Hz"
+    },
+    "lumens": {
+      "value": 806,
+      "unit": "lm",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9
+    },
+    "colour_temperature": {
+      "value": 6500,
+      "unit": "K",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9
+    },
+    "beam_angle": {
+      "value": 200,
+      "unit": "°",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "colour_rendering_index": {
+      "value": 80,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dimmability": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "shape": {
+      "value": "Round",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9
+    },
+    "size": {
+      "value": "60 mm diameter × 110 mm height",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.85
+    },
+    "power_factor": {
+      "value": 0.9,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "energy_rating": {
+      "value": "BEE 3 Star, as marketed for the Ace Saver 9 W; the star band is not restated on the listing used here",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "application_category": {
+      "value": "Indoor general lighting in homes, offices and shops",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "operating_type": {
+      "value": "Mains-operated, holder-mounted, non-dimmable",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "smart_compatibility": {
+      "value": "Not a smart lamp — Philips sells Wi-Fi control separately under the Smart Wi-Fi and WiZ ranges",
+      "provenance": "fetched",
+      "source_url": "https://www.lighting.philips.co.in/consumer/led-lights/led-bulbs",
+      "confidence": 0.8
+    },
+    "aluminium_housing": {
+      "value": "No external aluminium housing — polycarbonate body over an internal heat path",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "polycarbonate_diffuser": {
+      "value": "Yes — frosted polycarbonate diffuser",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.8
+    },
+    "led_chip_material": {
+      "value": "InGaN blue LED die with phosphor conversion to white",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pcb_material": {
+      "value": "Metal-core (aluminium-backed) PCB carrying the LED array",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "diffuser_material": {
+      "value": "Polycarbonate",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.85
+    },
+    "aluminium_heat_sink": {
+      "value": "Internal aluminium heat spreader under the polycarbonate body",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "brass_base": {
+      "value": "Nickel-plated B22 bayonet cap",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "flame_retardant_plastic": {
+      "value": "Flame-retardant polycarbonate body and diffuser",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "led_chip_mounting": {
+      "value": "Automated SMT placement of SMD LEDs, reflow soldered onto the board",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "driver_assembly": {
+      "value": "Compact integrated driver inside the lamp neck",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "lumen_testing": {
+      "value": "Integrating-sphere lumen measurement on production samples against the 806 lm rating",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "burn_in_testing": {
+      "value": "Powered ageing run before packing to weed out infant failures",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "overall_diameter": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.85
+    },
+    "bulb_diameter": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.8
+    },
+    "base_diameter": {
+      "value": 22,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "product_weight": {
+      "value": 50,
+      "unit": "g",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "package_dimensions": {
+      "value": "Listed pack envelope 60 × 60 × 110 mm; the retailer's declared shipping weight for the pack is 338 g",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.8
+    },
+    "dim_w_mm": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.85
+    },
+    "dim_h_mm": {
+      "value": 110,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.85
+    },
+    "dim_d_mm": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.85
+    },
+    "operating_temperature": {
+      "value": "Normal indoor ambient, roughly 0-45 °C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "storage_temperature": {
+      "value": "-20 °C to 60 °C in dry storage",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "led_junction_temperature": {
+      "value": "Typically 80-90 °C at the top of the indoor ambient range",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "impact_resistance": {
+      "value": "Polycarbonate body and diffuser — will not shatter like a glass lamp if dropped from holder height",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "luminous_flux": {
+      "value": 806,
+      "unit": "lm",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9
+    },
+    "efficacy": {
+      "value": 89.6,
+      "unit": "lm/W",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "operating_life": {
+      "value": 10000,
+      "unit": "h",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "switching_cycles": {
+      "value": 5000,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "flicker_level": {
+      "value": "Philips EyeComfort — glare is reduced and light flicker minimised to prevent eye strain and fatigue",
+      "provenance": "fetched",
+      "source_url": "https://www.lighting.philips.co.in/consumer/led-lights/led-bulbs",
+      "confidence": 0.75
+    },
+    "power_consumption": {
+      "value": 9,
+      "unit": "W",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.95
+    },
+    "heat_dissipation": {
+      "value": "Passive conduction from the LED board into the lamp body; no fan and no radiated infra-red",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "net_weight_kg": {
+      "value": 0.05,
+      "unit": "kg",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "screw_base_connection": {
+      "value": "Not a screw base — B22 bayonet cap, push and twist a quarter turn to lock",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.85
+    },
+    "residential": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "commercial": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "rated_current": {
+      "value": 41,
+      "unit": "mA",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "input_current": {
+      "value": 40,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45,
+      "unit": "mA"
+    },
+    "inrush_current": {
+      "value": "Short capacitive inrush typical of a compact LED driver; matters only when many lamps share one switch",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "dust_resistance": {
+      "value": "Indoor-rated enclosure; no IP figure is declared for this lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "is_16102": {
+      "value": "IS 16102 (Part 1) — self-ballasted LED lamps for general lighting, safety requirements",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "is_16103": {
+      "value": "IS 16103 (Part 1) — LED modules for general lighting, safety, applies to the module inside the lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "iec_62560": {
+      "value": "IEC 62560 — the international standard that IS 16102 (Part 1) is aligned to",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "bis": {
+      "value": "BIS registered under compulsory registration (CRS), as required for every LED bulb sold in India; no registration number was read, so none is recorded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "isi": {
+      "value": "Not an ISI-licence category — LED bulbs are covered by BIS compulsory registration (CRS), not the ISI mark scheme",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bee": {
+      "value": "BEE star label carried on the Ace Saver pack; the star band is not restated on the listing used here",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "rohs": {
+      "value": "RoHS-style construction; no mercury, and no UV or IR in the beam",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "lm_79": {
+      "value": "LM-79 photometric measurement is the industry basis for the declared 806 lm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "lm_80": {
+      "value": "LM-80 LED lumen-maintenance data underpins the rated life of the lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "ip_rating": {
+      "value": "Not declared; indoor use",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "is_standard": {
+      "value": "IS 16102 (Part 1)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "lumen_test": {
+      "value": "Integrating-sphere lumen check against the 806 lm declaration",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "flicker_test": {
+      "value": "Flicker measurement is central to the EyeComfort claim on this range",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "endurance_test": {
+      "value": "Life and switching endurance testing behind the rated lamp life",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "surface_finish": {
+      "value": "Frosted white envelope with the Philips wordmark on the neck",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "colour_uniformity": {
+      "value": "Single 6500 K cool day light bin per lamp; the frosted envelope evens out the individual LEDs",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "diffuser_clarity": {
+      "value": "Frosted — the LED array is not visible through the envelope",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "socket_compatibility": {
+      "value": "Fits any standard B22 bayonet holder — the common Indian pin-type holder",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9
+    },
+    "voltage_compatibility": {
+      "value": "220-240 V AC mains",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9
+    },
+    "mounting_orientation": {
+      "value": "Holder mounted, any orientation; avoid fully enclosed fittings",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dimmer_compatibility": {
+      "value": "Not dimmable — do not wire onto a dimmer or regulator circuit",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "installation_height": {
+      "value": "Normal ceiling or wall holder heights, 2.4-3.2 m for a room of this lumen output",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "individual_packaging": {
+      "value": "One lamp per printed Philips carton",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "carton_box": {
+      "value": "Trade packing is a master carton of printed single cartons; Philips also sells the same lamp in 2, 3, 4, 6 and 10-lamp multipacks",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "barcode_labeling": {
+      "value": "EAN barcode and 12NC printed on the individual carton",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "product_price": {
+      "value": 129,
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9,
+      "unit": "₹"
+    },
+    "bulk_price": {
+      "value": "Roughly ₹85-100 per lamp when bought as a Philips multipack or by the carton in Hyderabad",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "availability": {
+      "value": "Widely available at retail in AP and Telangana; the listing used shows it as available on request rather than in standard stock, and Signify no longer lists the model on its own Indian sites",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.8
+    },
+    "delivery_time": {
+      "value": "Typically 3-7 days to Hyderabad, Vijayawada and Visakhapatnam",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "retail_price": {
+      "value": 180,
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.9,
+      "unit": "₹"
+    },
+    "warranty_period": {
+      "value": "1 year from date of purchase",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "led_warranty": {
+      "value": "The LED board is covered by the same 1-year lamp warranty; there is no separate LED term",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_claim_procedure": {
+      "value": "Through the seller or Philips India consumer care (1800 102 2929) with the invoice and the failed lamp",
+      "provenance": "fetched",
+      "source_url": "https://www.moglix.com/philips-ace-saver-9w-cool-day-white-round-b22-led-bulb-929001198414/mp/msn19z2n111353",
+      "confidence": 0.7
+    },
+    "warranty_coverage": {
+      "value": "Manufacturing defects only; excludes use in fully enclosed fittings, outdoor use and physical breakage",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.lighting.philips.co.in/consumer/led-lights/led-bulbs/_jcr_content/root/responsivegrid/section_component_255072434/responsivegrid/carousel_component/item_1736411016034.signifyimg.82.360.png/1736411967394.png",
+      "alt": "Philips Ace Saver 9 W B22 cool day light LED bulb, front studio photograph showing frosted globe and B22 cap",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.lighting.philips.co.in/consumer/led-lights/led-bulbs/_jcr_content/root/responsivegrid/section_component_1668999500/responsivegrid/story_banner_compone.signifyimg.82.2000.jpeg/1736412967756.jpeg",
+      "alt": "Philips Ace Saver 9 W B22 LED bulb, angled view showing cap and diffuser profile",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.lighting.philips.co.in/consumer/led-lights/led-bulbs/_jcr_content/root/responsivegrid/section_component_1668999500/responsivegrid/story_banner_compone.signifyimg.82.300.jpeg/1736412967756.jpeg",
+      "alt": "Philips (Signify) Philips Ace Saver 9 W B22 Cool Day Light LED Bulb — in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.lighting.philips.co.in/consumer/led-lights/led-bulbs/_jcr_content/root/responsivegrid/section_component_255072434/responsivegrid/carousel_component/item_1736411017211.signifyimg.82.360.png/1736412070021.png",
+      "alt": "Philips EyeComfort low-glare, flicker-free driver specification and LM-80 performance panel",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.lighting.philips.co.in/consumer/led-lights/led-bulbs/_jcr_content/root/responsivegrid/section_component_255072434/responsivegrid/carousel_component/item_1736411023656.signifyimg.82.360.png/1736412718375.png",
+      "alt": "Philips Ace Saver B22 LED bulb carton declaration, dimensions 60 mm x 110 mm, and BIS license mark",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "base_type",
+    "luminous_flux",
+    "luminous_intensity",
+    "colour_temperature",
+    "colour_rendering_index",
+    "beam_angle",
+    "wattage",
+    "operating_life"
+  ],
+  "short_description": "Philips Ace Saver 9 W B22 LED bulb, 806 lm cool day light 6500 K, EyeComfort low-glare light, no UV or IR. Made in India.",
+  "long_description": "## What it is\n\nThe Philips Ace Saver 9 W B22 Cool Day Light LED bulb (Philips 12NC 929001198414) is the value tier of Philips India's household lamp range and the model most Indian buyers mean when they ask for \"a Philips bulb\". It is a round polycarbonate lamp with a frosted envelope and a B22 bayonet cap, drawing 9 W and delivering 806 lumens at 6500 K cool day light. It is made and packed in India by Philips India Ltd at Nalagarh, Himachal Pradesh.\n\n## What it's for\n\nEveryday indoor lighting: living rooms, bedrooms, kitchens and passages, and equally at home in an office or a shop on an existing B22 holder. It goes straight into the holder an ordinary incandescent bulb came out of, with no rewiring and no change of fitting.\n\n## Key specifications\n\nThe lamp runs on 220-240 V AC mains and consumes 9 W for 806 lumens, which works out at roughly 90 lumens per watt. Colour is 6500 K cool day light with a colour rendering index around 80. Philips builds the range around its EyeComfort claim: glare is reduced and light flicker minimised so the light does not cause eye strain or fatigue over a long evening. The beam carries no infra-red, so the lamp radiates no heat forward, and no ultra-violet, so fabrics and pictures under it do not fade. The body and diffuser are polycarbonate. The lamp measures 60 mm across and 110 mm tall and is non-dimmable.\n\n## Application and installation notes\n\nPush the cap into a standard B22 bayonet holder and twist a quarter turn to lock. Keep it off dimmer and regulator circuits — it is not a dimmable lamp. Avoid fully enclosed fittings, which trap the heat the driver needs to shed. Indoor use only; no IP rating is declared, so it is not for open verandas or outdoor fittings. Because the envelope is polycarbonate and not glass, a knock that would shatter a filament bulb generally will not break it.\n\n## What's in the box\n\nOne lamp in a printed Philips carton carrying the 12NC, the EAN barcode and the MRP block. Philips also packs the same lamp in 2, 3, 4, 6 and 10-lamp multipacks. The usual Philips lamp warranty is one year from date of purchase, claimed through the seller or Philips India consumer care.",
+  "seo": {
+    "title": "Philips Ace Saver 9W B22 LED Bulb 806lm 6500K",
+    "meta_description": "Philips Ace Saver 9 W B22 cool day light LED bulb: 806 lm, 6500 K, EyeComfort low-glare light, no UV or IR, 220-240 V, polycarbonate body, made in India.",
+    "keywords": [
+      "philips 9w led bulb",
+      "philips ace saver b22",
+      "9 watt led bulb b22",
+      "philips 929001198414",
+      "cool day light led bulb 6500k",
+      "led bulb price hyderabad",
+      "philips led bulb"
+    ],
+    "keywords_te": [
+      "ఫిలిప్స్ 9 వాట్ ఎల్ఈడీ బల్బు",
+      "ఏస్ సేవర్ బల్బు",
+      "బి22 ఎల్ఈడీ బల్బు",
+      "కూల్ డే లైట్ బల్బు",
+      "ఎల్ఈడీ బల్బు ధర"
+    ],
+    "keywords_hi": [
+      "फिलिप्स 9 वाट एलईडी बल्ब",
+      "एस सेवर बल्ब",
+      "बी22 एलईडी बल्ब",
+      "कूल डे लाइट बल्ब 6500K",
+      "एलईडी बल्ब कीमत"
+    ]
+  }
+}

@@ -1,0 +1,1127 @@
+{
+  "category": "total-stations",
+  "version": 2,
+  "attributes": [
+    {
+      "key": "instrument_class",
+      "group": "product_identity",
+      "label": "Instrument class",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Manual total station",
+        "Motorised total station",
+        "Robotic total station",
+        "Imaging total station"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 1,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "manual",
+        "robotic",
+        "motorised",
+        "one man station",
+        "ఇన్‌స్ట్రుమెంట్ రకం",
+        "इंस्ट्रूमेंट प्रकार"
+      ],
+      "display_order": 0
+    },
+    {
+      "key": "model_number",
+      "group": "product_identity",
+      "label": "Model number",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "model no",
+        "part number",
+        "instrument model",
+        "మోడల్ నంబర్",
+        "मॉडल नंबर"
+      ],
+      "display_order": 1
+    },
+    {
+      "key": "onboard_software",
+      "group": "product_identity",
+      "label": "Onboard software",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "field software",
+        "firmware",
+        "onboard programs",
+        "సాఫ్ట్‌వేర్",
+        "सॉफ्टवेयर"
+      ],
+      "display_order": 2
+    },
+    {
+      "key": "drive_system",
+      "group": "product_identity",
+      "label": "Drives and clamps",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "tangent screw",
+        "endless drive",
+        "డ్రైవ్",
+        "ड्राइव"
+      ],
+      "display_order": 3
+    },
+    {
+      "key": "angular_accuracy_arcsec",
+      "group": "measurement",
+      "label": "Angular accuracy",
+      "data_type": "number",
+      "unit": "arcsec",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 3,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "angle accuracy",
+        "2 second",
+        "5 second",
+        "seconds accuracy",
+        "కోణ ఖచ్చితత్వం",
+        "कोणीय सटीकता"
+      ],
+      "display_order": 4
+    },
+    {
+      "key": "angle_display_resolution",
+      "group": "measurement",
+      "label": "Angle display resolution",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "least count",
+        "display resolution",
+        "రిజల్యూషన్",
+        "रिज़ॉल्यूशन"
+      ],
+      "display_order": 5
+    },
+    {
+      "key": "distance_accuracy_prism",
+      "group": "measurement",
+      "label": "Distance accuracy (to prism)",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "EDM accuracy",
+        "mm + ppm",
+        "prism accuracy",
+        "దూర ఖచ్చితత్వం",
+        "दूरी सटीकता"
+      ],
+      "display_order": 6
+    },
+    {
+      "key": "distance_accuracy_reflectorless",
+      "group": "measurement",
+      "label": "Distance accuracy (reflectorless)",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "DR accuracy",
+        "reflectorless accuracy",
+        "రిఫ్లెక్టర్‌లెస్ ఖచ్చితత్వం",
+        "रिफ्लेक्टरलेस सटीकता"
+      ],
+      "display_order": 7
+    },
+    {
+      "key": "prism_range_m",
+      "group": "measurement",
+      "label": "Range to single prism",
+      "data_type": "number",
+      "unit": "m",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 5,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "prism range",
+        "with prism",
+        "ప్రిజం పరిధి",
+        "प्रिज्म रेंज"
+      ],
+      "display_order": 8
+    },
+    {
+      "key": "reflectorless_range_m",
+      "group": "measurement",
+      "label": "Reflectorless range",
+      "data_type": "number",
+      "unit": "m",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 4,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "prismless range",
+        "DR range",
+        "without prism",
+        "రిఫ్లెక్టర్‌లెస్ పరిధి",
+        "रिफ्लेक्टरलेस रेंज"
+      ],
+      "display_order": 9
+    },
+    {
+      "key": "edm_type",
+      "group": "measurement",
+      "label": "EDM type",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "distance meter",
+        "laser type",
+        "coaxial EDM",
+        "ఈడీఎం",
+        "ईडीएम"
+      ],
+      "display_order": 10
+    },
+    {
+      "key": "compensator_type",
+      "group": "measurement",
+      "label": "Compensator",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Single-axis",
+        "Dual-axis",
+        "Quadruple-axis",
+        "None"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 2,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "dual axis compensator",
+        "tilt sensor",
+        "కంపెన్సేటర్",
+        "कंपनसेटर"
+      ],
+      "display_order": 11
+    },
+    {
+      "key": "compensator_accuracy_arcsec",
+      "group": "measurement",
+      "label": "Compensator setting accuracy",
+      "data_type": "number",
+      "unit": "arcsec",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "tilt accuracy",
+        "setting accuracy",
+        "కంపెన్సేటర్ ఖచ్చితత్వం",
+        "कंपनसेटर सटीकता"
+      ],
+      "display_order": 12
+    },
+    {
+      "key": "compensator_range",
+      "group": "measurement",
+      "label": "Compensator working range",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "tilt range",
+        "working range",
+        "పని పరిధి",
+        "कार्य सीमा"
+      ],
+      "display_order": 13
+    },
+    {
+      "key": "telescope_magnification_x",
+      "group": "optical",
+      "label": "Telescope magnification",
+      "data_type": "number",
+      "unit": "x",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "zoom",
+        "30x",
+        "magnification",
+        "మాగ్నిఫికేషన్",
+        "आवर्धन"
+      ],
+      "display_order": 14
+    },
+    {
+      "key": "telescope_field_of_view",
+      "group": "optical",
+      "label": "Field of view",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "FOV",
+        "view at 100 m",
+        "వ్యూ ఫీల్డ్",
+        "दृश्य क्षेत्र"
+      ],
+      "display_order": 15
+    },
+    {
+      "key": "objective_aperture_mm",
+      "group": "optical",
+      "label": "Objective lens aperture",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "objective diameter",
+        "lens size",
+        "అపెర్చర్",
+        "अपर्चर"
+      ],
+      "display_order": 16
+    },
+    {
+      "key": "telescope_length_mm",
+      "group": "optical",
+      "label": "Telescope length",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "tube length",
+        "టెలిస్కోప్ పొడవు",
+        "टेलीस्कोप लंबाई"
+      ],
+      "display_order": 17
+    },
+    {
+      "key": "laser_class",
+      "group": "optical",
+      "label": "Laser class",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Class 1",
+        "Class 2",
+        "Class 3R"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 6,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "laser safety class",
+        "class 3R",
+        "లేజర్ క్లాస్",
+        "लेजर क्लास"
+      ],
+      "display_order": 18
+    },
+    {
+      "key": "battery_type",
+      "group": "electrical",
+      "label": "Battery",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "li-ion battery",
+        "power pack",
+        "బ్యాటరీ",
+        "बैटरी"
+      ],
+      "display_order": 19
+    },
+    {
+      "key": "battery_operating_time_h",
+      "group": "electrical",
+      "label": "Battery operating time",
+      "data_type": "number",
+      "unit": "h",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 7,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "battery backup",
+        "working hours",
+        "బ్యాటరీ సమయం",
+        "बैटरी बैकअप"
+      ],
+      "display_order": 20
+    },
+    {
+      "key": "internal_memory",
+      "group": "electrical",
+      "label": "Internal memory",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "storage",
+        "points capacity",
+        "మెమరీ",
+        "मेमोरी"
+      ],
+      "display_order": 21
+    },
+    {
+      "key": "connectivity",
+      "group": "electrical",
+      "label": "Connectivity",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ports",
+        "bluetooth wifi usb",
+        "data transfer",
+        "కనెక్టివిటీ",
+        "कनेक्टिविटी"
+      ],
+      "display_order": 22
+    },
+    {
+      "key": "bluetooth",
+      "group": "electrical",
+      "label": "Bluetooth",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": true,
+      "filter_widget": "toggle",
+      "filter_order": 8,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "wireless",
+        "bluetooth enabled",
+        "బ్లూటూత్",
+        "ब्लूटूथ"
+      ],
+      "display_order": 23
+    },
+    {
+      "key": "ip_rating",
+      "group": "environmental",
+      "label": "IP protection rating",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "IP54",
+        "IP55",
+        "IP65",
+        "IP66",
+        "IP67"
+      ],
+      "is_filterable": false,
+      "filter_order": 9,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ingress protection",
+        "dust water proof",
+        "ఐపీ రేటింగ్",
+        "आईपी रेटिंग"
+      ],
+      "display_order": 24
+    },
+    {
+      "key": "operating_temp_min_c",
+      "group": "environmental",
+      "label": "Minimum operating temperature",
+      "data_type": "number",
+      "unit": "°C",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "min temperature",
+        "cold limit",
+        "కనిష్ట ఉష్ణోగ్రత",
+        "न्यूनतम तापमान"
+      ],
+      "display_order": 25
+    },
+    {
+      "key": "operating_temp_max_c",
+      "group": "environmental",
+      "label": "Maximum operating temperature",
+      "data_type": "number",
+      "unit": "°C",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "max temperature",
+        "heat limit",
+        "గరిష్ట ఉష్ణోగ్రత",
+        "अधिकतम तापमान"
+      ],
+      "display_order": 26
+    },
+    {
+      "key": "housing_material",
+      "group": "composition",
+      "label": "Housing material",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "body material",
+        "casing",
+        "బాడీ మెటీరియల్",
+        "बॉडी मटेरियल"
+      ],
+      "display_order": 27
+    },
+    {
+      "key": "optics_coating",
+      "group": "composition",
+      "label": "Telescope optics and coating",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "lens coating",
+        "optics",
+        "టెలిస్కోప్ లెన్స్",
+        "लेंस कोटिंग"
+      ],
+      "display_order": 28
+    },
+    {
+      "key": "corrosion_protection",
+      "group": "composition",
+      "label": "Corrosion and weather protection",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "rust protection",
+        "anodised",
+        "తుప్పు నిరోధకత",
+        "जंग प्रतिरोध"
+      ],
+      "display_order": 29
+    },
+    {
+      "key": "factory_calibration",
+      "group": "manufacturing",
+      "label": "Factory calibration",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "calibration",
+        "adjustment",
+        "క్యాలిబ్రేషన్",
+        "कैलिब्रेशन"
+      ],
+      "display_order": 30
+    },
+    {
+      "key": "sealing_process",
+      "group": "manufacturing",
+      "label": "Sealing of optics and electronics",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "sealed body",
+        "dust proofing",
+        "సీలింగ్",
+        "सीलिंग"
+      ],
+      "display_order": 31
+    },
+    {
+      "key": "dim_w_mm",
+      "group": "dimensions",
+      "label": "Width",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "width",
+        "వెడల్పు",
+        "चौड़ाई"
+      ],
+      "display_order": 32
+    },
+    {
+      "key": "dim_h_mm",
+      "group": "dimensions",
+      "label": "Height",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "height",
+        "ఎత్తు",
+        "ऊंचाई"
+      ],
+      "display_order": 33
+    },
+    {
+      "key": "dim_d_mm",
+      "group": "dimensions",
+      "label": "Depth",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "depth",
+        "లోతు",
+        "गहराई"
+      ],
+      "display_order": 34
+    },
+    {
+      "key": "net_weight_kg",
+      "group": "dimensions",
+      "label": "Net weight (instrument with battery)",
+      "data_type": "number",
+      "unit": "kg",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "weight",
+        "బరువు",
+        "वजन"
+      ],
+      "display_order": 35
+    },
+    {
+      "key": "application_areas",
+      "group": "application",
+      "label": "Typical applications",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "uses",
+        "where used",
+        "ఉపయోగాలు",
+        "उपयोग"
+      ],
+      "display_order": 36
+    },
+    {
+      "key": "stakeout_support",
+      "group": "application",
+      "label": "Setting-out / stakeout programs",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "setting out",
+        "layout",
+        "stake out",
+        "లేఅవుట్",
+        "लेआउट"
+      ],
+      "display_order": 37
+    },
+    {
+      "key": "is_standard",
+      "group": "standards",
+      "label": "Governing standard",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ISO 17123",
+        "test standard",
+        "ప్రమాణం",
+        "मानक"
+      ],
+      "display_order": 38
+    },
+    {
+      "key": "laser_safety_standard",
+      "group": "standards",
+      "label": "Laser safety standard",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "IEC 60825",
+        "laser standard",
+        "లేజర్ ప్రమాణం",
+        "लेजर मानक"
+      ],
+      "display_order": 39
+    },
+    {
+      "key": "calibration_certificate_supplied",
+      "group": "quality_control",
+      "label": "Calibration certificate supplied",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "calibration report",
+        "test certificate",
+        "క్యాలిబ్రేషన్ సర్టిఫికెట్",
+        "कैलिब्रेशन प्रमाणपत्र"
+      ],
+      "display_order": 40
+    },
+    {
+      "key": "field_check_routine",
+      "group": "quality_control",
+      "label": "Field check and adjustment routine",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "field calibration",
+        "check and adjust",
+        "ఫీల్డ్ చెక్",
+        "फील्ड जांच"
+      ],
+      "display_order": 41
+    },
+    {
+      "key": "display_type",
+      "group": "appearance",
+      "label": "Display",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "screen",
+        "touchscreen",
+        "colour display",
+        "డిస్‌ప్లే",
+        "डिस्प्ले"
+      ],
+      "display_order": 42
+    },
+    {
+      "key": "keypad_type",
+      "group": "appearance",
+      "label": "Keypad",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "keyboard",
+        "keys",
+        "కీప్యాడ్",
+        "कीपैड"
+      ],
+      "display_order": 43
+    },
+    {
+      "key": "tripod_thread",
+      "group": "installation",
+      "label": "Tripod thread",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "5/8 inch",
+        "mounting thread",
+        "ట్రైపాడ్ థ్రెడ్",
+        "ट्राइपॉड थ्रेड"
+      ],
+      "display_order": 44
+    },
+    {
+      "key": "centring_method",
+      "group": "installation",
+      "label": "Centring",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "laser plummet",
+        "optical plummet",
+        "సెంట్రింగ్",
+        "सेंटरिंग"
+      ],
+      "display_order": 45
+    },
+    {
+      "key": "levelling_system",
+      "group": "installation",
+      "label": "Levelling",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "bubble",
+        "electronic level",
+        "లెవలింగ్",
+        "लेवलिंग"
+      ],
+      "display_order": 46
+    },
+    {
+      "key": "tribrach_included",
+      "group": "installation",
+      "label": "Tribrach included",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "detachable tribrach",
+        "base plate",
+        "ట్రైబ్రాక్",
+        "ट्राइब्रैक"
+      ],
+      "display_order": 47
+    },
+    {
+      "key": "transport_case",
+      "group": "packaging",
+      "label": "Transport case",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "carry case",
+        "hard case",
+        "కేస్",
+        "केस"
+      ],
+      "display_order": 48
+    },
+    {
+      "key": "package_contents",
+      "group": "packaging",
+      "label": "What's in the box",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "box contents",
+        "accessories",
+        "బాక్స్‌లో ఏమి ఉంది",
+        "बॉक्स में क्या है"
+      ],
+      "display_order": 49
+    },
+    {
+      "key": "minimum_order_quantity",
+      "group": "commercial",
+      "label": "Minimum order quantity",
+      "data_type": "number",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "MOQ",
+        "minimum quantity",
+        "కనీస ఆర్డర్",
+        "न्यूनतम ऑर्डर"
+      ],
+      "display_order": 50
+    },
+    {
+      "key": "warranty_months",
+      "group": "warranty",
+      "label": "Warranty",
+      "data_type": "number",
+      "unit": "months",
+      "is_filterable": false,
+      "filter_order": 10,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "guarantee",
+        "warranty period",
+        "వారంటీ",
+        "वारंटी"
+      ],
+      "display_order": 51
+    },
+    {
+      "key": "warranty_coverage",
+      "group": "warranty",
+      "label": "Warranty coverage",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "what is covered",
+        "warranty terms",
+        "వారంటీ కవరేజ్",
+        "वारंटी कवरेज"
+      ],
+      "display_order": 52
+    },
+    {
+      "key": "extended_warranty_available",
+      "group": "warranty",
+      "label": "Extended warranty / care pack available",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "AMC",
+        "care pack",
+        "extended cover",
+        "అదనపు వారంటీ",
+        "विस्तारित वारंटी"
+      ],
+      "display_order": 53
+    }
+  ]
+}

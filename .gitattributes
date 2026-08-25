@@ -1,0 +1,23 @@
+# One line ending everywhere. Biome formats with LF and the pipeline writes LF, so without
+# this a Windows checkout rewrites half the tree to CRLF and every file reads as modified.
+* text=auto eol=lf
+
+# Binary: never normalised, never diffed as text.
+*.xlsx  binary
+*.glb   binary
+*.usdz  binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.avif  binary
+*.ico   binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+
+# Generated: collapsed in diffs and excluded from language statistics.
+pnpm-lock.yaml               linguist-generated=true -diff
+services/pipeline/registry/*.json linguist-generated=true

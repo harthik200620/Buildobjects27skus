@@ -1,0 +1,1162 @@
+{
+  "category": "cctv",
+  "version": 2,
+  "attributes": [
+    {
+      "key": "resolution_mp",
+      "group": "product_identity",
+      "label": "Resolution",
+      "data_type": "number",
+      "unit": "MP",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 3,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "megapixel",
+        "MP",
+        "2MP",
+        "4MP",
+        "picture quality",
+        "రిజల్యూషన్",
+        "मेगापिक्सल"
+      ],
+      "display_order": 0
+    },
+    {
+      "key": "form_factor",
+      "group": "product_identity",
+      "label": "Body shape",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Dome",
+        "Bullet",
+        "Turret (eyeball)",
+        "Cube / indoor",
+        "PTZ",
+        "Fisheye"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 2,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "shape",
+        "dome",
+        "bullet",
+        "turret",
+        "body type",
+        "ఆకారం",
+        "डोम",
+        "बुलेट"
+      ],
+      "display_order": 1
+    },
+    {
+      "key": "model_number",
+      "group": "product_identity",
+      "label": "Model number",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "model no",
+        "model code",
+        "part number",
+        "మోడల్ నంబర్",
+        "मॉडल नंबर"
+      ],
+      "display_order": 2
+    },
+    {
+      "key": "signal_technology",
+      "group": "product_identity",
+      "label": "Signal technology",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "IP (network)",
+        "HDTVI",
+        "HDCVI",
+        "AHD",
+        "Analogue CVBS",
+        "Wi-Fi",
+        "Multi-standard (TVI/AHD/CVI/CVBS)"
+      ],
+      "is_filterable": false,
+      "filter_order": 4,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IP or analog",
+        "HDTVI",
+        "HDCVI",
+        "network camera",
+        "సిగ్నల్ రకం",
+        "सिग्नल प्रकार"
+      ],
+      "display_order": 3
+    },
+    {
+      "key": "audio_support",
+      "group": "product_identity",
+      "label": "Audio",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "None",
+        "Built-in microphone",
+        "Microphone + speaker (two-way talk)",
+        "Audio via separate input"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 6,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "mic",
+        "sound recording",
+        "two way talk",
+        "ఆడియో",
+        "ऑडियो",
+        "माइक"
+      ],
+      "display_order": 4
+    },
+    {
+      "key": "night_vision_type",
+      "group": "product_identity",
+      "label": "Night vision",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Infrared (black & white)",
+        "Full-colour (white light)",
+        "Smart dual-light (IR + white light)",
+        "None"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 5,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "night vision",
+        "colour night vision",
+        "ColorVu",
+        "Full Color",
+        "IR",
+        "రాత్రి దృష్టి",
+        "नाइट विजन"
+      ],
+      "display_order": 5
+    },
+    {
+      "key": "image_sensor",
+      "group": "imaging",
+      "label": "Image sensor",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "sensor",
+        "CMOS",
+        "progressive scan",
+        "సెన్సార్",
+        "सेंसर"
+      ],
+      "display_order": 6
+    },
+    {
+      "key": "max_video_resolution",
+      "group": "imaging",
+      "label": "Maximum video resolution",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "pixels",
+        "1080p",
+        "1440p",
+        "image size",
+        "వీడియో రిజల్యూషన్",
+        "वीडियो रिज़ॉल्यूशन"
+      ],
+      "display_order": 7
+    },
+    {
+      "key": "max_frame_rate_fps",
+      "group": "imaging",
+      "label": "Maximum frame rate",
+      "data_type": "number",
+      "unit": "fps",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "fps",
+        "frame rate",
+        "25fps",
+        "ఫ్రేమ్ రేట్",
+        "फ्रेम रेट"
+      ],
+      "display_order": 8
+    },
+    {
+      "key": "video_compression",
+      "group": "imaging",
+      "label": "Video compression",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "H.265+",
+        "H.265",
+        "H.264+",
+        "H.264",
+        "MJPEG",
+        "Analogue (no compression)"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 9,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "codec",
+        "H.265",
+        "compression",
+        "storage saving",
+        "కోడెక్",
+        "कोडेक"
+      ],
+      "display_order": 9
+    },
+    {
+      "key": "min_illumination_lux",
+      "group": "imaging",
+      "label": "Minimum illumination",
+      "data_type": "number",
+      "unit": "lux",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "low light",
+        "lux",
+        "sensitivity",
+        "కనిష్ట వెలుతురు",
+        "न्यूनतम रोशनी"
+      ],
+      "display_order": 10
+    },
+    {
+      "key": "ir_range_m",
+      "group": "imaging",
+      "label": "Night-vision (IR) range",
+      "data_type": "number",
+      "unit": "m",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 8,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "IR distance",
+        "night range",
+        "20 metre",
+        "30 metre",
+        "ఐఆర్ పరిధి",
+        "आईआर रेंज"
+      ],
+      "display_order": 11
+    },
+    {
+      "key": "lens_focal_length_mm",
+      "group": "optical",
+      "label": "Lens focal length",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 7,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "lens",
+        "2.8mm",
+        "3.6mm",
+        "focal length",
+        "లెన్స్",
+        "लेंस"
+      ],
+      "display_order": 12
+    },
+    {
+      "key": "lens_type",
+      "group": "optical",
+      "label": "Lens type",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Fixed focal",
+        "Varifocal (manual)",
+        "Motorised varifocal",
+        "Zoom"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "fixed lens",
+        "varifocal",
+        "zoom lens",
+        "లెన్స్ రకం",
+        "लेंस प्रकार"
+      ],
+      "display_order": 13
+    },
+    {
+      "key": "horizontal_field_of_view_deg",
+      "group": "optical",
+      "label": "Horizontal field of view",
+      "data_type": "number",
+      "unit": "°",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "viewing angle",
+        "FOV",
+        "coverage angle",
+        "వీక్షణ కోణం",
+        "व्यू एंगल"
+      ],
+      "display_order": 14
+    },
+    {
+      "key": "adjustment_range",
+      "group": "optical",
+      "label": "Pan / tilt / rotate adjustment",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "angle adjustment",
+        "pan tilt",
+        "3-axis",
+        "కోణం సర్దుబాటు",
+        "एंगल एडजस्टमेंट"
+      ],
+      "display_order": 15
+    },
+    {
+      "key": "ip_rating",
+      "group": "environmental",
+      "label": "Weather protection (IP) rating",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "IP54",
+        "IP65",
+        "IP66",
+        "IP67",
+        "IP68",
+        "Not rated (indoor)"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 10,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IP66",
+        "IP67",
+        "waterproof",
+        "rain proof",
+        "ఐపీ రేటింగ్",
+        "आईपी रेटिंग"
+      ],
+      "display_order": 16
+    },
+    {
+      "key": "ik_rating",
+      "group": "environmental",
+      "label": "Vandal-resistance (IK) rating",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IK10",
+        "impact rating",
+        "vandal proof",
+        "IK రేటింగ్",
+        "आईके रेटिंग"
+      ],
+      "display_order": 17
+    },
+    {
+      "key": "vandal_resistant",
+      "group": "environmental",
+      "label": "Vandal resistant",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "anti vandal",
+        "tamper proof",
+        "వాండల్ ప్రూఫ్",
+        "वैंडल प्रूफ"
+      ],
+      "display_order": 18
+    },
+    {
+      "key": "operating_temperature_min_c",
+      "group": "environmental",
+      "label": "Minimum operating temperature",
+      "data_type": "number",
+      "unit": "°C",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "min temperature",
+        "cold",
+        "కనిష్ట ఉష్ణోగ్రత",
+        "न्यूनतम तापमान"
+      ],
+      "display_order": 19
+    },
+    {
+      "key": "operating_temperature_max_c",
+      "group": "environmental",
+      "label": "Maximum operating temperature",
+      "data_type": "number",
+      "unit": "°C",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "max temperature",
+        "summer heat",
+        "గరిష్ట ఉష్ణోగ్రత",
+        "अधिकतम तापमान"
+      ],
+      "display_order": 20
+    },
+    {
+      "key": "operating_humidity_max_pct",
+      "group": "environmental",
+      "label": "Maximum operating humidity",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "humidity",
+        "moisture",
+        "తేమ",
+        "आर्द्रता"
+      ],
+      "display_order": 21
+    },
+    {
+      "key": "power_supply_type",
+      "group": "electrical",
+      "label": "Power supply",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "PoE (802.3af)",
+        "12 V DC",
+        "PoE + 12 V DC",
+        "24 V AC",
+        "5 V DC adapter"
+      ],
+      "is_filterable": false,
+      "filter_order": 11,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "PoE",
+        "12V DC",
+        "power over ethernet",
+        "adapter",
+        "విద్యుత్ సరఫరా",
+        "पावर सप्लाई"
+      ],
+      "display_order": 22
+    },
+    {
+      "key": "power_consumption_w",
+      "group": "electrical",
+      "label": "Power consumption",
+      "data_type": "number",
+      "unit": "W",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "watts",
+        "power draw",
+        "consumption",
+        "విద్యుత్ వినియోగం",
+        "बिजली खपत"
+      ],
+      "display_order": 23
+    },
+    {
+      "key": "connector_type",
+      "group": "electrical",
+      "label": "Cable / connector",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "RJ45",
+        "BNC",
+        "connector",
+        "pigtail",
+        "కనెక్టర్",
+        "कनेक्टर"
+      ],
+      "display_order": 24
+    },
+    {
+      "key": "housing_material",
+      "group": "composition",
+      "label": "Housing material",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Metal (aluminium alloy)",
+        "Plastic (ABS / PC)",
+        "Metal + plastic",
+        "Stainless steel"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "body material",
+        "metal body",
+        "plastic body",
+        "బాడీ మెటీరియల్",
+        "बॉडी मटेरियल"
+      ],
+      "display_order": 25
+    },
+    {
+      "key": "dome_cover_material",
+      "group": "composition",
+      "label": "Dome / front cover material",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "bubble",
+        "lens cover",
+        "polycarbonate dome",
+        "డోమ్ కవర్",
+        "डोम कवर"
+      ],
+      "display_order": 26
+    },
+    {
+      "key": "lens_assembly_process",
+      "group": "manufacturing",
+      "label": "Lens and sensor assembly",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "assembly",
+        "dust free assembly",
+        "అసెంబ్లీ",
+        "असेंबली"
+      ],
+      "display_order": 27
+    },
+    {
+      "key": "weatherproof_sealing_process",
+      "group": "manufacturing",
+      "label": "Weatherproof sealing",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "potting",
+        "gasket sealing",
+        "waterproofing",
+        "సీలింగ్",
+        "सीलिंग"
+      ],
+      "display_order": 28
+    },
+    {
+      "key": "dim_w_mm",
+      "group": "dimensions",
+      "label": "Width / diameter",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "width",
+        "diameter",
+        "వెడల్పు",
+        "चौड़ाई"
+      ],
+      "display_order": 29
+    },
+    {
+      "key": "dim_h_mm",
+      "group": "dimensions",
+      "label": "Height",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "height",
+        "ఎత్తు",
+        "ऊंचाई"
+      ],
+      "display_order": 30
+    },
+    {
+      "key": "dim_d_mm",
+      "group": "dimensions",
+      "label": "Depth / length",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "depth",
+        "length",
+        "లోతు",
+        "गहराई"
+      ],
+      "display_order": 31
+    },
+    {
+      "key": "net_weight_kg",
+      "group": "dimensions",
+      "label": "Net weight",
+      "data_type": "number",
+      "unit": "kg",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "weight",
+        "బరువు",
+        "वजन"
+      ],
+      "display_order": 32
+    },
+    {
+      "key": "indoor_use",
+      "group": "application",
+      "label": "Suitable for indoor use",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "indoor",
+        "inside",
+        "లోపల",
+        "इनडोर"
+      ],
+      "display_order": 33
+    },
+    {
+      "key": "outdoor_use",
+      "group": "application",
+      "label": "Suitable for outdoor use",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "outdoor",
+        "outside",
+        "weatherproof",
+        "బయట",
+        "आउटडोर"
+      ],
+      "display_order": 34
+    },
+    {
+      "key": "typical_application",
+      "group": "application",
+      "label": "Typical application",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "use case",
+        "where to use",
+        "home shop office",
+        "ఉపయోగం",
+        "उपयोग"
+      ],
+      "display_order": 35
+    },
+    {
+      "key": "is_standard",
+      "group": "standards",
+      "label": "Governing standard",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IS standard",
+        "BIS standard",
+        "IS 13252",
+        "ప్రమాణం",
+        "मानक"
+      ],
+      "display_order": 36
+    },
+    {
+      "key": "onvif_conformance",
+      "group": "standards",
+      "label": "ONVIF conformance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ONVIF",
+        "profile S",
+        "profile T",
+        "third party NVR",
+        "ఓఎన్‌వీఐఎఫ్",
+        "ओएनवीआईएफ"
+      ],
+      "display_order": 37
+    },
+    {
+      "key": "rohs_compliant",
+      "group": "standards",
+      "label": "RoHS compliant",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "RoHS",
+        "lead free",
+        "రోహెచ్‌ఎస్",
+        "आरओएचएस"
+      ],
+      "display_order": 38
+    },
+    {
+      "key": "burn_in_test",
+      "group": "quality_control",
+      "label": "Burn-in / ageing test",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "ageing test",
+        "burn in",
+        "బర్న్ ఇన్ టెస్ట్",
+        "बर्न इन टेस्ट"
+      ],
+      "display_order": 39
+    },
+    {
+      "key": "ingress_protection_test",
+      "group": "quality_control",
+      "label": "Ingress-protection test",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "water test",
+        "IP test",
+        "spray test",
+        "ఐపీ పరీక్ష",
+        "आईपी परीक्षण"
+      ],
+      "display_order": 40
+    },
+    {
+      "key": "body_colour",
+      "group": "appearance",
+      "label": "Body colour",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "White",
+        "Ivory / off-white",
+        "Grey",
+        "Black",
+        "White + grey"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "colour",
+        "color",
+        "white",
+        "రంగు",
+        "रंग"
+      ],
+      "display_order": 41
+    },
+    {
+      "key": "surface_finish",
+      "group": "appearance",
+      "label": "Surface finish",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "finish",
+        "matte",
+        "powder coated",
+        "ఫినిష్",
+        "फिनिश"
+      ],
+      "display_order": 42
+    },
+    {
+      "key": "mounting_type",
+      "group": "installation",
+      "label": "Mounting",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Ceiling",
+        "Wall",
+        "Ceiling or wall",
+        "Pole",
+        "Corner",
+        "Table / shelf"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "fitting",
+        "ceiling mount",
+        "wall mount",
+        "అమరిక",
+        "माउंटिंग"
+      ],
+      "display_order": 43
+    },
+    {
+      "key": "recommended_installation_height_m",
+      "group": "installation",
+      "label": "Recommended installation height",
+      "data_type": "number",
+      "unit": "m",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "mounting height",
+        "fixing height",
+        "అమర్చే ఎత్తు",
+        "स्थापना ऊंचाई"
+      ],
+      "display_order": 44
+    },
+    {
+      "key": "box_contents",
+      "group": "packaging",
+      "label": "What's in the box",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "accessories",
+        "included items",
+        "box contents",
+        "బాక్స్‌లో ఏమి ఉంది",
+        "बॉक्स में क्या है"
+      ],
+      "display_order": 45
+    },
+    {
+      "key": "packaging_type",
+      "group": "packaging",
+      "label": "Packaging",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "carton",
+        "packing",
+        "ప్యాకింగ్",
+        "पैकिंग"
+      ],
+      "display_order": 46
+    },
+    {
+      "key": "minimum_order_quantity",
+      "group": "commercial",
+      "label": "Minimum order quantity",
+      "data_type": "number",
+      "unit": "piece",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "MOQ",
+        "minimum quantity",
+        "కనీస ఆర్డర్",
+        "न्यूनतम ऑर्डर"
+      ],
+      "display_order": 47
+    },
+    {
+      "key": "warranty_months",
+      "group": "warranty",
+      "label": "Warranty",
+      "data_type": "number",
+      "unit": "months",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "warranty",
+        "guarantee",
+        "2 year",
+        "వారంటీ",
+        "वारंटी"
+      ],
+      "display_order": 48
+    },
+    {
+      "key": "warranty_type",
+      "group": "warranty",
+      "label": "Warranty type",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "carry in",
+        "replacement warranty",
+        "వారంటీ రకం",
+        "वारंटी प्रकार"
+      ],
+      "display_order": 49
+    },
+    {
+      "key": "warranty_coverage",
+      "group": "warranty",
+      "label": "Warranty coverage",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "what is covered",
+        "warranty terms",
+        "వారంటీ పరిధి",
+        "वारंटी कवरेज"
+      ],
+      "display_order": 50
+    }
+  ]
+}

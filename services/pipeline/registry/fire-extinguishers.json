@@ -1,0 +1,1183 @@
+{
+  "category": "fire-extinguishers",
+  "version": 2,
+  "attributes": [
+    {
+      "key": "extinguishing_agent",
+      "group": "product_identity",
+      "label": "Extinguishing agent",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Mono ammonium phosphate (MAP 90)",
+        "Mono ammonium phosphate (MAP 75)",
+        "Mono ammonium phosphate (MAP 40)",
+        "Sodium bicarbonate (BC powder)",
+        "Carbon dioxide",
+        "AFFF foam concentrate",
+        "Water with additive",
+        "Demineralised water mist",
+        "HCFC-123 clean agent",
+        "FK-5-1-12 clean agent",
+        "Potassium acetate solution"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 3,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "agent",
+        "powder type",
+        "MAP 90",
+        "filling",
+        "ఏజెంట్",
+        "एजेंट"
+      ],
+      "display_order": 0
+    },
+    {
+      "key": "capacity_kg",
+      "group": "product_identity",
+      "label": "Capacity",
+      "data_type": "number",
+      "unit": "kg",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 2,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "capacity",
+        "size",
+        "weight of agent",
+        "4 kg",
+        "6 kg",
+        "సామర్థ్యం",
+        "क्षमता"
+      ],
+      "display_order": 1
+    },
+    {
+      "key": "model_number",
+      "group": "product_identity",
+      "label": "Model number",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "model no",
+        "model code",
+        "మోడల్ నంబర్",
+        "मॉडल नंबर"
+      ],
+      "display_order": 2
+    },
+    {
+      "key": "operating_mechanism",
+      "group": "product_identity",
+      "label": "Operating mechanism",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Stored pressure",
+        "Gas cartridge operated",
+        "Constant pressure"
+      ],
+      "is_filterable": false,
+      "filter_order": 5,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "mechanism",
+        "stored pressure",
+        "cartridge",
+        "ఆపరేటింగ్ విధానం",
+        "संचालन प्रणाली"
+      ],
+      "display_order": 3
+    },
+    {
+      "key": "refillable",
+      "group": "product_identity",
+      "label": "Refillable",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": true,
+      "filter_widget": "toggle",
+      "filter_order": 9,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "refill",
+        "rechargeable",
+        "తిరిగి నింపదగినది",
+        "रिफिल योग्य"
+      ],
+      "display_order": 4
+    },
+    {
+      "key": "valve_type",
+      "group": "product_identity",
+      "label": "Valve type",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Squeeze grip lever with controllable discharge",
+        "Squeeze grip lever",
+        "Wheel type valve",
+        "Cartridge striker knob"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "valve type",
+        "lever",
+        "squeeze grip",
+        "వాల్వ్ రకం",
+        "वाल्व प्रकार"
+      ],
+      "display_order": 5
+    },
+    {
+      "key": "suitable_fire_classes",
+      "group": "performance",
+      "label": "Fire classes covered",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "class A B C",
+        "fire class",
+        "type of fire",
+        "అగ్ని తరగతి",
+        "आग की श्रेणी"
+      ],
+      "display_order": 6
+    },
+    {
+      "key": "fire_rating",
+      "group": "performance",
+      "label": "Fire rating",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 4,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "rating",
+        "2A 21B",
+        "4A 34B",
+        "fire test rating",
+        "అగ్ని రేటింగ్",
+        "अग्नि रेटिंग"
+      ],
+      "display_order": 7
+    },
+    {
+      "key": "discharge_time_s",
+      "group": "performance",
+      "label": "Discharge time",
+      "data_type": "number",
+      "unit": "s",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "discharge duration",
+        "emptying time",
+        "డిశ్చార్జ్ సమయం",
+        "डिस्चार्ज समय"
+      ],
+      "display_order": 8
+    },
+    {
+      "key": "discharge_range_m",
+      "group": "performance",
+      "label": "Discharge range",
+      "data_type": "number",
+      "unit": "m",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "throw distance",
+        "jet range",
+        "డిశ్చార్జ్ పరిధి",
+        "डिस्चार्ज दूरी"
+      ],
+      "display_order": 9
+    },
+    {
+      "key": "discharge_rate_kg_s",
+      "group": "performance",
+      "label": "Discharge rate",
+      "data_type": "number",
+      "unit": "kg/s",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "flow rate",
+        "discharge rate",
+        "డిశ్చార్జ్ రేటు",
+        "डिस्चार्ज दर"
+      ],
+      "display_order": 10
+    },
+    {
+      "key": "suitable_for_electrical",
+      "group": "performance",
+      "label": "Safe on live electrical fires",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 10,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "electrical fire",
+        "class E",
+        "live equipment",
+        "విద్యుత్ మంటలు",
+        "बिजली की आग"
+      ],
+      "display_order": 11
+    },
+    {
+      "key": "recommended_coverage_sqm",
+      "group": "performance",
+      "label": "Recommended coverage area",
+      "data_type": "number",
+      "unit": "m²",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "coverage",
+        "area covered",
+        "protection area",
+        "కవరేజ్",
+        "कवरेज"
+      ],
+      "display_order": 12
+    },
+    {
+      "key": "residue_type",
+      "group": "performance",
+      "label": "Residue after discharge",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "residue",
+        "clean-up",
+        "after use mess",
+        "అవశేషం",
+        "अवशेष"
+      ],
+      "display_order": 13
+    },
+    {
+      "key": "agent_composition",
+      "group": "performance",
+      "label": "Agent composition",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "composition",
+        "powder purity",
+        "MAP percentage",
+        "కూర్పు",
+        "संरचना"
+      ],
+      "display_order": 14
+    },
+    {
+      "key": "working_pressure_bar",
+      "group": "pressure",
+      "label": "Working pressure",
+      "data_type": "number",
+      "unit": "bar",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "service pressure",
+        "operating pressure",
+        "పని పీడనం",
+        "कार्य दाब"
+      ],
+      "display_order": 15
+    },
+    {
+      "key": "test_pressure_bar",
+      "group": "pressure",
+      "label": "Hydraulic test pressure",
+      "data_type": "number",
+      "unit": "bar",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "test pressure",
+        "hydro test",
+        "పరీక్ష పీడనం",
+        "परीक्षण दाब"
+      ],
+      "display_order": 16
+    },
+    {
+      "key": "pressure_gauge_fitted",
+      "group": "pressure",
+      "label": "Pressure gauge fitted",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "gauge",
+        "pressure indicator",
+        "ప్రెషర్ గేజ్",
+        "दाब गेज"
+      ],
+      "display_order": 17
+    },
+    {
+      "key": "safety_pin_fitted",
+      "group": "pressure",
+      "label": "Safety pin and tamper seal",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "safety pin",
+        "tamper seal",
+        "lock pin",
+        "భద్రతా పిన్",
+        "सुरक्षा पिन"
+      ],
+      "display_order": 18
+    },
+    {
+      "key": "valve_thread_size",
+      "group": "pressure",
+      "label": "Valve thread size",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "thread",
+        "neck thread",
+        "valve connection",
+        "థ్రెడ్ సైజు",
+        "थ्रेड आकार"
+      ],
+      "display_order": 19
+    },
+    {
+      "key": "cylinder_material",
+      "group": "composition",
+      "label": "Cylinder material",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Deep-drawn CRCA steel",
+        "Seamless alloy steel",
+        "Welded mild steel (EN 10120)",
+        "Stainless steel",
+        "Aluminium alloy"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 6,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "body material",
+        "shell",
+        "cylinder steel",
+        "సిలిండర్ మెటీరియల్",
+        "सिलेंडर सामग्री"
+      ],
+      "display_order": 20
+    },
+    {
+      "key": "valve_material",
+      "group": "composition",
+      "label": "Valve material",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Forged brass",
+        "Brass with chrome plating",
+        "Aluminium alloy",
+        "Stainless steel"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "valve",
+        "head material",
+        "వాల్వ్ మెటీరియల్",
+        "वाल्व सामग्री"
+      ],
+      "display_order": 21
+    },
+    {
+      "key": "hose_material",
+      "group": "composition",
+      "label": "Hose / nozzle material",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "hose",
+        "discharge hose",
+        "nozzle",
+        "హోస్",
+        "होज़"
+      ],
+      "display_order": 22
+    },
+    {
+      "key": "cylinder_construction",
+      "group": "manufacturing",
+      "label": "Cylinder construction",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Deep drawn seamless",
+        "Two-piece welded",
+        "Three-piece welded"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "construction",
+        "seamless",
+        "welded",
+        "నిర్మాణం",
+        "निर्माण"
+      ],
+      "display_order": 23
+    },
+    {
+      "key": "surface_treatment_process",
+      "group": "manufacturing",
+      "label": "Surface treatment",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "coating process",
+        "phosphating",
+        "powder coating",
+        "ఉపరితల చికిత్స",
+        "सतह उपचार"
+      ],
+      "display_order": 24
+    },
+    {
+      "key": "dim_w_mm",
+      "group": "dimensions",
+      "label": "Width / cylinder diameter",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "diameter",
+        "width",
+        "వెడల్పు",
+        "चौड़ाई"
+      ],
+      "display_order": 25
+    },
+    {
+      "key": "dim_h_mm",
+      "group": "dimensions",
+      "label": "Overall height",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "height",
+        "overall height",
+        "ఎత్తు",
+        "ऊंचाई"
+      ],
+      "display_order": 26
+    },
+    {
+      "key": "dim_d_mm",
+      "group": "dimensions",
+      "label": "Depth (with valve and hose)",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "depth",
+        "లోతు",
+        "गहराई"
+      ],
+      "display_order": 27
+    },
+    {
+      "key": "hose_length_mm",
+      "group": "dimensions",
+      "label": "Hose length",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "hose length",
+        "pipe length",
+        "హోస్ పొడవు",
+        "होज़ लंबाई"
+      ],
+      "display_order": 28
+    },
+    {
+      "key": "net_weight_kg",
+      "group": "dimensions",
+      "label": "Net weight (charged)",
+      "data_type": "number",
+      "unit": "kg",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "total weight",
+        "gross weight",
+        "filled weight",
+        "బరువు",
+        "वजन"
+      ],
+      "display_order": 29
+    },
+    {
+      "key": "operating_temperature_min_c",
+      "group": "thermal",
+      "label": "Minimum operating temperature",
+      "data_type": "number",
+      "unit": "°C",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "min temperature",
+        "low temp limit",
+        "కనిష్ట ఉష్ణోగ్రత",
+        "न्यूनतम तापमान"
+      ],
+      "display_order": 30
+    },
+    {
+      "key": "operating_temperature_max_c",
+      "group": "thermal",
+      "label": "Maximum operating temperature",
+      "data_type": "number",
+      "unit": "°C",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "max temperature",
+        "high temp limit",
+        "గరిష్ట ఉష్ణోగ్రత",
+        "अधिकतम तापमान"
+      ],
+      "display_order": 31
+    },
+    {
+      "key": "shelf_life_years",
+      "group": "durability",
+      "label": "Shelf life before refill",
+      "data_type": "number",
+      "unit": "years",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "shelf life",
+        "service life",
+        "life span",
+        "షెల్ఫ్ లైఫ్",
+        "शेल्फ लाइफ"
+      ],
+      "display_order": 32
+    },
+    {
+      "key": "hydraulic_test_interval_years",
+      "group": "durability",
+      "label": "Hydraulic re-test interval",
+      "data_type": "number",
+      "unit": "years",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "hydro test interval",
+        "pressure test frequency",
+        "పరీక్ష విరామం",
+        "परीक्षण अंतराल"
+      ],
+      "display_order": 33
+    },
+    {
+      "key": "refill_inspection_interval_months",
+      "group": "durability",
+      "label": "Inspection / refill interval",
+      "data_type": "number",
+      "unit": "months",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "service interval",
+        "refill period",
+        "maintenance",
+        "తనిఖీ విరామం",
+        "निरीक्षण अंतराल"
+      ],
+      "display_order": 34
+    },
+    {
+      "key": "application_areas",
+      "group": "application",
+      "label": "Recommended areas",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "where to use",
+        "application",
+        "usage areas",
+        "ఉపయోగ ప్రాంతాలు",
+        "उपयोग क्षेत्र"
+      ],
+      "display_order": 35
+    },
+    {
+      "key": "is_standard",
+      "group": "standards",
+      "label": "Indian Standard",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IS 15683",
+        "BIS standard",
+        "standard",
+        "ప్రమాణం",
+        "मानक"
+      ],
+      "display_order": 36
+    },
+    {
+      "key": "is_2190_reference",
+      "group": "standards",
+      "label": "Selection / installation code",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "IS 2190",
+        "installation code",
+        "selection code",
+        "స్థాపన కోడ్",
+        "स्थापना कोड"
+      ],
+      "display_order": 37
+    },
+    {
+      "key": "isi_marked",
+      "group": "standards",
+      "label": "ISI marked",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": true,
+      "filter_widget": "toggle",
+      "filter_order": 7,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ISI",
+        "BIS mark",
+        "certified",
+        "ఐఎస్ఐ మార్క్",
+        "आईएसआई मार्क"
+      ],
+      "display_order": 38
+    },
+    {
+      "key": "bis_certification",
+      "group": "standards",
+      "label": "BIS certification",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "BIS licence",
+        "certification",
+        "CM/L",
+        "బిఐఎస్",
+        "बीआईएस"
+      ],
+      "display_order": 39
+    },
+    {
+      "key": "iso_quality_system",
+      "group": "standards",
+      "label": "Manufacturer quality system",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "ISO 9001",
+        "quality system",
+        "నాణ్యత వ్యవస్థ",
+        "गुणवत्ता प्रणाली"
+      ],
+      "display_order": 40
+    },
+    {
+      "key": "body_colour",
+      "group": "appearance",
+      "label": "Body colour",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Signal red (RAL 3000)",
+        "Fire red",
+        "Red with black band",
+        "Red with cream band",
+        "Stainless steel finish"
+      ],
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "colour",
+        "color",
+        "red",
+        "రంగు",
+        "रंग"
+      ],
+      "display_order": 41
+    },
+    {
+      "key": "surface_finish",
+      "group": "appearance",
+      "label": "Surface finish",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "finish",
+        "paint",
+        "coating",
+        "ఉపరితలం",
+        "फिनिश"
+      ],
+      "display_order": 42
+    },
+    {
+      "key": "mounting_type",
+      "group": "installation",
+      "label": "Mounting type",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Wall bracket",
+        "Wall hook",
+        "Floor stand",
+        "Vehicle bracket",
+        "Trolley mounted"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 8,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "mounting",
+        "bracket",
+        "wall mount",
+        "మౌంటింగ్",
+        "माउंटिंग"
+      ],
+      "display_order": 43
+    },
+    {
+      "key": "bracket_included",
+      "group": "installation",
+      "label": "Wall bracket included",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "bracket in box",
+        "clamp included",
+        "బ్రాకెట్",
+        "ब्रैकेट"
+      ],
+      "display_order": 44
+    },
+    {
+      "key": "installation_height_mm",
+      "group": "installation",
+      "label": "Recommended mounting height",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "mounting height",
+        "fixing height",
+        "స్థాపన ఎత్తు",
+        "स्थापना ऊंचाई"
+      ],
+      "display_order": 45
+    },
+    {
+      "key": "packaging_type",
+      "group": "packaging",
+      "label": "Packaging",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "box",
+        "carton",
+        "packing",
+        "ప్యాకేజింగ్",
+        "पैकेजिंग"
+      ],
+      "display_order": 46
+    },
+    {
+      "key": "units_per_carton",
+      "group": "packaging",
+      "label": "Units per carton",
+      "data_type": "number",
+      "unit": "pieces",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "pack quantity",
+        "per box",
+        "కార్టన్ యూనిట్లు",
+        "प्रति कार्टन"
+      ],
+      "display_order": 47
+    },
+    {
+      "key": "gst_rate_pct",
+      "group": "commercial",
+      "label": "GST rate",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "GST",
+        "tax rate",
+        "జిఎస్టి",
+        "जीएसटी"
+      ],
+      "display_order": 48
+    },
+    {
+      "key": "availability",
+      "group": "commercial",
+      "label": "Availability",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "stock",
+        "lead time",
+        "availability",
+        "లభ్యత",
+        "उपलब्धता"
+      ],
+      "display_order": 49
+    },
+    {
+      "key": "minimum_order_quantity",
+      "group": "commercial",
+      "label": "Minimum order quantity",
+      "data_type": "number",
+      "unit": "pieces",
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "MOQ",
+        "minimum order",
+        "కనీస ఆర్డర్",
+        "न्यूनतम ऑर्डर"
+      ],
+      "display_order": 50
+    },
+    {
+      "key": "warranty_months",
+      "group": "warranty",
+      "label": "Warranty",
+      "data_type": "number",
+      "unit": "months",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 11,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "warranty",
+        "guarantee",
+        "వారంటీ",
+        "वारंटी"
+      ],
+      "display_order": 51
+    },
+    {
+      "key": "warranty_coverage",
+      "group": "warranty",
+      "label": "Warranty coverage",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "what is covered",
+        "coverage",
+        "వారంటీ కవరేజ్",
+        "वारंटी कवरेज"
+      ],
+      "display_order": 52
+    },
+    {
+      "key": "refill_service_note",
+      "group": "warranty",
+      "label": "Refill / service support",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 99,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "refill service",
+        "AMC",
+        "after sales",
+        "రీఫిల్ సేవ",
+        "रिफिल सेवा"
+      ],
+      "display_order": 53
+    }
+  ]
+}

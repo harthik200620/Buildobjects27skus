@@ -1,0 +1,821 @@
+{
+  "sku_code": "BUL-HAV-LEDPLUS9WB22",
+  "category": "bulbs",
+  "brand": {
+    "slug": "havells",
+    "name": "Havells",
+    "official_domains": [
+      "havells.com"
+    ],
+    "logo_url": "https://havells.com/media/logo/stores/1/Havells_Logo.svg",
+    "intel": {
+      "year_established": {
+        "value": 1958,
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "parent_company": {
+        "value": "Havells India Limited — independent Indian listed company, headquartered in Noida; owns the Havells, Lloyd, Crabtree, Standard Electric, Reo and Promptec brands",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Havells"
+      },
+      "product_portfolio": {
+        "value": "Domestic, commercial and industrial lighting including LED lamps; fans; home appliances; modular switches and wiring accessories; water heaters; domestic and industrial switchgear; cables and wires; induction motors and capacitors",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Havells"
+      },
+      "market_coverage": {
+        "value": "Pan-India through a very deep electrical-dealer network; in Andhra Pradesh and Telangana it is stocked by almost every general electrical shop in Hyderabad, Vijayawada, Visakhapatnam and the district towns, plus Havells Galaxy exclusive stores",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "quality_strength_note": {
+        "value": "Publishes a full engineering spec sheet per lamp — efficacy, power factor, THD, surge and isolation withstand, switching cycles, F50 L70 life — which very few Indian lamp brands do. 4 kV surge protection and a 140-270 V withstand range make it a safe choice on unstable rural feeders",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.3/5 (typical) — rated for consistency of light output and low failure rate rather than lowest price",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "High. Electrical contractors on flats and villa projects default to Havells lamps because the same dealer supplies wires, MCBs and switches, so one bill covers the lot",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High. The brand is recognised from fan and switch advertising, so a first-time buyer picks it off the shelf without asking for specifications",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 70,
+          "highest": 180,
+          "unit": "₹/piece (9 W B22 LED bulb)"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project supply of LED bulbs typically lands 25-40 % below printed MRP once a builder buys by the carton; single-piece retail in a Hyderabad shop sits near the online special price",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Carton lots (typically 100 lamps) attract the deepest slab; 500+ lamp orders for an apartment handover are usually quoted at a flat per-lamp rate",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Roughly 20-30 % on LED lamps at the counter, thinner than on fans or switchgear because online pricing sets the ceiling",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "moderate",
+          "roads": "weak",
+          "bridges": "weak",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "North and West India",
+          "weak": "—",
+          "balanced": "South India including AP/Telangana",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "General indoor lighting in homes — living rooms, bedrooms, kitchens and passages",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Offices, shops, restaurants and hotel corridors on existing B22 holders",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Replacement lamping during handover of apartment projects, where a single model has to be fitted in hundreds of identical holders",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Philips",
+          "Havells",
+          "Wipro",
+          "Syska",
+          "Bajaj"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Havells LED Plus 9 W B22 Cool Day Light Lamp V7",
+    "slug": "havells-led-plus-9w-b22-cool-day-light-lamp-v7",
+    "model_no": "LHLDDDBNL5R009",
+    "status": "active"
+  },
+  "variant_label": "9 W · B22 · 6500 K cool day light · single lamp",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 150,
+    "selling_price": 70,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+    "fetched_at": "2026-08-22",
+    "note": "MRP ₹150 and special price ₹70 (inclusive of all taxes) as listed on havells.com on 22 Aug 2026."
+  },
+  "gst_rate": 12,
+  "sources": {
+    "official_product_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://havells.com/lighting/lighting-led-lamps.html",
+      "https://en.wikipedia.org/wiki/Havells"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "LHLDDDBNL5R009",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.98
+    },
+    "bulb_type": {
+      "value": "Round GLS / A-shape LED lamp",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.85
+    },
+    "led_type": {
+      "value": "SMD LEDs on a DOB (direct-on-board) driver",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.8
+    },
+    "base_type": {
+      "value": "B22",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.98
+    },
+    "wattage": {
+      "value": 9,
+      "unit": "W",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.98
+    },
+    "voltage": {
+      "value": "220-240 V AC rated; withstands 140-270 V",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "frequency": {
+      "value": 50,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95,
+      "unit": "Hz"
+    },
+    "lumens": {
+      "value": 849,
+      "unit": "lm",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "colour_temperature": {
+      "value": 6500,
+      "unit": "K",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "beam_angle": {
+      "value": 220,
+      "unit": "°",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "colour_rendering_index": {
+      "value": 80,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "dimmability": {
+      "value": false,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "shape": {
+      "value": "Round / ball",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "size": {
+      "value": "60 mm diameter × 113 mm height",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.85
+    },
+    "power_factor": {
+      "value": 0.9,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "energy_rating": {
+      "value": "BEE 1 Star (efficacy band ≥ 90 and < 105 lm/W)",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "application_category": {
+      "value": "Indoor general lighting — home, corporate office, shopping malls, restaurants and hotels",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "operating_type": {
+      "value": "Mains-operated, holder-mounted, non-dimmable",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.85
+    },
+    "smart_compatibility": {
+      "value": "Not a smart lamp — no Wi-Fi, app or voice control",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "aluminium_housing": {
+      "value": "No external aluminium housing — polycarbonate body over an internal heat path",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "polycarbonate_diffuser": {
+      "value": "Yes — opal polycarbonate diffuser at 90 % transparency",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "led_chip_material": {
+      "value": "InGaN blue LED die with phosphor conversion to white",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pcb_material": {
+      "value": "Metal-core (aluminium-backed) PCB carrying the DOB driver and the LEDs",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "diffuser_material": {
+      "value": "Polycarbonate (opal)",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "aluminium_heat_sink": {
+      "value": "Internal aluminium heat spreader under the polycarbonate body",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "brass_base": {
+      "value": "Nickel-plated B22 bayonet cap",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "flame_retardant_plastic": {
+      "value": "Flame-retardant polycarbonate body and diffuser",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "led_chip_mounting": {
+      "value": "Automated SMT pick-and-place of SMD LEDs onto the driver board, reflow soldered",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "driver_assembly": {
+      "value": "DOB (direct-on-board) — driver electronics sit on the same board as the LEDs, no separate driver module",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.85
+    },
+    "lumen_testing": {
+      "value": "Integrating-sphere lumen measurement on production samples against the 849 lm rating",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "burn_in_testing": {
+      "value": "Powered ageing / burn-in run before packing to weed out infant failures",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "overall_diameter": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "bulb_diameter": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.85
+    },
+    "base_diameter": {
+      "value": 22,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "product_weight": {
+      "value": 48,
+      "unit": "g",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "package_dimensions": {
+      "value": "Single carton 65 × 60 × 120 mm; master box 316 × 316 × 250 mm, 3.14 kg",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "dim_w_mm": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "dim_h_mm": {
+      "value": 113,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "dim_d_mm": {
+      "value": 60,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "operating_temperature": {
+      "value": "0 °C to 35 °C",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "storage_temperature": {
+      "value": "-20 °C to 60 °C in dry storage",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "led_junction_temperature": {
+      "value": "Typically 80-85 °C at the top of the rated ambient range",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "impact_resistance": {
+      "value": "Polycarbonate body and diffuser — will not shatter like a glass lamp if dropped from holder height",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "luminous_flux": {
+      "value": 849,
+      "unit": "lm",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "efficacy": {
+      "value": 94.44,
+      "unit": "lm/W",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "operating_life": {
+      "value": 15000,
+      "unit": "h",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "switching_cycles": {
+      "value": 7500,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "flicker_level": {
+      "value": "No visible flicker at rated voltage; DOB driver with THD below 33 %",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.7
+    },
+    "power_consumption": {
+      "value": 9,
+      "unit": "W",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "heat_dissipation": {
+      "value": "Passive conduction from the board into the lamp body; efficient heat dissipation is claimed for this range",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.7
+    },
+    "net_weight_kg": {
+      "value": 0.048,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "screw_base_connection": {
+      "value": "Not a screw base — B22 bayonet cap, push and twist a quarter turn to lock",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.85
+    },
+    "residential": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "commercial": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "rated_current": {
+      "value": 50,
+      "unit": "mA",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "input_current": {
+      "value": 50,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9,
+      "unit": "mA"
+    },
+    "inrush_current": {
+      "value": "Short capacitive inrush typical of a DOB driver; matters only when many lamps share one switch",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "dust_resistance": {
+      "value": "IP20 — guarded against solid objects above 12.5 mm only; not dust-tight",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "is_16102": {
+      "value": "IS 16102 (Part 1) — self-ballasted LED lamps for general lighting, safety requirements",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "is_16103": {
+      "value": "IS 16103 (Part 1) — LED modules for general lighting, safety, applies to the module inside the lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "iec_62560": {
+      "value": "IEC 62560 — the international standard that IS 16102 (Part 1) is aligned to",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "bis": {
+      "value": "BIS certified — listed under Certifications on the manufacturer's product page",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "isi": {
+      "value": "Not an ISI-licence category — LED bulbs are covered by BIS compulsory registration (CRS), not the ISI mark scheme",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bee": {
+      "value": "BEE labelled, 1 Star",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "rohs": {
+      "value": "RoHS-style construction; zero mercury content declared on the product page",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "lm_79": {
+      "value": "LM-79 photometric measurement is the industry basis for the declared 849 lm and 94.44 lm/W",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "lm_80": {
+      "value": "LM-80 LED lumen-maintenance data underpins the F50 L70 15 000 h life code",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "ip_rating": {
+      "value": "IP20",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "is_standard": {
+      "value": "IS 16102 (Part 1)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "lumen_test": {
+      "value": "Integrating-sphere lumen check against the 849 lm declaration",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "flicker_test": {
+      "value": "Ripple / flicker check on the DOB driver output, supporting the no-visible-flicker claim",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "endurance_test": {
+      "value": "Life and switching endurance testing to the F50 L70 15 000 h and 7 500-cycle ratings",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "surface_finish": {
+      "value": "Glossy white",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "colour_uniformity": {
+      "value": "Single 6500 K bin per lamp; the opal diffuser evens out the individual LEDs",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "diffuser_clarity": {
+      "value": "Opal polycarbonate at 90 % transparency",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "socket_compatibility": {
+      "value": "Fits any standard B22 bayonet holder — the common Indian pin-type holder",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "voltage_compatibility": {
+      "value": "220-240 V AC nominal, keeps working across 140-270 V, starts from 100 V",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "mounting_orientation": {
+      "value": "Holder mounted, any orientation; avoid fully enclosed fittings",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.8
+    },
+    "dimmer_compatibility": {
+      "value": "Not dimmable — do not wire onto a dimmer or regulator circuit",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "installation_height": {
+      "value": "Normal ceiling or wall holder heights, 2.4-3.2 m for a room of this lumen output",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "individual_packaging": {
+      "value": "One lamp per printed carton, net contents 1 N",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "carton_box": {
+      "value": "Master box 316 × 316 × 250 mm weighing 3.14 kg",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9
+    },
+    "barcode_labeling": {
+      "value": "EAN barcode and model code printed on the individual carton",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "product_price": {
+      "value": 70,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.9,
+      "unit": "₹"
+    },
+    "bulk_price": {
+      "value": "Roughly ₹55-65 per lamp on a full-carton purchase in Hyderabad",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.8
+    },
+    "availability": {
+      "value": "Listed and orderable on havells.com",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.85
+    },
+    "delivery_time": {
+      "value": "Typically 3-7 days to Hyderabad, Vijayawada and Visakhapatnam from a Havells dealer",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "retail_price": {
+      "value": 150,
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95,
+      "unit": "₹"
+    },
+    "warranty_period": {
+      "value": "1 year",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    },
+    "led_warranty": {
+      "value": "The LED board is covered by the same 1-year lamp warranty; there is no separate LED term",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "warranty_claim_procedure": {
+      "value": "Through the Havells service network, dealer or Havells One app with the invoice and the failed lamp",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "warranty_coverage": {
+      "value": "Manufacturing defects only; excludes use outside the 140-270 V withstand range, use in fully enclosed fittings, and physical breakage",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "fetched",
+      "source_url": "https://havells.com/lighting/led-lamps/led-plus-9-w-b22-cdl-lamp-v7-lhldddbnl5r009.html",
+      "confidence": 0.95
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://havells.com/media/catalog/product/cache/553761e1c239bcd5973d5ba4fb1f412b/l/h/lhldddbnl5r009_1.jpg",
+      "alt": "Havells LED Plus 9 W B22 cool day light LED bulb, front view showing the white polycarbonate body and B22 bayonet cap",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://havells.com/media/catalog/product/l/h/lhldddbnl5r009_1.jpg",
+      "alt": "Havells Adore+ LED lamp shown in its B22 and E27 cap variants, angled view of the bayonet cap",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://havells.com/media/catalog/product/cache/a68cd95282f629852e6b9e296b7a5618/l/h/lhldddbnl5r009_1.jpg",
+      "alt": "Living room lit by the Havells LED lamp compared with ordinary lighting, showing the brighter cool day light output",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://havells.com/media/wysiwyg/LHLDDDBNL5R009_2_1.jpg",
+      "alt": "Feature panel for the Havells Adore+ LED lamp: wider light spread, surge protection up to 4 kV, efficient heat dissipation",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://havells.com/media/wysiwyg/LHLDDDBNL5R009_3_1.jpg",
+      "alt": "Havells Adore+ LED lamp range shown in 5 W, 7 W, 9 W and 10 W with the BEE energy label mark",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "base_type",
+    "luminous_flux",
+    "luminous_intensity",
+    "colour_temperature",
+    "colour_rendering_index",
+    "beam_angle",
+    "wattage",
+    "operating_life"
+  ],
+  "short_description": "Havells 9 W B22 LED bulb, 849 lm cool day light 6500 K, 15,000 h life, 4 kV surge protection, works from 140-270 V. BEE 1 Star.",
+  "long_description": "## What it is\n\nThe Havells LED Plus 9 W B22 CDL Lamp V7 (model LHLDDDBNL5R009) is a self-ballasted LED bulb with a round polycarbonate body, an opal polycarbonate diffuser and a B22 bayonet cap — the ordinary pin-type holder used in almost every Indian house. It draws 9 W and puts out 849 lumens of 6500 K cool day light, which works out to 94.44 lm/W and earns it a BEE 1 Star label. Havells makes it in India and sells it under its Adore+ LED lamp identity.\n\n## What it's for\n\nGeneral indoor lighting: living rooms and bedrooms first, and equally at home in a corporate office, a shop, a restaurant or a hotel corridor. At 849 lm it replaces a roughly 57 W incandescent bulb one-for-one in the same holder, so it is the straightforward swap when an old bulb fails or when a new flat is being lamped up.\n\n## Key specifications\n\nIt runs on 220-240 V AC at 50 Hz and draws 0.05 A, with a power factor of at least 0.90 and total harmonic distortion below 33 %. The point that matters on an unstable feeder is the withstand range: the lamp keeps working from 140 V to 270 V, starts from 100 V, carries 4 kV of in-built surge protection and 3.75 kV of isolation. The colour rendering index is 80 or better, start-up is under two seconds, and there is no flicker visible at rated voltage and no UV or IR in the beam. Rated life is 15,000 hours to the F50 L70 code with 7,500 switching cycles. The lamp measures 60 mm across and 113 mm tall, weighs 48 g net, and is rated IP20 for ambient temperatures of 0-35 °C.\n\n## Application and installation notes\n\nPush the cap into the B22 holder and twist a quarter turn; any orientation is fine. It is not dimmable, so keep it off dimmer and regulator circuits. Do not fit it inside a fully enclosed luminaire — the IP20 rating and the 0-35 °C ambient limit both assume the lamp can shed its heat into open air. Being polycarbonate rather than glass, it survives a knock that would shatter a filament bulb.\n\n## What's in the box\n\nOne lamp in a printed carton, net contents 1 N, carton 65 × 60 × 120 mm. Trade packing is a master box of 316 × 316 × 250 mm weighing 3.14 kg. The lamp carries a one-year Havells warranty.",
+  "seo": {
+    "title": "Havells 9W B22 LED Bulb 849lm 6500K — LED Plus V7",
+    "meta_description": "Havells LED Plus 9 W B22 cool day light bulb: 849 lm, 6500 K, 94.44 lm/W, 15,000 h life, 4 kV surge protection, 140-270 V range, BEE 1 Star, 1 yr warranty.",
+    "keywords": [
+      "havells 9w led bulb",
+      "havells b22 led bulb",
+      "9 watt led bulb b22",
+      "havells led plus 9w",
+      "cool day light led bulb 6500k",
+      "LHLDDDBNL5R009",
+      "led bulb price hyderabad"
+    ],
+    "keywords_te": [
+      "హెవెల్స్ 9 వాట్ ఎల్ఈడీ బల్బు",
+      "బి22 ఎల్ఈడీ బల్బు",
+      "కూల్ డే లైట్ బల్బు",
+      "ఎల్ఈడీ బల్బు ధర",
+      "9 వాట్ బల్బు"
+    ],
+    "keywords_hi": [
+      "हैवेल्स 9 वाट एलईडी बल्ब",
+      "बी22 एलईडी बल्ब",
+      "कूल डे लाइट बल्ब 6500K",
+      "एलईडी बल्ब कीमत",
+      "9 वाट बल्ब"
+    ]
+  }
+}

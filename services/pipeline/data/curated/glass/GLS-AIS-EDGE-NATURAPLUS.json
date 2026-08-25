@@ -1,0 +1,562 @@
+{
+  "sku_code": "GLS-AIS-EDGE-NATURAPLUS",
+  "category": "glass",
+  "brand": {
+    "slug": "ais",
+    "name": "AIS (Asahi India Glass)",
+    "official_domains": [
+      "aisglass.com"
+    ],
+    "logo_url": "https://www.aisglass.com/wp-content/uploads/2024/05/logo-desktop.jpg.png",
+    "intel": {
+      "year_established": {
+        "value": 1984,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Asahi_India_Glass"
+      },
+      "parent_company": {
+        "value": "Asahi India Glass Ltd — listed joint venture of the Labroo family, AGC Inc. (Japan) and Maruti Suzuki",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Asahi_India_Glass"
+      },
+      "product_portfolio": {
+        "value": "Ecosense coated glass (Enhance, Exceed, Essence, Edge, Spectra), AIS Clear float, AIS Tinted, AIS Opal and Sunshield reflective glass, AIS Mirror, AIS Décor lacquered glass, Stronglas toughened, Securityglas laminated and Securityplus SentryGlas, Swytchglas smart glass, Pyrobel fire-resistant glass, Krystal frosted glass, AIS Windows uPVC/aluminium fenestration, automotive glass",
+        "provenance": "fetched",
+        "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf"
+      },
+      "market_coverage": {
+        "value": "Pan-India; float lines at Taloja, Maharashtra (since 2017) and Roorkee, Uttarakhand, with 13 plants including Bawal and Chennai; about 20% share of Indian architectural glass (2017)",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Asahi_India_Glass"
+      },
+      "quality_strength_note": {
+        "value": "Ecosense is developed for Indian climatic conditions and every shade is published with VLT, reflection, solar factor, shading coefficient and U-value computed to ISO 9050 / EN 673 with EN 1096 tolerances; AIS offers 4G Solutions (energy, lighting, wind-load and acoustic simulation) for glass selection",
+        "provenance": "fetched",
+        "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf"
+      },
+      "engineer_user_rating": {
+        "value": "4.4/5 (typical) — consultants value the complete per-shade performance tables and the DGU data; the Edge range is the usual answer when a client wants thermal insulation without a DGU",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "High on apartment and commercial projects in Hyderabad where AIS processors supply toughened and DGU units; moderate at small window shops, where Saint-Gobain shades are more familiar",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Moderate — known to home buyers mainly through AIS Windows and the AIS Glasxperts retail brand rather than by glass product name",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 60,
+          "highest": 160,
+          "unit": "₹/sqft"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project supply via AIS processors is typically 15–25% below retail counter rates; single-window retail orders carry cutting, wastage and transport charges",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Slabs generally start at one jumbo-equivalent (about 70–80 sqft of 6 mm) and improve at crate lots; shade-matched batches should be ordered together",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Distributor-to-dealer margins on coated architectural glass generally run 10–18%, processing (toughening, DGU) being a separate margin line",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "moderate",
+          "roads": "weak",
+          "bridges": "weak",
+          "dams_metro": "weak"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "North and West India around the Roorkee and Taloja float plants",
+          "weak": "Deep rural South",
+          "balanced": "South India including Andhra Pradesh and Telangana, supplied through Chennai and Hyderabad processors",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Energy-efficient single-glazed windows and balcony glazing for houses and apartments",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Low-rise commercial facades and structural glazing, and 6-12-6 DGUs for offices",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Green-building (IGBC / GRIHA) projects where single-glazed thermal insulation with a neutral look is specified",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Saint-Gobain",
+          "AIS",
+          "Guardian",
+          "Gold Plus",
+          "Şişecam"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "AIS Ecosense Edge Natura Plus Solar-Control Low-E Glass 6 mm",
+    "slug": "ais-ecosense-edge-natura-plus-6-mm",
+    "model_no": "Natura Plus",
+    "status": "active"
+  },
+  "variant_label": "6 mm, Natura Plus (neutral), single glazing",
+  "unit": "sqft",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 110,
+    "selling_price": 95,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-23",
+    "note": "Typical Hyderabad glass-dealer rate for AIS Ecosense Edge 6 mm coated glass, Aug 2026, ±15%. AIS publishes no MRP and its own IndiaMART listing shows the range out of stock without a price."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.aisglass.com/building-and-construction/coated-for-exteriors/ais-ecosense/",
+    "datasheet_urls": [
+      "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "https://www.aisglass.com/wp-content/uploads/2024/01/140_AIS_Ecosense-Brochure_31-01-2024.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.aisglass.com/technical-guide/ais-glass-performance-parameters/",
+      "https://www.indiamart.com/proddetail/ais-ecosense-high-performance-energy-efficient-glass-20767879612.html",
+      "https://en.wikipedia.org/wiki/Asahi_India_Glass",
+      "https://www.aisglass.com/"
+    ]
+  },
+  "attributes": {
+    "product_series": {
+      "value": "AIS Ecosense Edge",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "confidence": 0.95
+    },
+    "substrate_glass": {
+      "value": "Clear float",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "glazing_configuration": {
+      "value": "Monolithic single glazing",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "confidence": 0.9
+    },
+    "manufacturing_process": {
+      "value": "Float glass coated offline in a vacuum magnetron-sputtering coater, with a durable top layer that allows single-glazed use",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "coating_deposition_method": {
+      "value": "Offline magnetron sputter vacuum deposition",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "nominal_thickness_mm": {
+      "value": 6,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "source_urls": [
+        "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+        "https://www.aisglass.com/wp-content/uploads/2024/01/140_AIS_Ecosense-Brochure_31-01-2024.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "max_pane_width_mm": {
+      "value": 3210,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.35
+    },
+    "max_pane_height_mm": {
+      "value": 2250,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.35
+    },
+    "dim_w_mm": {
+      "value": 1200,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_h_mm": {
+      "value": 1800,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_d_mm": {
+      "value": 6,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "confidence": 0.95
+    },
+    "max_service_temperature_c": {
+      "value": 200,
+      "unit": "°C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "thermal_shock_resistance_c": {
+      "value": 40,
+      "unit": "°C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "bending_strength_mpa": {
+      "value": 41,
+      "unit": "MPa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "impact_safety_class": {
+      "value": "Not a safety glass",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "uv_transmission_pct": {
+      "value": 20,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "density_kg_m3": {
+      "value": 2500,
+      "unit": "kg/m³",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "weight_per_sqm_kg": {
+      "value": 15,
+      "unit": "kg/m²",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "net_weight_kg": {
+      "value": 32.4,
+      "unit": "kg",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "visible_light_transmission_pct": {
+      "value": 45,
+      "unit": "%",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "source_urls": [
+        "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+        "https://www.aisglass.com/wp-content/uploads/2024/01/140_AIS_Ecosense-Brochure_31-01-2024.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "visible_light_reflectance_out_pct": {
+      "value": 20,
+      "unit": "%",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "source_urls": [
+        "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+        "https://www.aisglass.com/wp-content/uploads/2024/01/140_AIS_Ecosense-Brochure_31-01-2024.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "solar_heat_gain_coefficient": {
+      "value": 0.42,
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "source_urls": [
+        "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+        "https://www.aisglass.com/wp-content/uploads/2024/01/140_AIS_Ecosense-Brochure_31-01-2024.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "u_value_w_m2k": {
+      "value": 4.6,
+      "unit": "W/m²K",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "source_urls": [
+        "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+        "https://www.aisglass.com/wp-content/uploads/2024/01/140_AIS_Ecosense-Brochure_31-01-2024.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "emissivity": {
+      "value": 0.4,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "sound_reduction_db": {
+      "value": 31,
+      "unit": "dB",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "application_area": {
+      "value": "Windows and residential glazing",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "confidence": 0.85
+    },
+    "suitable_for_exterior": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/building-and-construction/coated-for-exteriors/ais-ecosense/",
+      "confidence": 0.9
+    },
+    "suitable_for_overhead_glazing": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_standard": {
+      "value": "IS 14900 (float glass substrate); optical data per ISO 9050, U-value per EN 673",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "is_2553_safety_glass": {
+      "value": "Not applicable as supplied (annealed); a toughened or laminated version must comply with IS 2553 Part 1",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_14900_float_glass": {
+      "value": "IS 14900 — transparent sheet (float) glass, governs the clear float substrate",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_16231_igu": {
+      "value": "Not applicable (monolithic pane); IS 16231 applies if built into the 6-12-6 DGU configuration AIS also publishes",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "fragmentation_test": {
+      "value": "Not applicable (annealed glass, not thermally toughened)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "glass_colour": {
+      "value": "Neutral / silver",
+      "provenance": "fetched",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "confidence": 0.8
+    },
+    "surface_finish": {
+      "value": "Reflective",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "glazing_system_compatibility": {
+      "value": "uPVC and aluminium window frames and structural-glazing systems; coating on surface 2 (inside face of the outer pane)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "min_edge_engagement_mm": {
+      "value": 12,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "cuttable_after_processing": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "packing_type": {
+      "value": "Cut-to-size panes with the coated face marked, interleaved with paper or cork pads, delivered on an A-frame or in a wooden crate",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "minimum_order_quantity_sqft": {
+      "value": 10,
+      "unit": "sqft",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "lead_time_days": {
+      "value": 7,
+      "unit": "days",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "availability": {
+      "value": "Supplied through AIS authorised processors and dealers in Hyderabad, Vijayawada and Visakhapatnam; cut to size or toughened to order",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 120,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against coating defects such as peeling, haze or discolouration under normal use; breakage, scratches, chemical attack and installation faults excluded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "coating_warranty_months": {
+      "value": 120,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/05/AIS-Enhance.jpg",
+      "alt": "AIS (Asahi India Glass) GLS-AIS-EDGE-NATURAPLUS - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.aisglass.com/wp-content/themes/aisglass/img/ecosence-1-desk.jpg",
+      "alt": "AIS (Asahi India Glass) GLS-AIS-EDGE-NATURAPLUS - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.aisglass.com/wp-content/themes/aisglass/ais_ecosense_assets/ecosense-images/Chroma-&-Natural-Image.jpg",
+      "alt": "AIS (Asahi India Glass) GLS-AIS-EDGE-NATURAPLUS - in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.aisglass.com/wp-content/themes/aisglass/ais_ecosense_assets/ecosense-images/Edge.jpg",
+      "alt": "AIS (Asahi India Glass) GLS-AIS-EDGE-NATURAPLUS - detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.aisglass.com/wp-content/themes/aisglass/ais_ecosense_assets/ecosense-images/Spectra.png",
+      "alt": "AIS (Asahi India Glass) GLS-AIS-EDGE-NATURAPLUS - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "AIS Ecosense brochure 2025 (July 2026 edition) — performance parameters for Enhance, Edge, Essence, Exceed and Spectra",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2025/12/Ecosense-brochure-2025_New.pdf",
+      "checked": true
+    },
+    {
+      "type": "brochure",
+      "title": "AIS Ecosense brochure, 31 January 2024 edition",
+      "source_url": "https://www.aisglass.com/wp-content/uploads/2024/01/140_AIS_Ecosense-Brochure_31-01-2024.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "visible_light_transmission_pct",
+    "light_to_solar_gain",
+    "solar_heat_gain_coefficient",
+    "u_value_w_m2k",
+    "sound_reduction_db",
+    "impact_safety_class",
+    "nominal_thickness_mm",
+    "max_pane_width_mm"
+  ],
+  "short_description": "AIS Ecosense Edge Natura Plus 6 mm neutral coated glass for single glazing. VLT 45%, SHGC 0.42, U-value 4.6 W/m²K. Sold per sqft, cut to size.",
+  "long_description": "## What it is\n\nAIS Ecosense Edge Natura Plus is a 6 mm coated glass from Asahi India Glass's Ecosense range, in the Edge sub-range that AIS developed for single-glazing use. A multilayer metal-oxide coating on clear soda-lime float glass gives the pane both solar control and a measure of thermal insulation, which is why it is grouped here as a low-emissivity glass; the neutral shade keeps the view colour-true. It is supplied as one annealed monolithic pane, so it is not a safety glass as delivered, and a processor can toughen or laminate it to IS 2553 Part 1 if required. At about 15 kg per square metre, a 1200 × 1800 mm pane weighs roughly 32 kg.\n\n## What it's for\n\nWindows and residential glazing: large living-room sliders, bedroom windows and balcony glazing in houses and apartments across Andhra Pradesh and Telangana, and small façades and structural glazing on low-rise commercial buildings. It is rated for exterior use with the coated face to the interior; as supplied it is not meant for overhead glazing.\n\n## Key specifications\n\nFor the 6 mm single pane AIS publishes a visible light transmission of 45%, external reflection of 20%, a solar factor of 42% (SHGC 0.42) and a U-value of 4.6 W/m²K, computed to ISO 9050 for light and solar values and EN 673 for the U-value. Emissivity is estimated at about 0.4, UV transmission around 20% and sound reduction about 31 dB. Thermal-shock resistance is 40 °C and bending strength 41 MPa, the usual values for annealed float. The substrate is IS 14900 float glass; IS 2553 Part 1 applies only once toughened or laminated, and IS 16231 only if the pane is built into the 6-12-6 DGU configuration AIS also lists.\n\n## Installation notes\n\nGlaze with the coating on surface 2 — the inside face of the outer pane — in uPVC or aluminium frames or structural-glazing systems, with at least 12 mm edge engagement, setting blocks and neutral-cure silicone. The coated annealed pane can be cut to size at the dealer; handle the coated face with clean gloves, keep it dry in storage and do not use abrasive pads on it. Order toughened panes for doors, railings and oversized lights.\n\n## What's supplied\n\nCut-to-size panes with as-cut edges and the coated face marked, interleaved with paper or cork pads and delivered on an A-frame or in a wooden crate. Minimum order 10 sqft; typical lead time about 7 days through AIS processors in Hyderabad and Vijayawada. Warranty is recorded as 120 months on the coating, to be confirmed with the AIS dealer. HSN 7005, GST 18%.",
+  "seo": {
+    "title": "AIS Ecosense Edge Natura Plus 6 mm Glass",
+    "meta_description": "AIS Ecosense Edge Natura Plus 6 mm solar-control low-E glass for single glazing: VLT 45%, SHGC 0.42, U 4.6 W/m²K. Per sqft, cut to size, AP & Telangana.",
+    "keywords": [
+      "ais ecosense glass",
+      "ais ecosense edge natura plus",
+      "ais 6mm coated glass price",
+      "low e glass for windows india",
+      "energy efficient window glass hyderabad",
+      "asahi india glass ecosense"
+    ],
+    "keywords_te": [
+      "ఏఐఎస్ ఎకోసెన్స్ గాజు",
+      "ఎకోసెన్స్ ఎడ్జ్ నాచురా ప్లస్",
+      "6 ఎంఎం కోటెడ్ గాజు ధర",
+      "శక్తి ఆదా కిటికీ గాజు"
+    ],
+    "keywords_hi": [
+      "एआईएस इकोसेंस ग्लास",
+      "इकोसेंस एज नेचुरा प्लस",
+      "6 एमएम कोटेड कांच कीमत",
+      "ऊर्जा बचत खिड़की का कांच"
+    ]
+  }
+}

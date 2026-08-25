@@ -1,0 +1,687 @@
+{
+  "sku_code": "TST-TOP-GM-52",
+  "category": "total-stations",
+  "brand": {
+    "slug": "topcon",
+    "name": "Topcon",
+    "official_domains": [
+      "topconpositioning.com",
+      "topcon.co.jp"
+    ],
+    "logo_url": "https://www.topconpositioning.com/content/dam/topconpositioning/topcon-logo.png",
+    "intel": {
+      "year_established": {
+        "value": 1932,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Topcon"
+      },
+      "parent_company": {
+        "value": "Privately held since 2025 by a KKR-led consortium with Japan Investment Corporation and management (Topcon Corporation, Tokyo; formerly Tokyo Stock Exchange-listed)",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Topcon"
+      },
+      "product_portfolio": {
+        "value": "Positioning: manual (GM-50, GM-100, ES/OS), robotic (GT, DS) total stations, GNSS receivers, construction lasers, machine control and MAGNET software; eye-care diagnostic and medical instruments",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Topcon"
+      },
+      "market_coverage": {
+        "value": "Global (Tokyo HQ, about 5,500 employees); in India through Topcon Sokkia India (Noida) and the densest total-station dealer network in Andhra Pradesh and Telangana",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "quality_strength_note": {
+        "value": "IP66 magnesium-alloy body, IACS independent angle calibration, 14 h battery life and 500 m reflectorless EDM; every instrument is tested in dust and water chambers and for vibration, drop, temperature and humidity",
+        "provenance": "fetched",
+        "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf"
+      },
+      "engineer_user_rating": {
+        "value": "4.4/5 - rated the best value-for-accuracy manual total station; the South India service network is a frequent plus",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Highest among mid-size contractors and survey consultants in AP and Telangana for price-performance and resale liquidity",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Very high - the most common first total station for small survey firms and civil engineering colleges thanks to the simple keypad interface",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 300000,
+          "highest": 650000,
+          "unit": "₹/unit"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project kits (instrument, tripod, prism, pole, training) are quoted 10-15% above the bare-instrument price; retail buyers in district towns usually pay the listed dealer price",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Orders of three or more units attract 5-10% off; education and PSU tenders are priced separately through the national distributor",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Dealer margins on GM-series instruments run about 10-15%, with calibration, repair and accessory sales adding recurring income",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "moderate",
+          "roads": "strong",
+          "bridges": "moderate",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India, especially tier-2 and tier-3 cities and district towns",
+          "weak": "-",
+          "balanced": "Andhra Pradesh and Telangana",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Site layout and boundary or topographic survey for building and road projects",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Land-records and cadastral survey, quantity surveying",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Entry-level training and academic use; reflectorless facade and inaccessible-point measurement up to 500 m",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Topcon",
+          "Leica Geosystems",
+          "Sokkia",
+          "Trimble",
+          "South"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Topcon GM-52 2\" Reflectorless Total Station",
+    "slug": "topcon-gm-52-2-reflectorless-total-station",
+    "model_no": "GM-52",
+    "status": "active"
+  },
+  "variant_label": "2\" angular accuracy, dual display, laser plummet",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 395000,
+    "selling_price": 395000,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html",
+    "fetched_at": "2026-08-23",
+    "note": "IndiaMART listing by Ocean Survey Instruments Tech, New Delhi, for the GM-52 2\". Other Indian listings for the GM-52 run about 3.5-3.95 lakh (Aug 2026)."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.topconpositioning.com/gb/total-stations/manual-total-stations/gm-50",
+    "datasheet_urls": [
+      "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html",
+      "https://www.skippertech.com/product/gm-52/",
+      "https://en.wikipedia.org/wiki/Topcon"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "GM-52",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html"
+      ],
+      "confidence": 0.95
+    },
+    "instrument_class": {
+      "value": "Manual total station",
+      "provenance": "fetched",
+      "source_url": "https://www.topconpositioning.com/gb/total-stations/manual-total-stations/gm-50",
+      "confidence": 0.95
+    },
+    "onboard_software": {
+      "value": "TopBasic onboard program (no Windows or MAGNET onboard); pairs over Bluetooth with MAGNET Field on a data collector",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.topconpositioning.com/gb/total-stations/manual-total-stations/gm-50"
+      ],
+      "confidence": 0.8
+    },
+    "housing_material": {
+      "value": "Magnesium-alloy housing",
+      "provenance": "fetched",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "confidence": 0.9
+    },
+    "optics_coating": {
+      "value": "Multi-coated erect-image telescope optics with 5-level reticle illumination",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.7
+    },
+    "factory_calibration": {
+      "value": "Independent Angle Calibration System (IACS) on the 2\" and 5\" models; factory EDM base-line accuracy test and collimator angle test and adjustment",
+      "provenance": "fetched",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "confidence": 0.85
+    },
+    "sealing_process": {
+      "value": "IP66 dust and water-jet protection (IEC 60529:2001), verified in dust-proof and water-proof test chambers",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "dim_w_mm": {
+      "value": 183,
+      "unit": "mm",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html"
+      ],
+      "confidence": 0.9
+    },
+    "dim_h_mm": {
+      "value": 348,
+      "unit": "mm",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html"
+      ],
+      "confidence": 0.9
+    },
+    "dim_d_mm": {
+      "value": 181,
+      "unit": "mm",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html"
+      ],
+      "confidence": 0.9
+    },
+    "telescope_length_mm": {
+      "value": 171,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "objective_aperture_mm": {
+      "value": 45,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "operating_temp_min_c": {
+      "value": -20,
+      "unit": "°C",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.9
+    },
+    "operating_temp_max_c": {
+      "value": 60,
+      "unit": "°C",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.85
+    },
+    "compensator_type": {
+      "value": "Dual-axis",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.95
+    },
+    "compensator_accuracy_arcsec": {
+      "value": 1,
+      "unit": "arcsec",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.7
+    },
+    "compensator_range": {
+      "value": "+/- 6' (liquid 2-axis tilt sensor)",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.9
+    },
+    "drive_system": {
+      "value": "Horizontal and vertical clamps with tangent screws",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "corrosion_protection": {
+      "value": "Magnesium-alloy body with protective finish and IP66 sealing for humid coastal and monsoon sites",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "angular_accuracy_arcsec": {
+      "value": 2,
+      "unit": "arcsec",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html"
+      ],
+      "confidence": 0.95
+    },
+    "angle_display_resolution": {
+      "value": "1\" / 5\" selectable (0.0002 / 0.0010 gon)",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "distance_accuracy_prism": {
+      "value": "(1.5 mm + 2 ppm x D) fine mode (ISO 17123-4:2012)",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "distance_accuracy_reflectorless": {
+      "value": "(2 mm + 2 ppm x D) to 200 m; (5 mm + 10 ppm x D) 200-350 m; (10 mm + 10 ppm x D) 350-500 m, fine mode",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "reflectorless_range_m": {
+      "value": 500,
+      "unit": "m",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "prism_range_m": {
+      "value": 4000,
+      "unit": "m",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html"
+      ],
+      "confidence": 0.95
+    },
+    "edm_type": {
+      "value": "Coaxial phase-shift EDM, red laser diode 690 nm, with coaxial red laser pointer; 13 mm beam spot at 30 m",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "laser_class": {
+      "value": "Class 3R",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "telescope_magnification_x": {
+      "value": 30,
+      "unit": "x",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.95
+    },
+    "telescope_field_of_view": {
+      "value": "1°30'; minimum focus 1.3 m; resolving power 2.5\"",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "battery_type": {
+      "value": "Rechargeable Li-ion BDC46C, 7.2 V 2,430 mAh, side-mounted (about 10 h in normal fine mode every 30 s); CDC68A charger, about 2.5 h per battery",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "battery_operating_time_h": {
+      "value": 14,
+      "unit": "h",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.85
+    },
+    "internal_memory": {
+      "value": "About 50,000 points internal; USB flash drive up to 32 GB",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html"
+      ],
+      "confidence": 0.95
+    },
+    "connectivity": {
+      "value": "RS-232C serial, USB 2.0 host (Type A) for flash drives, Bluetooth Class 1.5 (SPP/DUN, about 10 m; fitted depending on region)",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "bluetooth": {
+      "value": true,
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.8
+    },
+    "net_weight_kg": {
+      "value": 5.1,
+      "unit": "kg",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html"
+      ],
+      "confidence": 0.9
+    },
+    "application_areas": {
+      "value": "Entry-level site layout and surveying: building construction, civil works, topographic and cadastral surveys",
+      "provenance": "fetched",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "confidence": 0.8
+    },
+    "stakeout_support": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "confidence": 0.75
+    },
+    "is_standard": {
+      "value": "ISO 17123-3:2001 (angle accuracy) / ISO 17123-4:2012 (EDM accuracy); IEC 60825-1 Ed.3.0:2014 (Class 3R laser); IEC 60529:2001 IP66",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "ip_rating": {
+      "value": "IP66",
+      "provenance": "verified",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "source_urls": [
+        "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.95
+    },
+    "laser_safety_standard": {
+      "value": "IEC 60825-1 Ed.3.0:2014 and FDA 21 CFR 1040.10 - Class 3R EDM (Class 1 equivalent when prism or sheet target is selected); Class 2 laser plummet",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "field_check_routine": {
+      "value": "Manual-guided checks: circular and electronic levels, laser or optical plummet, collimation, vertical index, tilt-sensor zero and EDM additive constant",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "calibration_certificate_supplied": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "display_type": {
+      "value": "Dual-face graphic LCD, 192 x 80 dots, backlit (GM-52)",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.95
+    },
+    "keypad_type": {
+      "value": "28-key alphanumeric keyboard with illuminator, on both faces",
+      "provenance": "verified",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "source_urls": [
+        "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+        "https://www.skippertech.com/product/gm-52/"
+      ],
+      "confidence": 0.9
+    },
+    "tripod_thread": {
+      "value": "5/8-inch x 11 TPI (standard tribrach)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "centring_method": {
+      "value": "Laser plummet (Class 2, 635 nm): 1 mm or better at 1.3 m tripod height, 5 brightness levels; optical-plummet (3x, 0.5 m) version also offered",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "levelling_system": {
+      "value": "Circular level 10'/2 mm plus electronic circular level (+/- 6'30\" digital range)",
+      "provenance": "fetched",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "confidence": 0.9
+    },
+    "tribrach_included": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "transport_case": {
+      "value": "Hard carrying case",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "package_contents": {
+      "value": "GM-52 instrument with tribrach, BDC46C Li-ion battery, CDC68A charger, lens cap, tool kit, rain cover, instruction manual and hard carrying case",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "fetched",
+      "source_url": "https://www.indiamart.com/proddetail/topcon-gm-52-total-station-2849318657933.html",
+      "confidence": 0.7
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against defects in materials and workmanship through the Indian distributor; batteries, accidental damage and misuse excluded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "extended_warranty_available": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.topconpositioning.com/content/topconpositioning/gb/en/solutions/technology/infrastructure-products/manual-total-stations/_jcr_content/root/container/container/container/productcomparison/productcard2/image.coreimg.85.1024.jpeg/1708567067097.jpeg",
+      "alt": "Topcon TST-TOP-GM-52 - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.topconpositioning.com/content/topconpositioning/gb/en/solutions/technology/infrastructure-products/manual-total-stations/_jcr_content/root/container/container/container_1533983123/image.coreimg.85.1024.jpeg/1708567065990.jpeg",
+      "alt": "Topcon TST-TOP-GM-52 - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.topconpositioning.com/content/topconpositioning/gb/en/solutions/technology/infrastructure-products/manual-total-stations/_jcr_content/root/container/container/container_210499810/teaser_copy.coreimg.jpeg/1708567067289.jpeg",
+      "alt": "Topcon TST-TOP-GM-52 - in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.topconpositioning.com/content/topconpositioning/gb/en/solutions/technology/infrastructure-products/manual-total-stations/_jcr_content/root/container/container/container_copy_19449_1471479921/teaser_8671333_copy_.coreimg.jpeg/1708567066086.jpeg",
+      "alt": "Topcon TST-TOP-GM-52 - detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.topconpositioning.com/content/topconpositioning/gb/en/solutions/technology/infrastructure-products/manual-total-stations/_jcr_content/root/container/container/container_copy_19449_1931238127/teaser_8671333_copy_.coreimg.jpeg/1708567066037.jpeg",
+      "alt": "Topcon TST-TOP-GM-52 - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "brochure",
+      "title": "Topcon GM-50 Series reflectorless total stations brochure (7010-2251 C, 09/25)",
+      "source_url": "https://www.topconpositioning.com/content/dam/topcon_digital_asset_hub/collateral/brochures/topcon_gm-50-series_7010-2251_enUS23broc.pdf",
+      "checked": true
+    },
+    {
+      "type": "manual",
+      "title": "Topcon GM-50 series instruction manual 1025821-01-A (Top Basic)",
+      "source_url": "https://geoconstrucciones.com.gt/assets/images/solutions/Manual_GM50_tb_e_a.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "angular_accuracy_arcsec",
+    "distance_accuracy_prism",
+    "prism_range_m",
+    "reflectorless_range_m",
+    "compensator_type",
+    "telescope_magnification_x",
+    "battery_operating_time_h",
+    "ip_rating"
+  ],
+  "short_description": "Topcon GM-52 2\" reflectorless total station: 500 m reflectorless, 4,000 m to prism, 30x, IP66 magnesium body, 50,000-point memory, 14 h battery.",
+  "long_description": "## What it is\n\nThe Topcon GM-52 is the 2-second model of the GM-50 Series, a manual reflectorless total station with a magnesium-alloy housing, dual-face 192 x 80 dot graphic LCDs with 28-key illuminated keyboards, and Topcon's TopBasic onboard program. It weighs 5.1 kg with handle and battery and measures 183 x 181 x 348 mm.\n\n## What it's for\n\nTopcon positions the GM-50 Series as an entry-level site layout and survey tool: building construction, civil works, topographic and cadastral surveys. Stakeout routines are onboard, and Bluetooth lets the instrument work cable-free with MAGNET Field on a data collector, so a two-person crew can run layout without a cable to the controller.\n\n## Key specifications\n\nAngular accuracy is 2\" (ISO 17123-3:2001) from a rotary absolute encoder read on two sides, held by a liquid dual-axis tilt sensor with +/- 6' range; IACS factory calibration keeps the angle system honest. The coaxial phase-shift EDM (690 nm red laser, Class 3R, Class 1-equivalent in prism mode) measures to 4,000 m on a standard prism at 1.5 mm + 2 ppm, and reflectorless to 500 m - 2 mm + 2 ppm to 200 m, 5 mm + 10 ppm to 350 m and 10 mm + 10 ppm to 500 m - with a 13 mm beam spot at 30 m. The 30x telescope with 45 mm objective has a 1°30' field of view, 2.5\" resolving power and 1.3 m minimum focus. Internal memory holds about 50,000 points, and USB flash drives up to 32 GB plug into the Type-A port; RS-232C and Bluetooth Class 1.5 are also provided. The side-mounted BDC46C Li-ion battery (7.2 V, 2,430 mAh) runs about 14 hours in EDM eco mode (about 10 hours in normal fine mode) and charges in about 2.5 hours on the CDC68A charger. Protection is IP66; the operating range is -20 °C to +60 °C, with the instrument shaded above 50 °C.\n\n## Field notes\n\nThe Class 2 laser plummet holds 1 mm at 1.3 m tripod height; level on the 10'/2 mm circular level and finish on the electronic circular level. After transport, check the levels, plummet, collimation, vertical index, tilt-sensor zero and EDM additive constant as the manual describes. The tripod thread is the standard 5/8-inch. The Indian dealer warranty is 12 months, and AMC or extended cover is available.\n\n## What's in the case\n\nGM-52 with tribrach, BDC46C battery and CDC68A charger, lens cap, tool kit, rain cover, instruction manual and the hard carrying case. A calibration certificate is normally supplied with a new instrument.",
+  "seo": {
+    "title": "Topcon GM-52 2\" Reflectorless Total Station",
+    "meta_description": "Topcon GM-52 2\" manual total station: 500 m reflectorless, 4,000 m prism range, 30x, IP66, 50,000-point memory, Bluetooth. Dealer price for AP/Telangana.",
+    "keywords": [
+      "topcon gm-52 total station",
+      "topcon gm 52 price",
+      "topcon gm-50 series",
+      "reflectorless total station 2 second",
+      "topcon total station hyderabad",
+      "topcon total station price india"
+    ],
+    "keywords_te": [
+      "టాప్‌కాన్ టోటల్ స్టేషన్",
+      "టాప్‌కాన్ GM-52 ధర",
+      "రిఫ్లెక్టర్‌లెస్ టోటల్ స్టేషన్",
+      "సర్వే పరికరం టాప్‌కాన్"
+    ],
+    "keywords_hi": [
+      "टॉपकॉन टोटल स्टेशन",
+      "टॉपकॉन GM-52 कीमत",
+      "रिफ्लेक्टरलेस टोटल स्टेशन",
+      "सर्वे उपकरण टॉपकॉन"
+    ]
+  }
+}

@@ -1,0 +1,541 @@
+{
+  "sku_code": "GLS-SGB-SUNBAN-SAPPHIRE5",
+  "category": "glass",
+  "brand": {
+    "slug": "saint-gobain",
+    "name": "Saint-Gobain",
+    "official_domains": [
+      "in.saint-gobain-glass.com",
+      "saint-gobain-glass.in"
+    ],
+    "logo_url": "https://in.saint-gobain-glass.com/sites/in.saint-gobain-glass.com/themes/customs/saint_gobai/logo.png",
+    "intel": {
+      "year_established": {
+        "value": 1665,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Saint-Gobain"
+      },
+      "parent_company": {
+        "value": "Compagnie de Saint-Gobain S.A. (France); Indian glass business run as Saint-Gobain India Private Limited – Glass Business",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Saint-Gobain"
+      },
+      "product_portfolio": {
+        "value": "Clear float (Planilux) and extra-clear (Diamant), tinted float, Sun Ban residential solar-control glass, Infinity / Cool-Lite / Antelio Plus / Envision / Nano / Nano Silver / Evolite / Planitherm facade solar-control and low-E ranges, Privalite and SageGlass smart glass, Aspira LED mirrors, Vetrotech fire-rated glass, shower cubicles, glass hardware and railing systems",
+        "provenance": "fetched",
+        "source_url": "https://in.saint-gobain-glass.com/compare-glass"
+      },
+      "market_coverage": {
+        "value": "Pan-India; own float plants at Sriperumbudur near Chennai (since 2000) and Bhiwadi, Rajasthan (2014); Indian capacity about 3,850 tonnes per day after the 2018 Sriperumbudur expansion",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Saint-Gobain"
+      },
+      "quality_strength_note": {
+        "value": "Sun Ban is a pyrolytic (online hard-coat) solar-control range with the 5 mm optical and thermal data published per shade, and the product page states the test basis (EN 410 / EN 673); the Chennai float plant gives South India the shortest supply chain of the three brands",
+        "provenance": "fetched",
+        "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue"
+      },
+      "engineer_user_rating": {
+        "value": "4.6/5 (typical) — the default specification brand for architects and structural consultants in South India; engineers cite published performance data and consistent shade across batches",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Very high — window fabricators in Hyderabad, Vijayawada and Visakhapatnam stock Sun Ban shades as their standard reflective glass; the brand name is often written into apartment specifications",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High — 'Saint-Gobain glass' is the one glass brand most first-time house builders in AP/Telangana know by name, helped by retail advertising and the My Home programme",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 45,
+          "highest": 140,
+          "unit": "₹/sqft"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project supply through fabricators and processors runs 15–25% below single-window retail counter rates; retail buyers pay cutting, wastage and transport on top of the per-sqft rate",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Volume slabs typically start at one full jumbo-equivalent (about 75–80 sqft of 5 mm) and improve at crate quantities; shade-matched batches should be ordered together",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Authorised distributor-to-dealer margins on coated residential glass generally run 10–18%, with cutting and edge-work charged separately",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "weak",
+          "roads": "weak",
+          "bridges": "weak",
+          "dams_metro": "weak"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "South India (Tamil Nadu, Andhra Pradesh, Telangana, Karnataka) served from the Chennai plant",
+          "weak": "Far north-east",
+          "balanced": "West and North India",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Solar-control glazing for house and apartment windows, balconies and staircase glazing",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Small commercial facades and shopfronts where a reflective tinted look is wanted without a DGU",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Toughened or laminated Sun Ban for doors, railings and canopies after processing to IS 2553",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Saint-Gobain",
+          "AIS",
+          "Guardian",
+          "Gold Plus",
+          "Şişecam"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Saint-Gobain Sun Ban SGG Sapphire Blue Solar-Control Glass 5 mm",
+    "slug": "saint-gobain-sun-ban-sgg-sapphire-blue-5-mm",
+    "model_no": "SGG Sapphire Blue",
+    "status": "active"
+  },
+  "variant_label": "5 mm, Sapphire Blue, single pane",
+  "unit": "sqft",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 50,
+    "selling_price": 50,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.indiamart.com/proddetail/saint-gobain-sunban-glass-2856413089162.html",
+    "fetched_at": "2026-08-23",
+    "note": "IndiaMART dealer listing (Sri Narayana Traders, Dindigul) for 'Saint Gobain Sunban Glass' 5 mm at ₹50/sq ft, shade not specified. Hyderabad window-counter rates for Sapphire Blue 5 mm typically run ₹55–70/sqft before cutting; re-quote from a Saint-Gobain dealer."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+    "datasheet_urls": [
+      "https://in.saint-gobain-glass.com/sites/in.saint-gobain-glass.com/files/2020-05/SGG_Windows_22.pdf"
+    ],
+    "secondary_urls": [
+      "https://in.saint-gobain-glass.com/sun-ban-sgg",
+      "https://in.saint-gobain-glass.com/Sun-ban",
+      "https://in.saint-gobain-glass.com/compare-glass",
+      "https://www.indiamart.com/proddetail/saint-gobain-sunban-glass-2856413089162.html",
+      "https://en.wikipedia.org/wiki/Saint-Gobain"
+    ]
+  },
+  "attributes": {
+    "product_series": {
+      "value": "Saint-Gobain Sun Ban",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.98
+    },
+    "substrate_glass": {
+      "value": "Clear float",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "glazing_configuration": {
+      "value": "Monolithic single glazing",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.85
+    },
+    "manufacturing_process": {
+      "value": "Float process with the solar-control coating applied by pyrolysis on the hot float ribbon (online hard coat)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "coating_deposition_method": {
+      "value": "Online pyrolytic (CVD) on the float line",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.8
+    },
+    "nominal_thickness_mm": {
+      "value": 5,
+      "unit": "mm",
+      "provenance": "verified",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "source_urls": [
+        "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+        "https://www.indiamart.com/proddetail/saint-gobain-sunban-glass-2856413089162.html"
+      ],
+      "confidence": 0.95
+    },
+    "max_pane_width_mm": {
+      "value": 3210,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "max_pane_height_mm": {
+      "value": 2250,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "dim_w_mm": {
+      "value": 1200,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_h_mm": {
+      "value": 1800,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_d_mm": {
+      "value": 5,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.95
+    },
+    "max_service_temperature_c": {
+      "value": 200,
+      "unit": "°C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "thermal_shock_resistance_c": {
+      "value": 40,
+      "unit": "°C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "bending_strength_mpa": {
+      "value": 41,
+      "unit": "MPa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "impact_safety_class": {
+      "value": "Not a safety glass",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "uv_transmission_pct": {
+      "value": 15,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "density_kg_m3": {
+      "value": 2500,
+      "unit": "kg/m³",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "weight_per_sqm_kg": {
+      "value": 12.5,
+      "unit": "kg/m²",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "net_weight_kg": {
+      "value": 27,
+      "unit": "kg",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "visible_light_transmission_pct": {
+      "value": 22.9,
+      "unit": "%",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.95
+    },
+    "visible_light_reflectance_out_pct": {
+      "value": 23.7,
+      "unit": "%",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.95
+    },
+    "solar_heat_gain_coefficient": {
+      "value": 0.39,
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.95
+    },
+    "u_value_w_m2k": {
+      "value": 5.72,
+      "unit": "W/m²K",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.95
+    },
+    "emissivity": {
+      "value": 0.84,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "sound_reduction_db": {
+      "value": 30,
+      "unit": "dB",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "application_area": {
+      "value": "Windows and residential glazing",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.9
+    },
+    "suitable_for_exterior": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/Sun-ban",
+      "confidence": 0.9
+    },
+    "suitable_for_overhead_glazing": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_standard": {
+      "value": "IS 14900 (transparent float glass substrate)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_2553_safety_glass": {
+      "value": "Not applicable as supplied (annealed); a toughened or laminated version must comply with IS 2553 Part 1",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_14900_float_glass": {
+      "value": "IS 14900 — transparent sheet (float) glass, governs the clear float substrate",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_16231_igu": {
+      "value": "Not applicable (monolithic pane); IS 16231 applies only if processed into an insulating glass unit",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "fragmentation_test": {
+      "value": "Not applicable (annealed glass, not thermally toughened)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "glass_colour": {
+      "value": "Blue",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.95
+    },
+    "surface_finish": {
+      "value": "Reflective",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/product/sgg-sapphire-blue",
+      "confidence": 0.85
+    },
+    "glazing_system_compatibility": {
+      "value": "Standard uPVC, aluminium and timber window beading and balcony / staircase glazing; the coated face must be installed towards the interior (surface 2)",
+      "provenance": "fetched",
+      "source_url": "https://in.saint-gobain-glass.com/Sun-ban",
+      "confidence": 0.8
+    },
+    "min_edge_engagement_mm": {
+      "value": 12,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "cuttable_after_processing": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "packing_type": {
+      "value": "Cut-to-size panes interleaved with paper or cork pads, delivered on an A-frame or in a wooden crate",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "minimum_order_quantity_sqft": {
+      "value": 10,
+      "unit": "sqft",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "lead_time_days": {
+      "value": 5,
+      "unit": "days",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "availability": {
+      "value": "Stocked by Saint-Gobain dealers and window fabricators in Hyderabad, Vijayawada and Visakhapatnam; cut to size at the dealer",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 120,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against coating defects such as peeling, haze or discolouration under normal use; breakage, scratches, chemical attack and installation faults excluded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "coating_warranty_months": {
+      "value": 120,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://in.saint-gobain-glass.com/sites/in.saint-gobain-glass.com/files/2022-06/Sapphire-Blue.jpg",
+      "alt": "Saint-Gobain GLS-SGB-SUNBAN-SAPPHIRE5 - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://in.saint-gobain-glass.com/sites/in.saint-gobain-glass.com/files/2020-10/DSC_0080%20Final.jpg",
+      "alt": "Saint-Gobain GLS-SGB-SUNBAN-SAPPHIRE5 - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": null,
+      "alt": "Saint-Gobain GLS-SGB-SUNBAN-SAPPHIRE5 - in context",
+      "content_type": "image/jpeg",
+      "checked": false
+    },
+    {
+      "role": "detail",
+      "source_url": null,
+      "alt": "Saint-Gobain GLS-SGB-SUNBAN-SAPPHIRE5 - detail",
+      "content_type": "image/jpeg",
+      "checked": false
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": null,
+      "alt": "Saint-Gobain GLS-SGB-SUNBAN-SAPPHIRE5 - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": false
+    }
+  ],
+  "documents": [
+    {
+      "type": "brochure",
+      "title": "Saint-Gobain glass for windows brochure (SGG Windows) — Sun Ban range",
+      "source_url": "https://in.saint-gobain-glass.com/sites/in.saint-gobain-glass.com/files/2020-05/SGG_Windows_22.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "visible_light_transmission_pct",
+    "light_to_solar_gain",
+    "solar_heat_gain_coefficient",
+    "u_value_w_m2k",
+    "sound_reduction_db",
+    "impact_safety_class",
+    "nominal_thickness_mm",
+    "max_pane_width_mm"
+  ],
+  "short_description": "Saint-Gobain Sun Ban SGG Sapphire Blue 5 mm pyrolytic solar-control glass. VLT 22.9%, SHGC 0.39, U-value 5.72 W/m²K. Sold per sqft, cut to size.",
+  "long_description": "## What it is\n\nSaint-Gobain Sun Ban SGG Sapphire Blue is a 5 mm solar-control glass from Saint-Gobain's Sun Ban range for residences. A pyrolytic coating is fired onto clear soda-lime float glass on the float line itself, so the coating is a hard coat, and the pane reads as a reflective blue from outside. It is supplied as a single monolithic pane, annealed, so it is not a safety glass as delivered; a processor can toughen or laminate it to IS 2553 Part 1 if a door, railing or large opening calls for it. Weight is about 12.5 kg per square metre, so a 1200 × 1800 mm pane weighs roughly 27 kg.\n\n## What it's for\n\nWindows and residential glazing: sliding and casement windows, balconies, staircase glazing and small façades on houses and apartments in Andhra Pradesh and Telangana, where the need is to cut afternoon heat without losing the view. It is suitable for exterior use. As supplied — annealed and monolithic — it is not intended for overhead glazing.\n\n## Key specifications\n\nAt 5 mm, visible light transmission is 22.9% with 23.7% external reflection, which gives strong glare control and daytime privacy. The solar heat gain coefficient is 0.39, so a little under 40% of incident solar energy reaches the room, and the U-value is 5.72 W/m²K. UV transmission is in the region of 15% and sound reduction about 30 dB for the single pane. Thermal-shock resistance is the usual 40 °C of annealed glass and bending strength 41 MPa. The substrate is IS 14900 transparent float glass; IS 2553 Part 1 applies only once the pane is toughened or laminated, and IS 16231 only if it is built into a DGU.\n\n## Installation notes\n\nInstall with the coated face towards the interior (surface 2) — Saint-Gobain states this protects the coating from weathering and keeps reflectivity consistent. Keep at least 12 mm of edge engagement in the frame, use setting blocks and a neutral-cure silicone or EPDM gasket in uPVC, aluminium or timber frames. The hard coat is cuttable, so panes can be cut and arrised at the dealer or on site, but edges should be clean-cut to limit thermal-stress breakage on sunny elevations. Clean with water and a mild detergent only; no abrasive pads on the coated face.\n\n## What's supplied\n\nCut-to-size panes with as-cut edges, interleaved with paper or cork pads and delivered on an A-frame or in a wooden crate. Minimum order 10 sqft; typical lead time about 5 days from Hyderabad and Vijayawada stockists. Warranty is recorded as 120 months on the coating, to be confirmed on the dealer invoice. HSN 7005, GST 18%.",
+  "seo": {
+    "title": "Saint-Gobain Sun Ban Sapphire Blue 5 mm Glass",
+    "meta_description": "Saint-Gobain Sun Ban Sapphire Blue 5 mm solar-control glass: VLT 22.9%, SHGC 0.39, U 5.72 W/m²K, pyrolytic coat. Per sqft, cut to size, AP & Telangana.",
+    "keywords": [
+      "saint gobain sun ban glass",
+      "sapphire blue glass 5mm",
+      "sunban glass price per sqft",
+      "solar control glass for windows",
+      "heat reflective glass hyderabad",
+      "saint gobain window glass"
+    ],
+    "keywords_te": [
+      "సెయింట్ గోబెయిన్ సన్ బాన్ గ్లాస్",
+      "సఫైర్ బ్లూ గాజు 5 ఎంఎం",
+      "వేడి తగ్గించే కిటికీ గాజు",
+      "సన్‌బాన్ గాజు ధర"
+    ],
+    "keywords_hi": [
+      "सेंट गोबेन सन बैन ग्लास",
+      "सफायर ब्लू कांच 5 एमएम",
+      "सोलर कंट्रोल खिड़की का कांच",
+      "सनबैन ग्लास प्रति वर्ग फुट कीमत"
+    ]
+  }
+}

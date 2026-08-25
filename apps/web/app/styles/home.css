@@ -1,0 +1,214 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Homepage: the category tree.
+
+   Thirty-seven tiles in two registers. The nine live categories are full-size and
+   photographic; the twenty-eight upcoming ones are half that and drawn, grouped under
+   their department. Nothing here shows a price — a tile that says "from ₹410" answers a
+   question the buyer has not asked yet and commits the store to a number before they have
+   chosen a product.
+
+   Replaces the .cat-* block that lived in legacy.css and had to invert its own artwork
+   (`filter: invert(1) hue-rotate(180deg)`) to sit on a light page.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+@layer components {
+  .sec-sub {
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+
+  .cat-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .cat-grid--sm {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .cat-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .cat-card:hover {
+    border-color: var(--color-line-strong);
+    box-shadow: var(--shadow-1);
+  }
+  .cat-card:hover .cat-arrow {
+    color: var(--color-teal-700);
+  }
+
+  .cat-photo {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-canvas-2);
+  }
+  .cat-photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* The mark on an upcoming category's tile, over the department-tinted ground. */
+  .cat-photo-mark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-ink-2);
+    opacity: 0.34;
+  }
+  .cat-card:hover .cat-photo-mark {
+    opacity: 0.5;
+  }
+
+  .cat-band {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 60px;
+    padding: 10px 12px;
+    border-top: 1px solid var(--color-line-2);
+    background: var(--color-surface);
+  }
+  .cat-icon {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: var(--color-teal-50);
+    color: var(--color-teal-800);
+  }
+  .cat-text {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .cat-name {
+    display: block;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cat-meta {
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+  }
+  .cat-meta .fig {
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .cat-dot {
+    padding: 0 5px;
+    color: var(--color-ink-3);
+  }
+  .cat-arrow {
+    display: inline-flex;
+    flex: none;
+    color: var(--color-ink-3);
+  }
+
+  /* A category with nothing to sell yet is quieter, but still a real, clickable place. */
+  .cat-card--soon .cat-icon {
+    background: var(--color-surface-3);
+    color: var(--color-ink-2);
+  }
+  .cat-card--sm .cat-band {
+    min-height: 52px;
+    gap: 10px;
+    padding: 8px 10px;
+  }
+  .cat-card--sm .cat-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .cat-card--sm .cat-name {
+    font-size: 13.5px;
+    line-height: 18px;
+  }
+  .cat-card--sm .cat-meta {
+    font-size: 11.5px;
+  }
+
+  /* ── the department blocks under "Arriving soon" ─────────────────────── */
+  .dept-block {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-line-2);
+  }
+  .dept-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .dept-count {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--color-ink-2);
+  }
+  .dept {
+    margin-top: 20px;
+  }
+  .dept-name {
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+  }
+
+  @media (max-width: 1099.98px) {
+    .cat-grid--sm {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 899.98px) {
+    .cat-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+  }
+  @media (max-width: 639.98px) {
+    .cat-grid--sm {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .cat-name {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+  }
+}

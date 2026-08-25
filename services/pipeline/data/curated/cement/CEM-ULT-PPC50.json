@@ -1,0 +1,549 @@
+{
+  "sku_code": "CEM-ULT-PPC50",
+  "category": "cement",
+  "brand": {
+    "slug": "ultratech",
+    "name": "UltraTech Cement",
+    "official_domains": [
+      "ultratechcement.com"
+    ],
+    "logo_url": "https://www.ultratechcement.com/content/dam/ultratechcement/newLogo.png",
+    "intel": {
+      "year_established": {
+        "value": 1983,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/UltraTech_Cement"
+      },
+      "parent_company": {
+        "value": "Aditya Birla Group, held through Grasim Industries (56.11%)",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/UltraTech_Cement"
+      },
+      "product_portfolio": {
+        "value": "Grey cement (OPC, PPC, PSC, composite), white cement, ready-mix concrete and building products",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/UltraTech_Cement"
+      },
+      "market_coverage": {
+        "value": "Pan-India; 152.70 MTPA installed capacity; largest grey cement, RMC and white cement manufacturer in India and fifth largest in the world",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/UltraTech_Cement"
+      },
+      "quality_strength_note": {
+        "value": "Consistent bag-to-bag quality is UltraTech's main reputational asset in South India; PPC route uses high-reactive-silica fly ash and high-purity gypsum for low permeability and steel protection",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.5/5 (typical)",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "First choice for contractors and developers in Andhra Pradesh and Telangana; specified by default on most RCC work where the client has not named a brand",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Very high — the most recognised cement name among first-time individual house builders; the brand is often used as a generic word for cement",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 380,
+          "highest": 460,
+          "unit": "₹/bag"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project/bulk supply typically lands ₹25–45 per bag below the retail counter rate for orders above roughly 500 bags with direct plant despatch",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Slab-based discounts usually start around 100 bags; full-truckload (roughly 400–600 bags) attracts the best rate plus freight absorption",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Retail dealer margin on a 50 kg bag is typically ₹12–25, thinner than for smaller brands because volumes are high and rotation is fast",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "moderate",
+          "bridges": "strong",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India",
+          "weak": "—",
+          "balanced": "South and West",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "General residential construction — foundation, column, beam and slab concrete",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Brick and block masonry, internal and external wall plastering",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Marine and hydraulic structures, dams, underground basements and sewerage works where sulphate and chloride resistance matters",
+        "provenance": "fetched",
+        "source_url": "https://www.ultratechcement.com/for-homebuilders/products/overview/ppc"
+      },
+      "top_preference_order": {
+        "value": [
+          "UltraTech",
+          "ACC",
+          "Ambuja"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "UltraTech Portland Pozzolana Cement (PPC)",
+    "slug": "ultratech-ppc-cement-50kg",
+    "model_no": "PPC",
+    "status": "active"
+  },
+  "variant_label": "50 kg bag",
+  "unit": "bag",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 440,
+    "selling_price": 415,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "Typical Hyderabad / Vijayawada counter rate for UltraTech PPC 50 kg, August 2026, ±10%. No public MRP is published on the brand site and the L&T-SuFin listing opened for this SKU showed no price."
+  },
+  "gst_rate": 28,
+  "gst_needs_verification": true,
+  "sources": {
+    "official_product_url": "https://www.ultratechcement.com/for-homebuilders/products/overview/ppc",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148",
+      "https://en.wikipedia.org/wiki/UltraTech_Cement"
+    ]
+  },
+  "attributes": {
+    "cement_type": {
+      "value": "PPC",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.ultratechcement.com/for-homebuilders/products/overview/ppc",
+        "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148"
+      ],
+      "confidence": 0.98
+    },
+    "model_number": {
+      "value": "PPC",
+      "provenance": "fetched",
+      "source_url": "https://www.ultratechcement.com/for-homebuilders/products/overview/ppc",
+      "confidence": 0.85
+    },
+    "application_segment": {
+      "value": "General purpose",
+      "provenance": "fetched",
+      "source_url": "https://www.ultratechcement.com/for-homebuilders/products/overview/ppc",
+      "confidence": 0.9
+    },
+    "clinker_content_pct": {
+      "value": 66,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "fly_ash_content_pct": {
+      "value": 30,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "slag_content_pct": {
+      "value": 0,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "gypsum_content_pct": {
+      "value": 4,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "manufacturing_process": {
+      "value": "Dry process. High-quality clinker of balanced chemical composition is inter-ground with high-reactive-silica fly ash and high-purity gypsum, or high-quality OPC is blended with finer fly ash",
+      "provenance": "fetched",
+      "source_url": "https://www.ultratechcement.com/for-homebuilders/products/overview/ppc",
+      "confidence": 0.95
+    },
+    "grinding_method": {
+      "value": "Closed-circuit grinding with separator control for uniform particle size distribution",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dim_w_mm": {
+      "value": 450,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_h_mm": {
+      "value": 700,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_d_mm": {
+      "value": 140,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "heat_of_hydration_7d": {
+      "value": 240,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "application_temperature_range": {
+      "value": "5 °C to 40 °C ambient during mixing, placing and curing",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "compressive_strength_3d": {
+      "value": 28.6,
+      "provenance": "fetched",
+      "source_url": "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148",
+      "confidence": 0.85
+    },
+    "compressive_strength_7d": {
+      "value": 40,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "compressive_strength_28d": {
+      "value": 58,
+      "provenance": "fetched",
+      "source_url": "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148",
+      "confidence": 0.85
+    },
+    "soundness_le_chatelier": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "drying_shrinkage_pct": {
+      "value": 0.06,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "chloride_content_max_pct": {
+      "value": 0.035,
+      "provenance": "fetched",
+      "source_url": "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148",
+      "confidence": 0.85
+    },
+    "sulphate_so3_max_pct": {
+      "value": 2.5,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "magnesia_max_pct": {
+      "value": 1.5,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "loss_on_ignition_max_pct": {
+      "value": 2.5,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "insoluble_residue_max_pct": {
+      "value": 22.8,
+      "provenance": "fetched",
+      "source_url": "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148",
+      "confidence": 0.85
+    },
+    "fineness_blaine": {
+      "value": 340,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "specific_gravity": {
+      "value": 2.9,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bulk_density": {
+      "value": 1250,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "standard_consistency_pct": {
+      "value": 30,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "setting_time_initial": {
+      "value": 150,
+      "provenance": "fetched",
+      "source_url": "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148",
+      "confidence": 0.85
+    },
+    "setting_time_final": {
+      "value": 225,
+      "provenance": "fetched",
+      "source_url": "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148",
+      "confidence": 0.85
+    },
+    "net_weight_kg": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "suitable_applications": {
+      "value": "General construction in all applications including RCC, PCC, masonry and plastering; also marine structures, hydraulic constructions, dams, underground basements and sewerage systems",
+      "provenance": "fetched",
+      "source_url": "https://www.ultratechcement.com/for-homebuilders/products/overview/ppc",
+      "confidence": 0.95
+    },
+    "recommended_concrete_grade": {
+      "value": "M15 to M30 for general residential work; nominal mixes 1:2:4 and 1:1.5:3",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "water_cement_ratio": {
+      "value": 0.45,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_standard": {
+      "value": "IS 1489 (Part 1)",
+      "provenance": "fetched",
+      "source_url": "https://lntsufin.com/product/ultratech-ppc-cement-is-1489-1991/16034-148",
+      "confidence": 0.9
+    },
+    "bis_certification": {
+      "value": "BIS product certification (ISI mark) under IS 1489 (Part 1); cement is a mandatory-certification product in India",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "isi_marked": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iso_quality_system": {
+      "value": "ISO 9001 quality management system at manufacturing units",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "testing_protocol": {
+      "value": "Each batch checked for fineness, standard consistency, setting time, soundness and compressive strength by the methods of IS 4031",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mill_test_certificate_available": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "mixing_guidance": {
+      "value": "Mix cement, sand and aggregate dry until uniform, then add water gradually to the design water-cement ratio. Machine mixing gives a more cohesive mix; place and compact within 30 minutes of adding water",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "curing_period_days": {
+      "value": 14,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "storage_guidance": {
+      "value": "Store bags off the floor on wooden planks, away from external walls, in a dry covered godown. Use in the order received",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bag_material": {
+      "value": "HDPE/PP laminated woven",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "shelf_life_months": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "stacking_limit_bags": {
+      "value": 10,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "gst_rate_pct": {
+      "value": 28,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "minimum_order_quantity": {
+      "value": 10,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "availability": {
+      "value": "Widely stocked across the Andhra Pradesh and Telangana dealer network",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "delivery_time": {
+      "value": "1–3 working days within Hyderabad, Vijayawada and Visakhapatnam",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "quality_assurance_note": {
+      "value": "Quality is guaranteed against the IS 1489 (Part 1) requirements for the stated shelf life when the bag is stored dry and unopened; claims are handled through the supplying dealer",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.ultratechcement.com/content/ultratechcement/in/en/home/for-homebuilders/products/overview/ppc/_jcr_content/root/container/container/container_copy_copy/teaser.coreimg.png/1786966981369/cement-card.png",
+      "alt": "UltraTech Cement CEM-ULT-PPC50 - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.ultratechcement.com/content/ultratechcement/in/en/home/for-homebuilders/products/overview/ppc/_jcr_content/root/container/container/container_1664351281/slickcarousel/teaser_copy_109768611.coreimg.png/1699003941808/base--11-.png",
+      "alt": "UltraTech Cement CEM-ULT-PPC50 - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.ultratechcement.com/content/ultratechcement/in/en/home/for-homebuilders/products/overview/ppc/_jcr_content/root/container/container/container_1664351281/slickcarousel/teaser_copy_11124076.coreimg.png/1699003943621/base--9-.png",
+      "alt": "UltraTech Cement CEM-ULT-PPC50 - in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.ultratechcement.com/content/ultratechcement/in/en/home/for-homebuilders/products/overview/ppc/_jcr_content/root/container/container/container_1664351281/slickcarousel/teaser_copy_93074321.coreimg.png/1699003941030/base--10-.png",
+      "alt": "UltraTech Cement CEM-ULT-PPC50 - detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.ultratechcement.com/content/ultratechcement/in/en/home/for-homebuilders/products/overview/ppc/_jcr_content/root/container/container/container_267731970_/teaser.coreimg.png/1786966964993/yellwobioy.png",
+      "alt": "UltraTech Cement CEM-ULT-PPC50 - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "cement_type",
+    "compressive_strength_28d",
+    "fineness_blaine",
+    "setting_time_initial",
+    "net_weight_kg",
+    "recommended_concrete_grade",
+    "is_standard",
+    "shelf_life_months"
+  ],
+  "short_description": "UltraTech Portland Pozzolana Cement, 50 kg bag. Fly-ash blended cement to IS 1489 (Part 1) for RCC, masonry and plaster work.",
+  "long_description": "## What it is\n\nUltraTech Portland Pozzolana Cement is a fly-ash blended grey cement supplied in a 50 kg HDPE/PP laminated woven bag. It is made by the dry process: high-quality clinker of balanced chemical composition is inter-ground with fly ash containing high reactive silica and high-purity gypsum, or high-quality Ordinary Portland Cement is blended with finer fly ash. The blend conforms to IS 1489 (Part 1), the Indian Standard for fly-ash based Portland Pozzolana Cement, and as a blended cement it carries no numeric strength grade.\n\n## What it's for\n\nThis is a general-purpose cement for construction in all applications, including RCC, PCC, masonry and plastering. Because the pozzolanic reaction cuts permeability, UltraTech also positions it for marine structures, hydraulic constructions, dams, underground basements and sewerage systems, where resistance to chemical attack and protection against corrosion of steel matter most. In ordinary house building it suits foundation, column, beam and slab concrete around M15 to M30, at a typical water–cement ratio near 0.45.\n\n## Key specifications\n\nMill testing against IS 1489 (Part 1) returned 28.6 MPa compressive strength at 3 days and 58 MPa at 28 days, with an initial setting time of 150 minutes and a final set at 225 minutes — a long working window that suits hand placement in warm weather. Chloride content is held at 0.035% and insoluble residue at 22.80% by mass. Fineness is around 340 m²/kg Blaine, specific gravity about 2.9, standard consistency about 30%, and Le Chatelier soundness expansion about 1 mm. The composition runs roughly 66% clinker, 30% fly ash and 4% gypsum.\n\n## Application and installation notes\n\nMix the dry constituents until uniform, then add water gradually to the design ratio; place and compact within about 30 minutes. Blended cements gain strength more slowly than OPC, so cure with water for a full 14 days. Work between 5 °C and 40 °C ambient. Store bags off the floor on wooden planks, clear of external walls, in a dry covered godown, stacked no more than 10 high, and use within 3 months of packing.\n\n## What's in the box\n\nOne 50 kg sealed bag, approximately 450 × 700 × 140 mm.",
+  "seo": {
+    "title": "UltraTech PPC Cement 50 kg Bag | IS 1489 Part 1",
+    "meta_description": "UltraTech Portland Pozzolana Cement, 50 kg bag. IS 1489 (Part 1) fly-ash cement, 58 MPa at 28 days, for RCC, masonry and plaster. AP & Telangana delivery.",
+    "keywords": [
+      "ultratech ppc cement",
+      "ultratech cement 50 kg price",
+      "ppc cement bag",
+      "is 1489 part 1 cement",
+      "fly ash cement",
+      "cement for slab",
+      "ultratech cement hyderabad"
+    ],
+    "keywords_te": [
+      "అల్ట్రాటెక్ సిమెంట్",
+      "పీపీసీ సిమెంట్",
+      "సిమెంట్ బస్తా ధర",
+      "50 కేజీ సిమెంట్",
+      "స్లాబ్ కోసం సిమెంట్"
+    ],
+    "keywords_hi": [
+      "अल्ट्राटेक सीमेंट",
+      "पीपीसी सीमेंट",
+      "सीमेंट बोरी कीमत",
+      "50 किलो सीमेंट",
+      "स्लैब के लिए सीमेंट"
+    ]
+  }
+}

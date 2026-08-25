@@ -1,0 +1,1059 @@
+{
+  "$comment": "Per-category filter policy — the category-filters skill applied (plan T2B-F). DATA, not code: it is merged with the data rule by services/pipeline/src/facets/build.ts and validated against registry/{slug}.json by facets/policy.ts (every key must exist there; every conditional/relabel value must be a registry enum value). Reserved keys the engine computes: price, brand, stock. Bands: 'quartiles' (live distribution) or explicit ascending edges with edges+1 labels. The trees describe the catalogue each category grows into; today's 3–4 SKUs collapse most of it through the data rule and the depth rule (< 20 SKUs → 4 primary facets).",
+  "version": 1,
+  "categories": {
+    "cement": {
+      "canonical_unit": "bag (50 kg)",
+      "price_label": "Price per bag",
+      "lead": "cement_type",
+      "lead_note": "All {n} cements here are {cement_type} {net_weight_kg} bags",
+      "brand_first": true,
+      "primary": [
+        "cement_type",
+        "brand",
+        "price",
+        "application_segment",
+        "compressive_strength_28d"
+      ],
+      "more": [
+        "net_weight_kg",
+        "setting_time_initial",
+        "fineness_blaine",
+        "bag_material"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {},
+      "bands": {
+        "price": "quartiles",
+        "compressive_strength_28d": {
+          "edges": [
+            43,
+            53
+          ],
+          "labels": [
+            "Under 43 MPa",
+            "43 – 53 MPa",
+            "53 MPa and above"
+          ]
+        }
+      },
+      "relabel": {
+        "cement_type": {
+          "label": "Type",
+          "sublabels": {
+            "OPC 33": "plaster & masonry",
+            "OPC 43": "general RCC & plaster",
+            "OPC 53": "high early strength — RCC, precast",
+            "PPC": "fly-ash blended — most general works",
+            "PSC": "slag blended — marine & sulphate exposure",
+            "Composite Cement": "fly-ash + slag blend",
+            "White Cement": "finishes & grouting"
+          }
+        },
+        "application_segment": {
+          "label": "Use"
+        },
+        "compressive_strength_28d": {
+          "label": "28-day strength"
+        },
+        "net_weight_kg": {
+          "label": "Pack"
+        },
+        "setting_time_initial": {
+          "label": "Initial setting time"
+        },
+        "fineness_blaine": {
+          "label": "Fineness"
+        },
+        "bag_material": {
+          "label": "Bag material"
+        }
+      },
+      "certification_note": {
+        "text": "Every cement here carries a valid BIS licence (IS 1489 / IS 269).",
+        "needs_verification": true,
+        "detail": "Cement is covered by a BIS Quality Control Order, which makes a valid licence a condition of sale — so a BIS filter would have one value and is replaced by this line. The order's exact title, commencement date and the IS list it covers must be checked against the gazette before the line ships."
+      },
+      "omit": [
+        {
+          "key": "isi_marked",
+          "reason": "BIS is mandatory for cement under the Quality Control Order (needs verification against the gazette) — one value on every listing; replaced by the certification line"
+        },
+        {
+          "key": "is_standard",
+          "reason": "restates Type: IS 269 (OPC), IS 1489 (PPC) and IS 455 (PSC) follow from the cement type"
+        }
+      ],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    },
+    "tiles": {
+      "canonical_unit": "sq ft",
+      "price_key": "price_per_sqft",
+      "price_label": "Price per sq ft",
+      "pack_price_label": "Price per box",
+      "lead": "usage_area",
+      "lead_note": "All {n} tiles here are {usage_area} tiles",
+      "primary": [
+        "usage_area",
+        "body_type",
+        "surface_finish",
+        "design_theme",
+        "price_per_sqft",
+        "brand"
+      ],
+      "more": [
+        "pei_abrasion_class",
+        "rectified"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {
+        "slip_resistance_class": {
+          "depends_on": "usage_area",
+          "values": [
+            "Floor",
+            "Floor and wall",
+            "Outdoor / open area"
+          ]
+        }
+      },
+      "bands": {
+        "price_per_sqft": "quartiles",
+        "price": "quartiles"
+      },
+      "relabel": {
+        "usage_area": {
+          "label": "Where it goes",
+          "sublabels": {
+            "Outdoor / open area": "anti-skid matters",
+            "Facade / elevation": "exterior cladding"
+          }
+        },
+        "body_type": {
+          "label": "Size"
+        },
+        "surface_finish": {
+          "label": "Finish"
+        },
+        "design_theme": {
+          "label": "Look"
+        },
+        "price_per_sqft": {
+          "label": "Price per sq ft"
+        },
+        "slip_resistance_class": {
+          "label": "Anti-skid (R rating)",
+          "sublabels": {
+            "R9": "dry areas",
+            "R10": "lightly wet",
+            "R11": "wet areas — bathrooms, outdoors",
+            "R12": "ramps, heavy wet",
+            "R13": "industrial"
+          }
+        },
+        "pei_abrasion_class": {
+          "label": "Wear class (PEI)",
+          "sublabels": {
+            "PEI I": "walls, no foot traffic",
+            "PEI II": "bedrooms, light use",
+            "PEI III": "homes",
+            "PEI IV": "homes & light commercial",
+            "PEI V": "heavy commercial"
+          }
+        },
+        "rectified": {
+          "label": "Rectified edge",
+          "true_label": "Rectified — narrow grout lines"
+        }
+      },
+      "swatches": {
+        "surface_finish": {
+          "Glossy": "linear-gradient(135deg,#ffffff 0%,#c9d1d1 100%)",
+          "Matt": "#d6d8d8",
+          "Satin": "#e3e5e5",
+          "Polished": "linear-gradient(135deg,#fafafa 0%,#aeb8b8 100%)",
+          "Carving / textured": "#c6bda9",
+          "Rustic": "#b3977a",
+          "Sugar": "#e9e3d7",
+          "Lappato / semi-polished": "linear-gradient(135deg,#eeeeee 0%,#cbd1d1 100%)"
+        }
+      },
+      "notes": {
+        "price_per_sqft": "Price per sq ft is the comparison unit; the card shows pieces per box and sq ft per box."
+      },
+      "omit": [
+        {
+          "key": "water_absorption_pct",
+          "reason": "restates Tile type: vitrified < 0.5 %, ceramic 3–10 % — the BIS grouping follows from the type"
+        },
+        {
+          "key": "dim_d_mm",
+          "reason": "thickness follows from size and type; printed on the card instead of filtered"
+        }
+      ],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    },
+    "bulbs": {
+      "canonical_unit": "piece",
+      "price_label": "Price",
+      "lead": "lumens",
+      "lead_note": "All {n} bulbs here are {lumens} bulbs",
+      "primary": [
+        "lumens",
+        "colour_temperature",
+        "wattage",
+        "base_type",
+        "price",
+        "brand",
+        "energy_rating"
+      ],
+      "more": [
+        "shape",
+        "operating_life",
+        "dimmability",
+        "warranty_months"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {},
+      "bands": {
+        "price": "quartiles",
+        "lumens": {
+          "edges": [
+            500,
+            1000,
+            2000
+          ],
+          "labels": [
+            "Under 500 lm",
+            "500 – 1,000 lm",
+            "1,000 – 2,000 lm",
+            "2,000 lm and above"
+          ]
+        },
+        "colour_temperature": {
+          "edges": [
+            2900,
+            3500,
+            5000
+          ],
+          "labels": [
+            "Warm white (2700 K)",
+            "Soft white (3000 K)",
+            "Neutral (4000 K)",
+            "Cool daylight (6500 K)"
+          ],
+          "swatches": [
+            "#ffb15c",
+            "#ffcf8a",
+            "#fff1c9",
+            "#e7f3ff"
+          ]
+        },
+        "wattage": {
+          "edges": [
+            5,
+            10,
+            15,
+            25
+          ],
+          "labels": [
+            "Under 5 W",
+            "5 – 10 W",
+            "10 – 15 W",
+            "15 – 25 W",
+            "25 W and above"
+          ]
+        },
+        "operating_life": {
+          "edges": [
+            10000,
+            15000,
+            25000
+          ],
+          "labels": [
+            "Under 10,000 h",
+            "10,000 – 15,000 h",
+            "15,000 – 25,000 h",
+            "25,000 h and above"
+          ]
+        }
+      },
+      "relabel": {
+        "lumens": {
+          "label": "Brightness"
+        },
+        "colour_temperature": {
+          "label": "Light colour"
+        },
+        "wattage": {
+          "label": "Wattage"
+        },
+        "base_type": {
+          "label": "Base (fit)",
+          "sublabels": {
+            "B22": "bayonet pin — the standard Indian holder",
+            "E27": "large screw",
+            "E14": "small screw — candle & chandelier",
+            "GU10": "twist-lock spotlight",
+            "B15": "small bayonet"
+          }
+        },
+        "energy_rating": {
+          "label": "Energy rating"
+        },
+        "shape": {
+          "label": "Shape"
+        },
+        "operating_life": {
+          "label": "Rated life"
+        },
+        "dimmability": {
+          "label": "Dimmable",
+          "true_label": "Dimmable"
+        },
+        "warranty_months": {
+          "label": "Warranty"
+        }
+      },
+      "notes": {
+        "energy_rating": "BEE star labelling is voluntary for LED bulbs — unlabelled bulbs show as Unrated once the pipeline canonicalises the values (★ 1–5 / Unrated); until then the declared text is shown."
+      },
+      "omit": [
+        {
+          "key": "colour_rendering_index",
+          "reason": "CRI is 80 Ra on virtually every general-lighting LED bulb — one value in practice; printed on the card"
+        }
+      ],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    },
+    "glass": {
+      "canonical_unit": "sq ft",
+      "price_label": "Price per sq ft",
+      "lead": "substrate_glass",
+      "lead_note": "All {n} glass products here are {substrate_glass}",
+      "primary": [
+        "substrate_glass",
+        "nominal_thickness_mm",
+        "glass_colour",
+        "application_area",
+        "price",
+        "brand"
+      ],
+      "more": [
+        "solar_heat_gain_coefficient",
+        "visible_light_transmission_pct",
+        "u_value_w_m2k",
+        "sound_reduction_db"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {},
+      "bands": {
+        "price": "quartiles",
+        "nominal_thickness_mm": {
+          "edges": [
+            4.5,
+            5.5,
+            6.5,
+            9
+          ],
+          "labels": [
+            "4 mm and thinner",
+            "5 mm",
+            "6 mm",
+            "8 mm",
+            "10 mm and thicker"
+          ]
+        },
+        "solar_heat_gain_coefficient": {
+          "edges": [
+            0.3,
+            0.45,
+            0.6
+          ],
+          "labels": [
+            "0.30 and under — high heat cut",
+            "0.30 – 0.45",
+            "0.45 – 0.60",
+            "Over 0.60 — little heat cut"
+          ]
+        },
+        "visible_light_transmission_pct": {
+          "edges": [
+            30,
+            50,
+            70
+          ],
+          "labels": [
+            "Under 30 % — dark",
+            "30 – 50 %",
+            "50 – 70 %",
+            "70 % and above — clear"
+          ]
+        },
+        "u_value_w_m2k": {
+          "edges": [
+            2,
+            4,
+            5.5
+          ],
+          "labels": [
+            "Under 2.0 — insulating",
+            "2.0 – 4.0",
+            "4.0 – 5.5",
+            "5.5 and above — single glazing"
+          ]
+        },
+        "sound_reduction_db": {
+          "edges": [
+            30,
+            35,
+            40
+          ],
+          "labels": [
+            "Under 30 dB",
+            "30 – 35 dB",
+            "35 – 40 dB",
+            "40 dB and above"
+          ]
+        }
+      },
+      "relabel": {
+        "substrate_glass": {
+          "label": "Type"
+        },
+        "nominal_thickness_mm": {
+          "label": "Thickness"
+        },
+        "glass_colour": {
+          "label": "Tint"
+        },
+        "application_area": {
+          "label": "Where it goes"
+        },
+        "impact_safety_class": {
+          "label": "Safety class"
+        },
+        "solar_heat_gain_coefficient": {
+          "label": "Solar control (SHGC)"
+        },
+        "visible_light_transmission_pct": {
+          "label": "Light transmission (VLT)"
+        },
+        "u_value_w_m2k": {
+          "label": "Insulation (U-value)"
+        },
+        "sound_reduction_db": {
+          "label": "Sound reduction"
+        }
+      },
+      "swatches": {
+        "glass_colour": {
+          "Clear": "#eef6f4",
+          "Extra clear": "#f7fbfa",
+          "Green": "#9ccbb5",
+          "Blue": "#8fb6d6",
+          "Grey": "#9ea4a8",
+          "Bronze": "#b08a62",
+          "Neutral / silver": "#c9cfd2",
+          "Neutral grey": "#aeb4b8",
+          "Blue-green": "#8cc1bd",
+          "Gold": "#d2b46a",
+          "Black": "#3b3f42"
+        }
+      },
+      "omit": [],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    },
+    "solar-panels": {
+      "canonical_unit": "panel",
+      "price_label": "Price per panel",
+      "lead": "rated_power_wp",
+      "lead_note": "All {n} panels here are {rated_power_wp} modules",
+      "primary": [
+        "rated_power_wp",
+        "cell_technology",
+        "module_efficiency_pct",
+        "price",
+        "brand",
+        "almm_listed"
+      ],
+      "more": [
+        "bifacial",
+        "application_segment",
+        "product_warranty_years",
+        "performance_warranty_years"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {},
+      "bands": {
+        "price": "quartiles",
+        "rated_power_wp": {
+          "edges": [
+            400,
+            500,
+            550,
+            600
+          ],
+          "labels": [
+            "Under 400 Wp",
+            "400 – 500 Wp",
+            "500 – 550 Wp",
+            "550 – 600 Wp",
+            "600 Wp and above"
+          ]
+        },
+        "module_efficiency_pct": {
+          "edges": [
+            20,
+            21,
+            22
+          ],
+          "labels": [
+            "Under 20 %",
+            "20 – 21 %",
+            "21 – 22 %",
+            "22 % and above"
+          ]
+        }
+      },
+      "relabel": {
+        "rated_power_wp": {
+          "label": "Power"
+        },
+        "cell_technology": {
+          "label": "Cell technology",
+          "sublabels": {
+            "Mono PERC": "proven, value",
+            "N-type TOPCon": "higher efficiency, low degradation",
+            "HJT": "premium, best in heat",
+            "IBC": "premium, all-black",
+            "Polycrystalline": "older, budget"
+          }
+        },
+        "module_efficiency_pct": {
+          "label": "Efficiency"
+        },
+        "almm_listed": {
+          "label": "ALMM listed",
+          "true_label": "ALMM listed — subsidy eligible"
+        },
+        "bifacial": {
+          "label": "Bifacial",
+          "true_label": "Bifacial — generates from the rear too"
+        },
+        "application_segment": {
+          "label": "Application"
+        },
+        "product_warranty_years": {
+          "label": "Product warranty"
+        },
+        "performance_warranty_years": {
+          "label": "Performance warranty"
+        }
+      },
+      "default_off": [
+        "almm_listed"
+      ],
+      "needs_verification": {
+        "almm_listed": "Subsidy wording: ALMM listing is required for central rooftop-subsidy schemes and most government tenders — confirm the current MNRE ALMM order before the label says 'subsidy eligible'."
+      },
+      "notes": {
+        "almm_listed": "Labels, never hides: unlisted modules stay visible."
+      },
+      "omit": [
+        {
+          "key": "junction_box_ip_rating",
+          "reason": "not a buying decision — every listed module carries an IP67/IP68 junction box (one value)"
+        },
+        {
+          "key": "number_of_cells",
+          "reason": "cell count follows from the power class and cell technology (144 half-cut cells on every 540–600 Wp module); printed on the card"
+        }
+      ],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    },
+    "cctv": {
+      "canonical_unit": "piece",
+      "price_label": "Price",
+      "lead": "form_factor",
+      "lead_note": "All {n} cameras here are {form_factor} units",
+      "primary": [
+        "form_factor",
+        "resolution_mp",
+        "night_vision_type",
+        "ip_rating",
+        "price",
+        "brand"
+      ],
+      "more": [
+        "audio_support",
+        "lens_focal_length_mm",
+        "ir_range_m",
+        "video_compression"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {},
+      "bands": {
+        "price": "quartiles",
+        "resolution_mp": {
+          "edges": [
+            3,
+            4.5,
+            6
+          ],
+          "labels": [
+            "2 MP (1080p)",
+            "4 MP",
+            "5 MP",
+            "8 MP (4K)"
+          ]
+        },
+        "lens_focal_length_mm": {
+          "edges": [
+            3.2,
+            4.8,
+            8
+          ],
+          "labels": [
+            "2.8 mm — wide",
+            "3.6 mm — standard",
+            "6 mm — narrow, longer reach",
+            "8 mm and above — telephoto"
+          ]
+        },
+        "ir_range_m": {
+          "edges": [
+            20,
+            30,
+            50
+          ],
+          "labels": [
+            "Under 20 m",
+            "20 – 30 m",
+            "30 – 50 m",
+            "50 m and above"
+          ]
+        }
+      },
+      "relabel": {
+        "form_factor": {
+          "label": "Camera type"
+        },
+        "resolution_mp": {
+          "label": "Resolution"
+        },
+        "night_vision_type": {
+          "label": "Night vision"
+        },
+        "ip_rating": {
+          "label": "Weather protection",
+          "sublabels": {
+            "Not rated (indoor)": "indoor only",
+            "IP54": "sheltered outdoor",
+            "IP65": "outdoor",
+            "IP66": "outdoor, heavy rain",
+            "IP67": "outdoor, survives immersion",
+            "IP68": "outdoor, submersible"
+          }
+        },
+        "power_supply_type": {
+          "label": "Power"
+        },
+        "signal_technology": {
+          "label": "Signal"
+        },
+        "audio_support": {
+          "label": "Audio"
+        },
+        "lens_focal_length_mm": {
+          "label": "Lens"
+        },
+        "ir_range_m": {
+          "label": "Night-vision range"
+        },
+        "video_compression": {
+          "label": "Compression"
+        }
+      },
+      "omit": [],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    },
+    "fire-extinguishers": {
+      "canonical_unit": "piece",
+      "price_label": "Price",
+      "lead": "extinguishing_agent",
+      "lead_note": "All {n} extinguishers here use {extinguishing_agent}",
+      "primary": [
+        "extinguishing_agent",
+        "capacity_kg",
+        "price",
+        "brand",
+        "isi_marked"
+      ],
+      "more": [
+        "fire_rating",
+        "refillable",
+        "warranty_months",
+        "cylinder_material"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {
+        "mounting_type": {
+          "depends_on": "capacity_kg",
+          "min": 9
+        }
+      },
+      "bands": {
+        "price": "quartiles",
+        "capacity_kg": {
+          "edges": [
+            1.5,
+            3,
+            5,
+            8
+          ],
+          "labels": [
+            "1 kg",
+            "2 kg",
+            "4 – 4.5 kg",
+            "6 kg",
+            "9 kg and above"
+          ]
+        },
+        "warranty_months": {
+          "edges": [
+            13,
+            37,
+            61
+          ],
+          "labels": [
+            "Up to 12 months",
+            "1 – 3 years",
+            "3 – 5 years",
+            "Over 5 years"
+          ]
+        }
+      },
+      "relabel": {
+        "extinguishing_agent": {
+          "label": "Type / agent"
+        },
+        "capacity_kg": {
+          "label": "Capacity"
+        },
+        "isi_marked": {
+          "label": "ISI mark (IS 15683)",
+          "true_label": "ISI marked"
+        },
+        "mounting_type": {
+          "label": "Mounting"
+        },
+        "fire_rating": {
+          "label": "Fire rating"
+        },
+        "refillable": {
+          "label": "Refillable",
+          "true_label": "Refillable"
+        },
+        "warranty_months": {
+          "label": "Warranty"
+        },
+        "cylinder_material": {
+          "label": "Cylinder"
+        }
+      },
+      "default_off": [
+        "isi_marked"
+      ],
+      "needs_verification": {
+        "isi_marked": "Whether portable extinguishers (IS 15683) fall under a BIS Quality Control Order is unconfirmed — until it is checked against the gazette this stays an optional label filter (labels, never hides)."
+      },
+      "notes": {
+        "fire_rating": "Values are canonicalised to the IS 15683 form (e.g. 4A 144B) by the pipeline; until then the declared text is shown."
+      },
+      "omit": [
+        {
+          "key": "operating_mechanism",
+          "reason": "one value — stored pressure — across the retail range; cartridge-operated units are industrial"
+        },
+        {
+          "key": "suitable_for_electrical",
+          "reason": "a sublabel of the type (ABC, CO₂ and clean agent are electrical-safe), not a second facet"
+        }
+      ],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    },
+    "epoxy": {
+      "canonical_unit": "kit",
+      "price_label": "Price per kit",
+      "lead": "epoxy_type",
+      "lead_note": "All {n} epoxies here are {epoxy_type} systems",
+      "primary": [
+        "epoxy_type",
+        "application_form",
+        "pack_size_kg",
+        "price",
+        "brand",
+        "structural_use"
+      ],
+      "more": [
+        "compressive_strength_mpa",
+        "pot_life_min",
+        "solvent_free"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {},
+      "bands": {
+        "price": "quartiles",
+        "pack_size_kg": {
+          "edges": [
+            2,
+            5,
+            10
+          ],
+          "labels": [
+            "Under 2 kg",
+            "2 – 5 kg",
+            "5 – 10 kg",
+            "10 kg and above"
+          ]
+        },
+        "compressive_strength_mpa": {
+          "edges": [
+            50,
+            70,
+            90
+          ],
+          "labels": [
+            "Under 50 MPa",
+            "50 – 70 MPa",
+            "70 – 90 MPa",
+            "90 MPa and above"
+          ]
+        },
+        "pot_life_min": {
+          "edges": [
+            30,
+            60,
+            90
+          ],
+          "labels": [
+            "Under 30 min — fast set",
+            "30 – 60 min",
+            "60 – 90 min",
+            "90 min and above — long working time"
+          ]
+        }
+      },
+      "relabel": {
+        "epoxy_type": {
+          "label": "What it's for",
+          "sublabels": {
+            "Structural adhesive": "structural bonding, steel to concrete",
+            "Bonding agent": "new concrete to old",
+            "Injection resin": "crack injection",
+            "Repair mortar": "patch repair",
+            "Anchoring grout": "rebar & bolt anchoring",
+            "Free-flow grout": "baseplate & machine grouting",
+            "Floor coating": "floor coating",
+            "Crack filler": "surface cracks",
+            "Tile joint filler": "tile grout"
+          }
+        },
+        "application_form": {
+          "label": "Form"
+        },
+        "pack_size_kg": {
+          "label": "Pack size"
+        },
+        "structural_use": {
+          "label": "Structural grade",
+          "true_label": "Structural grade — load-bearing repair"
+        },
+        "compressive_strength_mpa": {
+          "label": "Strength"
+        },
+        "pot_life_min": {
+          "label": "Working time (pot life)"
+        },
+        "solvent_free": {
+          "label": "Solvent-free",
+          "true_label": "Solvent-free"
+        }
+      },
+      "notes": {},
+      "omit": [
+        {
+          "key": "usage_area",
+          "reason": "interior / exterior suitability is one value across structural epoxies; the buyer's 'what for' question is the epoxy_type facet"
+        }
+      ],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    },
+    "total-stations": {
+      "canonical_unit": "piece",
+      "price_label": "Price",
+      "lead": "angular_accuracy_arcsec",
+      "lead_note": "All {n} total stations here are {angular_accuracy_arcsec} instruments",
+      "primary": [
+        "angular_accuracy_arcsec",
+        "reflectorless_range_m",
+        "instrument_class",
+        "brand",
+        "price",
+        "bluetooth"
+      ],
+      "more": [
+        "prism_range_m",
+        "compensator_type",
+        "laser_class",
+        "battery_operating_time_h"
+      ],
+      "toolbar": [
+        "stock"
+      ],
+      "conditional": {},
+      "bands": {
+        "price": "quartiles",
+        "angular_accuracy_arcsec": {
+          "edges": [
+            1.5,
+            2.5,
+            4,
+            6
+          ],
+          "labels": [
+            "1″ — precision & monitoring",
+            "2″ — the tender standard",
+            "3″",
+            "5″ — general construction",
+            "7″ and coarser"
+          ]
+        },
+        "reflectorless_range_m": {
+          "edges": [
+            501,
+            1001
+          ],
+          "labels": [
+            "Up to 500 m",
+            "500 – 1,000 m",
+            "Over 1,000 m"
+          ]
+        },
+        "prism_range_m": {
+          "edges": [
+            3001,
+            4001,
+            5001
+          ],
+          "labels": [
+            "Up to 3,000 m",
+            "3,000 – 4,000 m",
+            "4,000 – 5,000 m",
+            "Over 5,000 m"
+          ]
+        },
+        "battery_operating_time_h": {
+          "edges": [
+            10,
+            20,
+            30
+          ],
+          "labels": [
+            "Under 10 h",
+            "10 – 20 h",
+            "20 – 30 h",
+            "30 h and above"
+          ]
+        }
+      },
+      "relabel": {
+        "angular_accuracy_arcsec": {
+          "label": "Angular accuracy"
+        },
+        "reflectorless_range_m": {
+          "label": "Reflectorless range"
+        },
+        "instrument_class": {
+          "label": "Class",
+          "sublabels": {
+            "Manual total station": "operator aims",
+            "Motorised total station": "auto-aim",
+            "Robotic total station": "one-person operation",
+            "Imaging total station": "scanning & imaging"
+          }
+        },
+        "bluetooth": {
+          "label": "Bluetooth",
+          "true_label": "Bluetooth — wireless data"
+        },
+        "prism_range_m": {
+          "label": "Prism range"
+        },
+        "compensator_type": {
+          "label": "Compensator"
+        },
+        "laser_class": {
+          "label": "Laser class"
+        },
+        "battery_operating_time_h": {
+          "label": "Battery life"
+        }
+      },
+      "omit": [
+        {
+          "key": "ip_rating",
+          "reason": "IP66 across the current range (one value); printed on the card"
+        },
+        {
+          "key": "warranty_months",
+          "reason": "12 months across the range; printed on the card"
+        }
+      ],
+      "universal": {
+        "price_basis": true,
+        "price_freshness": true
+      }
+    }
+  }
+}

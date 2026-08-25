@@ -1,0 +1,14 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "services/*"
+
+allowBuilds:
+  "@google/genai": true
+  "@tailwindcss/oxide": true
+  esbuild: true
+  msgpackr-extract: true
+  protobufjs: true
+  sharp: true
+  playwright: true
+  unrs-resolver: true

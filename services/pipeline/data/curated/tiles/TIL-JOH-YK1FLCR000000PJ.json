@@ -1,0 +1,555 @@
+{
+  "sku_code": "TIL-JOH-YK1FLCR000000PJ",
+  "category": "tiles",
+  "brand": {
+    "slug": "johnson",
+    "name": "Johnson (H&R Johnson India)",
+    "official_domains": [
+      "hrjohnsonindia.com"
+    ],
+    "logo_url": "https://www.hrjohnsonindia.com/assets/images/logo-johnson.png",
+    "intel": {
+      "year_established": {
+        "value": 1958,
+        "provenance": "fetched",
+        "source_url": "https://www.hrjohnsonindia.com/about-us"
+      },
+      "parent_company": {
+        "value": "Prism Johnson Limited - H & R Johnson (India) is its tile division, alongside Prism Cement and Prism RMC; Ardex Endura (India) is its tile-adhesive JV with the Ardex group of Germany",
+        "provenance": "fetched",
+        "source_url": "https://www.hrjohnsonindia.com/about-us"
+      },
+      "product_portfolio": {
+        "value": "Johnson ceramic wall and floor tiles, Porselano glazed vitrified tiles, Marbonite vitrified tiles and slabs, Endura industrial tiles, plus sanitaryware, bath fittings and engineered marble and quartz",
+        "provenance": "fetched",
+        "source_url": "https://www.hrjohnsonindia.com/about-us"
+      },
+      "market_coverage": {
+        "value": "Pan-India; the pioneer of ceramic tiles in India with over six decades of operation and the only Indian company offering end-to-end tiles, sanitaryware, bath fittings and engineered marble and quartz; over 3,000 options across company-owned experience centres including Hyderabad",
+        "provenance": "fetched",
+        "source_url": "https://www.hrjohnsonindia.com/about-us"
+      },
+      "quality_strength_note": {
+        "value": "Marbonite is the brand's fully vitrified flagship, and this Elite range is sold as a StainFree series - a low-maintenance polished surface; the Industrial Products and Natural Resources division has run its own ceramics R&D department (CTDC) since 1997",
+        "provenance": "fetched",
+        "source_url": "https://www.hrjohnsonindia.com/about-us"
+      },
+      "engineer_user_rating": {
+        "value": "4.2/5 (typical) - engineers rate Johnson strongly on industrial and heavy-duty flooring, and as a solid rather than leading choice on decorative large formats",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Moderate to high. Contractors reach for Marbonite when a job needs a fully vitrified, easy-clean polished floor and the client already knows the Johnson name from ceramic tiles",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High for ceramic wall tiles, moderate for large-format vitrified; first-time buyers recognise Johnson but often do not know Marbonite is the same house",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 40,
+          "highest": 250,
+          "unit": "₹/sqft"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project rates through the Prism Johnson institutional desk usually run 12-20% under the retail counter rate; retail carries dealer margin, freight and breakage allowance",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Discount slabs typically open around 500 sqft, improving at full-truck quantity; single-design loads price better than mixed loads",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Typical dealer margin 14-22% on vitrified tiles, thinner on hero designs held as stock lines",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "moderate",
+          "roads": "not applicable",
+          "bridges": "not applicable",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "West and South India",
+          "weak": "North-East",
+          "balanced": "North India",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Residential floor tiling in large format - living, dining and bedroom floors",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Wall cladding and feature walls in the same module, and light-commercial interiors",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Countertops, staircase treads and lift-lobby cladding; the wider Johnson range extends to industrial, anti-static, radiation-shielding and cool-roof tiles",
+        "provenance": "fetched",
+        "source_url": "https://www.hrjohnsonindia.com/about-us"
+      },
+      "top_preference_order": {
+        "value": [
+          "Kajaria",
+          "Somany",
+          "Johnson (H&R Johnson)",
+          "Orient Bell",
+          "Nitco"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Johnson Marbonite Elite Floral Crema Vitrified Tile 600x1200 mm Polished",
+    "slug": "johnson-marbonite-elite-floral-crema-600x1200-polished",
+    "model_no": "YK1FLCR000000PJ",
+    "status": "active"
+  },
+  "variant_label": "600 x 1200 mm, polished, box of 2 (1.44 sqm / 15.5 sqft)",
+  "unit": "box",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 1400,
+    "selling_price": 1200,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "No price is published on the Johnson product page. Typical Hyderabad / Vijayawada dealer counter rate for a 600x1200 mm Marbonite polished vitrified tile in August 2026 is ₹70-90 per sqft; at 15.5 sqft per box that is roughly ₹1,085-1,395 per box. ±10%."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://www.hrjohnsonindia.com/collections-elite-dsf-rt24",
+      "https://www.hrjohnsonindia.com/about-us",
+      "https://www.hrjohnsonindia.com/assets/images/catalogue/pdf/Marbonite-Master-Catalogue-Rajkot-2026.pdf"
+    ]
+  },
+  "attributes": {
+    "series_name": {
+      "value": "Elite DSF RT24 (Marbonite by Johnson)",
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.95
+    },
+    "design_name": {
+      "value": "Floral Crema",
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.98
+    },
+    "body_type": {
+      "value": "Vitrified (porcelain) body",
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.8
+    },
+    "body_composition": {
+      "value": "Pressed porcelain body of ball clay, feldspar, quartz and kaolin, fully vitrified through the section",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "manufacturing_process": {
+      "value": "Dry pressed (ISO 13006 Group B)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "printing_technology": {
+      "value": "High-definition digital printing (design look listed as ART)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "firing_temperature_c": {
+      "value": 1200,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dim_w_mm": {
+      "value": 600,
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.95
+    },
+    "dim_h_mm": {
+      "value": 1200,
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.95
+    },
+    "dim_d_mm": {
+      "value": 9,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "rectified": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "dimensional_tolerance_pct": {
+      "value": 0.6,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "frost_resistance": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "thermal_shock_resistance": {
+      "value": "Resistant to thermal shock when tested to ISO 10545-9",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "breaking_strength_n": {
+      "value": 1300,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "modulus_of_rupture_mpa": {
+      "value": 35,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "mohs_hardness": {
+      "value": 6,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pei_abrasion_class": {
+      "value": "PEI IV",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "stain_resistance_class": {
+      "value": "Class 5",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "chemical_resistance_class": {
+      "value": "Resistant to household chemicals and cleaning agents (ISO 10545-13)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "water_absorption_pct": {
+      "value": 0.5,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "net_weight_kg": {
+      "value": 31,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "slip_resistance_class": {
+      "value": "R9",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "usage_area": {
+      "value": "Floor and wall",
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.95
+    },
+    "recommended_rooms": {
+      "value": "Residential flooring - living room, bedroom, dining and corridors, plus feature walls",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "residential_suitable": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "commercial_suitable": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "outdoor_suitable": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "antibacterial_surface": {
+      "value": false,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "is_standard": {
+      "value": "IS 15622 (pressed ceramic tiles)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iso_standard": {
+      "value": "ISO 13006 (classification), ISO 10545 (test methods)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iso_13006_group": {
+      "value": "BIa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "bis_isi_marked": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "green_certification": {
+      "value": "Not stated on the product page",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "quality_grade": {
+      "value": "Premium / first quality",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "test_standard_series": {
+      "value": "ISO 10545 Parts 2 to 14",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "surface_finish": {
+      "value": "Polished",
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.95
+    },
+    "design_theme": {
+      "value": "Marble",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "colour_shade": {
+      "value": "Crema (cream / beige)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "shade_variation_class": {
+      "value": "V2 - slight variation",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "installation_method": {
+      "value": "Thin-bed fixing with polymer-modified tile adhesive over a levelled, cured screed; back-butter large formats for full contact",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "recommended_adhesive": {
+      "value": "Ardex Endura polymer-modified tile adhesive conforming to IS 15477 (the group's tile-adhesive JV)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "joint_width_mm": {
+      "value": 2,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pieces_per_box": {
+      "value": 2,
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.98
+    },
+    "coverage_per_box_sqm": {
+      "value": 1.44,
+      "provenance": "fetched",
+      "source_url": "https://www.hrjohnsonindia.com/product-elite-dsf-rt24-floral-crema-yk1flcr000000pj",
+      "confidence": 0.98
+    },
+    "coverage_per_box_sqft": {
+      "value": 15.5,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "price_per_sqft": {
+      "value": 77,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "price_per_box": {
+      "value": 1200,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "availability": {
+      "value": "Current listed design in the Elite DSF RT24 collection; available through the Johnson dealer network and experience centres including Hyderabad",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "warranty_months": {
+      "value": 12,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_coverage": {
+      "value": "Manufacturing defects only. Shade, size and surface must be checked against the box batch before fixing; claims are not accepted once tiles are laid",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.hrjohnsonindia.com/assets/media/sku/big/YK1FLCR000000PJ.jpg",
+      "alt": "Johnson Marbonite Elite Floral Crema 600x1200 mm polished vitrified tile, full face",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.hrjohnsonindia.com/assets/media/sku/medium/YJ1VEBLMT0000PJP.jpg",
+      "alt": "Johnson Marbonite Floral Crema tile at an angle showing the polished vitrified sheen",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.hrjohnsonindia.com/assets/media/sku/medium/YJ1VEOLMT0000PJP.jpg",
+      "alt": "Marbonite Floral Crema 600x1200 mm vitrified tiles laid in a luxury living space",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.hrjohnsonindia.com/assets/media/sku/medium/YK1ALBROS0000PJ.jpg",
+      "alt": "Close-up of the polished cream marble veining on Johnson Marbonite Floral Crema",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.hrjohnsonindia.com/assets/media/sku/medium/YK1ALMA020000PJ.jpg",
+      "alt": "Johnson Marbonite 600x1200 mm carton declaration, 2 tiles per box covering 1.44 sqm",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "brochure",
+      "title": "Johnson Marbonite master catalogue 2026",
+      "source_url": "https://www.hrjohnsonindia.com/assets/images/catalogue/pdf/Marbonite-Master-Catalogue-Rajkot-2026.pdf",
+      "checked": true
+    },
+    {
+      "type": "brochure",
+      "title": "Johnson Marbonite double-charge and soluble-salt catalogue 2026",
+      "source_url": "https://www.hrjohnsonindia.com/assets/images/catalogue/pdf/marbonite-dc-and-ss-catalogue-2026.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "rectified",
+    "dim_w_mm",
+    "pei_abrasion_class",
+    "slip_resistance_class",
+    "modulus_of_rupture_mpa",
+    "water_absorption_pct",
+    "surface_finish",
+    "coverage_per_box_sqft"
+  ],
+  "short_description": "Johnson Marbonite Elite Floral Crema, 600x1200 mm polished vitrified tile from the StainFree series, 2 tiles per box covering 1.44 sqm.",
+  "long_description": "## What it is\n\nFloral Crema (article YK1FLCR000000PJ) is a polished vitrified tile from Elite DSF RT24, the 600 x 1200 mm collection of Marbonite by Johnson. Johnson describes the Marbonite StainFree series as fully vitrified and easy on maintenance; the tile is a dry-pressed porcelain body in a cream marble design, 9 mm thick.\n\n## What it's for\n\nJohnson lists the application as floor and wall, which is how the 2 x 4 ft format is used across Andhra Pradesh and Telangana - a continuous polished floor through living, dining and bedroom areas, with the same tile carried up a feature wall. PEI IV abrasion and a vitrified body cover domestic traffic and light-commercial interiors such as offices and showrooms. With an R9 slip class and a polished face this is an indoor, dry-area tile - not for balconies, terraces or open parking.\n\n## Key specifications\n\nThe body is Group BIa vitrified porcelain with water absorption at or below 0.5%, the property behind both the stain tolerance and the dimensional stability a 1200 mm tile needs. Breaking strength is taken at 1300 N with a modulus of rupture of 35 N/mm², to IS 15622 and the ISO 10545 test series, surface hardness around MOHS 6 and stain resistance Class 5. Dimensional tolerance is held to 0.6%, so the rectified edge closes on a 2 mm joint. The StainFree surface is the range's own low-maintenance polished face.\n\n## Application and installation notes\n\nFix thin-bed over a levelled, fully cured screed using a polymer-modified adhesive to IS 15477 - Ardex Endura, the group's own adhesive brand, is the matched product. Back-butter each tile so nothing is hollow across the 1200 mm span, hold joints at 2 mm, and check the box batch before laying, since shade variation is V2.\n\n## What's in the box\n\nOne box holds 2 tiles covering 1.44 m² (about 15.5 sqft) and weighs about 31 kg. Sold by the box under HSN 6907 at 18% GST.",
+  "seo": {
+    "title": "Johnson Marbonite Floral Crema 600x1200 Tile",
+    "meta_description": "Johnson Marbonite Elite Floral Crema 600x1200 mm polished vitrified tile - StainFree series, cream marble look, 2 tiles per box (1.44 sqm). AP & Telangana.",
+    "keywords": [
+      "johnson marbonite",
+      "marbonite floral crema",
+      "johnson 600x1200 tile",
+      "polished vitrified tile",
+      "H&R Johnson tile price",
+      "cream marble floor tile",
+      "2x4 vitrified tile Hyderabad"
+    ],
+    "keywords_te": [
+      "జాన్సన్ టైల్స్",
+      "మార్బొనైట్ విట్రిఫైడ్ టైల్",
+      "600x1200 ఫ్లోర్ టైల్",
+      "పాలిష్డ్ విట్రిఫైడ్ టైల్",
+      "క్రీమ్ మార్బుల్ టైల్ ధర"
+    ],
+    "keywords_hi": [
+      "जॉनसन टाइल्स",
+      "मार्बोनाइट विट्रिफाइड टाइल",
+      "600x1200 फ्लोर टाइल",
+      "पॉलिश्ड विट्रिफाइड टाइल",
+      "क्रीम मार्बल टाइल कीमत"
+    ]
+  }
+}

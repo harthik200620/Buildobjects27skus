@@ -1,0 +1,21 @@
+{
+  "$comment": "Where a person had to look and decide. `pnpm pipeline images:resource` gets most SKUs right from the brand's own page, but ranking cannot always tell one variant of a product from another, and it cannot tell that a manufacturer has stopped publishing a photograph at all. `skus` pins a role to a URL, or to `null` when the brand publishes no photograph and the labelled placeholder is the honest output — better than an accessory or a neighbouring model standing in for it. A pinned URL is still subject to the competitor rule. `reviewed` records SKUs someone has already been through and found nothing to pin, so the next person does not repeat the search.",
+
+  "skus": {
+    "SOL-VIK-PARADEA-550": {
+      "hero": "https://www.vikramsolar.com/wp-content/uploads/2022/10/Paradea-M10_144_550W.png",
+      "why": "Vikram publish four Paradea module renders whose filenames differ only by variant — paradea_g12_120, Paradea-G12_132, Paradea-M10_144_550W. All score identically on the product name, so the ranking chose on frame shape and picked a field photograph instead. This SKU is the M10 144-cell 550 W, and that is the file that names it."
+    },
+
+    "CCT-DAH-HDW1200TRQP": {
+      "hero": null,
+      "why": "Dahua's page for HAC-HDW1200TRQ carries a Discontinued_Product banner and exactly one asset under /ProductImage/ — a PFA13G pole-mount bracket. The rest of the page is category navigation: Network_Cameras, PTZ_Cameras, Flame-Detection-Camera. None is this camera, and an accessory shown as the product is the error this whole pass exists to remove. Replace with a Dahua-hosted photograph of the camera if one appears."
+    }
+  },
+
+  "reviewed": {
+    "BUL-PHI-ACESAVER9WB22": "Philips publish no photograph of the Ace Saver 9 W. Their captured page is the LED-bulbs range listing, whose carousel holds a StellarBright 9 W and an Ace Saver 10 W — right wattage in the wrong range, right range at the wrong wattage. The one Ace Saver product link on that page, in.shop.lighting.philips.com/.../philips-ace-saver-led-bulb, now answers 404. A 10 W carton on a 9 W listing is a claim a buyer could act on, so the hero stays the range artwork Philips themselves put on that page. Pin a real one the moment they publish it.",
+    "EPX-FOS-CONBEXTRAEP10": "Not wrong. /assets/productDetailImages/024-Large-Fosroc-Epoxy-Grout.jpg is Fosroc's own product-detail image for Conbextra EP10 — a base-plate grouting illustration, because that is what Fosroc publish for a pourable grout rather than a pack shot. The rest of their page is a twelve-flag language switcher and an App Store badge, all under the size floor.",
+    "GLS-AIS-EDGE-NATURAPLUS": "Not wrong. All three glass SKUs lead with a glazed facade, because that is how architectural glass is specified and photographed; a pane of glass shot alone shows nothing. Same for GLS-GUA-CLIMAGUARD-BLUE5 and GLS-SGB-SUNBAN-SAPPHIRE5."
+  }
+}

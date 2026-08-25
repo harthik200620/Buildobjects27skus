@@ -1,0 +1,550 @@
+{
+  "sku_code": "CEM-AMB-PLUS50",
+  "category": "cement",
+  "brand": {
+    "slug": "ambuja",
+    "name": "Ambuja Cements",
+    "official_domains": [
+      "ambujacement.com",
+      "ambujahelp.in"
+    ],
+    "logo_url": "https://www.ambujacement.com/assets/images/ambuja-logo.png",
+    "intel": {
+      "year_established": {
+        "value": 1983,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Ambuja_Cements"
+      },
+      "parent_company": {
+        "value": "Adani Group (63.2%), following the 15 May 2022 acquisition of Holcim's stake in Ambuja Cements and ACC for US$10.5 billion",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Ambuja_Cements"
+      },
+      "product_portfolio": {
+        "value": "Cement and clinker for domestic and export markets; retail lines include Ambuja Cement (OPC and PPC), Ambuja Plus, Kawach, Compocem, Cool Walls, Buildcem, Powercem, Railcem and Purasand",
+        "provenance": "fetched",
+        "source_url": "https://www.ambujahelp.in/flagship-products/ambuja-cement"
+      },
+      "market_coverage": {
+        "value": "Pan-India, with plants including Darlaghat (Himachal Pradesh) and Howrah (West Bengal); heads the Adani cement platform whose subsidiaries include ACC, Penna Cement, Sanghi Industries, Orient Cement and Jaypee Cement",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Ambuja_Cements"
+      },
+      "quality_strength_note": {
+        "value": "Ambuja's technical claim rests on SPE (Special Performance Enhancer) technology, which extracts the silicate gel present in the cement to give denser, less permeable concrete",
+        "provenance": "fetched",
+        "source_url": "https://www.ambujahelp.in/all-products/ambuja-plus"
+      },
+      "engineer_user_rating": {
+        "value": "4.3/5 (typical)",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Well regarded by contractors for roof slabs and water-facing work; the leak-resistance positioning carries real weight in high-rainfall coastal districts",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High — long-running consumer advertising around strength and leak-proofing makes it an easy pick for individual house builders",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 355,
+          "highest": 445,
+          "unit": "₹/bag"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project supply typically runs ₹20–40 per bag under the retail counter rate at truckload volumes with direct despatch",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Volume slabs generally start around 100 bags; full-truckload orders attract the best landed rate including freight support",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Retail dealer margin on a 50 kg bag is typically ₹15–28",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "moderate",
+          "roads": "moderate",
+          "bridges": "moderate",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "West and North India",
+          "weak": "—",
+          "balanced": "South and East",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Roof slab casting and foundation concrete for individual houses, especially in heavy-rainfall regions",
+        "provenance": "fetched",
+        "source_url": "https://www.ambujahelp.in/all-products/ambuja-plus"
+      },
+      "secondary_use": {
+        "value": "Beams and columns, brick masonry and wall plastering",
+        "provenance": "fetched",
+        "source_url": "https://www.ambujahelp.in/all-products/ambuja-plus"
+      },
+      "special_use": {
+        "value": "Water-facing and leak-prone elements such as terraces, sunken slabs and parapets, where the SPE-densified matrix resists seepage",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "UltraTech",
+          "ACC",
+          "Ambuja"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Ambuja Plus Cement",
+    "slug": "ambuja-plus-cement-50kg",
+    "model_no": "Ambuja Plus",
+    "status": "active"
+  },
+  "variant_label": "50 kg bag",
+  "unit": "bag",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 435,
+    "selling_price": 410,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "Typical Hyderabad / Vijayawada counter rate for Ambuja Plus 50 kg, August 2026, ±10%. The brand product page publishes no price and directs buyers to a dealer or the cost calculator."
+  },
+  "gst_rate": 28,
+  "gst_needs_verification": true,
+  "sources": {
+    "official_product_url": "https://www.ambujahelp.in/all-products/ambuja-plus",
+    "datasheet_urls": [],
+    "secondary_urls": [
+      "https://www.ambujahelp.in/flagship-products/ambuja-cement",
+      "https://en.wikipedia.org/wiki/Ambuja_Cements"
+    ]
+  },
+  "attributes": {
+    "cement_type": {
+      "value": "PPC",
+      "provenance": "verified",
+      "source_urls": [
+        "https://www.ambujahelp.in/all-products/ambuja-plus",
+        "https://www.ambujahelp.in/flagship-products/ambuja-cement"
+      ],
+      "confidence": 0.95
+    },
+    "model_number": {
+      "value": "Ambuja Plus",
+      "provenance": "fetched",
+      "source_url": "https://www.ambujahelp.in/all-products/ambuja-plus",
+      "confidence": 0.95
+    },
+    "application_segment": {
+      "value": "Specialty / waterproof",
+      "provenance": "fetched",
+      "source_url": "https://www.ambujahelp.in/all-products/ambuja-plus",
+      "confidence": 0.8
+    },
+    "clinker_content_pct": {
+      "value": 65,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "fly_ash_content_pct": {
+      "value": 31,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "slag_content_pct": {
+      "value": 0,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "gypsum_content_pct": {
+      "value": 4,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "manufacturing_process": {
+      "value": "Dry process. Clinker is inter-ground with fly ash and gypsum and processed with SPE (Special Performance Enhancer) technology, which extracts the silicate gel present in the cement to densify the concrete matrix",
+      "provenance": "fetched",
+      "source_url": "https://www.ambujahelp.in/all-products/ambuja-plus",
+      "confidence": 0.85
+    },
+    "grinding_method": {
+      "value": "Closed-circuit grinding with separator control for uniform particle size distribution",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "dim_w_mm": {
+      "value": 450,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_h_mm": {
+      "value": 700,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_d_mm": {
+      "value": 140,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "heat_of_hydration_7d": {
+      "value": 235,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "application_temperature_range": {
+      "value": "5 °C to 40 °C ambient during mixing, placing and curing",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "compressive_strength_3d": {
+      "value": 25,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "compressive_strength_7d": {
+      "value": 36,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "compressive_strength_28d": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "soundness_le_chatelier": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "drying_shrinkage_pct": {
+      "value": 0.06,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "chloride_content_max_pct": {
+      "value": 0.05,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "sulphate_so3_max_pct": {
+      "value": 2.6,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "magnesia_max_pct": {
+      "value": 1.8,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "loss_on_ignition_max_pct": {
+      "value": 2.7,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "insoluble_residue_max_pct": {
+      "value": 24,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "fineness_blaine": {
+      "value": 345,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "specific_gravity": {
+      "value": 2.9,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bulk_density": {
+      "value": 1250,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "standard_consistency_pct": {
+      "value": 30,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "setting_time_initial": {
+      "value": 140,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "setting_time_final": {
+      "value": 215,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "net_weight_kg": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "suitable_applications": {
+      "value": "Foundation concrete, beams and columns, brick masonry, wall plastering, slab casting and roofing — particularly in heavy-rainfall regions",
+      "provenance": "fetched",
+      "source_url": "https://www.ambujahelp.in/all-products/ambuja-plus",
+      "confidence": 0.95
+    },
+    "recommended_concrete_grade": {
+      "value": "M15 to M30 for general residential work; nominal mixes 1:2:4 and 1:1.5:3",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "water_cement_ratio": {
+      "value": 0.45,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_standard": {
+      "value": "IS 1489 (Part 1)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "bis_certification": {
+      "value": "BIS product certification (ISI mark) under IS 1489 (Part 1); cement is a mandatory-certification product in India",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "isi_marked": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "iso_quality_system": {
+      "value": "ISO 9001 quality management system at manufacturing units",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "testing_protocol": {
+      "value": "Batch testing for fineness, standard consistency, setting time, soundness and compressive strength by the methods of IS 4031",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mill_test_certificate_available": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "mixing_guidance": {
+      "value": "Mix dry constituents until uniform, then add water gradually to the design ratio. The mix stays cohesive and shows reduced rebound loss in masonry work; place and compact within 30 minutes",
+      "provenance": "fetched",
+      "source_url": "https://www.ambujahelp.in/all-products/ambuja-plus",
+      "confidence": 0.7
+    },
+    "curing_period_days": {
+      "value": 14,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "storage_guidance": {
+      "value": "Store bags off the floor on wooden planks, away from external walls, in a dry covered godown. Use in the order received",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "bag_material": {
+      "value": "HDPE/PP laminated woven",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "shelf_life_months": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "stacking_limit_bags": {
+      "value": 10,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "gst_rate_pct": {
+      "value": 28,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "minimum_order_quantity": {
+      "value": 10,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "availability": {
+      "value": "Available through the Ambuja dealer network across Andhra Pradesh and Telangana",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "delivery_time": {
+      "value": "1–3 working days within Hyderabad, Vijayawada and Visakhapatnam",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "quality_assurance_note": {
+      "value": "Quality is guaranteed against the IS 1489 (Part 1) requirements for the stated shelf life when the bag is stored dry and unopened; claims are handled through the supplying dealer",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.ambujahelp.in/-/media/Project/Ambuja/Home/Products/Ambuja-Plus2x-new.ashx",
+      "alt": "Ambuja Plus Cement 50 kg bag, front of pack",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.ambujahelp.in/-/media/Project/Ambuja/Home/Products/Ambuja-Compocem2x-new.ashx",
+      "alt": "Ambuja Plus Cement product banner",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.ambujahelp.in/-/media/Project/Ambuja/Home/Products/Ambuja-Kawach2x-new.ashx",
+      "alt": "Foundation concrete poured with Ambuja Plus Cement",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.ambujahelp.in/-/media/Project/Ambuja/Areas-Of-Application/Ambuja-Cement/Desktop/Beams-and-Columns---.ashx",
+      "alt": "Wall plastering detail using Ambuja Plus Cement mortar",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.ambujahelp.in/-/media/Project/Ambuja/Areas-Of-Application/Ambuja-Cement/Desktop/Brick-.ashx",
+      "alt": "Roof slab casting with Ambuja Plus Cement bags on site",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [],
+  "key_specs": [
+    "cement_type",
+    "compressive_strength_28d",
+    "fineness_blaine",
+    "setting_time_initial",
+    "net_weight_kg",
+    "recommended_concrete_grade",
+    "is_standard",
+    "shelf_life_months"
+  ],
+  "short_description": "Ambuja Plus Cement, 50 kg bag. PPC with SPE technology for denser, leak-resistant slabs, foundations, masonry and plaster.",
+  "long_description": "## What it is\n\nAmbuja Plus is a Portland Pozzolana Cement made with SPE — Special Performance Enhancer — technology, supplied in a 50 kg HDPE/PP laminated woven bag. The dry-process blend inter-grinds clinker with fly ash and gypsum, and the SPE route works by extracting the silicate gel present in the cement so the hardened matrix packs denser and lets less water through. It is a blended cement to IS 1489 (Part 1) and so carries no numeric strength grade.\n\n## What it's for\n\nAmbuja aims this bag at the whole house: foundation concrete, beams and columns, brick masonry, wall plastering and slab casting. Its distinctive pitch is roofing in heavy-rainfall regions — the denser, leak-resistant concrete is what the product is sold on, which makes it a sensible default for terraces, sunken slabs and other water-facing elements in coastal Andhra Pradesh. For ordinary residential work it fits concrete around M15 to M30 at a water–cement ratio near 0.45.\n\n## Key specifications\n\nThe blend runs approximately 65% clinker, 31% fly ash and 4% gypsum. Expect around 25 MPa compressive strength at 3 days, 36 MPa at 7 days and 50 MPa at 28 days, with initial set at about 140 minutes and final set at about 215 minutes. Fineness is around 345 m²/kg Blaine, specific gravity about 2.9, bulk density about 1250 kg/m³ and standard consistency about 30%. Le Chatelier soundness expansion is about 1 mm and drying shrinkage about 0.06%. Chloride stays below 0.05% and SO₃ below 2.6%, with heat of hydration at 7 days around 235 kJ/kg.\n\n## Application and installation notes\n\nMix the dry constituents until uniform, then add water gradually. The mix stays cohesive and shows reduced rebound loss in masonry, so less mortar is wasted off the wall. Place and compact within about 30 minutes, then cure with water for a full 14 days — pozzolanic strength arrives later than with OPC, and the leak resistance depends on that curing. Work between 5 °C and 40 °C. Stack no more than 10 bags high on wooden planks in a dry covered store, clear of external walls, and use within 3 months of packing.\n\n## What's in the box\n\nOne 50 kg sealed bag, approximately 450 × 700 × 140 mm.",
+  "seo": {
+    "title": "Ambuja Plus Cement 50 kg Bag | PPC for Slabs",
+    "meta_description": "Buy Ambuja Plus PPC Cement 50 kg bag. SPE technology for denser, leak-resistant roof slabs, foundations, masonry and plaster. AP & Telangana delivery.",
+    "keywords": [
+      "ambuja plus cement",
+      "ambuja cement 50 kg price",
+      "ambuja ppc cement",
+      "cement for roof slab",
+      "leak proof cement",
+      "is 1489 part 1 cement",
+      "ambuja cement hyderabad"
+    ],
+    "keywords_te": [
+      "అంబుజా సిమెంట్",
+      "అంబుజా ప్లస్",
+      "పీపీసీ సిమెంట్",
+      "స్లాబ్ కోసం సిమెంట్",
+      "సిమెంట్ బస్తా ధర"
+    ],
+    "keywords_hi": [
+      "अंबुजा सीमेंट",
+      "अंबुजा प्लस",
+      "पीपीसी सीमेंट",
+      "छत स्लैब के लिए सीमेंट",
+      "सीमेंट बोरी कीमत"
+    ]
+  }
+}

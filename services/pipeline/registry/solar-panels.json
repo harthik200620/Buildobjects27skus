@@ -1,0 +1,1191 @@
+{
+  "category": "solar-panels",
+  "version": 2,
+  "attributes": [
+    {
+      "key": "rated_power_wp",
+      "group": "product_identity",
+      "label": "Rated power (STC)",
+      "data_type": "number",
+      "unit": "Wp",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 1,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "wattage",
+        "watt peak",
+        "panel watts",
+        "Pmax",
+        "వాట్",
+        "वाट"
+      ],
+      "display_order": 0
+    },
+    {
+      "key": "module_efficiency_pct",
+      "group": "product_identity",
+      "label": "Module efficiency",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 3,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "efficiency",
+        "conversion efficiency",
+        "సామర్థ్యం",
+        "दक्षता"
+      ],
+      "display_order": 1
+    },
+    {
+      "key": "cell_technology",
+      "group": "product_identity",
+      "label": "Cell technology",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Mono PERC",
+        "N-type TOPCon",
+        "HJT",
+        "IBC",
+        "Polycrystalline"
+      ],
+      "is_filterable": true,
+      "filter_widget": "chips",
+      "filter_order": 2,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": true,
+      "compare": true,
+      "synonyms": [
+        "mono perc",
+        "topcon",
+        "n type",
+        "cell type",
+        "సెల్ టెక్నాలజీ",
+        "सेल तकनीक"
+      ],
+      "display_order": 2
+    },
+    {
+      "key": "bifacial",
+      "group": "product_identity",
+      "label": "Bifacial (generates from the rear too)",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": true,
+      "filter_widget": "toggle",
+      "filter_order": 4,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "bifacial module",
+        "glass to glass",
+        "double glass",
+        "బైఫేషియల్",
+        "बाइफेशियल"
+      ],
+      "display_order": 3
+    },
+    {
+      "key": "model_number",
+      "group": "product_identity",
+      "label": "Model / module code",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "model no",
+        "module code",
+        "part number",
+        "మోడల్ నంబర్",
+        "मॉडल नंबर"
+      ],
+      "display_order": 4
+    },
+    {
+      "key": "number_of_cells",
+      "group": "product_identity",
+      "label": "Number of cells",
+      "data_type": "number",
+      "unit": "cells",
+      "is_filterable": false,
+      "filter_order": 6,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "cell count",
+        "144 cells",
+        "132 cells",
+        "సెల్స్ సంఖ్య",
+        "सेल संख्या"
+      ],
+      "display_order": 5
+    },
+    {
+      "key": "power_tolerance",
+      "group": "product_identity",
+      "label": "Power output tolerance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "tolerance",
+        "positive tolerance",
+        "0/+5W",
+        "టాలరెన్స్",
+        "टॉलरेंस"
+      ],
+      "display_order": 6
+    },
+    {
+      "key": "voc_v",
+      "group": "electrical",
+      "label": "Open-circuit voltage (Voc)",
+      "data_type": "number",
+      "unit": "V",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "Voc",
+        "open circuit voltage",
+        "ఓపెన్ సర్క్యూట్ వోల్టేజ్",
+        "ओपन सर्किट वोल्टेज"
+      ],
+      "display_order": 7
+    },
+    {
+      "key": "isc_a",
+      "group": "electrical",
+      "label": "Short-circuit current (Isc)",
+      "data_type": "number",
+      "unit": "A",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "Isc",
+        "short circuit current",
+        "షార్ట్ సర్క్యూట్ కరెంట్",
+        "शॉर्ट सर्किट करंट"
+      ],
+      "display_order": 8
+    },
+    {
+      "key": "vmp_v",
+      "group": "electrical",
+      "label": "Voltage at maximum power (Vmp)",
+      "data_type": "number",
+      "unit": "V",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "Vmp",
+        "Vmpp",
+        "operating voltage",
+        "వోల్టేజ్",
+        "वोल्टेज"
+      ],
+      "display_order": 9
+    },
+    {
+      "key": "imp_a",
+      "group": "electrical",
+      "label": "Current at maximum power (Imp)",
+      "data_type": "number",
+      "unit": "A",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "Imp",
+        "Impp",
+        "operating current",
+        "కరెంట్",
+        "करंट"
+      ],
+      "display_order": 10
+    },
+    {
+      "key": "fill_factor",
+      "group": "electrical",
+      "label": "Fill factor",
+      "data_type": "number",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [],
+      "display_order": 11
+    },
+    {
+      "key": "max_system_voltage_v",
+      "group": "electrical",
+      "label": "Maximum system voltage",
+      "data_type": "number",
+      "unit": "V",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "system voltage",
+        "1500V",
+        "DC voltage",
+        "సిస్టమ్ వోల్టేజ్",
+        "सिस्टम वोल्टेज"
+      ],
+      "display_order": 12
+    },
+    {
+      "key": "max_series_fuse_a",
+      "group": "electrical",
+      "label": "Maximum series fuse rating",
+      "data_type": "number",
+      "unit": "A",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "fuse rating",
+        "series fuse",
+        "ఫ్యూజ్",
+        "फ्यूज"
+      ],
+      "display_order": 13
+    },
+    {
+      "key": "junction_box_diode_count",
+      "group": "electrical",
+      "label": "Bypass diodes in junction box",
+      "data_type": "number",
+      "unit": "diodes",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "bypass diode",
+        "diodes",
+        "junction box diodes",
+        "డయోడ్",
+        "डायोड"
+      ],
+      "display_order": 14
+    },
+    {
+      "key": "connector_type",
+      "group": "electrical",
+      "label": "Connector type",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "MC4",
+        "connector",
+        "plug",
+        "కనెక్టర్",
+        "कनेक्टर"
+      ],
+      "display_order": 15
+    },
+    {
+      "key": "cable_cross_section_mm2",
+      "group": "electrical",
+      "label": "Cable cross-section",
+      "data_type": "number",
+      "unit": "mm²",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "cable size",
+        "4 sq mm",
+        "wire gauge",
+        "కేబుల్ సైజు",
+        "केबल साइज"
+      ],
+      "display_order": 16
+    },
+    {
+      "key": "cable_length_mm",
+      "group": "electrical",
+      "label": "Output cable length",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "cable length",
+        "lead length",
+        "కేబుల్ పొడవు",
+        "केबल लंबाई"
+      ],
+      "display_order": 17
+    },
+    {
+      "key": "temp_coefficient_pmax",
+      "group": "thermal",
+      "label": "Temperature coefficient of Pmax",
+      "data_type": "number",
+      "unit": "%/°C",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "temp coefficient",
+        "power temperature coefficient",
+        "ఉష్ణోగ్రత గుణకం",
+        "तापमान गुणांक"
+      ],
+      "display_order": 18
+    },
+    {
+      "key": "temp_coefficient_voc",
+      "group": "thermal",
+      "label": "Temperature coefficient of Voc",
+      "data_type": "number",
+      "unit": "%/°C",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "voc coefficient",
+        "voltage temperature coefficient",
+        "वोल्टेज तापमान गुणांक"
+      ],
+      "display_order": 19
+    },
+    {
+      "key": "noct_c",
+      "group": "thermal",
+      "label": "NOCT / NMOT",
+      "data_type": "number",
+      "unit": "°C",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "NOCT",
+        "NMOT",
+        "nominal operating cell temperature",
+        "एनओसीटी"
+      ],
+      "display_order": 20
+    },
+    {
+      "key": "operating_temperature_range",
+      "group": "thermal",
+      "label": "Operating temperature range",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "working temperature",
+        "ambient range",
+        "ఉష్ణోగ్రత పరిధి",
+        "तापमान सीमा"
+      ],
+      "display_order": 21
+    },
+    {
+      "key": "max_snow_load_pa",
+      "group": "durability",
+      "label": "Maximum front (snow) load",
+      "data_type": "number",
+      "unit": "Pa",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "front load",
+        "snow load",
+        "static load",
+        "మంచు లోడ్",
+        "स्नो लोड"
+      ],
+      "display_order": 22
+    },
+    {
+      "key": "max_wind_load_pa",
+      "group": "durability",
+      "label": "Maximum rear (wind) load",
+      "data_type": "number",
+      "unit": "Pa",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "wind load",
+        "rear load",
+        "గాలి లోడ్",
+        "विंड लोड"
+      ],
+      "display_order": 23
+    },
+    {
+      "key": "hail_impact_resistance",
+      "group": "durability",
+      "label": "Hail impact resistance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "hail test",
+        "impact resistance",
+        "వడగళ్ళ నిరోధకత",
+        "ओला प्रतिरोध"
+      ],
+      "display_order": 24
+    },
+    {
+      "key": "salt_mist_corrosion_class",
+      "group": "durability",
+      "label": "Salt mist / corrosion resistance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "salt mist",
+        "IEC 61701",
+        "coastal",
+        "ఉప్పు తుప్పు",
+        "नमक धुंध"
+      ],
+      "display_order": 25
+    },
+    {
+      "key": "pid_resistance",
+      "group": "durability",
+      "label": "PID resistance",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "PID free",
+        "potential induced degradation",
+        "IEC 62804",
+        "पीआईडी"
+      ],
+      "display_order": 26
+    },
+    {
+      "key": "annual_degradation_pct",
+      "group": "durability",
+      "label": "Annual power degradation",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "degradation",
+        "annual loss",
+        "0.55%",
+        "క్షీణత",
+        "गिरावट"
+      ],
+      "display_order": 27
+    },
+    {
+      "key": "power_output_at_end_pct",
+      "group": "durability",
+      "label": "Guaranteed power at end of performance warranty",
+      "data_type": "number",
+      "unit": "%",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "end of life power",
+        "84.8%",
+        "power retention",
+        "अंतिम पावर"
+      ],
+      "display_order": 28
+    },
+    {
+      "key": "frame_material",
+      "group": "composition",
+      "label": "Frame material",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "aluminium frame",
+        "anodised frame",
+        "ఫ్రేమ్",
+        "फ्रेम"
+      ],
+      "display_order": 29
+    },
+    {
+      "key": "front_glass_type",
+      "group": "composition",
+      "label": "Front glass",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "tempered glass",
+        "AR coated glass",
+        "toughened glass",
+        "గ్లాస్",
+        "ग्लास"
+      ],
+      "display_order": 30
+    },
+    {
+      "key": "front_glass_thickness_mm",
+      "group": "composition",
+      "label": "Front glass thickness",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "glass thickness",
+        "3.2 mm glass",
+        "గ్లాస్ మందం",
+        "कांच की मोटाई"
+      ],
+      "display_order": 31
+    },
+    {
+      "key": "backsheet_material",
+      "group": "composition",
+      "label": "Back sheet / rear cover",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "backsheet",
+        "rear glass",
+        "back cover",
+        "బ్యాక్ షీట్",
+        "बैक शीट"
+      ],
+      "display_order": 32
+    },
+    {
+      "key": "encapsulant_material",
+      "group": "composition",
+      "label": "Encapsulant",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "EVA",
+        "POE",
+        "encapsulation film",
+        "ఎన్‌క్యాప్సులెంట్",
+        "एनकैप्सुलेंट"
+      ],
+      "display_order": 33
+    },
+    {
+      "key": "cell_interconnection",
+      "group": "composition",
+      "label": "Cell cutting and interconnection",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "half cut",
+        "half-cut cells",
+        "ribbon soldering",
+        "సెల్ కటింగ్",
+        "हाफ कट सेल"
+      ],
+      "display_order": 34
+    },
+    {
+      "key": "busbar_count",
+      "group": "composition",
+      "label": "Busbars per cell",
+      "data_type": "number",
+      "unit": "busbars",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "busbar",
+        "9BB",
+        "16BB",
+        "multi busbar",
+        "బస్‌బార్",
+        "बसबार"
+      ],
+      "display_order": 35
+    },
+    {
+      "key": "dim_w_mm",
+      "group": "dimensions",
+      "label": "Width",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "width",
+        "panel width",
+        "వెడల్పు",
+        "चौड़ाई"
+      ],
+      "display_order": 36
+    },
+    {
+      "key": "dim_h_mm",
+      "group": "dimensions",
+      "label": "Height / length",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "length",
+        "panel length",
+        "height",
+        "పొడవు",
+        "लंबाई"
+      ],
+      "display_order": 37
+    },
+    {
+      "key": "dim_d_mm",
+      "group": "dimensions",
+      "label": "Depth / frame thickness",
+      "data_type": "number",
+      "unit": "mm",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "thickness",
+        "frame depth",
+        "మందం",
+        "मोटाई"
+      ],
+      "display_order": 38
+    },
+    {
+      "key": "net_weight_kg",
+      "group": "dimensions",
+      "label": "Net weight",
+      "data_type": "number",
+      "unit": "kg",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "weight",
+        "panel weight",
+        "బరువు",
+        "वजन"
+      ],
+      "display_order": 39
+    },
+    {
+      "key": "application_segment",
+      "group": "application",
+      "label": "Typical application",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Residential rooftop",
+        "Commercial & industrial rooftop",
+        "Utility-scale ground mount",
+        "Solar water pump",
+        "Off-grid / hybrid"
+      ],
+      "is_filterable": true,
+      "filter_widget": "checkbox",
+      "filter_order": 7,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "use case",
+        "rooftop",
+        "ground mount",
+        "అనువర్తనం",
+        "उपयोग"
+      ],
+      "display_order": 40
+    },
+    {
+      "key": "suitable_for_rooftop",
+      "group": "application",
+      "label": "Suitable for rooftop installation",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 3,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "rooftop",
+        "terrace",
+        "home solar",
+        "పైకప్పు",
+        "छत"
+      ],
+      "display_order": 41
+    },
+    {
+      "key": "is_standard",
+      "group": "standards",
+      "label": "Governing standard",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IS 14286",
+        "BIS standard",
+        "IEC 61215",
+        "ప్రమాణం",
+        "मानक"
+      ],
+      "display_order": 42
+    },
+    {
+      "key": "iec_61215_certified",
+      "group": "standards",
+      "label": "IEC 61215 design qualification",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IEC 61215",
+        "design qualification",
+        "type approval",
+        "आईईसी 61215"
+      ],
+      "display_order": 43
+    },
+    {
+      "key": "iec_61730_certified",
+      "group": "standards",
+      "label": "IEC 61730 safety qualification",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IEC 61730",
+        "safety qualification",
+        "आईईसी 61730"
+      ],
+      "display_order": 44
+    },
+    {
+      "key": "almm_listed",
+      "group": "standards",
+      "label": "ALMM listed (subsidy eligible)",
+      "data_type": "boolean",
+      "unit": null,
+      "is_filterable": true,
+      "filter_widget": "toggle",
+      "filter_order": 5,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "ALMM",
+        "approved list",
+        "MNRE",
+        "subsidy",
+        "PM Surya Ghar",
+        "ఏఎల్ఎంఎం",
+        "एएलएमएम"
+      ],
+      "display_order": 45
+    },
+    {
+      "key": "junction_box_ip_rating",
+      "group": "standards",
+      "label": "Junction box IP rating",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "IP65",
+        "IP67",
+        "IP68"
+      ],
+      "is_filterable": false,
+      "filter_order": 10,
+      "importance_rank": 2,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "IP68",
+        "IP67",
+        "junction box",
+        "ingress protection",
+        "जंक्शन बॉक्स"
+      ],
+      "display_order": 46
+    },
+    {
+      "key": "fire_safety_class",
+      "group": "standards",
+      "label": "Fire safety class",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "fire class",
+        "fire rating",
+        "Class C",
+        "अग्नि श्रेणी"
+      ],
+      "display_order": 47
+    },
+    {
+      "key": "el_inspection",
+      "group": "quality_control",
+      "label": "Electroluminescence (EL) inspection",
+      "data_type": "text",
+      "unit": null,
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "EL test",
+        "electroluminescence",
+        "micro crack test",
+        "ईएल टेस्ट"
+      ],
+      "display_order": 48
+    },
+    {
+      "key": "frame_colour",
+      "group": "appearance",
+      "label": "Frame colour",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "Silver anodised",
+        "Black anodised",
+        "Frameless"
+      ],
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "frame colour",
+        "silver frame",
+        "black frame",
+        "ఫ్రేమ్ రంగు",
+        "फ्रेम रंग"
+      ],
+      "display_order": 49
+    },
+    {
+      "key": "backsheet_colour",
+      "group": "appearance",
+      "label": "Rear cover colour",
+      "data_type": "enum",
+      "unit": null,
+      "enum_values": [
+        "White",
+        "Black",
+        "Transparent"
+      ],
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 5,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "backsheet colour",
+        "white backsheet",
+        "बैक शीट रंग"
+      ],
+      "display_order": 50
+    },
+    {
+      "key": "modules_per_pallet",
+      "group": "packaging",
+      "label": "Modules per pallet",
+      "data_type": "number",
+      "unit": "panels",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "pallet quantity",
+        "packing",
+        "per pallet",
+        "ప్యాలెట్",
+        "पैलेट"
+      ],
+      "display_order": 51
+    },
+    {
+      "key": "minimum_order_quantity",
+      "group": "commercial",
+      "label": "Minimum order quantity",
+      "data_type": "number",
+      "unit": "panels",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 4,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": false,
+      "synonyms": [
+        "MOQ",
+        "minimum quantity",
+        "కనీస ఆర్డర్",
+        "न्यूनतम ऑर्डर"
+      ],
+      "display_order": 52
+    },
+    {
+      "key": "product_warranty_years",
+      "group": "warranty",
+      "label": "Product / workmanship warranty",
+      "data_type": "number",
+      "unit": "years",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 8,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "product warranty",
+        "material warranty",
+        "12 years",
+        "ఉత్పత్తి వారంటీ",
+        "उत्पाद वारंटी"
+      ],
+      "display_order": 53
+    },
+    {
+      "key": "performance_warranty_years",
+      "group": "warranty",
+      "label": "Performance warranty",
+      "data_type": "number",
+      "unit": "years",
+      "is_filterable": true,
+      "filter_widget": "range",
+      "filter_order": 9,
+      "importance_rank": 1,
+      "show_in_key_specs": true,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "performance warranty",
+        "power warranty",
+        "25 years",
+        "30 years",
+        "పనితీరు వారంటీ",
+        "प्रदर्शन वारंटी"
+      ],
+      "display_order": 54
+    },
+    {
+      "key": "warranty_months",
+      "group": "warranty",
+      "label": "Product warranty",
+      "data_type": "number",
+      "unit": "months",
+      "is_filterable": false,
+      "filter_order": 100,
+      "importance_rank": 1,
+      "show_in_key_specs": false,
+      "show_on_card": false,
+      "compare": true,
+      "synonyms": [
+        "warranty",
+        "guarantee",
+        "వారంటీ",
+        "वारंटी"
+      ],
+      "display_order": 55
+    }
+  ]
+}

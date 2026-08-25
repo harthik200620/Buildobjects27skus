@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* Design system: tokens, base element styles, and the primitive class contract (btn, card, field…). */
+@import "@buildobjects/ui/theme.css";
+
+/* App shell and the widgets every page shares: header, nav, footer, search, product card, pager. */
+@import "./store.css";
+
+/* Page-specific rules, one file per surface that has enough of them to be worth separating. */
+@import "./styles/home.css";
+@import "./styles/listing.css";
+@import "./styles/ar.css";
+
+/*
+ * Older class vocabulary (glass-card, display, kicker, prov, facet, wizard…) mapped onto the
+ * current tokens. Pages still speak it; each one that is restyled should take its rules into
+ * store.css or a styles/ file and delete them from here.
+ */
+@import "./legacy.css";

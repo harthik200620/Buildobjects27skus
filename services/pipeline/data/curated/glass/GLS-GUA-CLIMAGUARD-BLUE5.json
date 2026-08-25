@@ -1,0 +1,547 @@
+{
+  "sku_code": "GLS-GUA-CLIMAGUARD-BLUE5",
+  "category": "glass",
+  "brand": {
+    "slug": "guardian",
+    "name": "Guardian Glass",
+    "official_domains": [
+      "gujaratguardianglass.com",
+      "guardianglass.com"
+    ],
+    "logo_url": "https://www.gujaratguardianglass.com/content/dam/guardianindustriesholdings/guardian-brand---logos/india/Gujarat%20Guardian%20Glass%20Logo.png",
+    "intel": {
+      "year_established": {
+        "value": 1993,
+        "provenance": "fetched",
+        "source_url": "https://www.gujaratguardianglass.com/in/en/who-we-are/our-company/about"
+      },
+      "parent_company": {
+        "value": "Gujarat Guardian Limited — joint venture of Guardian Industries Corp. and Modi Rubber Limited",
+        "provenance": "fetched",
+        "source_url": "https://www.gujaratguardianglass.com/in/en/who-we-are/our-company/about"
+      },
+      "product_portfolio": {
+        "value": "Guardian SunGuard coated glass (Double Silver, High Performance, Solar, Solar Plus, HD Colors), Guardian ClimaGuard residential glass (Blue, Clear, Green, Grey, Bronze), MODIGUARD float glass and mirrors, Guardian ShowerGuard",
+        "provenance": "fetched",
+        "source_url": "https://www.gujaratguardianglass.com/in/en/our-glass"
+      },
+      "market_coverage": {
+        "value": "Pan-India from the Ankleshwar, Gujarat plant — India's first float glass plant (1993) and first automated curtain-coating mirror plant (1994) — making float, coated and mirror glass for commercial, residential, interior and automotive use",
+        "provenance": "fetched",
+        "source_url": "https://www.gujaratguardianglass.com/in/en/who-we-are/our-company/about"
+      },
+      "quality_strength_note": {
+        "value": "Guardian Industries, founded 1932 in Michigan and owned by Koch Industries since 2017, is one of the world's largest float and coated-glass groups; the India product sheets state substrate, thickness, maximum size, processing options and coating position for each ClimaGuard shade",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Guardian_Industries"
+      },
+      "engineer_user_rating": {
+        "value": "4.3/5 (typical) — respected for coating durability and global SunGuard data, but engineers note that India-specific optical and thermal values are not published for ClimaGuard",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Moderate to high — Guardian and MODIGUARD are well stocked by Hyderabad and Vijayawada glass merchants, and ClimaGuard is pitched by dealers as the durable-coat alternative to hard-coat reflective glass",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Moderate — the Guardian name is less familiar to first-time house builders than Saint-Gobain, though MODIGUARD mirrors are widely known",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 55,
+          "highest": 150,
+          "unit": "₹/sqft"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project supply through processors is typically 15–25% below retail counter rates; retail buyers pay cutting, wastage and transport on top of the per-sqft rate",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Slabs generally start at one jumbo-equivalent (about 95–100 sqft of 5 mm at the published 3660 × 2550 mm maximum) and improve at crate lots",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Distributor-to-dealer margins on coated residential glass generally run 10–18%, with cutting and processing charged separately",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "weak",
+          "roads": "weak",
+          "bridges": "weak",
+          "dams_metro": "weak"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "West India around the Ankleshwar plant (Gujarat, Maharashtra)",
+          "weak": "North-east",
+          "balanced": "South India including Andhra Pradesh and Telangana, served through Hyderabad distributors",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Solar-control glazing for house and apartment windows, doors and balconies",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Small commercial facades, shops and skylights where a blue durable-coated glass is wanted",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Laminated or heat-strengthened ClimaGuard for skylights and roof windows, and IGUs with the coating on surface 2",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Saint-Gobain",
+          "AIS",
+          "Guardian",
+          "Gold Plus",
+          "Şişecam"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Guardian ClimaGuard Blue Solar-Control Glass 5 mm",
+    "slug": "guardian-climaguard-blue-5-mm",
+    "model_no": "ClimaGuard Blue",
+    "status": "active"
+  },
+  "variant_label": "5 mm, Blue, monolithic single pane",
+  "unit": "sqft",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 70,
+    "selling_price": 70,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.indiamart.com/proddetail/coated-glass-climaguard-2850058948697.html",
+    "fetched_at": "2026-08-23",
+    "note": "IndiaMART dealer listing (Goutam Glass Incorporation, Hyderabad) for 'Coated Glass ClimaGuard' at ₹70/sq ft; the listing covers 4–12 mm and all shades, so the 5 mm Blue rate should be re-quoted from a Guardian dealer."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.gujaratguardianglass.com/in/en/our-glass/climaguard/climaguard-blue",
+    "datasheet_urls": [
+      "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "https://www.gujaratguardianglass.com/content/dam/guardianindustriesholdings/collateral/india/GGL%20-%20ClimaGuard.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.gujaratguardianglass.com/in/en/our-glass/climaguard",
+      "https://www.gujaratguardianglass.com/in/en/who-we-are/our-company/about",
+      "https://www.indiamart.com/proddetail/coated-glass-climaguard-2850058948697.html",
+      "https://en.wikipedia.org/wiki/Guardian_Industries"
+    ]
+  },
+  "attributes": {
+    "product_series": {
+      "value": "Guardian ClimaGuard",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/in/en/our-glass/climaguard/climaguard-blue",
+      "confidence": 0.98
+    },
+    "substrate_glass": {
+      "value": "Clear float",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "confidence": 0.95
+    },
+    "glazing_configuration": {
+      "value": "Monolithic single glazing",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "confidence": 0.9
+    },
+    "manufacturing_process": {
+      "value": "Float glass coated offline with a durable magnetron-sputtered solar-control coating that can be heat-treated, bent, laminated or ceramic-fritted",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "coating_deposition_method": {
+      "value": "Offline magnetron sputter vacuum deposition",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "nominal_thickness_mm": {
+      "value": 5,
+      "unit": "mm",
+      "provenance": "verified",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "source_urls": [
+        "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+        "https://www.indiamart.com/proddetail/coated-glass-climaguard-2850058948697.html"
+      ],
+      "confidence": 0.9
+    },
+    "max_pane_width_mm": {
+      "value": 3660,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "confidence": 0.9
+    },
+    "max_pane_height_mm": {
+      "value": 2550,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "confidence": 0.9
+    },
+    "dim_w_mm": {
+      "value": 1200,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_h_mm": {
+      "value": 1800,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "dim_d_mm": {
+      "value": 5,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "confidence": 0.95
+    },
+    "max_service_temperature_c": {
+      "value": 200,
+      "unit": "°C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "thermal_shock_resistance_c": {
+      "value": 40,
+      "unit": "°C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "bending_strength_mpa": {
+      "value": 41,
+      "unit": "MPa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "impact_safety_class": {
+      "value": "Not a safety glass",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "uv_transmission_pct": {
+      "value": 20,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.4
+    },
+    "density_kg_m3": {
+      "value": 2500,
+      "unit": "kg/m³",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "weight_per_sqm_kg": {
+      "value": 12.5,
+      "unit": "kg/m²",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "net_weight_kg": {
+      "value": 27,
+      "unit": "kg",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "visible_light_transmission_pct": {
+      "value": 36,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "visible_light_reflectance_out_pct": {
+      "value": 18,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "solar_heat_gain_coefficient": {
+      "value": 0.45,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "u_value_w_m2k": {
+      "value": 5.7,
+      "unit": "W/m²K",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "emissivity": {
+      "value": 0.84,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "sound_reduction_db": {
+      "value": 30,
+      "unit": "dB",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "application_area": {
+      "value": "Windows and residential glazing",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/in/en/our-glass/climaguard/climaguard-blue",
+      "confidence": 0.9
+    },
+    "suitable_for_exterior": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "confidence": 0.9
+    },
+    "suitable_for_overhead_glazing": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/in/en/our-glass/climaguard/climaguard-blue",
+      "confidence": 0.75
+    },
+    "is_standard": {
+      "value": "IS 14900 (transparent float glass substrate)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_2553_safety_glass": {
+      "value": "Not applicable as supplied (annealed); the heat-strengthened, toughened or laminated versions Guardian lists must comply with IS 2553 Part 1",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_14900_float_glass": {
+      "value": "IS 14900 — transparent sheet (float) glass, governs the clear float substrate",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_16231_igu": {
+      "value": "Not applicable (monolithic pane); IS 16231 applies if built into the insulating glass unit Guardian lists, with the coating on surface 2",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "fragmentation_test": {
+      "value": "Not applicable (annealed glass, not thermally toughened)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "glass_colour": {
+      "value": "Blue",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/in/en/our-glass/climaguard/climaguard-blue",
+      "confidence": 0.95
+    },
+    "surface_finish": {
+      "value": "Reflective",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "glazing_system_compatibility": {
+      "value": "Windows, doors, skylights and roof windows in uPVC or aluminium frames, monolithic or in an IGU; Guardian recommends the coating on surface 2",
+      "provenance": "fetched",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "confidence": 0.8
+    },
+    "min_edge_engagement_mm": {
+      "value": 12,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "cuttable_after_processing": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "packing_type": {
+      "value": "Cut-to-size panes with the coated face marked, interleaved with paper or cork pads, delivered on an A-frame or in a wooden crate",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "minimum_order_quantity_sqft": {
+      "value": 10,
+      "unit": "sqft",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "lead_time_days": {
+      "value": 7,
+      "unit": "days",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "availability": {
+      "value": "4 mm and 5 mm on Guardian's short lead time; stocked by Guardian / MODIGUARD distributors in Hyderabad and cut to size at the dealer",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 120,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against coating defects such as peeling, haze or discolouration under normal use; breakage, scratches, chemical attack and installation faults excluded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "coating_warranty_months": {
+      "value": 120,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.gujaratguardianglass.com/content/dam/guardianindustriesholdings/product/india1/climaguard_blue_product_ap_in_01.jpg.transform/rendition-1280-keep/img.jpg",
+      "alt": "Guardian Glass GLS-GUA-CLIMAGUARD-BLUE5 - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.gujaratguardianglass.com/content/dam/guardianindustriesholdings/product/india1/climaguard_blue_product_ap_in_02.jpg.transform/rendition-1280-keep/img.jpg",
+      "alt": "Guardian Glass GLS-GUA-CLIMAGUARD-BLUE5 - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.gujaratguardianglass.com/content/dam/guardianindustriesholdings/product/india1/climaguard_blue_product_ap_in_03.jpg.transform/rendition-1280-keep/img.jpg",
+      "alt": "Guardian Glass GLS-GUA-CLIMAGUARD-BLUE5 - in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.gujaratguardianglass.com/content/dam/guardianindustriesholdings/product/india1/climaguard_blue_product_ap_in_04.jpg.transform/rendition-1280-keep/img.jpg",
+      "alt": "Guardian Glass GLS-GUA-CLIMAGUARD-BLUE5 - detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.gujaratguardianglass.com/content/dam/guardianindustriesholdings/product/india1/climaguard_blue_product_ap_in_05.jpg.transform/rendition-1280-keep/img.jpg",
+      "alt": "Guardian Glass GLS-GUA-CLIMAGUARD-BLUE5 - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Guardian ClimaGuard Blue product information sheet (published 14 Aug 2026)",
+      "source_url": "https://www.gujaratguardianglass.com/content/guardianindustriesholdings/asia-pacific/in/en/our-glass/climaguard/climaguard-blue.brochure.pdf",
+      "checked": true
+    },
+    {
+      "type": "brochure",
+      "title": "Guardian ClimaGuard range brochure — Gujarat Guardian Limited",
+      "source_url": "https://www.gujaratguardianglass.com/content/dam/guardianindustriesholdings/collateral/india/GGL%20-%20ClimaGuard.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "visible_light_transmission_pct",
+    "light_to_solar_gain",
+    "solar_heat_gain_coefficient",
+    "u_value_w_m2k",
+    "sound_reduction_db",
+    "impact_safety_class",
+    "nominal_thickness_mm",
+    "max_pane_width_mm"
+  ],
+  "short_description": "Guardian ClimaGuard Blue 5 mm durable coated solar-control glass for homes. Clear float substrate, max size 3660 × 2550 mm, coating on surface 2. Sold per sqft.",
+  "long_description": "## What it is\n\nGuardian ClimaGuard Blue is a 5 mm durable coated solar-control glass from Guardian's ClimaGuard residential range, made on a clear float substrate and supplied as a single annealed monolithic pane. Guardian lists the coating as usable monolithic or in an insulating glass unit, with heat-strengthened, heat-soaked, laminated and bent processing options and no edge deletion required. As delivered it is not a safety glass; a processor can toughen or laminate it to IS 2553 Part 1. It weighs about 12.5 kg per square metre, so a 1200 × 1800 mm pane is roughly 27 kg.\n\n## What it's for\n\nWindows and residential glazing — Guardian names windows, skylights, roof windows and doors for this product — in houses, apartments and small commercial buildings across Andhra Pradesh and Telangana. It is suitable for exterior use with the coating on surface 2, and it is rated for overhead glazing, where it should be laminated or toughened to satisfy IS 2553 Part 1.\n\n## Key specifications\n\nGuardian publishes the thickness range (3.5, 4 and 5 mm), a maximum pane size under 3660 × 2550 mm and the blue appearance, but not optical or thermal numbers for India, so the following are indicative values for a 5 mm durable-coated blue solar-control glass: visible light transmission about 36%, external reflection about 18%, solar heat gain coefficient about 0.45, U-value about 5.7 W/m²K, emissivity about 0.84, UV transmission about 20% and sound reduction about 30 dB. Thermal-shock resistance is 40 °C and bending strength 41 MPa, as for annealed float. The substrate is IS 14900 float glass; IS 16231 applies only if the pane is made into a DGU.\n\n## Installation notes\n\nGlaze with the coated face towards the interior (surface 2), with at least 12 mm edge engagement, setting blocks and neutral-cure silicone or EPDM gaskets in uPVC or aluminium frames. The annealed coated pane is cuttable and needs no edge deletion. Handle the coated side with clean gloves, avoid abrasive cleaning on it, and wash with water and a mild detergent. Order toughened or laminated panes for doors, skylights and large openings.\n\n## What's supplied\n\nCut-to-size panes with as-cut edges and the coated face marked, interleaved with paper or cork pads and delivered on an A-frame or in a wooden crate from dealer stock. Minimum order 10 sqft; 4 and 5 mm are on Guardian's short lead time, typically about 7 days through Hyderabad dealers. Warranty is recorded as 120 months on the coating, to be confirmed with the dealer. HSN 7005, GST 18%.",
+  "seo": {
+    "title": "Guardian ClimaGuard Blue 5 mm Solar-Control Glass",
+    "meta_description": "Guardian ClimaGuard Blue 5 mm durable coated solar-control glass for homes: clear float, max 3660 × 2550 mm, coating on surface 2. Per sqft, AP/Telangana.",
+    "keywords": [
+      "guardian climaguard blue glass",
+      "climaguard glass price per sqft",
+      "guardian glass 5mm blue",
+      "solar control glass for home windows",
+      "modiguard coated glass hyderabad",
+      "gujarat guardian glass"
+    ],
+    "keywords_te": [
+      "గార్డియన్ క్లైమాగార్డ్ బ్లూ గాజు",
+      "క్లైమాగార్డ్ గాజు ధర",
+      "5 ఎంఎం బ్లూ కోటెడ్ గాజు",
+      "ఇంటి కిటికీ సోలార్ కంట్రోల్ గాజు"
+    ],
+    "keywords_hi": [
+      "गार्जियन क्लाइमागार्ड ब्लू ग्लास",
+      "क्लाइमागार्ड कांच कीमत",
+      "5 एमएम ब्लू कोटेड कांच",
+      "घर की खिड़की सोलर कंट्रोल कांच"
+    ]
+  }
+}

@@ -1,0 +1,604 @@
+{
+  "sku_code": "TST-LEI-TS07-2-R500",
+  "category": "total-stations",
+  "brand": {
+    "slug": "leica",
+    "name": "Leica Geosystems",
+    "official_domains": [
+      "leica-geosystems.com",
+      "hexagon.com"
+    ],
+    "logo_url": "https://leica-geosystems.com/-/media/images/leicageosystems/logos%20and%20icons/icons/leica_geosystems_logo.jpg",
+    "intel": {
+      "year_established": {
+        "value": 1921,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Leica_Geosystems"
+      },
+      "parent_company": {
+        "value": "Hexagon AB (Sweden) - Leica Geosystems AG has been part of Hexagon since 2005",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Leica_Geosystems"
+      },
+      "product_portfolio": {
+        "value": "Total stations (FlexLine manual, Viva/Captivate robotic, Nova multistations), GNSS receivers, digital levels, laser scanners, DISTO laser distance meters, geospatial imaging and field/office software",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Leica_Geosystems"
+      },
+      "market_coverage": {
+        "value": "Global (Heerbrugg, Switzerland HQ, about 5,500 employees); in India sold and serviced through Hexagon / Leica Geosystems India and authorised dealers in Hyderabad, Vijayawada, Visakhapatnam, Chennai and Bengaluru",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "quality_strength_note": {
+        "value": "FlexLine is marketed on durability and low total cost of ownership: IP66 body, MIL-STD-810G rain test, -20 to +50 C operation, quadruple-axis compensation and PinPoint EDM",
+        "provenance": "fetched",
+        "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf"
+      },
+      "engineer_user_rating": {
+        "value": "4.6/5 - the reference brand among Indian survey engineers for accuracy retention, optics and service back-up",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Very high on government and infrastructure tenders that specify \"Leica or equivalent\"; preferred where resale value and calibration traceability matter",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "High - FlexField guided workflows and the large pool of trained operators; the premium price is the main barrier for first-time buyers",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 450000,
+          "highest": 900000,
+          "unit": "₹/unit"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project or tender supply bundled with tripod, prisms and training runs 10-15% above a bare-instrument dealer quote; single-unit retail buyers rarely get more than 10% off list",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Institutional orders of three or more units typically attract 5-10% off plus bundled training; colleges and PSUs negotiate dealer-level pricing",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Dealer margins on manual total stations run about 8-15%, with calibration, service contracts and accessories adding recurring revenue",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "moderate",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "strong",
+          "bridges": "strong",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India metros and infrastructure corridors",
+          "weak": "Price-sensitive rural retail",
+          "balanced": "South India including Andhra Pradesh and Telangana",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Control, topographic and setting-out survey on building and infrastructure sites",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Cadastral and land-records survey, quantity measurement and as-built checks",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "High-accuracy layout and monitoring where the 1-2 second variants and the AutoHeight module reduce setup error",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Leica Geosystems",
+          "Topcon",
+          "Trimble",
+          "Sokkia",
+          "South"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Leica FlexLine TS07 2\" R500 Manual Total Station",
+    "slug": "leica-flexline-ts07-2-r500-manual-total-station",
+    "model_no": "TS07 2\" R500",
+    "status": "active"
+  },
+  "variant_label": "2\" angular accuracy, R500 reflectorless",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 470000,
+    "selling_price": 470000,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.indiamart.com/proddetail/3-5-inch-leica-total-station-27049665062.html",
+    "fetched_at": "2026-08-23",
+    "note": "IndiaMART listing by 4D Survey Instruments and Consultants, Chennai, for the TS07 2\" (price excluding GST). Other Indian dealer listings for the TS07 run about 5.4-7.9 lakh depending on accuracy class and kit (Aug 2026)."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://leica-geosystems.com/products/total-stations/manual-total-stations/leica-flexline-ts07",
+    "datasheet_urls": [
+      "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "https://hexagondownloads.blob.core.windows.net/public/Leica/Total%20Stations/Manual%20Total%20Stations/Leica%20FlexLine%20TS10/Data%20sheets/EN-IN/Leica-FlexLine-Series-DS-LR.pdf",
+      "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica-flexline_ts03_ts07_ds_lr.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.indiamart.com/proddetail/3-5-inch-leica-total-station-27049665062.html",
+      "https://en.wikipedia.org/wiki/Leica_Geosystems",
+      "https://leica-geosystems.com/-/media/files/leicageosystems/products/poster/leica%20flexline%20ts07%20overview%20poster.pdf"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "FlexLine TS07 2\" R500",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "instrument_class": {
+      "value": "Manual total station",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/products/total-stations/manual-total-stations/leica-flexline-ts07",
+      "confidence": 0.95
+    },
+    "onboard_software": {
+      "value": "Leica FlexField application software (Windows EC7 on a TI OMAP4430 1 GHz dual-core processor); optional AutoHeight instrument-height module",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "housing_material": {
+      "value": "Die-cast alloy body with glass-fibre-reinforced polymer covers",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "optics_coating": {
+      "value": "Fully multi-coated telescope optics with anti-reflective coating",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "factory_calibration": {
+      "value": "Factory-calibrated quadruple-axis compensator with Hz collimation and V-index correction stored onboard; field re-check through FlexField",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.7
+    },
+    "sealing_process": {
+      "value": "Sealed to IP66 (IEC 60529) with 95% non-condensing humidity rating; MIL-STD-810G Method 506.5 rain tested",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.8
+    },
+    "dim_w_mm": {
+      "value": 207,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "dim_h_mm": {
+      "value": 350,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "dim_d_mm": {
+      "value": 195,
+      "unit": "mm",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "operating_temp_min_c": {
+      "value": -20,
+      "unit": "°C",
+      "provenance": "verified",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "source_urls": [
+        "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+        "https://www.indiamart.com/proddetail/3-5-inch-leica-total-station-27049665062.html"
+      ],
+      "confidence": 0.9
+    },
+    "operating_temp_max_c": {
+      "value": 50,
+      "unit": "°C",
+      "provenance": "verified",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "source_urls": [
+        "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+        "https://www.indiamart.com/proddetail/3-5-inch-leica-total-station-27049665062.html"
+      ],
+      "confidence": 0.9
+    },
+    "compensator_type": {
+      "value": "Quadruple-axis",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.85
+    },
+    "compensator_accuracy_arcsec": {
+      "value": 0.5,
+      "unit": "arcsec",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "compensator_range": {
+      "value": "+/- 4'",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "drive_system": {
+      "value": "Endless drives for Hz and V with drives on both sides; user-definable trigger key with two functions",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "corrosion_protection": {
+      "value": "Powder-coated metal parts and a sealed housing suited to humid coastal and monsoon conditions",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "angular_accuracy_arcsec": {
+      "value": 2,
+      "unit": "arcsec",
+      "provenance": "verified",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "source_urls": [
+        "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+        "https://www.indiamart.com/proddetail/3-5-inch-leica-total-station-27049665062.html"
+      ],
+      "confidence": 0.95
+    },
+    "angle_display_resolution": {
+      "value": "0.1\" (0.1 mgon)",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "distance_accuracy_prism": {
+      "value": "1 mm + 1.5 ppm (single prism, typical 1-2 s)",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.95
+    },
+    "distance_accuracy_reflectorless": {
+      "value": "2 mm + 2 ppm from 0 to 500 m; 4 mm + 2 ppm beyond 500 m",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "reflectorless_range_m": {
+      "value": 500,
+      "unit": "m",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "prism_range_m": {
+      "value": 3500,
+      "unit": "m",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "edm_type": {
+      "value": "Coaxial visible red-laser PinPoint EDM, R500 reflectorless variant (Kodak grey 90% to over 500 m); GPR1 long-range mode beyond 10,000 m",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.8
+    },
+    "laser_class": {
+      "value": "Class 3R",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "telescope_magnification_x": {
+      "value": 30,
+      "unit": "x",
+      "provenance": "verified",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "source_urls": [
+        "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+        "https://www.indiamart.com/proddetail/3-5-inch-leica-total-station-27049665062.html"
+      ],
+      "confidence": 0.95
+    },
+    "telescope_field_of_view": {
+      "value": "1°30' (1.66 gon), 2.7 m at 100 m; focusing from 1.5 m to infinity; 3\" resolving power",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "battery_type": {
+      "value": "Exchangeable Li-ion GEB361 (GEB331 optional, up to 15 h); external 13 V DC / 16 W supply",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.85
+    },
+    "battery_operating_time_h": {
+      "value": 30,
+      "unit": "h",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.85
+    },
+    "internal_memory": {
+      "value": "2 GB internal flash (4 GB on R1000); SD card 1 GB / 8 GB and 1 GB USB stick slots",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.8
+    },
+    "connectivity": {
+      "value": "RS232 (5-pin Lemo-0), USB device port, Bluetooth; WLAN (range up to 200 m) and LTE mobile-data side cover optional",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.8
+    },
+    "bluetooth": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.8
+    },
+    "net_weight_kg": {
+      "value": 4.3,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.8
+    },
+    "application_areas": {
+      "value": "Building construction, civil engineering, surveying and mapping: control traverses, topographic pick-up, plot demarcation and setting out",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/products/total-stations/manual-total-stations/leica-flexline-ts07",
+      "confidence": 0.8
+    },
+    "stakeout_support": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "is_standard": {
+      "value": "IEC 60825-1:2014 (Class 3R laser); IEC 60529 (IP66); MIL-STD-810G Method 506.5; angular and EDM accuracy classes per ISO 17123-3 / ISO 17123-4",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.8
+    },
+    "ip_rating": {
+      "value": "IP66",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.95
+    },
+    "laser_safety_standard": {
+      "value": "IEC 60825-1:2014 - Class 3R EDM; Class 2 laser plummet and AutoHeight module",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "field_check_routine": {
+      "value": "FlexField check-and-adjust routine: Hz collimation, V index, compensator index and laser plummet checks on site",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "calibration_certificate_supplied": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "display_type": {
+      "value": "3.5-inch 320 x 240 px QVGA colour touchscreen (face I standard, face II optional)",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "keypad_type": {
+      "value": "28-key illuminated alphanumeric keypad with user-definable trigger key",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "tripod_thread": {
+      "value": "5/8-inch x 11 TPI (standard tribrach)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "centring_method": {
+      "value": "Laser plummet (Class 2): 1.5 mm plumb-line deviation and 2.5 mm dot at 1.5 m instrument height; optional AutoHeight module (1.0 mm, 0.7-2.7 m)",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "levelling_system": {
+      "value": "Circular level 6'/2 mm plus electronic level with 2\" resolution",
+      "provenance": "fetched",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "confidence": 0.9
+    },
+    "tribrach_included": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "transport_case": {
+      "value": "Leica hard transport container with shoulder strap",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "package_contents": {
+      "value": "TS07 instrument, GEB361 Li-ion battery and charger, tribrach, USB cable, adjustment tools, rain cover, user manual and hard transport container",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "fetched",
+      "source_url": "https://www.indiamart.com/proddetail/3-5-inch-leica-total-station-27049665062.html",
+      "confidence": 0.7
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against defects in materials and workmanship; batteries, accidental damage and calibration drift from misuse are excluded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "extended_warranty_available": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://leica-geosystems.com/-/media/images/leicageosystems/products/total-stations/800x428_thumbnail_portlet_callout/leica-flexline-ts07-web-portlet-800x428.jpg?sc_lang=en&hash=BED134BC493E925025CCC85C66C4FD50",
+      "alt": "Leica FlexLine TS07 manual total station, front view, set against a residential construction site (official key visual)",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://leica-geosystems.com/-/media/images/leicageosystems/products/total-stations/2480x750_kv/leica-flexline-ts07-web-large-kv-2480x750.jpg?h=750&iar=0&w=2480&sc_lang=en&hash=49921144F28429ABFBF7AE28B7DB57C6",
+      "alt": "Leica FlexLine TS07 three-quarter view showing the colour touchscreen, keypad, telescope and tribrach",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://leica-geosystems.com/-/media/images/leicageosystems/products/total-stations/800x428_thumbnail_portlet_callout/leica-flexline-ts07-carousel-images-800x428---1.jpg?sc_lang=en",
+      "alt": "Surveyor operating a Leica FlexLine TS07 on a tripod at a scaffolded building site",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://leica-geosystems.com/-/media/images/leicageosystems/products/total-stations/800x428_thumbnail_portlet_callout/leica-flexline-ts07-carousel-images-800x428---2.jpg?sc_lang=en",
+      "alt": "Leica FlexLine TS07 front face: 30x telescope, 3.5-inch colour touchscreen and 28-key keypad",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://leica-geosystems.com/-/media/images/leicageosystems/products/total-stations/800x428_thumbnail_portlet_callout/leica-flexline-ts07-carousel-images-800x428---3.jpg?sc_lang=en",
+      "alt": "Leica Geosystems TST-LEI-TS07-2-R500 - Rugged carrying case, tribrach, battery and charger kit",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Leica FlexLine TS07 datasheet (EN-IN, 02.21)",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica%20flexline%20ts07%200221%20en-in%20lr.pdf",
+      "checked": true
+    },
+    {
+      "type": "datasheet",
+      "title": "Leica FlexLine TS03/TS07/TS10 series datasheet (EN-IN)",
+      "source_url": "https://hexagondownloads.blob.core.windows.net/public/Leica/Total%20Stations/Manual%20Total%20Stations/Leica%20FlexLine%20TS10/Data%20sheets/EN-IN/Leica-FlexLine-Series-DS-LR.pdf",
+      "checked": true
+    },
+    {
+      "type": "datasheet",
+      "title": "Leica FlexLine TS03/TS07 datasheet",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/datasheets/leica-flexline_ts03_ts07_ds_lr.pdf",
+      "checked": true
+    },
+    {
+      "type": "brochure",
+      "title": "Leica FlexLine TS07 overview poster",
+      "source_url": "https://leica-geosystems.com/-/media/files/leicageosystems/products/poster/leica%20flexline%20ts07%20overview%20poster.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "angular_accuracy_arcsec",
+    "distance_accuracy_prism",
+    "prism_range_m",
+    "reflectorless_range_m",
+    "compensator_type",
+    "telescope_magnification_x",
+    "battery_operating_time_h",
+    "ip_rating"
+  ],
+  "short_description": "Leica FlexLine TS07 2\" R500 manual total station: 500 m reflectorless, 3,500 m to prism, 30x telescope, FlexField touchscreen, IP66, 30 h battery.",
+  "long_description": "## What it is\n\nThe Leica FlexLine TS07 is a manual total station from Leica Geosystems' FlexLine range, supplied here in the 2-second angular accuracy, R500 reflectorless configuration. Angles are read with 0.1\" display resolution and held by a quadruple-axis compensator with a +/- 4' working range and 0.5\" setting accuracy; distances come from a coaxial visible red-laser PinPoint EDM rated Class 3R under IEC 60825-1:2014. The instrument runs Leica FlexField software on a 3.5-inch 320 x 240 colour touchscreen with a 28-key illuminated keypad and a user-definable trigger key, and weighs about 4.3 kg.\n\n## What it's for\n\nIt is built for building construction, civil engineering and survey-and-mapping work: control traverses, topographic pick-up, plot demarcation and, above all, setting out on site. Endless horizontal and vertical drives with drives on both sides make repetitive stakeout quicker, and the optional AutoHeight module measures the instrument height automatically so that one common setup error disappears.\n\n## Key specifications\n\nTo a single prism the EDM is accurate to 1 mm + 1.5 ppm, with a 3,500 m range to a GPR1 round prism and a long-range mode beyond 10,000 m. Without a prism it reaches 500 m on a 90% reflective surface, at 2 mm + 2 ppm up to 500 m and 4 mm + 2 ppm beyond. The 30x telescope has a 1°30' field of view (2.7 m at 100 m), 3\" resolving power and focuses from 1.5 m. Data lives on 2 GB of internal flash, an SD card or a USB stick and leaves through RS232, USB or Bluetooth, with WLAN and an LTE side cover as options. The GEB361 Li-ion battery gives up to 30 hours of measuring. The housing is sealed to IP66, rated from -20 °C to +50 °C and rain-tested to MIL-STD-810G.\n\n## Field notes\n\nThe Class 2 laser plummet holds 1.5 mm at 1.5 m instrument height; level on the 6'/2 mm circular bubble and refine on the 2\" electronic level. Run the FlexField check-and-adjust routine after transport or a large temperature change, keep the 5/8-inch tripod screw tight, and respect the IP66 limit - the instrument shrugs off monsoon rain and dust but not immersion. The Indian dealer warranty is 12 months and extended warranty packages are available.\n\n## What's in the case\n\nTS07 instrument, GEB361 Li-ion battery with charger, tribrach, USB cable, adjustment tools, rain cover, user manual and the hard transport container. A calibration certificate is normally supplied with a new instrument.",
+  "seo": {
+    "title": "Leica FlexLine TS07 2\" R500 Total Station",
+    "meta_description": "Leica FlexLine TS07 2\" R500 manual total station: 500 m reflectorless, 3,500 m prism range, 30x, IP66, FlexField. Dealer price for AP and Telangana.",
+    "keywords": [
+      "leica ts07 total station",
+      "leica flexline ts07 price",
+      "leica ts07 2 second r500",
+      "manual total station hyderabad",
+      "leica total station price india",
+      "reflectorless total station 500 m"
+    ],
+    "keywords_te": [
+      "లైకా టోటల్ స్టేషన్",
+      "టోటల్ స్టేషన్ ధర",
+      "సర్వే పరికరం లైకా TS07",
+      "రిఫ్లెక్టర్‌లెస్ టోటల్ స్టేషన్"
+    ],
+    "keywords_hi": [
+      "लाइका टोटल स्टेशन",
+      "टोटल स्टेशन कीमत",
+      "लाइका TS07 टोटल स्टेशन",
+      "रिफ्लेक्टरलेस टोटल स्टेशन"
+    ]
+  }
+}

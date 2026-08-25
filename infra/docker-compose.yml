@@ -1,0 +1,39 @@
+# The containerised equivalent of `node infra/local.mjs up`. Same ports, same credentials.
+#   docker compose -f infra/docker-compose.yml up -d
+services:
+  mysql:
+    image: mysql:8.4
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_0900_ai_ci
+      --innodb-buffer-pool-size=1G
+      --max-allowed-packet=256M
+      --local-infile=1
+    environment:
+      MYSQL_ROOT_PASSWORD: buildo
+      MYSQL_DATABASE: buildobjects
+    ports: ["3306:3306"]
+    volumes: ["mysql-data:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pbuildo"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.15
+    environment:
+      MEILI_MASTER_KEY: buildo-local
+      MEILI_ENV: development
+      MEILI_NO_ANALYTICS: "true"
+    ports: ["7700:7700"]
+    volumes: ["meili-data:/meili_data"]
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports: ["6379:6379"]
+
+volumes:
+  mysql-data:
+  meili-data:

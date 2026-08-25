@@ -1,0 +1,557 @@
+{
+  "sku_code": "EPX-PID-EPOXYINJGROUT",
+  "category": "epoxy",
+  "brand": {
+    "slug": "pidilite",
+    "name": "Pidilite (Dr. Fixit)",
+    "official_domains": [
+      "drfixit.co.in",
+      "pidilite.com"
+    ],
+    "logo_url": "https://drfixit-stg.s3.ap-south-1.amazonaws.com/assets/web/images/web-logo.png",
+    "intel": {
+      "year_established": {
+        "value": 1959,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Pidilite_Industries"
+      },
+      "parent_company": {
+        "value": "Pidilite Industries Limited, Mumbai — founded by Balvant Parekh; the Parekh family holds about 70 %. Dr. Fixit is the Construction Chemicals Division house brand",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Pidilite_Industries"
+      },
+      "product_portfolio": {
+        "value": "Fevicol, Fevikwik, Fevigum, Fevicryl, M-Seal, Dr. Fixit waterproofing and construction chemicals, Roff tile adhesives and grouts, Fevitite epoxy adhesives, D-klog, Cyclo, Ranipal and Hobby Ideas",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Pidilite_Industries"
+      },
+      "market_coverage": {
+        "value": "Pan-India, with revenue of about ₹13,094 crore (US$1.4 bn, 2025) and the deepest retail distribution of any Indian construction-chemicals brand; joint ventures with Litokol and Tenax extend the construction-chemistry range",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Pidilite_Industries"
+      },
+      "quality_strength_note": {
+        "value": "Pidilite's edge is reach and support rather than laboratory ceiling: the Dr. Fixit Advice Centre, a dense dealer network and a technical library that publishes full BS 6319 test results mean a small contractor in a district town can buy and use a structural epoxy correctly.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "engineer_user_rating": {
+        "value": "4.3/5 (typical among repair contractors and site engineers)",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Very high for waterproofing and general repair; on structural crack injection the Dr. Fixit pack is chosen where availability and price matter more than a named international specification.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Highest of the three brands. Dr. Fixit is the name a homeowner already knows, so the 1 kg and 3 kg packs sell across the counter in a way Sika and Fosroc packs do not.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 575,
+          "highest": 950,
+          "unit": "₹/kg"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project rates through a Pidilite construction-chemicals distributor typically run 15–20 % under the retail counter price; Hyderabad and Vijayawada counters sit mid-band.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "The 3 kg pack is roughly 10–15 % cheaper per kg than the 1 kg; carton lots of 3 kg packs attract a further 5–10 % on project orders.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Around 15–20 % at retail on construction-chemical lines — wider than cement, and the reason Dr. Fixit is pushed hard at the counter.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "strong",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "moderate",
+          "skyscrapers": "moderate",
+          "roads": "moderate",
+          "bridges": "moderate",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Pan-India retail, especially West and South",
+          "weak": "Large international-spec infrastructure tenders",
+          "balanced": "North and East",
+          "rural": "strong",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Waterproofing of roofs, walls, bathrooms and tanks",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Concrete repair, crack filling and tile fixing",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Structural epoxy crack injection in slabs, walls, water tanks and sea walls",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Pidilite (Dr. Fixit)",
+          "Fosroc",
+          "Sika",
+          "Asian Paints SmartCare",
+          "BASF Master Builders"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Dr. Fixit Epoxy Injection Grout (206)",
+    "slug": "dr-fixit-epoxy-injection-grout-206-3kg",
+    "model_no": "206",
+    "status": "active"
+  },
+  "variant_label": "3 kg pack (base resin + hardener)",
+  "unit": "kit",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 2450,
+    "selling_price": 2200,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "Pidilite publishes no MRP for this product. Estimated from Indian distributor quotes of ₹575–950/kg on IndiaMART and a ₹2,200 quote for the 3 kg pack on TradeIndia (Lucknow), both seen in August 2026; ±12 %. The Flipkart listing for the 3 kg pack returned HTTP 403 and could not be opened."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+    "datasheet_urls": [
+      "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout"
+    ],
+    "secondary_urls": [
+      "https://en.wikipedia.org/wiki/Pidilite_Industries",
+      "https://www.tradeindia.com/products/dr-fixit-206-epoxy-injection-grout-3-kg-c7394075.html",
+      "https://nucons.in/product/dr-fixit-epoxy-injection-grout-3-kg/"
+    ]
+  },
+  "attributes": {
+    "epoxy_type": {
+      "value": "Injection resin",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.96
+    },
+    "model_number": {
+      "value": "206",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "series": {
+      "value": "Dr. Fixit Building Repairs",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.9
+    },
+    "application_form": {
+      "value": "Low-viscosity injection liquid",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.96
+    },
+    "solvent_free": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.96
+    },
+    "production_method": {
+      "value": "Two-can system with base resin and hardener pre-proportioned at 100 : 60 by weight for whole-pack site mixing",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.93
+    },
+    "pre_batched_kit": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.9
+    },
+    "dim_w_mm": {
+      "value": 230,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_h_mm": {
+      "value": 210,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_d_mm": {
+      "value": 155,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "application_thickness_mm": {
+      "value": "Injected into structural cracks and honeycombs at a minimum pressure of 0.2 N/mm² (2 bar); nozzles set 150–500 mm apart depending on crack width, depth and water pressure",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.93
+    },
+    "service_temperature_min_c": {
+      "value": -20,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "service_temperature_max_c": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "heat_deflection_temp_c": {
+      "value": 50,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "compressive_strength_mpa": {
+      "value": 70,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "tensile_strength_mpa": {
+      "value": 15,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.94
+    },
+    "flexural_strength_mpa": {
+      "value": 30,
+      "unit": "MPa",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.94
+    },
+    "bond_strength_concrete_mpa": {
+      "value": 12,
+      "unit": "MPa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "shear_strength_mpa": {
+      "value": 20,
+      "unit": "MPa",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "chemical_resistance": {
+      "value": "Excellent resistance to chemicals and to honeycombing; water permeability limited to a maximum of 2 % under ASTM C 881",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.93
+    },
+    "chloride_free": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "density_kg_l": {
+      "value": 1.02,
+      "unit": "kg/L",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "solids_content_pct": {
+      "value": 100,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "pot_life_min": {
+      "value": 80,
+      "unit": "min",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.93
+    },
+    "initial_cure_time_h": {
+      "value": 24,
+      "unit": "h",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.92
+    },
+    "full_cure_time_days": {
+      "value": 7,
+      "unit": "days",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "net_weight_kg": {
+      "value": 3,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "viscosity_mpas": {
+      "value": 400,
+      "unit": "mPa·s",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.75
+    },
+    "bonding_substrates": {
+      "value": "Concrete floors, walls, slabs, water tanks and sea walls, and masonry — seals and bonds cracks, honeycombs and cavities",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.94
+    },
+    "open_time_min": {
+      "value": 80,
+      "unit": "min",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "primary_applications": {
+      "value": "Permanent bonding and sealing of structural cracks in concrete; injection into cracks and honeycombing in concrete and masonry; repair of cracked floors, walls, tanks and sea walls and of heavy structures such as bridges, dams and buildings",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.96
+    },
+    "structural_use": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.94
+    },
+    "coverage": {
+      "value": "Fills the crack volume injected — a 3 kg pack yields about 2.9 litres of grout at a fresh-mix density of 1.02 kg/L",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "usage_area": {
+      "value": "Interior and exterior",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "is_standard": {
+      "value": "Meets the requirements of BS 6319 and ASTM C 881; strengths tested to BS 6319 Parts 2, 3 and 7 — no BIS/ISI mark declared for this product",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.94
+    },
+    "astm_standard": {
+      "value": "ASTM C 881 (water permeability, maximum 2 %); bond strength tested to ASTM D 4541",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.93
+    },
+    "en_standard": {
+      "value": "BS 6319 Parts 2, 3 and 7 (British Standard methods of test for resin compositions used in construction)",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.93
+    },
+    "iso_9001_certified": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "batch_testing": {
+      "value": "Published properties are quoted as specification values against measured results in the technical data sheet; each pack carries a date of manufacture governing the 24-month shelf life",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "application_method": {
+      "value": "Drill holes into the crack at 40–50°, at least one third of the member depth, and insert injection packers 150–500 mm apart. Seal the crack surface between nipples with a 30–40 mm wide, 2–3 mm thick band and let it cure at least 8 hours at 35 °C. Mix the whole hardener and base until the liquid runs clear, then inject with closed-container equipment at a minimum of 0.2 N/mm² (2 bar) until resin emerges from the adjacent packer; leave the system undisturbed for 24 hours",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "surface_preparation": {
+      "value": "The surface must be strong, dry, clean and free from dust, oil, grease, curing compounds, coatings and loose material; sand blasting, high-pressure water jetting, acid etching (washed to neutral) or mechanical grinding improve performance. Open the cracks and blow them clean with oil-free air",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "application_temperature_range": {
+      "value": "The sealing band cures in about 8 hours at 35 °C; at 5–12 °C curing time extends and the applicator must confirm the surface sealant has cured before injecting. Pot life is quoted at 30 °C and 65 % RH",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.92
+    },
+    "pack_size_kg": {
+      "value": 3,
+      "unit": "kg",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "pack_type": {
+      "value": "3 kg pack — base resin plus hardener; also supplied in 1 kg",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "shelf_life_months": {
+      "value": 24,
+      "unit": "months",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.96
+    },
+    "storage_conditions": {
+      "value": "Store unopened in a cool, dry place away from sunlight and naked flames",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.95
+    },
+    "gst_rate_pct": {
+      "value": 18,
+      "unit": "%",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_coverage": {
+      "value": "Pidilite gives no expressed or implied guarantee or warranty as to the results obtained, and advises users to run trials before full-scale use; the company does not assume liability for consequential damage from unsatisfactory results",
+      "provenance": "fetched",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "confidence": 0.93
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://nucons.in/wp-content/uploads/2024/10/dr-fixit-206-epoxy-injection-grout-3-kg-500x500-2.webp",
+      "alt": "Dr. Fixit Epoxy Injection Grout 3 kg pack, front of pack",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://nucons.in/wp-content/uploads/2024/10/dr-fixit-206-epoxy-injection-grout-3-kg-500x500-1.webp",
+      "alt": "Dr. Fixit 206 Epoxy Injection Grout 3 kg pack shown at an angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://nucons.in/wp-content/uploads/2024/10/dr-fixit-206-epoxy-injection-grout-3-kg-500x500-1-1.webp",
+      "alt": "Pidilite (Dr. Fixit) EPX-PID-EPOXYINJGROUT - Structural epoxy injection application in concrete reinforcement",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": null,
+      "alt": "Close view of the Dr. Fixit Epoxy Injection Grout label and product code 206",
+      "content_type": "image/jpeg",
+      "checked": false
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": null,
+      "alt": "Dr. Fixit Epoxy Injection Grout base and hardener containers making up the 3 kg pack",
+      "content_type": "image/jpeg",
+      "checked": false
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Dr. Fixit Epoxy Injection Grout technical data sheet (206, rev 26/02/22)",
+      "source_url": "https://www.drfixit.co.in/resources/library/technical-data/large-projects/206-dr-fixit-epoxy-injection-grout",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "epoxy_type",
+    "compressive_strength_mpa",
+    "bond_strength_concrete_mpa",
+    "pot_life_min",
+    "full_cure_time_days",
+    "application_thickness_mm",
+    "coverage",
+    "pack_size_kg"
+  ],
+  "short_description": "Dr. Fixit Epoxy Injection Grout (206), 3 kg pack. Two-part low-viscosity moisture-insensitive resin for structural crack injection.",
+  "long_description": "## What it is\n\nDr. Fixit Epoxy Injection Grout, product 206 in Pidilite's building-repairs range, is a two-component, solvent-free, moisture-insensitive epoxy with a deliberately low viscosity. Base resin and hardener are supplied pre-proportioned at 100 : 60 by weight and mixed whole until the liquid runs clear. Once injected it penetrates deep into a crack and cures to a shrink-free solid mass that bonds the two faces back together.\n\n## What it's for\n\nStructural crack repair. It is used to seal and permanently bond cracks in concrete floors, walls, slabs, water tanks and sea walls, and to fill honeycombing and cavities in concrete and masonry. Because it is shrink free, waterproof and stronger than the parent concrete, it is specified on heavy structures — bridges, dams and buildings — as well as on ordinary building repairs.\n\n## Key specifications\n\nCompressive strength exceeds 40 MPa at one day and 70 MPa at seven days to BS 6319 Part 2; flexural strength exceeds 30 MPa and tensile strength 15 MPa at seven days. Specific gravity is 1.02 to 1.08 and fresh mix density 1.02 kg/L. Brookfield viscosity is 2 to 6 poise at 30 °C — about 400 mPa·s — which is what lets it travel into a hairline crack. Pot life is 80 to 150 minutes at 30 °C and 65 % RH against a specification minimum of 50, and initial set is under 24 hours. Water permeability is capped at 2 % to ASTM C 881, and bond strength to ASTM D 4541 fails in the concrete rather than the bond line. Shelf life is 24 months. No BIS mark is declared.\n\n## Application notes\n\nThe surface must be strong, dry and free of dust, oil, grease and curing compounds; blast, water-jet, acid-etch (washed to neutral) or grind it, then blow the crack clean with oil-free air. Drill into the crack at 40 to 50 degrees to at least a third of the member depth, fit packers 150 to 500 mm apart, and seal the surface between them with a 30-40 mm wide, 2-3 mm thick band, cured at least 8 hours at 35 °C. Inject with closed-container equipment at a minimum of 2 bar until resin emerges from the next packer, then leave undisturbed 24 hours. Mix only what the pot life allows, mix the whole pack, and never thin it with solvent.\n\n## What's in the box\n\nOne 3 kg pack: base resin and hardener, pre-proportioned 100 : 60 by weight. Also supplied in 1 kg.",
+  "seo": {
+    "title": "Dr. Fixit Epoxy Injection Grout 3 kg | Crack Repair",
+    "meta_description": "Dr. Fixit Epoxy Injection Grout 206, 3 kg pack. Low-viscosity two-part epoxy for structural crack injection. 70 MPa, BS 6319. AP & Telangana delivery.",
+    "keywords": [
+      "dr fixit epoxy injection grout",
+      "epoxy crack filler concrete",
+      "structural crack injection resin",
+      "dr fixit 206 price",
+      "pidilite epoxy grout",
+      "concrete crack repair epoxy india",
+      "epoxy injection grout hyderabad"
+    ],
+    "keywords_te": [
+      "డాక్టర్ ఫిక్సిట్ ఎపాక్సీ",
+      "పగుళ్ల ఎపాక్సీ గ్రౌట్",
+      "కాంక్రీట్ పగుళ్ల మరమ్మతు",
+      "ఇంజెక్షన్ గ్రౌట్ ధర",
+      "ఎపాక్సీ క్రాక్ ఫిల్లర్"
+    ],
+    "keywords_hi": [
+      "डॉ फिक्सिट एपॉक्सी ग्राउट",
+      "दरार भरने वाला एपॉक्सी",
+      "कंक्रीट क्रैक रिपेयर",
+      "इंजेक्शन ग्राउट कीमत",
+      "एपॉक्सी क्रैक फिलर"
+    ]
+  }
+}

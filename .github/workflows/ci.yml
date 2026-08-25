@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+# A new push to a branch makes the run in flight for it pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Turbo prints progress bars nobody reads in a log file.
+  TURBO_TELEMETRY_DISABLED: 1
+  DO_NOT_TRACK: 1
+
+jobs:
+  check:
+    name: lint · typecheck · test · build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Lint first: it is seconds, and a formatting-only failure should not wait behind a build.
+      - name: Lint and format check
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      # Parses packages/ui/src/theme.css and fails if any token pair the UI actually uses
+      # drops below its WCAG minimum. It caught a 3.97:1 button label the day it was wired up.
+      - name: Colour contrast
+        run: pnpm contrast
+
+      # The curated SKU files are data, and data rots the way code does. This validator existed
+      # and was never run, which is how 12,895 attribute values reading "Verified Industry
+      # Standard" came to be stamped `verified` at 0.98 confidence with no source behind them.
+      - name: Validate curated data
+        run: pnpm validate
+
+      # The build is the only step that catches a bad server/client boundary or a route that
+      # cannot be traced, so it runs even though nothing is deployed from here.
+      - name: Build
+        run: pnpm build

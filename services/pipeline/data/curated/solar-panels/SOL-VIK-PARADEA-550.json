@@ -1,0 +1,574 @@
+{
+  "sku_code": "SOL-VIK-PARADEA-550",
+  "category": "solar-panels",
+  "brand": {
+    "slug": "vikram-solar",
+    "name": "Vikram Solar",
+    "official_domains": [
+      "vikramsolar.com"
+    ],
+    "logo_url": "https://www.vikramsolar.com/wp-content/uploads/2022/04/cropped-logo-1.png",
+    "intel": {
+      "year_established": {
+        "value": 2005,
+        "provenance": "fetched",
+        "source_url": "https://www.vikramsolar.com/company/"
+      },
+      "parent_company": {
+        "value": "Vikram Solar Limited (formerly Vikram Solar Private Limited), CIN L18100WB2005PLC106448, Kolkata; promoter and Managing Director Gyanesh Chaudhary",
+        "provenance": "fetched",
+        "source_url": "https://www.vikramsolar.com/company/"
+      },
+      "product_portfolio": {
+        "value": "Crystalline PV modules across the Paradea (bifacial glass-glass), Somera, Hypersol and Prexos ranges in Mono PERC, n-type and HJT, plus solar EPC and O&M services",
+        "provenance": "fetched",
+        "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf"
+      },
+      "market_coverage": {
+        "value": "Presence across 39 countries, over 10 GW of modules shipped and 1.41 GW of aggregate EPC capacity; one of India's largest module manufacturers by operational capacity as on 31 March 2025",
+        "provenance": "fetched",
+        "source_url": "https://www.vikramsolar.com/company/"
+      },
+      "quality_strength_note": {
+        "value": "PVEL Top Performer model. Datasheet prints its Indian standard explicitly (IS 14286:2010 / IEC 61215:2005 and IS/IEC 61730 Parts 1 and 2), plus IEC 61701 salt mist, IEC 62716 ammonia and IEC 60068-2-68 sand and dust, under ISO 9001, ISO 14001, ISO 45001 and SA 8000 systems. Verified 45 mm hail test at up to 27 m/s from a third-party laboratory.",
+        "provenance": "fetched",
+        "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf"
+      },
+      "engineer_user_rating": {
+        "value": "4.3/5 typical among Indian design engineers — respected for datasheet transparency and reliability testing, less visible than Waaree in the retail channel",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Well regarded by C&I and utility EPC contractors, particularly where a DCR-content module is needed; less commonly stocked than Waaree by small AP/Telangana rooftop installers.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Moderate. A first-time household buyer in Andhra Pradesh or Telangana is unlikely to name Vikram Solar unprompted, but installers introduce it as a credible alternative to Waaree at a similar price.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 18,
+          "highest": 28,
+          "unit": "₹/Wp"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Sold mainly on project terms; MW-scale supply typically runs 15-25% below any single-panel retail figure. The DCR-content variant of this model carries a premium over non-DCR.",
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Pallet quantity is 36 modules and container quantity 720, so pricing steps naturally at those breaks; container orders are quoted per Wp.",
+        "provenance": "fetched",
+        "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf"
+      },
+      "dealer_margin_note": {
+        "value": "Channel margin on modules is thin, roughly 4-7% for a distributor; installers make their money on structure, inverter and installation rather than on the panel.",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "moderate",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "moderate",
+          "roads": "moderate",
+          "bridges": "weak",
+          "dams_metro": "moderate"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "East India (West Bengal and the Kolkata belt) and Tamil Nadu",
+          "weak": "Rural retail across the Hindi belt",
+          "balanced": "South India including Andhra Pradesh and Telangana",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Commercial and industrial rooftop and ground-mounted solar plants",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Utility-scale plants and institutional campus installations",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Single-axis tracker installations — the frame carries dedicated tracking holes — and DCR-content supply for subsidy-linked schemes",
+        "provenance": "fetched",
+        "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf"
+      },
+      "top_preference_order": {
+        "value": [
+          "Waaree",
+          "Adani Solar",
+          "Vikram Solar",
+          "Tata Power Solar",
+          "Premier Energies"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Vikram Solar Paradea VSMDH.72.550.05 550 Wp Bifacial Glass-Glass Module",
+    "slug": "vikram-solar-paradea-550wp-bifacial-glass-glass-module",
+    "model_no": "VSMDH.72.550.05",
+    "status": "active"
+  },
+  "variant_label": "550 Wp · 144 half-cut cells · bifacial glass-glass",
+  "unit": "panel",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 15000,
+    "selling_price": 11600,
+    "currency": "INR",
+    "provenance": "estimated",
+    "source_url": null,
+    "fetched_at": "2026-08-22",
+    "note": "Vikram Solar publishes no MRP or retail price on vikramsolar.com. Estimated at about ₹21.1/Wp, benchmarked against Waaree's own published retail rate for a comparable 545 Wp bifacial module in Aug 2026; typical Hyderabad / Vijayawada distributor rate, ±10%."
+  },
+  "gst_rate": 5,
+  "gst_needs_verification": true,
+  "sources": {
+    "official_product_url": "https://www.vikramsolar.com/pv-modules/paradea/paradea-540-565w-144-cell/",
+    "datasheet_urls": [
+      "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.vikramsolar.com/company/"
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "VSMDH.72.550.05",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.9
+    },
+    "cell_technology": {
+      "value": "Mono PERC",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "bifacial": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.98
+    },
+    "rated_power_wp": {
+      "value": 550,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.98
+    },
+    "module_efficiency_pct": {
+      "value": 21.29,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "number_of_cells": {
+      "value": 144,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.98
+    },
+    "front_glass_type": {
+      "value": "2.0 mm high-transmission anti-reflective coated semi-tempered low-iron glass",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "front_glass_thickness_mm": {
+      "value": 2,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "frame_material": {
+      "value": "Anodised aluminium frame with twin-wall structure (alloy steel frame available to order)",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "encapsulant_material": {
+      "value": "EVA / EPE cell encapsulant",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "backsheet_material": {
+      "value": "2.0 mm high-transmission heat-strengthened low-iron rear glass (mesh glass available to order)",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "cell_interconnection": {
+      "value": "72 Mono PERC P-type bifacial cells cut into 144 half-cells on the M10 format, multi-busbar (MBB) ribbon interconnection",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "busbar_count": {
+      "value": 10,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "dim_w_mm": {
+      "value": 1134,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.98
+    },
+    "dim_h_mm": {
+      "value": 2278,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.98
+    },
+    "dim_d_mm": {
+      "value": 30,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.98
+    },
+    "cable_length_mm": {
+      "value": 300,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.9
+    },
+    "max_snow_load_pa": {
+      "value": 5400,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "max_wind_load_pa": {
+      "value": 2400,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "temp_coefficient_pmax": {
+      "value": -0.35,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "temp_coefficient_voc": {
+      "value": -0.27,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "noct_c": {
+      "value": 45,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "operating_temperature_range": {
+      "value": "-40 °C to +85 °C",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "hail_impact_resistance": {
+      "value": "45 mm hailstone at impact velocity up to 27 m/s, passed at a third-party laboratory",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.92
+    },
+    "salt_mist_corrosion_class": {
+      "value": "Salt-mist corrosion certified to IEC 61701, ammonia corrosion to IEC 62716 and sand and dust to IEC 60068-2-68; higher corrosion resistance claimed for severe sand, ammonia and salt-mist conditions",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.92
+    },
+    "net_weight_kg": {
+      "value": 32.5,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "vmp_v": {
+      "value": 41.9,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "imp_a": {
+      "value": 13.14,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "voc_v": {
+      "value": 49.7,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "isc_a": {
+      "value": 13.82,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "power_tolerance": {
+      "value": "0 / +3 %",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.9
+    },
+    "connector_type": {
+      "value": "MC4-compatible / MC4 connectors",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "junction_box_diode_count": {
+      "value": 3,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "cable_cross_section_mm2": {
+      "value": 4,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "application_segment": {
+      "value": "Commercial & industrial rooftop",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "suitable_for_rooftop": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "max_system_voltage_v": {
+      "value": 1500,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "max_series_fuse_a": {
+      "value": 25,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "is_standard": {
+      "value": "IS 14286:2010 / IEC 61215:2005 and IS/IEC 61730 (Parts 1 & 2):2004",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "iec_61215_certified": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "iec_61730_certified": {
+      "value": true,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "almm_listed": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "junction_box_ip_rating": {
+      "value": "IP68",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "fire_safety_class": {
+      "value": "Class C",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "el_inspection": {
+      "value": "Electroluminescence imaging to screen micro-cracks; module design claimed to carry a low risk of warping and micro-cracking",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "pid_resistance": {
+      "value": "PID-resistant laminate; PVEL Top Performer benchmarked for long-term reliability",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "frame_colour": {
+      "value": "Silver anodised",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.8
+    },
+    "backsheet_colour": {
+      "value": "Transparent",
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.85
+    },
+    "modules_per_pallet": {
+      "value": 36,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "warranty_months": {
+      "value": 144,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "product_warranty_years": {
+      "value": 12,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.98
+    },
+    "performance_warranty_years": {
+      "value": 30,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.98
+    },
+    "annual_degradation_pct": {
+      "value": 0.5,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.95
+    },
+    "power_output_at_end_pct": {
+      "value": 83.5,
+      "provenance": "fetched",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "confidence": 0.92
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/Paradea-M10_144_550W.png",
+      "alt": "Vikram Solar SOL-VIK-PARADEA-550 - hero",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/paradea_g12_120.png",
+      "alt": "Vikram Solar SOL-VIK-PARADEA-550 - angle",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/paradea_g12_120.png.webp",
+      "alt": "Vikram Solar SOL-VIK-PARADEA-550 - in context",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/Paradea-G12_132.png",
+      "alt": "Vikram Solar SOL-VIK-PARADEA-550 - detail",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/Paradea-G12_132.png.webp",
+      "alt": "Vikram Solar SOL-VIK-PARADEA-550 - pack or dimensions",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Vikram Solar Paradea 540-565 W 144-cell bifacial glass-glass module datasheet",
+      "source_url": "https://www.vikramsolar.com/wp-content/uploads/2022/10/PARADEA-M10-540-565W-144-CELLS.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "rated_power_wp",
+    "module_efficiency_pct",
+    "cell_technology",
+    "voc_v",
+    "isc_a",
+    "fill_factor",
+    "temp_coefficient_pmax",
+    "performance_warranty_years"
+  ],
+  "short_description": "550 Wp Vikram Solar Paradea bifacial glass-glass Mono PERC module, 21.29% efficient, IS 14286 certified, 45 mm hail tested, 30-year power warranty.",
+  "long_description": "## What it is\n\nThe Vikram Solar Paradea VSMDH.72.550.05 is a 550 Wp bifacial glass-glass module built from 72 Mono PERC P-type bifacial cells cut into 144 half-cells on the M10 format and joined with multi-busbar ribbons. Both faces are glass — 2.0 mm anti-reflective coated semi-tempered low-iron glass in front, 2.0 mm heat-strengthened low-iron glass behind — laminated with an EVA/EPE encapsulant inside an anodised aluminium frame of twin-wall section. Module efficiency at standard test conditions is 21.29%.\n\n## What it's for\n\nCommercial and industrial rooftops, institutional campuses and ground-mounted plants, including single-axis trackers — the frame carries dedicated tracker holes as well as installing and grounding holes. A DCR-content version of this model is offered, which matters for subsidy-linked rooftop work in Andhra Pradesh and Telangana.\n\n## Key specifications\n\nAt STC the module delivers 550 Wp at 41.9 V and 13.14 A, with 49.7 V open-circuit and 13.82 A short-circuit, at a power tolerance of 0 to +3%. Temperature coefficients are −0.35 %/°C on power and −0.27 %/°C on Voc, NOCT is 45 °C ± 2 °C and the operating range is −40 °C to +85 °C. Maximum system voltage is 1500 V with a 25 A maximum series fuse. The laminate is rated for 5400 Pa of snow load and 2400 Pa of wind load and has passed a 45 mm hail test at impact velocities up to 27 m/s at a third-party laboratory. It measures 2278 mm × 1134 mm × 30 mm and weighs 32.5 kg. The IP68 split junction box carries individual bypass diodes and MC4-compatible leads. Certification covers IS 14286:2010 / IEC 61215:2005 and IS/IEC 61730 Parts 1 and 2, plus IEC 61701 salt mist, IEC 62716 ammonia and IEC 60068-2-68 sand and dust.\n\n## Application and installation notes\n\nFix it through the eight 9 × 14 mm installing holes; four Ø4 mm grounding holes and four 7 × 10 mm tracker holes are provided in the frame. Earth every module at a grounding hole. Being bifacial, it wants clearance and a reflective surface behind the array. Check string length against the 1500 V limit and the 49.7 V open-circuit voltage. At 32.5 kg it is a two-person lift.\n\n## What's in the box\n\nOne 550 Wp module with split junction box, cables and MC4-compatible connectors fitted. Structure, clamps, earthing hardware and DC cable are supplied separately; modules ship 36 to a pallet. Warranty: 12 years on product, 30 years linear on power, with 2% first-year degradation and 0.5% a year thereafter, reaching 83.5% of rated power at year 30.",
+  "seo": {
+    "title": "Vikram Solar Paradea 550W Bifacial Panel Price",
+    "meta_description": "Vikram Solar Paradea 550 Wp bifacial glass-glass Mono PERC panel — 21.29% efficient, IS 14286 certified, 45 mm hail tested, 30-year power warranty.",
+    "keywords": [
+      "vikram solar 550w panel",
+      "vikram paradea solar module",
+      "bifacial glass glass solar panel",
+      "550 watt solar panel price india",
+      "mono perc bifacial module",
+      "vikram solar panel andhra pradesh",
+      "is 14286 solar module"
+    ],
+    "keywords_te": [
+      "విక్రమ్ సోలార్ ప్యానెల్",
+      "550 వాట్ సోలార్ ప్యానెల్ ధర",
+      "బైఫేషియల్ గ్లాస్ సోలార్ ప్యానెల్",
+      "మోనో పెర్క్ మాడ్యూల్",
+      "సోలార్ ప్యానెల్ ఆంధ్రప్రదేశ్"
+    ],
+    "keywords_hi": [
+      "विक्रम सोलर पैनल",
+      "550 वाट सोलर पैनल कीमत",
+      "बाइफेशियल ग्लास सोलर पैनल",
+      "मोनो पर्क मॉड्यूल",
+      "विक्रम पैराडिया सोलर"
+    ]
+  }
+}

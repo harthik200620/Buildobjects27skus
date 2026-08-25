@@ -1,0 +1,672 @@
+{
+  "sku_code": "TST-TRI-C5-2",
+  "category": "total-stations",
+  "brand": {
+    "slug": "trimble",
+    "name": "Trimble",
+    "official_domains": [
+      "geospatial.trimble.com",
+      "trimble.com"
+    ],
+    "logo_url": null,
+    "intel": {
+      "year_established": {
+        "value": 1978,
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Trimble_Inc."
+      },
+      "parent_company": {
+        "value": "None - independent, Nasdaq-listed Trimble Inc. (TRMB, S&P 500), Westminster, Colorado; C-series total stations are built by the Nikon-Trimble Co., Ltd. joint venture in Japan",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Trimble_Inc."
+      },
+      "product_portfolio": {
+        "value": "Field systems for surveying and positioning (C-series mechanical and S/SX robotic total stations, R-series GNSS, scanners), Trimble Access and Trimble Business Center software, AEC design tools, construction machine control, transportation and logistics platforms",
+        "provenance": "fetched",
+        "source_url": "https://en.wikipedia.org/wiki/Trimble_Inc."
+      },
+      "market_coverage": {
+        "value": "Global (about 11,500 employees, USD 3.59 bn revenue in 2025); in India through Trimble India and authorised distribution partners with offices in Hyderabad, Bengaluru, Chennai and Delhi-NCR",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "quality_strength_note": {
+        "value": "Nikon optics with autofocus, two colour touchscreens, IP66 body and a long-range time-of-flight EDM (5,000 m prism / 800 m reflectorless) that measures in about 2 seconds",
+        "provenance": "fetched",
+        "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5"
+      },
+      "engineer_user_rating": {
+        "value": "4.4/5 - valued for the Trimble Access / Business Center workflow and the Nikon optics; seen as pricier than Topcon for equivalent manual specifications",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "contractor_preference": {
+        "value": "Strong among contractors already running Trimble GNSS or machine control who want one software ecosystem; moderate elsewhere",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "novice_preference": {
+        "value": "Moderate - the touchscreen Access interface is easy to learn, but price and ecosystem suit established firms more than first-time buyers",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "price_band": {
+        "value": {
+          "lowest": 500000,
+          "highest": 950000,
+          "unit": "₹/unit"
+        },
+        "provenance": "estimated",
+        "source_url": null
+      },
+      "project_vs_retail_cost_note": {
+        "value": "Project supply is normally quoted as a kit (instrument, tripod, prism set, Access licence) 10-20% above the bare instrument; retail single-unit buyers pay close to the listed dealer price",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "bulk_discount_note": {
+        "value": "Fleet orders of three or more units typically earn 5-8% off and bundled Trimble Access training; software subscriptions are negotiated separately",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "dealer_margin_note": {
+        "value": "Distribution-partner margins on mechanical total stations are about 8-12%, with higher margins on software, service plans and accessories",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "building_type_strengths": {
+        "value": {
+          "individual_houses": "moderate",
+          "low_rise": "strong",
+          "mid_rise": "strong",
+          "high_rise": "strong",
+          "skyscrapers": "strong",
+          "roads": "strong",
+          "bridges": "strong",
+          "dams_metro": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "region_strengths": {
+        "value": {
+          "strong": "Infrastructure and mining belts; Hyderabad, Bengaluru and Delhi-NCR",
+          "weak": "Small-town retail",
+          "balanced": "Andhra Pradesh coastal districts and Telangana",
+          "rural": "moderate",
+          "urban": "strong"
+        },
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "primary_use": {
+        "value": "Construction layout and survey integrated with Trimble Access and Trimble Business Center workflows",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "secondary_use": {
+        "value": "Topographic pick-up, earthworks volumes and as-built verification",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "special_use": {
+        "value": "Mixed crews using Trimble GNSS rovers and machine control on the same job files",
+        "provenance": "ai_filled",
+        "source_url": null
+      },
+      "top_preference_order": {
+        "value": [
+          "Leica Geosystems",
+          "Topcon",
+          "Trimble",
+          "Sokkia",
+          "South"
+        ],
+        "provenance": "ai_filled",
+        "source_url": null
+      }
+    }
+  },
+  "product": {
+    "name": "Trimble C5 2\" Mechanical Total Station",
+    "slug": "trimble-c5-2-mechanical-total-station",
+    "model_no": "C5 2\"",
+    "status": "active"
+  },
+  "variant_label": "2\" angular accuracy, optical or laser plummet",
+  "unit": "piece",
+  "pack_qty": 1,
+  "price": {
+    "mrp": 825000,
+    "selling_price": 825000,
+    "currency": "INR",
+    "provenance": "fetched",
+    "source_url": "https://www.indiamart.com/proddetail/trimble-c5-total-station-20139919097.html",
+    "fetched_at": "2026-08-23",
+    "note": "IndiaMART listing by Allterra Solutions LLP, Gurugram (Trimble authorised distribution partner); accuracy class not stated on the listing (C5 is offered 1\"-5\"). Other Indian listings for the C5 / C5 HP run about 4.0-5.7 lakh (Aug 2026)."
+  },
+  "gst_rate": 18,
+  "sources": {
+    "official_product_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+    "datasheet_urls": [
+      "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf",
+      "https://trl.trimble.com/dscgi/ds.py/Get/File-954541/Product%20Comparison%20-Trimble%20Total%20Stations%20-%20English%20(US)%20-%20Screen.pdf"
+    ],
+    "secondary_urls": [
+      "https://www.indiamart.com/proddetail/trimble-c5-total-station-20139919097.html",
+      "https://www.duncan-parnell.com/itemdetail/W-TRIMBLE-C5",
+      "https://en.wikipedia.org/wiki/Trimble_Inc."
+    ]
+  },
+  "attributes": {
+    "model_number": {
+      "value": "Trimble C5 2\"",
+      "provenance": "fetched",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "confidence": 0.9
+    },
+    "instrument_class": {
+      "value": "Manual total station",
+      "provenance": "fetched",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "confidence": 0.95
+    },
+    "onboard_software": {
+      "value": "Trimble Access onboard (Windows Embedded Compact 7, dual-core 800 MHz), integrated with Trimble Business Center",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "housing_material": {
+      "value": "Magnesium-alloy chassis with impact-resistant polymer covers",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.45
+    },
+    "optics_coating": {
+      "value": "Nikon multi-coated optics, 45 mm objective, erect image, 3\" resolving power, 4-step reticle illumination",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.85
+    },
+    "factory_calibration": {
+      "value": "Factory-calibrated absolute encoders (62 mm circles) and EDM; onboard autofocus calibration and instrument-constant check routines",
+      "provenance": "fetched",
+      "source_url": "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf",
+      "confidence": 0.7
+    },
+    "sealing_process": {
+      "value": "Sealed to IP66 dust and water protection (IEC 60529)",
+      "provenance": "verified",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "source_urls": [
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+        "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf"
+      ],
+      "confidence": 0.85
+    },
+    "dim_w_mm": {
+      "value": 206,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.85
+    },
+    "dim_h_mm": {
+      "value": 318,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.85
+    },
+    "dim_d_mm": {
+      "value": 169,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.85
+    },
+    "telescope_length_mm": {
+      "value": 128,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.85
+    },
+    "objective_aperture_mm": {
+      "value": 45,
+      "unit": "mm",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.9
+    },
+    "operating_temp_min_c": {
+      "value": -20,
+      "unit": "°C",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "operating_temp_max_c": {
+      "value": 50,
+      "unit": "°C",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "compensator_type": {
+      "value": "Dual-axis",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "compensator_accuracy_arcsec": {
+      "value": 1,
+      "unit": "arcsec",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "compensator_range": {
+      "value": "+/- 3' (liquid-electric detection)",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.9
+    },
+    "drive_system": {
+      "value": "Horizontal and vertical clamps with tangent screws",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.8
+    },
+    "corrosion_protection": {
+      "value": "Sealed IP66 body with coated metalwork suited to humid coastal and monsoon conditions",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "angular_accuracy_arcsec": {
+      "value": 2,
+      "unit": "arcsec",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "angle_display_resolution": {
+      "value": "1\" / 0.1 mgon (selectable)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "distance_accuracy_prism": {
+      "value": "+/- (2 mm + 2 ppm) standard mode (ISO 17123-4)",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "distance_accuracy_reflectorless": {
+      "value": "+/- (3 mm + 2 ppm) standard mode; +/- (10 mm + 5 ppm) fast standard mode",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "reflectorless_range_m": {
+      "value": 800,
+      "unit": "m",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "prism_range_m": {
+      "value": 5000,
+      "unit": "m",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "edm_type": {
+      "value": "Time-of-flight (pulse) EDM, infrared 850-890 nm, 50 mm EDM aperture, with coaxial red laser pointer and Tracklight",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf"
+      ],
+      "confidence": 0.85
+    },
+    "laser_class": {
+      "value": "Class 1",
+      "provenance": "verified",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "source_urls": [
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+        "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "telescope_magnification_x": {
+      "value": 30,
+      "unit": "x",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.95
+    },
+    "telescope_field_of_view": {
+      "value": "1°25'; minimum focus 1.5 m; Nikon autofocus",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.9
+    },
+    "battery_type": {
+      "value": "Two hot-swappable Li-ion packs, 3.6 V, 0.1 kg each: about 12 h distance and angle every 30 s, 14 h angle-only, 7 h continuous; about 6 h to charge both",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.9
+    },
+    "battery_operating_time_h": {
+      "value": 12,
+      "unit": "h",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.9
+    },
+    "internal_memory": {
+      "value": "512 MB RAM, 4 GB flash memory",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.9
+    },
+    "connectivity": {
+      "value": "1 x RS-232C serial, 2 x USB (host and client), integrated Bluetooth Class 1 (2.0 EDR), WLAN IEEE 802.11 b/g/n",
+      "provenance": "verified",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "source_urls": [
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+        "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "bluetooth": {
+      "value": true,
+      "provenance": "verified",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "source_urls": [
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+        "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "net_weight_kg": {
+      "value": 4.3,
+      "unit": "kg",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "application_areas": {
+      "value": "Construction layout, road and rail earthworks, building surveys, boundary and topographic work",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.65
+    },
+    "stakeout_support": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "is_standard": {
+      "value": "ISO 17123-3 (angle accuracy) / ISO 17123-4 (EDM accuracy); IEC 60825-1:2014; IEC 60529 IP66; FCC Part 15 Class B, CE mark, RCM mark",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.85
+    },
+    "ip_rating": {
+      "value": "IP66",
+      "provenance": "verified",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "source_urls": [
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+        "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "laser_safety_standard": {
+      "value": "IEC 60825-1:2014 and 21 CFR 1040.10 - Class 1 EDM in prism and reflectorless modes; Class 2 laser pointer and laser plummet",
+      "provenance": "verified",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "source_urls": [
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+        "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "field_check_routine": {
+      "value": "Onboard checking and adjustment: electronic level, circular level, optical/laser plummet, vertical zero-point and horizontal-angle corrections, instrument constant, autofocus calibration",
+      "provenance": "fetched",
+      "source_url": "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf",
+      "confidence": 0.85
+    },
+    "calibration_certificate_supplied": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "display_type": {
+      "value": "Two colour backlit LCD touchscreens, 640 x 480 px, one on each face",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.95
+    },
+    "keypad_type": {
+      "value": "Touchscreen with backlit hard keys on both faces",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.55
+    },
+    "tripod_thread": {
+      "value": "5/8-inch x 11 TPI (standard tribrach)",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "centring_method": {
+      "value": "Optical plummet (3x, 5° field of view, 0.5 m minimum focus) or Class 2 laser plummet, model dependent",
+      "provenance": "verified",
+      "source_url": "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+      "source_urls": [
+        "https://geospatial.trimble.com/en/products/hardware/trimble-c5",
+        "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf"
+      ],
+      "confidence": 0.9
+    },
+    "levelling_system": {
+      "value": "Circular level on tribrach 10'/2 mm plus electronic level",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.85
+    },
+    "tribrach_included": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "transport_case": {
+      "value": "Hard carrying case (about 3.3 kg) with shoulder strap",
+      "provenance": "fetched",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "confidence": 0.85
+    },
+    "package_contents": {
+      "value": "Instrument main body, 2 battery packs, battery charger, AC adapter, adjustment pin and Allen wrench, rain/dust cover, carrying case, shoulder strap, USB cable",
+      "provenance": "fetched",
+      "source_url": "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf",
+      "confidence": 0.9
+    },
+    "minimum_order_quantity": {
+      "value": 1,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.7
+    },
+    "warranty_months": {
+      "value": 12,
+      "unit": "months",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    },
+    "warranty_coverage": {
+      "value": "Manufacturer warranty against defects in materials and workmanship through the authorised distribution partner; batteries, accidental damage and misuse excluded",
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.5
+    },
+    "extended_warranty_available": {
+      "value": true,
+      "provenance": "ai_filled",
+      "source_url": null,
+      "confidence": 0.6
+    }
+  },
+  "images": [
+    {
+      "role": "hero",
+      "source_url": "https://images.ctfassets.net/1nvkn1423yot/2wlVuHEawuUSoreuYJ8DwU/6d9273a912dfc1ac038d431b0a46977e/geo-c5-opengraph-1200x627.png",
+      "alt": "Trimble C5 mechanical total station, front view with colour touchscreen and keypad (official render, 1600 px rendition)",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "angle",
+      "source_url": "https://images.ctfassets.net/1nvkn1423yot/6TQWqFBh7v3AzZb70t5D1S/cd9109d57466b367ab07b648290dcaea/geo-trimblex9-productpage-keyfeatures-720x720.jpg",
+      "alt": "Trimble C5 on a tripod at an earthworks site, three-quarter view of telescope, carrying handle and face-2 display",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "in_context",
+      "source_url": "https://images.ctfassets.net/1nvkn1423yot/1QDwerKdm0x7ShbWbwfguO/9ee77e3f2c2d52b4c8be4c2a83f2001d/geo-c5-total-station-beside-road-unboundedcard-370x247.jpg",
+      "alt": "Trimble C5 set up on a yellow tripod beside a road during a survey",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "detail",
+      "source_url": "https://images.ctfassets.net/1nvkn1423yot/1zPDrWqpv7PeT7GuEuutHV/6697c925daf1fd19445416868f0cfdd1/geo-c5-productpage-keyfeatures-720x720.jpg",
+      "alt": "Close-up of the Trimble C5 colour touchscreen and keypad operated by a gloved surveyor",
+      "content_type": "image/jpeg",
+      "checked": true
+    },
+    {
+      "role": "pack_or_dimensions",
+      "source_url": "https://images.ctfassets.net/1nvkn1423yot/3cSDqj8ZqX3SE45Pq503Je/1071896224b58e47cc962e00743b173d/geo-c5-productpage-fullbackgroundproducthero-800x960.png",
+      "alt": "Trimble TST-TRI-C5-2 - Rugged carrying case, tribrach, battery and charger kit",
+      "content_type": "image/jpeg",
+      "checked": true
+    }
+  ],
+  "documents": [
+    {
+      "type": "datasheet",
+      "title": "Trimble C5 & C5 HP mechanical total station datasheet (PN 022516-482B, dealer-hosted copy)",
+      "source_url": "https://www.duncan-parnell.com/customer/docs/skudocs/trimble-c5-datasheet-www-duncan-parnell-com-.pdf",
+      "checked": true
+    },
+    {
+      "type": "manual",
+      "title": "Trimble C5 Series total station user guide v3.0 rev C (Sept 2025)",
+      "source_url": "https://trl.trimble.com/docushare/dsweb/Get/Document-867325/C5_UserGde_3B_1013795830_eng.pdf",
+      "checked": true
+    },
+    {
+      "type": "brochure",
+      "title": "Trimble total station portfolio comparison sheet",
+      "source_url": "https://trl.trimble.com/dscgi/ds.py/Get/File-954541/Product%20Comparison%20-Trimble%20Total%20Stations%20-%20English%20(US)%20-%20Screen.pdf",
+      "checked": true
+    }
+  ],
+  "key_specs": [
+    "angular_accuracy_arcsec",
+    "distance_accuracy_prism",
+    "prism_range_m",
+    "reflectorless_range_m",
+    "compensator_type",
+    "telescope_magnification_x",
+    "battery_operating_time_h",
+    "ip_rating"
+  ],
+  "short_description": "Trimble C5 2\" mechanical total station: 800 m reflectorless, 5,000 m to prism, Nikon autofocus optics, dual colour touchscreens, Trimble Access, IP66.",
+  "long_description": "## What it is\n\nThe Trimble C5 is a mechanical (manual) total station built for Trimble by Nikon-Trimble in Japan, supplied here in the 2-second angular accuracy class. It pairs Nikon multi-coated optics with autofocus, a time-of-flight infrared EDM that is Class 1 laser-safe in both prism and reflectorless modes, and two 640 x 480 colour touchscreens - one on each face - running Trimble Access onboard on Windows Embedded Compact 7. The main unit weighs 4.3 kg and measures 206 x 169 x 318 mm.\n\n## What it's for\n\nConstruction layout, road and rail earthworks, building surveys and boundary or topographic work where a crew wants a rugged, simple instrument whose job files flow straight into Trimble Business Center. Trimble Access gives stakeout and the usual survey routines from either face, so the operator never has to walk round the instrument.\n\n## Key specifications\n\nAngular accuracy is 2\" (ISO 17123-3) from absolute encoders on 62 mm circles, with a dual-axis compensator of +/- 3' range. To a prism the EDM measures +/- (2 mm + 2 ppm) out to 5,000 m; without a prism it reaches 800 m at +/- (3 mm + 2 ppm) in standard mode or +/- (10 mm + 5 ppm) in fast standard mode. The 30x telescope has a 45 mm objective, a 1°25' field of view, 3\" resolving power and focuses from 1.5 m, with Nikon autofocus and four-step reticle illumination. Memory is 512 MB RAM plus 4 GB flash; connections are one RS-232C serial port, two USB ports, integrated Bluetooth and WLAN. Two hot-swappable 3.6 V Li-ion packs give about 12 hours of distance-and-angle work (14 hours angle-only, 7 hours continuous) and recharge in about 6 hours. The body is sealed to IP66 and rated from -20 °C to +50 °C.\n\n## Field notes\n\nChoose the optical-plummet model (3x, 0.5 m minimum focus) or the Class 2 laser-plummet model. Level on the tribrach's 10'/2 mm circular vial, then on the electronic level. The user guide's checking-and-adjustment chapter covers the electronic and circular levels, the plummet, vertical zero-point and horizontal-angle corrections, the instrument constant and autofocus calibration - run it after transport. Both axes have clamps with tangent screws; the tripod thread is the standard 5/8-inch. The dealer warranty is typically 12 months, with extended plans available.\n\n## What's in the case\n\nInstrument main body with tribrach, two battery packs, battery charger and AC adapter, adjustment pin and Allen wrench, rain/dust cover, shoulder strap and USB cable, all in the 3.3 kg hard carrying case. A calibration certificate is normally supplied with a new instrument.",
+  "seo": {
+    "title": "Trimble C5 2\" Mechanical Total Station",
+    "meta_description": "Trimble C5 2\" mechanical total station: autofocus, 800 m reflectorless, 5,000 m prism range, dual touchscreens, Trimble Access. Price for AP/Telangana.",
+    "keywords": [
+      "trimble c5 total station",
+      "trimble c5 price india",
+      "trimble c5 2 second",
+      "mechanical total station autofocus",
+      "trimble total station hyderabad",
+      "trimble access total station"
+    ],
+    "keywords_te": [
+      "ట్రింబుల్ టోటల్ స్టేషన్",
+      "ట్రింబుల్ C5 ధర",
+      "మెకానికల్ టోటల్ స్టేషన్",
+      "సర్వే పరికరం ట్రింబుల్"
+    ],
+    "keywords_hi": [
+      "ट्रिम्बल टोटल स्टेशन",
+      "ट्रिम्बल C5 कीमत",
+      "मैकेनिकल टोटल स्टेशन",
+      "सर्वे उपकरण ट्रिम्बल"
+    ]
+  }
+}

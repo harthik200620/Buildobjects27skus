@@ -1,0 +1,527 @@
+/* ═════════════════════════════════════════════════════════════════════════════
+   Category listing and search results: the filter rail and the product grid.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* ── PLP Layout ─────────────────────────────────────────────────────────── */
+  .plp {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "toolbar"
+      "chips"
+      "results";
+    gap: 12px 24px;
+    align-items: start;
+  }
+
+  .plp > .results-head {
+    grid-area: toolbar;
+    margin-bottom: 0;
+  }
+
+  .plp > .applied {
+    grid-area: chips;
+    margin-bottom: 0;
+  }
+
+  .plp > aside[data-rail] {
+    grid-area: rail;
+  }
+
+  .plp > section[aria-label="Results"] {
+    grid-area: results;
+    min-width: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .plp {
+      grid-template-columns: 240px minmax(0, 1fr);
+      grid-template-areas:
+        "toolbar toolbar"
+        "chips chips"
+        "rail results";
+      gap: 12px 32px;
+    }
+  }
+
+  /* ── filter rail ───────────────────────────────────────────────────────── */
+  .filter-rail {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .filter-rail-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .facet {
+    padding-bottom: 16px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--color-line-2);
+  }
+
+  .facet:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .facet-title {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--color-ink);
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Plain Checkbox Links & Rows ───────────────────────────────────────── */
+  .facet-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .facet-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    padding: 2px 0;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .facet-checkbox {
+    margin-top: 2px;
+    accent-color: var(--color-teal-700);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .facet-option-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .facet-option-label {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink);
+    transition: color 0.12s ease;
+    overflow-wrap: anywhere;
+  }
+
+  .facet-option:hover .facet-option-label {
+    color: var(--color-teal-700);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .facet-option-label--empty {
+    color: var(--color-ink-3) !important;
+    text-decoration: line-through !important;
+    cursor: not-allowed;
+  }
+
+  .facet-option-note {
+    font-size: 11px;
+    line-height: 15px;
+    color: var(--color-ink-3);
+    margin-top: 1px;
+  }
+
+  .facet-count {
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--color-ink-3);
+    margin-left: auto;
+    flex-shrink: 0;
+    padding-left: 6px;
+  }
+
+  .facet-swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid var(--color-line-strong);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .facet-more {
+    background: none;
+    border: 0;
+    color: var(--color-teal-700);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 4px 0 0;
+    text-align: left;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .facet-more:hover {
+    color: var(--color-teal-800);
+    text-decoration: underline;
+  }
+
+  /* ── Category Link Rows (Search page) ──────────────────────────────────── */
+  .facet-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 3px 0;
+    background: none;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .facet-link:hover .facet-option-label {
+    color: var(--color-teal-700);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .facet-link--active .facet-option-label {
+    font-weight: 700;
+    color: var(--color-teal-800);
+  }
+
+  /* ── Price Bands & Range Inputs ────────────────────────────────────────── */
+  .facet-bands {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .facet-band {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 0;
+    padding: 2px 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  .facet-band:hover .facet-band-label {
+    color: var(--color-teal-700);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .facet-band--active .facet-band-label {
+    font-weight: 700;
+    color: var(--color-teal-800);
+  }
+
+  .facet-band-label {
+    flex: 1 1 auto;
+    font-size: 13px;
+  }
+
+  .facet-range {
+    margin-top: 6px;
+  }
+
+  .facet-range-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .facet-range-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .facet-range-prefix {
+    position: absolute;
+    left: 8px;
+    font-size: 12px;
+    color: var(--color-ink-3);
+    pointer-events: none;
+  }
+
+  .facet-range-input {
+    width: 100%;
+    height: 30px;
+    padding: 0 6px 0 18px;
+    font-size: 12.5px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-sm);
+    color: var(--color-ink);
+  }
+
+  .facet-range-input:focus {
+    outline: none;
+    border-color: var(--color-teal-700);
+    box-shadow: 0 0 0 2px var(--color-teal-100);
+  }
+
+  .facet-range-sep {
+    color: var(--color-ink-3);
+    font-size: 12px;
+  }
+
+  .facet-range-go {
+    height: 30px;
+    padding: 0 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition:
+      background 0.12s,
+      border-color 0.12s;
+  }
+
+  .facet-range-go:hover {
+    background: var(--color-surface-2);
+    border-color: var(--color-ink);
+  }
+
+  .facet-range-hint {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--color-ink-3);
+  }
+
+  /* ── More Filters Accordion Fold ───────────────────────────────────────── */
+  .facet-fold {
+    margin-top: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-line-2);
+  }
+
+  .facet-fold-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-ink);
+    cursor: pointer;
+    list-style: none;
+    padding: 4px 0;
+  }
+
+  .facet-fold-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .facet-fold-chevron {
+    transition: transform 0.2s ease;
+    color: var(--color-ink-3);
+  }
+
+  details[open] .facet-fold-chevron {
+    transform: rotate(180deg);
+  }
+
+  .facet-fold-body {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Trust Note Banner (Certification / BIS / Standards) ───────────────── */
+  .facet-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    background: var(--color-teal-50);
+    border: 1px solid var(--color-teal-100);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-teal-900);
+  }
+
+  .facet-note-icon {
+    color: var(--color-teal-700);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Toolbar In-Stock Toggle ───────────────────────────────────────────── */
+  .toolbar-stock-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--color-ink);
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    user-select: none;
+    transition:
+      background 0.12s,
+      border-color 0.12s;
+  }
+
+  .toolbar-stock-toggle:hover {
+    background: var(--color-surface-2);
+    border-color: var(--color-line-strong);
+  }
+
+  /* ── Mobile Sheet Content ──────────────────────────────────────────────── */
+  .sheet-scrollable-body {
+    max-height: calc(80vh - 140px);
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+}
+
+@layer components {
+  /* ─────────────────────────────────────────────────────────────────────────
+     Category rail — the whole catalogue tree above the filters, the nine that
+     sell first and the rest under their department. Sits inside the same left
+     column as the facets on desktop and collapses away on a phone, where the
+     horizontal CategoryStrip already carries the same navigation.
+     ──────────────────────────────────────────────────────────────────────── */
+  .cat-rail {
+    padding-bottom: 18px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--color-line-2);
+  }
+  .cat-rail-head {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .cat-rail-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .cat-rail-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 30px;
+    padding: 4px 8px 4px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .cat-rail-link:hover {
+    background: var(--color-surface-2);
+    color: var(--color-teal-800);
+  }
+  .cat-rail-link.is-current {
+    font-weight: 700;
+    color: var(--color-teal-800);
+    background: var(--color-teal-50);
+  }
+  .cat-rail-icon {
+    flex: none;
+    color: var(--color-ink-3);
+  }
+  .cat-rail-link:hover .cat-rail-icon,
+  .cat-rail-link.is-current .cat-rail-icon {
+    color: var(--color-teal-700);
+  }
+  /* A shelf that is not stocked yet reads quieter, but stays a real link. */
+  .cat-rail-link.is-soon {
+    color: var(--color-ink-2);
+  }
+  .cat-rail-dept {
+    margin-top: 14px;
+  }
+  .cat-rail-dept-name {
+    margin-bottom: 4px;
+    padding-left: 6px;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+}
+
+@layer components {
+  /* A category that is in the catalogue but not yet stocked. */
+  .soon-panel {
+    max-width: 62ch;
+    margin: 8px 0 40px;
+    padding: 28px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+  }
+  .soon-title {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .soon-body {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--color-ink-2);
+  }
+  .soon-label {
+    margin-top: 22px;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .soon-links {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

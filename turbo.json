@@ -1,0 +1,55 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "DATABASE_URL",
+    "MEILI_HOST",
+    "MEILI_MASTER_KEY",
+    "REDIS_URL",
+    "MEDIA_ROOT",
+    "MEDIA_BASE_URL",
+    "ANTHROPIC_API_KEY",
+    "GEMINI_API_KEY",
+    "GEMINI_PIPELINE_MODEL",
+    "GEMINI_FAST_MODEL",
+    "GEMINI_VISION_MODEL",
+    "GEMINI_IMAGE_MODEL",
+    "GEMINI_SEGMENT_MODEL",
+    "GEMINI_DRAWING_MODEL",
+    "GEMINI_THINKING",
+    "GEMINI_GROUNDED_STRICT_JSON",
+    "GEMINI_CONCURRENCY",
+    "GEMINI_RPM",
+    "GEMINI_TIMEOUT_MS",
+    "GEMINI_DAILY_CALL_CAP",
+    "GEMINI_PRICE_JSON",
+    "REPLICATE_API_TOKEN",
+    "SESSION_SECRET",
+    "QUEUE_DRIVER",
+    "MESHY_API_KEY",
+    "TRIPO_API_KEY",
+    "REFINE_RATE_LIMIT",
+    "REFINE_DAILY_CAP"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "test": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": [],
+      "outputs": []
+    }
+  }
+}

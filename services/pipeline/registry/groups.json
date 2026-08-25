@@ -1,0 +1,39 @@
+{
+  "$comment": "The calendar sheet's specification-heading system (4Day_calendar_sheet_for_products.xlsx, row 3 of every sheet). Keys are fixed across all categories. Order = display order on the PDP 'Show more' sheet. 'Images', 'Documents', 'SEO Specs' and 'Comparison engine' are sheet headings too, but they describe media roles, document types, SEO fields and a compare flag - they are modelled as sku_images.role, sku_documents.type, seo fields and attributes[].compare, not as EAV groups.",
+  "groups": [
+    { "key": "product_identity", "label": "Product identity",             "sheet_label": "Product identity",             "display_order": 1,  "importance": 1 },
+    { "key": "material",         "label": "Material specifications",      "sheet_label": "Material Specifications",      "display_order": 2,  "importance": 2 },
+    { "key": "manufacturing",    "label": "Manufacturing specifications", "sheet_label": "Manufactring Specifications",  "display_order": 3,  "importance": 4 },
+    { "key": "dimensions",       "label": "Dimension specifications",     "sheet_label": "Dimension specifications",     "display_order": 4,  "importance": 1 },
+    { "key": "pressure",         "label": "Pressure specifications",      "sheet_label": "Pressure specifications",      "display_order": 5,  "importance": 5 },
+    { "key": "temperature",      "label": "Temperature specifications",   "sheet_label": "Temperature specifications",   "display_order": 6,  "importance": 3 },
+    { "key": "mechanical",       "label": "Mechanical properties",        "sheet_label": "Mechanical properties",        "display_order": 7,  "importance": 2 },
+    { "key": "chemical",         "label": "Chemical properties",          "sheet_label": "chemical properties",          "display_order": 8,  "importance": 4 },
+    { "key": "physical",         "label": "Physical properties",          "sheet_label": "Physical properties",          "display_order": 9,  "importance": 1 },
+    { "key": "joining",          "label": "Joining properties",           "sheet_label": "Joining properties",           "display_order": 10, "importance": 4 },
+    { "key": "application",      "label": "Application specifications",   "sheet_label": "Application specifications",   "display_order": 11, "importance": 2 },
+    { "key": "flow",             "label": "Flow specifications",          "sheet_label": "Flow specifications",          "display_order": 12, "importance": 5 },
+    { "key": "hygiene",          "label": "Hygiene specifications",       "sheet_label": "Hygiene specifications",       "display_order": 13, "importance": 5 },
+    { "key": "standards",        "label": "Standards and certifications", "sheet_label": "Standards and certifications", "display_order": 14, "importance": 1 },
+    { "key": "quality_control",  "label": "Quality control",              "sheet_label": "Quality control",              "display_order": 15, "importance": 4 },
+    { "key": "appearance",       "label": "Appearance",                   "sheet_label": "Apperance",                    "display_order": 16, "importance": 3 },
+    { "key": "installation",     "label": "Installation specifications",  "sheet_label": "installation specifications",  "display_order": 17, "importance": 2 },
+    { "key": "packaging",        "label": "Packaging",                    "sheet_label": "Packaging",                    "display_order": 18, "importance": 3 },
+    { "key": "commercial",       "label": "Commercial specs",             "sheet_label": "commercial specs",             "display_order": 19, "importance": 2 },
+    { "key": "warranty",         "label": "Warranty",                     "sheet_label": "warranty",                     "display_order": 20, "importance": 2 }
+  ],
+  "media_headings": {
+    "Images":            "sku_images.role - hero | angle | in_context | detail | pack_or_dimensions",
+    "Documents":         "sku_documents.type - brochure | datasheet | manual | warranty_card | certificate",
+    "SEO Specs":         "skus.seo - title, meta_description, keywords, slug",
+    "Comparison engine": "attributes[].compare = true"
+  },
+  "brand_intel_headings": [
+    "COMPANY NAME", "LOGO", "YEAR ESTABLISHED", "PARENT COMPANY/INDIVIDUAL", "PRODUCT PORTFOLIO", "MARKET COVERAGE",
+    "QUALITY & STRENGTH", "ENGINEER & USERS RATING", "CONTRACTOR/MASON/DEVELOPERS PREFERENCE", "LOW KNOWLEDGEBLE INDIVIDUALS PREFERENCE",
+    "LOWEST PRICE", "HIGHEST PRICE", "PROJECT COST", "NON-PROJECT COST", "BULK DISCOUNTS COST", "DEALER MARGIN",
+    "INDIVIDUAL HOUSES", "LOW RISE BUILDINGS", "MID RISE BUILIDNGS", "HIGH RISE BUILDINGS", "SKY SCRAPPERS", "ROADS", "BRIDGES", "DAMS/ METRO",
+    "STRONG REGION", "WEAK REGION", "BALANCED REGION", "RURAL STRENGTH", "URBAN STRENGTH",
+    "Primary  Consumption", "Secondary Use", "Minor / Special Use", "Most Used  Brands (Top Preference Order)"
+  ]
+}

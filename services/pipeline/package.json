@@ -1,0 +1,41 @@
+{
+  "name": "@buildobjects/pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cli": "tsx src/cli.ts",
+    "registry": "tsx src/cli.ts registry",
+    "worker": "tsx src/worker.ts",
+    "media:generate": "tsx src/media/generate-site-art.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests",
+    "validate": "tsx src/validate-curated.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.120.0",
+    "@buildobjects/catalog": "workspace:*",
+    "@buildobjects/db": "workspace:*",
+    "@buildobjects/llm": "workspace:*",
+    "blurhash": "^2.0.5",
+    "bullmq": "^5.58.0",
+    "cheerio": "^1.2.0",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.44.5",
+    "ioredis": "^5.7.0",
+    "meilisearch": "^0.53.0",
+    "pdf-parse": "^1.1.1",
+    "playwright": "^1.56.0",
+    "robots-parser": "^3.0.1",
+    "sharp": "^0.34.5",
+    "xlsx": "^0.18.5",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.7.0",
+    "@types/pdf-parse": "^1.1.4",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}
