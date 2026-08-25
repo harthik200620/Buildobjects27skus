@@ -11,9 +11,16 @@ infra/bin/
 infra/data/
 infra/run/
 
-# everything under storage/ is produced by a run: media renditions, raw captures, coverage
-# reports, screenshots, lighthouse and scale results. None of it is source.
-storage/
+# Everything under storage/ is produced by a run. Most of it is not source and stays out —
+# raw page captures, coverage, screenshots, lighthouse and scale results.
+#
+# storage/media is the exception and is tracked: it is what the storefront actually serves
+# (product photographs, the generated category art, the estimator's house renders), it is
+# content-addressed so it never churns, and a clone without it renders a catalogue of empty
+# frames. Regenerating it costs a Meshy and a Gemini bill; committing it costs disk.
+storage/*
+!storage/media
+storage/media/**/*.tmp
 assets/3d/_selftest/
 
 # scale-test artefacts

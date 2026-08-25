@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-25T13:23:45.246Z",
+  "updated_at": "2026-08-25T13:26:37.812Z",
   "jobs": {
     "BUL-PHI-ACESAVER9WB22": {
       "sku": "BUL-PHI-ACESAVER9WB22",
@@ -566,10 +566,16 @@
       "images": [
         "skus/e3/TST-TOP-GM-52/img/1-orig.jpg"
       ],
-      "state": "submitted",
+      "state": "normalised",
       "attempts": 2,
       "submittedAt": "2026-08-25T13:23:45.245Z",
-      "updatedAt": "2026-08-25T13:23:45.245Z"
+      "updatedAt": "2026-08-25T13:26:37.811Z",
+      "modelUrls": {
+        "glb": "https://assets.meshy.ai/b8bb844e-bfe4-4d5b-a590-339ca54d042a/tasks/01a03917-4e16-75e7-b353-90b1a36f1fe4/output/model.glb?Expires=1787923571&Signature=PMLMH1p0PjWuX0b-sJG37eDVmqSRW1avEX2hX3aBYvhC4i3NhfDPdJIvkXxY4d7nVQPFT~XbsfEpZHZRd5pFdsDEEXUUABSGOAS8eGNQ6YoFHtFWz4TCr9L7c2mQ9wdMrmDJxP6~OuhQlHYssYiARQBnQq~YgN-Jz3PV3wPQYleoGZFmRIdDCqPToH6ehEndwibTcOqkQ8wWdg7txw7NhVmGAi9w6UR-3OCl4Vcu4b4QH9l9RSin2UtqYi0clUpizfmgBFNy79oaIEuoVgTA7~BDcGKO1XQPZjO-n6~xpur2Xl4qO4qnHtetMXNAm2PK7kLIX0TovFCC-QYw2HYUkQ__&Key-Pair-Id=K1VGYTHIYLM9UM",
+        "usdz": "https://assets.meshy.ai/b8bb844e-bfe4-4d5b-a590-339ca54d042a/tasks/01a03917-4e16-75e7-b353-90b1a36f1fe4/output/model.usdz?Expires=1787923571&Signature=Yb-NGVBtir9Th-dKHCMH0dEZXSa5qLe7hKFAd4i4j~RIqggy-rHeQsJhM43o2VJy67NdW9yVWS70GK3Z1XOtewRZadsC~bkE5PKI0sLyEy9eEC5C22lkcoeYzwxa6UNlzV34DqL92-ad0g2rnw7MnIhke3bx6IHblvwAPJe3Cu69y6gDK-PBOFzNw7EktYQ9tJI7khrboQKNKQFzUOCmSwdfXXcOZjpANnewc7W3LxOggbYRnhh3vzrPBiG6Tk-Pc0vE56j~LmUNWeNFXbonP72NVvnWPu5uqpZePAlvv1CHejcK9AeCjI3DALGLutxweTbBqNBVmguGn4GJUlfJkw__&Key-Pair-Id=K1VGYTHIYLM9UM"
+      },
+      "previewUrl": "https://assets.meshy.ai/b8bb844e-bfe4-4d5b-a590-339ca54d042a/tasks/01a03917-4e16-75e7-b353-90b1a36f1fe4/output/preview.png?Expires=1787923571&Signature=FxWKHsZ~IjPDUJt09Fa0GYOYgbWu~4wBHgyb85KsKLc9UH0ayFcAgt0xc-o4McsOHkEefDUU03La1rjlbdx12vJnMwpFwf424FLkC9RIP3xLe7KyQ5dKaUT-nxuOOjzPW22EwKbGlCS~9MYUIjOx3NiWD~NRS7Ei0rVYQNNhJoxVlpKfyZqo~B57j6DpLUC0vtsdNfL7DGzkKskdO~8xEOx2eD5IeCP~b4ASpDfRXmLMX2HUhTtzRFY4yOiJk-KxOONkMWwTQhfDhjHpRqrgRN4ikGeG2~I3UJmm298R83xNiDwFEAXzFVLwuJmQs2CJjcD6fTTGEUPYznHEytknQQ__&Key-Pair-Id=K1VGYTHIYLM9UM",
+      "outputFile": "TST-TOP-GM-52.glb"
     },
     "TST-TRI-C5-2": {
       "sku": "TST-TRI-C5-2",
@@ -2159,10 +2165,16 @@
       "images": [
         "skus/e3/TST-TOP-GM-52/img/1-orig.jpg"
       ],
-      "state": "submitted",
+      "state": "normalised",
       "attempts": 2,
       "submittedAt": "2026-08-25T13:23:45.245Z",
-      "updatedAt": "2026-08-25T13:23:45.245Z"
+      "updatedAt": "2026-08-25T13:26:37.811Z",
+      "modelUrls": {
+        "glb": "https://assets.meshy.ai/b8bb844e-bfe4-4d5b-a590-339ca54d042a/tasks/01a03917-4e16-75e7-b353-90b1a36f1fe4/output/model.glb?Expires=1787923571&Signature=PMLMH1p0PjWuX0b-sJG37eDVmqSRW1avEX2hX3aBYvhC4i3NhfDPdJIvkXxY4d7nVQPFT~XbsfEpZHZRd5pFdsDEEXUUABSGOAS8eGNQ6YoFHtFWz4TCr9L7c2mQ9wdMrmDJxP6~OuhQlHYssYiARQBnQq~YgN-Jz3PV3wPQYleoGZFmRIdDCqPToH6ehEndwibTcOqkQ8wWdg7txw7NhVmGAi9w6UR-3OCl4Vcu4b4QH9l9RSin2UtqYi0clUpizfmgBFNy79oaIEuoVgTA7~BDcGKO1XQPZjO-n6~xpur2Xl4qO4qnHtetMXNAm2PK7kLIX0TovFCC-QYw2HYUkQ__&Key-Pair-Id=K1VGYTHIYLM9UM",
+        "usdz": "https://assets.meshy.ai/b8bb844e-bfe4-4d5b-a590-339ca54d042a/tasks/01a03917-4e16-75e7-b353-90b1a36f1fe4/output/model.usdz?Expires=1787923571&Signature=Yb-NGVBtir9Th-dKHCMH0dEZXSa5qLe7hKFAd4i4j~RIqggy-rHeQsJhM43o2VJy67NdW9yVWS70GK3Z1XOtewRZadsC~bkE5PKI0sLyEy9eEC5C22lkcoeYzwxa6UNlzV34DqL92-ad0g2rnw7MnIhke3bx6IHblvwAPJe3Cu69y6gDK-PBOFzNw7EktYQ9tJI7khrboQKNKQFzUOCmSwdfXXcOZjpANnewc7W3LxOggbYRnhh3vzrPBiG6Tk-Pc0vE56j~LmUNWeNFXbonP72NVvnWPu5uqpZePAlvv1CHejcK9AeCjI3DALGLutxweTbBqNBVmguGn4GJUlfJkw__&Key-Pair-Id=K1VGYTHIYLM9UM"
+      },
+      "previewUrl": "https://assets.meshy.ai/b8bb844e-bfe4-4d5b-a590-339ca54d042a/tasks/01a03917-4e16-75e7-b353-90b1a36f1fe4/output/preview.png?Expires=1787923571&Signature=FxWKHsZ~IjPDUJt09Fa0GYOYgbWu~4wBHgyb85KsKLc9UH0ayFcAgt0xc-o4McsOHkEefDUU03La1rjlbdx12vJnMwpFwf424FLkC9RIP3xLe7KyQ5dKaUT-nxuOOjzPW22EwKbGlCS~9MYUIjOx3NiWD~NRS7Ei0rVYQNNhJoxVlpKfyZqo~B57j6DpLUC0vtsdNfL7DGzkKskdO~8xEOx2eD5IeCP~b4ASpDfRXmLMX2HUhTtzRFY4yOiJk-KxOONkMWwTQhfDhjHpRqrgRN4ikGeG2~I3UJmm298R83xNiDwFEAXzFVLwuJmQs2CJjcD6fTTGEUPYznHEytknQQ__&Key-Pair-Id=K1VGYTHIYLM9UM",
+      "outputFile": "TST-TOP-GM-52.glb"
     }
   ]
-}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+}

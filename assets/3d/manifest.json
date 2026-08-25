@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T13:23:38.813Z",
+  "generated_at": "2026-08-25T13:26:37.810Z",
   "assets": {
     "EPX-SIK-SIKADUR31IN": {
       "file": "EPX-SIK-SIKADUR31IN.glb",
@@ -1181,11 +1181,11 @@
         "d": 181
       },
       "bbox_m": {
-        "x": 0.2781172841787338,
-        "y": 0.34800000488758087,
-        "z": 0.23659026622772217
+        "x": 0.2217380553483963,
+        "y": 0.3479999899864197,
+        "z": 0.20958036929368973
       },
-      "triangles": 91003,
+      "triangles": 97352,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
@@ -1193,20 +1193,20 @@
       "source_images": [
         "skus/e3/TST-TOP-GM-52/img/1-orig.jpg"
       ],
-      "job_id": "01a038f5-573b-7acb-acad-a4e9adc132d2",
-      "generated_at": "2026-08-25T12:49:58.693Z",
-      "axis_map": "-y,x,z",
+      "job_id": "01a03917-4e16-75e7-b353-90b1a36f1fe4",
+      "generated_at": "2026-08-25T13:26:37.808Z",
+      "axis_map": "z,y,-x",
       "front_yaw_deg": 0,
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.5197665494163192,
+        "aspect_mismatch": 0.2116833862488826,
         "warnings": [
-          "meshy: aspect mismatch 52 % vs spec (warn > 15 %)",
+          "meshy: aspect mismatch 21 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 8.6 MB (warn > 8 MB)",
+          "meshy: GLB is 8.9 MB (warn > 8 MB)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"

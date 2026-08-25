@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T13:23:38.820Z",
+  "generated_at": "2026-08-25T13:26:37.815Z",
   "dry_run": false,
   "provider_pref": "auto",
   "providers": [
@@ -8,18 +8,18 @@
   ],
   "max_spend_usd": 8,
   "estimated_spend_usd": 0.4,
-  "ledger_spend_usd": 27.199999999999967,
+  "ledger_spend_usd": 27.599999999999966,
   "results": [
     {
-      "sku": "TIL-SOM-T31F119001859102",
-      "category": "tiles",
+      "sku": "TST-TOP-GM-52",
+      "category": "total-stations",
       "outcome": "photoreal",
       "provider": "meshy",
-      "job_id": "01a03914-9626-781c-aac2-e97baf8dab5c",
+      "job_id": "01a03917-4e16-75e7-b353-90b1a36f1fe4",
       "mode": "single",
       "images": [
         {
-          "key": "skus/52/TIL-SOM-T31F119001859102/img/1-orig.jpg",
+          "key": "skus/e3/TST-TOP-GM-52/img/1-orig.jpg",
           "role": "front",
           "source": "orig"
         }
@@ -27,10 +27,9 @@
       "cutouts": 0,
       "est_cost_usd": 0.4,
       "warnings": [
-        "meshy: simplified 1,03,464 → 98,000 triangles",
-        "meshy: sheet product: z scaled to 9 mm independently (344 mm under a uniform scale)",
+        "meshy: aspect mismatch 21 % vs spec (warn > 15 %)",
         "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-        "meshy: GLB is 9.6 MB (warn > 8 MB)",
+        "meshy: GLB is 8.9 MB (warn > 8 MB)",
         "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
       ],
       "quality_report": {
@@ -38,17 +37,16 @@
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.13745743071627903,
+        "aspect_mismatch": 0.2116833862488826,
         "warnings": [
-          "meshy: simplified 1,03,464 → 98,000 triangles",
-          "meshy: sheet product: z scaled to 9 mm independently (344 mm under a uniform scale)",
+          "meshy: aspect mismatch 21 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 9.6 MB (warn > 8 MB)",
+          "meshy: GLB is 8.9 MB (warn > 8 MB)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
-      "file": "TIL-SOM-T31F119001859102.glb",
+      "file": "TST-TOP-GM-52.glb",
       "attempts": 1
     }
   ],
