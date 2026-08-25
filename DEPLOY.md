@@ -35,6 +35,26 @@ pnpm dev                 # http://localhost:3000  (phone: any 10 digits · OTP 0
 
 Copy `.env.example` → `.env` and fill the right-hand column. Nothing else changes.
 
+## Live today: Vercel + Supabase
+
+**https://buildobjects27skus-web.vercel.app** — production, deployed from `main` on every push.
+
+| | |
+|---|---|
+| Catalogue | `apps/web/data/catalogue` — the frozen snapshot. No database in the read path. |
+| Photographs, models | Staged into `public/` by `apps/web/scripts/stage-media.mts` and served by Vercel's CDN. 1031 media files (131 MB) + 29 models (178 MB). |
+| Accounts, sessions, one-time codes, saved estimates | Supabase Postgres, via `apps/web/lib/pg-store.ts`. Four tables, created on first request. |
+
+The one thing to know about this shape: **a serverless function cannot read the repository.** Both
+media routes worked on every machine and 404'd in production, because a route handler ships only
+the files Next can trace and a dynamic `fs.readFile` traces nothing. Anything the storefront serves
+off disk has to be staged into `public/` before the build, and the turbo `build` task is
+uncacheable for the same reason — a cache hit would restore `.next` beside an empty `public/media`.
+
+Verified against the deployment: `/api/health` reports `postgres: up`; sign-in returns a session
+cookie; an estimate saved through `POST /api/estimates` reads back at `/estimate?e=<id>`; eleven
+pages, twenty sampled homepage images and all twenty-eight models return 200.
+
 ## Render, with the database (one Blueprint)
 
 `render.yaml` in the repository root brings up the store and a MySQL 8.4 server that keeps its data.
