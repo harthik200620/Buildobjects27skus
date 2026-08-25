@@ -191,15 +191,23 @@ export async function loadCategories(): Promise<CategoryCard[]> {
       stats: c.stats ? { sku_count: c.stats.sku_count, in_stock: c.stats.in_stock, min_price: c.stats.min_price, max_price: c.stats.max_price } : null,
     }));
   } catch {
-    return [];
+    /* No database: serve the frozen catalogue rather than an empty store. See
+       lib/static-catalogue.ts for why the snapshot exists at all. */
+    const { staticCategories } = await import('./static-catalogue');
+    return staticCategories;
   }
 }
 
-export async function loadCategory(slug: string) {
+export async function loadCategory(slug: string): Promise<typeof categories.$inferSelect | null> {
   try {
     const [c] = await getDb().select().from(categories).where(eq(categories.slug, slug)).limit(1);
-    return c ?? null;
+    if (c) return c;
+    throw new Error('not in the database');
   } catch {
-    return null;
+    const { staticCategories } = await import('./static-catalogue');
+    const c = staticCategories.find((x) => x.slug === slug);
+    /* The snapshot carries the card shape, not the table row; `id` is the only column the page
+       never reads and the only one a frozen catalogue cannot supply. */
+    return c ? ({ ...c, id: 0 } as unknown as typeof categories.$inferSelect) : null;
   }
 }

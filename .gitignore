@@ -33,3 +33,8 @@ assets/3d/placeholders/
 # nothing reads it back. The deliverable is assets/3d/{SKU}.glb; assets/3d/jobs.json is the
 # ledger that stops the provider being paid twice for the same inputs, and that IS tracked.
 assets/3d/photoreal/raw/
+
+# The catalogue database dump. Removed: the storefront no longer needs a database at all —
+# apps/web/data/catalogue is a 1 MB snapshot taken from the live loaders, and every loader falls
+# back to it. Regenerate with `npx tsx apps/web/scripts/export-catalogue.mts`.
+infra/seed/

@@ -1,0 +1,1467 @@
+{
+  "epoxy": {
+    "lead": "epoxy_type",
+    "facets": [
+      {
+        "key": "epoxy_type",
+        "attr": "attr_epoxy_type",
+        "kind": "chips",
+        "label": "What it's for",
+        "order": 0,
+        "values": [{ "count": 1, "value": "Free-flow grout" }, { "count": 1, "value": "Injection resin" }, { "count": 1, "value": "Structural adhesive" }],
+        "sublabel": {
+          "Free-flow grout": "baseplate & machine grouting",
+          "Injection resin": "crack injection",
+          "Structural adhesive": "structural bonding, steel to concrete"
+        },
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "application_form",
+        "attr": "attr_application_form",
+        "kind": "checkbox",
+        "label": "Form",
+        "order": 1,
+        "values": [
+          { "count": 1, "value": "Free-flowing liquid" },
+          { "count": 1, "value": "Low-viscosity injection liquid" },
+          { "count": 1, "value": "Thixotropic paste (non-sag)" }
+        ],
+        "importance": 2,
+        "visibility": "primary"
+      },
+      {
+        "key": "pack_size_kg",
+        "max": 6,
+        "min": 1,
+        "attr": "attr_pack_size_kg",
+        "kind": "range",
+        "step": 0.5,
+        "unit": "kg",
+        "bands": [
+          { "hi": 2, "lo": null, "count": 1, "label": "Under 2 kg" },
+          { "hi": 5, "lo": 2, "count": 1, "label": "2 – 5 kg" },
+          { "hi": 10, "lo": 5, "count": 1, "label": "5 – 10 kg" },
+          { "hi": null, "lo": 10, "count": 0, "label": "10 kg and above" }
+        ],
+        "label": "Pack size",
+        "order": 2,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "price",
+        "max": 2200,
+        "min": 1295,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 50,
+        "unit": "₹",
+        "bands": [{ "hi": 2200, "lo": null, "count": 2, "label": "Under ₹2,200" }, { "hi": null, "lo": 2200, "count": 1, "label": "₹2,200 and above" }],
+        "label": "Price per kit",
+        "order": 3,
+        "visibility": "primary"
+      },
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 4,
+        "values": [{ "count": 1, "value": "Fosroc" }, { "count": 1, "value": "Pidilite (Dr. Fixit)" }, { "count": 1, "value": "Sika" }],
+        "visibility": "primary"
+      },
+      {
+        "key": "structural_use",
+        "attr": "attr_structural_use",
+        "kind": "toggle",
+        "label": "Structural grade",
+        "order": 5,
+        "importance": 2,
+        "true_count": 3,
+        "true_label": "Structural grade — load-bearing repair",
+        "visibility": "primary"
+      },
+      {
+        "key": "compressive_strength_mpa",
+        "max": 80,
+        "min": 55,
+        "attr": "attr_compressive_strength_mpa",
+        "kind": "range",
+        "step": 5,
+        "unit": "MPa",
+        "bands": [
+          { "hi": 50, "lo": null, "count": 0, "label": "Under 50 MPa" },
+          { "hi": 70, "lo": 50, "count": 1, "label": "50 – 70 MPa" },
+          { "hi": 90, "lo": 70, "count": 2, "label": "70 – 90 MPa" },
+          { "hi": null, "lo": 90, "count": 0, "label": "90 MPa and above" }
+        ],
+        "label": "Strength",
+        "order": 6,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "pot_life_min",
+        "max": 80,
+        "min": 40,
+        "attr": "attr_pot_life_min",
+        "kind": "range",
+        "step": 5,
+        "unit": "min",
+        "bands": [
+          { "hi": 30, "lo": null, "count": 0, "label": "Under 30 min — fast set" },
+          { "hi": 60, "lo": 30, "count": 2, "label": "30 – 60 min" },
+          { "hi": 90, "lo": 60, "count": 1, "label": "60 – 90 min" },
+          { "hi": null, "lo": 90, "count": 0, "label": "90 min and above — long working time" }
+        ],
+        "label": "Working time (pot life)",
+        "order": 7,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "solvent_free",
+        "attr": "attr_solvent_free",
+        "kind": "toggle",
+        "label": "Solvent-free",
+        "order": 8,
+        "importance": 2,
+        "true_count": 3,
+        "true_label": "Solvent-free",
+        "visibility": "more"
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 9,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 10,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [{ "attr": "price_basis", "count": 3, "value": "estimated", "reason": "1 distinct value (need 2–15)" }],
+    "category": "epoxy",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.545Z",
+    "canonical_unit": "kit",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": [
+      "attr_epoxy_type",
+      "attr_application_form",
+      "attr_pack_size_kg",
+      "selling_price",
+      "brand",
+      "attr_structural_use",
+      "attr_compressive_strength_mpa",
+      "attr_pot_life_min",
+      "attr_solvent_free",
+      "price_fetched_at",
+      "in_stock"
+    ]
+  },
+  "fire-extinguishers": {
+    "lead": "extinguishing_agent",
+    "facets": [
+      {
+        "key": "extinguishing_agent",
+        "attr": "attr_extinguishing_agent",
+        "kind": "checkbox",
+        "label": "Type / agent",
+        "order": 0,
+        "values": [{ "count": 1, "value": "Mono ammonium phosphate (MAP 40)" }, { "count": 1, "value": "Mono ammonium phosphate (MAP 90)" }],
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "capacity_kg",
+        "max": 6,
+        "min": 4,
+        "attr": "attr_capacity_kg",
+        "kind": "range",
+        "step": 0.2,
+        "unit": "kg",
+        "bands": [
+          { "hi": 1.5, "lo": null, "count": 0, "label": "1 kg" },
+          { "hi": 3, "lo": 1.5, "count": 0, "label": "2 kg" },
+          { "hi": 5, "lo": 3, "count": 1, "label": "4 – 4.5 kg" },
+          { "hi": 8, "lo": 5, "count": 1, "label": "6 kg" },
+          { "hi": null, "lo": 8, "count": 0, "label": "9 kg and above" }
+        ],
+        "label": "Capacity",
+        "order": 1,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "price",
+        "max": 10230,
+        "min": 4399,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 500,
+        "unit": "₹",
+        "bands": [
+          { "hi": 5000, "lo": null, "count": 1, "label": "Under ₹5,000" },
+          { "hi": 10000, "lo": 5000, "count": 1, "label": "₹5,000 – ₹10,000" },
+          { "hi": null, "lo": 10000, "count": 1, "label": "₹10,000 and above" }
+        ],
+        "label": "Price",
+        "order": 2,
+        "visibility": "primary"
+      },
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 3,
+        "values": [{ "count": 1, "value": "Ceasefire" }, { "count": 1, "value": "Newage Fire Protection" }, { "count": 1, "value": "Safex Fire" }],
+        "visibility": "primary"
+      },
+      {
+        "key": "isi_marked",
+        "attr": "attr_isi_marked",
+        "kind": "toggle",
+        "label": "ISI mark (IS 15683)",
+        "order": 4,
+        "importance": 1,
+        "true_count": 2,
+        "true_label": "ISI marked",
+        "visibility": "primary",
+        "default_off": true,
+        "needs_verification": "Whether portable extinguishers (IS 15683) fall under a BIS Quality Control Order is unconfirmed — until it is checked against the gazette this stays an optional label filter (labels, never hides)."
+      },
+      {
+        "key": "fire_rating",
+        "attr": "attr_fire_rating",
+        "kind": "checkbox",
+        "note": "Values are canonicalised to the IS 15683 form (e.g. 4A 144B) by the pipeline; until then the declared text is shown.",
+        "label": "Fire rating",
+        "order": 5,
+        "values": [{ "count": 1, "value": "4A 144B (IS 15683); 21A 144B (EN 3)" }, { "count": 1, "value": "4A:55B" }],
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "refillable",
+        "attr": "attr_refillable",
+        "kind": "toggle",
+        "label": "Refillable",
+        "order": 6,
+        "importance": 3,
+        "true_count": 2,
+        "true_label": "Refillable",
+        "visibility": "more"
+      },
+      {
+        "key": "warranty_months",
+        "max": 120,
+        "min": 0,
+        "attr": "attr_warranty_months",
+        "kind": "range",
+        "step": 20,
+        "unit": "months",
+        "bands": [
+          { "hi": 13, "lo": null, "count": 2, "label": "Up to 12 months" },
+          { "hi": 37, "lo": 13, "count": 0, "label": "1 – 3 years" },
+          { "hi": 61, "lo": 37, "count": 0, "label": "3 – 5 years" },
+          { "hi": null, "lo": 61, "count": 1, "label": "Over 5 years" }
+        ],
+        "label": "Warranty",
+        "order": 7,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "cylinder_material",
+        "attr": "attr_cylinder_material",
+        "kind": "checkbox",
+        "label": "Cylinder",
+        "order": 8,
+        "values": [{ "count": 2, "value": "Welded mild steel (EN 10120)" }, { "count": 1, "value": "Deep-drawn CRCA steel" }],
+        "importance": 2,
+        "visibility": "more"
+      },
+      {
+        "key": "price_basis",
+        "attr": "price_provenance",
+        "kind": "checkbox",
+        "note": "Every price is either fetched from a source page or an explicit estimate; filter on which.",
+        "label": "Price basis",
+        "order": 9,
+        "values": [{ "count": 2, "label": "Fetched", "value": "fetched" }, { "count": 1, "label": "Estimated", "value": "estimated" }],
+        "sublabel": {
+          "fetched": "fetched from the brand or dealer page",
+          "verified": "verified against the source",
+          "estimated": "typical AP/TS dealer rate — marked on the card"
+        },
+        "visibility": "more",
+        "default_off": true
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 10,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 11,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [{ "attr": "mounting_type", "count": 3, "value": "Wall bracket", "reason": "1 distinct value (need 2–15)" }],
+    "category": "fire-extinguishers",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.567Z",
+    "canonical_unit": "piece",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": [
+      "attr_extinguishing_agent",
+      "attr_capacity_kg",
+      "selling_price",
+      "brand",
+      "attr_isi_marked",
+      "attr_fire_rating",
+      "attr_refillable",
+      "attr_warranty_months",
+      "attr_cylinder_material",
+      "price_provenance",
+      "price_fetched_at",
+      "in_stock"
+    ]
+  },
+  "solar-panels": {
+    "lead": "rated_power_wp",
+    "facets": [
+      {
+        "key": "rated_power_wp",
+        "max": 575,
+        "min": 545,
+        "attr": "attr_rated_power_wp",
+        "kind": "range",
+        "step": 5,
+        "unit": "Wp",
+        "bands": [
+          { "hi": 400, "lo": null, "count": 0, "label": "Under 400 Wp" },
+          { "hi": 500, "lo": 400, "count": 0, "label": "400 – 500 Wp" },
+          { "hi": 550, "lo": 500, "count": 1, "label": "500 – 550 Wp" },
+          { "hi": 600, "lo": 550, "count": 2, "label": "550 – 600 Wp" },
+          { "hi": null, "lo": 600, "count": 0, "label": "600 Wp and above" }
+        ],
+        "label": "Power",
+        "order": 0,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "cell_technology",
+        "attr": "attr_cell_technology",
+        "kind": "chips",
+        "label": "Cell technology",
+        "order": 1,
+        "values": [{ "count": 2, "value": "Mono PERC" }, { "count": 1, "value": "N-type TOPCon" }],
+        "sublabel": { "Mono PERC": "proven, value", "N-type TOPCon": "higher efficiency, low degradation" },
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "module_efficiency_pct",
+        "max": 22.4,
+        "min": 21,
+        "attr": "attr_module_efficiency_pct",
+        "kind": "range",
+        "step": 0.2,
+        "unit": "%",
+        "bands": [
+          { "hi": 20, "lo": null, "count": 0, "label": "Under 20 %" },
+          { "hi": 21, "lo": 20, "count": 0, "label": "20 – 21 %" },
+          { "hi": 22, "lo": 21, "count": 2, "label": "21 – 22 %" },
+          { "hi": null, "lo": 22, "count": 1, "label": "22 % and above" }
+        ],
+        "label": "Efficiency",
+        "order": 2,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "price",
+        "max": 12300,
+        "min": 11499,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 50,
+        "unit": "₹",
+        "bands": [{ "hi": 11600, "lo": null, "count": 1, "label": "Under ₹11,600" }, { "hi": null, "lo": 11600, "count": 2, "label": "₹11,600 and above" }],
+        "label": "Price per panel",
+        "order": 3,
+        "visibility": "primary"
+      },
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 4,
+        "values": [{ "count": 1, "value": "Adani Solar" }, { "count": 1, "value": "Vikram Solar" }, { "count": 1, "value": "Waaree" }],
+        "visibility": "primary"
+      },
+      {
+        "key": "almm_listed",
+        "attr": "attr_almm_listed",
+        "kind": "toggle",
+        "note": "Labels, never hides: unlisted modules stay visible.",
+        "label": "ALMM listed",
+        "order": 5,
+        "importance": 1,
+        "true_count": 3,
+        "true_label": "ALMM listed — subsidy eligible",
+        "visibility": "primary",
+        "default_off": true,
+        "needs_verification": "Subsidy wording: ALMM listing is required for central rooftop-subsidy schemes and most government tenders — confirm the current MNRE ALMM order before the label says 'subsidy eligible'."
+      },
+      {
+        "key": "bifacial",
+        "attr": "attr_bifacial",
+        "kind": "toggle",
+        "label": "Bifacial",
+        "order": 6,
+        "importance": 2,
+        "true_count": 3,
+        "true_label": "Bifacial — generates from the rear too",
+        "visibility": "more"
+      },
+      {
+        "key": "application_segment",
+        "attr": "attr_application_segment",
+        "kind": "checkbox",
+        "label": "Application",
+        "order": 7,
+        "values": [
+          { "count": 1, "value": "Commercial & industrial rooftop" },
+          { "count": 1, "value": "Residential rooftop" },
+          { "count": 1, "value": "Utility-scale ground mount" }
+        ],
+        "importance": 2,
+        "visibility": "more"
+      },
+      {
+        "key": "price_basis",
+        "attr": "price_provenance",
+        "kind": "checkbox",
+        "note": "Every price is either fetched from a source page or an explicit estimate; filter on which.",
+        "label": "Price basis",
+        "order": 8,
+        "values": [{ "count": 2, "label": "Estimated", "value": "estimated" }, { "count": 1, "label": "Fetched", "value": "fetched" }],
+        "sublabel": {
+          "fetched": "fetched from the brand or dealer page",
+          "verified": "verified against the source",
+          "estimated": "typical AP/TS dealer rate — marked on the card"
+        },
+        "visibility": "more",
+        "default_off": true
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 9,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 10,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [
+      { "attr": "product_warranty_years", "count": 3, "value": "12 years", "reason": "no spread (1 distinct value)" },
+      { "attr": "performance_warranty_years", "count": 3, "value": "30 years", "reason": "no spread (1 distinct value)" }
+    ],
+    "category": "solar-panels",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.587Z",
+    "canonical_unit": "panel",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": [
+      "attr_rated_power_wp",
+      "attr_cell_technology",
+      "attr_module_efficiency_pct",
+      "selling_price",
+      "brand",
+      "attr_almm_listed",
+      "attr_bifacial",
+      "attr_application_segment",
+      "price_provenance",
+      "price_fetched_at",
+      "in_stock"
+    ]
+  },
+  "cctv": {
+    "lead": "form_factor",
+    "facets": [
+      {
+        "key": "form_factor",
+        "attr": "attr_form_factor",
+        "kind": "chips",
+        "label": "Camera type",
+        "order": 0,
+        "values": [{ "count": 2, "value": "Turret (eyeball)" }, { "count": 1, "value": "Bullet" }],
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "resolution_mp",
+        "max": 2.4000000000000004,
+        "min": 2,
+        "attr": "attr_resolution_mp",
+        "kind": "range",
+        "step": 0.05,
+        "unit": "MP",
+        "bands": [
+          { "hi": 3, "lo": null, "count": 3, "label": "2 MP (1080p)" },
+          { "hi": 4.5, "lo": 3, "count": 0, "label": "4 MP" },
+          { "hi": 6, "lo": 4.5, "count": 0, "label": "5 MP" },
+          { "hi": null, "lo": 6, "count": 0, "label": "8 MP (4K)" }
+        ],
+        "label": "Resolution",
+        "order": 1,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "night_vision_type",
+        "attr": "attr_night_vision_type",
+        "kind": "chips",
+        "label": "Night vision",
+        "order": 2,
+        "values": [{ "count": 2, "value": "Infrared (black & white)" }, { "count": 1, "value": "Smart dual-light (IR + white light)" }],
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "ip_rating",
+        "attr": "attr_ip_rating",
+        "kind": "chips",
+        "label": "Weather protection",
+        "order": 3,
+        "values": [{ "count": 2, "value": "Not rated (indoor)" }, { "count": 1, "value": "IP67" }],
+        "sublabel": { "IP67": "outdoor, survives immersion", "Not rated (indoor)": "indoor only" },
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "price",
+        "max": 1350,
+        "min": 1230,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 10,
+        "unit": "₹",
+        "bands": [{ "hi": 1240, "lo": null, "count": 1, "label": "Under ₹1,240" }, { "hi": null, "lo": 1240, "count": 2, "label": "₹1,240 and above" }],
+        "label": "Price",
+        "order": 4,
+        "visibility": "primary"
+      },
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 5,
+        "values": [{ "count": 1, "value": "CP PLUS" }, { "count": 1, "value": "Dahua" }, { "count": 1, "value": "Hikvision" }],
+        "visibility": "primary"
+      },
+      {
+        "key": "audio_support",
+        "attr": "attr_audio_support",
+        "kind": "chips",
+        "label": "Audio",
+        "order": 6,
+        "values": [{ "count": 2, "value": "Built-in microphone" }, { "count": 1, "value": "None" }],
+        "importance": 2,
+        "visibility": "more"
+      },
+      {
+        "key": "ir_range_m",
+        "max": 30,
+        "min": 20,
+        "attr": "attr_ir_range_m",
+        "kind": "range",
+        "step": 1,
+        "unit": "m",
+        "bands": [
+          { "hi": 20, "lo": null, "count": 0, "label": "Under 20 m" },
+          { "hi": 30, "lo": 20, "count": 2, "label": "20 – 30 m" },
+          { "hi": 50, "lo": 30, "count": 1, "label": "30 – 50 m" },
+          { "hi": null, "lo": 50, "count": 0, "label": "50 m and above" }
+        ],
+        "label": "Night-vision range",
+        "order": 7,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "price_basis",
+        "attr": "price_provenance",
+        "kind": "checkbox",
+        "note": "Every price is either fetched from a source page or an explicit estimate; filter on which.",
+        "label": "Price basis",
+        "order": 8,
+        "values": [{ "count": 2, "label": "Fetched", "value": "fetched" }, { "count": 1, "label": "Estimated", "value": "estimated" }],
+        "sublabel": {
+          "fetched": "fetched from the brand or dealer page",
+          "verified": "verified against the source",
+          "estimated": "typical AP/TS dealer rate — marked on the card"
+        },
+        "visibility": "more",
+        "default_off": true
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 9,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 10,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [
+      { "attr": "lens_focal_length_mm", "count": 3, "value": "3.6 mm", "reason": "no spread (1 distinct value)" },
+      { "attr": "video_compression", "count": 3, "value": "Analogue (no compression)", "reason": "1 distinct value (need 2–15)" }
+    ],
+    "category": "cctv",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.607Z",
+    "canonical_unit": "piece",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": [
+      "attr_form_factor",
+      "attr_resolution_mp",
+      "attr_night_vision_type",
+      "attr_ip_rating",
+      "selling_price",
+      "brand",
+      "attr_audio_support",
+      "attr_ir_range_m",
+      "price_provenance",
+      "price_fetched_at",
+      "in_stock"
+    ]
+  },
+  "tiles": {
+    "lead": "usage_area",
+    "facets": [
+      {
+        "key": "price_per_sqft",
+        "max": 80,
+        "min": 75,
+        "attr": "attr_price_per_sqft",
+        "kind": "range",
+        "note": "Price per sq ft is the comparison unit; the card shows pieces per box and sq ft per box.",
+        "step": 0.5,
+        "unit": "₹",
+        "bands": [
+          { "hi": 77, "lo": null, "count": 1, "label": "Under ₹77" },
+          { "hi": 80, "lo": 77, "count": 1, "label": "₹77 – ₹80" },
+          { "hi": null, "lo": 80, "count": 1, "label": "₹80 and above" }
+        ],
+        "label": "Price per sq ft",
+        "order": 0,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 1,
+        "values": [
+          { "count": 1, "value": "Johnson (H&R Johnson India)" },
+          { "count": 1, "value": "Kajaria Ceramics" },
+          { "count": 1, "value": "Somany Ceramics" }
+        ],
+        "visibility": "primary"
+      },
+      {
+        "key": "rectified",
+        "attr": "attr_rectified",
+        "kind": "toggle",
+        "label": "Rectified edge",
+        "order": 2,
+        "importance": 2,
+        "true_count": 3,
+        "true_label": "Rectified — narrow grout lines",
+        "visibility": "more"
+      },
+      {
+        "key": "price",
+        "max": 1240,
+        "min": 1160,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 5,
+        "unit": "₹",
+        "bands": [
+          { "hi": 1200, "lo": null, "count": 1, "label": "Under ₹1,200" },
+          { "hi": 1240, "lo": 1200, "count": 1, "label": "₹1,200 – ₹1,240" },
+          { "hi": null, "lo": 1240, "count": 1, "label": "₹1,240 and above" }
+        ],
+        "label": "Price per box",
+        "order": 3,
+        "visibility": "more"
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 4,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 5,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [
+      { "attr": "surface_finish", "count": 3, "value": "Polished", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "usage_area", "count": 3, "value": "Floor and wall", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "design_theme", "count": 3, "value": "Marble", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "pei_abrasion_class", "count": 3, "value": "PEI IV", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "slip_resistance_class", "count": 3, "value": "R9", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "body_type", "count": 3, "value": "Vitrified (porcelain) body", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "price_basis", "count": 3, "value": "estimated", "reason": "1 distinct value (need 2–15)" }
+    ],
+    "category": "tiles",
+    "lead_note": "All three tiles here are Floor and wall tiles",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.627Z",
+    "canonical_unit": "sq ft",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": ["attr_price_per_sqft", "brand", "attr_rectified", "selling_price", "price_fetched_at", "in_stock"]
+  },
+  "glass": {
+    "lead": "substrate_glass",
+    "facets": [
+      {
+        "key": "nominal_thickness_mm",
+        "max": 6,
+        "min": 5,
+        "attr": "attr_nominal_thickness_mm",
+        "kind": "range",
+        "step": 0.1,
+        "unit": "mm",
+        "bands": [
+          { "hi": 4.5, "lo": null, "count": 0, "label": "4 mm and thinner" },
+          { "hi": 5.5, "lo": 4.5, "count": 2, "label": "5 mm" },
+          { "hi": 6.5, "lo": 5.5, "count": 1, "label": "6 mm" },
+          { "hi": 9, "lo": 6.5, "count": 0, "label": "8 mm" },
+          { "hi": null, "lo": 9, "count": 0, "label": "10 mm and thicker" }
+        ],
+        "label": "Thickness",
+        "order": 0,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "glass_colour",
+        "attr": "attr_glass_colour",
+        "kind": "checkbox",
+        "label": "Tint",
+        "order": 1,
+        "swatch": { "Blue": "#8fb6d6", "Neutral / silver": "#c9cfd2" },
+        "values": [{ "count": 2, "value": "Blue" }, { "count": 1, "value": "Neutral / silver" }],
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "price",
+        "max": 95,
+        "min": 50,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 5,
+        "unit": "₹",
+        "bands": [{ "hi": 70, "lo": null, "count": 1, "label": "Under ₹70" }, { "hi": null, "lo": 70, "count": 2, "label": "₹70 and above" }],
+        "label": "Price per sq ft",
+        "order": 2,
+        "visibility": "primary"
+      },
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 3,
+        "values": [{ "count": 1, "value": "AIS (Asahi India Glass)" }, { "count": 1, "value": "Guardian Glass" }, { "count": 1, "value": "Saint-Gobain" }],
+        "visibility": "primary"
+      },
+      {
+        "key": "solar_heat_gain_coefficient",
+        "max": 0.45,
+        "min": 0.39,
+        "attr": "attr_solar_heat_gain_coefficient",
+        "kind": "range",
+        "step": 0.01,
+        "unit": null,
+        "bands": [
+          { "hi": 0.3, "lo": null, "count": 0, "label": "0.30 and under — high heat cut" },
+          { "hi": 0.45, "lo": 0.3, "count": 2, "label": "0.30 – 0.45" },
+          { "hi": 0.6, "lo": 0.45, "count": 1, "label": "0.45 – 0.60" },
+          { "hi": null, "lo": 0.6, "count": 0, "label": "Over 0.60 — little heat cut" }
+        ],
+        "label": "Solar control (SHGC)",
+        "order": 4,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "visible_light_transmission_pct",
+        "max": 45,
+        "min": 20,
+        "attr": "attr_visible_light_transmission_pct",
+        "kind": "range",
+        "step": 5,
+        "unit": "%",
+        "bands": [
+          { "hi": 30, "lo": null, "count": 1, "label": "Under 30 % — dark" },
+          { "hi": 50, "lo": 30, "count": 2, "label": "30 – 50 %" },
+          { "hi": 70, "lo": 50, "count": 0, "label": "50 – 70 %" },
+          { "hi": null, "lo": 70, "count": 0, "label": "70 % and above — clear" }
+        ],
+        "label": "Light transmission (VLT)",
+        "order": 5,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "u_value_w_m2k",
+        "max": 5.800000000000001,
+        "min": 4.4,
+        "attr": "attr_u_value_w_m2k",
+        "kind": "range",
+        "step": 0.2,
+        "unit": "W/m²K",
+        "bands": [
+          { "hi": 2, "lo": null, "count": 0, "label": "Under 2.0 — insulating" },
+          { "hi": 4, "lo": 2, "count": 0, "label": "2.0 – 4.0" },
+          { "hi": 5.5, "lo": 4, "count": 1, "label": "4.0 – 5.5" },
+          { "hi": null, "lo": 5.5, "count": 2, "label": "5.5 and above — single glazing" }
+        ],
+        "label": "Insulation (U-value)",
+        "order": 6,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "sound_reduction_db",
+        "max": 31,
+        "min": 30,
+        "attr": "attr_sound_reduction_db",
+        "kind": "range",
+        "step": 0.1,
+        "unit": "dB",
+        "bands": [
+          { "hi": 30, "lo": null, "count": 0, "label": "Under 30 dB" },
+          { "hi": 35, "lo": 30, "count": 3, "label": "30 – 35 dB" },
+          { "hi": 40, "lo": 35, "count": 0, "label": "35 – 40 dB" },
+          { "hi": null, "lo": 40, "count": 0, "label": "40 dB and above" }
+        ],
+        "label": "Sound reduction",
+        "order": 7,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "price_basis",
+        "attr": "price_provenance",
+        "kind": "checkbox",
+        "note": "Every price is either fetched from a source page or an explicit estimate; filter on which.",
+        "label": "Price basis",
+        "order": 8,
+        "values": [{ "count": 2, "label": "Fetched", "value": "fetched" }, { "count": 1, "label": "Estimated", "value": "estimated" }],
+        "sublabel": {
+          "fetched": "fetched from the brand or dealer page",
+          "verified": "verified against the source",
+          "estimated": "typical AP/TS dealer rate — marked on the card"
+        },
+        "visibility": "more",
+        "default_off": true
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 9,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 10,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [
+      { "attr": "application_area", "count": 3, "value": "Windows and residential glazing", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "substrate_glass", "count": 3, "value": "Clear float", "reason": "1 distinct value (need 2–15)" }
+    ],
+    "category": "glass",
+    "lead_note": "All three glass products here are Clear float",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.647Z",
+    "canonical_unit": "sq ft",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": [
+      "attr_nominal_thickness_mm",
+      "attr_glass_colour",
+      "selling_price",
+      "brand",
+      "attr_solar_heat_gain_coefficient",
+      "attr_visible_light_transmission_pct",
+      "attr_u_value_w_m2k",
+      "attr_sound_reduction_db",
+      "price_provenance",
+      "price_fetched_at",
+      "in_stock"
+    ]
+  },
+  "total-stations": {
+    "lead": "angular_accuracy_arcsec",
+    "facets": [
+      {
+        "key": "reflectorless_range_m",
+        "max": 800,
+        "min": 500,
+        "attr": "attr_reflectorless_range_m",
+        "kind": "range",
+        "step": 50,
+        "unit": "m",
+        "bands": [
+          { "hi": 501, "lo": null, "count": 2, "label": "Up to 500 m" },
+          { "hi": 1001, "lo": 501, "count": 1, "label": "500 – 1,000 m" },
+          { "hi": null, "lo": 1001, "count": 0, "label": "Over 1,000 m" }
+        ],
+        "label": "Reflectorless range",
+        "order": 0,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 1,
+        "values": [{ "count": 1, "value": "Leica Geosystems" }, { "count": 1, "value": "Topcon" }, { "count": 1, "value": "Trimble" }],
+        "visibility": "primary"
+      },
+      {
+        "key": "price",
+        "max": 825000,
+        "min": 395000,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 50000,
+        "unit": "₹",
+        "bands": [{ "hi": 800000, "lo": null, "count": 2, "label": "Under ₹8 L" }, { "hi": null, "lo": 800000, "count": 1, "label": "₹8 L and above" }],
+        "label": "Price",
+        "order": 2,
+        "visibility": "primary"
+      },
+      {
+        "key": "bluetooth",
+        "attr": "attr_bluetooth",
+        "kind": "toggle",
+        "label": "Bluetooth",
+        "order": 3,
+        "importance": 2,
+        "true_count": 3,
+        "true_label": "Bluetooth — wireless data",
+        "visibility": "primary"
+      },
+      {
+        "key": "prism_range_m",
+        "max": 5000,
+        "min": 3400,
+        "attr": "attr_prism_range_m",
+        "kind": "range",
+        "step": 200,
+        "unit": "m",
+        "bands": [
+          { "hi": 3001, "lo": null, "count": 0, "label": "Up to 3,000 m" },
+          { "hi": 4001, "lo": 3001, "count": 2, "label": "3,000 – 4,000 m" },
+          { "hi": 5001, "lo": 4001, "count": 1, "label": "4,000 – 5,000 m" },
+          { "hi": null, "lo": 5001, "count": 0, "label": "Over 5,000 m" }
+        ],
+        "label": "Prism range",
+        "order": 4,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "compensator_type",
+        "attr": "attr_compensator_type",
+        "kind": "chips",
+        "label": "Compensator",
+        "order": 5,
+        "values": [{ "count": 2, "value": "Dual-axis" }, { "count": 1, "value": "Quadruple-axis" }],
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "laser_class",
+        "attr": "attr_laser_class",
+        "kind": "chips",
+        "label": "Laser class",
+        "order": 6,
+        "values": [{ "count": 2, "value": "Class 3R" }, { "count": 1, "value": "Class 1" }],
+        "importance": 3,
+        "visibility": "more"
+      },
+      {
+        "key": "battery_operating_time_h",
+        "max": 30,
+        "min": 12,
+        "attr": "attr_battery_operating_time_h",
+        "kind": "range",
+        "step": 2,
+        "unit": "h",
+        "bands": [
+          { "hi": 10, "lo": null, "count": 0, "label": "Under 10 h" },
+          { "hi": 20, "lo": 10, "count": 2, "label": "10 – 20 h" },
+          { "hi": 30, "lo": 20, "count": 0, "label": "20 – 30 h" },
+          { "hi": null, "lo": 30, "count": 1, "label": "30 h and above" }
+        ],
+        "label": "Battery life",
+        "order": 7,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 8,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 9,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [
+      { "attr": "instrument_class", "count": 3, "value": "Manual total station", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "angular_accuracy_arcsec", "count": 3, "value": "2 arcsec", "reason": "no spread (1 distinct value)" },
+      { "attr": "price_basis", "count": 3, "value": "fetched", "reason": "1 distinct value (need 2–15)" }
+    ],
+    "category": "total-stations",
+    "lead_note": "All three total stations here are 2 arcsec instruments",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.669Z",
+    "canonical_unit": "piece",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": [
+      "attr_reflectorless_range_m",
+      "brand",
+      "selling_price",
+      "attr_bluetooth",
+      "attr_prism_range_m",
+      "attr_compensator_type",
+      "attr_laser_class",
+      "attr_battery_operating_time_h",
+      "price_fetched_at",
+      "in_stock"
+    ]
+  },
+  "bulbs": {
+    "lead": "lumens",
+    "facets": [
+      {
+        "key": "lumens",
+        "max": 900,
+        "min": 800,
+        "attr": "attr_lumens",
+        "kind": "range",
+        "step": 10,
+        "unit": "lm",
+        "bands": [
+          { "hi": 500, "lo": null, "count": 0, "label": "Under 500 lm" },
+          { "hi": 1000, "lo": 500, "count": 3, "label": "500 – 1,000 lm" },
+          { "hi": 2000, "lo": 1000, "count": 0, "label": "1,000 – 2,000 lm" },
+          { "hi": null, "lo": 2000, "count": 0, "label": "2,000 lm and above" }
+        ],
+        "label": "Brightness",
+        "order": 0,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "price",
+        "max": 129,
+        "min": 65,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 5,
+        "unit": "₹",
+        "bands": [{ "hi": 70, "lo": null, "count": 1, "label": "Under ₹70" }, { "hi": null, "lo": 70, "count": 2, "label": "₹70 and above" }],
+        "label": "Price",
+        "order": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 2,
+        "values": [{ "count": 1, "value": "Havells" }, { "count": 1, "value": "Philips (Signify)" }, { "count": 1, "value": "Wipro Lighting" }],
+        "visibility": "primary"
+      },
+      {
+        "key": "energy_rating",
+        "attr": "attr_energy_rating",
+        "kind": "checkbox",
+        "note": "BEE star labelling is voluntary for LED bulbs — unlabelled bulbs show as Unrated once the pipeline canonicalises the values (★ 1–5 / Unrated); until then the declared text is shown.",
+        "label": "Energy rating",
+        "order": 3,
+        "values": [
+          { "count": 1, "value": "BEE 1 Star (efficacy band ≥ 90 and < 105 lm/W)" },
+          { "count": 1, "value": "BEE 3 Star, as marketed for the Ace Saver 9 W; the star band is not restated on the listing used here" },
+          {
+            "count": 1,
+            "value": "No BEE star label printed on the Garnet carton — star labelling is voluntary for LED bulbs; measured efficacy is about 100 lm/W"
+          }
+        ],
+        "importance": 2,
+        "visibility": "primary"
+      },
+      {
+        "key": "shape",
+        "attr": "attr_shape",
+        "kind": "checkbox",
+        "label": "Shape",
+        "order": 4,
+        "values": [{ "count": 1, "value": "Round" }, { "count": 1, "value": "Round / A-shape" }, { "count": 1, "value": "Round / ball" }],
+        "importance": 2,
+        "visibility": "more"
+      },
+      {
+        "key": "operating_life",
+        "max": 15000,
+        "min": 10000,
+        "attr": "attr_operating_life",
+        "kind": "range",
+        "step": 500,
+        "unit": "h",
+        "bands": [
+          { "hi": 10000, "lo": null, "count": 0, "label": "Under 10,000 h" },
+          { "hi": 15000, "lo": 10000, "count": 1, "label": "10,000 – 15,000 h" },
+          { "hi": 25000, "lo": 15000, "count": 2, "label": "15,000 – 25,000 h" },
+          { "hi": null, "lo": 25000, "count": 0, "label": "25,000 h and above" }
+        ],
+        "label": "Rated life",
+        "order": 5,
+        "importance": 2,
+        "visibility": "more"
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 6,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 7,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [
+      { "attr": "wattage", "count": 3, "value": "9 W", "reason": "no spread (1 distinct value)" },
+      { "attr": "colour_temperature", "count": 3, "value": "6,500 K", "reason": "no spread (1 distinct value)" },
+      { "attr": "base_type", "count": 3, "value": "B22", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "dimmability", "count": 3, "value": "No", "reason": "never true" },
+      { "attr": "warranty_months", "count": 3, "value": "12 months", "reason": "no spread (1 distinct value)" },
+      { "attr": "price_basis", "count": 3, "value": "fetched", "reason": "1 distinct value (need 2–15)" }
+    ],
+    "category": "bulbs",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.687Z",
+    "canonical_unit": "piece",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": ["attr_lumens", "selling_price", "brand", "attr_energy_rating", "attr_shape", "attr_operating_life", "price_fetched_at", "in_stock"]
+  },
+  "cement": {
+    "lead": "cement_type",
+    "facets": [
+      {
+        "key": "brand",
+        "attr": "brand",
+        "kind": "checkbox",
+        "label": "Brand",
+        "order": 0,
+        "values": [{ "count": 1, "value": "ACC" }, { "count": 1, "value": "Ambuja Cements" }, { "count": 1, "value": "UltraTech Cement" }],
+        "visibility": "primary"
+      },
+      {
+        "key": "price",
+        "max": 437,
+        "min": 410,
+        "attr": "selling_price",
+        "kind": "range",
+        "step": 2,
+        "unit": "₹",
+        "bands": [
+          { "hi": 415, "lo": null, "count": 1, "label": "Under ₹415" },
+          { "hi": 435, "lo": 415, "count": 1, "label": "₹415 – ₹435" },
+          { "hi": null, "lo": 435, "count": 1, "label": "₹435 and above" }
+        ],
+        "label": "Price per bag",
+        "order": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "application_segment",
+        "attr": "attr_application_segment",
+        "kind": "checkbox",
+        "label": "Use",
+        "order": 2,
+        "values": [{ "count": 2, "value": "General purpose" }, { "count": 1, "value": "Specialty / waterproof" }],
+        "importance": 2,
+        "visibility": "primary"
+      },
+      {
+        "key": "compressive_strength_28d",
+        "max": 58,
+        "min": 48,
+        "attr": "attr_compressive_strength_28d",
+        "kind": "range",
+        "step": 1,
+        "unit": "MPa",
+        "bands": [
+          { "hi": 43, "lo": null, "count": 0, "label": "Under 43 MPa" },
+          { "hi": 53, "lo": 43, "count": 2, "label": "43 – 53 MPa" },
+          { "hi": null, "lo": 53, "count": 1, "label": "53 MPa and above" }
+        ],
+        "label": "28-day strength",
+        "order": 3,
+        "importance": 1,
+        "visibility": "primary"
+      },
+      {
+        "key": "setting_time_initial",
+        "max": 150,
+        "min": 130,
+        "attr": "attr_setting_time_initial",
+        "kind": "range",
+        "step": 2,
+        "unit": "min",
+        "label": "Initial setting time",
+        "order": 4,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "fineness_blaine",
+        "max": 346,
+        "min": 330,
+        "attr": "attr_fineness_blaine",
+        "kind": "range",
+        "step": 2,
+        "unit": "m²/kg",
+        "label": "Fineness",
+        "order": 5,
+        "importance": 1,
+        "visibility": "more"
+      },
+      {
+        "key": "bag_material",
+        "attr": "attr_bag_material",
+        "kind": "checkbox",
+        "label": "Bag material",
+        "order": 6,
+        "values": [{ "count": 2, "value": "HDPE/PP laminated woven" }, { "count": 1, "value": "PP woven" }],
+        "importance": 3,
+        "visibility": "more"
+      },
+      {
+        "key": "price_basis",
+        "attr": "price_provenance",
+        "kind": "checkbox",
+        "note": "Every price is either fetched from a source page or an explicit estimate; filter on which.",
+        "label": "Price basis",
+        "order": 7,
+        "values": [{ "count": 2, "label": "Estimated", "value": "estimated" }, { "count": 1, "label": "Fetched", "value": "fetched" }],
+        "sublabel": {
+          "fetched": "fetched from the brand or dealer page",
+          "verified": "verified against the source",
+          "estimated": "typical AP/TS dealer rate — marked on the card"
+        },
+        "visibility": "more",
+        "default_off": true
+      },
+      {
+        "key": "price_freshness",
+        "attr": "price_fetched_at",
+        "kind": "toggle",
+        "note": "Prices carry the date they were last checked against the source.",
+        "label": "Price freshness",
+        "order": 8,
+        "since_days": 7,
+        "true_count": 3,
+        "true_label": "Checked in the last 7 days",
+        "visibility": "more"
+      },
+      {
+        "key": "stock",
+        "attr": "in_stock",
+        "kind": "toggle",
+        "label": "Availability",
+        "order": 9,
+        "true_count": 3,
+        "true_label": "In stock only",
+        "visibility": "toolbar"
+      }
+    ],
+    "dropped": [
+      { "attr": "cement_type", "count": 3, "value": "PPC", "reason": "1 distinct value (need 2–15)" },
+      { "attr": "net_weight_kg", "count": 3, "value": "50 kg", "reason": "no spread (1 distinct value)" }
+    ],
+    "category": "cement",
+    "lead_note": "All three cements here are PPC 50 kg bags",
+    "sku_count": 3,
+    "depth_rule": { "sku_count": 3, "primary_limit": 4 },
+    "computed_at": "2026-08-25T09:18:51.704Z",
+    "canonical_unit": "bag (50 kg)",
+    "in_stock_count": 3,
+    "policy_version": 1,
+    "meili_filterable": [
+      "brand",
+      "selling_price",
+      "attr_application_segment",
+      "attr_compressive_strength_28d",
+      "attr_setting_time_initial",
+      "attr_fineness_blaine",
+      "attr_bag_material",
+      "price_provenance",
+      "price_fetched_at",
+      "in_stock"
+    ],
+    "certification_note": {
+      "text": "Every cement here carries a valid BIS licence (IS 1489 / IS 269).",
+      "detail": "Cement is covered by a BIS Quality Control Order, which makes a valid licence a condition of sale — so a BIS filter would have one value and is replaced by this line. The order's exact title, commencement date and the IS list it covers must be checked against the gazette before the line ships.",
+      "needs_verification": true
+    }
+  }
+}

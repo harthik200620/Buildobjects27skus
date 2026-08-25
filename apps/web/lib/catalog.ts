@@ -88,9 +88,11 @@ export async function searchSkus(opts: {
       processingTimeMs: res.processingTimeMs,
       query: state.q,
     };
-  } catch (e) {
-    console.warn('[search] meilisearch unavailable:', (e as Error).message);
-    return { hits: [], total: 0, page: 1, totalPages: 1, facetDistribution: {}, facetStats: {}, processingTimeMs: 0, query: state.q };
+  } catch {
+    /* No search server: filter the frozen catalogue in memory. Twenty-eight documents scan
+       faster than the network hop this replaces — see lib/static-catalogue.ts. */
+    const { staticSearch } = await import('./static-catalogue');
+    return staticSearch(state, opts.fixedCategory);
   }
 }
 
@@ -101,9 +103,11 @@ export async function loadFacetConfig(categorySlug: string): Promise<FacetConfig
       .from(filterConfigs)
       .innerJoin(categories, eq(filterConfigs.categoryId, categories.id))
       .where(eq(categories.slug, categorySlug));
-    return (row?.config as FacetConfig) ?? null;
+    if (row?.config) return row.config as FacetConfig;
+    throw new Error('no config row');
   } catch {
-    return null;
+    const { staticFacetConfig } = await import('./static-catalogue');
+    return staticFacetConfig(categorySlug);
   }
 }
 
@@ -164,7 +168,25 @@ export interface SkuPageData {
  * request for that SKU inside the TTL. Keyed on the upper-cased code so `/p/cem-ult-ppc50` and
  * `/p/CEM-ULT-PPC50` share an entry.
  */
-const skuPage = memo((code: string) => loadSkuPageUncached(code), { max: 5_000 });
+/**
+ * The product page, with the frozen catalogue behind it.
+ *
+ * Wrapped rather than try/catch'd inside the query builder because the live path throws in
+ * several places — connection, join, JSON parse — and every one of them should end at the same
+ * answer: serve the snapshot, not a 404 for a product that plainly exists.
+ */
+async function loadSkuPageOrStatic(code: string): Promise<SkuPageData | null> {
+  try {
+    const live = await loadSkuPageUncached(code);
+    if (live) return live;
+  } catch {
+    /* fall through to the snapshot */
+  }
+  const { staticSkuPage } = await import('./static-catalogue');
+  return (staticSkuPage(code) as SkuPageData | null) ?? null;
+}
+
+const skuPage = memo((code: string) => loadSkuPageOrStatic(code), { max: 5_000 });
 export const loadSkuPage = (code: string): Promise<SkuPageData | null> => skuPage(code.toUpperCase());
 
 async function loadSkuPageUncached(code: string): Promise<SkuPageData | null> {
@@ -406,8 +428,9 @@ export async function loadFlagshipSkus(limit = 36): Promise<SkuSearchDoc[]> {
   try {
     const res = await meili().index<SkuSearchDoc>(SEARCH_INDEX).search('', { limit });
     return res.hits;
-  } catch (e) {
-    console.warn('[catalog] meilisearch unavailable, home grid empty:', (e as Error).message);
-    return [];
+  } catch {
+    /* No search server: the frozen catalogue has the same documents. */
+    const { staticFlagship } = await import('./static-catalogue');
+    return staticFlagship.slice(0, limit);
   }
 }
