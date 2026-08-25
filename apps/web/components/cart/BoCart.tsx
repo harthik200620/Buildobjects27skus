@@ -3,8 +3,21 @@
 import type { CatalogPrices } from '@buildobjects/estimator';
 import Link from 'next/link';
 import React from 'react';
-import { IconArrow, IconClose, IconEstimate, IconMinus, IconPlus, IconReturn, IconShield, IconTruck } from '@/components/icons';
+import {
+  IconArrow,
+  IconCart,
+  IconCheckCircle,
+  IconClose,
+  IconCoin,
+  IconEstimate,
+  IconMinus,
+  IconPlus,
+  IconShield,
+  IconStorefront,
+  IconTruck,
+} from '@/components/icons';
 import { getBoCoins, redeemBoCoins } from '@/lib/coins';
+import { skuTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
 import { clearPicks, type PickItem, readPicks, removePick, setPickQty } from '@/lib/picks';
 
@@ -54,19 +67,27 @@ export default function BoCart({ initialCatalog }: { initialCatalog: CatalogPric
 
   if (ordered) {
     return (
-      <div className="glass-card text-center py-12 px-6 max-w-[540px] mx-auto my-10" style={{ borderRadius: '24px' }}>
-        <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎉</div>
-        <h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '8px' }}>BO Order Confirmed!</h2>
-        <p style={{ color: 'var(--ink-2)', fontSize: '14px', lineHeight: '22px', marginBottom: '24px' }}>
-          Thank you for choosing Build Objects. Your order has been placed with verified dealer inventory and scheduled for prompt delivery.
-          {appliedCoins > 0 && ` You saved ₹${appliedCoins} using your BO Coins!`}
+      <div className="cart-state">
+        <span className="cart-state-mark cart-state-mark--ok">
+          <IconCheckCircle size={30} />
+        </span>
+        <h2 className="cart-state-h">Order placed</h2>
+        <p className="cart-state-p">
+          Your order is with us. We call to confirm the load and the delivery slot before anything leaves the yard — nothing is dispatched until you have agreed
+          both.
+          {appliedCoins > 0 && (
+            <>
+              {' '}
+              <b>{inr(appliedCoins)}</b> of BO Coins came off this order.
+            </>
+          )}
         </p>
-        <div className="flex justify-center gap-3">
-          <Link href="/" className="btn-primary h-11 px-6 text-[13.5px]">
-            Back to BO Home
+        <div className="cart-state-cta">
+          <Link href="/search" className="btn btn-primary btn--lg">
+            Keep shopping
           </Link>
-          <Link href="/estimate" className="btn-ghost h-11 px-6 text-[13.5px]">
-            Open BO Estimator
+          <Link href="/estimate" className="btn btn-secondary btn--lg">
+            <IconEstimate size={16} /> Open the estimator
           </Link>
         </div>
       </div>
@@ -75,183 +96,172 @@ export default function BoCart({ initialCatalog }: { initialCatalog: CatalogPric
 
   if (picks.length === 0) {
     return (
-      <div className="glass-card text-center py-16 px-6 max-w-[520px] mx-auto my-10" style={{ borderRadius: '24px' }}>
-        <div style={{ fontSize: '42px', marginBottom: '14px' }}>🛒</div>
-        <h2 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '6px' }}>Your BO Cart is Empty</h2>
-        <p style={{ color: 'var(--ink-2)', fontSize: '13.5px', marginBottom: '24px' }}>
-          Browse our 27 flagship products in the BO Store or view products in 3D AR before adding to your cart.
+      <div className="cart-state">
+        <span className="cart-state-mark">
+          <IconCart size={28} />
+        </span>
+        <h2 className="cart-state-h">Nothing in the cart yet</h2>
+        <p className="cart-state-p">
+          Every product page carries the price per unit, the GST on it, and a view of the item standing in your own room at its true size. Start there.
         </p>
-        <div className="flex justify-center gap-3">
-          <Link href="/search" className="btn-primary h-11 px-6 text-[13px]">
-            Explore BO Store
+        <div className="cart-state-cta">
+          <Link href="/search" className="btn btn-primary btn--lg">
+            <IconStorefront size={16} /> Browse the catalogue
           </Link>
-          <Link href="/estimate" className="btn-ghost h-11 px-6 text-[13px]">
-            BO Estimator
+          <Link href="/estimate" className="btn btn-secondary btn--lg">
+            <IconEstimate size={16} /> Estimate a house
           </Link>
         </div>
       </div>
     );
   }
 
+  const lines = picks.reduce((n, p) => n + p.qty, 0);
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 my-6">
-      {/* Products Column */}
-      <div className="lg:col-span-2 space-y-4">
-        <div className="glass-card" style={{ borderRadius: 'var(--radius-glass)', padding: '20px' }}>
-          <div className="flex items-center justify-between pb-4 border-b border-[var(--rule-soft)]">
-            <h2 className="text-[17px] font-semibold">BO Cart Items ({picks.reduce((n, p) => n + p.qty, 0)})</h2>
-            <button type="button" onClick={() => clearPicks()} className="text-[12px] text-[var(--ink-3)] hover:text-[var(--accent)]">
-              Clear all
+    <div className="cart">
+      {/* ------------------------------------------------------------------ the lines */}
+      <div className="cart-main">
+        <section className="cart-panel" aria-labelledby="cart-h" data-reveal>
+          <div className="cart-panel-head">
+            <h2 id="cart-h" className="cart-panel-title">
+              Your cart
+              <span className="cart-count fig">{lines}</span>
+            </h2>
+            <button type="button" onClick={() => clearPicks()} className="cart-clear">
+              Empty the cart
             </button>
           </div>
 
-          <div className="divide-y divide-[var(--rule-soft)]">
+          <ul className="cart-lines">
             {picks.map((p) => {
-              const s = catalog[p.sku_code];
-              const price = s?.selling_price ?? 0;
-              const lineTotal = price * p.qty;
-
+              const sku = catalog[p.sku_code];
+              const price = sku?.selling_price ?? 0;
               return (
-                <div key={p.sku_code} className="py-4 flex items-center gap-4">
-                  <div className="flex-1 min-w-0">
-                    <Link
-                      href={`/p/${p.sku_code.toLowerCase()}`}
-                      className="text-[14px] font-medium text-[var(--ink)] hover:text-[var(--accent)] block truncate"
-                    >
-                      {s ? `${s.brand} ${s.name}` : p.sku_code}
+                <li key={p.sku_code} className="cart-line">
+                  <div className="cart-line-what">
+                    <Link href={`/p/${p.sku_code.toLowerCase()}`} className="cart-line-name">
+                      {sku ? skuTitle(sku.name, sku.brand) : p.sku_code}
                     </Link>
-                    <div className="text-[12px] text-[var(--ink-2)] mt-0.5">
-                      Exact Price: <span className="fig font-semibold text-[var(--ink)]">{inr(price, { decimals: true })}</span> per {s?.unit ?? 'unit'} (incl.
-                      GST)
-                    </div>
+                    <p className="cart-line-unit">
+                      {sku?.brand ? `${sku.brand} · ` : ''}
+                      <span className="fig">{inr(price, { decimals: true })}</span> per {sku?.unit ?? 'unit'}, GST included
+                    </p>
                   </div>
 
-                  {/* Quantity Stepper */}
                   <div className="qty" role="group" aria-label={`Quantity of ${p.sku_code}`}>
                     <button type="button" onClick={() => setPickQty(p.sku_code, p.qty - 1)} aria-label="Decrease">
                       <IconMinus size={14} />
                     </button>
-                    <span className="qty-val fig font-semibold">{p.qty}</span>
+                    <span className="qty-val fig">{p.qty}</span>
                     <button type="button" onClick={() => setPickQty(p.sku_code, p.qty + 1)} aria-label="Increase">
                       <IconPlus size={14} />
                     </button>
                   </div>
 
-                  {/* Line Total */}
-                  <div className="fig font-semibold text-[14px] min-w-[80px] text-right">{inr(lineTotal, { decimals: true })}</div>
+                  <span className="cart-line-total fig">{inr(price * p.qty, { decimals: true })}</span>
 
-                  {/* Remove Button */}
-                  <button type="button" className="icon-btn" onClick={() => removePick(p.sku_code)} aria-label="Remove item">
+                  <button
+                    type="button"
+                    className="icon-btn cart-line-x"
+                    onClick={() => removePick(p.sku_code)}
+                    aria-label={`Remove ${sku?.name ?? p.sku_code}`}
+                  >
                     <IconClose size={15} />
                   </button>
-                </div>
+                </li>
               );
             })}
-          </div>
-        </div>
+          </ul>
+        </section>
 
-        {/* Assurance Cards */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="glass-card text-center p-3 text-[12px]" style={{ borderRadius: '12px' }}>
-            <IconTruck size={18} className="mx-auto mb-1 text-[var(--accent)]" />
-            <span>Fast AP & TS Delivery</span>
-          </div>
-          <div className="glass-card text-center p-3 text-[12px]" style={{ borderRadius: '12px' }}>
-            <IconReturn size={18} className="mx-auto mb-1 text-[var(--accent)]" />
-            <span>7-Day Return Policy</span>
-          </div>
-          <div className="glass-card text-center p-3 text-[12px]" style={{ borderRadius: '12px' }}>
-            <IconShield size={18} className="mx-auto mb-1 text-[var(--accent)]" />
-            <span>100% Genuine Brands</span>
-          </div>
-        </div>
+        {/*
+         * What the store will actually do for this order.
+         *
+         * Three cards stood here reading "Fast AP & TS Delivery", "7-Day Return Policy" and
+         * "100% Genuine Brands". The first is not a commitment, the second is a policy the store
+         * has never published anywhere, and the third is the kind of claim that means nothing
+         * precisely because no seller would ever print its opposite. Inventing a returns window
+         * on a checkout page is the worst place in the whole store to invent something.
+         *
+         * What is here instead is what the code and the catalogue can stand behind.
+         */}
+        <ul className="cart-assure" data-reveal>
+          <li>
+            <IconTruck size={17} />
+            <span>Delivered across Andhra Pradesh and Telangana, to the pincode set in the header.</span>
+          </li>
+          <li>
+            <IconShield size={17} />
+            <span>Every line is the brand and pack you picked, at the price shown on its product page.</span>
+          </li>
+          <li>
+            <IconEstimate size={17} />
+            <span>We call to confirm the load and the slot before anything is dispatched.</span>
+          </li>
+        </ul>
       </div>
 
-      {/* Order Summary & BO Coins Redemption Column */}
-      <div className="space-y-4">
-        <div className="glass-card p-6" style={{ borderRadius: 'var(--radius-glass)' }}>
-          <h2 className="text-[17px] font-semibold mb-4">BO Order Summary</h2>
+      {/* ---------------------------------------------------------------- the total */}
+      <div className="cart-side">
+        <section className="cart-panel cart-summary" aria-labelledby="sum-h" data-reveal="left">
+          <h2 id="sum-h" className="cart-panel-title">
+            Order summary
+          </h2>
 
-          {/* BO Coins Redemption Box */}
-          <div
-            style={{
-              background: 'var(--color-coin-wash)',
-              border: '1px solid var(--color-coin-line)',
-              borderRadius: '14px',
-              padding: '14px',
-              marginBottom: '16px',
-            }}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1.5 font-semibold text-[13px] text-[var(--color-coin-ink)]">
-                <span>🪙</span> BO Coins
-              </div>
-              <span className="text-[12px] fig text-[var(--ink-2)]">{coins} available</span>
+          <div className="cart-coins">
+            <div className="cart-coins-head">
+              <span className="cart-coins-label">
+                <IconCoin size={15} /> BO Coins
+              </span>
+              <span className="fig cart-coins-have">{coins} available</span>
             </div>
-
             {coins > 0 ? (
-              <label className="flex items-start gap-2 cursor-pointer text-[12.5px] mt-1">
-                <input type="checkbox" className="check mt-0.5" checked={useCoins} onChange={(e) => setUseCoins(e.target.checked)} />
+              <label className="cart-coins-opt">
+                <input type="checkbox" className="check" checked={useCoins} onChange={(e) => setUseCoins(e.target.checked)} />
                 <span>
-                  Redeem <b>{maxRedeemableCoins} BO Coins</b> for an instant <b>₹{maxRedeemableCoins}</b> discount (1 Coin = ₹1)
+                  Put <b className="fig">{maxRedeemableCoins}</b> of them against this order and take <b className="fig">{inr(maxRedeemableCoins)}</b> off. One
+                  coin is one rupee.
                 </span>
               </label>
             ) : (
-              <p className="text-[12px] text-[var(--ink-2)]">You have 0 BO Coins. Spin the wheel in your BO Account to earn welcome coins!</p>
+              <p className="cart-coins-none">No coins yet. The BO Engine in your account hands them out; they never expire.</p>
             )}
           </div>
 
-          {/* Totals Breakdown */}
-          <div className="space-y-2 text-[13.5px] pb-4 border-b border-[var(--rule-soft)]">
-            <div className="flex justify-between">
-              <span className="text-[var(--ink-2)]">Item Subtotal</span>
-              <span className="fig font-semibold">{inr(subtotal, { decimals: true })}</span>
+          <dl className="cart-totals">
+            <div>
+              <dt>Subtotal</dt>
+              <dd className="fig">{inr(subtotal, { decimals: true })}</dd>
             </div>
             {appliedCoins > 0 && (
-              <div className="flex justify-between text-[var(--color-credit)]">
-                <span>BO Coins Discount</span>
-                <span className="fig font-semibold">− {inr(appliedCoins, { decimals: true })}</span>
+              <div className="is-credit">
+                <dt>BO Coins</dt>
+                <dd className="fig">− {inr(appliedCoins, { decimals: true })}</dd>
               </div>
             )}
-            <div className="flex justify-between">
-              <span className="text-[var(--ink-2)]">Delivery Fee</span>
-              <span className="text-[var(--color-credit)] font-semibold">FREE</span>
-            </div>
-          </div>
-
-          {/* Net Total Payable */}
-          <div className="flex justify-between items-baseline pt-4 pb-6">
             <div>
-              <div className="text-[15px] font-bold">Total Amount</div>
-              <div className="text-[11.5px] text-[var(--ink-3)]">Exact store price incl. GST</div>
+              <dt>Delivery</dt>
+              <dd className="cart-free">Included</dd>
             </div>
-            <div className="text-right">
-              <div className="hero-figure text-[26px]">
-                {netTotal === 0 && subtotal > 0 ? (
-                  <span className="text-[var(--color-credit)] font-extrabold">
-                    ₹0 <span className="text-[13px] bg-[var(--color-credit)]/15 text-[var(--color-credit)] px-2 py-0.5 rounded-full uppercase ml-1">FREE</span>
-                  </span>
-                ) : (
-                  inr(netTotal, { decimals: true })
-                )}
-              </div>
-              {netTotal === 0 && subtotal > 0 && <div className="text-[11.5px] font-semibold text-[var(--color-credit)] mt-0.5">100% covered by BO Coins!</div>}
+          </dl>
+
+          <div className="cart-net">
+            <div>
+              <p className="cart-net-label">To pay</p>
+              <p className="cart-net-note">GST included</p>
             </div>
+            <p className={`cart-net-figure fig${netTotal === 0 && subtotal > 0 ? ' is-covered' : ''}`}>{inr(netTotal, { decimals: true })}</p>
           </div>
+          {netTotal === 0 && subtotal > 0 && <p className="cart-covered">Covered in full by your BO Coins.</p>}
 
-          {/* Primary Action Button */}
-          <button
-            type="button"
-            className="btn-primary w-full h-12 text-[14.5px] font-semibold shadow-xl rounded-xl flex items-center justify-center gap-2"
-            onClick={handleCheckout}
-          >
-            Place BO Order <IconArrow size={16} />
+          <button type="button" className="btn btn-primary btn--lg btn--block" onClick={handleCheckout}>
+            Place the order <IconArrow size={16} />
           </button>
-
-          <Link href="/estimate" className="btn-ghost w-full h-11 text-[13px] mt-2 flex items-center justify-center gap-2">
-            <IconEstimate size={16} /> Send items to BO Estimator
+          <Link href="/estimate" className="btn btn-secondary btn--block cart-to-estimate">
+            <IconEstimate size={16} /> Send these to the estimator
           </Link>
-        </div>
+        </section>
       </div>
     </div>
   );

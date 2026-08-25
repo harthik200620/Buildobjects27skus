@@ -1,0 +1,298 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   The specification sheet.
+
+   These rules exist because the component that draws it used to carry them inline, as about
+   sixty Tailwind arbitrary-value utilities: `rounded-lg border border-[var(--color-line)]
+   bg-[var(--color-surface)] p-4 shadow-sm`, repeated on every block, with the numbers picked
+   fresh each time — py-3.5, gap-2.5, text-[11px], px-2.5. Nothing was wrong with any single
+   one; what was wrong is that a reader could see six different paddings on one page and no rule
+   behind them. That is the specific thing that reads as machine-written.
+
+   Everything below is on the --s-* scale and the type ramp, and the sheet is now the only
+   component that owns these class names.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+@layer components {
+  .spec {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  /* ── masthead ───────────────────────────────────────────────────────────── */
+  .spec-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+  .spec-head-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+  .spec-title {
+    font: 700 16px / 22px var(--font-ui);
+    color: var(--color-ink);
+  }
+  .spec-sub {
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .spec-sub .fig {
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  /* ── provenance: the legend, and the marker it explains ──────────────────
+     Three states, and colour is never the only carrier — the legend names each one in words
+     beside its dot, and every row repeats the full sentence to a screen reader. */
+  .spec-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    margin: 0;
+    padding: var(--s-3) 0 0;
+    list-style: none;
+    border-top: 1px solid var(--color-line-2);
+  }
+  .spec-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+    cursor: help;
+  }
+  .spec-legend-count {
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .spec-dot {
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--color-ink-3);
+  }
+  .spec-dot--verified {
+    background: var(--color-success);
+  }
+  .spec-dot--fetched {
+    background: var(--color-brand);
+  }
+  /* Filled from a class standard rather than read off a datasheet: hollow, because it is the
+     one of the three that is not a measured fact about this particular product. */
+  .spec-dot--ai_filled {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--color-ink-3);
+  }
+
+  /* ── search ─────────────────────────────────────────────────────────────── */
+  .spec-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .spec-search-icon {
+    position: absolute;
+    left: 11px;
+    color: var(--color-ink-3);
+    pointer-events: none;
+  }
+  .spec-search-input {
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+  .spec-search-input::-webkit-search-cancel-button {
+    display: none;
+  }
+  .spec-search-clear {
+    position: absolute;
+    right: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--color-ink-2);
+    cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+  .spec-search-clear:hover {
+    background: var(--color-surface-2);
+    color: var(--color-ink);
+  }
+  .spec-hits {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .spec-hits b {
+    color: var(--color-ink);
+  }
+  .spec-hits .fig {
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  /* ── the sections ───────────────────────────────────────────────────────── */
+  .spec-groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .spec-group {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+  .spec-group:hover {
+    border-color: var(--color-line-strong);
+  }
+  .spec-group-h {
+    font: inherit;
+  }
+  .spec-group-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    width: 100%;
+    padding: var(--s-3) var(--s-4);
+    background: none;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+  .spec-group-btn:hover {
+    background: var(--color-surface-2);
+  }
+  .spec-group-icon {
+    flex: none;
+    color: var(--color-ink-2);
+    transition: color var(--dur-2) var(--ease-out);
+  }
+  .spec-group-btn:hover .spec-group-icon,
+  .spec-group-btn[aria-expanded="true"] .spec-group-icon {
+    color: var(--color-brand);
+  }
+  .spec-group-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .spec-group-count {
+    flex: none;
+    min-width: 22px;
+    padding: 1px 7px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-line-2);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 700;
+    color: var(--color-ink-2);
+    text-align: center;
+  }
+  .spec-group-chevron {
+    flex: none;
+    color: var(--color-ink-2);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .spec-group-btn[aria-expanded="true"] .spec-group-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* 0fr → 1fr on a single grid row. The only way to transition to a height the browser has to
+     measure — max-height with a guessed ceiling either clips a long section or eases against
+     empty space above a short one, and both were visible in the version this replaces. */
+  .spec-group-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur-3) var(--ease-out);
+  }
+  .spec-group-body[data-open] {
+    grid-template-rows: 1fr;
+  }
+  .spec-group-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ── the table ──────────────────────────────────────────────────────────── */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid var(--color-line-2);
+  }
+  .spec-table tr {
+    border-bottom: 1px solid var(--color-line-2);
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+  .spec-table tr:last-child {
+    border-bottom: 0;
+  }
+  .spec-table tr:hover {
+    background: var(--color-surface-2);
+  }
+  .spec-table th {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    width: 52%;
+    padding: 9px var(--s-3) 9px var(--s-4);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+    color: var(--color-ink-2);
+    text-align: left;
+  }
+  /* The marker sits on the text's own baseline rather than the row's, so it does not drift
+     up a line when a long label wraps. */
+  .spec-table th .spec-dot {
+    position: relative;
+    top: -2px;
+  }
+  .spec-table td {
+    padding: 9px var(--s-4) 9px var(--s-3);
+    font-family: var(--font-figure);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--color-ink);
+    text-align: right;
+    vertical-align: top;
+  }
+
+  .spec-more {
+    align-self: center;
+  }
+
+  @media (max-width: 519.98px) {
+    .spec-table th {
+      width: 58%;
+      padding-left: var(--s-3);
+    }
+    .spec-table td {
+      padding-right: var(--s-3);
+    }
+  }
+}

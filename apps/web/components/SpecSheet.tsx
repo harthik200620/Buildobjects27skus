@@ -1,284 +1,201 @@
 'use client';
 
 import { formatSpecValue, type SpecJson } from '@buildobjects/catalog';
-import { useMemo, useState } from 'react';
-import { IconChevronDown, IconDoc, IconDownload } from './icons';
-
-/** What each provenance level actually means, in the words shown to a buyer on hover. */
-const PROV: Record<string, string> = {
-  fetched: 'Read from the manufacturer’s own page or datasheet',
-  verified: 'Cross-checked against a second published source',
-  ai_filled: 'Filled from the industry standard for this product class — not confirmed with the brand',
-};
+import React from 'react';
+import { IconChevronDown, IconClose, IconSearch, SpecGroupIcon } from './icons';
 
 /**
- * One mark per heading. The heading's words come from the database — registry/spec-groups.json
- * decides them per category, so a bulb reads "Light output" and cement reads "Strength &
- * structure". Only the mark is chosen here.
+ * The full specification sheet: every figure the catalogue holds for one product, grouped by
+ * heading, searchable, and honest about where each number came from.
  *
- * This replaced a table that also overrode the label, and did it with one cement-shaped
- * vocabulary applied to every category: a light bulb was shown "Installation & Curing
- * Instructions" and a total station "Commercial & Wholesale Pricing Slabs".
+ * This is the most technical surface in the store — it is where a site engineer checks a
+ * compressive strength or a lumen output against a drawing — and it used to be the least
+ * serious-looking. Three things were wrong with it and all three are fixed here:
+ *
+ *   1. Twenty-eight emoji as section marks. Replaced by SpecGroupIcon (see components/icons.tsx),
+ *      which draws in the row's own ink at the row's own stroke weight.
+ *   2. A fabricated documents block. It advertised a "Technical Data Sheet (TDS) · 1.4 MB PDF",
+ *      an MSDS and a "BIS & MTC Quality Certificate", with file sizes invented to three
+ *      significant figures and Download buttons wired to window.print(). We do not hold those
+ *      files. It is deleted rather than restyled — a store that invents a safety datasheet for a
+ *      6 kg fire extinguisher is not a store anyone should buy from.
+ *   3. Provenance hidden in a title attribute, which does not exist on a touch device. Every row
+ *      now carries a visible marker, and the legend above says what the three of them mean.
+ *
+ * Provenance is the reason this component is careful. Roughly half of these values are filled
+ * from the industry standard for the product class rather than read off the manufacturer's
+ * datasheet, and the sheet never claims otherwise — there is no "verified" badge over the top of
+ * the table, because it would be a lie about half its own contents.
  */
-const GROUP_MARK: Record<string, string> = {
-  product_identity: '📋',
-  light_output: '💡',
-  electrical: '⚡',
-  optical: '🔭',
-  imaging: '🎥',
-  measurement: '📐',
-  acoustic: '🔊',
-  thermal: '🌡️',
-  strength: '🏗️',
-  surface: '🪨',
-  physical: '⚖️',
-  chemical: '🧪',
-  composition: '🧱',
-  manufacturing: '⚙️',
-  dimensions: '📏',
-  durability: '⏳',
-  cure: '⏱️',
-  pressure: '💨',
-  performance: '🔥',
-  environmental: '🛡️',
-  application: '🏠',
-  standards: '📜',
-  quality_control: '✅',
-  appearance: '✨',
-  installation: '🛠️',
-  packaging: '📦',
-  commercial: '💰',
-  warranty: '🤝',
+
+/** What each provenance level actually means, in the words shown to a buyer. */
+const PROV: Record<string, { label: string; detail: string }> = {
+  fetched: { label: 'From the brand', detail: 'Read from the manufacturer’s own page or datasheet' },
+  verified: { label: 'Cross-checked', detail: 'Confirmed against a second published source' },
+  ai_filled: { label: 'Class standard', detail: 'Filled from the industry standard for this product class — not confirmed with the brand' },
 };
+const PROV_ORDER = ['verified', 'fetched', 'ai_filled'] as const;
 
 /** Headings that describe how the catalogue is built, not what the product is. */
 const HIDDEN_SEGMENTS = new Set(['seo', 'images', 'comparison', 'documents']);
 
+/** Sections open on arrival. Enough to show the sheet is real, few enough to stay scannable. */
+const OPEN_ON_LOAD = 3;
+/** Sections rendered before "show more" — the rest are a click away, not a scroll away. */
+const PAGE = 4;
+
 export default function SpecSheet({ spec }: { spec: SpecJson }) {
-  const validGroups = useMemo(() => {
-    return spec.groups
-      .filter((g) => {
-        const k = g.key.toLowerCase();
-        return !HIDDEN_SEGMENTS.has(k) && !k.includes('seo') && !k.includes('comparison') && !k.includes('images');
-      })
-      .map((g) => ({ ...g, icon: GROUP_MARK[g.key] ?? '📋' }))
-      .sort((a, b) => a.importance - b.importance);
-  }, [spec.groups]);
+  const groups = React.useMemo(
+    () =>
+      spec.groups
+        .filter((g) => {
+          const k = g.key.toLowerCase();
+          return !HIDDEN_SEGMENTS.has(k) && !k.includes('seo') && !k.includes('comparison') && !k.includes('images');
+        })
+        .sort((a, b) => a.importance - b.importance),
+    [spec.groups],
+  );
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState<string>('all');
-  const [visibleCount, setVisibleCount] = useState<number>(4);
-  const [open, setOpen] = useState<Record<string, boolean>>(() => {
-    return Object.fromEntries(validGroups.map((g, i) => [g.key, i < 3]));
-  });
+  const [query, setQuery] = React.useState('');
+  const [shown, setShown] = React.useState(PAGE);
+  const [open, setOpen] = React.useState<Record<string, boolean>>(() => Object.fromEntries(groups.map((g, i) => [g.key, i < OPEN_ON_LOAD])));
 
-  // Filter groups based on search and category tab
-  const filteredGroups = useMemo(() => {
-    let list = validGroups;
-    if (selectedFilter !== 'all') {
-      list = list.filter((g) => g.key === selectedFilter);
-    }
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) return list;
-    return list
+  const totalRows = React.useMemo(() => groups.reduce((n, g) => n + g.rows.length, 0), [groups]);
+
+  /* How many of those figures came from each source. Stated once, above the sheet, so the
+     reader can weigh the whole table before reading any single row of it. */
+  const provCounts = React.useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const g of groups) for (const r of g.rows) counts[r.provenance] = (counts[r.provenance] ?? 0) + 1;
+    return counts;
+  }, [groups]);
+
+  /* Searching opens everything it matched: a hit inside a collapsed section is a hit the reader
+     cannot see, which reads as the search being broken. */
+  const searching = query.trim().length > 0;
+  const matched = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return groups;
+    return groups
       .map((g) => {
-        const matchingRows = g.rows.filter(
-          (r) => r.label.toLowerCase().includes(q) || String(r.value).toLowerCase().includes(q) || g.label.toLowerCase().includes(q),
-        );
-        return matchingRows.length > 0 ? { ...g, rows: matchingRows } : null;
+        if (g.label.toLowerCase().includes(q)) return g;
+        const rows = g.rows.filter((r) => r.label.toLowerCase().includes(q) || String(r.value).toLowerCase().includes(q));
+        return rows.length ? { ...g, rows } : null;
       })
-      .filter((g): g is (typeof validGroups)[0] => g !== null);
-  }, [validGroups, selectedFilter, searchQuery]);
+      .filter((g): g is (typeof groups)[number] => g !== null);
+  }, [groups, query]);
 
-  const displayedGroups = useMemo(() => {
-    if (searchQuery.trim() || selectedFilter !== 'all') return filteredGroups;
-    return filteredGroups.slice(0, visibleCount);
-  }, [filteredGroups, visibleCount, searchQuery, selectedFilter]);
+  const visible = searching ? matched : matched.slice(0, shown);
+  const hits = React.useMemo(() => matched.reduce((n, g) => n + g.rows.length, 0), [matched]);
+  const allOpen = visible.length > 0 && visible.every((g) => searching || open[g.key]);
 
-  const allOpen = useMemo(() => {
-    return displayedGroups.every((g) => open[g.key]);
-  }, [displayedGroups, open]);
-
-  const totalFilteredRows = useMemo(() => {
-    return filteredGroups.reduce((acc, g) => acc + g.rows.length, 0);
-  }, [filteredGroups]);
-
-  const totalValidSpecs = useMemo(() => {
-    return validGroups.reduce((acc, g) => acc + g.rows.length, 0);
-  }, [validGroups]);
-
-  const handleToggleAll = () => {
-    const nextState = !allOpen;
-    setOpen(Object.fromEntries(validGroups.map((g) => [g.key, nextState])));
-    if (nextState) {
-      setVisibleCount(validGroups.length);
-    }
-  };
-
-  const handleShowMoreGroups = () => {
-    setVisibleCount((prev) => Math.min(prev + 4, validGroups.length));
-  };
-
-  const handleShowAllGroups = () => {
-    setVisibleCount(validGroups.length);
-    setOpen(Object.fromEntries(validGroups.map((g) => [g.key, true])));
+  const toggleAll = () => {
+    const next = !allOpen;
+    setOpen(Object.fromEntries(groups.map((g) => [g.key, next])));
+    if (next) setShown(groups.length);
   };
 
   return (
-    <div className="space-y-5">
-      {/* ── the headline specs, above the full sheet ── */}
-      <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--color-line-2)] pb-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 items-center gap-1.5 rounded-full bg-[var(--color-teal-50)] px-3 py-1 text-xs font-bold text-[var(--color-teal-700)] border border-[var(--color-teal-100)]">
-              <span>✓</span>
-              <span>{totalValidSpecs} specifications</span>
-            </div>
-            <div>
-              <h3 className="text-[15px] font-bold text-[var(--color-ink)] leading-tight">Full specification sheet</h3>
-              {/* Every row carries its own provenance on hover. The sheet as a whole is not
-                  "audited" or "verified" — roughly half of these values are filled from the
-                  industry standard for the product class, and saying otherwise over the top of
-                  them would make the per-row provenance a lie. */}
-              <p className="text-[12px] text-[var(--color-ink-2)]">Every figure states where it came from — hover any row</p>
-            </div>
+    <section className="spec" aria-label="Full specification sheet">
+      {/* ── the masthead: what this sheet is, and how much of it to trust ── */}
+      <header className="spec-head">
+        <div className="spec-head-row">
+          <div>
+            <h3 className="spec-title">Full specification</h3>
+            <p className="spec-sub">
+              <span className="fig">{totalRows}</span> figures across <span className="fig">{groups.length}</span> sections.
+            </p>
           </div>
+          <button type="button" onClick={toggleAll} className="btn btn-secondary btn--sm">
+            {allOpen ? 'Collapse all' : 'Expand all'}
+          </button>
+        </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handleToggleAll}
-              className="inline-flex items-center gap-1.5 rounded-md border border-[var(--color-line-strong)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-surface-2)]"
-            >
-              {allOpen ? 'Collapse all segments' : 'Expand all segments'}
+        {/* The legend. Not decoration — it is the key to the marker on every row below. */}
+        <ul className="spec-legend">
+          {PROV_ORDER.filter((k) => provCounts[k]).map((k) => (
+            <li key={k} title={PROV[k].detail}>
+              <span className={`spec-dot spec-dot--${k}`} aria-hidden />
+              <span className="spec-legend-label">{PROV[k].label}</span>
+              <span className="fig spec-legend-count">{provCounts[k]}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="spec-search">
+          <IconSearch size={16} className="spec-search-icon" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Find a figure — compressive strength, warranty, IP rating"
+            aria-label="Search this specification sheet"
+            className="input spec-search-input"
+          />
+          {searching && (
+            <button type="button" onClick={() => setQuery('')} className="spec-search-clear" aria-label="Clear search">
+              <IconClose size={14} />
             </button>
-          </div>
+          )}
         </div>
-
-        {/* ── Search & Filter Controls ────────────────────────────── */}
-        <div className="mt-3 flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
-          <div className="relative flex-1">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search specifications (e.g. water required, pressure, compressive strength, warranty, price)..."
-              className="w-full h-10 rounded-md border border-[var(--color-line-strong)] bg-[var(--color-surface)] px-3 pl-9 text-xs text-[var(--color-ink)] placeholder-[var(--color-ink-3)] focus:border-[var(--color-teal-700)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal-100)]"
-            />
-            <span className="absolute left-3 top-2.5 text-[var(--color-ink-3)] text-xs">🔍</span>
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-2 text-xs font-medium text-[var(--color-ink-2)] hover:text-[var(--color-ink)]"
-              >
-                ✕ Clear ({totalFilteredRows} matches)
-              </button>
+        {searching && (
+          <p className="spec-hits" role="status">
+            {hits === 0 ? (
+              <>
+                Nothing in this sheet matches <b>{query}</b>.
+              </>
+            ) : (
+              <>
+                <span className="fig">{hits}</span> {hits === 1 ? 'figure' : 'figures'} in <span className="fig">{matched.length}</span>{' '}
+                {matched.length === 1 ? 'section' : 'sections'}.
+              </>
             )}
-          </div>
-        </div>
-
-        {/*
-          One chip per heading this product actually has, in sheet order. The chips used to be a
-          fixed set — "Water & Mixing", "Material Chemistry" — which matched cement and left a
-          bulb page with six chips that selected nothing.
-        */}
-        {!searchQuery && (
-          <div className="mt-3 flex gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
-            {[{ key: 'all', icon: '', label: 'All sections' }, ...validGroups].map((f) => (
-              <button
-                key={f.key}
-                type="button"
-                onClick={() => setSelectedFilter(f.key)}
-                className={`flex-none rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                  selectedFilter === f.key
-                    ? 'bg-[var(--color-teal-700)] text-white'
-                    : 'bg-[var(--color-surface-2)] text-[var(--color-ink-2)] hover:bg-[var(--color-surface-3)] hover:text-[var(--color-ink)] border border-[var(--color-line-2)]'
-                }`}
-              >
-                {f.icon ? `${f.icon} ` : ''}
-                {f.label}
-              </button>
-            ))}
-          </div>
+          </p>
         )}
-      </div>
+      </header>
 
-      {/* ── Filtered / Progressive Segment Accordions ─────────────── */}
-      <div className="space-y-3">
-        {displayedGroups.map((g) => {
-          const isOpen = !!open[g.key];
-
+      {/* ── the sheet ─────────────────────────────────────────────────────── */}
+      <div className="spec-groups stagger">
+        {visible.map((g, i) => {
+          const isOpen = searching || !!open[g.key];
           return (
-            <section key={g.key} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden shadow-sm transition-all">
-              <button
-                type="button"
-                className="w-full flex items-center justify-between px-4 py-3.5 text-left transition-colors hover:bg-[var(--color-surface-2)] focus:outline-none"
-                aria-expanded={isOpen}
-                onClick={() => setOpen((o) => ({ ...o, [g.key]: !o[g.key] }))}
-              >
-                <div className="flex items-center gap-2.5">
-                  <span className="text-base">{g.icon}</span>
-                  <span className="text-[14px] font-bold text-[var(--color-ink)]">{g.label}</span>
-                </div>
+            <section key={g.key} className="spec-group" style={{ '--i': i } as React.CSSProperties} data-reveal>
+              <h4 className="spec-group-h">
+                <button type="button" className="spec-group-btn" aria-expanded={isOpen} onClick={() => setOpen((o) => ({ ...o, [g.key]: !o[g.key] }))}>
+                  <SpecGroupIcon group={g.key} size={18} className="spec-group-icon" />
+                  <span className="spec-group-name">{g.label}</span>
+                  <span className="spec-group-count fig">{g.rows.length}</span>
+                  <IconChevronDown size={16} className="spec-group-chevron" />
+                </button>
+              </h4>
 
-                <div className="flex items-center gap-3">
-                  <span className="rounded-full bg-[var(--color-surface-2)] px-2.5 py-0.5 text-[11px] font-semibold text-[var(--color-ink-2)] border border-[var(--color-line-2)]">
-                    {g.rows.length} parameters
-                  </span>
-                  <IconChevronDown
-                    size={16}
-                    style={{
-                      transform: isOpen ? 'rotate(180deg)' : undefined,
-                      transition: 'transform 200ms ease',
-                      color: 'var(--color-ink-2)',
-                    }}
-                  />
-                </div>
-              </button>
-
-              {isOpen && (
-                <div className="border-t border-[var(--color-line-2)] px-4 py-3 bg-[var(--color-surface)]">
-                  <table className="w-full text-left text-xs border-collapse">
+              {/* 0fr → 1fr on a grid row: the one way to animate a height the browser measures
+                  for you. `hidden` on the inner element keeps the collapsed rows out of the
+                  accessibility tree and out of the tab order. */}
+              <div className="spec-group-body" data-open={isOpen ? '' : undefined}>
+                <div className="spec-group-clip" hidden={!isOpen}>
+                  <table className="spec-table">
                     <tbody>
-                      {g.rows.map((r, rIdx) => {
-                        const isHighlight =
-                          r.label.toLowerCase().includes('water required') ||
-                          r.label.toLowerCase().includes('compressive strength') ||
-                          r.label.toLowerCase().includes('warranty') ||
-                          r.label.toLowerCase().includes('selling price') ||
-                          r.label.toLowerCase().includes('m.r.p');
-
+                      {g.rows.map((r) => {
+                        const prov = PROV[r.provenance];
                         return (
-                          <tr
-                            key={r.key}
-                            className={`border-b border-[var(--color-line-2)] transition-colors ${
-                              isHighlight ? 'bg-[var(--color-teal-50)]/50' : rIdx % 2 === 1 ? 'bg-[var(--color-surface-2)]/60' : 'bg-[var(--color-surface)]'
-                            } hover:bg-[var(--color-teal-50)]/30`}
-                            title={`${PROV[r.provenance] ?? r.provenance}${r.confidence !== null ? ` · confidence ${Math.round(r.confidence * 100)}%` : ''}`}
-                          >
-                            <th scope="row" className="py-2.5 px-3 font-medium text-[var(--color-ink-2)] w-1/2 align-top text-[13px]">
-                              <div className="flex items-center gap-1.5">
-                                <span>{r.label}</span>
-                                {isHighlight && <span className="inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-teal-700)]" />}
-                              </div>
+                          <tr key={r.key}>
+                            <th scope="row">
+                              <span className={`spec-dot spec-dot--${r.provenance}`} aria-hidden />
+                              {r.label}
                             </th>
-                            <td className="py-2.5 px-3 font-semibold text-[var(--color-ink)] text-right align-top text-[13px] font-figure">
+                            <td>
                               {r.source_url ? (
-                                <a
-                                  href={r.source_url}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="text-[var(--color-teal-700)] hover:underline inline-flex items-center gap-1"
-                                >
-                                  <span>{formatSpecValue(r.value, r.unit, r.data_type)}</span>
-                                  <span className="text-[10px]">↗</span>
+                                <a href={r.source_url} target="_blank" rel="noreferrer" className="link">
+                                  {formatSpecValue(r.value, r.unit, r.data_type)}
                                 </a>
                               ) : (
-                                <span className={isHighlight ? 'text-[var(--color-teal-900)] font-bold' : 'text-[var(--color-ink)]'}>
-                                  {formatSpecValue(r.value, r.unit, r.data_type)}
-                                </span>
+                                formatSpecValue(r.value, r.unit, r.data_type)
                               )}
+                              <span className="visually-hidden">
+                                {' — '}
+                                {prov?.detail ?? r.provenance}
+                              </span>
                             </td>
                           </tr>
                         );
@@ -286,101 +203,18 @@ export default function SpecSheet({ spec }: { spec: SpecJson }) {
                     </tbody>
                   </table>
                 </div>
-              )}
+              </div>
             </section>
           );
         })}
       </div>
 
-      {/* ── Official Technical Downloads Section ─────────────────── */}
-      <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
-        <div className="flex items-center justify-between gap-2 border-b border-[var(--color-line-2)] pb-3">
-          <div className="flex items-center gap-2">
-            <IconDoc size={18} style={{ color: 'var(--color-teal-700)' }} />
-            <h4 className="text-[14px] font-bold text-[var(--color-ink)]">Official Technical Datasheets & Verified Documents</h4>
-          </div>
-          <span className="text-[11px] font-semibold text-[var(--color-teal-700)] bg-[var(--color-teal-50)] px-2 py-0.5 rounded border border-[var(--color-teal-100)]">
-            PDF Downloads Available
-          </span>
-        </div>
-
-        <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="flex items-center justify-between rounded-md border border-[var(--color-line-2)] bg-[var(--color-surface-2)] p-3 hover:border-[var(--color-line-strong)] transition-colors">
-            <div className="min-w-0 pr-2">
-              <div className="text-xs font-bold text-[var(--color-ink)] truncate">Technical Data Sheet (TDS)</div>
-              <div className="text-[11px] text-[var(--color-ink-3)]">Official Engineering Specs · 1.4 MB PDF</div>
-            </div>
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-1 rounded bg-[var(--color-surface)] px-2.5 py-1 text-[11px] font-semibold text-[var(--color-teal-700)] border border-[var(--color-line)] hover:bg-[var(--color-teal-50)]"
-            >
-              <IconDownload size={13} />
-              <span>Download</span>
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between rounded-md border border-[var(--color-line-2)] bg-[var(--color-surface-2)] p-3 hover:border-[var(--color-line-strong)] transition-colors">
-            <div className="min-w-0 pr-2">
-              <div className="text-xs font-bold text-[var(--color-ink)] truncate">Material Safety Sheet (MSDS)</div>
-              <div className="text-[11px] text-[var(--color-ink-3)]">Safety, VOC & Handling · 840 KB PDF</div>
-            </div>
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-1 rounded bg-[var(--color-surface)] px-2.5 py-1 text-[11px] font-semibold text-[var(--color-teal-700)] border border-[var(--color-line)] hover:bg-[var(--color-teal-50)]"
-            >
-              <IconDownload size={13} />
-              <span>Download</span>
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between rounded-md border border-[var(--color-line-2)] bg-[var(--color-surface-2)] p-3 hover:border-[var(--color-line-strong)] transition-colors">
-            <div className="min-w-0 pr-2">
-              <div className="text-xs font-bold text-[var(--color-ink)] truncate">BIS & MTC Quality Certificate</div>
-              <div className="text-[11px] text-[var(--color-ink-3)]">Factory Laboratory Test · 620 KB PDF</div>
-            </div>
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-1 rounded bg-[var(--color-surface)] px-2.5 py-1 text-[11px] font-semibold text-[var(--color-teal-700)] border border-[var(--color-line)] hover:bg-[var(--color-teal-50)]"
-            >
-              <IconDownload size={13} />
-              <span>Download</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Progressive Disclosure Controls ("Show More" / "Show All") ── */}
-      {!searchQuery && selectedFilter === 'all' && visibleCount < validGroups.length && (
-        <div className="pt-2 text-center space-y-2">
-          <div className="flex items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={handleShowMoreGroups}
-              className="inline-flex items-center gap-2 rounded-md border border-[var(--color-line-strong)] bg-[var(--color-surface)] px-5 py-2.5 text-xs font-bold text-[var(--color-ink)] shadow-sm transition-all hover:bg-[var(--color-surface-2)] hover:border-[var(--color-ink)]"
-            >
-              <span>Show more specifications</span>
-              <IconChevronDown size={14} />
-            </button>
-
-            <button
-              type="button"
-              onClick={handleShowAllGroups}
-              className="inline-flex items-center gap-2 rounded-md bg-[var(--color-teal-700)] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition-all hover:bg-[var(--color-teal-800)]"
-            >
-              <span>
-                Show all {validGroups.length} segments ({totalValidSpecs} data points)
-              </span>
-              <span>↓</span>
-            </button>
-          </div>
-          <p className="text-[12px] text-[var(--color-ink-3)]">
-            Showing {displayedGroups.length} of {validGroups.length} engineering & commercial segments
-          </p>
-        </div>
+      {!searching && shown < groups.length && (
+        <button type="button" onClick={() => setShown((n) => Math.min(n + PAGE, groups.length))} className="btn btn-secondary spec-more">
+          Show {Math.min(PAGE, groups.length - shown)} more {groups.length - shown === 1 ? 'section' : 'sections'}
+          <IconChevronDown size={14} />
+        </button>
       )}
-    </div>
+    </section>
   );
 }

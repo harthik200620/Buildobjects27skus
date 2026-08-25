@@ -160,6 +160,30 @@
   /* The one glow in the system: focus, and the live-AR reticle. */
   --glow-brand: 0 0 0 3px rgb(86 211 216 / 22%);
 
+  /* ── motion ─────────────────────────────────────────────────────────────────
+     Four durations and three curves, and nothing in the store may invent a
+     fifth. Before this existed every component picked its own number — 0.12s
+     here, 140ms there, 200ms, 220ms, 300ms — and a page where six things move
+     at six speeds reads as six people's work, which is exactly the "AI-made"
+     tell the palette and the type were already clear of.
+
+     The curves are the whole vocabulary:
+       --ease-out    things arriving: they overshoot nothing and settle fast.
+       --ease-spring things the pointer is touching: a small overshoot, so a
+                     press feels sprung rather than switched.
+       --ease-inout  things travelling across the screen under their own power. */
+  --dur-1: 120ms; /* state flips: colour, border, opacity */
+  --dur-2: 200ms; /* the default — hovers, chevrons, small transforms */
+  --dur-3: 340ms; /* panels, popovers, anything with size */
+  --dur-4: 640ms; /* entrances: a section arriving on scroll */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  /* How far a revealing element travels, and how much a card lifts on hover.
+     One number each, so the whole store rises by the same amount. */
+  --rise: 14px;
+  --lift: -3px;
+
   /* ── spacing ────────────────────────────────────────────────────────────── */
   --s-1: 4px;
   --s-2: 8px;
@@ -892,31 +916,50 @@
     color: var(--color-ink-2);
   }
 
-  /* ── breadcrumbs ────────────────────────────────────────────────────────── */
+  /* ── breadcrumbs ──────────────────────────────────────────────────────────
+     An ordered list, because a trail is ordered and a screen reader announcing "list, 4 items"
+     before reading it is exactly the right thing to say. components/Breadcrumbs.tsx is the only
+     thing that writes this markup; four pages used to write it by hand with the separator's
+     colour set inline in each. */
   .crumbs {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 2px 4px;
     font-size: 13px;
     line-height: 18px;
     color: var(--color-ink-2);
+  }
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .crumbs li {
+    display: inline-flex;
+    align-items: center;
   }
   .crumbs a {
     display: inline-flex;
     align-items: center;
     min-height: 32px;
+    padding: 0 2px;
+    border-radius: var(--radius-sm);
     color: var(--color-ink-2);
+    transition: color var(--dur-1) var(--ease-out);
   }
   .crumbs a:hover {
-    color: var(--color-teal-700);
+    color: var(--link);
     text-decoration: underline;
   }
   .crumbs [aria-current="page"] {
+    padding: 0 2px;
     color: var(--color-ink);
     font-weight: 600;
   }
+  .crumb-sep,
   .crumbs-sep {
+    flex: none;
     color: var(--color-ink-3);
     padding: 0 2px;
   }
@@ -1322,6 +1365,157 @@
     animation: fade-in 0.16s ease both;
   }
 
+  /* ═══════════════════════════════════════════════════════════════════════════
+     MOTION — the shared vocabulary
+     ═══════════════════════════════════════════════════════════════════════════
+     Five behaviours, defined once. A page asks for one by class; it never writes
+     a keyframe, a duration or a curve of its own.
+
+     All five are keyed off the tokens above, so slowing the whole store down is
+     one number, and all five collapse to nothing under prefers-reduced-motion —
+     the base layer already zeroes durations, and the reveal states below are
+     written so that a zeroed duration lands on the VISIBLE end, never on the
+     invisible one. That ordering is the only reason this is safe: an entrance
+     animation that a reduced-motion user cannot run must not be able to leave
+     them looking at an empty page.
+     ═════════════════════════════════════════════════════════════════════════ */
+
+  /* ── 1. reveal: content arriving as it is scrolled to ──────────────────────
+     components/Reveal.tsx adds [data-reveal] and flips it to [data-shown] with
+     an IntersectionObserver. The element is only hidden once the observer has
+     confirmed it is running (`.js-reveal` on <html>), so with JS off or broken
+     the content is simply there. */
+  .js-reveal [data-reveal] {
+    opacity: 0;
+    transform: translateY(var(--rise));
+    transition:
+      opacity var(--dur-4) var(--ease-out),
+      transform var(--dur-4) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .js-reveal [data-reveal="left"] {
+    transform: translateX(calc(var(--rise) * -1.4));
+  }
+  .js-reveal [data-reveal="scale"] {
+    transform: translateY(calc(var(--rise) * 0.5)) scale(0.97);
+  }
+  .js-reveal [data-shown] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* ── 2. stagger: a list whose children arrive in sequence ──────────────────
+     The index comes from an inline --i, so the delay is arithmetic rather than
+     forty hand-written rules. Capped at 10 steps: past about 600 ms of stagger a
+     grid stops reading as choreography and starts reading as a slow page. */
+  .stagger > * {
+    --reveal-delay: calc(min(var(--i, 0), 10) * 45ms);
+  }
+
+  /* ── 3. lift: the one hover elevation, for every card in the store ─────────
+     Border, shadow and a 3 px rise. Any card that wants hover uses this class
+     instead of re-deciding what hover means. */
+  .lift {
+    transition:
+      transform var(--dur-2) var(--ease-out),
+      border-color var(--dur-2) var(--ease-out),
+      box-shadow var(--dur-2) var(--ease-out),
+      background-color var(--dur-2) var(--ease-out);
+  }
+  @media (hover: hover) {
+    .lift:hover {
+      transform: translateY(var(--lift));
+      border-color: var(--color-line-strong);
+      box-shadow: var(--shadow-2);
+    }
+  }
+  .lift:active {
+    transform: translateY(0);
+    transition-duration: var(--dur-1);
+  }
+
+  /* ── 4. sheen: a slow diagonal highlight across a dark surface ─────────────
+     Used on the brand's own furniture (the hero field, the estimator's total)
+     and nowhere else. It is a light source, not a decoration: one pass, wide
+     and faint, on a 7 s cycle that the eye reads as ambience rather than as an
+     animation demanding attention. */
+  @keyframes sheen {
+    0% {
+      transform: translateX(-120%) skewX(-18deg);
+    }
+    55%,
+    100% {
+      transform: translateX(320%) skewX(-18deg);
+    }
+  }
+  .sheen {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .sheen::after {
+    content: "";
+    position: absolute;
+    inset: -40% -60%;
+    z-index: 1;
+    width: 24%;
+    background: linear-gradient(90deg, transparent, rgb(86 211 216 / 9%), transparent);
+    animation: sheen 7s var(--ease-inout) infinite;
+    pointer-events: none;
+  }
+
+  /* ── 5. pulse-dot: the live indicator ─────────────────────────────────────
+     A filled dot with a ring expanding out of it. The store uses it for exactly
+     one claim — that stock and prices are current — so it stays rare enough to
+     mean something. */
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.7;
+    }
+    70%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+  .pulse-dot {
+    position: relative;
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--color-success);
+  }
+  .pulse-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-success);
+    animation: pulse-ring 2.4s var(--ease-out) infinite;
+  }
+
+  /* Reduced motion: the base layer zeroes durations, which handles 1–3. The two
+     infinite loops have to be switched off outright, and the reveal has to be
+     pinned open — a 0.01 ms transition still starts from opacity 0. */
+  @media (prefers-reduced-motion: reduce) {
+    .js-reveal [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+    .sheen::after,
+    .pulse-dot::after {
+      animation: none;
+    }
+    .pulse-dot::after {
+      display: none;
+    }
+  }
+
   /*
    * Touch targets on a coarse pointer.
    *
@@ -1331,6 +1525,10 @@
    * instead of a fixed box clipping it.
    */
   @media (pointer: coarse) {
+    /* 36 px is what fits a dense list; it is not what a thumb needs. The controls below are the
+       ones a sweep of the 375 px viewport measured under 40 px — the deliver-to strip, the "All"
+       button that opens the whole catalogue, and the segments of a segmented control. Each is a
+       primary action on a phone, so each gets a real target rather than the list minimum. */
     .btn--sm,
     .chip,
     .chip--sm,
@@ -1338,6 +1536,11 @@
     .input--sm,
     .menu-row {
       min-height: 36px;
+    }
+    .nav-all,
+    .deliver-strip-btn,
+    .segmented > * {
+      min-height: 44px;
     }
     .foot a,
     .footer-col a,

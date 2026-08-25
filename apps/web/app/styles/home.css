@@ -1,19 +1,14 @@
-/* ─────────────────────────────────────────────────────────────────────────────
+/* -----------------------------------------------------------------------------
    Home: the catalogue as a taxonomy.
 
-   Thirty-seven categories in ONE register. The previous version drew the nine stocked ones
-   as large photographic cards in a three-column grid and the twenty-eight upcoming ones as
-   small drawn cards in a four-column grid — two card sizes and two grids for one taxonomy,
-   which reads as two systems bolted together rather than as a catalogue.
+   Thirty-five categories in ONE register - one card, one grid, one rhythm. Stocked and
+   upcoming differ by a pill and a quieter photograph, not by a different card in a different
+   grid the way they once did.
 
-   Now: one card, one grid, one rhythm. Stocked and upcoming differ by a pill and a quieter
-   photograph. Nothing here shows a price — a tile that says "from ₹410" answers a question
-   the buyer has not asked and commits the store to a number before they have chosen anything.
-
-   Every measurement below is on the --s-* scale. The old file mixed 36/24/20/12/10px by hand,
-   and hand-picked spacing is the difference a reader registers as "cheap" without being able
-   to name it.
-   ──────────────────────────────────────────────────────────────────────────── */
+   Every measurement here is on the --s-* scale and every duration and curve on the --dur-* /
+   --ease-* pair from theme.css. Hand-picked numbers are the specific thing a reader registers
+   as "cheap" without being able to name it: six paddings on one page and no rule behind them.
+   ---------------------------------------------------------------------------- */
 
 @layer components {
   /* Sections breathe further apart here than on a listing page: this page is scanned, not read. */
@@ -78,8 +73,47 @@
   }
   @media (min-width: 1024px) {
     .hero-in {
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
       gap: var(--s-7);
+    }
+  }
+  /* The words arrive first and the panel a beat later, so the eye lands on the headline rather
+     than on the thing that moved most. No observer needed - this runs once, on load. */
+  .hero-say > * {
+    animation: hero-in var(--dur-4) var(--ease-out) both;
+  }
+  .hero-say > :nth-child(1) {
+    animation-delay: 40ms;
+  }
+  .hero-say > :nth-child(2) {
+    animation-delay: 100ms;
+  }
+  .hero-say > :nth-child(3) {
+    animation-delay: 170ms;
+  }
+  .hero-say > :nth-child(4) {
+    animation-delay: 240ms;
+  }
+  .hero-say > :nth-child(5) {
+    animation-delay: 310ms;
+  }
+  .hero-board {
+    animation: hero-in var(--dur-4) var(--ease-out) 380ms both;
+  }
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-say > *,
+    .hero-board {
+      animation: none;
     }
   }
   .hero-eyebrow {
@@ -120,34 +154,257 @@
     gap: var(--s-3);
     margin-top: var(--s-5);
   }
+  /* Three figures as a description list, which is what they are: a label and its value. They
+     used to be one run of inline text - "35 categories 9 products 28 items on the shelf" - where
+     the numbers and the words carried the same weight and none of it was scannable. */
   .hero-facts {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--s-2) var(--s-5);
-    margin-top: var(--s-5);
-    font-size: 13px;
-    color: var(--color-ink-2);
+    gap: var(--s-3) var(--s-6);
+    margin-top: var(--s-6);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--color-line-2);
   }
-  .hero-facts b {
-    color: var(--color-ink);
+  .hero-facts div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .hero-facts dt {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .hero-facts dd {
+    margin: 0;
     font-family: var(--font-figure);
+    font-size: 26px;
+    line-height: 32px;
     font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
   }
 
-  /* the advertisement slot: part of the field, not a box dropped onto it */
-  .hero-ad {
-    position: relative;
-    min-height: 220px;
-    aspect-ratio: 16 / 9;
-    border: 1px solid var(--color-line-2);
+  /* the stock panel -------------------------------------------------------
+     What used to be an empty 16:9 rectangle held open for an advertisement. It now carries the
+     shop's own stock, one item at a time - see components/home/PriceBoard.tsx. */
+  .board {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    background: linear-gradient(155deg, var(--color-surface) 0%, var(--color-canvas-2) 100%);
+    border: 1px solid var(--color-line);
     border-radius: var(--radius-lg);
-    background:
-      radial-gradient(120% 120% at 84% 12%, var(--color-teal-50) 0%, transparent 62%), linear-gradient(150deg, var(--color-surface) 0%, transparent 74%);
+    box-shadow: var(--shadow-2);
   }
-  @media (max-width: 1023.98px) {
-    .hero-ad {
-      min-height: 150px;
+  .board-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+  .board-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+  }
+  /* The dwell timer, drawn. A conic gradient swept by one animated angle - one property, on the
+     compositor, and it restarts with the item because React keys it. */
+  @property --sweep {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
+  @keyframes board-sweep {
+    to {
+      --sweep: 360deg;
     }
+  }
+  .board-ring {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    border-radius: 50%;
+    background: conic-gradient(var(--color-brand) var(--sweep), var(--color-line) 0);
+    mask: radial-gradient(circle, transparent 52%, rgb(0 0 0 / 100%) 54%);
+    animation: board-sweep linear both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .board-ring {
+      display: none;
+    }
+  }
+
+  .board-item {
+    display: flex;
+    gap: var(--s-3);
+    align-items: flex-start;
+    min-height: 116px;
+    padding: var(--s-3);
+    border: 1px solid var(--color-line-2);
+    border-radius: var(--radius-md);
+    background: var(--color-canvas-2);
+    color: var(--color-ink);
+    text-decoration: none;
+    animation: board-swap var(--dur-3) var(--ease-out) both;
+    transition:
+      border-color var(--dur-2) var(--ease-out),
+      background-color var(--dur-2) var(--ease-out);
+  }
+  .board-item:hover {
+    border-color: var(--color-line-strong);
+    background: var(--color-surface);
+  }
+  @keyframes board-swap {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .board-item {
+      animation: none;
+    }
+  }
+  /* Brand photography is shot on white. On deep teal that is a hole in the page, so it sits on
+     the silver plate - the store's one light ground - exactly as it does everywhere else. */
+  .board-shot {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    padding: 6px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(160deg, var(--color-plate-2), var(--color-plate));
+    overflow: hidden;
+  }
+  .board-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .board-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .board-cat {
+    font-size: 11px;
+    line-height: 15px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-brand);
+  }
+  .board-brand {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-3);
+  }
+  .board-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 19px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .board-price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-top: 3px;
+  }
+  .board-price b {
+    font-family: var(--font-figure);
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .board-unit {
+    font-size: 12px;
+    color: var(--color-ink-3);
+  }
+
+  .board-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-3);
+  }
+  .board-gst,
+  .board-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .board-gst svg {
+    color: var(--color-success);
+  }
+  .board-go {
+    color: var(--link);
+    font-weight: 600;
+  }
+  .board-go svg {
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .board:hover .board-go svg {
+    transform: translateX(3px);
+  }
+
+  .board-dots {
+    display: flex;
+    gap: 5px;
+  }
+  .board-dot {
+    position: relative;
+    width: 26px;
+    height: 3px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-line);
+    cursor: pointer;
+    transition: background-color var(--dur-2) var(--ease-out);
+  }
+  .board-dot:hover {
+    background: var(--color-line-strong);
+  }
+  .board-dot.is-on {
+    background: var(--color-brand);
+  }
+  /* A 3 px bar is not a 44 px target. The hit area is padded out with a pseudo-element rather
+     than by making the bar itself taller. */
+  .board-dot::before {
+    content: "";
+    position: absolute;
+    /* 3 px of bar plus 21 px above and below is a 45 px target, which clears the 44 px floor a
+       thumb needs. Measured, not guessed: a sweep of the mobile viewport reported these at 3 px
+       until the pseudo-element was widened. */
+    inset: -21px -4px;
   }
 
   /* ── the category grid ────────────────────────────────────────────────── */
@@ -160,6 +417,8 @@
     gap: var(--s-4);
   }
 
+  /* The card takes .lift in the markup for its elevation, so the only rules here are the ones
+     unique to a category tile: the photograph, and the teal edge that lights along the top. */
   .cat-card {
     position: relative;
     display: flex;
@@ -171,23 +430,30 @@
     border-radius: var(--radius-lg);
     color: var(--color-ink);
     text-decoration: none;
-    /* One elevation rule for the whole grid; the photo scale is the only per-part motion. */
-    transition:
-      border-color 140ms ease,
-      box-shadow 140ms ease,
-      transform 140ms ease;
   }
-  .cat-card:hover {
-    border-color: var(--color-line-strong);
-    box-shadow: var(--shadow-2);
-    transform: translateY(-2px);
+  /* A 2 px brand rule that wipes in from the left along the top edge. Cheap - one scaled
+     pseudo-element, no layout - and it gives the grid a direction on hover rather than
+     thirty-five cards that each just get taller. */
+  .cat-card::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 2;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-brand), var(--color-teal-600));
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+  .cat-card:hover::after,
+  .cat-card:focus-visible::after {
+    transform: scaleX(1);
   }
   .cat-card:hover .cat-photo img {
-    transform: scale(1.04);
+    transform: scale(1.05);
   }
   @media (prefers-reduced-motion: reduce) {
-    .cat-card,
-    .cat-card:hover,
+    .cat-card::after,
     .cat-photo img,
     .cat-card:hover .cat-photo img {
       transition: none;
@@ -206,7 +472,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 220ms ease;
+    transition: transform var(--dur-4) var(--ease-out);
   }
   /* A category with nothing to sell yet is quieter — the same card, turned down. */
   .cat-card--soon .cat-photo img {
@@ -215,18 +481,31 @@
   .cat-card--soon:hover .cat-photo img {
     filter: saturate(0.8) brightness(0.88);
   }
+  /* "Arriving soon", on twenty-six of the thirty-five tiles. At that count a solid dark pill on
+     every card is the loudest thing in the grid, and what it repeats twenty-six times is an
+     absence. It is quiet by default and firms up on hover, where the reader has actually asked
+     about that one tile. */
   .cat-pill {
     position: absolute;
     top: var(--s-2);
     left: var(--s-2);
     padding: 3px var(--s-2);
     border-radius: var(--radius-pill);
-    background: var(--color-canvas);
+    background: color-mix(in srgb, var(--color-canvas) 78%, transparent);
+    border: 1px solid var(--color-line-2);
     color: var(--color-ink-2);
     font-size: 11px;
     line-height: 15px;
     font-weight: 600;
     letter-spacing: 0.02em;
+    backdrop-filter: blur(4px);
+    transition:
+      background-color var(--dur-2) var(--ease-out),
+      color var(--dur-2) var(--ease-out);
+  }
+  .cat-card:hover .cat-pill {
+    background: var(--color-canvas);
+    color: var(--color-ink);
   }
 
   .cat-band {
@@ -309,13 +588,19 @@
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: var(--s-2);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--s-3);
   }
+  /* Two lines and a price column, not one run of text.
+     The old chip was brand, name and price on one baseline with the name ellipsed, and because
+     `name` in the search index carries the variant glued onto it, what actually rendered was
+     "ULTRATECH CEMENT UltraTech Portland Pozzolana Cement (PPC) 50 kg bag ₹415" cut off
+     mid-word. Brand and price now share the top line - which puts every price in the grid on the
+     same right edge, so the column can be read down - and the title has the room to finish. */
   .stock-chip {
     display: flex;
-    align-items: baseline;
-    gap: var(--s-2);
+    flex-direction: column;
+    gap: 3px;
     height: 100%;
     padding: var(--s-3);
     border: 1px solid var(--color-line-2);
@@ -323,16 +608,29 @@
     background: var(--color-surface);
     color: var(--color-ink);
     text-decoration: none;
-    transition:
-      border-color 140ms ease,
-      background-color 140ms ease;
+  }
+  .stock-chip-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-2);
   }
   .stock-chip:hover {
     border-color: var(--color-line-strong);
     background: var(--color-surface-2);
+    transform: translateY(-1px);
+  }
+  .stock-chip {
+    transition:
+      border-color var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out),
+      transform var(--dur-1) var(--ease-out);
   }
   .stock-chip-brand {
-    flex: none;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 11px;
     line-height: 16px;
     font-weight: 700;
@@ -341,10 +639,20 @@
     color: var(--color-ink-3);
   }
   .stock-chip-name {
-    flex: 1 1 auto;
-    min-width: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
     font-size: 13px;
     line-height: 18px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .stock-chip-variant {
+    font-size: 11px;
+    line-height: 15px;
+    color: var(--color-ink-3);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -352,9 +660,59 @@
   .stock-chip-price {
     flex: none;
     font-family: var(--font-figure);
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--color-brand);
+  }
+
+  /* what every price carries -----------------------------------------------
+     Four statements of fact, each one a thing the store does. "Quality materials" and "Trusted
+     brands" used to sit here as two of four; they are things any competitor could also write,
+     which means neither of them said anything. */
+  .promises {
+    padding-top: var(--s-6);
+    border-top: 1px solid var(--color-line-2);
+  }
+  .promise-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+  .promise-grid li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .promise-grid svg {
+    color: var(--color-brand);
+  }
+  .promise-grid h3 {
+    font-size: 14px;
+    line-height: 20px;
     font-weight: 700;
     color: var(--color-ink);
+  }
+  .promise-grid p {
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--color-ink-2);
+    text-wrap: pretty;
+  }
+  @media (max-width: 1023.98px) {
+    .promise-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-5) var(--s-4);
+    }
+  }
+  @media (max-width: 519.98px) {
+    .promise-grid {
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+    }
   }
 
   @media (max-width: 1099.98px) {

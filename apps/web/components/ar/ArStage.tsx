@@ -21,7 +21,20 @@ import {
 } from '@buildobjects/ar-engine';
 import Link from 'next/link';
 import React from 'react';
-import { IconArrow, IconCamera, IconDownload, IconInfo, IconRefresh, IconRuler, IconShare, IconSpark, IconUpload } from '@/components/icons';
+import {
+  IconArrow,
+  IconCamera,
+  IconDownload,
+  IconInfo,
+  IconRefresh,
+  IconRotateLeft,
+  IconRotateRight,
+  IconRuler,
+  IconShare,
+  IconSpark,
+  IconTarget,
+  IconUpload,
+} from '@/components/icons';
 import type { ArProduct } from '@/lib/ar-data';
 import { inr } from '@/lib/media';
 import {
@@ -674,7 +687,9 @@ export default function ArStage({ product }: { product: ArProduct }) {
 
           {step === 'gate' && gateResult && (
             <div className="ar-hud" style={{ flexDirection: 'column' }}>
-              <span className="ar-chip ar-chip--warn">⌖ {gateResult.guidance}</span>
+              <span className="ar-chip ar-chip--warn">
+                <IconTarget size={13} /> {gateResult.guidance}
+              </span>
               <span className="ar-chip">
                 {gateResult.reason}
                 {scene ? ` · scene: ${SCENE_LABEL[scene.sceneType]}` : ''}
@@ -723,7 +738,11 @@ export default function ArStage({ product }: { product: ArProduct }) {
                     Surface: {SURFACE_LABEL[s] ?? s}
                   </button>
                 ))}
-                {wallGuidance && <span className="ar-chip ar-chip--warn">⌖ {wallGuidance}</span>}
+                {wallGuidance && (
+                  <span className="ar-chip ar-chip--warn">
+                    <IconTarget size={13} /> {wallGuidance}
+                  </span>
+                )}
               </div>
               <div className="ar-hud" style={{ flexWrap: 'wrap', gap: 6 }}>
                 <button
@@ -760,10 +779,10 @@ export default function ArStage({ product }: { product: ArProduct }) {
                   <IconRuler size={13} /> Set scale
                 </button>
                 <button type="button" className="ar-chip" onClick={() => dispatch({ type: 'yawChanged', yaw: yaw - 15 })} aria-label="Rotate left">
-                  ↺ 15°
+                  <IconRotateLeft size={13} /> 15°
                 </button>
                 <button type="button" className="ar-chip" onClick={() => dispatch({ type: 'yawChanged', yaw: yaw + 15 })} aria-label="Rotate right">
-                  ↻ 15°
+                  <IconRotateRight size={13} /> 15°
                 </button>
                 <button type="button" className="btn-primary h-10 px-4 text-[13px]" onClick={makeItReal}>
                   <IconSpark size={15} /> Make it real

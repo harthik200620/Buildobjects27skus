@@ -206,7 +206,7 @@ export default function Estimator({
             )}
             {!drawing.confirmed && (
               <div className="flex gap-2">
-                <button type="button" className="btn-primary h-9 px-4 text-[12.5px]" onClick={() => setDrawing({ ...drawing, confirmed: true })}>
+                <button type="button" className="btn btn-primary btn--sm" onClick={() => setDrawing({ ...drawing, confirmed: true })}>
                   <IconCheck size={14} /> Values are right
                 </button>
                 <button
@@ -417,7 +417,7 @@ export default function Estimator({
                   onChange={(e) => set({ builtUpOverrideSqft: Number(e.target.value) || null })}
                 />
               </label>
-              <button type="button" className="btn-ghost h-[42px] self-end text-[12.5px]" onClick={() => set({ builtUpOverrideSqft: null })}>
+              <button type="button" className="btn btn-secondary self-end" onClick={() => set({ builtUpOverrideSqft: null })}>
                 Use plot × coverage instead
               </button>
             </div>
@@ -438,11 +438,14 @@ export default function Estimator({
             ))}
           </div>
           <p className="wz-hint">
+            {/* What each tier actually specifies. The medium one used to end "the most popular
+                homeowner choice" — a sales fact nobody here has ever measured, sitting inside a
+                list of things that are all verifiable. */}
             {inputs.tier === 'basic'
-              ? 'Standard quality: PPC cement, fly-ash bricks, ceramic tiles, flush doors, and washable acrylic emulsion paint — dependable baseline quality.'
+              ? 'PPC cement, fly-ash bricks, ceramic tiles, flush doors, washable acrylic emulsion.'
               : inputs.tier === 'medium'
-                ? 'Superior quality: Premium PPC cement, table-moulded red bricks, 600×600 GVT vitrified tiles, designer laminated doors, weatherproof exterior paint, and partial false ceiling — the most popular homeowner choice.'
-                : 'Luxury quality: OPC 53 grade cement, wire-cut bricks, 600×1200 large-format PGVT tiles, teak-finish doors, high-performance architectural glass, and complete modular interiors.'}
+                ? 'Premium PPC cement, table-moulded red bricks, 600×600 GVT vitrified tiles, laminated doors, weatherproof exterior paint, partial false ceiling.'
+                : 'OPC 53-grade cement, wire-cut bricks, 600×1200 PGVT tiles, teak-finish doors, high-performance architectural glass, full modular interiors.'}
           </p>
           <div className="wz-row">
             <label className="check-row">
@@ -535,7 +538,12 @@ export default function Estimator({
             <p className="grand-label">
               {unconfirmed ? 'Preview total' : 'Estimated cost'} · {TIER_LABEL[inputs.tier]}
             </p>
-            <p className="hero-figure">{inr(result.grandTotal)}</p>
+            {/* Keyed on the value, so React replaces the node whenever the figure changes and the
+                arrival animation runs again. Switching Basic → Medium → Premium moves ₹7 lakh;
+                without this the number silently swaps and the eye can miss that it moved at all. */}
+            <p className="hero-figure grand-figure" key={result.grandTotal}>
+              {inr(result.grandTotal)}
+            </p>
             <p className="grand-sub">
               <span className="fig">{inr(Math.round(result.perSqft))}</span> per sqft · <span className="fig">{fmtSqft(result.derived.builtUpSqft)}</span> sqft
               built-up · {result.derived.floorsLabel} · {result.derived.cityName}

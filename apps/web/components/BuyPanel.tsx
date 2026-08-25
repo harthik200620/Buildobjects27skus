@@ -132,7 +132,7 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
           aria-label="Delivery pincode"
           placeholder="Pincode"
         />
-        <button type="button" className="btn-ghost h-10 px-4 text-[12.5px]" onClick={() => check(pin)} disabled={checking}>
+        <button type="button" className="btn btn-secondary btn--md" onClick={() => check(pin)} disabled={checking}>
           {checking ? 'Checking…' : 'Check'}
         </button>
       </div>
@@ -163,7 +163,7 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
       <div className="buy-ghost-row">
         <Link
           href={`/ar/${sku.code.toLowerCase()}`}
-          className="btn-ghost h-11 w-full text-[13.5px] font-medium flex items-center justify-center gap-2"
+          className="btn btn-secondary btn--block"
           style={{ border: '1px solid var(--accent)', color: 'var(--accent)' }}
         >
           <IconRoom size={18} /> View in your room (Live AR)
@@ -194,7 +194,7 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
           <span>{warrantyRow ? `Warranty ${warrantyRow.value}` : `${brand.name} warranty`}</span>
         </div>
       </div>
-      <p className="text-[10.5px] mt-4" style={{ color: 'var(--ink-3)' }}>
+      <p className="caption mt-4">
         {category.name} · SKU <span className="fig">{sku.code}</span>
         {sku.officialUrl ? (
           <>

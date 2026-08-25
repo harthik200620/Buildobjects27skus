@@ -228,7 +228,16 @@ export default function FilterRail(props: RailProps) {
 
   const renderContent = () => (
     <div className="filter-rail-body">
-      {/* Category Facet on Search Page */}
+      {/*
+        Category, as a filter rather than as navigation.
+
+        The search page used to render this AND the full thirty-five-category tree underneath it,
+        so the same nine names appeared twice in one 300 px column — once with a count that
+        narrowed the results in place, once as a link that threw the other filters away. This one
+        stays because it is the one that filters; the tree is still one click away in the header's
+        All menu, the strip under it and the footer, and it is what the home page is entirely made
+        of. The category PAGES keep the tree, because there the rail has no category facet at all.
+      */}
       {props.categoryFacet && props.categoryFacet.length > 0 && (
         <FacetSection title="Category">
           <ul className="facet-list">
@@ -282,12 +291,7 @@ export default function FilterRail(props: RailProps) {
       {/* ── Results Toolbar + Stock switch + Mobile trigger ───────────────── */}
       <div className="results-head">
         <div className="flex items-center gap-3 flex-wrap">
-          <button
-            type="button"
-            className="btn-ghost h-9 px-3 text-[12.5px] flex items-center gap-2 lg:hidden"
-            onClick={() => setOpen(true)}
-            aria-haspopup="dialog"
-          >
+          <button type="button" className="btn btn-secondary btn--sm flex items-center gap-2 lg:hidden" onClick={() => setOpen(true)} aria-haspopup="dialog">
             <IconFilter size={16} /> Filters{chips.length ? ` (${chips.length})` : ''}
           </button>
           <span className="results-count">
@@ -309,11 +313,20 @@ export default function FilterRail(props: RailProps) {
           )}
         </div>
 
-        <label className="flex items-center gap-2 text-[12px]" style={{ color: 'var(--color-ink-2)' }}>
-          <span className="hidden sm:inline font-medium">Sort by:</span>
+        {/*
+          The sort control carried `bg-white` — a Tailwind utility, which by this project's own
+          layering rule beats anything in the components layer. On a store whose ink is #eaf2f3
+          that put near-white text on a white box: a measured contrast ratio of 1.09:1, on the
+          control every listing page uses to reorder its results. It was invisible, and the
+          contrast gate could not see it because the gate reads stylesheets and this was a class
+          name in a component. `.input` is the select contract and already carries the chevron,
+          the focus ring and the dark ground.
+        */}
+        <label className="sort-by">
+          <span className="hidden sm:inline">Sort by:</span>
           <span className="relative">
             <select
-              className="field h-9 pl-3 pr-8 text-[12.5px] appearance-none cursor-pointer bg-white"
+              className="input input--sm sort-select"
               value={state.sort ?? 'relevance'}
               onChange={(e) => push({ sort: e.target.value as SortKey })}
               aria-label="Sort results"

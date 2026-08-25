@@ -1,7 +1,12 @@
 import {
+  Anvil,
+  Aperture,
   ArrowLeft,
   ArrowRight,
   ArrowUpDown,
+  Atom,
+  AudioLines,
+  BadgeCheck,
   Blocks,
   Bolt,
   Bookmark,
@@ -10,38 +15,54 @@ import {
   Camera,
   Cctv,
   Check,
+  CheckCheck,
   ChefHat,
   ChevronDown,
   ChevronRight,
   ChevronUp,
+  Circle,
   CircleCheck,
+  CircleDot,
   Cog,
+  Coins,
   Compass,
   Construction,
   Crosshair,
   DoorOpen,
   Download,
   Droplets,
+  Factory,
   Fence,
   FileClock,
   Files,
   FileText,
   FireExtinguisher,
+  Flame,
   FlaskConical,
   Frame,
+  Gauge,
+  Gift,
   GitCompare,
   Grid3x3,
+  Handshake,
   HardHat,
+  Hourglass,
   House,
+  IndianRupee,
   Info,
+  Leaf,
   Lightbulb,
   LogOut,
   MapPin,
   Menu,
   Minus,
+  Mountain,
+  Move3d,
   Package,
+  PackageOpen,
   PaintRoller,
   Palette,
+  PartyPopper,
   PencilRuler,
   Phone,
   Plus,
@@ -50,11 +71,16 @@ import {
   ReceiptIndianRupee,
   RefreshCw,
   RotateCcw,
+  RotateCw,
   Ruler,
+  Scale,
   Scan,
+  ScrollText,
   Search,
+  Settings2,
   Share2,
   ShieldCheck,
+  ShoppingCart,
   Shovel,
   SlidersHorizontal,
   Sofa,
@@ -62,16 +88,28 @@ import {
   Star,
   Store,
   SunMedium,
+  SwitchCamera,
+  Tag,
+  Target,
+  Telescope,
+  Thermometer,
+  Timer,
   Tractor,
   Trees,
   TriangleAlert,
+  Trophy,
   Truck,
   Umbrella,
   Upload,
   User,
+  Video,
+  Volume2,
+  VolumeX,
   Wallet,
   Wind,
+  Wrench,
   X,
+  Zap,
   ZoomIn,
 } from 'lucide-react';
 import type React from 'react';
@@ -134,6 +172,31 @@ export const IconZoom = icon(ZoomIn);
 export const IconCamera = icon(Camera);
 export const IconSpark = icon(Sparkles);
 export const IconRuler = icon(Ruler);
+export const IconRotateLeft = icon(RotateCcw);
+export const IconRotateRight = icon(RotateCw);
+export const IconMove = icon(Move3d);
+export const IconTarget = icon(Target);
+export const IconReticle = icon(CircleDot);
+export const IconSeeking = icon(Circle);
+export const IconVideo = icon(Video);
+export const IconFlipCamera = icon(SwitchCamera);
+export const IconSettings = icon(Settings2);
+export const IconVolumeOn = icon(Volume2);
+export const IconVolumeOff = icon(VolumeX);
+export const IconTrophy = icon(Trophy);
+export const IconGift = icon(Gift);
+export const IconCelebrate = icon(PartyPopper);
+export const IconDone = icon(CheckCheck);
+
+/* ── the BO layer: coins, the cart, the engine ─────────────────────────────
+   A currency and a shop need marks, and the three they had were 🪙, 🛒 and ⚡ — the same three
+   glyphs every other shop on the internet ships, rendered by the reader's operating system in
+   whatever colour and weight it feels like. An emoji is not an icon: it does not take
+   currentColor, it does not take a stroke width, it changes shape between Windows and Android,
+   and next to a 1.6 px Lucide stroke it reads as a sticker. These are the replacements. */
+export const IconCoin = icon(Coins);
+export const IconCart = icon(ShoppingCart);
+export const IconEngine = icon(Zap);
 
 /* ── the promises the store makes ──────────────────────────────────────── */
 export const IconStorefront = icon(Store);
@@ -237,5 +300,56 @@ export const CATEGORY_ICONS: Record<string, (p: P) => React.JSX.Element> = {
 
 export function CategoryIcon({ icon: key, ...p }: P & { icon: string }) {
   const C = CATEGORY_ICONS[key] ?? IconCement;
+  return <C {...p} />;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Specification-sheet group marks
+   ═══════════════════════════════════════════════════════════════════════════
+   One mark per heading on a product's specification sheet. The headings themselves come from
+   the database — registry/spec-groups.json decides them per category, so a bulb reads "Light
+   output" and cement reads "Strength & structure" — and only the mark is chosen here.
+
+   These were twenty-eight emoji: 📋 💡 ⚡ 🔭 🎥 📐 🔊 🌡️ 🏗️ 🪨 ⚖️ 🧪 🧱 ⚙️ 📏 ⏳ ⏱️ 💨 🔥 🛡️ 🏠
+   📜 ✅ ✨ 🛠️ 📦 💰 🤝. Twenty-eight pictures, at twenty-eight different optical weights, none
+   of them able to take the ink colour of the row they sat in. A specification sheet is the most
+   technical surface in the store — it is where a site engineer checks a compressive strength
+   against a drawing — and decorating it with party stickers is what made a serious document read
+   as a toy.
+   ═════════════════════════════════════════════════════════════════════════ */
+export const SPEC_GROUP_ICONS: Record<string, (p: P) => React.JSX.Element> = {
+  product_identity: icon(Tag),
+  light_output: icon(Lightbulb),
+  electrical: icon(Zap),
+  optical: icon(Telescope),
+  imaging: icon(Aperture),
+  measurement: icon(Ruler),
+  acoustic: icon(AudioLines),
+  thermal: icon(Thermometer),
+  strength: icon(Anvil),
+  surface: icon(Mountain),
+  physical: icon(Scale),
+  chemical: icon(FlaskConical),
+  composition: icon(Atom),
+  manufacturing: icon(Factory),
+  dimensions: icon(Ruler),
+  durability: icon(Hourglass),
+  cure: icon(Timer),
+  pressure: icon(Gauge),
+  performance: icon(Flame),
+  environmental: icon(Leaf),
+  application: icon(House),
+  standards: icon(ScrollText),
+  quality_control: icon(BadgeCheck),
+  appearance: icon(Sparkles),
+  installation: icon(Wrench),
+  packaging: icon(PackageOpen),
+  commercial: icon(IndianRupee),
+  warranty: icon(Handshake),
+};
+
+/** Any heading the registry adds later still gets a mark, rather than a hole in the column. */
+export function SpecGroupIcon({ group, ...p }: P & { group: string }) {
+  const C = SPEC_GROUP_ICONS[group] ?? IconDoc;
   return <C {...p} />;
 }

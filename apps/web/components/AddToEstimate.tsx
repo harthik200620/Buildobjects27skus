@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { addPick, readPicks } from '@/lib/picks';
+import { IconCheck } from './icons';
 import { useToast } from './Toast';
 
 /** "Add to Estimate": writes this device's picks, then toasts the running count. Sizes follow the button contract. */
@@ -46,7 +47,13 @@ export default function AddToEstimate({
     .join(' ');
   return (
     <button type="button" className={cls} onClick={onClick}>
-      {added ? 'Added ✓' : label}
+      {added ? (
+        <>
+          <IconCheck size={16} /> Added
+        </>
+      ) : (
+        label
+      )}
     </button>
   );
 }

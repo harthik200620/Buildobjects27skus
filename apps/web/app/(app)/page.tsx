@@ -1,14 +1,19 @@
 import Link from 'next/link';
 import CategoryTile from '@/components/CategoryTile';
+import CountUp from '@/components/home/CountUp';
+import PriceBoard, { type BoardItem } from '@/components/home/PriceBoard';
 import { IconArrow, IconClockCheck, IconEstimate, IconPin, IconRoom, IconShield, IconStorefront } from '@/components/icons';
 import { loadFlagshipSkus } from '@/lib/catalog';
 import { loadCatalogueCategories } from '@/lib/data';
-import { inr } from '@/lib/media';
+import { skuTitle, skuVariant } from '@/lib/label';
+import { inr, mediaUrl } from '@/lib/media';
 
 export const revalidate = 60;
 
 /** Tiles above the fold on a desktop grid; these load eagerly, the rest do not. */
 const EAGER = 4;
+/** How many stocked items rotate through the hero panel. Enough to feel deep, not a slideshow. */
+const BOARD = 6;
 
 /**
  * The front door shows CATEGORIES. Only categories.
@@ -17,67 +22,99 @@ const EAGER = 4;
  * this order. Cement is not one of them: CONCRETING is, and cement is a product on that sheet,
  * the same way tiles are a product on FLOORING and glass on DOORS & WINDOWS.
  *
- * Thirty-five tiles. Each opens its category, and the products are in there.
+ * The page is four moves and then the footer: a hero that states the offer and shows live stock
+ * beside it, the thirty-five tiles, everything on the shelf as one line each, and what every
+ * price on the site carries. Nothing on it is filler and nothing on it is a placeholder.
  */
 export default async function Home() {
   const [cats, skus] = await Promise.all([loadCatalogueCategories(), loadFlagshipSkus()]);
-  const productCount = cats.reduce((n, c) => n + c.products.length, 0);
   const liveCategories = cats.filter((c) => c.status === 'live').length;
+  const brands = new Set(skus.map((s) => s.brand)).size;
+
+  /* The hero panel takes the priced items, one per category, so six swaps show six different
+     parts of the shop rather than three cements in a row. */
+  const board: BoardItem[] = [];
+  const seenCategory = new Set<string>();
+  for (const s of skus) {
+    if (board.length >= BOARD) break;
+    if (s.selling_price === null || seenCategory.has(s.category)) continue;
+    seenCategory.add(s.category);
+    board.push({
+      sku: s.sku_code,
+      brand: s.brand,
+      name: skuTitle(s.name, s.brand, s.variant_label),
+      price: s.selling_price,
+      unit: s.unit,
+      image: s.hero_image_key ? mediaUrl(s.hero_image_key) : null,
+      blurhash: s.blurhash,
+      categoryName: s.category_name,
+    });
+  }
 
   return (
     <div className="page shell home">
       {/*
-       * The hero. The advertisement is not a banner on top of the page — it is part of the field
-       * the whole hero sits in: the teal wash, the construction grid and the glow are one
-       * composition, and the slot is a defined area inside it. It carries no label. A box that
-       * announces its own emptiness is worse than a considered space that simply holds its ground
-       * until there is a creative to put in it.
+       * The hero. The teal wash, the construction grid and the glow are one field, and the
+       * headline, the promise and the stock panel all sit inside it — the panel is part of the
+       * composition rather than a banner dropped on top of it.
        */}
       <section className="hero" aria-labelledby="home-h">
         <div className="hero-in">
-          <div>
-            <p className="hero-eyebrow">Building materials, delivered</p>
+          <div className="hero-say">
+            <p className="hero-eyebrow">Andhra Pradesh &amp; Telangana</p>
             <h1 id="home-h" className="hero-title">
-              Everything your site needs, at a price you can check.
+              Know what it costs before you order it.
             </h1>
             <p className="hero-lede">
-              Cement, steel, tiles, glass, lighting, solar and safety — from the brands your engineer already asks for. Every price is per unit with GST stated,
-              and you can see any product standing in your own room before you order it.
+              Cement, steel, tiles, glass, lighting, solar and safety, from the brands your engineer already writes into the specification. Every price is the
+              tax-paid price per unit, landed at your pincode — and you can stand any item in your own room at its true size before you commit to it.
             </p>
             <div className="hero-cta">
-              <Link href="/search" className="btn-primary btn--lg">
-                <IconStorefront size={16} /> Browse the store
+              <Link href="/search" className="btn btn-primary btn--lg">
+                <IconStorefront size={16} /> Browse the catalogue
               </Link>
-              <Link href="/estimate" className="btn-secondary btn--lg">
-                <IconEstimate size={16} /> What will my house cost?
+              <Link href="/estimate" className="btn btn-secondary btn--lg">
+                <IconEstimate size={16} /> Cost a whole house
               </Link>
             </div>
-            <p className="hero-facts">
-              <span>
-                <b>{cats.length}</b> categories
-              </span>
-              <span>
-                <b>{productCount}</b> products
-              </span>
-              <span>
-                <b>{skus.length}</b> items on the shelf
-              </span>
-            </p>
+            <dl className="hero-facts">
+              <div>
+                <dt>Categories</dt>
+                <dd>
+                  <CountUp to={cats.length} />
+                </dd>
+              </div>
+              <div>
+                <dt>Priced today</dt>
+                <dd>
+                  <CountUp to={skus.length} />
+                </dd>
+              </div>
+              <div>
+                <dt>Brands</dt>
+                <dd>
+                  <CountUp to={brands} />
+                </dd>
+              </div>
+            </dl>
           </div>
-          <div className="hero-ad" aria-hidden />
+
+          <div className="hero-board">
+            <PriceBoard items={board} />
+          </div>
         </div>
       </section>
 
       {/* ── the catalogue's top level: thirty-five categories, nothing below them ── */}
       <section className="sec" aria-labelledby="cats-h">
-        <div className="sec-head">
+        <div className="sec-head" data-reveal>
           <div>
             <h2 id="cats-h" className="sec-title">
-              Shop by category
+              Every category we carry
             </h2>
             <p className="sec-sub">
-              <span className="fig">{liveCategories}</span> of <span className="fig">{cats.length}</span> stocked today. Open one to see the products in it —
-              cement is in Concreting, tiles in Flooring, glass in Doors &amp; Windows.
+              <span className="fig">{liveCategories}</span> of <span className="fig">{cats.length}</span> are stocked today. The rest are shelves we are filling
+              — open one and it will tell you plainly where it stands.
             </p>
           </div>
           <Link href="/search" className="sec-more">
@@ -88,9 +125,11 @@ export default async function Home() {
         {cats.length === 0 ? (
           <EmptyShelves />
         ) : (
-          <ul className="cat-grid">
+          <ul className="cat-grid stagger">
             {cats.map((c, i) => (
-              <li key={c.slug}>
+              /* --i drives the stagger: four columns, so the modulo makes each row cascade
+                 left-to-right rather than the whole row arriving at once. */
+              <li key={c.slug} data-reveal="scale" style={{ '--i': i % 4 } as React.CSSProperties}>
                 <CategoryTile
                   href={`/c/${c.slug}`}
                   name={c.name}
@@ -98,13 +137,15 @@ export default async function Home() {
                   soon={c.status !== 'live'}
                   priority={i < EAGER}
                   meta={
-                    c.products.length > 0 ? (
+                    c.skuCount > 0 ? (
                       <>
-                        <span className="fig">{c.products.length}</span> {c.products.length === 1 ? 'product' : 'products'}
-                        <span className="cat-dot" aria-hidden>
-                          ·
-                        </span>
-                        <span className="fig">{c.skuCount}</span> on the shelf
+                        <span className="fig">{c.skuCount}</span> {c.skuCount === 1 ? 'item' : 'items'}
+                        {c.fromPrice !== null && (
+                          <>
+                            {' · from '}
+                            <span className="fig">{inr(c.fromPrice)}</span>
+                          </>
+                        )}
                       </>
                     ) : undefined
                   }
@@ -125,26 +166,30 @@ export default async function Home() {
        */}
       {skus.length > 0 && (
         <section className="sec" aria-labelledby="stock-h">
-          <div className="sec-head">
+          <div className="sec-head" data-reveal>
             <div>
               <h2 id="stock-h" className="sec-title">
                 On the shelf now
               </h2>
               <p className="sec-sub">
-                Every one of the <span className="fig">{skus.length}</span> items we stock today, priced per unit with GST stated.
+                All <span className="fig">{skus.length}</span> items we can price today, from <span className="fig">{brands}</span> brands. Each price is per
+                unit and includes GST.
               </p>
             </div>
             <Link href="/search" className="sec-more">
               Open in search <IconArrow size={14} style={{ display: 'inline', verticalAlign: -1 }} />
             </Link>
           </div>
-          <ul className="stock-strip">
-            {skus.map((s) => (
-              <li key={s.sku_code}>
-                <Link href={`/p/${s.sku_code.toLowerCase()}`} className="stock-chip">
-                  <span className="stock-chip-brand">{s.brand}</span>
-                  <span className="stock-chip-name">{s.name}</span>
-                  {s.selling_price !== null && <span className="stock-chip-price fig">{inr(s.selling_price)}</span>}
+          <ul className="stock-strip stagger">
+            {skus.map((s, i) => (
+              <li key={s.sku_code} data-reveal style={{ '--i': i % 4 } as React.CSSProperties}>
+                <Link href={`/p/${s.sku_code.toLowerCase()}`} className="stock-chip" title={s.name}>
+                  <span className="stock-chip-top">
+                    <span className="stock-chip-brand">{s.brand}</span>
+                    {s.selling_price !== null && <span className="stock-chip-price fig">{inr(s.selling_price)}</span>}
+                  </span>
+                  <span className="stock-chip-name">{skuTitle(s.name, s.brand, s.variant_label)}</span>
+                  {skuVariant(s.variant_label) && <span className="stock-chip-variant">{skuVariant(s.variant_label)}</span>}
                 </Link>
               </li>
             ))}
@@ -152,30 +197,45 @@ export default async function Home() {
         </section>
       )}
 
-      {/* ── the compact trust bar ────────────────────────────────────────── */}
-      <section className="trust-mini sec" aria-label="What every price carries">
-        <span>
-          <IconShield size={16} /> GST shown separately on every price
-        </span>
-        <span>
-          <IconClockCheck size={16} /> You can see where each price came from
-        </span>
-        <span>
-          <IconRoom size={16} /> See any product in your own room first
-        </span>
-        <span>
-          <IconPin size={16} /> Delivered to your pincode
-        </span>
+      {/* ── what every price on the site carries ─────────────────────────────
+          Four promises, each one a thing the store actually does rather than a virtue it claims
+          to have. "Trusted brands" and "quality materials" used to sit here; they say nothing a
+          competitor could not also say, which means they say nothing. */}
+      <section className="sec promises" aria-labelledby="promise-h">
+        <h2 id="promise-h" className="visually-hidden">
+          What every price on this site carries
+        </h2>
+        <ul className="promise-grid stagger">
+          {[
+            {
+              Icon: IconShield,
+              head: 'The price is the price',
+              body: 'What you see per unit is the tax-paid figure, and the GST rate inside it is printed next to it. Nothing is added at the end.',
+            },
+            {
+              Icon: IconClockCheck,
+              head: 'Every figure says where it came from',
+              body: 'Read from the brand, cross-checked, or filled from the class standard — each row on a specification tells you which.',
+            },
+            {
+              Icon: IconRoom,
+              head: 'See it in the room first',
+              body: 'Point your camera at the wall or the floor and the item stands there at true size, before you have spent anything.',
+            },
+            {
+              Icon: IconPin,
+              head: 'Landed at your pincode',
+              body: 'Set the pincode once in the header and every price on the site becomes the delivered price, not the yard price.',
+            },
+          ].map(({ Icon, head, body }, i) => (
+            <li key={head} data-reveal style={{ '--i': i } as React.CSSProperties}>
+              <Icon size={20} />
+              <h3>{head}</h3>
+              <p>{body}</p>
+            </li>
+          ))}
+        </ul>
       </section>
-
-      <footer className="foot">
-        <span>Build Objects</span>
-        <span className="flex gap-4">
-          <Link href="/estimate">BO Estimator</Link>
-          <Link href="/search">All products</Link>
-          <a href="/api/health">Status</a>
-        </span>
-      </footer>
     </div>
   );
 }

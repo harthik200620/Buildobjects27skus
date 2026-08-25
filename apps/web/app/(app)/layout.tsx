@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Header from '@/components/header/Header';
 import NavStrip from '@/components/header/NavStrip';
+import Reveal from '@/components/Reveal';
+import ScrollProgress from '@/components/ScrollProgress';
 import SkipLink from '@/components/SkipLink';
 import ToastHost from '@/components/Toast';
 import { allCategories } from '@/lib/catalog';
@@ -20,6 +22,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <>
       <SkipLink />
+      <ScrollProgress />
+      <Reveal />
       <Header pincode={session.pincode} phone={session.phone} regionName={svc.name} deliveryDays={svc.deliveryDays} categories={categories} />
       <NavStrip categories={categories} />
       <main id="main">{children}</main>

@@ -151,6 +151,8 @@ export interface CategoryGroup {
   products: CategoryCard[];
   skuCount: number;
   brandCount: number;
+  /** The lowest price in the category, so a tile can say "from ₹410" rather than "1 product". */
+  fromPrice: number | null;
   /**
    * A category has no photograph of its own, so it borrows one from a product inside it — a real
    * picture of cement says "concreting" better than a drawing of the idea would. The twenty-six
@@ -171,6 +173,12 @@ export interface CategoryGroup {
  * No migration: the rows keep their slugs, their art and their SKUs, and this decides which of
  * the two levels each one is.
  */
+/** The cheapest thing on a category's shelves, or null if nothing on them is priced. */
+function minPrice(products: CategoryCard[]): number | null {
+  const prices = products.map((c) => c.stats?.min_price).filter((n): n is number => typeof n === 'number' && n > 0);
+  return prices.length ? Math.min(...prices) : null;
+}
+
 export async function loadCatalogueCategories(): Promise<CategoryGroup[]> {
   const rows = await loadCategories();
   const bySlug = new Map(rows.map((r) => [r.slug, r]));
@@ -191,6 +199,7 @@ export async function loadCatalogueCategories(): Promise<CategoryGroup[]> {
       products,
       skuCount: products.reduce((n, c) => n + (c.stats?.sku_count ?? 0), 0),
       brandCount: products.reduce((n, c) => n + c.brandCount, 0),
+      fromPrice: minPrice(products),
       heroImageKey: hero,
       status: live ? ('live' as const) : ('upcoming' as const),
     };

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
+import { REVEAL_BOOTSTRAP } from '@/lib/reveal-bootstrap';
 import './globals.css';
 
 /**
@@ -55,7 +56,7 @@ const figure = localFont({
 export const metadata: Metadata = {
   title: { default: 'Build Objects', template: '%s · Build Objects' },
   description:
-    'Construction materials for India — every price per unit with GST shown, every product viewable at true size in your own room, and an estimator that tells you what your house will cost. Delivering today across Andhra Pradesh and Telangana.',
+    'Construction materials for India — tax-paid prices per unit with the GST rate stated, every product viewable at true size in your own room, and an estimator that tells you what your house will cost. Delivering today across Andhra Pradesh and Telangana.',
   applicationName: 'Build Objects',
 };
 
@@ -71,7 +72,27 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     // One appearance: deep teal and silver. No theme toggle, no prefers-color-scheme branch.
-    <html lang="en" className={`${display.variable} ${ui.variable} ${figure.variable}`}>
+    <html lang="en" className={`${display.variable} ${ui.variable} ${figure.variable}`} suppressHydrationWarning>
+      <head>
+        {/*
+         * Arms the scroll choreography before the browser paints, which is the only place it can
+         * go: an effect runs after paint, so the reader would see the page assembled and then
+         * blink out. It also arms the failsafe that un-hides everything if the observer never
+         * mounts — see components/Reveal.tsx.
+         *
+         * text/javascript on the server, text/plain on the client, per Next's own
+         * preventing-flash-before-hydration guide: it silences React's development warning about
+         * rendering <script>, and stops the script re-running on a client re-render.
+         * suppressHydrationWarning on <html> covers both that type swap and the class the script
+         * adds to the element React is managing.
+         */}
+        <script
+          type={typeof window === 'undefined' ? 'text/javascript' : 'text/plain'}
+          suppressHydrationWarning
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: a fixed string constant from lib/reveal-bootstrap.ts, with no interpolation of any kind — an inline <script> is the only thing that runs before first paint, and this is the shape Next's own preventing-flash-before-hydration guide prescribes
+          dangerouslySetInnerHTML={{ __html: REVEAL_BOOTSTRAP }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

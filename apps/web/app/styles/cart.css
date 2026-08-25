@@ -1,0 +1,322 @@
+/* -----------------------------------------------------------------------------
+   The cart.
+
+   Everything below used to live inline on the component as Tailwind arbitrary values, and the
+   numbers in them were the tell: text-[17px], text-[14px], text-[13.5px], text-[12.5px],
+   text-[12px], text-[11.5px] — six type sizes on one page, two of them at half a pixel, none of
+   them on the ramp. A reader cannot name that, but they can see it: it is why a page built this
+   way reads as assembled rather than as designed.
+
+   Three sizes now, from the ramp, and every measurement on the --s-* scale.
+   ---------------------------------------------------------------------------- */
+
+@layer components {
+  .cart {
+    display: grid;
+    gap: var(--s-5);
+    margin: var(--s-5) 0 var(--s-7);
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .cart {
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: var(--s-6);
+    }
+    /* The total follows you down a long list of lines rather than sitting at the bottom of it. */
+    .cart-side {
+      position: sticky;
+      top: calc(var(--header-h) + var(--s-4));
+    }
+  }
+  .cart-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+
+  .cart-panel {
+    padding: var(--s-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+  .cart-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--color-line-2);
+  }
+  .cart-panel-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font: 700 16px / 22px var(--font-ui);
+    color: var(--color-ink);
+  }
+  .cart-count {
+    min-width: 22px;
+    padding: 1px 7px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-line-2);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 700;
+    color: var(--color-ink-2);
+    text-align: center;
+  }
+  .cart-clear {
+    flex: none;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--color-ink-3);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
+  }
+  .cart-clear:hover {
+    background: var(--color-surface-2);
+    color: var(--color-danger);
+  }
+
+  /* ── the lines ──────────────────────────────────────────────────────────── */
+  .cart-lines {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .cart-line {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid var(--color-line-2);
+  }
+  .cart-line:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .cart-line-what {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .cart-line-name {
+    display: block;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--color-ink);
+    transition: color var(--dur-1) var(--ease-out);
+  }
+  .cart-line-name:hover {
+    color: var(--link);
+  }
+  .cart-line-unit {
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+  }
+  .cart-line-unit .fig {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  /* A fixed column so the line totals read down as a column rather than as a ragged edge. */
+  .cart-line-total {
+    flex: none;
+    min-width: 92px;
+    font-family: var(--font-figure);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
+    text-align: right;
+    color: var(--color-ink);
+  }
+  .cart-line-x {
+    flex: none;
+    color: var(--color-ink-3);
+    transition: color var(--dur-1) var(--ease-out);
+  }
+  .cart-line-x:hover {
+    color: var(--color-danger);
+  }
+  @media (max-width: 639.98px) {
+    .cart-line {
+      flex-wrap: wrap;
+      gap: var(--s-3);
+    }
+    .cart-line-what {
+      flex: 1 0 100%;
+    }
+    .cart-line-total {
+      flex: 1 1 auto;
+      text-align: left;
+    }
+  }
+
+  /* ── what the store will actually do ────────────────────────────────────── */
+  .cart-assure {
+    list-style: none;
+    margin: 0;
+    padding: var(--s-4);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-4);
+    background: var(--color-canvas-2);
+    border: 1px solid var(--color-line-2);
+    border-radius: var(--radius-lg);
+  }
+  .cart-assure li {
+    display: flex;
+    gap: var(--s-2);
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--color-ink-2);
+    text-wrap: pretty;
+  }
+  .cart-assure svg {
+    flex: none;
+    color: var(--color-brand);
+  }
+  @media (max-width: 767.98px) {
+    .cart-assure {
+      grid-template-columns: 1fr;
+      gap: var(--s-3);
+    }
+  }
+
+  /* ── the summary ────────────────────────────────────────────────────────── */
+  .cart-summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+  .cart-coins {
+    padding: var(--s-3);
+    border: 1px solid var(--color-coin-line);
+    border-radius: var(--radius-md);
+    background: var(--color-coin-wash);
+  }
+  .cart-coins-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    margin-bottom: var(--s-2);
+  }
+  .cart-coins-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 700;
+    color: var(--color-coin-ink);
+  }
+  .cart-coins-have {
+    font-size: 12px;
+    color: var(--color-ink-2);
+  }
+  .cart-coins-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+    cursor: pointer;
+  }
+  .cart-coins-opt .check {
+    margin-top: 1px;
+  }
+  .cart-coins-opt b {
+    color: var(--color-ink);
+  }
+  .cart-coins-none {
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--color-ink-2);
+  }
+
+  .cart-totals {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--color-line-2);
+  }
+  .cart-totals div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-size: 13px;
+    line-height: 18px;
+  }
+  .cart-totals dt {
+    color: var(--color-ink-2);
+  }
+  .cart-totals dd {
+    margin: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--color-ink);
+  }
+  .cart-totals .is-credit dt,
+  .cart-totals .is-credit dd {
+    color: var(--color-credit);
+  }
+  .cart-free {
+    color: var(--color-credit);
+  }
+
+  .cart-net {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+  .cart-net-label {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .cart-net-note {
+    font-size: 11px;
+    line-height: 16px;
+    color: var(--color-ink-3);
+  }
+  .cart-net-figure {
+    font-family: var(--font-figure);
+    font-size: 26px;
+    line-height: 32px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  .cart-net-figure.is-covered {
+    color: var(--color-credit);
+  }
+  .cart-covered {
+    margin-top: calc(var(--s-3) * -1);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    color: var(--color-credit);
+  }
+  .cart-to-estimate {
+    margin-top: calc(var(--s-4) * -1 + var(--s-2));
+  }
+}

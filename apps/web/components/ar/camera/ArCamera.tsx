@@ -30,7 +30,23 @@ import {
   type Vec3,
 } from '@buildobjects/ar-engine';
 import React from 'react';
-import { IconClose, IconDownload, IconRefresh, IconRuler, IconShare, IconSpark } from '@/components/icons';
+import {
+  IconCamera,
+  IconClose,
+  IconDownload,
+  IconFlipCamera,
+  IconMove,
+  IconRefresh,
+  IconReticle,
+  IconRotateLeft,
+  IconRotateRight,
+  IconRuler,
+  IconSeeking,
+  IconShare,
+  IconSpark,
+  IconTarget,
+  IconVideo,
+} from '@/components/icons';
 import { bestRegionScore, dataUrlToCanvas, download, productPixels } from '../photo';
 import { AnalysisScheduler, captureAnalysisFrame } from './analysisScheduler';
 import { buildCameraComposite } from './compositeFromCamera';
@@ -731,7 +747,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
               border: '1px solid var(--color-ar-line)',
             }}
           >
-            <span style={{ fontSize: 32 }}>🎥</span>
+            <IconVideo size={30} style={{ color: 'var(--color-brand)' }} />
           </div>
           <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: '#fff' }}>Start Live Camera AR</h3>
           <p style={{ fontSize: 14, color: 'var(--color-ink-2)', maxWidth: 380, marginBottom: 24, lineHeight: '20px' }}>
@@ -747,7 +763,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
               className="btn-primary h-12 px-7 text-sm font-semibold flex items-center gap-2 cursor-pointer shadow-xl rounded-full"
               onClick={() => startCameraStream(facingMode)}
             >
-              <span>📷</span> {camStatus === 'requesting' ? 'Starting…' : 'Enable Camera'}
+              <IconCamera size={17} /> {camStatus === 'requesting' ? 'Starting…' : 'Turn the camera on'}
             </button>
             <button type="button" className="ar-chip" onClick={onExit}>
               Use photo mode
@@ -759,7 +775,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       {/* 5. Surface prompt — the one instruction, in the rule's own words */}
       {!result && camStatus === 'streaming' && (
         <div className={`ar-surface-prompt${prompt.tone === 'ok' ? ' ar-surface-prompt--ok' : prompt.tone === 'seeking' ? ' ar-surface-prompt--seeking' : ''}`}>
-          <span aria-hidden>{prompt.tone === 'ok' ? '◉' : prompt.tone === 'seeking' ? '◌' : '⌖'}</span>
+          {prompt.tone === 'ok' ? <IconReticle size={14} /> : prompt.tone === 'seeking' ? <IconSeeking size={14} /> : <IconTarget size={14} />}
           <span>{!areaOk && prompt.tone === 'ok' ? areaPrompt(rule) : prompt.text}</span>
           {prompt.tone === 'ok' && match.confidence > 0 && <span style={{ opacity: 0.75 }}>{match.confidence}%</span>}
         </div>
@@ -769,7 +785,8 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       {!result && camStatus === 'streaming' && (
         <div style={{ position: 'absolute', top: '72px', left: '50%', transform: 'translateX(-50%)', zIndex: 4, pointerEvents: 'none' }}>
           <div className="ar-hud-glass ar-hud-pill text-[12px] opacity-90">
-            <span>💡 Tap to place · Drag to move · ↺ ↻ to rotate</span>
+            <IconMove size={13} />
+            <span>Tap to place · drag to move · rotate below</span>
           </div>
         </div>
       )}
@@ -837,7 +854,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
               }}
               aria-label="Switch camera"
             >
-              📷 Flip camera
+              <IconFlipCamera size={13} /> Flip camera
             </button>
             {scaleMult > 1.01 && (
               <button
@@ -926,10 +943,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
 
           <div className="ar-hud-glass ar-hud-pill">
             <button type="button" onClick={() => setYaw((y) => y - 15)} title="Rotate left">
-              ↺ 15°
+              <IconRotateLeft size={13} /> 15°
             </button>
             <button type="button" onClick={() => setYaw((y) => y + 15)} title="Rotate right">
-              ↻ 15°
+              <IconRotateRight size={13} /> 15°
             </button>
           </div>
 

@@ -1,0 +1,219 @@
+/* -----------------------------------------------------------------------------
+   The product gallery's chrome: the photos/model switch, the 3D stage and its badges.
+
+   Two of the values this replaces were referencing custom properties that are defined nowhere in
+   the app: `--rule-hairline` and `--ink-1`. An undefined custom property with no fallback makes
+   the whole declaration invalid, so a border set to the first of those was not drawing a hairline —
+   it was leaving the border at `currentcolor`, which on those buttons is the label's own ink. The
+   3D stage's border and the two inactive tab borders have therefore been the wrong colour for as
+   long as they have existed, and nothing failed loudly enough to say so.
+
+   Everything here is a defined token, so the same mistake cannot be made silently again: the
+   contrast gate reads these files and rejects a colour that is not one.
+   ---------------------------------------------------------------------------- */
+
+@layer components {
+  /* ── photos / model ─────────────────────────────────────────────────────── */
+  .gal-modes {
+    display: flex;
+    gap: var(--s-2);
+    margin-bottom: var(--s-3);
+  }
+  .gal-mode {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-ink-2);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+  .gal-mode:hover {
+    border-color: var(--color-line-strong);
+    color: var(--color-ink);
+  }
+  .gal-mode[aria-selected="true"] {
+    background: var(--color-teal-50);
+    border-color: var(--color-teal-600);
+    color: var(--color-ink);
+  }
+  .gal-mode svg {
+    flex: none;
+  }
+  .gal-mode-count,
+  .gal-mode-tag {
+    padding: 0 6px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    font-size: 11px;
+    line-height: 17px;
+    font-weight: 700;
+    color: var(--color-ink-2);
+  }
+  .gal-mode[aria-selected="true"] .gal-mode-count,
+  .gal-mode[aria-selected="true"] .gal-mode-tag {
+    background: var(--color-teal-100);
+    color: var(--color-ink);
+  }
+
+  /* ── the 3D stage ───────────────────────────────────────────────────────── */
+  .gal-3d {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    min-height: 380px;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-canvas-2);
+    user-select: none;
+  }
+  @media (min-width: 640px) {
+    .gal-3d {
+      min-height: 460px;
+    }
+  }
+  .gal-3d-canvas {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+  }
+  .gal-3d-canvas:active {
+    cursor: grabbing;
+  }
+
+  .gal-3d-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+    padding: var(--s-5);
+    text-align: center;
+    background: var(--scrim-ink);
+    backdrop-filter: blur(3px);
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .gal-3d-error {
+    font-size: 13px;
+    color: var(--color-danger);
+  }
+  @keyframes gal-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .gal-spinner {
+    width: 34px;
+    height: 34px;
+    border: 3px solid var(--color-line);
+    border-top-color: var(--color-brand);
+    border-radius: 50%;
+    animation: gal-spin 800ms linear infinite;
+  }
+  .is-spinning {
+    animation: gal-spin 2.4s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gal-spinner,
+    .is-spinning {
+      animation: none;
+    }
+  }
+
+  .gal-3d-badges {
+    position: absolute;
+    top: var(--s-3);
+    left: var(--s-3);
+    z-index: 10;
+    display: flex;
+    gap: var(--s-2);
+  }
+  .gal-badge {
+    padding: 3px 8px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-2);
+    backdrop-filter: blur(6px);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    color: var(--color-ink-2);
+  }
+  .gal-badge--scale {
+    background: var(--color-teal-50);
+    border-color: var(--color-teal-600);
+    color: var(--color-teal-300);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .gal-3d-bar {
+    position: absolute;
+    bottom: var(--s-3);
+    left: var(--s-3);
+    right: var(--s-3);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+  }
+  .gal-orbit {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-2);
+    backdrop-filter: blur(6px);
+    color: var(--color-ink-2);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+  .gal-orbit[aria-pressed="true"] {
+    background: var(--color-teal-50);
+    border-color: var(--color-teal-600);
+    color: var(--color-ink);
+  }
+  .gal-to-ar {
+    box-shadow: var(--shadow-2);
+  }
+
+  .gal-note {
+    margin-top: var(--s-2);
+  }
+  .gal-lightbox-note {
+    position: absolute;
+    bottom: var(--s-5);
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-3);
+  }
+}

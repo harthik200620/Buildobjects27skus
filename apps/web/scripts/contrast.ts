@@ -28,14 +28,27 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(here, '..', '..', '..');
 const THEME = path.join(ROOT, 'packages', 'ui', 'src', 'theme.css');
-const APP_CSS = [
-  path.join(here, '..', 'app', 'store.css'),
-  path.join(here, '..', 'app', 'legacy.css'),
-  path.join(here, '..', 'app', 'styles', 'home.css'),
-  path.join(here, '..', 'app', 'styles', 'listing.css'),
-  path.join(here, '..', 'app', 'styles', 'ar.css'),
-  path.join(here, '..', 'app', 'styles', 'estimator.css'),
-];
+/*
+ * Every stylesheet in the app, found rather than listed.
+ *
+ * This was six hardcoded paths, and the moment three new sheets were added — cart.css,
+ * gallery.css, spec.css — they were outside the gate without anything saying so. A guard whose
+ * coverage has to be remembered is a guard that silently shrinks: the whole point of the
+ * untokenised-colour check is that it is not possible to add a stray #fff anywhere in the app,
+ * and "anywhere" cannot be a list somebody keeps up to date by hand.
+ */
+const APP_DIR = path.join(here, '..', 'app');
+function stylesheets(dir: string, out: string[] = []): string[] {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, entry.name);
+    if (entry.isDirectory()) stylesheets(p, out);
+    /* globals.css is skipped: it is nothing but @import lines, and every file it names is
+       already in this walk. */
+    if (entry.isFile() && entry.name.endsWith('.css') && entry.name !== 'globals.css') out.push(p);
+  }
+  return out;
+}
+const APP_CSS = stylesheets(APP_DIR).sort();
 
 const css = fs.readFileSync(THEME, 'utf8');
 const tokens = new Map<string, string>();
@@ -169,6 +182,52 @@ for (const file of [...APP_CSS]) {
   }
 }
 if (!literals) console.log(`  none — every colour in ${APP_CSS.filter((f) => fs.existsSync(f)).length} stylesheets comes from a token`);
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Gate three: literal colours written as Tailwind utilities in components
+   ═══════════════════════════════════════════════════════════════════════════
+   The two gates above read stylesheets, and for a long time that was the whole
+   surface. It is not: this project's own layering rule is that "a utility class
+   on the same element still wins", which means `bg-white` in a .tsx beats every
+   token in theme.css — and neither gate could see it.
+
+   What that cost: the sort control on every listing page carried `bg-white`
+   alongside the app's ink colour. White text on a white box, 1.09:1, on the
+   control that reorders the results. It shipped, and it was found by measuring
+   a rendered page rather than by anything in this file.
+
+   So the same rule now applies to components. Tailwind's named colour utilities
+   are all literals by definition — there is no --color-white in the theme — and
+   an arbitrary value like text-[#fff] is one written longhand.
+   ═════════════════════════════════════════════════════════════════════════ */
+const TSX_LITERAL =
+  /\b(?:bg|text|border|ring|from|via|to|decoration|outline|shadow|fill|stroke|accent|caret|divide|placeholder)-(?:white|black|slate|gray|grey|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)\b(?:-\d{2,3})?|\b(?:bg|text|border|ring|fill|stroke)-\[(?:#|rgb|hsl)[^\]]*\]/g;
+
+function components(dir: string, out: string[] = []): string[] {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, entry.name);
+    if (entry.isDirectory() && entry.name !== 'node_modules' && !entry.name.startsWith('.')) components(p, out);
+    if (entry.isFile() && entry.name.endsWith('.tsx')) out.push(p);
+  }
+  return out;
+}
+
+console.log('\nliteral colours written as utilities in components:');
+let utilities = 0;
+for (const file of [...components(path.join(here, '..', 'app')), ...components(path.join(here, '..', 'components'))]) {
+  const src = fs
+    .readFileSync(file, 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, ' '))
+    .replace(/^\s*\/\/.*$/gm, '');
+  for (const [i, line] of src.split('\n').entries()) {
+    for (const m of line.matchAll(TSX_LITERAL)) {
+      utilities += 1;
+      failed += 1;
+      console.log(`✗ ${path.relative(ROOT, file)}:${i + 1}  ${m[0]}`);
+    }
+  }
+}
+if (!utilities) console.log('  none — no component paints a colour the theme does not name');
 
 if (failed) {
   console.error(`\n${failed} check(s) failed`);

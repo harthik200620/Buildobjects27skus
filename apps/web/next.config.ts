@@ -16,10 +16,36 @@ const nextConfig: NextConfig = {
     // rendition, so Next's optimiser never re-encodes a catalogue image.
     loader: 'custom',
     loaderFile: './lib/image-loader.ts',
-    deviceSizes: [240, 480, 1080, 2048],
-    /* 400 is the category renditions' smallest width; without it in the ladder next/image
-       never asks for one and every tile falls back to the 800 px card. */
-    imageSizes: [240, 400, 480],
+    /*
+     * These two lists must be DISJOINT. next/image concatenates them for any image that carries
+     * a `sizes` attribute and does not deduplicate, so 240 and 480 appearing in both was putting
+     * every category tile's srcset out with seven candidates of which two were literal repeats:
+     *
+     *   hero-thumb…?w=240 240w, hero-thumb…?w=240 240w, hero-thumb…?w=400 400w,
+     *   hero-card…?w=480 480w,  hero-card…?w=480 480w,  hero-gallery…?w=1080 1080w, …
+     *
+     * Next's own rule is that every imageSizes value is smaller than the smallest deviceSizes
+     * value, which the old pair also broke (480 was in both, and 400 sat above 240). Split at
+     * 480: the small end covers thumbnails and tiles, the large end covers viewport-width art.
+     */
+    /*
+     * 800 is here because of a hole that cost the home page most of its image weight.
+     *
+     * The ladder ran 480 → 1080 with nothing between. A category tile renders about 254 CSS px
+     * wide in a four-column grid, and on a retina screen — every modern laptop, every phone —
+     * that is 508 device pixels. The smallest candidate covering 508 was 1080, which the loader
+     * resolves to `hero-gallery`: a 1600 px file weighing 131 KB, fetched to fill a 254 px box.
+     * Thirty-five of them. The measurement that caught it read 401 KB of images on a page whose
+     * tiles need about 90 KB in total.
+     *
+     * 800 maps to `hero-card` (46 KB) and covers everything up to a 3× phone. The gap was
+     * invisible at devicePixelRatio 1, which is why it survived: it only appears on the hardware
+     * everybody actually owns.
+     */
+    deviceSizes: [480, 800, 1080, 2048],
+    /* 400 is the category renditions' smallest width; without it next/image never asks for one
+       and every tile falls back to the 800 px card. 160 is the hero panel's product shot. */
+    imageSizes: [160, 240, 400],
   },
   experimental: {
     optimizePackageImports: ['three'],

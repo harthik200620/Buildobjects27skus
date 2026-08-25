@@ -4,12 +4,19 @@ import Link from 'next/link';
 import React from 'react';
 import BoCoinWheel from '@/components/BoCoinWheel';
 import BoCartMark from '@/components/cart/BoCartMark';
-import { IconClose } from '@/components/icons';
+import { IconClose, IconCoin, IconEngine } from '@/components/icons';
 import { useDismiss } from '@/components/useDismiss';
 import { type CoinActivity, getBoCoinHistory, getBoCoins } from '@/lib/coins';
+import { inr } from '@/lib/media';
 import { readPicks } from '@/lib/picks';
 
-/** BO Cart & BO Coins Wallet popover action in header. */
+/**
+ * The two things on the right of the header: the coin balance, and the cart.
+ *
+ * Everything visible here used to be written inline — a 320 px popover with an 18 px radius, a
+ * 145deg gradient, a 12.5 px button and a 🪙 in three places. It is now `.wallet-*` in store.css,
+ * on the token scale, with the coin drawn rather than typed. Behaviour is unchanged.
+ */
 export default function CartButton() {
   const [count, setCount] = React.useState(0);
   const [coins, setCoins] = React.useState(0);
@@ -40,122 +47,69 @@ export default function CartButton() {
 
   return (
     <>
-      <div className="flex items-center gap-2" ref={walletRef} style={{ position: 'relative' }}>
-        {/* BO Coins Balance Interactive Trigger */}
+      <div className="header-right" ref={walletRef}>
         <button
           type="button"
           onClick={() => setWalletOpen((o) => !o)}
-          className="hidden lg:flex items-center gap-1.5 text-[12px] font-bold text-[var(--color-coin-ink)] bg-[var(--color-coin-wash)] border border-[var(--color-coin-line)] px-3 py-1.5 rounded-full hover:bg-[var(--color-coin-wash-strong)] transition-all cursor-pointer shadow-sm"
+          className="coin-pill"
           aria-expanded={walletOpen}
-          aria-label={`BO Coins Balance: ${coins} coins`}
+          aria-label={`BO Coins balance: ${coins} coins`}
         >
-          <span style={{ fontSize: '14px' }}>🪙</span>
-          <span>{coins} Coins</span>
+          <IconCoin size={15} />
+          <span className="fig">{coins}</span>
+          <span className="coin-pill-word">Coins</span>
         </button>
 
-        {/* BO Coins Wallet Popover */}
         {walletOpen && (
-          <div
-            className="popover fade-in"
-            style={{
-              position: 'absolute',
-              top: 'calc(100% + 8px)',
-              right: '0',
-              width: '320px',
-              background: 'var(--color-surface-2)',
-              border: '1px solid var(--color-coin-line)',
-              borderRadius: '18px',
-              padding: '18px',
-              boxShadow: '0 20px 40px var(--scrim-ink), 0 0 25px var(--color-coin-wash)',
-              zIndex: 900,
-            }}
-          >
-            {/* Header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ fontSize: '18px' }}>🪙</span>
-                <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-ink)' }}>BO Coins Wallet</span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setWalletOpen(false)}
-                style={{ background: 'none', border: 'none', color: 'var(--color-ink-3)', cursor: 'pointer', padding: '2px' }}
-                aria-label="Close wallet"
-              >
+          <div className="wallet fade-in" role="dialog" aria-label="BO Coins wallet">
+            <div className="wallet-head">
+              <h2 className="wallet-title">
+                <IconCoin size={17} /> BO Coins
+              </h2>
+              <button type="button" onClick={() => setWalletOpen(false)} className="wallet-close" aria-label="Close wallet">
                 <IconClose size={15} />
               </button>
             </div>
 
-            {/* Balance Card */}
-            <div
-              style={{
-                background: 'linear-gradient(145deg, var(--color-coin-wash-strong), var(--color-coin-wash))',
-                border: '1px solid var(--color-coin-line)',
-                borderRadius: '14px',
-                padding: '14px',
-                marginBottom: '14px',
-              }}
-            >
-              <div style={{ fontSize: '11px', color: 'var(--color-ink-3)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
-                Available Balance
-              </div>
-              <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--color-coin-ink)', marginTop: '2px' }}>🪙 {coins} BO Coins</div>
-              <div style={{ fontSize: '12px', color: 'var(--color-ink-2)', marginTop: '3px' }}>
-                Equivalent Value: <b>₹{coins} instant discount</b>
-              </div>
+            <div className="wallet-balance">
+              <p className="wallet-balance-label">Balance</p>
+              <p className="wallet-balance-figure fig">
+                {coins} <span>{coins === 1 ? 'coin' : 'coins'}</span>
+              </p>
+              <p className="wallet-balance-worth">
+                Worth <b className="fig">{inr(coins)}</b> off your next order
+              </p>
             </div>
 
-            {/* Explanatory Note */}
-            <p style={{ fontSize: '12px', color: 'var(--color-ink-3)', lineHeight: '17px', marginBottom: '14px' }}>
-              1 BO Coin = ₹1 cash discount. Check &quot;Redeem BO Coins&quot; in your BO Cart during checkout to apply savings.
-            </p>
+            <p className="wallet-note">One coin is one rupee off. Redeem them in the cart before you check out; they never expire.</p>
 
-            {/* Activity History */}
             {history.length > 0 && (
-              <div style={{ marginBottom: '14px', borderTop: '1px solid var(--color-line)', paddingTop: '10px' }}>
-                <div
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    color: 'var(--color-ink-3)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
-                    marginBottom: '8px',
-                  }}
-                >
-                  Recent Transactions
-                </div>
-                <div style={{ maxHeight: '120px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div className="wallet-history">
+                <h3 className="wallet-history-h">Recent</h3>
+                <ul className="wallet-history-list">
                   {history.slice(0, 4).map((h) => (
-                    <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
-                      <span style={{ color: 'var(--color-ink-2)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {h.description}
-                      </span>
-                      <span style={{ fontWeight: 700, color: h.amount > 0 ? 'var(--color-credit)' : 'var(--color-debit)' }}>
-                        {h.amount > 0 ? `+${h.amount}` : h.amount}
-                      </span>
-                    </div>
+                    <li key={h.id}>
+                      <span className="wallet-history-what">{h.description}</span>
+                      <span className={`fig wallet-history-amt ${h.amount > 0 ? 'is-credit' : 'is-debit'}`}>{h.amount > 0 ? `+${h.amount}` : h.amount}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             )}
 
-            {/* Action Buttons */}
             <button
               type="button"
-              className="btn-primary btn--block"
-              style={{ height: '38px', fontSize: '12.5px' }}
+              className="btn btn-primary btn--sm btn--block"
               onClick={() => {
                 setWalletOpen(false);
                 setWheelOpen(true);
               }}
             >
-              ⚡ Activate BO Engine
+              <IconEngine size={15} /> Spin the BO Engine
             </button>
           </div>
         )}
 
-        {/* BO Cart Button */}
         <Link
           href="/cart"
           className="header-action header-action--cart"
@@ -174,7 +128,6 @@ export default function CartButton() {
         </Link>
       </div>
 
-      {/* Kinetic Wheel Popover */}
       {wheelOpen && <BoCoinWheel forceOpen onClose={() => setWheelOpen(false)} />}
     </>
   );

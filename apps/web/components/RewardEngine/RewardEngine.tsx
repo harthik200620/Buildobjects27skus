@@ -2,6 +2,7 @@
 
 import { formatNumber } from '@buildobjects/catalog';
 import React from 'react';
+import { IconClose, IconCoin, IconEngine, IconSettings, IconVolumeOff, IconVolumeOn } from '@/components/icons';
 import { addBoCoins, getBoCoins, resetWheelStatus } from '@/lib/coins';
 import HouseScene from './HouseScene';
 import { triggerHaptic } from './hapticEngine';
@@ -213,7 +214,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
           <div
             style={{
               fontSize: '18px',
-              fontWeight: 900,
+              fontWeight: 700,
               color: 'var(--color-canvas)',
               letterSpacing: '-0.02em',
               display: 'flex',
@@ -258,11 +259,11 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            <span style={{ fontSize: '15px' }}>🪙</span>
+            <IconCoin size={15} style={{ color: 'var(--color-canvas)' }} />
             <span
               style={{
                 fontSize: '16px',
-                fontWeight: 900,
+                fontWeight: 700,
                 color: 'var(--color-canvas)',
                 fontVariantNumeric: 'tabular-nums',
               }}
@@ -272,7 +273,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
             <span
               style={{
                 fontSize: '11px',
-                fontWeight: 800,
+                fontWeight: 700,
                 color: 'var(--color-teal-600)',
                 letterSpacing: '0.08em',
               }}
@@ -301,7 +302,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
             }}
             title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
           >
-            {isMuted ? '🔇' : '🔊'}
+            {isMuted ? <IconVolumeOff size={16} /> : <IconVolumeOn size={16} />}
           </button>
 
           {/* Close for Modal Mode */}
@@ -325,7 +326,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               }}
               title="Close"
             >
-              ✕
+              <IconClose size={16} />
             </button>
           )}
         </div>
@@ -369,7 +370,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
             border: 'none',
             color: 'var(--color-ink)',
             fontSize: '15px',
-            fontWeight: 800,
+            fontWeight: 700,
             letterSpacing: '0.04em',
             cursor: isBusy ? 'default' : 'pointer',
             boxShadow: isBusy ? 'none' : '0 10px 25px rgb(30 74 85 / 40%), 0 2px 6px rgba(0,0,0,0.1)',
@@ -380,88 +381,99 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
             transition: 'all 0.2s ease',
           }}
         >
-          <span>⚡</span>
+          <IconEngine size={16} />
           <span>{buttonText}</span>
         </button>
 
         <div style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 600 }}>1 BO Coin = ₹1 cash discount in your BO Cart at checkout</div>
       </div>
 
-      {/* ── Discreet Developer QA Panel ─────────────────────────── */}
-      <div style={{ position: 'absolute', bottom: '12px', right: '16px', zIndex: 100 }}>
-        <button
-          type="button"
-          onClick={() => setShowDebug((d) => !d)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'rgba(0,0,0,0.25)',
-            fontSize: '14px',
-            cursor: 'pointer',
-            padding: '4px',
-          }}
-          title="Toggle QA Test Panel"
-        >
-          ⚙️
-        </button>
-
-        {showDebug && (
-          <div
+      {/*
+        The QA panel — development only.
+        
+        It was shipping. A 23 px button at 25% black, captioned "Toggle QA Test Panel", sat in the
+        corner of a modal that opens itself for every first-time visitor, and behind it was a
+        FORCE ROOM row that hands out coins on demand. Internal tooling in front of customers is
+        bad on its own; internal tooling that mints the store's currency is worse. The condition
+        is checked at render rather than at import so the whole panel is dead code in a
+        production bundle.
+      */}
+      {process.env.NODE_ENV !== 'production' && (
+        <div style={{ position: 'absolute', bottom: '12px', right: '16px', zIndex: 100 }}>
+          <button
+            type="button"
+            onClick={() => setShowDebug((d) => !d)}
             style={{
-              position: 'absolute',
-              bottom: '30px',
-              right: '0',
-              background: 'var(--color-ink)',
-              border: '1px solid var(--color-ink-2)',
-              borderRadius: '12px',
-              padding: '8px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-              whiteSpace: 'nowrap',
+              background: 'none',
+              border: 'none',
+              color: 'rgba(0,0,0,0.25)',
+              fontSize: '14px',
+              cursor: 'pointer',
+              padding: '4px',
             }}
+            title="Toggle QA Test Panel"
           >
-            <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 800 }}>FORCE ROOM:</span>
-            {ROOM_WAYPOINTS.map((r) => (
+            <IconSettings size={15} />
+          </button>
+
+          {showDebug && (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '30px',
+                right: '0',
+                background: 'var(--color-ink)',
+                border: '1px solid var(--color-ink-2)',
+                borderRadius: '12px',
+                padding: '8px 12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 700 }}>FORCE ROOM:</span>
+              {ROOM_WAYPOINTS.map((r) => (
+                <button
+                  key={r.value}
+                  type="button"
+                  onClick={() => startTokenJourney(r.value)}
+                  disabled={isBusy}
+                  style={{
+                    background: 'var(--color-teal-600)',
+                    border: 'none',
+                    borderRadius: '6px',
+                    color: 'var(--color-ink)',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    padding: '4px 8px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {r.value}
+                </button>
+              ))}
               <button
-                key={r.value}
                 type="button"
-                onClick={() => startTokenJourney(r.value)}
-                disabled={isBusy}
+                onClick={handleReset}
                 style={{
-                  background: 'var(--color-teal-600)',
+                  background: 'var(--color-ink-3)',
                   border: 'none',
                   borderRadius: '6px',
                   color: 'var(--color-ink)',
                   fontSize: '11px',
-                  fontWeight: 800,
+                  fontWeight: 700,
                   padding: '4px 8px',
                   cursor: 'pointer',
                 }}
               >
-                {r.value}
+                RESET
               </button>
-            ))}
-            <button
-              type="button"
-              onClick={handleReset}
-              style={{
-                background: 'var(--color-ink-3)',
-                border: 'none',
-                borderRadius: '6px',
-                color: 'var(--color-ink)',
-                fontSize: '11px',
-                fontWeight: 700,
-                padding: '4px 8px',
-                cursor: 'pointer',
-              }}
-            >
-              RESET
-            </button>
-          </div>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

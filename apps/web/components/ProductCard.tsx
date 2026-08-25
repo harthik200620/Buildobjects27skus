@@ -1,5 +1,6 @@
 import type { SkuSearchDoc } from '@buildobjects/catalog';
 import Link from 'next/link';
+import { skuTitle } from '@/lib/label';
 import { mediaUrl } from '@/lib/media';
 import AddToEstimate from './AddToEstimate';
 import Highlight from './Highlight';
@@ -71,9 +72,14 @@ export default function ProductCard({
       </div>
       <div className="prod-body">
         {!compact && <span className="prod-brand">{sku.brand}</span>}
+        {/* The brand chip above has already said "UltraTech Cement", and the search index glues
+            `variant_label` onto `name` — so printing `name` whole under it gave every card the
+            brand twice and the pack size twice. lib/label strips both back off for display; the
+            full string stays on the link as its title, and a search hit still highlights against
+            the untouched `name`. */}
         <h3 className="prod-title">
-          <Link href={href}>
-            <Highlight formatted={formatted} fallback={sku.name} />
+          <Link href={href} title={sku.name}>
+            <Highlight formatted={formatted} fallback={compact ? sku.name : skuTitle(sku.name, sku.brand, sku.variant_label)} />
           </Link>
         </h3>
         {!compact && specs && (

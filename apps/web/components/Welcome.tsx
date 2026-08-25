@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { IconCheck, IconClockCheck, IconPin, IconRoom, IconStorefront } from './icons';
+import { IconArrow, IconClockCheck, IconPin, IconRoom, IconShield } from './icons';
 import Wordmark from './Wordmark';
 
 /**
@@ -92,11 +92,19 @@ export default function Welcome({
     if (step === 'verify') otpRef.current?.focus();
   }, [step]);
 
+  /*
+   * Four things the store does, in the words of what it does.
+   *
+   * Two of these used to read "Quality materials" and "Trusted brands" — claims that every
+   * building-materials seller on the internet makes, that nobody can check, and that therefore
+   * carry no information at all. A promise a competitor can copy verbatim is not a promise. What
+   * replaces them is specific enough to be wrong, which is what makes it worth printing.
+   */
   const marks = [
-    { Icon: IconCheck, label: 'Quality materials' },
-    { Icon: IconStorefront, label: 'Trusted brands' },
-    { Icon: IconRoom, label: 'See it in your room' },
-    { Icon: IconPin, label: 'Landed to you' },
+    { Icon: IconShield, label: 'Tax-paid prices' },
+    { Icon: IconClockCheck, label: 'Every price dated and sourced' },
+    { Icon: IconRoom, label: 'True-size view in your room' },
+    { Icon: IconPin, label: 'Landed at your pincode' },
   ];
 
   return (
@@ -125,9 +133,9 @@ export default function Welcome({
             <Wordmark size={44} variant="word" />
           </h1>
           <p className="welcome-lede">
-            Construction materials for India, from the brands your engineer already asks for. Every price is per unit with GST shown, landed at your pincode —
-            and you can see any product at its true size in your own room before you buy. Delivering today across Andhra Pradesh and Telangana.
+            Construction materials from the brands your engineer already writes into the specification, priced per unit and landed at your pincode.
           </p>
+          <p className="welcome-lede welcome-lede--2">Delivering today across Andhra Pradesh and Telangana.</p>
 
           <div className="welcome-steps">
             {step === 'start' && (
@@ -137,9 +145,9 @@ export default function Welcome({
                     there is no password and no separate registration. Two buttons that do the
                     same thing ask the visitor to make a choice that does not exist. */}
                 <button type="button" onClick={() => onStep('deliver')} className="btn btn-primary btn--lg btn--block">
-                  Continue
+                  Set my pincode and enter <IconArrow size={16} />
                 </button>
-                <p className="caption">No password. We ask for your pincode so every price is landed, then a mobile number and a one-time code.</p>
+                <p className="caption">No password. Your pincode first, so every price you see is the landed one — then a mobile number and a one-time code.</p>
                 <p className="caption">
                   Demo sign-in: any 10-digit mobile number, one-time code <span className="fig">000000</span>.
                 </p>

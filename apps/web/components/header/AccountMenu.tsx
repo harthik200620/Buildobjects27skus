@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import BoCoinWheel from '@/components/BoCoinWheel';
-import { IconCheck, IconEstimate, IconLogout, IconUser } from '@/components/icons';
+import { IconCart, IconCheck, IconCoin, IconEngine, IconEstimate, IconLogout, IconUser } from '@/components/icons';
 import { useDismiss } from '@/components/useDismiss';
 import { getBoCoins, getProfileName, setProfileName as saveProfileName } from '@/lib/coins';
+import { inr } from '@/lib/media';
 
 /** BO Account Menu: Profile Name, Mobile Number, BO Coins Balance, BO Cart, and Logout. */
 export default function AccountMenu({ phone }: { phone: string }) {
@@ -77,80 +78,65 @@ export default function AccountMenu({ phone }: { phone: string }) {
           <span className="header-action-label">BO Account</span>
         </button>
         {open && (
-          <div className="popover menu fade-in" role="menu" aria-label="BO Account" style={{ minWidth: '280px', padding: '16px 14px' }}>
-            {/* 1. Profile Name & Edit */}
-            <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid var(--rule-soft)' }}>
+          <div className="popover menu account-menu fade-in" role="menu" aria-label="BO Account">
+            {/* 1. Who is signed in, and the one thing they can change about it. */}
+            <div className="account-who">
               {!editing ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--ink)' }}>{profileName}</div>
-                    <div style={{ fontSize: '12px', color: 'var(--ink-2)', marginTop: '2px' }}>{prettyPhone}</div>
+                <div className="account-who-row">
+                  <div className="account-who-id">
+                    <p className="account-who-name">{profileName}</p>
+                    <p className="account-who-phone fig">{prettyPhone}</p>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setEditing(true)}
-                    style={{ fontSize: '11.5px', color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 6px' }}
-                  >
+                  <button type="button" onClick={() => setEditing(true)} className="account-edit">
                     Edit
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSaveName} style={{ display: 'flex', gap: '6px' }}>
+                <form onSubmit={handleSaveName} className="account-edit-form">
                   <input
                     type="text"
-                    className="field text-[12.5px] h-8 px-2"
+                    className="input input--sm"
                     value={nameInput}
                     onChange={(e) => setNameInput(e.target.value)}
-                    placeholder="Your Name / Company"
+                    placeholder="Your name or firm"
+                    aria-label="Your name or firm"
                   />
-                  <button type="submit" className="btn-primary h-8 px-3 text-[12px]">
+                  <button type="submit" className="btn btn-primary btn--sm btn--icon" aria-label="Save name">
                     <IconCheck size={14} />
                   </button>
                 </form>
               )}
             </div>
 
-            {/* 2. BO Coins Balance Card */}
-            <div
-              style={{
-                background: 'var(--color-coin-wash)',
-                border: '1px solid var(--color-coin-line)',
-                borderRadius: '10px',
-                padding: '10px 12px',
-                marginBottom: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
+            {/* 2. What the account is worth today. */}
+            <div className="menu-coins">
               <div>
-                <div style={{ fontSize: '11px', color: 'var(--ink-2)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 600 }}>
-                  BO Coins Balance
-                </div>
-                <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-coin)', marginTop: '2px' }}>🪙 {coins} Coins</div>
-                <div style={{ fontSize: '11px', color: 'var(--ink-3)' }}>Worth ₹{coins} off in BO Cart</div>
+                <p className="menu-coins-label">BO Coins</p>
+                <p className="menu-coins-figure fig">
+                  <IconCoin size={15} /> {coins}
+                </p>
+                <p className="menu-coins-worth">Worth {inr(coins)} in the cart</p>
               </div>
               <button
                 type="button"
-                className="btn-primary btn--sm"
-                style={{ fontSize: '11.5px', padding: '0 10px' }}
+                className="btn btn-primary btn--sm"
                 onClick={() => {
                   setOpen(false);
                   setShowWheel(true);
                 }}
               >
-                ⚡ BO Engine
+                <IconEngine size={14} /> Earn more
               </button>
             </div>
 
             {/* 3. Navigation Links */}
             <Link href="/cart" className="menu-row" role="menuitem" onClick={() => setOpen(false)}>
-              🛒 BO Cart & Discounts
+              <IconCart size={18} /> BO Cart
             </Link>
             <Link href="/estimate" className="menu-row" role="menuitem" onClick={() => setOpen(false)}>
               <IconEstimate size={18} /> BO Estimator
             </Link>
-            <button type="button" className="menu-row" role="menuitem" onClick={logout} style={{ marginTop: '4px', color: 'var(--ink-2)' }}>
+            <button type="button" className="menu-row account-logout" role="menuitem" onClick={logout}>
               <IconLogout size={18} /> Log out
             </button>
           </div>

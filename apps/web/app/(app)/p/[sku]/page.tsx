@@ -1,7 +1,9 @@
+import { categoryName, categoryOf } from '@buildobjects/catalog';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import BrandStrip from '@/components/BrandStrip';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import BrochureViewer from '@/components/BrochureViewer';
 import BuyPanel from '@/components/BuyPanel';
 import Gallery from '@/components/Gallery';
@@ -39,24 +41,24 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   return (
     <div className="page shell">
-      <nav className="crumbs text-[12px] mt-5" aria-label="Breadcrumb">
-        <Link href="/">Home</Link>
-        <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
-          /
-        </span>
-        <Link href={`/c/${data.category.slug}`}>{data.category.name}</Link>
-        <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
-          /
-        </span>
-        <span aria-current="page">{data.brand.name}</span>
-      </nav>
+      {/* Home / Concreting / Cement / UltraTech — the whole tree, not the last two rungs of it.
+          The trail used to jump from Home straight to the product's own row, so a reader who
+          arrived from a search had no way back up to the category the item sits in. */}
+      <Breadcrumbs
+        trail={[
+          { label: 'Home', href: '/' },
+          { label: categoryName(categoryOf(data.category.slug)), href: `/c/${categoryOf(data.category.slug)}` },
+          ...(categoryOf(data.category.slug) !== data.category.slug ? [{ label: data.category.name, href: `/c/${data.category.slug}` }] : []),
+          { label: data.brand.name },
+        ]}
+      />
 
       <div className="pdp mt-4">
         <div>
           <Gallery images={data.images} name={`${data.brand.name} ${data.product.name}`} skuCode={data.sku.code} dims={data.dims} />
 
           {/* ── key details ────────────────────────────────────────────── */}
-          <section className="sec" aria-labelledby="key-h">
+          <section className="sec" aria-labelledby="key-h" data-reveal>
             <div className="sec-head">
               <h2 id="key-h" className="sec-title">
                 Key details
@@ -79,7 +81,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </section>
 
           {/* ── description ────────────────────────────────────────────── */}
-          <section className="sec" aria-labelledby="desc-h">
+          <section className="sec" aria-labelledby="desc-h" data-reveal>
             <div className="sec-head">
               <h2 id="desc-h" className="sec-title">
                 Description
@@ -89,7 +91,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </section>
 
           {/* ── brochure ───────────────────────────────────────────────── */}
-          <section className="sec" aria-labelledby="doc-h">
+          <section className="sec" aria-labelledby="doc-h" data-reveal>
             <div className="sec-head">
               <h2 id="doc-h" className="sec-title">
                 Brochure & datasheet
@@ -101,10 +103,10 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </section>
 
           {/* ── show more: the full sheet ──────────────────────────────── */}
-          <section className="sec" aria-labelledby="sheet-h">
+          <section className="sec" aria-labelledby="sheet-h" data-reveal>
             <div className="sec-head">
               <h2 id="sheet-h" className="sec-title">
-                Show more — the full specification sheet
+                Every figure we hold
               </h2>
             </div>
             <div className="mt-2">
@@ -113,7 +115,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </section>
 
           {/* ── brand ──────────────────────────────────────────────────── */}
-          <section className="sec" aria-labelledby="brand-h">
+          <section className="sec" aria-labelledby="brand-h" data-reveal>
             <div className="sec-head">
               <h2 id="brand-h" className="sec-title">
                 About {data.brand.name}

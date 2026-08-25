@@ -239,65 +239,49 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
   return (
     <div className="gallery">
       {/* ── Mode Switcher Tab Bar ────────────────────────────────────────── */}
+      {/* Photos or the model. A two-way switch is a tab list, so it is built as one — which is
+          also what gives it arrow-key navigation for free in every screen reader. */}
       {skuCode && (
-        <div className="flex items-center gap-2 mb-3">
-          <button
-            type="button"
-            onClick={() => setViewMode('photos')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
-              viewMode === 'photos'
-                ? 'bg-[var(--color-teal-50)] border border-[var(--color-teal-600)] text-[var(--color-brand)] shadow-sm'
-                : 'bg-[var(--card-face)] border border-[var(--rule-hairline)] text-[var(--ink-2)] hover:text-[var(--ink-1)]'
-            }`}
-          >
+        <div className="gal-modes" role="tablist" aria-label="How to view this product">
+          <button type="button" role="tab" aria-selected={viewMode === 'photos'} className="gal-mode" onClick={() => setViewMode('photos')}>
             <IconCamera size={14} />
-            <span>Photos ({n})</span>
+            <span>Photos</span>
+            <span className="gal-mode-count fig">{n}</span>
           </button>
-
-          <button
-            type="button"
-            onClick={() => setViewMode('3d')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
-              viewMode === '3d'
-                ? 'bg-[var(--color-teal-50)] border border-[var(--color-teal-600)] text-[var(--color-brand)] shadow-sm'
-                : 'bg-[var(--card-face)] border border-[var(--rule-hairline)] text-[var(--ink-2)] hover:text-[var(--ink-1)]'
-            }`}
-          >
+          <button type="button" role="tab" aria-selected={viewMode === '3d'} className="gal-mode" onClick={() => setViewMode('3d')}>
             <IconRoom size={14} />
-            <span>3D Model & AR (360°)</span>
-            <span className="px-1.5 py-0.2 text-[9px] font-bold rounded bg-[var(--color-teal-50)] text-[var(--color-teal-300)]">1:1 SCALE</span>
+            <span>3D model</span>
+            <span className="gal-mode-tag">1:1</span>
           </button>
         </div>
       )}
 
       {/* ── 3D View Mode ─────────────────────────────────────────────────── */}
       {viewMode === '3d' && skuCode ? (
-        <div className="relative w-full aspect-square min-h-[380px] sm:min-h-[460px] flex items-center justify-center select-none overflow-hidden rounded-2xl bg-[var(--color-canvas-2)] border border-[var(--rule-hairline)]">
-          <div ref={canvas3dRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
+        <div className="gal-3d">
+          <div ref={canvas3dRef} className="gal-3d-canvas" />
 
           {is3dLoading && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 backdrop-blur-sm bg-[var(--scrim-ink)] z-10">
-              <div className="w-9 h-9 border-3 border-[var(--color-line)] border-t-[var(--color-brand)] rounded-full animate-spin" />
-              <p className="text-xs font-medium text-[var(--color-ink-2)]">Loading photoreal 3D model…</p>
+            <div className="gal-3d-veil">
+              <span className="gal-spinner" aria-hidden />
+              <p>Loading the model…</p>
             </div>
           )}
 
           {threeError && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10">
-              <p className="text-xs text-[var(--color-danger)] mb-2">{threeError}</p>
-              <Link href={`/ar/${skuCode.toLowerCase()}`} className="btn btn-sm btn-ghost text-xs">
-                Open AR Page
+            <div className="gal-3d-veil gal-3d-veil--error">
+              <p className="gal-3d-error">{threeError}</p>
+              <Link href={`/ar/${skuCode.toLowerCase()}`} className="btn btn-secondary btn--sm">
+                Open the room view instead
               </Link>
             </div>
           )}
 
           {!is3dLoading && !threeError && (
-            <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
-              <span className="px-2.5 py-1 text-[10.5px] font-semibold tracking-wide uppercase rounded-md bg-[var(--color-teal-50)] border border-[var(--color-line)] text-[var(--color-teal-300)] shadow-sm backdrop-blur-md">
-                1:1 Real-World Scale
-              </span>
+            <div className="gal-3d-badges">
+              <span className="gal-badge gal-badge--scale">Real size</span>
               {dims && (
-                <span className="px-2.5 py-1 text-[10.5px] font-mono rounded-md bg-[var(--color-surface-2)] border border-[var(--color-line)] text-[var(--color-ink-2)] shadow-sm backdrop-blur-md">
+                <span className="gal-badge fig">
                   {dims.w} × {dims.h} × {dims.d} mm
                 </span>
               )}
@@ -305,27 +289,14 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
           )}
 
           {!is3dLoading && !threeError && (
-            <div className="absolute bottom-3 inset-x-3 flex items-center justify-between gap-2 z-10 pointer-events-none">
-              <button
-                type="button"
-                onClick={() => setAutoRotate(!autoRotate)}
-                className={`pointer-events-auto px-3 py-1.5 rounded-lg text-xs font-medium backdrop-blur-md border transition-all flex items-center gap-1.5 shadow-md ${
-                  autoRotate
-                    ? 'bg-[var(--color-teal-50)] border-[var(--color-teal-600)] text-[var(--color-brand)]'
-                    : 'bg-[var(--color-surface-2)] border-[var(--color-line)] text-[var(--color-ink-2)] hover:bg-[var(--color-surface-2)]'
-                }`}
-                title="Toggle 360 Turntable Orbit"
-              >
-                <IconRefresh size={14} className={autoRotate ? 'animate-spin' : ''} />
-                <span>360° Orbit</span>
+            <div className="gal-3d-bar">
+              <button type="button" onClick={() => setAutoRotate(!autoRotate)} aria-pressed={autoRotate} className="gal-orbit">
+                <IconRefresh size={14} className={autoRotate ? 'is-spinning' : undefined} />
+                <span>Turntable</span>
               </button>
-
-              <Link
-                href={`/ar/${skuCode.toLowerCase()}`}
-                className="pointer-events-auto px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--color-teal-700)] hover:bg-[var(--color-teal-800)] text-[var(--color-on-brand)] shadow-lg flex items-center gap-1.5 transition-transform active:scale-95"
-              >
+              <Link href={`/ar/${skuCode.toLowerCase()}`} className="btn btn-primary btn--sm gal-to-ar">
                 <IconRoom size={15} />
-                <span>View in Room AR</span>
+                <span>See it in your room</span>
               </Link>
             </div>
           )}
@@ -450,7 +421,7 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
             ))}
           </div>
 
-          <p className="text-[11px] mt-2" style={{ color: 'var(--ink-3)' }}>
+          <p className="caption gal-note">
             {ROLE_LABEL[cur?.role] ?? cur?.role} · {i + 1} of {n}
             {cur?.width && cur.width < 1200 && !cur.placeholder ? ' · source below 1200 px, zoom may be soft' : ''}
           </p>
@@ -550,9 +521,7 @@ function Lightbox({ src, alt, onClose, onPrev, onNext }: { src: string; alt: str
         }}
         draggable={false}
       />
-      <p className="absolute bottom-5 left-0 right-0 text-center text-[11.5px]" style={{ color: 'var(--ink-3)' }}>
-        Scroll or pinch to zoom · drag to pan · double-tap to reset · Esc to close
-      </p>
+      <p className="gal-lightbox-note">Scroll or pinch to zoom · drag to pan · double-tap to reset · Esc to close</p>
     </div>
   );
 }

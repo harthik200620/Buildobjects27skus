@@ -558,4 +558,68 @@
     scrollbar-width: thin;
     scrollbar-color: var(--color-line) transparent;
   }
+
+  /* the category landing page's header figures ------------------------------
+     Four measurements as a description list, so the page opens on what is on the shelf rather
+     than on how the catalogue files it. What stood here was one line of prose beginning
+     "1 product ·" — a fact about the tree, printed on every category page in the store. */
+  .cat-land-head {
+    padding-bottom: var(--s-3);
+  }
+  .cat-land-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-6);
+    margin-top: var(--s-3);
+  }
+  .cat-land-facts div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .cat-land-facts dt {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .cat-land-facts dd {
+    margin: 0;
+    font-family: var(--font-figure);
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+  /* A date is words, not a figure, so it does not take the 22 px numeral size. */
+  .cat-land-eta {
+    font-family: var(--font-ui) !important;
+    font-size: 15px !important;
+    line-height: 28px !important;
+    color: var(--color-success) !important;
+  }
+
+  /* The query, echoed back in the heading. It was set with an inline colour on a span; it is a
+     semantic thing - "this is what you typed" - so it gets a name. */
+  .search-q {
+    color: var(--color-brand);
+  }
+
+  /* Sort: a label and a select, both on the ramp. */
+  .sort-by {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    flex: none;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .sort-select {
+    width: auto;
+    min-width: 150px;
+  }
 }

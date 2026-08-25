@@ -46,10 +46,37 @@
     padding-top: 0;
   }
   .page .crumbs {
-    margin: 4px 0 8px;
+    margin: var(--s-4) 0 var(--s-2);
   }
 
-  /* ── header: 60 px of --color-header, sticky, no blur ───────────────────── */
+  /* ── the read-progress rule ───────────────────────────────────────────────
+     A 2 px brand line pinned to the bottom edge of the sticky header, scaled by
+     the --progress that components/ScrollProgress.tsx writes. transform on a
+     composited layer, so it never touches layout: the bar can be repainted on
+     every frame of a scroll without costing one.
+
+     It only appears once the page has actually moved, because a progress rule
+     sitting at zero on a page you have not scrolled is chrome that reports
+     nothing. */
+  .scroll-progress {
+    position: fixed;
+    top: calc(var(--header-h) - 2px);
+    left: 0;
+    z-index: 41;
+    width: 100%;
+    height: 2px;
+    transform: scaleX(var(--progress, 0));
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--color-teal-600), var(--color-brand));
+    opacity: 0;
+    transition: opacity var(--dur-2) var(--ease-out);
+    pointer-events: none;
+  }
+  :root[data-scrolled] .scroll-progress {
+    opacity: 1;
+  }
+
+  /* ── header: sticky, and it knows when it is floating ───────────────────── */
   .header {
     position: sticky;
     top: 0;
@@ -57,6 +84,17 @@
     height: var(--header-h);
     background: var(--color-header);
     color: var(--color-header-ink);
+    /* Flat while the page is at rest against it; lifted once content runs underneath. Both
+       properties are cheap to animate and neither moves anything on the page. */
+    box-shadow: none;
+    transition:
+      box-shadow var(--dur-3) var(--ease-out),
+      background-color var(--dur-3) var(--ease-out);
+  }
+  :root[data-scrolled] .header {
+    box-shadow:
+      0 1px 0 var(--color-chrome-hair),
+      var(--shadow-2);
   }
   .header :focus-visible,
   .nav :focus-visible,
@@ -161,6 +199,277 @@
     font-weight: 700;
     text-align: center;
   }
+  /* ── the coin balance, and the wallet behind it ──────────────────────────
+     The one place amber is allowed in the chrome. A BO Coin is money, and money in the brand's
+     own teal would read as a token you can only spend inside a game. */
+  .header-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .coin-pill {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--color-coin-line);
+    border-radius: var(--radius-pill);
+    background: var(--color-coin-wash);
+    color: var(--color-coin-ink);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out);
+  }
+  @media (min-width: 1024px) {
+    .coin-pill {
+      display: inline-flex;
+    }
+  }
+  .coin-pill:hover {
+    background: var(--color-coin-wash-strong);
+    border-color: var(--color-coin);
+  }
+  .coin-pill svg {
+    flex: none;
+  }
+  .coin-pill-word {
+    font-weight: 600;
+  }
+
+  .wallet {
+    position: absolute;
+    top: calc(100% - 4px);
+    right: 0;
+    z-index: 60;
+    width: 320px;
+    max-width: calc(100vw - 32px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-4);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-coin-line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-3);
+    color: var(--color-ink);
+  }
+  .wallet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+  }
+  .wallet-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: 700 14px / 20px var(--font-ui);
+    color: var(--color-ink);
+  }
+  .wallet-title svg {
+    color: var(--color-coin);
+  }
+  .wallet-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--color-ink-3);
+    cursor: pointer;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+  .wallet-close:hover {
+    color: var(--color-ink);
+  }
+  .wallet-balance {
+    padding: var(--s-3);
+    border: 1px solid var(--color-coin-line);
+    border-radius: var(--radius-md);
+    background: var(--color-coin-wash);
+  }
+  .wallet-balance-label {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .wallet-balance-figure {
+    font-family: var(--font-figure);
+    font-size: 26px;
+    line-height: 32px;
+    font-weight: 700;
+    color: var(--color-coin-ink);
+  }
+  .wallet-balance-figure span {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .wallet-balance-worth {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+  }
+  .wallet-balance-worth b {
+    color: var(--color-ink);
+  }
+  .wallet-note {
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--color-ink-3);
+  }
+  .wallet-history {
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--color-line);
+  }
+  .wallet-history-h {
+    margin-bottom: var(--s-2);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .wallet-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 120px;
+    overflow-y: auto;
+    list-style: none;
+  }
+  .wallet-history-list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .wallet-history-what {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-ink-2);
+  }
+  .wallet-history-amt {
+    flex: none;
+    font-weight: 700;
+  }
+  .wallet-history-amt.is-credit {
+    color: var(--color-credit);
+  }
+  .wallet-history-amt.is-debit {
+    color: var(--color-debit);
+  }
+
+  /* ── the account panel ──────────────────────────────────────────────────── */
+  .account-menu {
+    min-width: 280px;
+    padding: var(--s-4) var(--s-3);
+  }
+  .account-who {
+    margin-bottom: var(--s-3);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--color-line-2);
+  }
+  .account-who-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+  .account-who-id {
+    min-width: 0;
+  }
+  .account-who-name {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--color-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .account-who-phone {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+  }
+  .account-edit {
+    flex: none;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--link);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+  .account-edit:hover {
+    background: var(--color-surface-2);
+  }
+  .account-edit-form {
+    display: flex;
+    gap: 6px;
+  }
+  .account-logout {
+    margin-top: var(--s-1);
+    color: var(--color-ink-2);
+  }
+
+  /* The coin card, shared by the account panel. Amber, like every other coin surface. */
+  .menu-coins {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-bottom: var(--s-3);
+    padding: var(--s-3);
+    border: 1px solid var(--color-coin-line);
+    border-radius: var(--radius-md);
+    background: var(--color-coin-wash);
+  }
+  .menu-coins-label {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .menu-coins-figure {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-figure);
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
+    color: var(--color-coin-ink);
+  }
+  .menu-coins-worth {
+    font-size: 11px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+  }
+
   .account-wrap {
     position: relative;
     flex: none;
@@ -525,13 +834,34 @@
     white-space: nowrap;
     text-decoration: none;
   }
-  .nav-link:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  /* A brand rule that grows out of the middle of the link, rather than an underline that snaps
+     on. The rule is the same one that marks the current page, so hovering shows you what
+     "you are here" will look like. */
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 0;
+    height: 2px;
+    background: var(--color-brand);
+    transform: scaleX(0);
+    transition: transform var(--dur-2) var(--ease-out);
   }
+  .nav-link {
+    position: relative;
+  }
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+  /* The bar replaces the underline rather than joining it: two rules under one word is one rule
+     too many, and the underline was landing on top of the current-page border. */
   .nav-link[aria-current="page"] {
-    border-bottom-color: var(--color-brand);
     font-weight: 700;
+  }
+  .nav-link[aria-current="page"]::after {
+    transform: scaleX(1);
   }
   .nav-spacer {
     flex: 1 1 auto;
@@ -797,9 +1127,15 @@
   }
   .footer-cols {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 32px;
-    padding: 40px 0 32px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-6);
+    padding: var(--s-7) 0 var(--s-6);
+  }
+  @media (max-width: 1023.98px) {
+    .footer-cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-5) var(--s-6);
+    }
   }
   .footer-col h3 {
     margin: 0 0 12px;
@@ -823,6 +1159,51 @@
     color: #fff;
     text-decoration: underline;
   }
+  /* A statement of fact carries its own mark and is not a link; a list of links carries no
+     marks. Mixing the two in one column is what made the old About column read as four bullets
+     of which two happened to be clickable. */
+  .footer-facts {
+    gap: var(--s-3) !important;
+  }
+  .footer-facts li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    font-size: 13px;
+    line-height: 19px;
+    color: var(--color-header-ink-2);
+    text-wrap: pretty;
+  }
+  .footer-facts svg {
+    flex: none;
+    margin-top: 2px;
+    color: var(--color-brand);
+  }
+  .footer-facts .fig {
+    color: #fff;
+    font-weight: 600;
+  }
+  .footer-note {
+    margin-top: var(--s-3);
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--color-header-ink-2);
+    opacity: 0.85;
+    text-wrap: pretty;
+  }
+  .footer-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    color: var(--color-header-ink-2);
+  }
+  .footer-legal {
+    margin-left: auto;
+  }
+
   .footer-bottom {
     display: flex;
     flex-wrap: wrap;
@@ -843,8 +1224,11 @@
   @media (max-width: 639.98px) {
     .footer-cols {
       grid-template-columns: 1fr;
-      gap: 24px;
-      padding: 28px 0 24px;
+      gap: var(--s-5);
+      padding: var(--s-6) 0 var(--s-5);
+    }
+    .footer-legal {
+      margin-left: 0;
     }
   }
 
@@ -1461,6 +1845,61 @@
     color: var(--color-ink);
   }
 
+  /* ── cart states: nothing in it yet, and the order that just went ────────
+     Both used to be a 48 px emoji over a heading with an exclamation mark. A state screen is
+     the one place a store has the reader's full attention with nothing to sell them, and it
+     should read as the shop talking rather than as a notification. */
+  .cart-state {
+    max-width: 520px;
+    margin: var(--s-8) auto;
+    padding: var(--s-7) var(--s-5);
+    text-align: center;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+  .cart-state-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: var(--s-4);
+    border-radius: 50%;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-line);
+    color: var(--color-ink-2);
+  }
+  .cart-state-mark--ok {
+    background: var(--color-success-bg);
+    border-color: var(--color-success);
+    color: var(--color-success);
+  }
+  .cart-state-h {
+    font: 700 20px / 26px var(--font-ui);
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .cart-state-p {
+    max-width: 42ch;
+    margin: var(--s-2) auto 0;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--color-ink-2);
+    text-wrap: pretty;
+  }
+  .cart-state-p b {
+    color: var(--color-ink);
+    font-family: var(--font-figure);
+  }
+  .cart-state-cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+  }
+
   /* ── empty state ────────────────────────────────────────────────────────── */
   .empty {
     display: flex;
@@ -1678,6 +2117,14 @@
       margin: 0;
       max-width: 400px;
     }
+  }
+
+  /* The second half of the welcome lede: the delivery fact, set apart from the offer so the
+     offer lands on its own. */
+  .welcome-lede--2 {
+    margin-top: var(--s-2);
+    font-size: 14px;
+    color: var(--color-ink-3);
   }
 
   /* ── print ──────────────────────────────────────────────────────────────── */

@@ -385,4 +385,43 @@
       align-items: start;
     }
   }
+
+  /* The two lines under the estimator's heading: what it does, then what its numbers are worth.
+     Splitting them is the point - the second is a provenance note, not part of the pitch. */
+  .estimate-lede {
+    max-width: 68ch;
+    text-wrap: pretty;
+  }
+  .estimate-rates {
+    margin-top: var(--s-2);
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--color-ink-3);
+  }
+  .estimate-rates .fig {
+    color: var(--color-ink-2);
+    font-weight: 600;
+  }
+
+  /* The grand total, arriving. Every input on this page changes this number, and a figure that
+     changes without moving is a figure a reader has to re-read to notice. One short rise, on the
+     shared curve - see the MOTION block in theme.css. */
+  @keyframes grand-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .grand-figure {
+    animation: grand-arrive var(--dur-3) var(--ease-out) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .grand-figure {
+      animation: none;
+    }
+  }
 }

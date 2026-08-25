@@ -9,6 +9,9 @@
 /* Page-specific rules, one file per surface that has enough of them to be worth separating. */
 @import "./styles/home.css";
 @import "./styles/listing.css";
+@import "./styles/spec.css";
+@import "./styles/cart.css";
+@import "./styles/gallery.css";
 @import "./styles/estimator.css";
 @import "./styles/ar.css";
 

@@ -13,7 +13,9 @@
     "lighthouse": "tsx scripts/lighthouse.ts",
     "shots": "tsx scripts/shots.ts",
     "shots:strict": "tsx scripts/shots.ts --strict",
-    "contrast": "tsx scripts/contrast.ts"
+    "contrast": "tsx scripts/contrast.ts",
+    "fonts:subset": "tsx scripts/subset-fonts.mts",
+    "type:audit": "tsx scripts/type-audit.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

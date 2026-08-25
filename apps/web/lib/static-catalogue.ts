@@ -29,11 +29,49 @@ import type { CategoryCard } from './data';
  */
 
 export const staticCategories = categoriesJson as unknown as CategoryCard[];
-export const staticFlagship = flagshipJson as unknown as SkuSearchDoc[];
 const skus = skusJson as unknown as Record<string, unknown>;
-const listings = listingsJson as unknown as Record<string, StaticSearchResult>;
+
+/**
+ * The stocked SKUs — filtered to the ones this snapshot can actually open.
+ *
+ * `flagship.json` and `skus.json` are written by the same export run and are meant to agree. They
+ * do not: the index carries twenty-eight documents and the page store twenty-seven, because
+ * `CEM-AMB-KAWACH50` was added to the catalogue after the last full export. Unfiltered, that one
+ * row put a card on the home page, a card on the Concreting page and a hit in search, all three
+ * linking to `/p/cem-amb-kawach50`, which returns 404 — and it was also why a category header read
+ * "ON THE SHELF 3" above four cards.
+ *
+ * Filtering here rather than at each of those three call sites is deliberate: this module is the
+ * snapshot's public face, and a snapshot should not be able to advertise something it does not
+ * contain. Re-run `pnpm --filter @buildobjects/web export:catalogue` against a live database and
+ * the row comes back on its own, with a page behind it.
+ */
+const allFlagship = flagshipJson as unknown as SkuSearchDoc[];
+export const staticFlagship = allFlagship.filter((s) => s.sku_code.toLowerCase() in skus);
+if (allFlagship.length !== staticFlagship.length) {
+  const orphans = allFlagship.filter((s) => !(s.sku_code.toLowerCase() in skus)).map((s) => s.sku_code);
+  console.warn(`[catalogue] ${orphans.length} indexed SKU(s) have no page in the snapshot and are hidden: ${orphans.join(', ')}`);
+}
 const facetConfigs = facetsJson as unknown as Record<string, FacetConfig | null>;
-const searchAll = searchAllJson as unknown as StaticSearchResult;
+
+/**
+ * The same filter applied to the pre-computed result sets.
+ *
+ * `search-all.json` and `listings.json` were exported from the same index as `flagship.json`, so
+ * they carry the orphan too — and those are the two paths the unfiltered browse and each category
+ * listing take, which is to say the two places a shopper is most likely to click it. `total` is
+ * corrected with the hits, so the result count over the grid still matches the grid.
+ */
+function openable(result: StaticSearchResult): StaticSearchResult {
+  const hits = result.hits.filter((h) => h.sku_code.toLowerCase() in skus);
+  if (hits.length === result.hits.length) return result;
+  return { ...result, hits, total: Math.max(0, result.total - (result.hits.length - hits.length)) };
+}
+
+const listingsRaw = listingsJson as unknown as Record<string, StaticSearchResult>;
+const listings: Record<string, StaticSearchResult> = {};
+for (const [slug, result] of Object.entries(listingsRaw)) listings[slug] = openable(result);
+const searchAll = openable(searchAllJson as unknown as StaticSearchResult);
 
 export interface StaticSearchResult {
   hits: SkuSearchDoc[];

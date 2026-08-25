@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ArStage from '@/components/ar/ArStage';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { loadArProduct } from '@/lib/ar-data';
 
 type Params = { sku: string };
@@ -27,23 +28,13 @@ export default async function ArPage({ params, searchParams }: { params: Promise
 
   return (
     <div className="page shell">
-      <nav className="crumbs text-[12px] mt-5" aria-label="Breadcrumb">
-        <Link href="/">Home</Link>
-        <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
-          /
-        </span>
-        {product.pdpHref ? (
-          <Link href={product.pdpHref}>
-            {product.brand} {product.name}
-          </Link>
-        ) : (
-          <span>{product.name}</span>
-        )}
-        <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
-          /
-        </span>
-        <span aria-current="page">In your room</span>
-      </nav>
+      <Breadcrumbs
+        trail={[
+          { label: 'Home', href: '/' },
+          ...(product.pdpHref ? [{ label: `${product.brand} ${product.name}`, href: product.pdpHref }] : [{ label: product.name }]),
+          { label: 'In your room' },
+        ]}
+      />
       <header className="page-head" style={{ paddingBottom: 'var(--s-4)' }}>
         <p className="kicker">View in your room</p>
         <h1 className="display page-title">{product.demo ? 'Gate demo — a bathtub' : product.categoryName}</h1>

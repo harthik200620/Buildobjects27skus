@@ -140,12 +140,28 @@
   .page-head {
     padding: 16px 0 12px;
   }
+  /*
+   * The page heading.
+   *
+   * It carried font-weight: 700, and every page heading in the store is written as
+   * `class="display page-title"` — .display being the Audiowide rule. Audiowide ships ONE cut, at
+   * 400. Asking a single-weight face for 700 does not get a bolder face: the browser smears the
+   * 400 outward, and faux-bold on a wide geometric display face is unmistakable once seen. The
+   * brand's own voice was being rendered wrong on the title of every page except the home page,
+   * which sets its own rule.
+   *
+   * 700 stays for headings that are NOT in the display face — .page-title on its own is still a
+   * bold UI heading. Only the pairing is corrected.
+   */
   .page-title {
     font-size: 24px;
     line-height: 32px;
     font-weight: 700;
     letter-spacing: -0.01em;
     color: var(--color-ink);
+  }
+  .display.page-title {
+    font-weight: 400;
   }
   .page-sub {
     margin-top: 4px;

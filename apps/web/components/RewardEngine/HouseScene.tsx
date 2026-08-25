@@ -2,6 +2,7 @@
 
 import { formatNumber } from '@buildobjects/catalog';
 import React from 'react';
+import { IconCoin } from '@/components/icons';
 import { getTokenPosition } from './spinMath';
 import { type EngineState, ROOM_WAYPOINTS, type RoomWaypoint } from './types';
 
@@ -221,14 +222,14 @@ export default function HouseScene({
           pointerEvents: 'none',
         }}
       >
-        <span style={{ fontSize: '18px' }}>🪙</span>
-        <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--color-ink-3)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+        <IconCoin size={17} />
+        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--color-ink-3)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
           TOTAL COINS:
         </span>
         <span
           style={{
             fontSize: '22px',
-            fontWeight: 900,
+            fontWeight: 700,
             color: 'var(--color-ink)',
             fontVariantNumeric: 'tabular-nums',
             letterSpacing: '-0.02em',
@@ -237,7 +238,7 @@ export default function HouseScene({
         >
           {formattedHudBalance}
         </span>
-        <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--color-brand)', letterSpacing: '0.08em' }}>BO COINS</span>
+        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--color-brand)', letterSpacing: '0.08em' }}>BO COINS</span>
       </div>
 
       {/* ── 3. Subtle Glowing Circuit Track Connecting the 6 Rooms ── */}
@@ -335,7 +336,7 @@ export default function HouseScene({
               <span
                 style={{
                   fontSize: '17px',
-                  fontWeight: 900,
+                  fontWeight: 700,
                   color: isWinner ? 'var(--color-ink)' : 'var(--color-ink-2)',
                   letterSpacing: '-0.02em',
                   lineHeight: '1.1',
@@ -347,7 +348,7 @@ export default function HouseScene({
               <span
                 style={{
                   fontSize: '7px',
-                  fontWeight: 800,
+                  fontWeight: 700,
                   color: isWinner ? 'var(--color-brand)' : 'var(--color-ink-3)',
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
@@ -426,7 +427,7 @@ export default function HouseScene({
           <span
             style={{
               fontSize: '11px',
-              fontWeight: 900,
+              fontWeight: 700,
               color: 'var(--color-ink)',
               letterSpacing: '0.04em',
               lineHeight: '1',
