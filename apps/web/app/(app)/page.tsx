@@ -1,25 +1,31 @@
-import { DEPARTMENTS } from '@buildobjects/catalog';
 import Link from 'next/link';
 import CategoryTile from '@/components/CategoryTile';
 import { IconArrow, IconClockCheck, IconEstimate, IconPin, IconRoom, IconShield, IconStorefront } from '@/components/icons';
 import { loadFlagshipSkus } from '@/lib/catalog';
-import { loadCategories } from '@/lib/data';
+import { loadDepartments } from '@/lib/data';
 import { inr } from '@/lib/media';
 
 export const revalidate = 60;
 
-/** Tiles above the fold on a desktop grid; these load eagerly, the other thirty-three do not. */
+/** Tiles above the fold on a desktop grid; these load eagerly, the rest do not. */
 const EAGER = 4;
 
+/**
+ * The front door shows CATEGORIES. Only categories.
+ *
+ * The tree is the one the product workbook sets out in the first row of every sheet —
+ * `CEMENT · Construction Materials · 3 brands` — which reads category, product, then the brands
+ * underneath. So cement is not a category: it is a product inside Construction Materials, next to
+ * bricks and steel. This page used to show all thirty-seven products as tiles and then a grid of
+ * every SKU below them, which put the leaves of the tree on the page that exists to show its
+ * branches.
+ *
+ * Thirteen tiles now. Each opens its category, and the products are in there.
+ */
 export default async function Home() {
-  const [cats, skus] = await Promise.all([loadCategories(), loadFlagshipSkus()]);
-  const live = cats.filter((c) => c.status === 'live');
-  const soon = cats.filter((c) => c.status !== 'live');
-  const products = live.reduce((n, c) => n + (c.stats?.sku_count ?? 0), 0);
-
-  // Upcoming categories are grouped under their department, in the nav's order, so someone
-  // scanning twenty-eight tiles reads a structure rather than an alphabet.
-  const byDepartment = DEPARTMENTS.map((d) => ({ ...d, categories: soon.filter((c) => c.department === d.key) })).filter((d) => d.categories.length > 0);
+  const [depts, skus] = await Promise.all([loadDepartments(), loadFlagshipSkus()]);
+  const productCount = depts.reduce((n, d) => n + d.productCount, 0);
+  const liveCategories = depts.filter((d) => d.status === 'live').length;
 
   return (
     <div className="page shell home">
@@ -51,13 +57,13 @@ export default async function Home() {
             </div>
             <p className="hero-facts">
               <span>
-                <b>{live.length}</b> categories stocked
+                <b>{depts.length}</b> categories
               </span>
               <span>
-                <b>{products}</b> products
+                <b>{productCount}</b> products
               </span>
               <span>
-                <b>{cats.length}</b> in the full catalogue
+                <b>{skus.length}</b> items on the shelf
               </span>
             </p>
           </div>
@@ -65,7 +71,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── the catalogue, as a taxonomy: all thirty-seven, one card, one grid ── */}
+      {/* ── the catalogue's top level: thirteen categories, nothing below them ── */}
       <section className="sec" aria-labelledby="cats-h">
         <div className="sec-head">
           <div>
@@ -73,7 +79,8 @@ export default async function Home() {
               Shop by category
             </h2>
             <p className="sec-sub">
-              <span className="fig">{live.length}</span> stocked today. The other <span className="fig">{soon.length}</span> are on the way.
+              <span className="fig">{liveCategories}</span> of <span className="fig">{depts.length}</span> stocked today. Open one to see the products in it —
+              cement and steel are in Construction Materials, tiles and glass in Building Materials.
             </p>
           </div>
           <Link href="/search" className="sec-more">
@@ -81,53 +88,45 @@ export default async function Home() {
           </Link>
         </div>
 
-        {cats.length === 0 ? (
+        {depts.length === 0 ? (
           <EmptyShelves />
         ) : (
-          <>
-            <ul className="cat-grid">
-              {live.map((c, i) => (
-                <li key={c.slug}>
-                  <CategoryTile category={c} priority={i < EAGER} />
-                </li>
-              ))}
-            </ul>
-
-            {byDepartment.length > 0 && (
-              <div className="dept-block">
-                <h3 className="dept-head">
-                  On the way
-                  <span className="dept-count">
-                    <span className="fig">{soon.length}</span> more categories
-                  </span>
-                </h3>
-                {byDepartment.map((d) => (
-                  <section key={d.key} className="dept" aria-labelledby={`dept-${d.key}`}>
-                    <h4 id={`dept-${d.key}`} className="dept-name">
-                      {d.name}
-                    </h4>
-                    <ul className="cat-grid">
-                      {d.categories.map((c) => (
-                        <li key={c.slug}>
-                          <CategoryTile category={c} />
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-                ))}
-              </div>
-            )}
-          </>
+          <ul className="cat-grid">
+            {depts.map((d, i) => (
+              <li key={d.key}>
+                <CategoryTile
+                  href={`/c/${d.key}`}
+                  name={d.name}
+                  heroImageKey={d.heroImageKey}
+                  soon={d.status !== 'live'}
+                  priority={i < EAGER}
+                  meta={
+                    <>
+                      <span className="fig">{d.productCount}</span> {d.productCount === 1 ? 'product' : 'products'}
+                      {d.skuCount > 0 && (
+                        <>
+                          <span className="cat-dot" aria-hidden>
+                            ·
+                          </span>
+                          <span className="fig">{d.skuCount}</span> on the shelf
+                        </>
+                      )}
+                    </>
+                  }
+                />
+              </li>
+            ))}
+          </ul>
         )}
       </section>
 
       {/*
        * Everything on the shelf right now, as one line each.
        *
-       * Not product cards. This page is the taxonomy — a grid of photographs and prices below it
-       * would put the store's twenty-seven products in front of its thirty-seven categories and
-       * bury the thing the page is for. A name and a price is enough to say "this exists and it
-       * costs this"; the card, the specification and the room view live on the product page.
+       * Not product cards, and not a second grid. This page is the top of the tree; a wall of
+       * photographs below the categories would put the leaves back on it. A name and a price says
+       * "this exists and it costs this" — the card, the specification and the room view all live
+       * on the item's own page.
        */}
       {skus.length > 0 && (
         <section className="sec" aria-labelledby="stock-h">
@@ -137,7 +136,7 @@ export default async function Home() {
                 On the shelf now
               </h2>
               <p className="sec-sub">
-                Every one of the <span className="fig">{skus.length}</span> products we stock today, priced per unit with GST stated.
+                Every one of the <span className="fig">{skus.length}</span> items we stock today, priced per unit with GST stated.
               </p>
             </div>
             <Link href="/search" className="sec-more">

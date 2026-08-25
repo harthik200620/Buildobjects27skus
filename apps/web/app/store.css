@@ -611,6 +611,14 @@
   .nav-dept-row[aria-current="page"] svg {
     color: var(--color-teal-700);
   }
+  /* The category itself, above its products, with a rule to say so. */
+  .nav-dept-row.nav-dept-all {
+    margin-bottom: 4px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-line-2);
+    border-radius: 0;
+    font-weight: 700;
+  }
   /* A subcategory the department will carry but does not stock yet. */
   .nav-dept-row.is-soon {
     color: var(--color-ink-2);
@@ -686,6 +694,15 @@
     margin-top: 10px;
     padding-top: 8px;
     border-top: 1px solid var(--color-line-2);
+  }
+  /* The heading links to the category page; it should not look like body copy that happens to be blue. */
+  .cat-menu-dept-name a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .cat-menu-dept-name a:hover {
+    color: var(--color-teal-800);
+    text-decoration: underline;
   }
   .cat-menu-dept-name {
     padding: 0 12px 4px;

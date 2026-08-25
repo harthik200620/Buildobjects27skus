@@ -1,4 +1,5 @@
 import 'server-only';
+import { DEPARTMENTS } from '@buildobjects/catalog';
 import { categories, getDb, products, regions as regionsTable } from '@buildobjects/db';
 import { asc, eq, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
@@ -142,6 +143,70 @@ export async function loadSession(): Promise<SessionClaims | null> {
   return verifySession(jar.get(SESSION_COOKIE)?.value);
 }
 
+/** One of the thirteen categories, with the products that sit inside it. */
+export interface DepartmentCard {
+  key: string;
+  name: string;
+  /** The products in it — cement, bricks and steel under Construction Materials. */
+  products: CategoryCard[];
+  productCount: number;
+  liveProducts: number;
+  skuCount: number;
+  brandCount: number;
+  /**
+   * Borrowed from the best product in the category: a category has no photograph of its own,
+   * and a real picture of cement says "construction materials" better than any drawing of the
+   * idea would. Prefers a stocked product, since those have real photography rather than
+   * generated art.
+   */
+  heroImageKey: string | null;
+  status: 'live' | 'upcoming';
+}
+
+/**
+ * The catalogue's top level: thirteen categories, each carrying its products.
+ *
+ * Derived from `loadCategories()` rather than queried, because the department is already a
+ * column on every product row — there is no thirteen-row table to fetch and nothing to keep in
+ * step. `DEPARTMENTS` fixes the order, which is the workbook's order.
+ */
+export async function loadDepartments(): Promise<DepartmentCard[]> {
+  const all = await loadCategories();
+  return DEPARTMENTS.map(({ key, name }) => {
+    const inIt = all.filter((c) => c.department === key);
+    const live = inIt.filter((c) => c.status === 'live');
+    /* A stocked product's hero first; otherwise whatever art the first product has. */
+    const hero = (live.find((c) => c.heroImageKey) ?? inIt.find((c) => c.heroImageKey))?.heroImageKey ?? null;
+    return {
+      key,
+      name,
+      products: inIt,
+      productCount: inIt.length,
+      liveProducts: live.length,
+      skuCount: inIt.reduce((n, c) => n + (c.stats?.sku_count ?? 0), 0),
+      brandCount: inIt.reduce((n, c) => n + c.brandCount, 0),
+      heroImageKey: hero,
+      status: live.length ? ('live' as const) : ('upcoming' as const),
+    };
+  }).filter((d) => d.productCount > 0);
+}
+
+/**
+ * THE THREE LEVELS, AND WHAT THE WORKBOOK CALLS THEM.
+ *
+ * `WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx` names them in the first row of every sheet:
+ *
+ *     CEMENT  ·  Construction Materials  ·  3 brands  ·  52 specifications  ·  unit: bag
+ *     ^product   ^category                  ^the SKUs underneath it
+ *
+ * So the tree is CATEGORY → PRODUCT → SKU. Cement is a product; the category it sits in is
+ * Construction Materials. Tiles and Glass are two products in one category, Building Materials.
+ *
+ * The database calls the middle level `categories` and the top level `department`, and those
+ * column names are not worth a migration — but the names the store *shows* have to be the
+ * workbook's, because that is the tree the buyer is being sold. `Department` here means the
+ * thirteen the workbook calls categories, and `CategoryCard` is one product within one.
+ */
 export interface CategoryCard {
   slug: string;
   code: string;

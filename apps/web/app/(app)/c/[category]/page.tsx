@@ -1,14 +1,16 @@
+import { departmentName } from '@buildobjects/catalog';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import CategorySidebar from '@/components/CategorySidebar';
 import CategoryStrip from '@/components/CategoryStrip';
+import CategoryTile from '@/components/CategoryTile';
 import FilterRail from '@/components/FilterRail';
-import { CategoryIcon } from '@/components/icons';
+import { CategoryIcon, IconArrow } from '@/components/icons';
 import Pagination from '@/components/Pagination';
 import ProductCard from '@/components/ProductCard';
 import { allCategories, loadFacetConfig, searchSkus } from '@/lib/catalog';
-import { loadCategory, loadSession, serviceability } from '@/lib/data';
+import { type DepartmentCard, loadCategory, loadDepartments, loadSession, serviceability } from '@/lib/data';
 import { deliverBy } from '@/lib/delivery';
 import { parseFilters } from '@/lib/filters';
 import { inr } from '@/lib/media';
@@ -19,17 +21,35 @@ type Search = Record<string, string | string[] | undefined>;
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { category } = await params;
   const cat = await loadCategory(category);
-  return {
-    title: cat ? `${cat.name}` : 'Category',
-    description: cat ? `${cat.name} from the brands engineers specify — GST-stated prices, datasheets, and every product viewable in your room.` : undefined,
-  };
+  if (cat) {
+    return {
+      title: cat.name,
+      description: `${cat.name} from the brands engineers specify — GST-stated prices, datasheets, and every product viewable in your room.`,
+    };
+  }
+  const dept = (await loadDepartments()).find((d) => d.key === category);
+  return dept
+    ? { title: dept.name, description: `${dept.productCount} products in ${dept.name} — ${dept.products.map((c) => c.name).join(', ')}.` }
+    : { title: 'Category' };
 }
 
 export default async function CategoryPage({ params, searchParams }: { params: Promise<Params>; searchParams: Promise<Search> }) {
   const { category } = await params;
   const sp = await searchParams;
   const cat = await loadCategory(category);
-  if (!cat) notFound();
+  /*
+   * One route, two levels of the tree.
+   *
+   * `/c/cement` is a product and lists the items in it; `/c/construction-materials` is the
+   * category cement sits in and lists the products. A product wins the slug when both could
+   * match — `external-works` is registered as both a category and its own only product, and the
+   * product is the one with items, filters and a price to show.
+   */
+  if (!cat) {
+    const dept = (await loadDepartments()).find((d) => d.key === category);
+    if (dept) return <CategoryLanding dept={dept} />;
+    notFound();
+  }
   const state = parseFilters(sp);
   const [config, cats, session] = await Promise.all([loadFacetConfig(category), allCategories(), loadSession()]);
   const result = await searchSkus({ state, config, fixedCategory: category });
@@ -45,7 +65,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
         <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
           /
         </span>
-        <Link href="/search">Products</Link>
+        <Link href={`/c/${cat.department}`}>{departmentName(cat.department)}</Link>
         <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
           /
         </span>
@@ -141,6 +161,75 @@ export default async function CategoryPage({ params, searchParams }: { params: P
             )}
           </section>
         </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * A category: the thirteen the workbook names in the first row of every product sheet.
+ *
+ * It has no filters and no price rail because a category does not have specifications — its
+ * products do. What it owes the buyer is the answer to "what is in here", which is a grid of the
+ * products and, when any of them are stocked, a way straight through to the shelf.
+ */
+function CategoryLanding({ dept }: { dept: DepartmentCard }) {
+  const live = dept.products.filter((c) => c.status === 'live');
+
+  return (
+    <div className="page shell">
+      <nav className="crumbs text-[12px] mt-5" aria-label="Breadcrumb">
+        <Link href="/">Home</Link>
+        <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
+          /
+        </span>
+        <span aria-current="page">{dept.name}</span>
+      </nav>
+      <header className="page-head" style={{ paddingBottom: 'var(--s-3)' }}>
+        <h1 className="display page-title">{dept.name}</h1>
+        <p className="page-sub">
+          <span className="fig">{dept.productCount}</span> {dept.productCount === 1 ? 'product' : 'products'}
+          {dept.skuCount > 0 && (
+            <>
+              {' · '}
+              <span className="fig">{dept.skuCount}</span> {dept.skuCount === 1 ? 'item' : 'items'} on the shelf from{' '}
+              <span className="fig">{dept.brandCount}</span> {dept.brandCount === 1 ? 'brand' : 'brands'}
+            </>
+          )}
+        </p>
+      </header>
+
+      <ul className="cat-grid" style={{ marginTop: 'var(--s-4)' }}>
+        {dept.products.map((c, i) => (
+          <li key={c.slug}>
+            <CategoryTile
+              href={`/c/${c.slug}`}
+              name={c.name}
+              heroImageKey={c.heroImageKey}
+              soon={c.status !== 'live'}
+              priority={i < 4}
+              meta={
+                c.status === 'live' ? (
+                  <>
+                    <span className="fig">{c.brandCount}</span> {c.brandCount === 1 ? 'brand' : 'brands'}
+                    <span className="cat-dot" aria-hidden>
+                      ·
+                    </span>
+                    <span className="fig">{c.stats?.sku_count ?? 0}</span> {(c.stats?.sku_count ?? 0) === 1 ? 'item' : 'items'}
+                  </>
+                ) : undefined
+              }
+            />
+          </li>
+        ))}
+      </ul>
+
+      {live.length > 0 && (
+        <p className="sec" style={{ marginTop: 'var(--s-6)' }}>
+          <Link href={`/search?category=${live[0].slug}`} className="sec-more">
+            See everything stocked in {dept.name} <IconArrow size={14} style={{ display: 'inline', verticalAlign: -1 }} />
+          </Link>
+        </p>
       )}
     </div>
   );

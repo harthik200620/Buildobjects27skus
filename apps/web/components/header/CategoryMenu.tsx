@@ -124,7 +124,12 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
               </ul>
               {byDepartment.map((d) => (
                 <div key={d.key} className="cat-menu-dept">
-                  <h3 className="cat-menu-dept-name">{d.name}</h3>
+                  <h3 className="cat-menu-dept-name">
+                    {/* The heading is the category itself — cement lives inside this, not beside it. */}
+                    <Link href={`/c/${d.key}`} onClick={close}>
+                      {d.name}
+                    </Link>
+                  </h3>
                   <ul className="cat-menu-list">
                     {d.categories.map((c) => (
                       <li key={c.slug}>

@@ -1,31 +1,42 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import type { CategoryCard } from '@/lib/data';
 import { mediaUrl } from '@/lib/media';
 
 /**
- * One category in the home grid.
+ * One tile in a catalogue grid — a category on the home page, a product inside a category page.
  *
- * The photograph is the design. All thirty-seven categories have real art, so the tile carries no
- * glyph at all — the previous version laid a line drawing over the picture at 34% opacity on the
- * twenty-eight upcoming tiles and put a second copy of the same drawing in a teal chip below the
- * name. A photograph competing with two diagrams of itself is what made the grid look cheap.
+ * The same card does both levels on purpose: the tree is CATEGORY → PRODUCT → SKU, and the first
+ * two levels are the same act of choosing. Giving them different cards is what made the old home
+ * page read as two systems bolted together.
  *
- * It shows what the category is and how much of it there is — never a price. A "from ₹410" here
+ * The photograph is the design. It carries no glyph: every category and every product has real
+ * art, and the previous version laid a line drawing over the picture at 34% opacity and then put
+ * a second copy of the same drawing in a chip below the name.
+ *
+ * It shows what the thing is and how much of it there is — never a price. A "from ₹410" here
  * answers a question nobody has asked yet and commits the store to a number before the buyer has
- * picked anything; brands and products is what actually helps someone choose where to look first.
- *
- * One card, one size. Stocked and upcoming differ by a pill and a quieter picture, not by a
- * different component — they are one taxonomy and should read as one.
+ * chosen anything.
  */
-export default function CategoryTile({ category, priority = false }: { category: CategoryCard; priority?: boolean }) {
-  const { slug, name, status, brandCount, stats } = category;
-  const skuCount = stats?.sku_count ?? 0;
-  const live = status === 'live';
-  const hero = mediaUrl(category.heroImageKey);
+export default function CategoryTile({
+  href,
+  name,
+  heroImageKey,
+  meta,
+  soon = false,
+  priority = false,
+}: {
+  href: string;
+  name: string;
+  heroImageKey: string | null;
+  /** One line under the name: "3 products · 9 items", or nothing when there is nothing to sell. */
+  meta?: React.ReactNode;
+  soon?: boolean;
+  priority?: boolean;
+}) {
+  const hero = mediaUrl(heroImageKey);
 
   return (
-    <Link href={`/c/${slug}`} className={`cat-card${live ? '' : ' cat-card--soon'}`}>
+    <Link href={href} className={`cat-card${soon ? ' cat-card--soon' : ''}`}>
       <div className="cat-photo">
         {hero && (
           <Image
@@ -39,19 +50,11 @@ export default function CategoryTile({ category, priority = false }: { category:
             loading={priority ? 'eager' : 'lazy'}
           />
         )}
-        {!live && <span className="cat-pill">Arriving soon</span>}
+        {soon && <span className="cat-pill">Arriving soon</span>}
       </div>
       <div className="cat-band">
         <span className="cat-name">{name}</span>
-        {live && (
-          <span className="cat-meta">
-            <span className="fig">{brandCount}</span> {brandCount === 1 ? 'brand' : 'brands'}
-            <span className="cat-dot" aria-hidden>
-              ·
-            </span>
-            <span className="fig">{skuCount}</span> {skuCount === 1 ? 'product' : 'products'}
-          </span>
-        )}
+        {meta && <span className="cat-meta">{meta}</span>}
       </div>
     </Link>
   );

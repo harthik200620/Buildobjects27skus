@@ -97,6 +97,12 @@ export default function NavLinks({ categories, arHref = AR_DEMO_HREF }: { catego
             {expanded && (
               <div className="nav-dept-panel fade-in" style={pos ?? undefined}>
                 <ul>
+                  {/* The category itself, above the products in it. */}
+                  <li>
+                    <Link href={`/c/${d.key}`} className="nav-dept-row nav-dept-all" onClick={() => setOpen(null)}>
+                      <span>All of {d.name}</span>
+                    </Link>
+                  </li>
                   {d.categories.map((c) => (
                     <li key={c.slug}>
                       <Link
