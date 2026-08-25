@@ -19,10 +19,19 @@ export async function POST(req: Request) {
       { status: 400 },
     );
 
-  const db = getDb();
   let uid = 0;
   const sid = randomBytes(24).toString('base64url');
+  /*
+   * `getDb()` belongs INSIDE the try.
+   *
+   * It was outside it, and `databaseUrl()` throws synchronously when DATABASE_URL is unset — so
+   * on a deployment with no database the handler threw before it could return anything, the
+   * response body was empty, and the sign-in screen showed "Unexpected end of JSON input"
+   * instead of signing anyone in. The catch below was already written to issue a stateless
+   * session; it just never got the chance to run.
+   */
   try {
+    const db = getDb();
     const known = await db.select({ regionId: regions.regionId }).from(regions).where(eq(regions.regionId, regionId)).limit(1);
     if (!known.length) regionId = pincode.startsWith('50') ? 'hyd' : 'vij';
     await db
@@ -32,8 +41,10 @@ export async function POST(req: Request) {
     const [u] = await db.select({ id: users.id }).from(users).where(eq(users.phone, phone)).limit(1);
     uid = u?.id ?? 0;
     await db.insert(sessions).values({ id: sid, userId: uid, regionId, pincode, expiresAt: new Date(Date.now() + SESSION_DAYS * 86400_000) });
-  } catch (e) {
-    console.warn('[auth/login] db unavailable, issuing stateless session:', (e as Error).message);
+  } catch {
+    /* No database: the session is a signed JWT, so it needs nothing persisted to be valid.
+       Pick the region from the pincode the way the seeded table would have. */
+    if (regionId !== 'hyd' && regionId !== 'vij') regionId = pincode.startsWith('50') ? 'hyd' : 'vij';
   }
 
   const token = await signSession({ sid, uid, phone, regionId, pincode });

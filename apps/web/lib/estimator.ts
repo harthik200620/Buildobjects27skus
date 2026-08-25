@@ -37,6 +37,7 @@ type Row = {
   spec: unknown;
 };
 
+/** Throws when there is no database; every caller is wrapped and falls back to the rate card. */
 function base() {
   return getDb()
     .select(cols)

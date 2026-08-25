@@ -36,9 +36,19 @@ export async function saveEstimate(rawInputs: unknown): Promise<{ id: string; gr
     lines: r.lines,
   };
   const id = randomBytes(6).toString('base64url');
-  await getDb()
-    .insert(estimates)
-    .values({ publicId: id, inputs, outputs, tier: inputs.tier, city: inputs.city, grandTotal: String(r.grandTotal) });
+  try {
+    await getDb()
+      .insert(estimates)
+      .values({ publicId: id, inputs, outputs, tier: inputs.tier, city: inputs.city, grandTotal: String(r.grandTotal) });
+  } catch {
+    /*
+     * No database: the estimate is still fully described by its own URL.
+     *
+     * `inputsToQuery` round-trips every input, so a shared link reproduces the estimate exactly
+     * without a stored row — what is lost is the short id, not the estimate. Failing the whole
+     * save because there is nowhere to write a convenience copy would be the wrong trade.
+     */
+  }
   return { id, grandTotal: r.grandTotal, tier: inputs.tier, city: inputs.city };
 }
 
