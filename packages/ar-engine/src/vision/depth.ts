@@ -78,3 +78,28 @@ export function rowAtFloorDistance(d: number, pitchDeg: number, fy: number, cy: 
 export function wallDistanceFromFloorLine(floorTopRow: number, pitchDeg: number, fy: number, cy: number, cameraHeightM: number): number | null {
   return floorDistanceAtRow({ vPx: floorTopRow, pitchDeg, fy, cy, cameraHeightM });
 }
+
+/**
+ * The image row a point at a real height on a wall projects to.
+ *
+ * This is what makes a wall-mounted product land where it would actually be mounted. The drop
+ * point used to be a fixed fraction of the frame — 0.28 for a high mount, 0.55 for a low one —
+ * which is a reasonable guess at a typical tilt and simply wrong when the phone is held level:
+ * with the camera at 1.4 m and a wall 3 m away, a fire extinguisher at its real 1.0 m mounting
+ * height projects to v = 0.61, not 0.55, and a CCTV camera at 2.4 m projects to v = 0.32, not
+ * 0.28. Small on paper; the difference between "mounted on the wall" and "floating near it".
+ *
+ * @param heightM     Height of the product above the floor, metres.
+ * @param distanceM   Horizontal distance to the wall, metres.
+ * @param pitchDeg    Camera pitch; negative looks down.
+ * @param cameraHeightM Camera height above the floor, metres.
+ */
+export function rowForWallHeight(heightM: number, distanceM: number, pitchDeg: number, fy: number, cy: number, cameraHeightM: number): number | null {
+  if (!(distanceM > 0) || !(fy > 0)) return null;
+  // Elevation of the point above the camera's own horizontal plane.
+  const elevation = Math.atan((heightM - cameraHeightM) / distanceM);
+  const belowAxis = pitchDeg * DEG - elevation;
+  // Beyond ~80° off-axis the tangent explodes and the point is far outside any real frame.
+  if (Math.abs(belowAxis) > 1.4) return null;
+  return cy + fy * Math.tan(belowAxis);
+}

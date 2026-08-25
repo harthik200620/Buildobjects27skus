@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T12:49:58.694Z",
+  "generated_at": "2026-08-25T12:54:00.491Z",
   "assets": {
     "EPX-SIK-SIKADUR31IN": {
       "file": "EPX-SIK-SIKADUR31IN.glb",
@@ -1124,26 +1124,52 @@
       "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TST-TRI-C5-2": {
-      "file": "placeholders/TST-TRI-C5-2.glb",
+      "file": "TST-TRI-C5-2.glb",
       "category": "total-stations",
-      "placeholder": true,
+      "placeholder": false,
       "dims_mm": {
         "w": 206,
         "h": 318,
         "d": 169
       },
       "bbox_m": {
-        "x": 1.9297155141830444,
-        "y": 1.8254720862023532,
-        "z": 1.6746495962142944
+        "x": 0.1979087069630623,
+        "y": 0.318000003695488,
+        "z": 0.1893388032913208
       },
-      "triangles": 792,
-      "builder": "total-stations",
-      "variant": "on-tripod",
+      "triangles": 99537,
+      "builder": "photoreal",
       "usdz": null,
-      "quality": "placeholder",
-      "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.545Z"
+      "quality": "photoreal",
+      "provider": "meshy",
+      "source_images": [
+        "skus/04/TST-TRI-C5-2/img/1-orig.png"
+      ],
+      "job_id": "01a038f8-7bb7-7aac-b0c9-0d983f5af9ed",
+      "generated_at": "2026-08-25T12:54:00.489Z",
+      "axis_map": "z,y,-x",
+      "front_yaw_deg": 0,
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.1203479553683286,
+        "warnings": [
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 10.2 MB (warn > 8 MB)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "textures": {
+        "count": 3,
+        "max_px": 2048,
+        "sources": [
+          "meshy"
+        ]
+      },
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TST-TOP-GM-52": {
       "file": "TST-TOP-GM-52.glb",

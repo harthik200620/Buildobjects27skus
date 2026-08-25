@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T12:49:58.698Z",
+  "generated_at": "2026-08-25T12:54:00.494Z",
   "dry_run": false,
   "provider_pref": "auto",
   "providers": [
@@ -8,18 +8,18 @@
   ],
   "max_spend_usd": 12,
   "estimated_spend_usd": 0.4,
-  "ledger_spend_usd": 22.799999999999983,
+  "ledger_spend_usd": 23.19999999999998,
   "results": [
     {
-      "sku": "TST-TOP-GM-52",
+      "sku": "TST-TRI-C5-2",
       "category": "total-stations",
       "outcome": "photoreal",
       "provider": "meshy",
-      "job_id": "01a038f5-573b-7acb-acad-a4e9adc132d2",
+      "job_id": "01a038f8-7bb7-7aac-b0c9-0d983f5af9ed",
       "mode": "single",
       "images": [
         {
-          "key": "skus/e3/TST-TOP-GM-52/img/1-orig.jpg",
+          "key": "skus/04/TST-TRI-C5-2/img/1-orig.png",
           "role": "front",
           "source": "orig"
         }
@@ -27,9 +27,8 @@
       "cutouts": 0,
       "est_cost_usd": 0.4,
       "warnings": [
-        "meshy: aspect mismatch 52 % vs spec (warn > 15 %)",
         "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-        "meshy: GLB is 8.6 MB (warn > 8 MB)",
+        "meshy: GLB is 10.2 MB (warn > 8 MB)",
         "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
       ],
       "quality_report": {
@@ -37,16 +36,15 @@
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.5197665494163192,
+        "aspect_mismatch": 0.1203479553683286,
         "warnings": [
-          "meshy: aspect mismatch 52 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 8.6 MB (warn > 8 MB)",
+          "meshy: GLB is 10.2 MB (warn > 8 MB)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
-      "file": "TST-TOP-GM-52.glb",
+      "file": "TST-TRI-C5-2.glb",
       "attempts": 1
     }
   ],

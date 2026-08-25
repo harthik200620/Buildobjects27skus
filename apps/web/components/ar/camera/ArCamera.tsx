@@ -9,6 +9,7 @@ import {
   cameraRotationFromQuat,
   DEFAULT_CAMERA_HEIGHT_M,
   defaultDropPoint,
+  dropPointFor,
   hasOpenArea,
   intrinsicsFor,
   type Mat3,
@@ -16,6 +17,7 @@ import {
   type PlacementRule,
   type ProductDims,
   pitchFromHorizon,
+  pitchFromQuat,
   productNoun,
   type Quat,
   type SceneAnalysis,
@@ -158,6 +160,29 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
      every few seconds as the analysis returns, and closing over it would re-create the loop. */
   const matchRef = React.useRef(match);
   matchRef.current = match;
+
+  /*
+   * Where the product belongs in the frame, solved from the geometry when it is available.
+   *
+   * `defaultDropPoint` is a fixed fraction per mount type. That reads correctly at the downward
+   * tilt people use for a floor and visibly wrong with the phone held level at a wall, which is
+   * exactly how someone points it at a fire extinguisher or a CCTV camera. With the pitch, the
+   * camera height and the distance all known, the row a real mounting height projects to is
+   * arithmetic — so it is computed, and the fraction is only the fallback.
+   */
+  const dropPoint = React.useCallback((targetSurface: Surface) => {
+    const video = videoRef.current;
+    const pose = lastPoseRef.current;
+    if (!video?.videoHeight || !pose) return defaultDropPoint(ruleRef.current, targetSurface);
+    const K = intrinsicsFor(video.videoWidth, video.videoHeight, 'phone');
+    return dropPointFor(ruleRef.current, targetSurface, {
+      pitchDeg: pitchFromQuat(pose.q),
+      fy: K.fy,
+      height: video.videoHeight,
+      cameraHeightM: DEFAULT_CAMERA_HEIGHT_M.phone,
+      distanceM: surfaceDistanceM(targetSurface, matchRef.current),
+    });
+  }, []);
   const dimsRef = React.useRef(dims);
   dimsRef.current = dims;
 
@@ -295,10 +320,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       if (!map) return;
       /* Where the product belongs in frame depends on what it stands on. A fixed y = 0.35 put
          wall items right and dropped every cement bag, tile and total station into mid-air. */
-      const drop = defaultDropPoint(ruleRef.current, targetSurface);
+      const drop = dropPoint(targetSurface);
       placeAtPixel(map.x0 + map.cw * drop.u, map.y0 + map.ch * drop.v, targetSurface);
     },
-    [placeAtPixel, surface],
+    [placeAtPixel, surface, dropPoint],
   );
 
   /* ── 6. Continuous Render & Tracking Loop ───────────────────────────── */
@@ -367,7 +392,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     // Auto-place on first valid frame, at the point this category's surface actually is
     if (!autoPlacedRef.current) {
       autoPlacedRef.current = true;
-      const drop = defaultDropPoint(ruleRef.current, surface);
+      const drop = dropPoint(surface);
       const initAnchor = anchorFromPixel({
         K,
         R,
@@ -398,7 +423,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         // Out of view for > 35 frames (~0.6 s): bring it back to this category's drop point.
         if (offScreenFramesRef.current > 35) {
           offScreenFramesRef.current = 0;
-          const drop = defaultDropPoint(ruleRef.current, surface);
+          const drop = dropPoint(surface);
           const reAnchor = anchorFromPixel({
             K,
             R,
@@ -421,7 +446,9 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
 
     // Always render 3D WebGL frame
     renderer.render();
-  }, [sceneAnalysis, surface, yaw]);
+    // `dropPoint` is stable (its own deps are all refs), so listing it costs nothing and
+    // keeps the loop honest about what it calls.
+  }, [sceneAnalysis, surface, yaw, dropPoint]);
 
   // Continuous animation loop
   React.useEffect(() => {

@@ -1,5 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { floorDistanceAtRow, MAX_DEPTH_M, MIN_DEPTH_M, rowAtFloorDistance, surfaceDistanceM, wallDistanceFromFloorLine } from '../src/index';
+import {
+  defaultDropPoint,
+  dropPointFor,
+  floorDistanceAtRow,
+  MAX_DEPTH_M,
+  MIN_DEPTH_M,
+  rowAtFloorDistance,
+  rowForWallHeight,
+  ruleFor,
+  surfaceDistanceM,
+  wallDistanceFromFloorLine,
+} from '../src/index';
 
 /**
  * Distance sets the projected size of the product, so these are the numbers that decide whether
@@ -99,5 +110,69 @@ describe('surfaceDistanceM', () => {
   it('clamps a nonsense measurement instead of trusting it', () => {
     const far = surfaceDistanceM('wall', { surface: 'wall', confidence: 90, detection: { type: 'wall', confidence: 0.9, bbox, distanceM: 900 } });
     expect(far).toBeLessThanOrEqual(8);
+  });
+});
+
+describe('rowForWallHeight — the level-camera case', () => {
+  it('puts a wall product where it would really be mounted, phone held level', () => {
+    /*
+     * Camera at 1.4 m, level, wall 3 m away. Worked by hand:
+     *   fire extinguisher at 1.0 m  → elevation atan(-0.4/3) = -7.59° → row 540 + 900·tan(7.59°) = 660
+     *   CCTV at 2.4 m               → elevation atan( 1.0/3) = 18.43° → row 540 - 900·tan(18.43°) = 240
+     * The fixed fractions this replaced would have put them at 594 and 302 — both floating.
+     */
+    expect(rowForWallHeight(1.0, 3, 0, FY, CY, H) as number).toBeCloseTo(660, 0);
+    expect(rowForWallHeight(2.4, 3, 0, FY, CY, H) as number).toBeCloseTo(240, 0);
+  });
+
+  it('places a product at exactly camera height on the horizon', () => {
+    // Same height as the lens, level camera: dead centre, at any distance.
+    for (const d of [1, 3, 8]) expect(rowForWallHeight(H, d, 0, FY, CY, H) as number).toBeCloseTo(CY, 6);
+  });
+
+  it('moves the product down the frame as the phone tilts up, and vice versa', () => {
+    const level = rowForWallHeight(1.0, 3, 0, FY, CY, H) as number;
+    const up = rowForWallHeight(1.0, 3, 15, FY, CY, H) as number;
+    const down = rowForWallHeight(1.0, 3, -15, FY, CY, H) as number;
+    expect(up).toBeGreaterThan(level);
+    expect(down).toBeLessThan(level);
+  });
+
+  it('converges on the horizon for a distant wall, whatever the mounting height', () => {
+    const far = rowForWallHeight(2.4, 400, 0, FY, CY, H) as number;
+    expect(Math.abs(far - CY)).toBeLessThan(10);
+  });
+});
+
+describe('dropPointFor', () => {
+  const geo = (pitchDeg: number, distanceM = 3) => ({ pitchDeg, fy: FY, height: 1080, cameraHeightM: H, distanceM });
+
+  it('solves the row for a wall mount instead of using a fixed fraction', () => {
+    // Fire extinguisher: band 800-1200 mm, mid 1.0 m. Level camera, wall 3 m → v = 660/1080.
+    const solved = dropPointFor(ruleFor('fire-extinguishers'), 'wall', geo(0));
+    expect(solved.v).toBeCloseTo(660 / 1080, 2);
+    expect(solved.v).not.toBeCloseTo(defaultDropPoint(ruleFor('fire-extinguishers'), 'wall').v, 2);
+  });
+
+  it('puts a CCTV camera high on the wall when the phone is level', () => {
+    const solved = dropPointFor(ruleFor('cctv'), 'wall', geo(0));
+    expect(solved.v).toBeLessThan(0.35); // band 2200-3000 mm, well above the lens
+  });
+
+  it('keeps horizontal mounts on their plane rather than solving a height', () => {
+    // A cement bag is pinned by the floor plane; there is no wall height to compute.
+    expect(dropPointFor(ruleFor('cement'), 'floor', geo(-20))).toEqual(defaultDropPoint(ruleFor('cement'), 'floor'));
+  });
+
+  it('falls back to the fraction when the device reports no orientation', () => {
+    expect(dropPointFor(ruleFor('cctv'), 'wall', geo(0) && { ...geo(0), pitchDeg: null })).toEqual(defaultDropPoint(ruleFor('cctv'), 'wall'));
+    expect(dropPointFor(ruleFor('cctv'), 'wall', null)).toEqual(defaultDropPoint(ruleFor('cctv'), 'wall'));
+  });
+
+  it('keeps an off-frame product just inside the edge so it can still be dragged', () => {
+    // Standing very close to a wall: a high mount projects far above the frame.
+    const v = dropPointFor(ruleFor('cctv'), 'wall', geo(0, 0.5)).v;
+    expect(v).toBeGreaterThanOrEqual(0.06);
+    expect(v).toBeLessThanOrEqual(0.94);
   });
 });

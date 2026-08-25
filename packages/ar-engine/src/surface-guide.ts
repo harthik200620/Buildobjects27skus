@@ -1,5 +1,6 @@
 import { SURFACE_LABEL } from './placement';
 import type { PlacementRule, SceneAnalysis, Surface, SurfaceDetection } from './types';
+import { rowForWallHeight } from './vision/depth';
 
 /**
  * What surface a product needs, whether the camera is looking at one, and what to say when it
@@ -190,6 +191,48 @@ export function defaultDropPoint(rule: PlacementRule, surface: Surface): { u: nu
   if (band && band[0] >= 1800) return { u: 0.5, v: 0.28 };
   if (band && band[1] <= 1400) return { u: 0.5, v: 0.55 };
   return { u: 0.5, v: 0.42 };
+}
+
+export interface DropGeometry {
+  pitchDeg: number | null;
+  fy: number;
+  /** Full frame height in pixels; the principal point is taken as its centre. */
+  height: number;
+  cameraHeightM: number;
+  /** Measured or estimated distance to the surface. */
+  distanceM: number;
+}
+
+/**
+ * Where to put the product, solved rather than guessed.
+ *
+ * `defaultDropPoint` returns a fixed fraction of the frame per mount type, which is a reasonable
+ * approximation at a typical downward tilt and visibly wrong when the phone is held level — the
+ * case a person is most likely to be in when they point it at a wall. Given the camera's pitch,
+ * its height and the distance to the surface, the row a real mounting height projects to is
+ * arithmetic, so this uses it and falls back to the fraction only when the geometry is unknown.
+ *
+ * The horizontal position stays centred: nothing in the frame tells us where along the wall a
+ * person wants the product, and they can drag it.
+ */
+export function dropPointFor(rule: PlacementRule, surface: Surface, geo: DropGeometry | null): { u: number; v: number } {
+  const fallback = defaultDropPoint(rule, surface);
+  if (!geo || geo.pitchDeg === null || !(geo.height > 0)) return fallback;
+
+  // Only vertical mounts have a height to solve for; horizontal ones are pinned by the plane.
+  const vertical = surface === 'wall' || surface === 'window';
+  if (!vertical) return fallback;
+
+  /* The middle of the rule's own mounting band, or eye level when it declares none. */
+  const band = rule.heightBandMm;
+  const heightM = band ? (band[0] + band[1]) / 2 / 1000 : 1.5;
+  const row = rowForWallHeight(heightM, geo.distanceM, geo.pitchDeg, geo.fy, geo.height / 2, geo.cameraHeightM);
+  if (row === null) return fallback;
+
+  const v = row / geo.height;
+  /* Off-frame means the product genuinely is not in view at this angle — keep it just inside the
+     edge so it can be seen and dragged, rather than anchoring it somewhere invisible. */
+  return { u: 0.5, v: Math.max(0.06, Math.min(0.94, v)) };
 }
 
 /**
