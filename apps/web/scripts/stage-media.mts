@@ -36,6 +36,8 @@ interface Job {
   label: string;
   /** `null` means take the whole tree. */
   pick?: (rel: string) => boolean;
+  /** A second source, used only for paths the first one does not have. */
+  fallbackFrom?: string;
 }
 
 const JOBS: Job[] = [
@@ -47,6 +49,13 @@ const JOBS: Job[] = [
     /* Only the delivered models and the manifest. `photoreal/` holds what the provider returned
        before normalisation — 724 MB that nothing reads back. */
     pick: (rel) => !rel.includes('/') && (rel.endsWith('.glb') || rel === 'manifest.json'),
+    /*
+     * Seven SKUs have no photoreal model and wear a generated parametric one instead. On a machine
+     * with the repository the route handler finds those under `placeholders/`; a CDN has no such
+     * fallback, so they are promoted to the top level here and the viewer gets a model for all
+     * twenty-eight rather than a 404 for seven. 1.3 MB for the set.
+     */
+    fallbackFrom: path.join(REPO, 'assets', '3d', 'placeholders'),
   },
 ];
 
@@ -77,11 +86,16 @@ let unchanged = 0;
 let removed = 0;
 
 for (const job of JOBS) {
-  const wanted = walk(job.from).filter((rel) => !SKIP.some((re) => re.test(rel)) && (job.pick?.(rel) ?? true));
+  const keep = (rel: string) => !SKIP.some((re) => re.test(rel)) && (job.pick?.(rel) ?? true);
+  const primary = walk(job.from).filter(keep);
+  const seen = new Set(primary);
+  const fallback = job.fallbackFrom ? walk(job.fallbackFrom).filter((rel) => keep(rel) && !seen.has(rel)) : [];
+  const source = (rel: string) => (seen.has(rel) ? job.from : (job.fallbackFrom as string));
+  const wanted = [...primary, ...fallback];
   const want = new Set(wanted);
 
   for (const rel of wanted) {
-    const from = path.join(job.from, rel);
+    const from = path.join(source(rel), rel);
     const to = path.join(job.to, rel);
     const src = fs.statSync(from);
     /* Same size and no older than the source means the staged copy is already right. */
@@ -104,7 +118,7 @@ for (const job of JOBS) {
     removed++;
   }
 
-  const total = wanted.reduce((n, rel) => n + fs.statSync(path.join(job.from, rel)).size, 0);
+  const total = wanted.reduce((n, rel) => n + fs.statSync(path.join(source(rel), rel)).size, 0);
   process.stdout.write(`  ${job.label.padEnd(6)} ${String(wanted.length).padStart(5)} files  ${(total / 1048576).toFixed(1).padStart(7)} MB\n`);
 }
 

@@ -26,8 +26,10 @@ assets/3d/_selftest/
 # scale-test artefacts
 packages/db/scale-report*.json
 
-# generated placeholder models (pnpm assets:3d); real models in assets/3d/{SKU}.glb are kept
-assets/3d/placeholders/
+# Generated placeholder models (`pnpm assets:3d`); a real model at assets/3d/{SKU}.glb always
+# wins over the placeholder of the same name. These are tracked: seven SKUs still have no
+# photoreal build, a CDN cannot fall back to a directory the way the route handler does, and
+# 1.3 MB is cheaper than a 3D viewer that 404s for a quarter of the catalogue.
 
 # What Meshy/Tripo returned, byte for byte, before normalisation — 19 MB for one SKU and
 # nothing reads it back. The deliverable is assets/3d/{SKU}.glb; assets/3d/jobs.json is the
