@@ -7,4 +7,5 @@ export * from './scale';
 export * from './surface-guide';
 export * from './tier';
 export * from './types';
-export const AR_ENGINE_VERSION = '0.4.0';
+export * from './vision';
+export const AR_ENGINE_VERSION = '0.5.0';

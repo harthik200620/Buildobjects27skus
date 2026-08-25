@@ -76,8 +76,9 @@
   }
   .hero-title {
     margin-top: var(--s-3);
-    font: 700 30px / 36px var(--font-ui);
-    letter-spacing: -0.02em;
+    /* Audiowide, like every other display heading — see .display in legacy.css. */
+    font: 400 30px / 38px var(--font-display);
+    letter-spacing: -0.005em;
     color: var(--color-ink);
     text-wrap: balance;
   }

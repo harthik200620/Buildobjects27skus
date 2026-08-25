@@ -56,7 +56,8 @@ export interface SceneAnalysis {
   /** Normalised y of the horizon / eye-level line, for the depth model. */
   horizonY: number;
   lighting: { direction: 'left' | 'right' | 'top' | 'front' | 'unknown'; warm: boolean; brightness: number };
-  provider: 'gemini' | 'mock';
+  /* 'device' = the on-device vision in src/vision (no API key, no round trip). */
+  provider: 'gemini' | 'device' | 'mock';
   notes?: string;
   /** Live mode: round-trip latency of the analysis call that produced this frame, ms. */
   latencyMs?: number;
@@ -112,7 +113,8 @@ export interface CompositeRequest {
 }
 export interface CompositeResult {
   image: { mimeType: string; base64: string };
-  provider: 'gemini' | 'mock';
+  /* 'device' = the on-device vision in src/vision (no API key, no round trip). */
+  provider: 'gemini' | 'device' | 'mock';
   fidelity: number;
   attempts: number;
   note: string;

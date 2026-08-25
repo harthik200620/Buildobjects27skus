@@ -86,8 +86,8 @@
     border-color: var(--color-chrome-hair-strong);
   }
   /* The lockup sizes itself (components/Wordmark.tsx); the chrome only has to leave room. */
-  .header-logo svg,
-  .header-logo img {
+  .header-logo img,
+  .header-logo > span > span {
     flex: none;
   }
   .header-menu {
@@ -818,9 +818,11 @@
       padding: 0 6px;
     }
     /* Row 1 is ≡ · mark · Estimate · Account; the word only fits on wider phones, so the
-       narrowest layout keeps the mark and drops the drawn word beside it. */
+       narrowest layout keeps the mark and drops the word beside it. Targets the word by its
+       role rather than by tag: it used to be an <svg> and is now set type, and a selector
+       naming the tag silently stopped hiding anything the moment that changed. */
     @media (max-width: 479.98px) {
-      .header-logo svg {
+      .header-logo [role="img"] {
         display: none;
       }
     }
@@ -891,66 +893,83 @@
   /* ── BO cart mark ────────────────────────────────────────────────────────────
      The mark on wheels, and its arrival.
 
-     It does not fade in, it lands: the rig drops from above the header, the
-     chassis compresses on impact, the wheels spin up and settle, and the whole
-     thing rocks once as the weight transfers. Every part is one keyframe on one
-     element — no animation library and no JS timeline — and the whole sequence
-     replays when something joins the cart, because adding to your order should
-     have a physical consequence in the chrome.
+     Layout first, because the first version had none: the mark and the chassis
+     were drawn in one SVG at one scale, and at header size the logo's thin
+     diagonals sat directly on the trolley's thin metal and fused into a single
+     unreadable shape. Here they are two elements with a fixed proportion and a
+     real gap — the load is 62% of the height, the chassis is 30%, and the 8%
+     between them is what keeps "logo" and "metal" legible as separate things.
 
-     Under prefers-reduced-motion every animation here is off, not shortened. */
+     The arrival does not fade in, it lands: the rig drops from above the header,
+     compresses on impact, and the wheels spin up and settle. Every part is one
+     keyframe on one element, replayed when something joins the cart. Under
+     prefers-reduced-motion all of it is off, not shortened. */
   .bocart {
-    display: inline-block;
     position: relative;
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
     flex: none;
     line-height: 0;
+    color: var(--color-header-ink);
   }
-  .bocart svg {
+  .bocart-rig {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+    animation: bocart-drop 880ms cubic-bezier(0.3, 1.5, 0.4, 1) both;
+  }
+  /* The load and the deck are sized in pixels by the component — see BoCartMark for why
+     percentages could not resolve here. These rules only own display and flow. */
+  .bocart-load {
     display: block;
-    overflow: visible;
+    width: auto;
+    flex: none;
+  }
+  .bocart-chassis {
+    display: block;
+    width: 100%;
+    flex: none;
   }
 
-  /* the whole rig: drop in, land, rock, settle */
-  .bocart-rig {
-    transform-box: fill-box;
-    transform-origin: 50% 100%;
-    animation: bocart-drop 900ms cubic-bezier(0.3, 1.5, 0.4, 1) both;
-  }
   @keyframes bocart-drop {
     0% {
       opacity: 0;
-      transform: translateY(-160%) rotate(-14deg);
+      transform: translateY(-150%) rotate(-12deg);
     }
     46% {
       opacity: 1;
-      transform: translateY(0) rotate(0deg) scaleY(0.86) scaleX(1.08);
+      transform: translateY(0) rotate(0deg) scaleY(0.88) scaleX(1.06);
     }
-    62% {
-      transform: translateY(0) rotate(3deg) scaleY(1.04) scaleX(0.97);
+    64% {
+      transform: translateY(0) rotate(2.5deg) scaleY(1.03) scaleX(0.98);
     }
-    78% {
-      transform: translateY(0) rotate(-1.5deg) scale(1);
+    80% {
+      transform: translateY(0) rotate(-1deg) scale(1);
     }
     100% {
       transform: translateY(0) rotate(0) scale(1);
     }
   }
 
-  /* the basket rocks a beat behind the chassis, the way a load does */
-  .bocart-basket {
-    transform-box: fill-box;
+  /* the load rocks a beat behind the chassis, the way a load does */
+  .bocart-load {
+    animation: bocart-settle 880ms cubic-bezier(0.3, 1.4, 0.4, 1) 60ms both;
     transform-origin: 50% 100%;
-    animation: bocart-load 900ms cubic-bezier(0.3, 1.4, 0.4, 1) 60ms both;
   }
-  @keyframes bocart-load {
+  @keyframes bocart-settle {
     0% {
-      transform: translateY(-40%) rotate(-8deg);
+      transform: translateY(-30%) rotate(-7deg);
     }
-    50% {
-      transform: translateY(3%) rotate(4deg);
+    52% {
+      transform: translateY(2%) rotate(4deg);
     }
-    72% {
-      transform: translateY(0) rotate(-2deg);
+    74% {
+      transform: translateY(0) rotate(-1.5deg);
     }
     100% {
       transform: translateY(0) rotate(0);
@@ -961,10 +980,10 @@
   .bocart-wheel {
     transform-box: fill-box;
     transform-origin: 50% 50%;
-    animation: bocart-roll 820ms cubic-bezier(0.1, 0.8, 0.2, 1) 380ms both;
+    animation: bocart-roll 800ms cubic-bezier(0.1, 0.8, 0.2, 1) 360ms both;
   }
   .bocart-wheel--b {
-    animation-delay: 430ms;
+    animation-delay: 410ms;
   }
   @keyframes bocart-roll {
     from {
@@ -975,36 +994,23 @@
     }
   }
 
-  /* the figure walks in from the left just behind the trolley */
-  .bocart-driver {
-    transform-box: fill-box;
-    transform-origin: 50% 100%;
-    animation: bocart-walk-in 760ms cubic-bezier(0.2, 0.9, 0.25, 1) 120ms both;
+  /* the figure, only where there is room for it (see BoCartMark: `driver`) */
+  .bocart--driver {
+    padding-left: 42%;
+  }
+  .bocart-person {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40%;
+    height: 92%;
+    color: var(--color-header-ink-2);
+    animation: bocart-walk-in 740ms cubic-bezier(0.2, 0.9, 0.25, 1) 120ms both;
   }
   @keyframes bocart-walk-in {
-    0% {
-      opacity: 0;
-      transform: translateX(-40%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  .bocart-leg {
-    transform-box: fill-box;
-    transform-origin: 100% 0;
-    animation: bocart-stride 460ms ease-in-out 200ms 3 alternate both;
-  }
-  .bocart-leg--b {
-    animation-delay: 430ms;
-  }
-  @keyframes bocart-stride {
     from {
-      transform: rotate(-16deg);
-    }
-    to {
-      transform: rotate(16deg);
+      opacity: 0;
+      transform: translateX(-38%);
     }
   }
 
@@ -1017,10 +1023,9 @@
 
   @media (prefers-reduced-motion: reduce) {
     .bocart-rig,
-    .bocart-basket,
+    .bocart-load,
     .bocart-wheel,
-    .bocart-driver,
-    .bocart-leg {
+    .bocart-person {
       animation: none;
     }
     .header-action--cart:hover .bocart-rig {

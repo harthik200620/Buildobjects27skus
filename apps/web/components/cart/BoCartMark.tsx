@@ -3,95 +3,91 @@
 import React from 'react';
 
 /**
- * The BO cart: the Build Objects mark, on wheels, being pushed.
+ * The BO cart: the Build Objects mark, on wheels.
  *
- * The header used to carry a 🛒 emoji — the same glyph as every other shop on the internet,
- * rendered by whatever font the operating system happened to pick, in whatever colour that font
- * decided. It was the one piece of the store's chrome that belonged to nobody.
+ * The header used to carry a 🛒 emoji — the same glyph as every other shop on the internet, drawn
+ * by whatever font the operating system picked, in whatever colour that font decided. It was the
+ * one piece of chrome that belonged to nobody.
  *
- * This is drawn instead, and it is drawn out of the brand: the trolley's basket is the mark's own
- * "b" — three parallel strokes and a bowl — set on a chassis with two wheels and a handle, with a
- * figure behind it. So the thing that carries your order is literally the thing that sells it.
+ * The first replacement drew the whole scene in SVG: the mark's three diagonal strokes and bowl
+ * redrawn as a basket, a deck, two spoked wheels and a figure pushing it. At 140 units it was
+ * legible. At the 26 px the header actually renders it, the thin strokes of the mark collided
+ * with the thin strokes of the trolley and the whole thing became one grey-and-teal smear —
+ * metal and logo welded together, readable as neither.
  *
- * The entrance is the Blinkit idea: it does not fade in, it arrives. The trolley drops from above
- * the header, the chassis compresses on landing, the wheels spin up and settle, and the whole rig
- * rocks once as the weight transfers. Every part of that is one CSS keyframe on one element — no
- * animation library, no JS timeline — and the whole thing is off under prefers-reduced-motion,
- * where it renders as a still mark.
+ * So the load is the real logo asset. `/logo-mark.png` is the mark as the brand actually draws
+ * it, already built to survive being small, and using it means the recognisable part of the icon
+ * is the part nobody redrew. The chassis is what got cut back: one flat deck bar and two solid
+ * wheels, with real clearance between the mark and the metal so they read as separate objects.
  *
- * `arrive` re-fires the landing. The header calls it whenever an item joins the cart, so adding
- * something to your order has a physical consequence in the chrome.
+ * The figure is off by default. It was the busiest element and it is illegible below about 40 px;
+ * `driver` brings it back where there is room.
+ *
+ * The entrance is the Blinkit idea: it does not fade in, it arrives. The rig drops from above the
+ * header, compresses on landing, the wheels spin up and settle. `arriveKey` replays it — the
+ * header passes the cart's item count, so adding something has a physical consequence in the
+ * chrome. All of it is off under prefers-reduced-motion.
  */
 
 export interface BoCartMarkProps {
+  /** Height of the whole rig in CSS pixels. */
   size?: number;
   /** Bump this to replay the landing — the header passes the cart's item count. */
   arriveKey?: number | string;
+  /** Show the figure pushing it. Off by default: it is illegible below ~40 px. */
+  driver?: boolean;
   className?: string;
 }
 
-/**
- * The mark's three strokes and bowl, drawn at its own scale and then placed on the deck.
- *
- * The first attempt left the b hovering a third of the frame above the trolley with the handle
- * running up to nothing, which read as a logo next to a cart rather than a logo *on* one. The
- * numbers below are worked so the bowl's baseline lands exactly on the deck: the paths span
- * y 8…78, scaled by 0.6 that is 4.8…46.8, so a translate of (104 − 46.8) sets it down flush.
- */
-const B_STROKES = 'M30 8 L10 78 M48 8 L28 78 M66 8 L46 78';
-const B_BOWL = 'M62 26 H92 A26 26 0 0 1 92 78 H44';
-const B_SCALE = 0.6;
-const DECK_Y = 100;
-const B_PLACE = `translate(44 ${DECK_Y - 78 * B_SCALE}) scale(${B_SCALE})`;
-
-export default function BoCartMark({ size = 26, arriveKey, className }: BoCartMarkProps) {
+export default function BoCartMark({ size = 26, arriveKey, driver = false, className }: BoCartMarkProps) {
   /*
-   * A CSS animation only replays if the element is re-created or the animation is restarted, so
-   * the key changes with `arriveKey` and React swaps the node. Cheaper and more reliable than
-   * toggling a class and forcing a reflow.
+   * A CSS animation only replays if the element is re-created, so the key changes with
+   * `arriveKey` and React swaps the node. Derived during render rather than in an effect: the
+   * trolley should land on the frame the count changes, not one paint later.
    */
   const [seq, setSeq] = React.useState(0);
   const lastArrival = React.useRef(arriveKey);
   if (lastArrival.current !== arriveKey) {
-    /* Derived during render rather than in an effect: the trolley should land on the frame the
-       count changes, not one paint later, and this is the "adjusting state on prop change"
-       pattern React documents for exactly this case. */
     lastArrival.current = arriveKey;
     setSeq((n) => n + 1);
   }
 
+  /*
+   * Sized in pixels, not percentages.
+   *
+   * The first layout gave the load 62% and the chassis 30% of the rig. Percentage heights need a
+   * definite parent height to resolve against, and through an inline-flex wrapper and an SVG with
+   * its own intrinsic aspect ratio they did not: at a 24 px box the parts measured 19 px and
+   * 13 px — 32 px of content in a 24 px frame, which is exactly the overlap that welded the logo
+   * to the metal. Three integers computed here cannot drift.
+   */
+  const loadH = Math.round(size * 0.58);
+  const deckH = Math.round(size * 0.3);
+  const gapH = Math.max(1, size - loadH - deckH);
+
   return (
-    <span key={seq} className={`bocart${className ? ` ${className}` : ''}`} style={{ width: size * 1.35, height: size * 1.35 }} aria-hidden="true">
-      <svg viewBox="0 0 140 140" width="100%" height="100%" fill="none">
-        <title>BO Cart</title>
-
-        {/* the person: head, body, one arm reaching the grip, two legs mid-stride */}
-        <g className="bocart-driver" stroke="var(--color-header-ink-2)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="18" cy="42" r="9" fill="var(--color-header-ink-2)" stroke="none" />
-          <path d="M18 53 v22" />
-          <path d="M18 60 L36 66" />
-          <path className="bocart-leg bocart-leg--a" d="M18 75 L9 100" />
-          <path className="bocart-leg bocart-leg--b" d="M18 75 L29 100" />
-        </g>
-
-        {/* the trolley: grip, post, deck, wheels — and the mark riding on the deck */}
-        <g className="bocart-rig">
-          <path d="M36 66 H50 V100" stroke="var(--color-header-ink-2)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
-          <g className="bocart-basket" transform={B_PLACE}>
-            <path d={B_STROKES} stroke="var(--color-brand)" strokeWidth="14" strokeLinecap="round" />
-            <path d={B_BOWL} stroke="var(--color-brand)" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" />
-          </g>
-          <rect x="46" y={DECK_Y} width="80" height="8" rx="4" fill="var(--color-header-ink)" />
-          <g className="bocart-wheel bocart-wheel--a">
-            <circle cx="64" cy="120" r="10" fill="var(--color-header-ink)" />
-            <circle cx="64" cy="120" r="3.4" fill="var(--color-header)" />
-          </g>
-          <g className="bocart-wheel bocart-wheel--b">
-            <circle cx="108" cy="120" r="10" fill="var(--color-header-ink)" />
-            <circle cx="108" cy="120" r="3.4" fill="var(--color-header)" />
-          </g>
-        </g>
-      </svg>
+    <span
+      key={seq}
+      className={`bocart${driver ? ' bocart--driver' : ''}${className ? ` ${className}` : ''}`}
+      style={{ width: Math.round(size * 1.16), height: size }}
+      aria-hidden="true"
+    >
+      {driver && (
+        <svg className="bocart-person" viewBox="0 0 44 100" fill="none" aria-hidden="true">
+          <circle cx="20" cy="15" r="9" fill="currentColor" />
+          <path d="M20 26 v25 M20 33 L40 41 M20 51 L10 80 M20 51 L31 80" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )}
+      <span className="bocart-rig">
+        {/* The load: the real mark, not a redrawing of it. */}
+        <img className="bocart-load" src="/logo-mark.png" alt="" draggable={false} style={{ height: loadH, marginBottom: gapH }} />
+        {/* The chassis: one deck and two wheels, and nothing else. */}
+        <svg className="bocart-chassis" viewBox="0 0 100 34" fill="none" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style={{ height: deckH }}>
+          <rect x="3" y="0" width="94" height="7" rx="3.5" fill="currentColor" />
+          <circle className="bocart-wheel bocart-wheel--a" cx="27" cy="22" r="10" fill="currentColor" />
+          <circle className="bocart-wheel bocart-wheel--b" cx="73" cy="22" r="10" fill="currentColor" />
+        </svg>
+      </span>
     </span>
   );
 }

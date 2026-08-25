@@ -163,7 +163,7 @@ export default function CartButton() {
         >
           <span className="header-action-icon relative">
             {/* The count is the arrival trigger: add something and the trolley lands again. */}
-            <BoCartMark size={22} arriveKey={count} />
+            <BoCartMark size={24} arriveKey={count} />
             {count > 0 && (
               <span className="header-count" aria-hidden="true">
                 {count > 99 ? '99+' : count}

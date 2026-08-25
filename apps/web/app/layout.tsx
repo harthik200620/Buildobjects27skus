@@ -3,20 +3,29 @@ import localFont from 'next/font/local';
 import './globals.css';
 
 /**
- * Type — the Build Objects type program. Two faces, down from three.
+ * Type — the Build Objects type program. Three faces.
  *
+ *   Display 2 (Audiowide)     — the brand name, wherever it appears, and nothing else.
  *   Sans 5    (Encode Sans)   — every figure (tabular-nums, a true ₹, static 300–700 cuts).
  *   Sans 3    (Arimo)         — every piece of body and UI text.
  *
- * Display 2 (Audiowide) is gone. It was loaded on every page to set two words — the wordmark —
- * and the wordmark is now drawn as vector in components/Wordmark.tsx, where the O of OBJECTS can
- * actually be the brand teal at the mark's own size. A webfont for a logo is a webfont for a
- * picture; this deletes ~19 KB from every first paint and removes a face nothing else could use.
+ * Audiowide was briefly removed on the argument that a webfont loaded to set two words is a
+ * webfont loaded for a picture, and the wordmark was drawn as vector instead. That was the wrong
+ * call: the display face IS the brand's voice, and a hand-cut substitute — however carefully
+ * drawn — reads as a wireframe of the name rather than as the name. It is back, it is the only
+ * thing that ever sets the brand name, and components/Wordmark.tsx is the one place that does it.
  *
  * Single-word fallbacks ONLY in localFont: next/font writes the list into the CSS variable
  * unquoted, and an unquoted multi-word family is invalid CSS that discards the whole
  * declaration. The ₹-bearing fallbacks live in --font-figure in theme.css, quoted.
  */
+const display = localFont({
+  src: [{ path: '../public/fonts/BuildObjectsDisplay2-Regular.woff2', weight: '400', style: 'normal' }],
+  display: 'swap',
+  variable: '--font-display-face',
+  fallback: ['system-ui', 'sans-serif'],
+});
+
 const ui = localFont({
   src: [
     { path: '../public/fonts/BuildObjectsSans3-Regular.woff2', weight: '400', style: 'normal' },
@@ -61,7 +70,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     // One appearance: deep teal and silver. No theme toggle, no prefers-color-scheme branch.
-    <html lang="en" className={`${ui.variable} ${figure.variable}`}>
+    <html lang="en" className={`${display.variable} ${ui.variable} ${figure.variable}`}>
       <body>{children}</body>
     </html>
   );

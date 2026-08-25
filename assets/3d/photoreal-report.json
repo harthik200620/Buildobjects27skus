@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T11:16:30.334Z",
+  "generated_at": "2026-08-25T12:12:58.228Z",
   "dry_run": false,
   "provider_pref": "auto",
   "providers": [
@@ -7,20 +7,20 @@
     "tripo: no key"
   ],
   "max_spend_usd": 20,
-  "estimated_spend_usd": 0.8,
-  "ledger_spend_usd": 15.200000000000008,
+  "estimated_spend_usd": 2,
+  "ledger_spend_usd": 17.200000000000003,
   "results": [
     {
-      "sku": "FIR-CEA-MAP90-4KG",
-      "category": "fire-extinguishers",
+      "sku": "GLS-AIS-EDGE-NATURAPLUS",
+      "category": "glass",
       "outcome": "rejected",
-      "reason": "normalise rejected (meshy, retry): aspect mismatch 131 % vs spec 140×445×190 mm (reject > 85 %)",
+      "reason": "normalise rejected (meshy, retry): GLB is 14.5 MB (reject > 12 MB)",
       "provider": "meshy",
-      "job_id": "01a0387d-119f-797b-af40-b27efeceefbe",
+      "job_id": "01a03882-6ceb-7abb-b254-361fb55f00b4",
       "mode": "single",
       "images": [
         {
-          "key": "skus/03/FIR-CEA-MAP90-4KG/img/1-orig.png",
+          "key": "skus/e0/GLS-AIS-EDGE-NATURAPLUS/img/1-orig.jpg",
           "role": "front",
           "source": "orig"
         }
@@ -28,14 +28,104 @@
       "cutouts": 0,
       "est_cost_usd": 0.4,
       "warnings": [
-        "meshy: simplified 1,01,586 → 98,000 triangles",
-        "meshy: simplified 1,00,760 → 97,999 triangles"
+        "meshy: sheet product: z scaled to 6 mm independently (1223 mm under a uniform scale)",
+        "meshy: aspect mismatch 19 % vs spec (warn > 15 %)",
+        "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+        "meshy: sheet product: z scaled to 6 mm independently (1401 mm under a uniform scale)",
+        "meshy: aspect mismatch 36 % vs spec (warn > 15 %)",
+        "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)"
       ],
       "attempts": 2
+    },
+    {
+      "sku": "GLS-GUA-CLIMAGUARD-BLUE5",
+      "category": "glass",
+      "outcome": "photoreal",
+      "provider": "meshy",
+      "job_id": "01a038d1-2cd2-7ca9-8b88-b9445325ea34",
+      "mode": "single",
+      "images": [
+        {
+          "key": "skus/52/GLS-GUA-CLIMAGUARD-BLUE5/img/1-orig.jpg",
+          "role": "front",
+          "source": "orig"
+        }
+      ],
+      "cutouts": 0,
+      "est_cost_usd": 0.4,
+      "warnings": [
+        "meshy: sheet product: z scaled to 5 mm independently (1578 mm under a uniform scale)",
+        "meshy: aspect mismatch 50 % vs spec (warn > 15 %)",
+        "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+        "meshy: sheet product: z scaled to 5 mm independently (1149 mm under a uniform scale)",
+        "meshy: aspect mismatch 50 % vs spec (warn > 15 %)",
+        "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+        "meshy: GLB is 10.9 MB (warn > 8 MB)",
+        "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+      ],
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.49703610765736206,
+        "warnings": [
+          "meshy: sheet product: z scaled to 5 mm independently (1578 mm under a uniform scale)",
+          "meshy: aspect mismatch 50 % vs spec (warn > 15 %)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: sheet product: z scaled to 5 mm independently (1149 mm under a uniform scale)",
+          "meshy: aspect mismatch 50 % vs spec (warn > 15 %)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 10.9 MB (warn > 8 MB)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "file": "GLS-GUA-CLIMAGUARD-BLUE5.glb",
+      "attempts": 2
+    },
+    {
+      "sku": "GLS-SGB-SUNBAN-SAPPHIRE5",
+      "category": "glass",
+      "outcome": "photoreal",
+      "provider": "meshy",
+      "job_id": "01a038d3-8a93-7d64-815a-acbcad9d1556",
+      "mode": "single",
+      "images": [
+        {
+          "key": "skus/2a/GLS-SGB-SUNBAN-SAPPHIRE5/img/1-orig.webp",
+          "role": "front",
+          "source": "orig"
+        }
+      ],
+      "cutouts": 0,
+      "est_cost_usd": 0.4,
+      "warnings": [
+        "meshy: sheet product: z scaled to 5 mm independently (432 mm under a uniform scale)",
+        "meshy: aspect mismatch 33 % vs spec (warn > 15 %)",
+        "meshy: GLB is 10.3 MB (warn > 8 MB)",
+        "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+      ],
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": 0.5267712276906436,
+        "aspect_mismatch": 0.3349627075263145,
+        "warnings": [
+          "meshy: sheet product: z scaled to 5 mm independently (432 mm under a uniform scale)",
+          "meshy: aspect mismatch 33 % vs spec (warn > 15 %)",
+          "meshy: GLB is 10.3 MB (warn > 8 MB)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "file": "GLS-SGB-SUNBAN-SAPPHIRE5.glb",
+      "attempts": 1
     }
   ],
   "totals": {
-    "photoreal": 0,
+    "photoreal": 2,
     "planned": 0,
     "skipped": 0,
     "failed": 0,

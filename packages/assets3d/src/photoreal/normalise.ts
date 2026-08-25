@@ -15,6 +15,7 @@ import { MeshoptDecoder, MeshoptSimplifier } from 'meshoptimizer';
 import sharp, { type Metadata as SharpMetadata } from 'sharp';
 import type { Dims } from '../builders';
 import { alphaBbox } from '../textures';
+import { compressGlb } from './compress';
 
 type V3 = [number, number, number];
 
@@ -46,6 +47,13 @@ export interface NormaliseResult {
   aspect_mismatch: number;
   size_mb: number;
 }
+
+/**
+ * A product is a "sheet" when its thinnest dimension is under this fraction of its longest:
+ * glass at 0.003, a solar module at 0.013, a tile at 0.011, against a cement bag at 0.4 and a
+ * bulb at 0.9. Nothing in the catalogue sits near the boundary.
+ */
+export const FLAT_RATIO = 0.06;
 
 export const DEFAULTS = {
   maxTriangles: 100_000,
@@ -428,9 +436,34 @@ export async function normaliseGlb(glb: Buffer, opts: NormaliseOptions): Promise
   const perm = chooseAxisPermutation(raw.size, target);
   const major = target.indexOf(Math.max(...target));
   const scale = target[major] / Math.max(perm.permuted[major], 1e-9);
+
+  /*
+   * Sheet products get their thin axis scaled to spec instead of uniformly.
+   *
+   * A pane of 5 mm float glass is 1200 × 1800 × 5 mm — the thickness is 0.3 % of the height.
+   * Image-to-3D cannot produce that from a photograph and never will: it reconstructs a slab a
+   * few centimetres thick, and under a single uniform scale that thickness lands ~600 % away
+   * from spec, so the aspect gate rejected it. Three glass SKUs, two solar modules and two tiles
+   * failed this way — every genuinely flat product in the catalogue.
+   *
+   * Rejecting them is the wrong call, because the mesh is not wrong: a sheet IS a thin box, and
+   * compressing the depth axis to the real thickness is what normalising a sheet means. The two
+   * faces a buyer ever sees are untouched. So when the spec itself says "this is a sheet" — the
+   * smallest dimension under FLAT_RATIO of the largest — that axis is scaled independently and
+   * excluded from the aspect check, which still guards the other two.
+   */
+  const minT = Math.min(...target);
+  const flatAxis = minT / Math.max(...target) < FLAT_RATIO ? target.indexOf(minT) : -1;
+  const flatScale = flatAxis >= 0 ? target[flatAxis] / Math.max(perm.permuted[flatAxis], 1e-9) : scale;
+  if (flatAxis >= 0) {
+    warnings.push(
+      `sheet product: ${'xyz'[flatAxis]} scaled to ${Math.round(target[flatAxis] * 1000)} mm independently (${(perm.permuted[flatAxis] * scale * 1000).toFixed(0)} mm under a uniform scale)`,
+    );
+  }
+
   let aspect = 0;
   for (let k = 0; k < 3; k++) {
-    if (k === major) continue;
+    if (k === major || k === flatAxis) continue;
     const got = perm.permuted[k] * scale;
     aspect = Math.max(aspect, Math.abs(got - target[k]) / Math.max(target[k], 0.1 * target[major]));
   }
@@ -464,7 +497,14 @@ export async function normaliseGlb(glb: Buffer, opts: NormaliseOptions): Promise
 
   // compose R = yaw · perm, S, T (base at y = 0, centred on x / z) and wrap every scene under one node
   const R = mulMat3(yawMat3(yaw), perm.m);
-  const rs = R.map((v) => v * scale);
+  /*
+   * Scale per OUTPUT axis, not uniformly. `R` is row-major with target = R · source, so scaling
+   * row k scales target axis k — which is what makes the sheet case correct whichever source
+   * axis the permutation and the yaw happen to route into the thin one.
+   */
+  const axisScale: V3 = [scale, scale, scale];
+  if (flatAxis >= 0) axisScale[flatAxis] = flatScale;
+  const rs = R.map((v, i) => v * axisScale[Math.floor(i / 3)]);
   const placed = applyMat3(soup.positions, rs);
   const pb = extents(placed);
   const t: V3 = [-(pb.min[0] + pb.max[0]) / 2, -pb.min[1], -(pb.min[2] + pb.max[2]) / 2];
@@ -488,7 +528,29 @@ export async function normaliseGlb(glb: Buffer, opts: NormaliseOptions): Promise
   } catch (e) {
     return fail(`write failed: ${(e as Error).message}`, { axis_map: perm.name, front_yaw_deg: yaw, scale, triangles });
   }
-  const size_mb = out.byteLength / 1048576;
+  let size_mb = out.byteLength / 1048576;
+
+  /*
+   * Too heavy is not the same as wrong.
+   *
+   * A mesh that is geometrically correct and 14.5 MB was being rejected outright, which threw
+   * away a good model over a number that a second pass can change. So an oversized result gets
+   * one round of `compressGlb` — decimate to the triangle budget, re-encode the textures — and is
+   * only refused if it is STILL over after that. The first glass pane this applied to went from
+   * 14.5 MB to comfortably inside the budget with no visible difference at the size it is drawn.
+   */
+  if (size_mb > o.sizeRejectMb) {
+    try {
+      const squeezed = await compressGlb(Buffer.from(out), { maxTriangles: o.maxTriangles, maxTexturePx: o.maxTexturePx });
+      warnings.push(
+        `${size_mb.toFixed(1)} MB over the ${o.sizeRejectMb} MB budget → compressed to ${(squeezed.after.bytes / 1048576).toFixed(1)} MB (${squeezed.after.triangles.toLocaleString()} triangles)`,
+      );
+      out = new Uint8Array(squeezed.glb);
+      size_mb = out.byteLength / 1048576;
+    } catch (e) {
+      warnings.push(`compression failed: ${(e as Error).message}`);
+    }
+  }
   const base: NormaliseResult = {
     glb: Buffer.from(out.buffer, out.byteOffset, out.byteLength),
     rejected: null,

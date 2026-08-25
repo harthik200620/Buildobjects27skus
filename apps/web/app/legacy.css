@@ -105,10 +105,17 @@
   }
 
   /* ── type ───────────────────────────────────────────────────────────────── */
+  /*
+   * Display headings are set in Audiowide — the brand's own face, not the UI face at a heavier
+   * weight. It is a wide display cut, so the tracking is pulled back in and the weight drops to
+   * 400 (the only cut it has); at 700 the browser synthesises a bold that thickens the joints.
+   * Body copy, labels and every figure stay in their own faces: Audiowide has no ₹ glyph and is
+   * unreadable below about 18 px.
+   */
   .display {
-    font-family: var(--font-ui);
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.005em;
     color: var(--color-ink);
   }
   .hero-figure {

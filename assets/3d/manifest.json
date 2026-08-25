@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T10:58:14.189Z",
+  "generated_at": "2026-08-25T12:18:47.226Z",
   "assets": {
     "EPX-SIK-SIKADUR31IN": {
       "file": "EPX-SIK-SIKADUR31IN.glb",
@@ -318,11 +318,11 @@
         "d": 30
       },
       "bbox_m": {
-        "x": 1.0699251294136047,
+        "x": 0.7863850593566895,
         "y": 2.277999997138977,
-        "z": 0.12045318260788918
+        "z": 0.03000000026077032
       },
-      "triangles": 97906,
+      "triangles": 97654,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
@@ -330,8 +330,8 @@
       "source_images": [
         "skus/f7/SOL-VIK-PARADEA-550/img/1-orig.png"
       ],
-      "job_id": "01a0388d-98e5-7654-a934-1441861afac3",
-      "generated_at": "2026-08-25T10:55:50.740Z",
+      "job_id": "01a038d9-2acf-7f2b-b604-7e9167f9b8ca",
+      "generated_at": "2026-08-25T12:18:47.224Z",
       "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -339,11 +339,14 @@
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.39707279696234704,
+        "aspect_mismatch": 0.3065387548373482,
         "warnings": [
-          "meshy: aspect mismatch 40 % vs spec (warn > 15 %)",
+          "meshy: sheet product: z scaled to 30 mm independently (255 mm under a uniform scale)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 12.0 MB (warn > 8 MB)",
+          "meshy: sheet product: z scaled to 30 mm independently (209 mm under a uniform scale)",
+          "meshy: aspect mismatch 31 % vs spec (warn > 15 %)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 11.5 MB (warn > 8 MB)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
@@ -876,26 +879,53 @@
       "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "GLS-SGB-SUNBAN-SAPPHIRE5": {
-      "file": "placeholders/GLS-SGB-SUNBAN-SAPPHIRE5.glb",
+      "file": "GLS-SGB-SUNBAN-SAPPHIRE5.glb",
       "category": "glass",
-      "placeholder": true,
+      "placeholder": false,
       "dims_mm": {
         "w": 1200,
         "h": 1800,
         "d": 5
       },
       "bbox_m": {
-        "x": 1.2000000476837158,
-        "y": 1.7999999523162842,
-        "z": 0.005100000184029341
+        "x": 1.6019552946090698,
+        "y": 1.800000011920929,
+        "z": 0.004999999888241291
       },
-      "triangles": 24,
-      "builder": "glass",
-      "variant": "pane",
+      "triangles": 90524,
+      "builder": "photoreal",
       "usdz": null,
-      "quality": "placeholder",
-      "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.539Z"
+      "quality": "photoreal",
+      "provider": "meshy",
+      "source_images": [
+        "skus/2a/GLS-SGB-SUNBAN-SAPPHIRE5/img/1-orig.webp"
+      ],
+      "job_id": "01a038d3-8a93-7d64-815a-acbcad9d1556",
+      "generated_at": "2026-08-25T12:12:47.383Z",
+      "axis_map": "x,y,z",
+      "front_yaw_deg": 0,
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": 0.5267712276906436,
+        "aspect_mismatch": 0.3349627075263145,
+        "warnings": [
+          "meshy: sheet product: z scaled to 5 mm independently (432 mm under a uniform scale)",
+          "meshy: aspect mismatch 33 % vs spec (warn > 15 %)",
+          "meshy: GLB is 10.3 MB (warn > 8 MB)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "textures": {
+        "count": 3,
+        "max_px": 2048,
+        "sources": [
+          "meshy"
+        ]
+      },
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "GLS-AIS-EDGE-NATURAPLUS": {
       "file": "placeholders/GLS-AIS-EDGE-NATURAPLUS.glb",
@@ -920,26 +950,57 @@
       "generated_at": "2026-08-23T15:51:30.534Z"
     },
     "GLS-GUA-CLIMAGUARD-BLUE5": {
-      "file": "placeholders/GLS-GUA-CLIMAGUARD-BLUE5.glb",
+      "file": "GLS-GUA-CLIMAGUARD-BLUE5.glb",
       "category": "glass",
-      "placeholder": true,
+      "placeholder": false,
       "dims_mm": {
         "w": 1200,
         "h": 1800,
         "d": 5
       },
       "bbox_m": {
-        "x": 1.2000000476837158,
-        "y": 1.7999999523162842,
-        "z": 0.005100000184029341
+        "x": 1.7964433431625366,
+        "y": 1.800000011920929,
+        "z": 0.004999999888241291
       },
-      "triangles": 24,
-      "builder": "glass",
-      "variant": "pane",
+      "triangles": 92900,
+      "builder": "photoreal",
       "usdz": null,
-      "quality": "placeholder",
-      "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.537Z"
+      "quality": "photoreal",
+      "provider": "meshy",
+      "source_images": [
+        "skus/52/GLS-GUA-CLIMAGUARD-BLUE5/img/1-orig.jpg"
+      ],
+      "job_id": "01a038d1-2cd2-7ca9-8b88-b9445325ea34",
+      "generated_at": "2026-08-25T12:09:42.521Z",
+      "axis_map": "x,z,-y",
+      "front_yaw_deg": 0,
+      "quality_report": {
+        "overall": null,
+        "defects": [],
+        "judge": "skipped",
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.49703610765736206,
+        "warnings": [
+          "meshy: sheet product: z scaled to 5 mm independently (1578 mm under a uniform scale)",
+          "meshy: aspect mismatch 50 % vs spec (warn > 15 %)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: sheet product: z scaled to 5 mm independently (1149 mm under a uniform scale)",
+          "meshy: aspect mismatch 50 % vs spec (warn > 15 %)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 10.9 MB (warn > 8 MB)",
+          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        ],
+        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      },
+      "textures": {
+        "count": 3,
+        "max_px": 2048,
+        "sources": [
+          "meshy"
+        ]
+      },
+      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TST-LEI-TS07-2-R500": {
       "file": "placeholders/TST-LEI-TS07-2-R500.glb",

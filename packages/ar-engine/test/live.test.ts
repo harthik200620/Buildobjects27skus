@@ -600,6 +600,6 @@ describe('tier detection', () => {
     expect(deviceClassFor({ userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', platform: 'MacIntel', maxTouchPoints: 5 })).toBe('phone');
     // 0.4.0 added the surface guide: matchSurface / surfacePrompt / defaultDropPoint, which
     // is what made live AR work for every category rather than only for a bulb on a wall.
-    expect(AR_ENGINE_VERSION).toBe('0.4.0');
+    expect(AR_ENGINE_VERSION).toBe('0.5.0');
   });
 });

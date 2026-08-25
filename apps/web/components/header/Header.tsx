@@ -32,7 +32,10 @@ export default function Header({
         <div className="header-in shell">
           <CategoryMenu categories={categories} variant="icon" />
           <Link href="/" className="header-logo" aria-label="Build Objects home">
-            <Wordmark size={30} />
+            {/* 22, not 30. Audiowide is a very wide face: at a 30 px cap the lockup measured 392 px and
+              squeezed the search field — the store's most-used control — down to 210 px. The rule
+              that the capitals match the mark is kept; the whole lockup is just smaller here. */}
+            <Wordmark size={22} />
           </Link>
           <DeliverTo pincode={pincode} regionName={regionName} deliveryDays={deliveryDays} variant="header" />
           <Suspense fallback={<div className="search" aria-hidden="true" />}>

@@ -32,6 +32,7 @@ import { bestRegionScore, dataUrlToCanvas, download, productPixels } from '../ph
 import { AnalysisScheduler, captureAnalysisFrame } from './analysisScheduler';
 import { buildCameraComposite } from './compositeFromCamera';
 import { type CoverMap, coverMap, stageToVideo } from './coverMap';
+import { createLocalVision } from './localVision';
 import { SceneRenderer } from './SceneRenderer';
 import { useCameraStream } from './useCameraStream';
 import { useOrientation } from './useOrientation';
@@ -43,6 +44,24 @@ export interface ArCameraProps {
   category: string;
   name: string;
   onExit: () => void;
+}
+
+/**
+ * Whether two analyses describe the same thing, for the purpose of re-rendering.
+ *
+ * The on-device analyser returns a fresh object ~8 times a second. Setting state on every one of
+ * them would re-render the whole HUD eight times a second for a room that has not changed, so the
+ * surfaces are compared by what the UI actually shows: which surfaces, and to one decimal of
+ * confidence.
+ */
+function sameSurfaces(a: SceneAnalysis | null, b: SceneAnalysis): boolean {
+  if (!a || a.surfaces.length !== b.surfaces.length) return false;
+  if (a.sceneType !== b.sceneType) return false;
+  for (let i = 0; i < a.surfaces.length; i++) {
+    if (a.surfaces[i].type !== b.surfaces[i].type) return false;
+    if (Math.abs(a.surfaces[i].confidence - b.surfaces[i].confidence) > 0.05) return false;
+  }
+  return true;
 }
 
 export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }: ArCameraProps) {
@@ -57,6 +76,16 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   const autoPlacedRef = React.useRef<boolean>(false);
   const draggingRef = React.useRef<boolean>(false);
   const lastPoseRef = React.useRef<{ q: Quat; R: Mat3; C: Vec3 } | null>(null);
+  /*
+   * On-device scene understanding, running in the render loop.
+   *
+   * This is the primary source of surfaces now, not a fallback. It needs no API key, no network
+   * and no budget, and it answers on the next frame instead of several seconds later — which is
+   * what makes the product follow the phone rather than lag behind it. Gemini, when a key is
+   * present, still runs on its own schedule and refines the answer; when there is no key the
+   * feature is unchanged rather than absent.
+   */
+  const visionRef = React.useRef(createLocalVision());
 
   /* The mount starts at the rule's own first choice, not at 'wall'. PLACEMENT_RULES lists a
      category's surfaces in preference order — cement is ['floor','ground'], CCTV is
@@ -110,6 +139,11 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     return stop;
   }, [facingMode, startCameraStream]);
 
+  const vision = visionRef.current;
+  React.useEffect(() => () => vision.dispose(), [vision]);
+
+  /* The last on-device answer, for the loop to compare against without re-rendering. */
+  const localSceneRef = React.useRef<SceneAnalysis | null>(null);
   const ruleRef = React.useRef(rule);
   ruleRef.current = rule;
   /* Read through a ref inside the render loop and the placement callbacks: the match changes
@@ -303,7 +337,21 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     // Update pixel-exact perspective camera in Three.js
     renderer.setCamera(map, K.fovYDeg, q, C);
 
-    // Tick scheduler for Gemini analysis
+    // On-device analysis first: it is free, it is instant, and it is what the placement reads.
+    if (hasVideo && video) {
+      const local = visionRef.current.step(video, q, performance.now());
+      if (local) {
+        localSceneRef.current = local;
+        setSceneAnalysis((prev) => (sameSurfaces(prev, local) ? prev : local));
+        const m = matchSurface(ruleRef.current, local);
+        setMatch((prev) => (prev.surface === m.surface && prev.confidence === m.confidence ? prev : m));
+        setAnalysed(true);
+        if (m.surface) setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
+        if (renderer && local.lighting) renderer.setLighting(local.lighting);
+      }
+    }
+
+    // Then the model, on its own schedule, where a key exists.
     if (hasVideo) {
       schedulerRef.current?.tick();
     }

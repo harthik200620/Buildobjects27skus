@@ -31,10 +31,12 @@
 
 @theme static {
   /* ── type faces ────────────────────────────────────────────────────────────
-     Arimo (Build Objects Sans 3) for every piece of UI text; Encode Sans
-     (Sans 5) for figures — it has a true ₹ and static 300–700 cuts. The display
-     face is gone: the wordmark is drawn as SVG (components/Wordmark.tsx), so a
-     third webfont existed only to set two words. */
+     Audiowide (Display 2) sets the brand name and nothing else — it is the
+     brand's voice, and it lives behind .wordmark and components/Wordmark.tsx.
+     Arimo (Sans 3) for every piece of UI text; Encode Sans (Sans 5) for figures,
+     which has a true ₹ and static 300–700 cuts. Audiowide has NO ₹ glyph, so it
+     must never touch a price. */
+  --font-display: var(--font-display-face), "Audiowide", system-ui, sans-serif;
   --font-ui: var(--font-ui-face), Arial, "Helvetica Neue", Helvetica, "Segoe UI", system-ui, sans-serif;
   --font-figure: var(--font-figure-face), "Encode Sans", "Segoe UI Variable Text", system-ui, sans-serif;
 
@@ -303,6 +305,20 @@
     font-variant-numeric: tabular-nums lining-nums;
     letter-spacing: -0.02em;
     color: var(--color-ink);
+  }
+
+  /* Audiowide lives here and nowhere else. The brand name is uppercase in it by
+     design, and the tracking is opened slightly because the face is already wide. */
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  /* The single O of OBJECTS, in the mark's own teal. */
+  .wordmark-o {
+    color: var(--color-brand);
   }
 
   .link {
