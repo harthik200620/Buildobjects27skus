@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "next build",
+    "stage": "tsx scripts/stage-media.mts",
+    "build": "tsx scripts/stage-media.mts && next build",
     "start": "next start",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc -p tsconfig.json",

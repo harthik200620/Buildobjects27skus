@@ -40,3 +40,9 @@ assets/3d/photoreal/raw/
 # no phone numbers. The uncompressed copy beside it is a build artefact of `pnpm db:dump`.
 infra/seed/*
 !infra/seed/buildobjects.sql.gz
+
+# Staged for the CDN by `apps/web/scripts/stage-media.mts` at build time — hard links to
+# storage/media and assets/3d, which are the tracked originals. Deriving it on every build is
+# what lets Vercel serve 309 MB of photographs and models statically without a second copy in git.
+apps/web/public/media/
+apps/web/public/3d/

@@ -33,7 +33,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "cache": false
     },
     "test": {
       "dependsOn": [],
