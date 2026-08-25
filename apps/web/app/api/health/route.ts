@@ -3,17 +3,35 @@ import { dailyBudget, hasGemini, usageSummary } from '@buildobjects/llm';
 import { sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import { drawingProvider } from '@/lib/drawing';
+import { ensurePgSchema, getPg, hasPg } from '@/lib/pg-store';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const out: Record<string, unknown> = { ok: true, time: new Date().toISOString() };
+  /*
+   * The runtime store first, because that is the one a deployment actually has. `ok` follows it:
+   * the catalogue comes from the frozen snapshot either way, so a missing MySQL is a laptop
+   * without the pipeline running, not an unhealthy instance.
+   */
+  if (hasPg()) {
+    try {
+      await ensurePgSchema();
+      await getPg().execute(sql`SELECT 1`);
+      out.postgres = 'up';
+    } catch (e) {
+      out.postgres = `down: ${(e as Error).message}`;
+      out.ok = false;
+    }
+  } else {
+    out.postgres = 'not configured';
+  }
   try {
     await getDb().execute(sql`SELECT 1`);
     out.mysql = 'up';
   } catch (e) {
     out.mysql = `down: ${(e as Error).message}`;
-    out.ok = false;
+    if (!hasPg()) out.ok = false;
   }
   try {
     const r = await fetch(`${process.env.MEILI_HOST}/health`, { cache: 'no-store' });

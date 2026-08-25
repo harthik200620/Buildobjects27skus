@@ -1,5 +1,6 @@
 import { getDb, otpChallenges } from '@buildobjects/db';
 import { NextResponse } from 'next/server';
+import { ensurePgSchema, getPg, hasPg, pgOtpChallenges } from '@/lib/pg-store';
 
 /**
  * Demo OTP: any Indian mobile number, the fixed code below, ten-minute validity. Nothing is sent
@@ -16,10 +17,14 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   const phone = String(body.phone ?? '').replace(/\D/g, '');
   if (!/^[6-9]\d{9}$/.test(phone)) return NextResponse.json({ error: 'Enter a valid 10-digit Indian mobile number' }, { status: 400 });
+  const expiresAt = new Date(Date.now() + VALIDITY_MS);
   try {
-    await getDb()
-      .insert(otpChallenges)
-      .values({ phone, code: DEMO_CODE, expiresAt: new Date(Date.now() + VALIDITY_MS) });
+    if (hasPg()) {
+      await ensurePgSchema();
+      await getPg().insert(pgOtpChallenges).values({ phone, code: DEMO_CODE, expiresAt });
+    } else {
+      await getDb().insert(otpChallenges).values({ phone, code: DEMO_CODE, expiresAt });
+    }
   } catch (e) {
     // The demo must work even before the schema exists; the login route re-validates the code.
     console.warn('[auth/otp] could not record challenge:', (e as Error).message);

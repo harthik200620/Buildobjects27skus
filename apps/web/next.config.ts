@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     '@buildobjects/ui',
     '@buildobjects/llm',
   ],
-  serverExternalPackages: ['mysql2', 'sharp'],
+  serverExternalPackages: ['mysql2', 'postgres', 'sharp'],
   images: {
     // Media is pre-derived by the pipeline into exact sizes; the loader picks the right
     // rendition, so Next's optimiser never re-encodes a catalogue image.

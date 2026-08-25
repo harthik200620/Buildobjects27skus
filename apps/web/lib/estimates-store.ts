@@ -4,6 +4,7 @@ import { estimates, getDb, num } from '@buildobjects/db';
 import { type EstimateInputs, type EstimateResult, estimate, normalizeInputs } from '@buildobjects/estimator';
 import { eq } from 'drizzle-orm';
 import { loadCalculatorCatalog } from './estimator';
+import { ensurePgSchema, getPg, hasPg, pgEstimates } from './pg-store';
 
 /**
  * What a saved estimate keeps: the inputs (re-runnable — `inputs.adjustments` travel here, via
@@ -36,10 +37,14 @@ export async function saveEstimate(rawInputs: unknown): Promise<{ id: string; gr
     lines: r.lines,
   };
   const id = randomBytes(6).toString('base64url');
+  const row = { publicId: id, inputs, outputs, tier: inputs.tier, city: inputs.city, grandTotal: String(r.grandTotal) };
   try {
-    await getDb()
-      .insert(estimates)
-      .values({ publicId: id, inputs, outputs, tier: inputs.tier, city: inputs.city, grandTotal: String(r.grandTotal) });
+    if (hasPg()) {
+      await ensurePgSchema();
+      await getPg().insert(pgEstimates).values(row);
+    } else {
+      await getDb().insert(estimates).values(row);
+    }
   } catch {
     /*
      * No database: the estimate is still fully described by its own URL.
@@ -57,7 +62,12 @@ export async function loadSavedEstimate(
 ): Promise<{ id: string; inputs: EstimateInputs; outputs: SavedOutputs; grandTotal: number | null; createdAt: Date } | null> {
   if (!/^[A-Za-z0-9_-]{6,16}$/.test(publicId)) return null;
   try {
-    const [row] = await getDb().select().from(estimates).where(eq(estimates.publicId, publicId)).limit(1);
+    const [row] = hasPg()
+      ? await (async () => {
+          await ensurePgSchema();
+          return getPg().select().from(pgEstimates).where(eq(pgEstimates.publicId, publicId)).limit(1);
+        })()
+      : await getDb().select().from(estimates).where(eq(estimates.publicId, publicId)).limit(1);
     if (!row) return null;
     // Rows saved before the v2 engine carry no outputs.adjustments — backfill an empty record.
     const outputs: SavedOutputs = Object.assign({ adjustments: { applied: 0, ignored: [] } }, row.outputs as SavedOutputs);
