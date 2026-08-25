@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T13:05:31.353Z",
+  "generated_at": "2026-08-25T13:23:38.820Z",
   "dry_run": false,
   "provider_pref": "auto",
   "providers": [
@@ -8,18 +8,18 @@
   ],
   "max_spend_usd": 8,
   "estimated_spend_usd": 0.4,
-  "ledger_spend_usd": 24.399999999999977,
+  "ledger_spend_usd": 27.199999999999967,
   "results": [
     {
-      "sku": "BUL-HAV-LEDPLUS9WB22",
-      "category": "bulbs",
+      "sku": "TIL-SOM-T31F119001859102",
+      "category": "tiles",
       "outcome": "photoreal",
       "provider": "meshy",
-      "job_id": "01a03904-116e-7df6-9049-3ced9fc410e5",
+      "job_id": "01a03914-9626-781c-aac2-e97baf8dab5c",
       "mode": "single",
       "images": [
         {
-          "key": "skus/65/BUL-HAV-LEDPLUS9WB22/img/1-orig.webp",
+          "key": "skus/52/TIL-SOM-T31F119001859102/img/1-orig.jpg",
           "role": "front",
           "source": "orig"
         }
@@ -27,22 +27,28 @@
       "cutouts": 0,
       "est_cost_usd": 0.4,
       "warnings": [
-        "meshy: aspect mismatch 73 % vs spec (warn > 15 %)",
+        "meshy: simplified 1,03,464 → 98,000 triangles",
+        "meshy: sheet product: z scaled to 9 mm independently (344 mm under a uniform scale)",
+        "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+        "meshy: GLB is 9.6 MB (warn > 8 MB)",
         "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
       ],
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
-        "silhouette_iou": 0.7843498273878021,
-        "aspect_mismatch": 0.7306960292494801,
+        "silhouette_iou": null,
+        "aspect_mismatch": 0.13745743071627903,
         "warnings": [
-          "meshy: aspect mismatch 73 % vs spec (warn > 15 %)",
+          "meshy: simplified 1,03,464 → 98,000 triangles",
+          "meshy: sheet product: z scaled to 9 mm independently (344 mm under a uniform scale)",
+          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 9.6 MB (warn > 8 MB)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
-      "file": "BUL-HAV-LEDPLUS9WB22.glb",
+      "file": "TIL-SOM-T31F119001859102.glb",
       "attempts": 1
     }
   ],

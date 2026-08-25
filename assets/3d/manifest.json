@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T13:05:31.348Z",
+  "generated_at": "2026-08-25T13:23:38.813Z",
   "assets": {
     "EPX-SIK-SIKADUR31IN": {
       "file": "EPX-SIK-SIKADUR31IN.glb",
@@ -59,11 +59,11 @@
         "d": 110
       },
       "bbox_m": {
-        "x": 0.17500000447034836,
-        "y": 0.17498117685317993,
-        "z": 0.12662017345428467
+        "x": 0.17499999701976776,
+        "y": 0.038421083241701126,
+        "z": 0.019994904287159443
       },
-      "triangles": 95324,
+      "triangles": 84409,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
@@ -71,19 +71,20 @@
       "source_images": [
         "skus/98/EPX-FOS-CONBEXTRAEP10/img/1-orig.webp"
       ],
-      "job_id": "01a03877-9d58-7e82-b18d-0f3117e6909a",
-      "generated_at": "2026-08-25T10:31:46.294Z",
-      "axis_map": "z,x,y",
+      "job_id": "01a0390b-3be9-7538-9755-ad3d4778f68a",
+      "generated_at": "2026-08-25T13:13:04.651Z",
+      "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.151092496085637,
+        "aspect_mismatch": 0.8182281487284065,
         "warnings": [
-          "meshy: aspect mismatch 15 % vs spec (warn > 15 %)",
+          "meshy: aspect mismatch 82 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 9.7 MB (warn > 8 MB)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
@@ -107,11 +108,11 @@
         "d": 155
       },
       "bbox_m": {
-        "x": 0.22999999672174454,
-        "y": 0.2029627561569214,
-        "z": 0.047603413462638855
+        "x": 0.23000000417232513,
+        "y": 0.15968094766139984,
+        "z": 0.06908740103244781
       },
-      "triangles": 99257,
+      "triangles": 98580,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
@@ -119,20 +120,20 @@
       "source_images": [
         "skus/a4/EPX-PID-EPOXYINJGROUT/img/1-orig.webp"
       ],
-      "job_id": "01a03878-9004-7ecb-9804-615b0eb91784",
-      "generated_at": "2026-08-25T10:32:30.854Z",
-      "axis_map": "x,y,z",
+      "job_id": "01a0390d-a34c-724b-b9f1-73f75458bd5b",
+      "generated_at": "2026-08-25T13:15:26.206Z",
+      "axis_map": "-y,x,z",
       "front_yaw_deg": 0,
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.6928812086913286,
+        "aspect_mismatch": 0.5542748284337932,
         "warnings": [
-          "meshy: aspect mismatch 69 % vs spec (warn > 15 %)",
+          "meshy: aspect mismatch 55 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 9.3 MB (warn > 8 MB)",
+          "meshy: GLB is 9.6 MB (warn > 8 MB)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
@@ -446,11 +447,11 @@
         "d": 9
       },
       "bbox_m": {
-        "x": 1.0824434757232666,
+        "x": 0.5175255537033081,
         "y": 1.199999988079071,
         "z": 0.009000000078231096
       },
-      "triangles": 95441,
+      "triangles": 98000,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
@@ -458,8 +459,8 @@
       "source_images": [
         "skus/52/TIL-SOM-T31F119001859102/img/1-orig.jpg"
       ],
-      "job_id": "01a038f0-6e13-75de-b4b3-68083745e193",
-      "generated_at": "2026-08-25T12:43:46.496Z",
+      "job_id": "01a03914-9626-781c-aac2-e97baf8dab5c",
+      "generated_at": "2026-08-25T13:23:38.811Z",
       "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -467,12 +468,12 @@
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.8040724138508865,
+        "aspect_mismatch": 0.13745743071627903,
         "warnings": [
-          "meshy: sheet product: z scaled to 9 mm independently (1186 mm under a uniform scale)",
-          "meshy: sheet product: z scaled to 9 mm independently (1075 mm under a uniform scale)",
-          "meshy: aspect mismatch 80 % vs spec (warn > 15 %)",
+          "meshy: simplified 1,03,464 → 98,000 triangles",
+          "meshy: sheet product: z scaled to 9 mm independently (344 mm under a uniform scale)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
+          "meshy: GLB is 9.6 MB (warn > 8 MB)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"

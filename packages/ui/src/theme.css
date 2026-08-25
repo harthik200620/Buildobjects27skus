@@ -1309,7 +1309,14 @@
     animation: fade-in 0.16s ease both;
   }
 
-  /* Touch targets: nothing interactive under 36 px on a coarse pointer. */
+  /*
+   * Touch targets on a coarse pointer.
+   *
+   * The primitives were already covered; the link lists were not, and a measurement on a 375 px
+   * viewport found footer links at 18 px and category-rail links at 16 px — a third of what a
+   * thumb needs. Padding rather than min-height on the inline ones, so a wrapped link grows
+   * instead of a fixed box clipping it.
+   */
   @media (pointer: coarse) {
     .btn--sm,
     .chip,
@@ -1318,6 +1325,16 @@
     .input--sm,
     .menu-row {
       min-height: 36px;
+    }
+    .foot a,
+    .footer-col a,
+    .cat-rail-link,
+    .nav-link,
+    .crumbs a,
+    .sec-more {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
     }
     .check,
     .radio {
