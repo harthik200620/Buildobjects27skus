@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-25T12:54:00.494Z",
+  "generated_at": "2026-08-25T13:05:31.353Z",
   "dry_run": false,
   "provider_pref": "auto",
   "providers": [
     "meshy: key present",
     "tripo: no key"
   ],
-  "max_spend_usd": 12,
+  "max_spend_usd": 8,
   "estimated_spend_usd": 0.4,
-  "ledger_spend_usd": 23.19999999999998,
+  "ledger_spend_usd": 24.399999999999977,
   "results": [
     {
-      "sku": "TST-TRI-C5-2",
-      "category": "total-stations",
+      "sku": "BUL-HAV-LEDPLUS9WB22",
+      "category": "bulbs",
       "outcome": "photoreal",
       "provider": "meshy",
-      "job_id": "01a038f8-7bb7-7aac-b0c9-0d983f5af9ed",
+      "job_id": "01a03904-116e-7df6-9049-3ced9fc410e5",
       "mode": "single",
       "images": [
         {
-          "key": "skus/04/TST-TRI-C5-2/img/1-orig.png",
+          "key": "skus/65/BUL-HAV-LEDPLUS9WB22/img/1-orig.webp",
           "role": "front",
           "source": "orig"
         }
@@ -27,24 +27,22 @@
       "cutouts": 0,
       "est_cost_usd": 0.4,
       "warnings": [
-        "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-        "meshy: GLB is 10.2 MB (warn > 8 MB)",
+        "meshy: aspect mismatch 73 % vs spec (warn > 15 %)",
         "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
       ],
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.1203479553683286,
+        "silhouette_iou": 0.7843498273878021,
+        "aspect_mismatch": 0.7306960292494801,
         "warnings": [
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 10.2 MB (warn > 8 MB)",
+          "meshy: aspect mismatch 73 % vs spec (warn > 15 %)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
       },
-      "file": "TST-TRI-C5-2.glb",
+      "file": "BUL-HAV-LEDPLUS9WB22.glb",
       "attempts": 1
     }
   ],

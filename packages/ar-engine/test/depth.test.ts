@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
+  autoFitScale,
   defaultDropPoint,
   dropPointFor,
   floorDistanceAtRow,
+  MAX_AUTO_FIT,
   MAX_DEPTH_M,
   MIN_DEPTH_M,
   rowAtFloorDistance,
@@ -174,5 +176,43 @@ describe('dropPointFor', () => {
     const v = dropPointFor(ruleFor('cctv'), 'wall', geo(0, 0.5)).v;
     expect(v).toBeGreaterThanOrEqual(0.06);
     expect(v).toBeLessThanOrEqual(0.94);
+  });
+});
+
+describe('autoFitScale', () => {
+  const bulb = { w_mm: 60, h_mm: 110, d_mm: 60 };
+  const module = { w_mm: 1133, h_mm: 2278, d_mm: 30 };
+
+  it('enlarges a bulb across the room, because 25 px cannot be judged', () => {
+    // 110 mm tall, 2.2 m away, fy 900 → 45 px. Below the legibility floor.
+    const fit = autoFitScale(bulb, 2.2, 900);
+    expect(fit.enlarged).toBe(true);
+    expect(fit.scale).toBeGreaterThan(1.5);
+  });
+
+  it('leaves a solar module alone, because it is already legible', () => {
+    // This is the case the old blanket 1.8x multiplier got wrong: a 2.3 m panel needs no help.
+    const fit = autoFitScale(module, 3, 900);
+    expect(fit.enlarged).toBe(false);
+    expect(fit.scale).toBe(1);
+  });
+
+  it('enlarges exactly to the legibility floor and no further', () => {
+    const fit = autoFitScale(bulb, 2.2, 900, 96);
+    const projected = (0.11 * 900) / 2.2;
+    expect(fit.scale).toBeCloseTo(96 / projected, 1);
+  });
+
+  it('needs less enlargement the closer you stand', () => {
+    expect(autoFitScale(bulb, 0.8, 900).scale).toBeLessThan(autoFitScale(bulb, 3.5, 900).scale);
+  });
+
+  it('never asks for more than the cap, however far away', () => {
+    expect(autoFitScale(bulb, 40, 900).scale).toBeLessThanOrEqual(MAX_AUTO_FIT);
+  });
+
+  it('does nothing when the inputs are unusable rather than dividing by zero', () => {
+    expect(autoFitScale(bulb, 0, 900)).toEqual({ scale: 1, enlarged: false });
+    expect(autoFitScale({ w_mm: 0, h_mm: 0, d_mm: 0 }, 2, 900)).toEqual({ scale: 1, enlarged: false });
   });
 });

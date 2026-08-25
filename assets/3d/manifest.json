@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T12:54:00.491Z",
+  "generated_at": "2026-08-25T13:05:31.348Z",
   "assets": {
     "EPX-SIK-SIKADUR31IN": {
       "file": "EPX-SIK-SIKADUR31IN.glb",
@@ -593,11 +593,11 @@
         "d": 60
       },
       "bbox_m": {
-        "x": 0.04629158228635788,
-        "y": 0.11299999803304672,
-        "z": 0.09857398271560669
+        "x": 0.051272548735141754,
+        "y": 0.11300000175833702,
+        "z": 0.10384175926446915
       },
-      "triangles": 88555,
+      "triangles": 89856,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
@@ -605,19 +605,18 @@
       "source_images": [
         "skus/65/BUL-HAV-LEDPLUS9WB22/img/1-orig.webp"
       ],
-      "job_id": "01a0386e-18e7-756b-bc41-252847a81f26",
-      "generated_at": "2026-08-25T10:21:25.426Z",
-      "axis_map": "-y,x,z",
-      "front_yaw_deg": 90,
+      "job_id": "01a03904-116e-7df6-9049-3ced9fc410e5",
+      "generated_at": "2026-08-25T13:05:31.346Z",
+      "axis_map": "x,z,-y",
+      "front_yaw_deg": 0,
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
-        "silhouette_iou": 0.6998272884283246,
-        "aspect_mismatch": 0.6428997236343537,
+        "silhouette_iou": 0.7843498273878021,
+        "aspect_mismatch": 0.7306960292494801,
         "warnings": [
-          "meshy: aspect mismatch 64 % vs spec (warn > 15 %)",
-          "meshy: GLB is 8.3 MB (warn > 8 MB)",
+          "meshy: aspect mismatch 73 % vs spec (warn > 15 %)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
         "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"

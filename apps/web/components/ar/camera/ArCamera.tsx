@@ -4,6 +4,7 @@ import {
   type Anchor,
   anchorFromPixel,
   areaPrompt,
+  autoFitScale,
   type CompositeResult,
   cameraPosition,
   cameraRotationFromQuat,
@@ -16,12 +17,12 @@ import {
   matchSurface,
   type PlacementRule,
   type ProductDims,
-  pitchFromHorizon,
   pitchFromQuat,
   productNoun,
   type Quat,
   type SceneAnalysis,
   SURFACE_LABEL,
+  SURFACE_SWITCH_CONFIDENCE,
   type Surface,
   type SurfaceMatch,
   surfaceDistanceM,
@@ -66,6 +67,9 @@ function sameSurfaces(a: SceneAnalysis | null, b: SceneAnalysis): boolean {
   return true;
 }
 
+/** Assumed camera pitch when the device reports no orientation. See the pose block for why. */
+const NO_SENSOR_PITCH_DEG = -10;
+
 export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }: ArCameraProps) {
   const { videoRef, start, stop, status: camStatus, error: camError } = useCameraStream();
   const stageRef = React.useRef<HTMLDivElement | null>(null);
@@ -102,6 +106,9 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
    * someone enlarge a small item deliberately, and says so when they have.
    */
   const [scaleMult, setScaleMult] = React.useState<number>(1);
+  /* True when the current scale is an auto-enlargement rather than the user's choice, so the HUD
+     can say so and offer true size back. */
+  const [enlarged, setEnlarged] = React.useState(false);
   const [yaw, setYaw] = React.useState<number>(0);
   const [facingMode, setFacingMode] = React.useState<'environment' | 'user'>('environment');
   const [match, setMatch] = React.useState<SurfaceMatch>({ surface: null, detection: null, confidence: 0 });
@@ -122,6 +129,28 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
    * to place this fire extinguisher", "…at a floor to place this cement bag".
    */
   const noun = React.useMemo(() => productNoun(category), [category]);
+
+  /*
+   * Auto-fit, once per configuration.
+   *
+   * A 60 mm bulb on a wall 2.2 m away projects to about 25 px at true size — honest and
+   * impossible to judge. The old answer was a blanket 1.8x on every product, which made a 1.8 m
+   * solar module 80 % too big to solve a problem only small items have. This enlarges only what
+   * is illegible, only as far as legibility needs, and records that it did so.
+   */
+  const fitKeyRef = React.useRef('');
+  const applyAutoFit = React.useCallback((targetSurface: Surface) => {
+    const video = videoRef.current;
+    if (!video?.videoHeight) return;
+    const K = intrinsicsFor(video.videoWidth, video.videoHeight, 'phone');
+    const d = surfaceDistanceM(targetSurface, matchRef.current);
+    const key = `${targetSurface}|${d.toFixed(1)}|${dimsRef.current.w_mm}`;
+    if (fitKeyRef.current === key) return;
+    fitKeyRef.current = key;
+    const fit = autoFitScale(dimsRef.current, d, K.fy);
+    setScaleMult(fit.scale);
+    setEnlarged(fit.enlarged);
+  }, []);
   const prompt = React.useMemo(() => surfacePrompt(rule, match, analysed, noun), [rule, match, analysed, noun]);
   const areaOk = React.useMemo(() => hasOpenArea(rule, sceneAnalysis), [rule, sceneAnalysis]);
 
@@ -262,9 +291,17 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         const m = matchSurface(ruleRef.current, analysis);
         setMatch(m);
         setAnalysed(true);
-        /* Follow the surface the room actually offers. Someone pointing a phone at the floor
-           for a fire extinguisher should get the floor mount, not a silent refusal. */
-        if (m.surface) setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
+        /*
+         * Follow the room, but only on solid evidence.
+         *
+         * This used to switch on any detection above the reporting threshold, which is how a
+         * bulb — whose rule is ceiling or wall — ended up lying flat on a carpet: one marginal
+         * frame was enough to move it. A mount change needs a confident reading; below that the
+         * rule's own first choice stands.
+         */
+        if (m.surface && m.confidence >= SURFACE_SWITCH_CONFIDENCE * 100) {
+          setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
+        }
       },
       onError: (err) => {
         /* 503 = the vision model is unavailable, not "there is no surface". Refusing to place
@@ -320,10 +357,11 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       if (!map) return;
       /* Where the product belongs in frame depends on what it stands on. A fixed y = 0.35 put
          wall items right and dropped every cement bag, tile and total station into mid-air. */
+      applyAutoFit(targetSurface);
       const drop = dropPoint(targetSurface);
       placeAtPixel(map.x0 + map.cw * drop.u, map.y0 + map.ch * drop.v, targetSurface);
     },
-    [placeAtPixel, surface, dropPoint],
+    [placeAtPixel, surface, dropPoint, applyAutoFit],
   );
 
   /* ── 6. Continuous Render & Tracking Loop ───────────────────────────── */
@@ -351,12 +389,17 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     if (gyro && orientationFeed.active) {
       q = gyro.q;
     } else {
-      // Laptop / desktop without gyro: estimate pitch from horizon or level
-      const pitch =
-        sceneAnalysis && typeof sceneAnalysis.horizonY === 'number' && Number.isFinite(sceneAnalysis.horizonY)
-          ? pitchFromHorizon(sceneAnalysis.horizonY, H, intrinsicsFor(W, H, 'laptop').fy)
-          : -10;
-      const safePitch = Number.isFinite(pitch) ? Math.max(-50, Math.min(50, pitch)) : -10;
+      /*
+       * No orientation sensor — a laptop, or a phone that refused the permission.
+       *
+       * This used to derive the pitch from `sceneAnalysis.horizonY`, which the on-device analyser
+       * derives from the pitch it was given: a loop with no ground truth in it, drifting on its
+       * own output. A fixed, stated assumption is worse in principle and far better in practice,
+       * because it is at least stable — the product stops sliding around between frames.
+       *
+       * -10° is a webcam on a laptop lid, tilted slightly down at the person in front of it.
+       */
+      const safePitch = NO_SENSOR_PITCH_DEG;
       q = { x: Math.sin((safePitch * Math.PI) / 360), y: 0, z: 0, w: Math.cos((safePitch * Math.PI) / 360) };
     }
 
@@ -379,7 +422,9 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         const m = matchSurface(ruleRef.current, local);
         setMatch((prev) => (prev.surface === m.surface && prev.confidence === m.confidence ? prev : m));
         setAnalysed(true);
-        if (m.surface) setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
+        if (m.surface && m.confidence >= SURFACE_SWITCH_CONFIDENCE * 100) {
+          setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
+        }
         if (renderer && local.lighting) renderer.setLighting(local.lighting);
       }
     }
@@ -392,6 +437,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     // Auto-place on first valid frame, at the point this category's surface actually is
     if (!autoPlacedRef.current) {
       autoPlacedRef.current = true;
+      applyAutoFit(surface);
       const drop = dropPoint(surface);
       const initAnchor = anchorFromPixel({
         K,
@@ -448,7 +494,11 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     renderer.render();
     // `dropPoint` is stable (its own deps are all refs), so listing it costs nothing and
     // keeps the loop honest about what it calls.
-  }, [sceneAnalysis, surface, yaw, dropPoint]);
+    /* `sceneAnalysis` is gone from this list: the loop no longer reads it. It used to derive the
+       camera pitch from the analysis's horizon — the feedback loop described in the pose block —
+       and keeping it as a dependency re-created the whole render callback every time a frame was
+       analysed, roughly eight times a second. */
+  }, [surface, yaw, dropPoint, applyAutoFit]);
 
   // Continuous animation loop
   React.useEffect(() => {
@@ -790,8 +840,16 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
               📷 Flip camera
             </button>
             {scaleMult > 1.01 && (
-              <button type="button" className="ar-hud-glass ar-hud-pill cursor-pointer" onClick={() => setScaleMult(1.0)} aria-label="Reset to 1:1 true size">
-                <IconRuler size={13} /> 1:1 True size
+              <button
+                type="button"
+                className="ar-hud-glass ar-hud-pill cursor-pointer"
+                onClick={() => {
+                  setEnlarged(false);
+                  setScaleMult(1);
+                }}
+                aria-label="Show at true 1:1 size"
+              >
+                <IconRuler size={13} /> {enlarged ? `Enlarged ${Math.round(scaleMult * 100)}% — show true size` : '1:1 True size'}
               </button>
             )}
             <button
@@ -843,7 +901,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
           <div className="ar-hud-glass ar-hud-pill">
             <button
               type="button"
-              onClick={() => setScaleMult((m) => Math.max(0.4, +(m - 0.2).toFixed(2)))}
+              onClick={() => {
+                setEnlarged(false);
+                setScaleMult((m) => Math.max(0.4, +(m - 0.2).toFixed(2)));
+              }}
               style={{ padding: '0 6px', fontWeight: 'bold' }}
               title="Scale down"
             >
@@ -852,7 +913,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
             <span>Size</span>
             <button
               type="button"
-              onClick={() => setScaleMult((m) => Math.min(3.5, +(m + 0.2).toFixed(2)))}
+              onClick={() => {
+                setEnlarged(false);
+                setScaleMult((m) => Math.min(6, +(m + 0.2).toFixed(2)));
+              }}
               style={{ padding: '0 6px', fontWeight: 'bold' }}
               title="Scale up"
             >

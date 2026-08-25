@@ -1,5 +1,5 @@
 import { SURFACE_LABEL } from './placement';
-import type { PlacementRule, SceneAnalysis, Surface, SurfaceDetection } from './types';
+import type { PlacementRule, ProductDims, SceneAnalysis, Surface, SurfaceDetection } from './types';
 import { rowForWallHeight } from './vision/depth';
 
 /**
@@ -253,4 +253,43 @@ export function hasOpenArea(rule: PlacementRule, analysis: SceneAnalysis | null)
 /** The follow-on sentence when the surface is right but there is not enough of it. */
 export function areaPrompt(rule: PlacementRule): string {
   return `Not enough clear ${rule.surfaceLabel} in view — step back so more of it is in frame.`;
+}
+
+/**
+ * A detection has to be this confident before it is allowed to MOVE the mount.
+ *
+ * `SURFACE_MIN_CONFIDENCE` (0.35) is the bar for reporting a surface at all. Switching the
+ * product onto a different surface is a stronger claim and needs a stronger reading: a bulb whose
+ * rule says ceiling-or-wall ended up lying on a carpet because a marginal detection was treated
+ * as a decision.
+ */
+export const SURFACE_SWITCH_CONFIDENCE = 0.6;
+
+/**
+ * How much to enlarge a product so it can actually be evaluated, and whether it was enlarged.
+ *
+ * True 1:1 is the promise and it is also, for a small object across a room, a few dozen pixels:
+ * a 60 mm bulb on a wall 2.2 m away projects to about 25 px, which is honest and useless. The
+ * old code answered this by multiplying EVERY product by 1.8 — including a 1.8 m solar module,
+ * which is how a catalogue ends up 80 % oversized.
+ *
+ * This enlarges only what is too small to read, only as far as legibility needs, and returns the
+ * fact so the UI can say so. The user can always drop back to true size.
+ */
+export interface AutoFit {
+  scale: number;
+  enlarged: boolean;
+}
+
+/** Below this many pixels on its longest visible edge, a product cannot be judged. */
+export const MIN_LEGIBLE_PX = 96;
+export const MAX_AUTO_FIT = 6;
+
+export function autoFitScale(dims: ProductDims, distanceM: number, fyPx: number, minPx = MIN_LEGIBLE_PX): AutoFit {
+  const longestM = Math.max(dims.w_mm, dims.h_mm, dims.d_mm) / 1000;
+  if (!(longestM > 0) || !(distanceM > 0) || !(fyPx > 0)) return { scale: 1, enlarged: false };
+  const projectedPx = (longestM * fyPx) / distanceM;
+  if (projectedPx >= minPx) return { scale: 1, enlarged: false };
+  const scale = Math.min(MAX_AUTO_FIT, minPx / projectedPx);
+  return { scale: Number(scale.toFixed(2)), enlarged: true };
 }
