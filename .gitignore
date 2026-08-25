@@ -34,7 +34,9 @@ assets/3d/placeholders/
 # ledger that stops the provider being paid twice for the same inputs, and that IS tracked.
 assets/3d/photoreal/raw/
 
-# The catalogue database dump. Removed: the storefront no longer needs a database at all —
-# apps/web/data/catalogue is a 1 MB snapshot taken from the live loaders, and every loader falls
-# back to it. Regenerate with `npx tsx apps/web/scripts/export-catalogue.mts`.
-infra/seed/
+# The catalogue database dump. The compressed one is tracked — it is what a fresh deployment
+# restores into an empty database on first boot (packages/db/src/bootstrap.ts), it is 177 KB, and
+# it holds schema for every table but rows for the catalogue tables only: no users, no sessions,
+# no phone numbers. The uncompressed copy beside it is a build artefact of `pnpm db:dump`.
+infra/seed/*
+!infra/seed/buildobjects.sql.gz

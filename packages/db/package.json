@@ -12,6 +12,7 @@
   "scripts": {
     "generate": "drizzle-kit generate",
     "migrate": "tsx src/migrate.ts",
+    "bootstrap": "tsx src/bootstrap.ts",
     "seed": "tsx src/seed.ts",
     "reset": "tsx src/reset.ts",
     "seed:scale": "tsx scripts/seed-scale.ts",

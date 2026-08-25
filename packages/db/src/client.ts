@@ -8,10 +8,28 @@ export type Db = MySql2Database<typeof schema>;
 let pool: mysql.Pool | null = null;
 let db: Db | null = null;
 
+/**
+ * The connection string, from `DATABASE_URL` or assembled from parts.
+ *
+ * The parts exist for Render. A Blueprint can hand one service another service's hostname and
+ * another service's generated password, but it cannot concatenate them into a URL — so a managed
+ * deployment has to either compose the URL here or ask a person to paste a secret by hand. It
+ * composes it here. `DATABASE_URL` still wins wherever it is set, which is everywhere else.
+ */
 export function databaseUrl(): string {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error('DATABASE_URL is not set (see .env.example)');
-  return url;
+  const url = process.env.DATABASE_URL?.trim();
+  if (url) return url;
+
+  const host = process.env.DB_HOST?.trim();
+  if (host) {
+    const port = process.env.DB_PORT?.trim() || '3306';
+    const user = encodeURIComponent(process.env.DB_USER?.trim() || 'root');
+    const password = encodeURIComponent(process.env.DB_PASSWORD ?? process.env.MYSQL_ROOT_PASSWORD ?? '');
+    const name = process.env.DB_NAME?.trim() || process.env.MYSQL_DATABASE?.trim() || 'buildobjects';
+    return `mysql://${user}:${password}@${host}:${port}/${name}`;
+  }
+
+  throw new Error('DATABASE_URL is not set (see .env.example)');
 }
 
 /** One pool per process. `connectionLimit` sized for a web worker; the pipeline raises it via env. */

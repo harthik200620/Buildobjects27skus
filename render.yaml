@@ -1,0 +1,106 @@
+# Build Objects on Render — the storefront and its database, as one Blueprint.
+#
+#   Render dashboard → New → Blueprint → connect this repository → Apply.
+#
+# Two services come up. `bo-mysql` is a private service: it has no public address, it is reachable
+# only from inside this workspace's private network, and its disk is what makes the catalogue
+# survive a redeploy. `bo-web` is the store, and on first boot it restores the catalogue into the
+# empty database (infra/seed/buildobjects.sql.gz, via `pnpm db:bootstrap`) and applies migrations.
+#
+# Cost, stated plainly: Render's free instances cover web services and Postgres only — private
+# services and disks are paid. MySQL here is a private service with a disk, so this Blueprint is
+# roughly $7/month for the database, $1.25 for its disk, and $7 for the web service. Dropping
+# `bo-web` to `plan: free` saves the last $7 and costs you a ~50 second wake-up after 15 idle
+# minutes; the database cannot be moved to free at any price.
+#
+# Both services must stay in the same region — that is what puts them on the same private network.
+
+envVarGroups:
+  - name: bo-db
+    envVars:
+      # The MySQL container reads these; the web service composes DATABASE_URL from them and the
+      # private hostname (packages/db/src/client.ts). Render generates the password once, at apply
+      # time, and it is never in this file or in git.
+      - key: MYSQL_DATABASE
+        value: buildobjects
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
+
+services:
+  - type: pserv
+    name: bo-mysql
+    runtime: image
+    plan: starter
+    region: singapore
+    image:
+      url: docker.io/library/mysql:8.4
+    # `--datadir` points one level inside the mount on purpose: a fresh Render disk contains
+    # lost+found, and `mysqld --initialize` refuses to write into a directory that already has
+    # files in it. The buffer pool and performance schema are sized for a 512 MB starter instance;
+    # if the service restarts under load, raise the plan to standard rather than these numbers.
+    dockerCommand: >-
+      mysqld
+      --datadir=/var/lib/mysql/data
+      --innodb-buffer-pool-size=128M
+      --performance-schema=OFF
+      --max-allowed-packet=64M
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_0900_ai_ci
+    disk:
+      name: bo-mysql-data
+      mountPath: /var/lib/mysql
+      sizeGB: 5
+    # A database should not restart because a stylesheet changed.
+    autoDeployTrigger: "off"
+    envVars:
+      - fromGroup: bo-db
+
+  - type: web
+    name: bo-web
+    runtime: node
+    plan: starter
+    region: singapore
+    # No healthCheckPath on purpose. /api/health reports on every dependency and answers 503 when
+    # MySQL is down — which is a useful diagnostic and a bad liveness probe, because the store keeps
+    # serving from the frozen catalogue when the database is away. Render's default check (the port
+    # is open) is the question actually worth asking of an instance.
+    autoDeployTrigger: commit
+    buildCommand: (corepack enable pnpm || npm install -g pnpm@11.22.0) && pnpm install --frozen-lockfile --prod=false && pnpm --filter @buildobjects/web build
+    # `pnpm start` is db:bootstrap (wait for MySQL, restore if empty, migrate) then `next start`.
+    startCommand: pnpm start
+    envVars:
+      - fromGroup: bo-db
+      - key: DB_HOST
+        fromService:
+          name: bo-mysql
+          type: pserv
+          property: host
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_USER
+        value: root
+      - key: DB_PASSWORD
+        fromService:
+          name: bo-mysql
+          type: pserv
+          envVarKey: MYSQL_ROOT_PASSWORD
+      - key: DB_NAME
+        value: buildobjects
+      # Signs the session cookie. Generated once; rotating it signs everyone out, nothing worse.
+      - key: SESSION_SECRET
+        generateValue: true
+      # Product photographs, category art and the estimator's house renders are in the repository
+      # (storage/media, 216 MB) and served by the app at /media. Nothing to upload, nothing to mount.
+      - key: MEDIA_ROOT
+        value: ./storage/media
+      - key: MEDIA_STORE
+        value: local
+      - key: MEDIA_BASE_URL
+        value: /media
+      # No Redis in this Blueprint: the only queue work is the pipeline, which runs on a laptop.
+      - key: QUEUE_DRIVER
+        value: local
+      - key: COREPACK_ENABLE_DOWNLOAD_PROMPT
+        value: "0"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
