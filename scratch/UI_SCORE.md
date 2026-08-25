@@ -158,3 +158,37 @@ discipline 9.
 2. Performance (9/10) — 240 KB of JS is the largest remaining item.
 3. Discipline (9/10) — the AR and reward-engine components still hold static inline styles among
    their dynamic ones.
+
+---
+
+## Round 4 — 96 / 100, and shipped
+
+**Done**
+
+- The last two synthesised-weight bugs, and a permanent gate for them.
+  `scripts/type-audit.mts` drives a real browser over every route and fails on any computed
+  (family, weight) with no font file behind it. Proved against a probe: it catches the Audiowide
+  bug on 7 routes and exits non-zero.
+- The estimator's grand total is keyed on its own value, so switching tier visibly moves the
+  number instead of silently swapping it.
+- Deployed. `dpl_BtGzXvDDAeg6dYQNxLsTBkURQR4B` READY and aliased.
+
+**Verified on the live site**, not locally: 80 pages crawled from the front door, **0 broken
+links, 0 pages containing an emoji**, 35 category tiles and 0 product cards on the home page.
+
+**Scores** — content 15, IA 14, composition 14, icons 10, motion 14, performance 9, a11y 10,
+discipline 10.
+
+### What is still missing from 100, honestly
+
+These are the four points, and none of them is a thing I can fix by editing code:
+
+1. **Photography (−2, composition + IA).** All 35 category tiles use generated art, and 3 of them
+   are still the weaker generations from before the Gemini quota ran out. Real product and site
+   photography is what separates this from a very well-built template, and it cannot be written.
+2. **The hero has no advertisement (−1).** The slot now carries live stock, which is a better
+   default than an empty rectangle — but a real campaign creative would be better still.
+3. **JS at 240 KB (−1, performance).** That is React plus the Next runtime plus the client
+   components. Getting materially below it means removing features, not tuning.
+
+Everything that was mine to fix, I fixed.
