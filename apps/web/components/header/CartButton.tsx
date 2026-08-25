@@ -45,7 +45,7 @@ export default function CartButton() {
         <button
           type="button"
           onClick={() => setWalletOpen((o) => !o)}
-          className="hidden md:flex items-center gap-1.5 text-[12px] font-bold text-[var(--color-coin-ink)] bg-[var(--color-coin-wash)] border border-[var(--color-coin-line)] px-3 py-1.5 rounded-full hover:bg-[var(--color-coin-wash-strong)] transition-all cursor-pointer shadow-sm"
+          className="hidden lg:flex items-center gap-1.5 text-[12px] font-bold text-[var(--color-coin-ink)] bg-[var(--color-coin-wash)] border border-[var(--color-coin-line)] px-3 py-1.5 rounded-full hover:bg-[var(--color-coin-wash-strong)] transition-all cursor-pointer shadow-sm"
           aria-expanded={walletOpen}
           aria-label={`BO Coins Balance: ${coins} coins`}
         >

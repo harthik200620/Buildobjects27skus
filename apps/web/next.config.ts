@@ -17,7 +17,9 @@ const nextConfig: NextConfig = {
     loader: 'custom',
     loaderFile: './lib/image-loader.ts',
     deviceSizes: [240, 480, 1080, 2048],
-    imageSizes: [240, 480],
+    /* 400 is the category renditions' smallest width; without it in the ladder next/image
+       never asks for one and every tile falls back to the 800 px card. */
+    imageSizes: [240, 400, 480],
   },
   experimental: {
     optimizePackageImports: ['three'],

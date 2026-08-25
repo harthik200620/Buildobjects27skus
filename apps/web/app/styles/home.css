@@ -1,17 +1,35 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   Homepage: the category tree.
+   Home: the catalogue as a taxonomy.
 
-   Thirty-seven tiles in two registers. The nine live categories are full-size and
-   photographic; the twenty-eight upcoming ones are half that and drawn, grouped under
-   their department. Nothing here shows a price — a tile that says "from ₹410" answers a
-   question the buyer has not asked yet and commits the store to a number before they have
-   chosen a product.
+   Thirty-seven categories in ONE register. The previous version drew the nine stocked ones
+   as large photographic cards in a three-column grid and the twenty-eight upcoming ones as
+   small drawn cards in a four-column grid — two card sizes and two grids for one taxonomy,
+   which reads as two systems bolted together rather than as a catalogue.
 
-   Replaces the .cat-* block that lived in legacy.css and had to invert its own artwork
-   (`filter: invert(1) hue-rotate(180deg)`) to sit on a light page.
+   Now: one card, one grid, one rhythm. Stocked and upcoming differ by a pill and a quieter
+   photograph. Nothing here shows a price — a tile that says "from ₹410" answers a question
+   the buyer has not asked and commits the store to a number before they have chosen anything.
+
+   Every measurement below is on the --s-* scale. The old file mixed 36/24/20/12/10px by hand,
+   and hand-picked spacing is the difference a reader registers as "cheap" without being able
+   to name it.
    ──────────────────────────────────────────────────────────────────────────── */
 
 @layer components {
+  /* Sections breathe further apart here than on a listing page: this page is scanned, not read. */
+  .home .sec {
+    margin-top: var(--s-7);
+  }
+  .home .sec-head {
+    margin-bottom: var(--s-4);
+  }
+  /* A section heading on the front door carries more weight than one inside a listing. */
+  .home .sec-title {
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+  }
+
   /* ── the hero, and the advertisement inside it ───────────────────────────────
      The brief asked for an advertisement panel "integrated into the background of
      the home page, not presented as a separate foreground section". So there is no
@@ -19,9 +37,10 @@
      faint construction grid, a soft brand glow — and the headline, the promise line
      and the ad slot all sit inside that one composition.
 
-     The slot is empty today and says so, quietly, in the corner. An empty rectangle
-     that pretends to be content is worse than a considered space that is honest
-     about waiting for a creative. Homepage only: no other surface carries it. */
+     The slot carries no label. It used to say "Advertising space — available" in the
+     corner over a dashed border, which is a box announcing its own emptiness; a
+     considered space that simply holds its ground reads as design, and the same
+     rectangle takes a creative the day there is one. Homepage only. */
   .hero {
     position: relative;
     margin: 0 calc(50% - 50vw) var(--s-6);
@@ -66,7 +85,7 @@
   .hero-eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--s-2);
     font-size: 12px;
     line-height: 16px;
     font-weight: 600;
@@ -98,13 +117,13 @@
   .hero-cta {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: var(--s-3);
     margin-top: var(--s-5);
   }
   .hero-facts {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 22px;
+    gap: var(--s-2) var(--s-5);
     margin-top: var(--s-5);
     font-size: 13px;
     color: var(--color-ink-2);
@@ -118,19 +137,12 @@
   /* the advertisement slot: part of the field, not a box dropped onto it */
   .hero-ad {
     position: relative;
-    display: flex;
-    align-items: flex-end;
     min-height: 220px;
     aspect-ratio: 16 / 9;
-    padding: var(--s-4);
-    border: 1px dashed var(--color-line);
+    border: 1px solid var(--color-line-2);
     border-radius: var(--radius-lg);
-    background: linear-gradient(150deg, var(--color-surface) 0%, transparent 70%);
-  }
-  .hero-ad-note {
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-ink-3);
+    background:
+      radial-gradient(120% 120% at 84% 12%, var(--color-teal-50) 0%, transparent 62%), linear-gradient(150deg, var(--color-surface) 0%, transparent 74%);
   }
   @media (max-width: 1023.98px) {
     .hero-ad {
@@ -138,24 +150,14 @@
     }
   }
 
-  .sec-sub {
-    margin-top: 2px;
-    font-size: 13px;
-    line-height: 18px;
-    color: var(--color-ink-2);
-  }
-
+  /* ── the category grid ────────────────────────────────────────────────── */
   .cat-grid {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-  }
-  .cat-grid--sm {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
+    gap: var(--s-4);
   }
 
   .cat-card {
@@ -166,16 +168,31 @@
     overflow: hidden;
     background: var(--color-surface);
     border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     color: var(--color-ink);
     text-decoration: none;
+    /* One elevation rule for the whole grid; the photo scale is the only per-part motion. */
+    transition:
+      border-color 140ms ease,
+      box-shadow 140ms ease,
+      transform 140ms ease;
   }
   .cat-card:hover {
     border-color: var(--color-line-strong);
-    box-shadow: var(--shadow-1);
+    box-shadow: var(--shadow-2);
+    transform: translateY(-2px);
   }
-  .cat-card:hover .cat-arrow {
-    color: var(--color-teal-700);
+  .cat-card:hover .cat-photo img {
+    transform: scale(1.04);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cat-card,
+    .cat-card:hover,
+    .cat-photo img,
+    .cat-card:hover .cat-photo img {
+      transition: none;
+      transform: none;
+    }
   }
 
   .cat-photo {
@@ -185,61 +202,54 @@
     background: var(--color-canvas-2);
   }
   .cat-photo img {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 220ms ease;
   }
-  /* The mark on an upcoming category's tile, over the department-tinted ground. */
-  .cat-photo-mark {
+  /* A category with nothing to sell yet is quieter — the same card, turned down. */
+  .cat-card--soon .cat-photo img {
+    filter: saturate(0.55) brightness(0.74);
+  }
+  .cat-card--soon:hover .cat-photo img {
+    filter: saturate(0.8) brightness(0.88);
+  }
+  .cat-pill {
     position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: var(--s-2);
+    left: var(--s-2);
+    padding: 3px var(--s-2);
+    border-radius: var(--radius-pill);
+    background: var(--color-canvas);
     color: var(--color-ink-2);
-    opacity: 0.34;
-  }
-  .cat-card:hover .cat-photo-mark {
-    opacity: 0.5;
+    font-size: 11px;
+    line-height: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   .cat-band {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 60px;
-    padding: 10px 12px;
-    border-top: 1px solid var(--color-line-2);
-    background: var(--color-surface);
-  }
-  .cat-icon {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-md);
-    background: var(--color-teal-50);
-    color: var(--color-teal-800);
-  }
-  .cat-text {
-    display: block;
+    flex-direction: column;
+    gap: 2px;
     flex: 1 1 auto;
-    min-width: 0;
+    padding: var(--s-3) var(--s-3) var(--s-4);
   }
+  /* Names wrap. "Communication & Furniture" and "Heavy Construction Equipment" were both
+     clipped by the ellipsis this replaces, and a truncated name is a category the reader
+     cannot identify. Two lines are reserved either way so the grid keeps a baseline. */
   .cat-name {
-    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    min-height: 40px;
     font-size: 15px;
     line-height: 20px;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--color-ink);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
   .cat-meta {
     display: block;
@@ -255,44 +265,17 @@
     padding: 0 5px;
     color: var(--color-ink-3);
   }
-  .cat-arrow {
-    display: inline-flex;
-    flex: none;
-    color: var(--color-ink-3);
-  }
 
-  /* A category with nothing to sell yet is quieter, but still a real, clickable place. */
-  .cat-card--soon .cat-icon {
-    background: var(--color-surface-3);
-    color: var(--color-ink-2);
-  }
-  .cat-card--sm .cat-band {
-    min-height: 52px;
-    gap: 10px;
-    padding: 8px 10px;
-  }
-  .cat-card--sm .cat-icon {
-    width: 30px;
-    height: 30px;
-  }
-  .cat-card--sm .cat-name {
-    font-size: 13.5px;
-    line-height: 18px;
-  }
-  .cat-card--sm .cat-meta {
-    font-size: 11.5px;
-  }
-
-  /* ── the department blocks under "Arriving soon" ─────────────────────── */
+  /* ── the department blocks under "On the way" ─────────────────────────── */
   .dept-block {
-    margin-top: 36px;
-    padding-top: 24px;
+    margin-top: var(--s-6);
+    padding-top: var(--s-5);
     border-top: 1px solid var(--color-line-2);
   }
   .dept-head {
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: var(--s-3);
     font-size: 16px;
     line-height: 22px;
     font-weight: 700;
@@ -304,10 +287,10 @@
     color: var(--color-ink-2);
   }
   .dept {
-    margin-top: 20px;
+    margin-top: var(--s-5);
   }
   .dept-name {
-    margin-bottom: 10px;
+    margin-bottom: var(--s-3);
     font-size: 12px;
     line-height: 16px;
     font-weight: 700;
@@ -316,25 +299,77 @@
     color: var(--color-ink-2);
   }
 
+  /* ── "On the shelf now": every stocked product, one line each ──────────
+     Deliberately not a product grid. This page is the taxonomy; a wall of photographs and
+     prices below it would put twenty-seven products in front of thirty-seven categories and
+     bury what the page is for. A name and a price says "this exists and it costs this" — the
+     card, the specification and the room view all live on the product page. */
+  .stock-strip {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--s-2);
+  }
+  .stock-chip {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    height: 100%;
+    padding: var(--s-3);
+    border: 1px solid var(--color-line-2);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition:
+      border-color 140ms ease,
+      background-color 140ms ease;
+  }
+  .stock-chip:hover {
+    border-color: var(--color-line-strong);
+    background: var(--color-surface-2);
+  }
+  .stock-chip-brand {
+    flex: none;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+  .stock-chip-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 13px;
+    line-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .stock-chip-price {
+    flex: none;
+    font-family: var(--font-figure);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
   @media (max-width: 1099.98px) {
-    .cat-grid--sm {
+    .cat-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
-  @media (max-width: 899.98px) {
+  @media (max-width: 767.98px) {
     .cat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-  }
-  @media (max-width: 639.98px) {
-    .cat-grid--sm {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-3);
     }
     .cat-name {
-      white-space: normal;
-      overflow: visible;
-      text-overflow: clip;
+      font-size: 14px;
+      min-height: 38px;
     }
   }
 }

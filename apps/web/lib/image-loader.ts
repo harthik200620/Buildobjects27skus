@@ -2,23 +2,49 @@
 import type { ImageLoaderProps } from 'next/image';
 
 /**
- * Pre-derived renditions only. A catalogue key looks like `skus/xx/CODE/img/1-card.webp`;
- * for a requested width we swap the size segment for the smallest rendition that covers it.
- * Anything that is not a catalogue key (logo PNGs, generated art) passes through untouched.
- * The requested width rides along as `?w=` — the media route ignores it, but next/image's dev
- * check insists the loader's URL reflects the width it was asked for.
+ * Pre-derived renditions only. Nothing is re-encoded on the way to the screen: for a requested
+ * width the loader swaps the size segment in the key for the smallest rendition that covers it.
+ *
+ * Two key shapes carry renditions, and they name their sizes differently:
+ *
+ *   products    skus/xx/CODE/img/1-card.webp          → 1-thumb / 1-card / 1-gallery / 1-zoom
+ *   categories  categories/cement/hero-card-a1b2.webp → hero-thumb- / hero-card- / hero-gallery-
+ *
+ * The category hash is the content version of the original and is shared by every rendition of
+ * it, so the segment is the only part that moves. Anything matching neither shape — logo PNGs,
+ * the estimator's house renders — passes through untouched.
+ *
+ * The requested width rides along as `?w=`. The media route ignores it, but next/image's dev
+ * check insists the URL the loader returns reflects the width it was asked for.
  */
-const LADDER: [number, string][] = [
+const SKU_LADDER: [number, string][] = [
   [240, 'thumb'],
   [480, 'card'],
   [1080, 'gallery'],
   [2048, 'zoom'],
 ];
 
+/** Categories are 16:9 and only ever three sizes wide: 400, 800, 1600. */
+const CATEGORY_LADDER: [number, string][] = [
+  [400, 'thumb'],
+  [800, 'card'],
+  [1600, 'gallery'],
+];
+
+const pick = (ladder: [number, string][], width: number) => (ladder.find(([w]) => w >= width) ?? ladder[ladder.length - 1])[1];
+
 export default function imageLoader({ src, width }: ImageLoaderProps): string {
-  const m = src.match(/^(.*\/img\/\d+)-(thumb|card|gallery|zoom|orig)\.(webp|avif)(\?.*)?$/);
-  if (!m) return src;
-  const size = (LADDER.find(([w]) => w >= width) ?? LADDER[LADDER.length - 1])[1];
-  const query = m[4] ? `${m[4]}&w=${width}` : `?w=${width}`;
-  return `${m[1]}-${size}.${m[3]}${query}`;
+  const sku = src.match(/^(.*\/img\/\d+)-(thumb|card|gallery|zoom|orig)\.(webp|avif)(\?.*)?$/);
+  if (sku) {
+    const query = sku[4] ? `${sku[4]}&w=${width}` : `?w=${width}`;
+    return `${sku[1]}-${pick(SKU_LADDER, width)}.${sku[3]}${query}`;
+  }
+
+  const category = src.match(/^(.*\/hero)-(thumb|card|gallery)-([0-9a-f]+)\.(webp|avif)(\?.*)?$/);
+  if (category) {
+    const query = category[5] ? `${category[5]}&w=${width}` : `?w=${width}`;
+    return `${category[1]}-${pick(CATEGORY_LADDER, width)}-${category[3]}.${category[4]}${query}`;
+  }
+
+  return src;
 }

@@ -64,31 +64,46 @@
   .footer :focus-visible {
     outline-color: var(--color-brand);
   }
+  /* Two rows at every width. `flex-wrap` plus a 100%-basis search field is the same mechanism
+     the mobile header always used; making it the only mechanism means one layout to keep right
+     instead of two that drift. */
   .header-in {
     display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
     align-items: center;
-    gap: 8px;
+    gap: 0 8px;
     height: 100%;
   }
+  .header-menu,
+  .header-logo,
+  .header-action,
+  .account-wrap,
+  .deliver-wrap--header,
+  .header-spacer {
+    height: 56px;
+  }
   .header-logo {
+    --wm-size: 34px;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     flex: none;
-    height: 40px;
     padding: 0 6px;
     margin-left: -6px;
     border: 1px solid transparent;
     border-radius: var(--radius-sm);
     color: #fff;
   }
+  /* The lockup steps down as the row narrows. Audiowide is wide: the full name measures ~506 px
+     at a 34 px cap and ~419 px at 28. See the chrome rules further down for what yields to it. */
+  @media (max-width: 1099.98px) {
+    .header-logo {
+      --wm-size: 28px;
+    }
+  }
   .header-logo:hover {
     border-color: var(--color-chrome-hair-strong);
-  }
-  /* The lockup sizes itself (components/Wordmark.tsx); the chrome only has to leave room. */
-  .header-logo img,
-  .header-logo > span > span {
-    flex: none;
   }
   .header-menu {
     display: none;
@@ -235,6 +250,26 @@
     background: var(--color-header-2);
     color: #fff;
   }
+  /* Row one has to hold the lockup and still fit, and what gives way is the chrome, not the logo.
+     A labelled action reads perfectly well as an icon, and deliver-to has a second presentation
+     already built for exactly this — the strip below, which phones have always used. Ordered
+     after `.deliver-strip { display: none }` on purpose: same specificity, so it has to come
+     later to win. */
+  @media (max-width: 1279.98px) {
+    .deliver-wrap--header {
+      display: none;
+    }
+    .deliver-strip {
+      display: block;
+    }
+    .header-action-label {
+      display: none;
+    }
+    .header-action {
+      min-width: 44px;
+      padding: 0 6px;
+    }
+  }
   .deliver-strip-btn {
     display: inline-flex;
     align-items: center;
@@ -263,18 +298,20 @@
   }
 
   /* ── search: the dominant element ───────────────────────────────────────── */
+  /* Row two. `flex-basis: 100%` is what forces the wrap, so the cap on how wide the field may
+     actually get belongs on the form inside it — a max-width here would clamp the basis and the
+     field could end up back on row one on a wide screen. */
   .search {
     position: relative;
-    flex: 1 1 0;
+    order: 10;
+    flex: 0 0 100%;
     min-width: 0;
-    max-width: 860px;
-    height: 40px;
-  }
-  .header-action--estimate {
-    margin-left: auto;
+    height: 48px;
+    padding-bottom: 8px;
   }
   .search-form {
     display: flex;
+    max-width: 860px;
     height: 40px;
     background: var(--color-surface);
     border-radius: var(--radius-md);
@@ -784,19 +821,10 @@
     }
   }
 
-  /* ── mobile header: two sticky rows (56 + 48) ───────────────────────────── */
+  /* ── the phone: the same two rows, tightened ────────────────────────────── */
   @media (max-width: 767.98px) {
     .header-in {
-      flex-wrap: wrap;
-      align-content: flex-start;
       gap: 0 4px;
-    }
-    .header-menu,
-    .header-logo,
-    .header-action,
-    .account-wrap,
-    .header-spacer {
-      height: 56px;
     }
     .header-menu {
       display: inline-grid;
@@ -810,6 +838,7 @@
       cursor: pointer;
     }
     .header-logo {
+      --wm-size: 26px;
       margin-left: 0;
       border: 0;
     }
@@ -832,13 +861,6 @@
     }
     .deliver-wrap--header {
       display: none;
-    }
-    .search {
-      order: 10;
-      flex: 0 0 100%;
-      max-width: none;
-      height: 48px;
-      padding-bottom: 8px;
     }
     .deliver-strip {
       display: block;

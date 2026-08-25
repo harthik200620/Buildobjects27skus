@@ -1,3 +1,5 @@
+import type React from 'react';
+
 /**
  * The Build Objects lockup — the mark, and the brand name beside it in Audiowide.
  *
@@ -18,31 +20,29 @@
  * Audiowide is the brand's face. This is the one component that sets it, so:
  *
  *   · AUDIOWIDE, always, wherever the brand name appears — header, footer, front door, cart.
- *   · CAP HEIGHT = MARK HEIGHT. The font size is derived from the face's cap-height ratio, so
- *     the capitals are exactly as tall as the logo at every size the lockup is used.
+ *   · CAP HEIGHT = MARK HEIGHT. The capitals are exactly as tall as the logo at every size.
  *   · THE O IS TEAL. OBJECTS carries the only O in the name and it is --color-brand: the mark's
  *     own colour, at the mark's own size.
  *
  * Audiowide has no ₹ glyph. It must never be used for a price — see the type program in
  * app/layout.tsx.
+ *
+ * `size` is published as the `--wm-size` custom property rather than baked into inline width and
+ * font-size. Everything derived from it — the mark's box, the cap height, the gap — is computed in
+ * theme.css from that one number, so a media query moves all three by redefining it, and a caller
+ * that omits the prop hands that decision to CSS entirely.
  */
-
-/**
- * Audiowide's cap height as a fraction of the em. The font size is `size / CAP_RATIO` so the
- * capitals — not the em box — match the mark.
- */
-const CAP_RATIO = 0.715;
-
 export type WordmarkVariant = 'full' | 'word' | 'mark';
 
 /**
- * @param size  Height of the mark in CSS pixels; the capitals match it exactly.
+ * @param size  Height of the mark in CSS pixels; the capitals match it exactly. Omit it to let
+ *              an ancestor's `--wm-size` decide, which is what the header does.
  * @param variant `full` = mark + name, `word` = the name alone, `mark` = the mark alone.
  * @param tone  `brand` keeps the name in the current ink with a teal O — the default. `mono`
  *              renders all of it in currentColor, for the places a lockup has to survive one ink.
  */
 export default function Wordmark({
-  size = 32,
+  size,
   variant = 'full',
   tone = 'brand',
   className,
@@ -52,11 +52,18 @@ export default function Wordmark({
   tone?: 'brand' | 'mono';
   className?: string;
 }) {
-  const fontSize = size / CAP_RATIO;
-  const gap = Math.round(size * 0.42);
+  /*
+   * No `size` means "whoever mounts me decides, in CSS".
+   *
+   * An inline custom property beats every selector, so a header that has to shrink its lockup at
+   * three breakpoints cannot do it while the size arrives as a style attribute. Omitting the prop
+   * leaves --wm-size to cascade from an ancestor (see .header-logo in store.css); passing one is
+   * for the places that want a fixed size and no breakpoints — the footer, the front door.
+   */
+  const style = size === undefined ? undefined : ({ '--wm-size': `${size}px` } as React.CSSProperties);
 
   const word = (
-    <span className="wordmark" role="img" aria-label="Build Objects" style={{ fontSize, lineHeight: 1 }}>
+    <span className="wordmark" role="img" aria-label="Build Objects">
       Build{' '}
       {tone === 'brand' ? (
         <>
@@ -68,12 +75,27 @@ export default function Wordmark({
     </span>
   );
 
-  const mark = <img src="/logo-mark.png" width={size} height={size} alt="" aria-hidden="true" draggable={false} style={{ display: 'block', flex: 'none' }} />;
+  {
+    /* The 128 px rendition, not the 815 px one. The header draws this at 34 px, which is 68 px on
+       a 2× screen — the large file was 187 KB shipped to paint a mark the size of a fingernail. */
+  }
+  const mark = <img className="wordmark-mark" src="/logo-mark-128.png" width={128} height={128} alt="" aria-hidden="true" draggable={false} />;
 
-  if (variant === 'mark') return <span className={className}>{mark}</span>;
-  if (variant === 'word') return <span className={className}>{word}</span>;
+  const cls = `lockup${className ? ` ${className}` : ''}`;
+  if (variant === 'mark')
+    return (
+      <span className={cls} style={style}>
+        {mark}
+      </span>
+    );
+  if (variant === 'word')
+    return (
+      <span className={cls} style={style}>
+        {word}
+      </span>
+    );
   return (
-    <span className={className} style={{ display: 'inline-flex', alignItems: 'center', gap }}>
+    <span className={cls} style={style}>
       {mark}
       {word}
     </span>

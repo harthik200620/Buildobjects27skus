@@ -39,8 +39,9 @@ const ui = localFont({
 });
 
 const figure = localFont({
+  /* No 300: nothing in the app sets a weight below 400, and a declared source is a preload the
+     first paint waits on whether or not a glyph ever asks for it. */
   src: [
-    { path: '../public/fonts/BuildObjectsSans5-Light.woff2', weight: '300', style: 'normal' },
     { path: '../public/fonts/BuildObjectsSans5-Regular.woff2', weight: '400', style: 'normal' },
     { path: '../public/fonts/BuildObjectsSans5-Medium.woff2', weight: '500', style: 'normal' },
     { path: '../public/fonts/BuildObjectsSans5-SemiBold.woff2', weight: '600', style: 'normal' },

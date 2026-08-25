@@ -2,7 +2,7 @@
 
 import type { SkuSearchDoc } from '@buildobjects/catalog';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { inr, mediaUrl } from '@/lib/media';
 import Highlight from './Highlight';
@@ -43,9 +43,27 @@ const ICON_BY_SLUG: Record<string, string> = {
 
 export default function SearchBar({ categories = [] }: { categories?: { slug: string; name: string }[] }) {
   const router = useRouter();
-  const params = useSearchParams();
-  const [q, setQ] = React.useState(params.get('q') ?? '');
-  const [scope, setScope] = React.useState(params.get('category') ?? '');
+  /*
+   * The query is read from the URL after mount, not through `useSearchParams`.
+   *
+   * `useSearchParams` suspends, which forced the header to wrap this in a <Suspense> boundary,
+   * and on a prerendered page that boundary never completed: the deployed store served an empty
+   * 326 × 40 div where the search field should be, with the real one parked in a `<div hidden
+   * id="S:0">` at the end of <body> waiting for a swap script that never ran. The store's
+   * most-used control has not been on screen in production.
+   *
+   * Both values only ever seeded initial state — `useState` ignores its initial value after the
+   * first render, so this was always a mount-time read — which means an effect does the same job
+   * with no boundary, no fallback and nothing to go wrong between the server and the client.
+   */
+  const [q, setQ] = React.useState('');
+  const [scope, setScope] = React.useState('');
+
+  React.useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    setQ(p.get('q') ?? '');
+    setScope(p.get('category') ?? '');
+  }, []);
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState<Suggest | null>(null);
   const [sel, setSel] = React.useState(-1);

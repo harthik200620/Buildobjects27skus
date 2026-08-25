@@ -1,60 +1,57 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { CategoryCard } from '@/lib/data';
 import { mediaUrl } from '@/lib/media';
-import { CategoryIcon, IconArrow } from './icons';
 
 /**
- * One category in the homepage grid and the department pages.
+ * One category in the home grid.
  *
- * It shows what the category is and how much of it there is — never a price. A "from ₹410"
- * on a tile answers a question nobody asked at this level and quietly commits the store to a
- * number before the buyer has picked a product; the count of brands and products is what
- * actually helps someone choose where to look first.
+ * The photograph is the design. All thirty-seven categories have real art, so the tile carries no
+ * glyph at all — the previous version laid a line drawing over the picture at 34% opacity on the
+ * twenty-eight upcoming tiles and put a second copy of the same drawing in a teal chip below the
+ * name. A photograph competing with two diagrams of itself is what made the grid look cheap.
+ *
+ * It shows what the category is and how much of it there is — never a price. A "from ₹410" here
+ * answers a question nobody has asked yet and commits the store to a number before the buyer has
+ * picked anything; brands and products is what actually helps someone choose where to look first.
+ *
+ * One card, one size. Stocked and upcoming differ by a pill and a quieter picture, not by a
+ * different component — they are one taxonomy and should read as one.
  */
-export default function CategoryTile({ category, size = 'lg' }: { category: CategoryCard; size?: 'lg' | 'sm' }) {
-  const { slug, name, icon, status, brandCount, stats } = category;
+export default function CategoryTile({ category, priority = false }: { category: CategoryCard; priority?: boolean }) {
+  const { slug, name, status, brandCount, stats } = category;
   const skuCount = stats?.sku_count ?? 0;
   const live = status === 'live';
   const hero = mediaUrl(category.heroImageKey);
 
   return (
-    <Link href={`/c/${slug}`} className={`cat-card lift${live ? '' : ' cat-card--soon'}${size === 'sm' ? ' cat-card--sm' : ''}`}>
+    <Link href={`/c/${slug}`} className={`cat-card${live ? '' : ' cat-card--soon'}`}>
       <div className="cat-photo">
-        {hero && <img src={hero} alt="" loading="lazy" decoding="async" />}
-        {/* A category with nothing to photograph gets its ground from the tile and its mark from
-            here, so the thirty-seven glyphs live in one place. `hero` is absent only before
-            `pnpm pipeline art:categories` has run. */}
-        {(!live || !hero) && (
-          <span className="cat-photo-mark">
-            <CategoryIcon icon={icon ?? 'cement'} size={size === 'sm' ? 44 : 66} strokeWidth={1} />
-          </span>
+        {hero && (
+          <Image
+            src={hero}
+            alt=""
+            width={800}
+            height={450}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            priority={priority}
+            /* Above the fold the browser must not wait to be told the image matters. */
+            loading={priority ? 'eager' : 'lazy'}
+          />
         )}
+        {!live && <span className="cat-pill">Arriving soon</span>}
       </div>
       <div className="cat-band">
-        <span className="cat-icon">
-          <CategoryIcon icon={icon ?? 'cement'} size={size === 'sm' ? 18 : 20} />
-        </span>
-        <span className="cat-text">
-          <span className="cat-name" title={name}>
-            {name}
-          </span>
+        <span className="cat-name">{name}</span>
+        {live && (
           <span className="cat-meta">
-            {live ? (
-              <>
-                <span className="fig">{brandCount}</span> {brandCount === 1 ? 'brand' : 'brands'}
-                <span className="cat-dot" aria-hidden>
-                  ·
-                </span>
-                <span className="fig">{skuCount}</span> {skuCount === 1 ? 'product' : 'products'}
-              </>
-            ) : (
-              'Arriving soon'
-            )}
+            <span className="fig">{brandCount}</span> {brandCount === 1 ? 'brand' : 'brands'}
+            <span className="cat-dot" aria-hidden>
+              ·
+            </span>
+            <span className="fig">{skuCount}</span> {skuCount === 1 ? 'product' : 'products'}
           </span>
-        </span>
-        <span className="cat-arrow">
-          <IconArrow size={size === 'sm' ? 16 : 18} />
-        </span>
+        )}
       </div>
     </Link>
   );

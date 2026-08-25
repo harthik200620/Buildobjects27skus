@@ -2,11 +2,14 @@ import { DEPARTMENTS } from '@buildobjects/catalog';
 import Link from 'next/link';
 import CategoryTile from '@/components/CategoryTile';
 import { IconArrow, IconClockCheck, IconEstimate, IconPin, IconRoom, IconShield, IconStorefront } from '@/components/icons';
-import ProductCard from '@/components/ProductCard';
 import { loadFlagshipSkus } from '@/lib/catalog';
 import { loadCategories } from '@/lib/data';
+import { inr } from '@/lib/media';
 
 export const revalidate = 60;
+
+/** Tiles above the fold on a desktop grid; these load eagerly, the other thirty-three do not. */
+const EAGER = 4;
 
 export default async function Home() {
   const [cats, skus] = await Promise.all([loadCategories(), loadFlagshipSkus()]);
@@ -14,18 +17,18 @@ export default async function Home() {
   const soon = cats.filter((c) => c.status !== 'live');
   const products = live.reduce((n, c) => n + (c.stats?.sku_count ?? 0), 0);
 
-  // Upcoming categories are grouped under their department, in the nav's order, so a buyer
+  // Upcoming categories are grouped under their department, in the nav's order, so someone
   // scanning twenty-eight tiles reads a structure rather than an alphabet.
   const byDepartment = DEPARTMENTS.map((d) => ({ ...d, categories: soon.filter((c) => c.department === d.key) })).filter((d) => d.categories.length > 0);
 
   return (
     <div className="page shell home">
       {/*
-       * The hero. The advertisement is not a banner on top of the page — it is part of the
-       * field the whole hero sits in: the teal wash, the construction grid and the glow are
-       * one composition, and the slot is a defined area inside it. It is empty today and says
-       * so in the corner, because a placeholder pretending to be a creative is worse than a
-       * considered space that is honest about waiting for one.
+       * The hero. The advertisement is not a banner on top of the page — it is part of the field
+       * the whole hero sits in: the teal wash, the construction grid and the glow are one
+       * composition, and the slot is a defined area inside it. It carries no label. A box that
+       * announces its own emptiness is worse than a considered space that simply holds its ground
+       * until there is a creative to put in it.
        */}
       <section className="hero" aria-labelledby="home-h">
         <div className="hero-in">
@@ -40,7 +43,7 @@ export default async function Home() {
             </p>
             <div className="hero-cta">
               <Link href="/search" className="btn-primary btn--lg">
-                Start shopping <IconArrow size={16} />
+                <IconStorefront size={16} /> Browse the store
               </Link>
               <Link href="/estimate" className="btn-secondary btn--lg">
                 <IconEstimate size={16} /> What will my house cost?
@@ -58,13 +61,11 @@ export default async function Home() {
               </span>
             </p>
           </div>
-          <aside className="hero-ad" aria-label="Advertisement space">
-            <span className="hero-ad-note">Advertising space — available</span>
-          </aside>
+          <div className="hero-ad" aria-hidden />
         </div>
       </section>
 
-      {/* ── shop by category: the nine that sell, then the rest of the tree ─── */}
+      {/* ── the catalogue, as a taxonomy: all thirty-seven, one card, one grid ── */}
       <section className="sec" aria-labelledby="cats-h">
         <div className="sec-head">
           <div>
@@ -84,10 +85,10 @@ export default async function Home() {
           <EmptyShelves />
         ) : (
           <>
-            <ul className="cat-grid mt-4">
-              {live.map((c) => (
+            <ul className="cat-grid">
+              {live.map((c, i) => (
                 <li key={c.slug}>
-                  <CategoryTile category={c} />
+                  <CategoryTile category={c} priority={i < EAGER} />
                 </li>
               ))}
             </ul>
@@ -105,10 +106,10 @@ export default async function Home() {
                     <h4 id={`dept-${d.key}`} className="dept-name">
                       {d.name}
                     </h4>
-                    <ul className="cat-grid cat-grid--sm">
+                    <ul className="cat-grid">
                       {d.categories.map((c) => (
                         <li key={c.slug}>
-                          <CategoryTile category={c} size="sm" />
+                          <CategoryTile category={c} />
                         </li>
                       ))}
                     </ul>
@@ -120,65 +121,42 @@ export default async function Home() {
         )}
       </section>
 
-      {/* ── the two destinations ─────────────────────────────────────────── */}
-      <section className="dest-grid" aria-label="Start here">
-        <Link href="/search" className="dest lift">
-          <IconStorefront size={26} className="dest-icon" />
-          <span className="dest-kicker">BO Marketplace</span>
-          <span className="display dest-title">BO Store Products</span>
-          <span className="dest-body">
-            {products > 0 ? (
-              <>
-                <span className="fig">{products}</span> products across <span className="fig">{live.length}</span> live categories
-              </>
-            ) : (
-              'Nine live categories'
-            )}
-            . Filter by the specifications that actually matter, read the datasheet, and see it in your room before you buy.
-          </span>
-          <IconArrow size={20} className="dest-arrow" />
-        </Link>
-        <Link href="/estimate" className="dest lift">
-          <IconEstimate size={26} className="dest-icon" />
-          <span className="dest-kicker">BO Intelligence</span>
-          <span className="display dest-title">BO Estimator</span>
-          <span className="dest-body">
-            A house-construction estimate for any city in AP and Telangana — civil structure and interior finishes ledgered separately at three quality tiers.
-          </span>
-          <IconArrow size={20} className="dest-arrow" />
-        </Link>
-      </section>
-
-      {/* ── the flagship catalogue ───────────────────────────────────────── */}
-      <section className="sec" aria-labelledby="prods-h">
-        <div className="sec-head">
-          <div>
-            <h2 id="prods-h" className="sec-title">
-              Popular right now
-            </h2>
-            <p className="sec-sub">Every one carries its full specification sheet, the source of every figure, and a true-size view in your own room.</p>
+      {/*
+       * Everything on the shelf right now, as one line each.
+       *
+       * Not product cards. This page is the taxonomy — a grid of photographs and prices below it
+       * would put the store's twenty-seven products in front of its thirty-seven categories and
+       * bury the thing the page is for. A name and a price is enough to say "this exists and it
+       * costs this"; the card, the specification and the room view live on the product page.
+       */}
+      {skus.length > 0 && (
+        <section className="sec" aria-labelledby="stock-h">
+          <div className="sec-head">
+            <div>
+              <h2 id="stock-h" className="sec-title">
+                On the shelf now
+              </h2>
+              <p className="sec-sub">
+                Every one of the <span className="fig">{skus.length}</span> products we stock today, priced per unit with GST stated.
+              </p>
+            </div>
+            <Link href="/search" className="sec-more">
+              Open in search <IconArrow size={14} style={{ display: 'inline', verticalAlign: -1 }} />
+            </Link>
           </div>
-          <Link href="/search" className="sec-more">
-            View all in search <IconArrow size={14} style={{ display: 'inline', verticalAlign: -1 }} />
-          </Link>
-        </div>
-
-        {skus.length === 0 ? (
-          <div className="empty glass-card mt-4" style={{ borderRadius: 'var(--radius-glass)' }}>
-            <p className="kicker">Products</p>
-            <p className="display">Ingesting flagship catalog</p>
-            <p>
-              Run <code className="fig">pnpm pipeline run</code> to populate product details and pricing.
-            </p>
-          </div>
-        ) : (
-          <div className="prod-grid mt-4">
-            {skus.map((sku) => (
-              <ProductCard key={sku.sku_code} sku={sku} />
+          <ul className="stock-strip">
+            {skus.map((s) => (
+              <li key={s.sku_code}>
+                <Link href={`/p/${s.sku_code.toLowerCase()}`} className="stock-chip">
+                  <span className="stock-chip-brand">{s.brand}</span>
+                  <span className="stock-chip-name">{s.name}</span>
+                  {s.selling_price !== null && <span className="stock-chip-price fig">{inr(s.selling_price)}</span>}
+                </Link>
+              </li>
             ))}
-          </div>
-        )}
-      </section>
+          </ul>
+        </section>
+      )}
 
       {/* ── the compact trust bar ────────────────────────────────────────── */}
       <section className="trust-mini sec" aria-label="What every price carries">

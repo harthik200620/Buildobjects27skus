@@ -172,16 +172,10 @@
   --s-9: 96px;
 
   /* ── chrome heights (sticky offsets use these) ──────────────────────────── */
-  --header-h: 60px;
+  --header-h: 104px; /* two rows: 56 for the lockup and the actions, 48 for search */
   --nav-h: 40px;
 }
 
-/* Two sticky rows on a phone: 56 px (menu, mark, estimate, account) + 48 px search. */
-@media (max-width: 767.98px) {
-  :root {
-    --header-h: 104px;
-  }
-}
 /* A page without the app header (the front door) has no header height. */
 :root:not(:has(.header)) {
   --header-h: 0px;
@@ -309,9 +303,28 @@
 
   /* Audiowide lives here and nowhere else. The brand name is uppercase in it by
      design, and the tracking is opened slightly because the face is already wide. */
+  /* ── the lockup ───────────────────────────────────────────────────────────
+     components/Wordmark.tsx publishes one number, --wm-size (the height of the mark in px),
+     and the mark's box, the cap height and the gap are all derived from it here. That is what
+     lets a narrow header shrink the whole lockup with a single custom-property override
+     instead of fighting three inline styles. */
+  .lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--wm-size, 32px) * 0.42);
+  }
+  .wordmark-mark {
+    display: block;
+    flex: none;
+    width: var(--wm-size, 32px);
+    height: var(--wm-size, 32px);
+  }
   .wordmark {
     font-family: var(--font-display);
     font-weight: 400;
+    /* Audiowide's cap height is 0.715 em, so this sets the CAPITALS to --wm-size, not the em box. */
+    font-size: calc(var(--wm-size, 32px) / 0.715);
+    line-height: 1;
     text-transform: uppercase;
     letter-spacing: 0.01em;
     white-space: nowrap;

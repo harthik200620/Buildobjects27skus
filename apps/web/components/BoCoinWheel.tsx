@@ -1,9 +1,16 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import React from 'react';
 import { hasSpunWheel } from '@/lib/coins';
-import RewardEngine from './RewardEngine/RewardEngine';
 import { useDismiss, useScrollLock } from './useDismiss';
+
+/**
+ * The wheel is 1,378 lines and it is mounted by the header, which means it was in the initial
+ * client bundle of every route in the store — a page of cement bags paying for a reward
+ * animation it will not show unless the visitor has never spun. It loads when it opens.
+ */
+const RewardEngine = dynamic(() => import('./RewardEngine/RewardEngine'), { ssr: false });
 
 /** How long a first-time visitor gets to look at the page before the wheel offers itself. */
 const FIRST_VISIT_DELAY_MS = 1_200;

@@ -338,66 +338,6 @@
     border-radius: 6px;
   }
 
-  /* ── home (v1 markup) ───────────────────────────────────────────────────── */
-  .dest-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  @media (min-width: 768px) {
-    .dest-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  .dest {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 6px;
-    min-height: 150px;
-    padding: 20px 56px 20px 20px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
-    color: var(--color-ink);
-    text-decoration: none;
-  }
-  .dest-icon {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    color: var(--color-teal-700);
-  }
-  .dest-kicker {
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-teal-700);
-  }
-  .dest-title {
-    font-size: 20px;
-    line-height: 26px;
-    font-weight: 700;
-    color: var(--color-ink);
-  }
-  .dest-body {
-    max-width: 44ch;
-    font-size: 14px;
-    line-height: 20px;
-    color: var(--color-ink-2);
-  }
-  .dest-arrow {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    color: var(--color-ink-3);
-  }
-  .dest:hover .dest-arrow {
-    color: var(--color-teal-700);
-  }
   .cat-head-icon {
     flex: none;
     display: inline-flex;

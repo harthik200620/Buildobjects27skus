@@ -15,7 +15,7 @@ import React from 'react';
  * with the thin strokes of the trolley and the whole thing became one grey-and-teal smear —
  * metal and logo welded together, readable as neither.
  *
- * So the load is the real logo asset. `/logo-mark.png` is the mark as the brand actually draws
+ * So the load is the real logo asset. `/logo-mark-128.png` is the mark as the brand actually draws
  * it, already built to survive being small, and using it means the recognisable part of the icon
  * is the part nobody redrew. The chassis is what got cut back: one flat deck bar and two solid
  * wheels, with real clearance between the mark and the metal so they read as separate objects.
@@ -80,7 +80,7 @@ export default function BoCartMark({ size = 26, arriveKey, driver = false, class
       )}
       <span className="bocart-rig">
         {/* The load: the real mark, not a redrawing of it. */}
-        <img className="bocart-load" src="/logo-mark.png" alt="" draggable={false} style={{ height: loadH, marginBottom: gapH }} />
+        <img className="bocart-load" src="/logo-mark-128.png" alt="" draggable={false} style={{ height: loadH, marginBottom: gapH }} />
         {/* The chassis: one deck and two wheels, and nothing else. */}
         <svg className="bocart-chassis" viewBox="0 0 100 34" fill="none" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style={{ height: deckH }}>
           <rect x="3" y="0" width="94" height="7" rx="3.5" fill="currentColor" />
