@@ -40,6 +40,24 @@ import {
   type SubmitInput,
 } from './types';
 
+/**
+ * Categories whose product photography is not a photograph of the product.
+ *
+ * Image-to-3D reconstructs whatever is in the frame. For most of the catalogue that is the
+ * product, and the result is a cement bag or a fire extinguisher. For architectural glass it is a
+ * glazed building — which is not a failure of the source images but the correct way that product
+ * is specified and sold, and is already recorded in registry/image-overrides.json. Run through
+ * Meshy, both glass SKUs came back as detailed 3D models of office blocks, trees included.
+ *
+ * The parametric placeholder is the better answer for these: a 1200 x 1800 x 5 mm pane at true
+ * dimensions is what a sheet of glass is, and a buyer placing one in AR wants a pane, not a
+ * building. Skipped before submission so it costs nothing to be right about.
+ */
+export const NO_IMAGE_TO_3D: Record<string, string> = {
+  glass:
+    'architectural glass is photographed as a glazed facade, so image-to-3D reconstructs the building — the parametric pane at true dimensions is the honest model',
+};
+
 export const POLL_DELAYS_MS = [5_000, 10_000, 20_000];
 export const POLL_MAX_MS = 15 * 60_000;
 export const REPORT_FILE = 'photoreal-report.json';
@@ -179,6 +197,9 @@ export async function pollUntilDone(
 async function planSku(t: PhotorealTarget, ctx: Ctx): Promise<SkuPlan> {
   const dims = dimsFor(t.spec, t.category);
   const base: SkuPlan = { target: t, dims, views: [], images: [], cutouts: 0, heroMask: null, mode: 'single', hash: '', decision: 'submit', cost: 0 };
+  // Some categories are photographed as context, not as product — see NO_IMAGE_TO_3D.
+  const excluded = NO_IMAGE_TO_3D[t.category];
+  if (excluded) return { ...base, skip: excluded };
   const views = selectViews(t, ctx.mediaRoot, { extraCutoutDirs: [ctx.cutoutsDir] });
   if (!views.length)
     return {

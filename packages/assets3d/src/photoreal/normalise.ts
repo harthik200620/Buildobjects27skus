@@ -62,6 +62,9 @@ export const DEFAULTS = {
   sizeRejectMb: 12,
   aspectWarn: 0.15,
   aspectReject: 0.85,
+  /* Below this, the mesh's outline disagrees with its own source photograph. See the front
+     check for the distribution this was set against. */
+  iouReject: 0.2,
   yawCandidates: [0, 90, 180, 270],
 };
 
@@ -491,6 +494,23 @@ export async function normaliseGlb(glb: Buffer, opts: NormaliseOptions): Promise
       yaw = r.yaw;
       best = r.best;
       byYaw = r.byYaw;
+      /*
+       * The silhouette check is the one measurement that asks "is this a model OF this product",
+       * and it was only ever a warning. Across the catalogue the good meshes score 0.68–0.95 and
+       * the borderline ones 0.49–0.55; the Kajaria tile scored 0.06 and shipped as a warped sheet
+       * that looks nothing like a tile. Below `iouReject` the outline does not match the very
+       * photograph the mesh was built from, which is not a near miss — it is a different object,
+       * and the parametric placeholder at true dimensions is the better answer.
+       */
+      if (best < o.iouReject)
+        return fail(`silhouette IoU ${best.toFixed(2)} at ${yaw}° — the mesh does not match the product photo (reject < ${o.iouReject})`, {
+          axis_map: perm.name,
+          front_yaw_deg: yaw,
+          scale,
+          triangles,
+          silhouette_iou: best,
+          iou_by_yaw: r.byYaw,
+        });
       if (best < 0.5) warnings.push(`front uncertain: best silhouette IoU ${best.toFixed(2)} at ${yaw}°`);
     }
   } else warnings.push('front check skipped: no hero cut-out');
