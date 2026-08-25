@@ -14,7 +14,10 @@ export async function POST(req: Request) {
   if (!/^[6-9]\d{9}$/.test(phone)) return NextResponse.json({ error: 'Enter a valid 10-digit Indian mobile number' }, { status: 400 });
   if (otp !== '000000') return NextResponse.json({ error: 'That code did not match. Demo code is 000000.' }, { status: 401 });
   if (!/^5[0-3]\d{4}$/.test(pincode))
-    return NextResponse.json({ error: 'We deliver across Andhra Pradesh and Telangana (pincodes 50xxxx–53xxxx).' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'We do not deliver to that pincode yet. Today we cover Andhra Pradesh and Telangana — pincodes 50xxxx to 53xxxx.' },
+      { status: 400 },
+    );
 
   const db = getDb();
   let uid = 0;

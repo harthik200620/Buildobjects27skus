@@ -66,7 +66,7 @@ export default function BoCart({ initialCatalog }: { initialCatalog: CatalogPric
             Back to BO Home
           </Link>
           <Link href="/estimate" className="btn-ghost h-11 px-6 text-[13.5px]">
-            Open BO Calculator
+            Open BO Estimator
           </Link>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function BoCart({ initialCatalog }: { initialCatalog: CatalogPric
             Explore BO Store
           </Link>
           <Link href="/estimate" className="btn-ghost h-11 px-6 text-[13px]">
-            BO Cost Calculator
+            BO Estimator
           </Link>
         </div>
       </div>
@@ -249,7 +249,7 @@ export default function BoCart({ initialCatalog }: { initialCatalog: CatalogPric
           </button>
 
           <Link href="/estimate" className="btn-ghost w-full h-11 text-[13px] mt-2 flex items-center justify-center gap-2">
-            <IconEstimate size={16} /> Send items to BO Calculator
+            <IconEstimate size={16} /> Send items to BO Estimator
           </Link>
         </div>
       </div>

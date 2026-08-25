@@ -17,7 +17,8 @@ export default function WelcomeGate({ regions, next }: { regions: Region[]; next
 
   const pincodeError = React.useMemo(() => {
     if (pincode.length < 6) return null;
-    if (!/^5[0-3]\d{4}$/.test(pincode)) return 'We deliver across Andhra Pradesh and Telangana — pincodes 50xxxx to 53xxxx.';
+    if (!/^5[0-3]\d{4}$/.test(pincode))
+      return 'We do not deliver to that pincode yet. Today we cover Andhra Pradesh and Telangana — pincodes 50xxxx to 53xxxx.';
     return null;
   }, [pincode]);
 

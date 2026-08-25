@@ -119,7 +119,7 @@ export default function NavLinks({ categories, arHref = AR_DEMO_HREF }: { catego
       })}
       <span className="nav-spacer" aria-hidden="true" />
       <Link href="/estimate" className="nav-link nav-tool" aria-current={pathname.startsWith('/estimate') ? 'page' : undefined}>
-        <IconEstimate size={16} /> Cost Calculator
+        <IconEstimate size={16} /> BO Estimator
       </Link>
       <Link href={arHref} className="nav-link nav-tool" aria-current={pathname.startsWith('/ar/') ? 'page' : undefined}>
         <IconRoom size={16} /> View in your room

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import React from 'react';
 import BoCoinWheel from '@/components/BoCoinWheel';
+import BoCartMark from '@/components/cart/BoCartMark';
 import { IconClose } from '@/components/icons';
 import { useDismiss } from '@/components/useDismiss';
 import { type CoinActivity, getBoCoinHistory, getBoCoins } from '@/lib/coins';
@@ -61,11 +62,11 @@ export default function CartButton() {
               top: 'calc(100% + 8px)',
               right: '0',
               width: '320px',
-              background: 'var(--color-coin-surface)',
+              background: 'var(--color-surface-2)',
               border: '1px solid var(--color-coin-line)',
               borderRadius: '18px',
               padding: '18px',
-              boxShadow: '0 20px 40px var(--color-coin-shadow), 0 0 25px var(--color-coin-wash)',
+              boxShadow: '0 20px 40px var(--scrim-ink), 0 0 25px var(--color-coin-wash)',
               zIndex: 900,
             }}
           >
@@ -73,12 +74,12 @@ export default function CartButton() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <span style={{ fontSize: '18px' }}>🪙</span>
-                <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-on-dark)' }}>BO Coins Wallet</span>
+                <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-ink)' }}>BO Coins Wallet</span>
               </div>
               <button
                 type="button"
                 onClick={() => setWalletOpen(false)}
-                style={{ background: 'none', border: 'none', color: 'var(--color-on-dark-3)', cursor: 'pointer', padding: '2px' }}
+                style={{ background: 'none', border: 'none', color: 'var(--color-ink-3)', cursor: 'pointer', padding: '2px' }}
                 aria-label="Close wallet"
               >
                 <IconClose size={15} />
@@ -95,28 +96,28 @@ export default function CartButton() {
                 marginBottom: '14px',
               }}
             >
-              <div style={{ fontSize: '11px', color: 'var(--color-on-dark-3)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
+              <div style={{ fontSize: '11px', color: 'var(--color-ink-3)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>
                 Available Balance
               </div>
               <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--color-coin-ink)', marginTop: '2px' }}>🪙 {coins} BO Coins</div>
-              <div style={{ fontSize: '12px', color: 'var(--color-on-dark-2)', marginTop: '3px' }}>
+              <div style={{ fontSize: '12px', color: 'var(--color-ink-2)', marginTop: '3px' }}>
                 Equivalent Value: <b>₹{coins} instant discount</b>
               </div>
             </div>
 
             {/* Explanatory Note */}
-            <p style={{ fontSize: '12px', color: 'var(--color-on-dark-3)', lineHeight: '17px', marginBottom: '14px' }}>
+            <p style={{ fontSize: '12px', color: 'var(--color-ink-3)', lineHeight: '17px', marginBottom: '14px' }}>
               1 BO Coin = ₹1 cash discount. Check &quot;Redeem BO Coins&quot; in your BO Cart during checkout to apply savings.
             </p>
 
             {/* Activity History */}
             {history.length > 0 && (
-              <div style={{ marginBottom: '14px', borderTop: '1px solid var(--color-on-dark-line)', paddingTop: '10px' }}>
+              <div style={{ marginBottom: '14px', borderTop: '1px solid var(--color-line)', paddingTop: '10px' }}>
                 <div
                   style={{
                     fontSize: '11px',
                     fontWeight: 700,
-                    color: 'var(--color-on-dark-3)',
+                    color: 'var(--color-ink-3)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.04em',
                     marginBottom: '8px',
@@ -127,7 +128,7 @@ export default function CartButton() {
                 <div style={{ maxHeight: '120px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {history.slice(0, 4).map((h) => (
                     <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
-                      <span style={{ color: 'var(--color-on-dark-2)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span style={{ color: 'var(--color-ink-2)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {h.description}
                       </span>
                       <span style={{ fontWeight: 700, color: h.amount > 0 ? 'var(--color-credit)' : 'var(--color-debit)' }}>
@@ -142,18 +143,8 @@ export default function CartButton() {
             {/* Action Buttons */}
             <button
               type="button"
-              className="btn-primary"
-              style={{
-                width: '100%',
-                height: '38px',
-                fontSize: '12.5px',
-                fontWeight: 700,
-                borderRadius: '10px',
-                background: 'linear-gradient(135deg, var(--color-engine-from), var(--color-engine-to))',
-                border: '1px solid var(--color-engine-line)',
-                color: 'var(--color-engine-ink)',
-                cursor: 'pointer',
-              }}
+              className="btn-primary btn--block"
+              style={{ height: '38px', fontSize: '12.5px' }}
               onClick={() => {
                 setWalletOpen(false);
                 setWheelOpen(true);
@@ -171,7 +162,8 @@ export default function CartButton() {
           aria-label={count > 0 ? `BO Cart, ${count} ${count === 1 ? 'item' : 'items'}` : 'BO Cart'}
         >
           <span className="header-action-icon relative">
-            <span style={{ fontSize: '20px' }}>🛒</span>
+            {/* The count is the arrival trigger: add something and the trolley lands again. */}
+            <BoCartMark size={22} arriveKey={count} />
             {count > 0 && (
               <span className="header-count" aria-hidden="true">
                 {count > 99 ? '99+' : count}

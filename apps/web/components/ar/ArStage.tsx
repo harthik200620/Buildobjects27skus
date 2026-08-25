@@ -259,7 +259,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
       ctx.drawImage(composite, 0, 0);
       // placement outline
       ctx.save();
-      ctx.strokeStyle = 'rgba(92,225,230,.85)';
+      ctx.strokeStyle = 'var(--color-ar-line-strong)';
       ctx.lineWidth = Math.max(2, photo.width / 500);
       ctx.setLineDash([10, 8]);
       ctx.translate(rect.cx, rect.cy);
@@ -269,14 +269,14 @@ export default function ArStage({ product }: { product: ArProduct }) {
     } else {
       ctx.drawImage(photo, 0, 0);
       if (step === 'calibrate') {
-        ctx.fillStyle = '#5ce1e6';
+        ctx.fillStyle = '#56d3d8';
         for (const p of calibPts) {
           ctx.beginPath();
           ctx.arc(p.x * photo.width, p.y * photo.height, Math.max(5, photo.width / 160), 0, Math.PI * 2);
           ctx.fill();
         }
         if (calibPts.length === 2) {
-          ctx.strokeStyle = '#5ce1e6';
+          ctx.strokeStyle = '#56d3d8';
           ctx.lineWidth = 3;
           ctx.beginPath();
           ctx.moveTo(calibPts[0].x * photo.width, calibPts[0].y * photo.height);
@@ -287,11 +287,11 @@ export default function ArStage({ product }: { product: ArProduct }) {
       if (step === 'gate' && scene)
         for (const s of scene.surfaces.filter((x) => x.bbox && x.confidence >= 0.35)) {
           const b = s.bbox!;
-          ctx.strokeStyle = 'rgba(92,225,230,.5)';
+          ctx.strokeStyle = 'rgba(86,211,216,.5)';
           ctx.setLineDash([6, 6]);
           ctx.lineWidth = 2;
           ctx.strokeRect(b[0] * photo.width, b[1] * photo.height, b[2] * photo.width, b[3] * photo.height);
-          ctx.fillStyle = 'rgba(92,225,230,.9)';
+          ctx.fillStyle = 'var(--color-ar-line-strong)';
           ctx.font = `${Math.max(12, photo.width / 60)}px sans-serif`;
           ctx.fillText(s.type, b[0] * photo.width + 8, b[1] * photo.height + 20);
         }
@@ -587,7 +587,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
                       style={{
                         width: 150,
                         height: 150,
-                        border: '2px dashed rgba(92,225,230,.7)',
+                        border: '2px dashed var(--color-ar-line)',
                         borderRadius: 12,
                         display: 'flex',
                         alignItems: 'center',
@@ -607,13 +607,13 @@ export default function ArStage({ product }: { product: ArProduct }) {
                           position: 'absolute',
                           bottom: -28,
                           fontSize: 11,
-                          color: '#5ce1e6',
+                          color: '#56d3d8',
                           fontWeight: 600,
-                          background: 'rgba(4,20,26,.85)',
+                          background: 'var(--color-ar-panel)',
                           padding: '3px 10px',
                           borderRadius: 6,
                           whiteSpace: 'nowrap',
-                          border: '1px solid rgba(92,225,230,.3)',
+                          border: '1px solid var(--color-ar-wash)',
                         }}
                       >
                         {dims.w_mm} × {dims.h_mm} mm · Aim at {SURFACE_LABEL[surface] ?? surface}
@@ -649,7 +649,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
           )}
 
           {step === 'scene' && (
-            <div className="ar-progress" style={{ background: 'rgba(4,20,26,.75)' }}>
+            <div className="ar-progress" style={{ background: 'var(--color-ar-panel)' }}>
               <span>No vision model is configured, so tell me what this is a photo of:</span>
               <div className="flex flex-wrap gap-2 justify-center" style={{ maxWidth: 520 }}>
                 {ROOMS.map((r) => (

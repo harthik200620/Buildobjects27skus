@@ -83,16 +83,12 @@
     color: #fff;
   }
   .header-logo:hover {
-    border-color: rgba(255, 255, 255, 0.6);
+    border-color: var(--color-chrome-hair-strong);
   }
+  /* The lockup sizes itself (components/Wordmark.tsx); the chrome only has to leave room. */
+  .header-logo svg,
   .header-logo img {
-    width: 32px;
-    height: 32px;
-  }
-  .header-logo .wordmark {
-    font-size: 15px;
-    line-height: 1;
-    white-space: nowrap;
+    flex: none;
   }
   .header-menu {
     display: none;
@@ -124,7 +120,7 @@
     line-height: 14px;
   }
   .header-action:hover {
-    border-color: rgba(255, 255, 255, 0.6);
+    border-color: var(--color-chrome-hair-strong);
   }
   .header-action-icon {
     position: relative;
@@ -182,7 +178,7 @@
     text-align: left;
   }
   .deliver-to:hover {
-    border-color: rgba(255, 255, 255, 0.6);
+    border-color: var(--color-chrome-hair-strong);
   }
   .deliver-to > svg {
     flex: none;
@@ -475,7 +471,7 @@
     white-space: nowrap;
   }
   .nav-all:hover {
-    border-color: rgba(255, 255, 255, 0.6);
+    border-color: var(--color-chrome-hair-strong);
   }
   .nav-link {
     flex: none;
@@ -733,7 +729,7 @@
     text-decoration: none;
   }
   .footer-top:hover {
-    background: #134a55;
+    background: var(--color-surface-2);
   }
   .footer-cols {
     display: grid;
@@ -770,7 +766,7 @@
     justify-content: space-between;
     gap: 8px 24px;
     padding: 16px 0 calc(16px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid var(--color-chrome-hair);
     font-size: 13px;
     line-height: 18px;
   }
@@ -779,13 +775,6 @@
     align-items: center;
     gap: 8px;
     color: #fff;
-  }
-  .footer-brand img {
-    width: 22px;
-    height: 22px;
-  }
-  .footer-brand .wordmark {
-    font-size: 13px;
   }
   @media (max-width: 639.98px) {
     .footer-cols {
@@ -828,9 +817,10 @@
       min-width: 52px;
       padding: 0 6px;
     }
-    /* Row 1 is ≡ · mark · Estimate · Account; the wordmark only fits on wider phones. */
+    /* Row 1 is ≡ · mark · Estimate · Account; the word only fits on wider phones, so the
+       narrowest layout keeps the mark and drops the drawn word beside it. */
     @media (max-width: 479.98px) {
-      .header-logo .wordmark {
+      .header-logo svg {
         display: none;
       }
     }
@@ -898,6 +888,146 @@
     }
   }
 
+  /* ── BO cart mark ────────────────────────────────────────────────────────────
+     The mark on wheels, and its arrival.
+
+     It does not fade in, it lands: the rig drops from above the header, the
+     chassis compresses on impact, the wheels spin up and settle, and the whole
+     thing rocks once as the weight transfers. Every part is one keyframe on one
+     element — no animation library and no JS timeline — and the whole sequence
+     replays when something joins the cart, because adding to your order should
+     have a physical consequence in the chrome.
+
+     Under prefers-reduced-motion every animation here is off, not shortened. */
+  .bocart {
+    display: inline-block;
+    position: relative;
+    flex: none;
+    line-height: 0;
+  }
+  .bocart svg {
+    display: block;
+    overflow: visible;
+  }
+
+  /* the whole rig: drop in, land, rock, settle */
+  .bocart-rig {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: bocart-drop 900ms cubic-bezier(0.3, 1.5, 0.4, 1) both;
+  }
+  @keyframes bocart-drop {
+    0% {
+      opacity: 0;
+      transform: translateY(-160%) rotate(-14deg);
+    }
+    46% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg) scaleY(0.86) scaleX(1.08);
+    }
+    62% {
+      transform: translateY(0) rotate(3deg) scaleY(1.04) scaleX(0.97);
+    }
+    78% {
+      transform: translateY(0) rotate(-1.5deg) scale(1);
+    }
+    100% {
+      transform: translateY(0) rotate(0) scale(1);
+    }
+  }
+
+  /* the basket rocks a beat behind the chassis, the way a load does */
+  .bocart-basket {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: bocart-load 900ms cubic-bezier(0.3, 1.4, 0.4, 1) 60ms both;
+  }
+  @keyframes bocart-load {
+    0% {
+      transform: translateY(-40%) rotate(-8deg);
+    }
+    50% {
+      transform: translateY(3%) rotate(4deg);
+    }
+    72% {
+      transform: translateY(0) rotate(-2deg);
+    }
+    100% {
+      transform: translateY(0) rotate(0);
+    }
+  }
+
+  /* wheels spin up on landing and stop; the second lags the first */
+  .bocart-wheel {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: bocart-roll 820ms cubic-bezier(0.1, 0.8, 0.2, 1) 380ms both;
+  }
+  .bocart-wheel--b {
+    animation-delay: 430ms;
+  }
+  @keyframes bocart-roll {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(300deg);
+    }
+  }
+
+  /* the figure walks in from the left just behind the trolley */
+  .bocart-driver {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: bocart-walk-in 760ms cubic-bezier(0.2, 0.9, 0.25, 1) 120ms both;
+  }
+  @keyframes bocart-walk-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-40%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  .bocart-leg {
+    transform-box: fill-box;
+    transform-origin: 100% 0;
+    animation: bocart-stride 460ms ease-in-out 200ms 3 alternate both;
+  }
+  .bocart-leg--b {
+    animation-delay: 430ms;
+  }
+  @keyframes bocart-stride {
+    from {
+      transform: rotate(-16deg);
+    }
+    to {
+      transform: rotate(16deg);
+    }
+  }
+
+  /* a hovered cart nudges forward, because a trolley is a thing you push */
+  .header-action--cart:hover .bocart-rig,
+  .header-action--cart:focus-visible .bocart-rig {
+    transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.25, 1);
+    transform: translateX(2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bocart-rig,
+    .bocart-basket,
+    .bocart-wheel,
+    .bocart-driver,
+    .bocart-leg {
+      animation: none;
+    }
+    .header-action--cart:hover .bocart-rig {
+      transform: none;
+    }
+  }
+
   /* ── icon button (40 px target around a 20 px glyph) ────────────────────── */
   .icon-btn {
     display: inline-grid;
@@ -959,10 +1089,13 @@
     border-color: var(--color-teal-700);
     box-shadow: 0 0 0 1px var(--color-teal-700);
   }
+  /* Every product photograph in the store sits on the silver plate (theme.css .plate) — a card,
+     a search row, the PDP gallery and the cart line all mount them the same way. */
   .prod-media {
     position: relative;
     aspect-ratio: 1 / 1;
-    background: var(--color-surface);
+    background: var(--color-plate);
+    background-image: linear-gradient(160deg, var(--color-plate-2) 0%, var(--color-plate) 62%);
     border-bottom: 1px solid var(--color-line-2);
     overflow: hidden;
   }
@@ -1505,8 +1638,8 @@
       display: none !important;
     }
     body {
-      background: #fff !important;
-      color: #000 !important;
+      background: var(--color-paper) !important;
+      color: var(--color-paper-ink) !important;
     }
     .page {
       min-height: 0;
@@ -1527,7 +1660,7 @@
     align-items: center;
     justify-content: center;
     padding: 16px;
-    background: rgba(15, 23, 42, 0.75);
+    background: var(--scrim-ink);
     backdrop-filter: blur(16px);
   }
   .modal-panel {
@@ -1537,6 +1670,6 @@
     max-height: 94dvh;
     overflow-y: auto;
     border-radius: 32px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-3);
   }
 }

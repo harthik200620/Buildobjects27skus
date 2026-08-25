@@ -15,7 +15,7 @@ export default function NotFound() {
             All products
           </Link>
           <Link href="/estimate" className="btn btn-secondary">
-            Cost Calculator
+            BO Estimator
           </Link>
         </div>
       </div>

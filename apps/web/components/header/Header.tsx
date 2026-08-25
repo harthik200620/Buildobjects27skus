@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import BoCoinWheel from '@/components/BoCoinWheel';
 import SearchBar from '@/components/SearchBar';
+import Wordmark from '@/components/Wordmark';
 import AccountMenu from './AccountMenu';
 import CartButton from './CartButton';
 import CategoryMenu from './CategoryMenu';
@@ -10,7 +11,7 @@ import EstimateButton from './EstimateButton';
 import type { NavCategory } from './types';
 
 /**
- * The sticky header: BO Logo · Deliver to · Search · BO Cart · BO Calculator · BO Account.
+ * The sticky header: BO Logo · Deliver to · Search · BO Cart · BO Estimator · BO Account.
  */
 export default function Header({
   pincode,
@@ -30,9 +31,8 @@ export default function Header({
       <header className="header" id="top">
         <div className="header-in shell">
           <CategoryMenu categories={categories} variant="icon" />
-          <Link href="/" className="header-logo" aria-label="Build Objects Home">
-            <img src="/logo-mark-128.png" width={32} height={32} alt="" />
-            <span className="wordmark">Build Objects</span>
+          <Link href="/" className="header-logo" aria-label="Build Objects home">
+            <Wordmark size={30} />
           </Link>
           <DeliverTo pincode={pincode} regionName={regionName} deliveryDays={deliveryDays} variant="header" />
           <Suspense fallback={<div className="search" aria-hidden="true" />}>

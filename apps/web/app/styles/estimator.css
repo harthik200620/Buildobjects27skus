@@ -1,0 +1,388 @@
+/*
+ * BO Estimator.
+ *
+ * The animation here is the product, not a flourish on it. A house rises in the order a real one
+ * does — ground, plinth, storeys from the bottom, openings, roof — and each part is delayed by
+ * its own `--i`, so one keyframe staggers a hundred and forty elements without a timeline in JS.
+ * Re-keying the <svg> on the building's shape re-runs the whole build, which is why changing a
+ * floor count visibly *constructs* the extra storey instead of swapping the picture.
+ *
+ * Under prefers-reduced-motion every part snaps to its end state. Not "faster" — off.
+ */
+@layer components {
+  /* ── the stage ──────────────────────────────────────────────────────────── */
+  .lh {
+    position: relative;
+    margin: 0;
+    background: var(--color-canvas-2);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .lh-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .lh-cap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--color-line-2);
+    background: var(--color-surface);
+  }
+  .lh-cap-main {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .lh-cap-sub {
+    font-size: 13px;
+    color: var(--color-ink-2);
+  }
+
+  /* ── the build ──────────────────────────────────────────────────────────── */
+  /* Every animated part reads --i (its place in the sequence) and nothing else. */
+  .lh-plot,
+  .lh-part,
+  .lh-storey,
+  .lh-openings {
+    animation-duration: 520ms;
+    animation-timing-function: cubic-bezier(0.16, 0.84, 0.28, 1);
+    animation-fill-mode: both;
+    animation-delay: calc(var(--i, 0) * 130ms);
+  }
+
+  /* The ground settles first: it spreads, it does not drop. */
+  .lh-plot {
+    animation-name: lh-settle;
+    transform-origin: 50% 300px;
+  }
+  @keyframes lh-settle {
+    from {
+      opacity: 0;
+      transform: scaleX(0.72);
+    }
+  }
+
+  /* Plinth, roof, parapet, solar, porch: they arrive from above and land. */
+  .lh-part {
+    animation-name: lh-land;
+  }
+  @keyframes lh-land {
+    from {
+      opacity: 0;
+      transform: translateY(-26px);
+    }
+  }
+
+  /* A storey grows out of the slab below it, so the house builds upward. */
+  .lh-storey {
+    animation-name: lh-rise;
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+  @keyframes lh-rise {
+    from {
+      opacity: 0;
+      transform: scaleY(0.04);
+    }
+  }
+
+  /* The openings are cut after the wall is up — a half-beat behind their own storey. */
+  .lh-openings {
+    animation-name: lh-cut;
+    animation-delay: calc(var(--i, 0) * 130ms + 240ms);
+  }
+  @keyframes lh-cut {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* The solar array catches the light once, on arrival, then stops. */
+  .lh-solar {
+    animation: lh-glint 2.4s ease-in-out 1.4s 2;
+  }
+  @keyframes lh-glint {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.62;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lh-plot,
+    .lh-part,
+    .lh-storey,
+    .lh-openings,
+    .lh-solar {
+      animation: none;
+    }
+  }
+
+  /* ── the house render ───────────────────────────────────────────────────────
+     Two stacked images and a crossfade. The incoming render is decoded first and
+     revealed only when it is ready, so changing a floor dissolves instead of
+     flickering — see HouseRender.tsx for why a single <img> with a swapped src
+     is not good enough here. */
+  .hr {
+    margin: 0;
+    background: var(--color-canvas-2);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .hr-frame {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--color-canvas);
+    isolation: isolate;
+  }
+  .hr-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    animation: hr-fade 320ms ease both;
+  }
+  .hr-img--in {
+    opacity: 0;
+    animation: none;
+  }
+  @keyframes hr-fade {
+    from {
+      opacity: 0;
+      transform: scale(1.012);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hr-img {
+      animation: none;
+    }
+  }
+  /* The caption sits on the photograph, so it carries its own ground rather than
+     relying on whatever happens to be behind it in that render. */
+  .hr-cap {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 6px;
+    max-width: calc(100% - 24px);
+    padding: 7px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-ar-panel);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--color-ar-hair);
+  }
+  .hr-cap-main {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-header-ink);
+  }
+  .hr-cap-sub {
+    font-size: 13px;
+    color: var(--color-header-ink-2);
+  }
+  .hr-cap-dot {
+    color: var(--color-header-ink-2);
+  }
+  .hr-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 14px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--color-line-2);
+    background: var(--color-surface);
+  }
+  .hr-foot-k {
+    font-size: 13px;
+    color: var(--color-ink);
+  }
+  .hr-foot-x {
+    font-size: 13px;
+    color: var(--color-ink-2);
+  }
+
+  /* ── the turntable ──────────────────────────────────────────────────────────
+     The 3D view replaces the still inside the same frame rather than opening a
+     modal: the point is that it is the same house, so it should not arrive as a
+     different screen. Loaded only when the button is pressed — the meshes are
+     ~4 MB each and most people will never rotate one. */
+  .hr-3d {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 34px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    background: var(--color-ar-panel);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--color-ar-hair);
+    color: var(--color-header-ink);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .hr-3d:hover {
+    background: var(--color-teal-50);
+    border-color: var(--color-brand);
+    color: var(--color-brand);
+  }
+  .ht {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: var(--color-canvas-2);
+  }
+  .ht-stage {
+    position: absolute;
+    inset: 0;
+  }
+  .ht-veil {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    text-align: center;
+    background: var(--color-canvas-2);
+    color: var(--color-ink-2);
+    font-size: 13px;
+  }
+  .ht-hud {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  /* ── the three questions ────────────────────────────────────────────────── */
+  .est-ask {
+    display: grid;
+    gap: var(--s-4);
+  }
+  .est-q {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .est-q[data-open="true"] {
+    border-color: var(--color-line-strong);
+    background: var(--color-surface-2);
+  }
+  .est-q-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .est-q-n {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--radius-pill);
+    background: var(--color-teal-50);
+    color: var(--color-brand);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--font-figure);
+  }
+  .est-q-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .est-q-hint {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+    margin-top: 2px;
+  }
+
+  /* ── the running total ──────────────────────────────────────────────────── */
+  .est-total {
+    position: sticky;
+    top: calc(var(--header-h) + 12px);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+  }
+  .est-total-fig {
+    font-family: var(--font-figure);
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 40px;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums lining-nums;
+    color: var(--color-ink);
+  }
+  /* The figure ticks rather than jumps, so a change reads as a consequence of the last edit. */
+  .est-total-fig[data-moved="true"] {
+    animation: est-tick 420ms ease-out;
+  }
+  @keyframes est-tick {
+    from {
+      color: var(--color-brand);
+      transform: translateY(-2px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .est-total-fig[data-moved="true"] {
+      animation: none;
+    }
+  }
+  .est-total-sub {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+    margin-top: 2px;
+  }
+
+  .est-split {
+    display: grid;
+    gap: var(--s-5);
+  }
+  @media (min-width: 1024px) {
+    .est-split {
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 420px);
+      align-items: start;
+    }
+  }
+}

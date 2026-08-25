@@ -187,7 +187,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
         position: 'relative',
         width: '100%',
         minHeight: '88vh',
-        background: '#F8FAFC',
+        background: 'var(--color-ink)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -214,7 +214,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
             style={{
               fontSize: '18px',
               fontWeight: 900,
-              color: '#0F172A',
+              color: 'var(--color-canvas)',
               letterSpacing: '-0.02em',
               display: 'flex',
               alignItems: 'center',
@@ -226,9 +226,9 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               style={{
                 fontSize: '11px',
                 fontWeight: 700,
-                color: '#087F80',
-                background: 'rgba(8, 127, 128, 0.1)',
-                border: '1px solid rgba(8, 127, 128, 0.25)',
+                color: 'var(--color-teal-600)',
+                background: 'rgb(30 74 85 / 10%)',
+                border: '1px solid rgb(30 74 85 / 25%)',
                 padding: '2px 8px',
                 borderRadius: '999px',
                 letterSpacing: '0.06em',
@@ -238,7 +238,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               The House Is The Wheel
             </span>
           </div>
-          <div style={{ fontSize: '12px', color: '#64748B', marginTop: '2px' }}>Watch the BO Engine travel room to room around the house.</div>
+          <div style={{ fontSize: '12px', color: 'var(--color-ink-3)', marginTop: '2px' }}>Watch the BO Engine travel room to room around the house.</div>
         </div>
 
         {/* Live Balance Pill & Audio Controls */}
@@ -249,8 +249,8 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              background: '#FFFFFF',
-              border: '1px solid #E2E8F0',
+              background: 'var(--color-ink)',
+              border: '1px solid var(--color-ink-2)',
               borderRadius: '999px',
               padding: '6px 16px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
@@ -263,7 +263,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               style={{
                 fontSize: '16px',
                 fontWeight: 900,
-                color: '#0F172A',
+                color: 'var(--color-canvas)',
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
@@ -273,7 +273,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               style={{
                 fontSize: '11px',
                 fontWeight: 800,
-                color: '#087F80',
+                color: 'var(--color-teal-600)',
                 letterSpacing: '0.08em',
               }}
             >
@@ -286,13 +286,13 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
             type="button"
             onClick={toggleMute}
             style={{
-              background: '#FFFFFF',
-              border: '1px solid #E2E8F0',
+              background: 'var(--color-ink)',
+              border: '1px solid var(--color-ink-2)',
               borderRadius: '50%',
               width: '36px',
               height: '36px',
               fontSize: '13px',
-              color: '#475569',
+              color: 'var(--color-line-strong)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -310,13 +310,13 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               type="button"
               onClick={onClose}
               style={{
-                background: '#FFFFFF',
-                border: '1px solid #E2E8F0',
+                background: 'var(--color-ink)',
+                border: '1px solid var(--color-ink-2)',
                 borderRadius: '50%',
                 width: '36px',
                 height: '36px',
                 fontSize: '14px',
-                color: '#475569',
+                color: 'var(--color-line-strong)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -363,14 +363,16 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
             width: '100%',
             height: '52px',
             borderRadius: '16px',
-            background: isBusy ? 'linear-gradient(135deg, #075E60, #063F42)' : 'linear-gradient(135deg, #087F80, #063F42)',
+            background: isBusy
+              ? 'linear-gradient(135deg, var(--color-line), var(--color-canvas-2))'
+              : 'linear-gradient(135deg, var(--color-teal-600), var(--color-canvas-2))',
             border: 'none',
-            color: '#FFFFFF',
+            color: 'var(--color-ink)',
             fontSize: '15px',
             fontWeight: 800,
             letterSpacing: '0.04em',
             cursor: isBusy ? 'default' : 'pointer',
-            boxShadow: isBusy ? 'none' : '0 10px 25px rgba(8, 127, 128, 0.4), 0 2px 6px rgba(0,0,0,0.1)',
+            boxShadow: isBusy ? 'none' : '0 10px 25px rgb(30 74 85 / 40%), 0 2px 6px rgba(0,0,0,0.1)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -382,7 +384,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
           <span>{buttonText}</span>
         </button>
 
-        <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>1 BO Coin = ₹1 cash discount in your BO Cart at checkout</div>
+        <div style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 600 }}>1 BO Coin = ₹1 cash discount in your BO Cart at checkout</div>
       </div>
 
       {/* ── Discreet Developer QA Panel ─────────────────────────── */}
@@ -409,8 +411,8 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               position: 'absolute',
               bottom: '30px',
               right: '0',
-              background: '#FFFFFF',
-              border: '1px solid #CBD5E1',
+              background: 'var(--color-ink)',
+              border: '1px solid var(--color-ink-2)',
               borderRadius: '12px',
               padding: '8px 12px',
               display: 'flex',
@@ -420,7 +422,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               whiteSpace: 'nowrap',
             }}
           >
-            <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 800 }}>FORCE ROOM:</span>
+            <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 800 }}>FORCE ROOM:</span>
             {ROOM_WAYPOINTS.map((r) => (
               <button
                 key={r.value}
@@ -428,10 +430,10 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
                 onClick={() => startTokenJourney(r.value)}
                 disabled={isBusy}
                 style={{
-                  background: '#087F80',
+                  background: 'var(--color-teal-600)',
                   border: 'none',
                   borderRadius: '6px',
-                  color: '#FFFFFF',
+                  color: 'var(--color-ink)',
                   fontSize: '11px',
                   fontWeight: 800,
                   padding: '4px 8px',
@@ -445,10 +447,10 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
               type="button"
               onClick={handleReset}
               style={{
-                background: '#64748B',
+                background: 'var(--color-ink-3)',
                 border: 'none',
                 borderRadius: '6px',
-                color: '#FFFFFF',
+                color: 'var(--color-ink)',
                 fontSize: '11px',
                 fontWeight: 700,
                 padding: '4px 8px',

@@ -22,12 +22,12 @@ export default function EstimateButton() {
     <Link
       href="/estimate"
       className="header-action header-action--estimate"
-      aria-label={count > 0 ? `BO Calculator, ${count} ${count === 1 ? 'item' : 'items'}` : 'BO Calculator'}
+      aria-label={count > 0 ? `BO Estimator, ${count} ${count === 1 ? 'item' : 'items'}` : 'BO Estimator'}
     >
       <span className="header-action-icon">
         <IconEstimate size={22} />
       </span>
-      <span className="header-action-label">BO Calculator</span>
+      <span className="header-action-label">BO Estimator</span>
     </Link>
   );
 }

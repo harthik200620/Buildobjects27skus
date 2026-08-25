@@ -132,15 +132,8 @@ export default function AccountMenu({ phone }: { phone: string }) {
               </div>
               <button
                 type="button"
-                className="chip"
-                style={{
-                  fontSize: '11.5px',
-                  background: 'var(--color-engine-from)',
-                  color: 'var(--color-engine-ink)',
-                  fontWeight: 700,
-                  padding: '5px 10px',
-                  border: '1px solid var(--color-engine-line)',
-                }}
+                className="btn-primary btn--sm"
+                style={{ fontSize: '11.5px', padding: '0 10px' }}
                 onClick={() => {
                   setOpen(false);
                   setShowWheel(true);
@@ -155,7 +148,7 @@ export default function AccountMenu({ phone }: { phone: string }) {
               🛒 BO Cart & Discounts
             </Link>
             <Link href="/estimate" className="menu-row" role="menuitem" onClick={() => setOpen(false)}>
-              <IconEstimate size={18} /> BO Cost Calculator
+              <IconEstimate size={18} /> BO Estimator
             </Link>
             <button type="button" className="menu-row" role="menuitem" onClick={logout} style={{ marginTop: '4px', color: 'var(--ink-2)' }}>
               <IconLogout size={18} /> Log out

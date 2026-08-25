@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-08-25T11:20:53.726Z",
+  "spend_usd": 0.8,
+  "models": {
+    "1-basic": {
+      "id": "1-basic",
+      "floors": 1,
+      "finish": "basic",
+      "file": "house/1-basic.glb",
+      "jobId": "01a038a4-2a5b-73bc-a64d-11dc94f5bbae",
+      "costUsd": 0.4,
+      "triangles": 58798,
+      "bytes": 4122328,
+      "generatedAt": "2026-08-25T11:20:53.722Z"
+    }
+  }
+}

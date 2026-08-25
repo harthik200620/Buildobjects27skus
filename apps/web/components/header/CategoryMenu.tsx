@@ -148,7 +148,7 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
                 All products
               </Link>
               <Link href="/estimate" className="link" onClick={close}>
-                Cost Calculator
+                BO Estimator
               </Link>
               <Link href={AR_DEMO_HREF} className="link" onClick={close}>
                 View in your room

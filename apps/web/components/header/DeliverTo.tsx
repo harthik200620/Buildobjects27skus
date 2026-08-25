@@ -106,7 +106,7 @@ export default function DeliverTo({
               {note.text}
             </p>
           ) : (
-            <p className="field-hint">Andhra Pradesh and Telangana pincodes (50xxxx – 53xxxx).</p>
+            <p className="field-hint">We deliver to Andhra Pradesh and Telangana today — pincodes 50xxxx to 53xxxx.</p>
           )}
         </form>
       </div>

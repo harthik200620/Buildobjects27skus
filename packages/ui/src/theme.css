@@ -1,112 +1,148 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   Build Objects theme
+   Build Objects theme — deep teal and silver
    ─────────────────────────────────────────────────────────────────────────────
-   Light, dense, one brand accent. White canvas, near-black ink, 1 px
-   #d5d9d9 borders, 8 px radii, 14 px neutral sans. Teal is spent three ways and
-   never a fourth: the logo mark / search button / count pill use the brand
-   teal #56d3d8 as a FILL (1.79:1 on white — never text), links, primary
-   buttons, focus rings and active states use teal-700 #0f7c84 (4.96:1 on
-   white), and selected surfaces use teal-50.
+   A dark store. Deep teal canvas, silver ink, one brand teal that now carries
+   its own weight. The light Amazon-style theme this replaces spent teal three
+   ways and never a fourth, because #56d3d8 measures 1.79:1 on white and could
+   only ever be a fill. On #06181d it measures 10.12:1 — so the brand colour is
+   finally allowed to be text, a link, a border and a focus ring, and the store
+   stops needing a second, duller teal to say the same things.
 
    Rules that are engineering, not taste:
    1. Every text token clears WCAG AA on every surface it is allowed on —
-      measured by apps/web/scripts/contrast.ts, which parses this file.
-      ink-3 is only ever set on white / canvas-2 (4.8 / 4.5); it must never
-      meet surface-3 (4.2) and the script fails the build if a rule does.
-   2. No glass, blur, gradients or inset highlights anywhere. Elevation is a
-      border first and a shadow second. (The skeleton shimmer and the welcome
-      page's radial field are the two named exceptions.)
-   3. Everything below sits in Tailwind's `components` layer so that a utility
-      class on the same element (`mt-3`, `h-11`, `hidden`) still wins.
+      measured by apps/web/scripts/contrast.ts, which parses this file. Unlike
+      the light theme, there is no forbidden pair: ink-3 on surface-3 was 4.2
+      there and is 4.73 here, so every ink is legal on every surface.
+   2. Elevation is luminance. On white, depth came from a 1 px border and a
+      shadow, because a white card on a white page has nothing else. Here each
+      step up the surface ladder is lighter than the one below it, and that is
+      the primary signal; the border is the secondary one, and a shadow is only
+      spent on something that genuinely floats.
+   3. Product photography never sits directly on the canvas. Brand photographs
+      are shot on white, and a white rectangle on deep teal is a hole in the
+      page. Every photo sits on --color-plate, a silver ground that reads as a
+      deliberate mount rather than an accident.
+   4. Everything below sits in Tailwind components layer so that a utility
+      class on the same element (mt-3, h-11, hidden) still wins.
 
-   `@theme static` (never `inline`): the tokens must exist as real custom
-   properties — components read `var(--color-*)` from inline styles and SVG.
+   @theme static (never inline): the tokens must exist as real custom
+   properties — components read var(--color-*) from inline styles and SVG.
    ───────────────────────────────────────────────────────────────────────────── */
 
 @theme static {
   /* ── type faces ────────────────────────────────────────────────────────────
      Arimo (Build Objects Sans 3) for every piece of UI text; Encode Sans
-     (Sans 5) for figures — it has a true ₹ and static 300–700 cuts; Audiowide
-     (Display 2) only ever in .wordmark. Fallbacks match each face's genre. */
-  --font-display: var(--font-display-face), "Audiowide", system-ui, sans-serif;
+     (Sans 5) for figures — it has a true ₹ and static 300–700 cuts. The display
+     face is gone: the wordmark is drawn as SVG (components/Wordmark.tsx), so a
+     third webfont existed only to set two words. */
   --font-ui: var(--font-ui-face), Arial, "Helvetica Neue", Helvetica, "Segoe UI", system-ui, sans-serif;
   --font-figure: var(--font-figure-face), "Encode Sans", "Segoe UI Variable Text", system-ui, sans-serif;
 
-  /* ── ink (contrast on white) ─────────────────────────────────────────────── */
-  --color-ink: #0f1111; /* 18.9 */
-  --color-ink-2: #565959; /* 7.1  */
-  --color-ink-3: #6f7373; /* 4.8 — only on white / canvas-2 */
+  /* ── ink (contrast on canvas) ───────────────────────────────────────────── */
+  --color-ink: #eaf2f3; /* 16.0 */
+  --color-ink-2: #b0c5c9; /* 10.1 */
+  --color-ink-3: #9bb1b5; /* 8.1 — legal on every surface, including surface-3 */
 
-  /* ── canvases and surfaces ──────────────────────────────────────────────── */
-  --color-canvas: #ffffff;
-  --color-canvas-2: #f7f8f8; /* home, calculator, table headers */
-  --color-surface: #ffffff;
-  --color-surface-2: #f7f8f8;
-  --color-surface-3: #eef1f1; /* disabled, donut track */
+  /* ── canvases and surfaces: each step lighter than the one below ────────── */
+  --color-canvas: #06181d;
+  --color-canvas-2: #0a2229; /* home, estimator, table headers */
+  --color-surface: #0d2a32; /* cards */
+  --color-surface-2: #113640; /* raised, selected rows, wallet */
+  --color-surface-3: #17444f; /* disabled, donut track */
+
+  /* ── the silver plate: the only light ground in the store ───────────────── */
+  --color-plate: #e9eeef; /* product photography sits here */
+  --color-plate-2: #f5f8f8; /* the brighter half of the plate gradient */
+  --color-on-plate: #0f1111; /* 16.2 — anything written over a plate */
+  --color-on-plate-2: #565959; /* 6.0 */
 
   /* ── lines ──────────────────────────────────────────────────────────────── */
-  --color-line: #d5d9d9;
-  --color-line-2: #e7e9e9;
-  --color-line-strong: #888c8c; /* inputs, 3.4 non-text */
+  --color-line: #1e4a55;
+  --color-line-2: #163a43;
+  --color-line-strong: #54939d; /* inputs, 5.2 on canvas / 4.3 on a card */
 
-  /* ── brand (fill only) ──────────────────────────────────────────────────── */
+  /* ── brand ──────────────────────────────────────────────────────────────── */
   --color-brand: #56d3d8;
-  --color-on-brand: #062028; /* 9.4 on brand */
+  --color-on-brand: #04171b; /* 10.2 on brand */
 
-  /* ── teal ladder ────────────────────────────────────────────────────────── */
-  --color-teal-50: #e6f5f6; /* selected background */
-  --color-teal-100: #d9f1f2; /* focus halo */
-  --color-teal-600: #14919a; /* decoration */
-  --color-teal-700: #0f7c84; /* links, primary buttons (white text 4.96), active, focus ring */
-  --color-teal-800: #0b6b73; /* hover */
-  --color-teal-900: #085a61; /* pressed */
+  /* ── teal ladder ────────────────────────────────────────────────────────────
+     Inverted from the light theme: on a dark ground, stronger means lighter.
+     700/800/900 stay the primary-button ramp so every existing call site reads
+     correctly; they now go up in luminance on hover and press instead of down. */
+  --color-teal-50: #0f333b; /* selected background */
+  --color-teal-100: #164852; /* focus halo, highlight mark */
+  --color-teal-300: #7ee3e7; /* links (12.1 on canvas) */
+  --color-teal-600: #3ab8be; /* decoration */
+  --color-teal-700: #56d3d8; /* primary button fill (dark ink on it) */
+  --color-teal-800: #74dee2; /* hover */
+  --color-teal-900: #93e8eb; /* pressed */
 
-  /* ── header chrome ──────────────────────────────────────────────────────── */
-  --color-header: #0b2a30;
-  --color-header-2: #0f3a42;
+  /* ── header chrome: the deepest teal in the store ───────────────────────── */
+  --color-header: #04141a;
+  --color-header-2: #082228;
   --color-header-ink: #ffffff;
-  --color-header-ink-2: #b8d4d8; /* 9.7 on header */
+  --color-header-ink-2: #a8c4c8; /* 10.2 on header */
 
   /* ── status ─────────────────────────────────────────────────────────────── */
-  --color-success: #007600;
-  --color-success-bg: #eaf6ea;
-  --color-warn: #8a4b00; /* Estimated price, low stock, unconfirmed drawing */
-  --color-warn-bg: #fff4e5;
-  --color-danger: #b12704;
-  --color-danger-bg: #fdecea;
+  --color-success: #4ade80;
+  --color-success-bg: #0c2b1d;
+  --color-warn: #fbbf24; /* Estimated price, low stock, unconfirmed drawing */
+  --color-warn-bg: #2f2107;
+  --color-danger: #fb8b8b;
+  --color-danger-bg: #331419;
 
   /* ── BO Coins ───────────────────────────────────────────────────────────────
-     The rewards surfaces (header balance, wallet popover, cart redemption) are dark panels on
-     a light store, so they need their own scale rather than the page's. The amber below was
-     previously written nine different ways across three files — #f59e0b, #fbbf24 and seven
-     spellings of rgba(245, 158, 11, …) differing only in spacing and alpha. One definition. */
-  --color-coin: #f59e0b;
-  --color-coin-ink: #fbbf24; /* text and figures on a dark panel */
-  --color-coin-line: rgb(245 158 11 / 35%);
-  --color-coin-wash: rgb(245 158 11 / 14%);
-  --color-coin-wash-strong: rgb(245 158 11 / 25%);
-  --color-coin-surface: #090d16; /* the wallet panel itself */
-  --color-coin-shadow: rgb(0 0 0 / 80%);
+     Amber survives the repaint, and only here. A BO Coin is a currency, and a
+     teal coin reads as a token rather than as money — so the glyph and the
+     figure stay gold while every surface they sat on became a theme surface.
+     The wallet used to carry its own near-black panel, its own white ladder and
+     its own shadow because it was a dark island on a light store; the store is
+     dark now, so those nine tokens were nine ways of saying surface-2. */
+  --color-coin: #f5b40a; /* the coin itself, borders, rules */
+  --color-coin-ink: #fbbf24; /* the figure — 7.7 on surface-2 */
+  --color-coin-line: rgb(245 180 10 / 32%);
+  --color-coin-wash: rgb(245 180 10 / 12%);
+  --color-coin-wash-strong: rgb(245 180 10 / 22%);
+  --color-credit: #4ade80; /* coins earned */
+  --color-debit: #fb8b8b;
 
-  /* Text on those dark panels, and the two states a transaction can have. */
-  --color-on-dark: #ffffff;
-  --color-on-dark-2: rgb(255 255 255 / 80%);
-  --color-on-dark-3: rgb(255 255 255 / 55%);
-  --color-on-dark-line: rgb(255 255 255 / 8%);
-  --color-credit: #10b981; /* coins earned — the light-theme --color-success is unreadable here */
-  --color-debit: #ef4444;
+  /* ── chrome hairlines ───────────────────────────────────────────────────────
+     The header, nav and footer sit on the two darkest teals, below every surface
+     on the ladder. A hover border there cannot come from --color-line (it would
+     be darker than its own ground), so chrome gets two white hairlines and they
+     are the only two in the store. */
+  --color-chrome-hair: rgb(255 255 255 / 12%);
+  --color-chrome-hair-strong: rgb(255 255 255 / 58%);
 
-  /* The "Activate BO Engine" call to action: a deeper teal than the store's, because it sits on
-     the dark wallet panel rather than on white. */
-  --color-engine-from: #087f80;
-  --color-engine-to: #063f42;
-  --color-engine-line: #45d7cf;
-  /* White, not a near-white: #e5eaeb measured 3.97:1 on --color-engine-from, under AA. */
-  --color-engine-ink: #ffffff;
+  /* ── paper ──────────────────────────────────────────────────────────────────
+     A printed estimate is ink on paper, not silver on teal. The print stylesheet
+     is the one place the store is deliberately light, so it gets real tokens
+     rather than a bare #fff the literal gate would have to make an exception for. */
+  --color-paper: #ffffff;
+  --color-paper-ink: #000000;
+
+  /* ── AR heads-up display ────────────────────────────────────────────────────
+     These sit over a live camera image, not over a theme surface, so they are
+     the one group that has to stay legible against anything — hence translucent
+     near-black panels and a teal that carries its own alpha. What they are NOT
+     is a second palette: the accent below is --color-brand, where ar.css
+     previously used #5ce1e6, a teal four values away from the brand's and
+     answerable to nothing. */
+  --color-ar-void: #000000; /* letterbox behind the camera feed */
+  --color-ar-panel: rgb(4 20 26 / 78%);
+  --color-ar-hair: rgb(255 255 255 / 14%);
+  --color-ar-wash: rgb(86 211 216 / 8%);
+  --color-ar-line: rgb(86 211 216 / 50%);
+  --color-ar-line-strong: rgb(86 211 216 / 95%);
+  --color-ar-warn: rgb(251 191 36 / 92%);
+  --color-ar-danger: rgb(251 139 139 / 92%);
+  --color-ar-ok: rgb(74 222 128 / 88%);
+  --color-ar-shadow: rgb(0 0 0 / 40%);
 
   /* ── semantic aliases ───────────────────────────────────────────────────── */
-  --link: var(--color-teal-700);
-  --focus: var(--color-teal-700);
+  --link: var(--color-teal-300);
+  --focus: var(--color-brand);
+  --scrim-ink: rgb(2 10 13 / 72%);
 
   /* ── shape ──────────────────────────────────────────────────────────────── */
   --radius-sm: 4px;
@@ -114,9 +150,13 @@
   --radius-lg: 12px;
   --radius-pill: 999px;
 
-  --shadow-1: 0 1px 2px rgba(15, 17, 17, 0.08), 0 2px 8px rgba(15, 17, 17, 0.06);
-  --shadow-2: 0 2px 6px rgba(15, 17, 17, 0.1), 0 8px 24px rgba(15, 17, 17, 0.1);
-  --shadow-3: 0 6px 16px rgba(15, 17, 17, 0.14), 0 16px 48px rgba(15, 17, 17, 0.16);
+  /* Shadows on a dark ground are near-black and deeper than their light
+     counterparts — an 8% black shadow is invisible on #06181d. */
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%), 0 2px 8px rgb(0 0 0 / 28%);
+  --shadow-2: 0 2px 6px rgb(0 0 0 / 46%), 0 8px 24px rgb(0 0 0 / 38%);
+  --shadow-3: 0 6px 16px rgb(0 0 0 / 52%), 0 16px 48px rgb(0 0 0 / 46%);
+  /* The one glow in the system: focus, and the live-AR reticle. */
+  --glow-brand: 0 0 0 3px rgb(86 211 216 / 22%);
 
   /* ── spacing ────────────────────────────────────────────────────────────── */
   --s-1: 4px;
@@ -150,7 +190,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   html {
@@ -189,6 +229,7 @@
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
+    box-shadow: var(--glow-brand);
   }
 
   ::selection {
@@ -263,13 +304,6 @@
     letter-spacing: -0.02em;
     color: var(--color-ink);
   }
-  /* Audiowide lives here and nowhere else. */
-  .wordmark {
-    font-family: var(--font-display);
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-  }
 
   .link {
     color: var(--link);
@@ -281,7 +315,7 @@
   }
 
   mark.hl {
-    background: var(--color-teal-50);
+    background: var(--color-teal-100);
     color: inherit;
     font-weight: 600;
     border-radius: 2px;
@@ -333,7 +367,7 @@
   .btn-primary {
     background: var(--color-teal-700);
     border-color: var(--color-teal-700);
-    color: #fff;
+    color: var(--color-on-brand);
   }
   .btn-primary:hover {
     background: var(--color-teal-800);
@@ -379,12 +413,12 @@
     color: var(--color-on-brand);
   }
   .btn-brand:hover {
-    background: #45c9ce;
-    border-color: #45c9ce;
+    background: var(--color-teal-800);
+    border-color: var(--color-teal-800);
   }
   .btn-brand:active {
-    background: #3abfc4;
-    border-color: #3abfc4;
+    background: var(--color-teal-900);
+    border-color: var(--color-teal-900);
   }
 
   .btn:disabled,
@@ -462,13 +496,13 @@
   .input:focus {
     outline: none;
     border-color: var(--color-teal-700);
-    box-shadow: 0 0 0 3px var(--color-teal-100);
+    box-shadow: var(--glow-brand);
   }
   .input[aria-invalid="true"] {
     border-color: var(--color-danger);
   }
   .input[aria-invalid="true"]:focus {
-    box-shadow: 0 0 0 3px var(--color-danger-bg);
+    box-shadow: 0 0 0 3px rgb(251 139 139 / 22%);
   }
   .input:disabled {
     background: var(--color-surface-3);
@@ -497,7 +531,7 @@
     -webkit-appearance: none;
     padding-right: 32px;
     cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f1111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b0c5c9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
   }
@@ -551,7 +585,7 @@
     width: 10px;
     height: 10px;
     transform: scale(0);
-    background: #fff;
+    background: var(--color-on-brand);
     clip-path: polygon(14% 46%, 0 60%, 39% 100%, 100% 22%, 86% 8%, 38% 71%);
     transition: transform 0.1s ease;
   }
@@ -561,7 +595,7 @@
     height: 8px;
     border-radius: 50%;
     transform: scale(0);
-    background: #fff;
+    background: var(--color-on-brand);
     transition: transform 0.1s ease;
   }
   .check:hover:not(:checked),
@@ -907,17 +941,65 @@
   .card--pad-lg {
     padding: 24px;
   }
+  /* Hover lifts by luminance first — one step up the surface ladder — because on a
+     dark ground a shadow under a card is invisible and a border change alone is
+     too quiet to read as "this is the one you are pointing at". */
   .card--lift {
     transition:
+      background-color 0.15s ease,
       box-shadow 0.15s ease,
-      border-color 0.15s ease;
+      border-color 0.15s ease,
+      transform 0.15s ease;
   }
   .card--lift:hover {
-    box-shadow: var(--shadow-1);
+    background: var(--color-surface-2);
+    box-shadow: var(--shadow-2);
     border-color: var(--color-line-strong);
+    transform: translateY(-2px);
+  }
+  .card--lift:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-1);
   }
   .card--canvas {
     background: var(--color-canvas-2);
+  }
+
+  /* ── plate: the mount every product photograph sits on ───────────────────────
+     Brand photography is shot on white. Dropped straight onto #06181d it reads
+     as a hole punched in the page, and cutting 119 photographs out by hand would
+     nick the edges of glass and thin objects. So the white becomes deliberate: a
+     silver plate with its own radius and hairline, the same on every card, PDP
+     gallery and category tile. `--color-on-plate` is the only ink allowed over it. */
+  .plate {
+    position: relative;
+    background: var(--color-plate);
+    background-image: linear-gradient(160deg, var(--color-plate-2) 0%, var(--color-plate) 62%);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    color: var(--color-on-plate);
+  }
+  .plate > img,
+  .plate > picture > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  /* The teal returns as a hairline so a plate still belongs to the store. */
+  .plate::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgb(4 23 27 / 10%);
+    pointer-events: none;
+  }
+  .plate--pill {
+    border-radius: var(--radius-pill);
+  }
+  .plate--flush {
+    border-radius: 0;
   }
 
   /* ── skeleton ───────────────────────────────────────────────────────────── */
@@ -932,7 +1014,7 @@
     position: absolute;
     inset: 0;
     transform: translateX(-100%);
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.65) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 9%) 50%, transparent 100%);
     animation: skel-shimmer 1.4s ease-in-out infinite;
   }
   @keyframes skel-shimmer {
@@ -958,8 +1040,11 @@
     margin: 0 auto;
     z-index: 90;
     padding: 12px 16px;
-    background: var(--color-ink);
-    color: #fff;
+    /* Was near-black with white text. On a dark store that inverts to white on
+       white, so the toast is a lifted surface with a hairline instead. */
+    background: var(--color-surface-2);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-3);
     font-size: 14px;
@@ -971,7 +1056,7 @@
     position: fixed;
     inset: 0;
     z-index: 60;
-    background: rgba(15, 17, 17, 0.5);
+    background: var(--scrim-ink);
   }
 
   .sheet {

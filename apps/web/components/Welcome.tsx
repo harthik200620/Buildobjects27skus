@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { IconCheck, IconClockCheck, IconPin, IconRoom, IconStorefront } from './icons';
+import Wordmark from './Wordmark';
 
 /**
  * Sign-in, and the only screen that collects anything from the user.
@@ -110,7 +111,7 @@ export default function Welcome({
             <p className="welcome-figure-caption">Construction materials · Andhra Pradesh &amp; Telangana</p>
           </>
         ) : (
-          <img src="/logo-mark-128.png" width={56} height={56} alt="" aria-hidden className="welcome-figure-mark" draggable={false} />
+          <Wordmark size={56} variant="mark" className="welcome-figure-mark" />
         )}
       </div>
 
@@ -118,14 +119,14 @@ export default function Welcome({
       <div className="welcome-entry">
         <div className="welcome-entry-in">
           <p className="welcome-eyebrow">Welcome to</p>
-          <h1 className="wordmark welcome-title">
-            Build
-            <br />
-            <span className="welcome-title-accent">Objects</span>
+          {/* The lockup itself is the page's h1 — the name is drawn, not set, so the heading
+              carries the drawing and the accessible name comes from the SVG's aria-label. */}
+          <h1 className="welcome-title">
+            <Wordmark size={44} variant="word" />
           </h1>
           <p className="welcome-lede">
-            Construction products for Andhra Pradesh and Telangana — every price GST-stated, per unit, landed at your pincode. Every product viewable in your
-            own room before you buy.
+            Construction materials for India, from the brands your engineer already asks for. Every price is per unit with GST shown, landed at your pincode —
+            and you can see any product at its true size in your own room before you buy. Delivering today across Andhra Pradesh and Telangana.
           </p>
 
           <div className="welcome-steps">

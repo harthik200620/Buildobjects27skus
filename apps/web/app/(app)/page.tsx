@@ -20,13 +20,48 @@ export default async function Home() {
 
   return (
     <div className="page shell home">
-      <section className="page-head" style={{ paddingTop: 'var(--s-7)' }}>
-        <p className="eyebrow">BO Environment · Andhra Pradesh & Telangana</p>
-        <h1 className="display home-title mt-3">BO Store & Construction Hub</h1>
-        <p className="page-sub max-w-[56ch]" style={{ fontSize: 14 }}>
-          Engineering-grade construction materials with live GST-inclusive pricing, 1:1 true scale Live AR placement in your room, and the BO House Cost
-          Calculator.
-        </p>
+      {/*
+       * The hero. The advertisement is not a banner on top of the page — it is part of the
+       * field the whole hero sits in: the teal wash, the construction grid and the glow are
+       * one composition, and the slot is a defined area inside it. It is empty today and says
+       * so in the corner, because a placeholder pretending to be a creative is worse than a
+       * considered space that is honest about waiting for one.
+       */}
+      <section className="hero" aria-labelledby="home-h">
+        <div className="hero-in">
+          <div>
+            <p className="hero-eyebrow">Building materials, delivered</p>
+            <h1 id="home-h" className="hero-title">
+              Everything your site needs, at a price you can check.
+            </h1>
+            <p className="hero-lede">
+              Cement, steel, tiles, glass, lighting, solar and safety — from the brands your engineer already asks for. Every price is per unit with GST stated,
+              and you can see any product standing in your own room before you order it.
+            </p>
+            <div className="hero-cta">
+              <Link href="/search" className="btn-primary btn--lg">
+                Start shopping <IconArrow size={16} />
+              </Link>
+              <Link href="/estimate" className="btn-secondary btn--lg">
+                <IconEstimate size={16} /> What will my house cost?
+              </Link>
+            </div>
+            <p className="hero-facts">
+              <span>
+                <b>{live.length}</b> categories stocked
+              </span>
+              <span>
+                <b>{products}</b> products
+              </span>
+              <span>
+                <b>{cats.length}</b> in the full catalogue
+              </span>
+            </p>
+          </div>
+          <aside className="hero-ad" aria-label="Advertisement space">
+            <span className="hero-ad-note">Advertising space — available</span>
+          </aside>
+        </div>
       </section>
 
       {/* ── shop by category: the nine that sell, then the rest of the tree ─── */}
@@ -37,7 +72,7 @@ export default async function Home() {
               Shop by category
             </h2>
             <p className="sec-sub">
-              <span className="fig">{live.length}</span> categories stocked today, <span className="fig">{cats.length}</span> in the catalogue.
+              <span className="fig">{live.length}</span> stocked today. The other <span className="fig">{soon.length}</span> are on the way.
             </p>
           </div>
           <Link href="/search" className="sec-more">
@@ -60,7 +95,7 @@ export default async function Home() {
             {byDepartment.length > 0 && (
               <div className="dept-block">
                 <h3 className="dept-head">
-                  Arriving soon
+                  On the way
                   <span className="dept-count">
                     <span className="fig">{soon.length}</span> more categories
                   </span>
@@ -99,14 +134,14 @@ export default async function Home() {
             ) : (
               'Nine live categories'
             )}
-            , filtered by the specs that matter, with datasheets and 3D AR view on every page.
+            . Filter by the specifications that actually matter, read the datasheet, and see it in your room before you buy.
           </span>
           <IconArrow size={20} className="dest-arrow" />
         </Link>
         <Link href="/estimate" className="dest lift">
           <IconEstimate size={26} className="dest-icon" />
           <span className="dest-kicker">BO Intelligence</span>
-          <span className="display dest-title">BO Cost Calculator</span>
+          <span className="display dest-title">BO Estimator</span>
           <span className="dest-body">
             A house-construction estimate for any city in AP and Telangana — civil structure and interior finishes ledgered separately at three quality tiers.
           </span>
@@ -119,9 +154,9 @@ export default async function Home() {
         <div className="sec-head">
           <div>
             <h2 id="prods-h" className="sec-title">
-              Flagship products
+              Popular right now
             </h2>
-            <p className="sec-sub">Every product carries its full specification sheet, the source of every figure, and a 1:1 room view.</p>
+            <p className="sec-sub">Every one carries its full specification sheet, the source of every figure, and a true-size view in your own room.</p>
           </div>
           <Link href="/search" className="sec-more">
             View all in search <IconArrow size={14} style={{ display: 'inline', verticalAlign: -1 }} />
@@ -148,13 +183,13 @@ export default async function Home() {
       {/* ── the compact trust bar ────────────────────────────────────────── */}
       <section className="trust-mini sec" aria-label="What every price carries">
         <span>
-          <IconShield size={16} /> GST stated, per unit
+          <IconShield size={16} /> GST shown separately on every price
         </span>
         <span>
-          <IconClockCheck size={16} /> Price source and date on every page
+          <IconClockCheck size={16} /> You can see where each price came from
         </span>
         <span>
-          <IconRoom size={16} /> View any product in your room
+          <IconRoom size={16} /> See any product in your own room first
         </span>
         <span>
           <IconPin size={16} /> Delivered to your pincode
@@ -162,9 +197,9 @@ export default async function Home() {
       </section>
 
       <footer className="foot">
-        <span>Build Objects · Price Intelligence</span>
+        <span>Build Objects</span>
         <span className="flex gap-4">
-          <Link href="/estimate">Cost calculator</Link>
+          <Link href="/estimate">BO Estimator</Link>
           <Link href="/search">All products</Link>
           <a href="/api/health">Status</a>
         </span>
@@ -177,7 +212,7 @@ function EmptyShelves() {
   return (
     <div className="empty glass-card" style={{ borderRadius: 'var(--radius-glass)' }}>
       <p className="kicker">Catalogue</p>
-      <p className="display">The shelves are being filled</p>
+      <p className="display">The shelves are still being filled</p>
       <p>
         Run <code className="fig">pnpm registry:seed</code> and <code className="fig">pnpm pipeline run</code> — the categories appear here with live counts.
       </p>

@@ -98,7 +98,7 @@ export default function HouseScene({
       delay: number;
     }> = [];
 
-    const colors = ['#12AFA9', '#45D7CF', '#087F80', '#FFFFFF', '#E5EAEB'];
+    const colors = ['var(--color-teal-600)', 'var(--color-brand)', 'var(--color-teal-600)', 'var(--color-ink)', 'var(--color-ink-2)'];
     const count = winningRoom.isMaxOutput ? 36 : 24;
 
     for (let i = 0; i < count; i++) {
@@ -142,7 +142,7 @@ export default function HouseScene({
           ctx.save();
           ctx.globalAlpha = Math.min(1, Math.sin(t * Math.PI) * 1.5);
           ctx.fillStyle = p.color;
-          ctx.shadowColor = '#45D7CF';
+          ctx.shadowColor = 'var(--color-brand)';
           ctx.shadowBlur = 10;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -172,7 +172,7 @@ export default function HouseScene({
         borderRadius: '28px',
         overflow: 'hidden',
         boxShadow: '0 30px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06)',
-        background: '#FFFFFF',
+        background: 'var(--color-ink)',
       }}
     >
       {/* ── 1. Clean Photorealistic Daylight Cutaway Indian House Background ── */}
@@ -209,33 +209,35 @@ export default function HouseScene({
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
-          background: 'linear-gradient(135deg, rgba(6, 63, 66, 0.92), rgba(5, 9, 10, 0.95))',
-          border: isBalancePulsing ? '2px solid #45D7CF' : '1.5px solid rgba(18, 175, 169, 0.6)',
+          background: 'linear-gradient(135deg, rgb(10 34 41 / 92%), rgb(6 24 29 / 95%))',
+          border: isBalancePulsing ? '2px solid var(--color-brand)' : '1.5px solid rgb(58 184 190 / 60%)',
           borderRadius: '999px',
           padding: '8px 24px',
           boxShadow: isBalancePulsing
-            ? '0 0 35px rgba(69, 215, 207, 0.9), 0 8px 24px rgba(0,0,0,0.6)'
-            : '0 8px 25px rgba(0,0,0,0.4), 0 0 15px rgba(18, 175, 169, 0.3)',
+            ? '0 0 35px rgb(86 211 216 / 90%), 0 8px 24px rgba(0,0,0,0.6)'
+            : '0 8px 25px rgba(0,0,0,0.4), 0 0 15px rgb(58 184 190 / 30%)',
           backdropFilter: 'blur(12px)',
           transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
           pointerEvents: 'none',
         }}
       >
         <span style={{ fontSize: '18px' }}>🪙</span>
-        <span style={{ fontSize: '11px', fontWeight: 800, color: '#BFC7C9', letterSpacing: '0.14em', textTransform: 'uppercase' }}>TOTAL COINS:</span>
+        <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--color-ink-3)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+          TOTAL COINS:
+        </span>
         <span
           style={{
             fontSize: '22px',
             fontWeight: 900,
-            color: '#FFFFFF',
+            color: 'var(--color-ink)',
             fontVariantNumeric: 'tabular-nums',
             letterSpacing: '-0.02em',
-            textShadow: '0 0 12px #45D7CF',
+            textShadow: '0 0 12px var(--color-brand)',
           }}
         >
           {formattedHudBalance}
         </span>
-        <span style={{ fontSize: '11px', fontWeight: 800, color: '#45D7CF', letterSpacing: '0.08em' }}>BO COINS</span>
+        <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--color-brand)', letterSpacing: '0.08em' }}>BO COINS</span>
       </div>
 
       {/* ── 3. Subtle Glowing Circuit Track Connecting the 6 Rooms ── */}
@@ -255,19 +257,19 @@ export default function HouseScene({
         <path
           d="M 500 202 L 760 202 Q 800 202 800 242 L 800 364 Q 800 404 760 404 L 240 404 Q 200 404 200 364 L 200 242 Q 200 202 240 202 Z"
           fill="none"
-          stroke="#087F80"
+          stroke="var(--color-teal-600)"
           strokeWidth="2.5"
           strokeDasharray="6 6"
           opacity={isBusy ? 0.8 : 0.35}
           style={{
-            filter: isBusy ? 'drop-shadow(0 0 8px rgba(18, 175, 169, 0.7))' : 'none',
+            filter: isBusy ? 'drop-shadow(0 0 8px rgb(58 184 190 / 70%))' : 'none',
             transition: 'opacity 0.3s ease, filter 0.3s ease',
           }}
         />
 
         {/* Room Node Measurement Markers on Track */}
         {ROOM_WAYPOINTS.map((room) => (
-          <circle key={room.id} cx={`${room.xPct * 10}`} cy={`${room.yPct * 5.62}`} r="4" fill="#12AFA9" opacity={isBusy ? 0.9 : 0.45} />
+          <circle key={room.id} cx={`${room.xPct * 10}`} cy={`${room.yPct * 5.62}`} r="4" fill="var(--color-teal-600)" opacity={isBusy ? 0.9 : 0.45} />
         ))}
       </svg>
 
@@ -296,8 +298,8 @@ export default function HouseScene({
                   inset: '-28px',
                   borderRadius: '20px',
                   background: isWinner
-                    ? 'radial-gradient(circle, rgba(69, 215, 207, 0.5) 0%, transparent 70%)'
-                    : 'radial-gradient(circle, rgba(18, 175, 169, 0.35) 0%, transparent 70%)',
+                    ? 'radial-gradient(circle, rgb(86 211 216 / 50%) 0%, transparent 70%)'
+                    : 'radial-gradient(circle, rgb(58 184 190 / 35%) 0%, transparent 70%)',
                   pointerEvents: 'none',
                   animation: engineState === 'REVEALED' ? 'pulse 1.2s infinite' : 'none',
                 }}
@@ -315,15 +317,15 @@ export default function HouseScene({
                 minWidth: '72px',
                 borderRadius: '10px',
                 background: isWinner
-                  ? 'linear-gradient(135deg, rgba(8, 127, 128, 0.95), rgba(6, 63, 66, 0.95))'
+                  ? 'linear-gradient(135deg, rgb(30 74 85 / 95%), rgb(10 34 41 / 95%))'
                   : isCurrentPassing
-                    ? 'linear-gradient(135deg, rgba(8, 127, 128, 0.85), rgba(6, 63, 66, 0.85))'
-                    : 'linear-gradient(135deg, rgba(6, 63, 66, 0.85), rgba(5, 9, 10, 0.85))',
-                border: isWinner ? '2px solid #45D7CF' : isCurrentPassing ? '1.5px solid #12AFA9' : '1px solid rgba(191, 199, 201, 0.35)',
+                    ? 'linear-gradient(135deg, rgb(30 74 85 / 85%), rgb(10 34 41 / 85%))'
+                    : 'linear-gradient(135deg, rgb(10 34 41 / 85%), rgb(6 24 29 / 85%))',
+                border: isWinner ? '2px solid var(--color-brand)' : isCurrentPassing ? '1.5px solid var(--color-teal-600)' : '1px solid rgb(155 177 181 / 35%)',
                 boxShadow: isWinner
-                  ? '0 0 30px rgba(69, 215, 207, 0.8), 0 8px 20px rgba(0,0,0,0.6)'
+                  ? '0 0 30px rgb(86 211 216 / 80%), 0 8px 20px rgba(0,0,0,0.6)'
                   : isCurrentPassing
-                    ? '0 0 16px rgba(18, 175, 169, 0.6)'
+                    ? '0 0 16px rgb(58 184 190 / 60%)'
                     : '0 4px 12px rgba(0,0,0,0.4)',
                 transform: isWinner ? 'scale(1.15)' : isCurrentPassing ? 'scale(1.06)' : 'scale(1)',
                 transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -334,10 +336,10 @@ export default function HouseScene({
                 style={{
                   fontSize: '17px',
                   fontWeight: 900,
-                  color: isWinner ? '#FFFFFF' : '#E5EAEB',
+                  color: isWinner ? 'var(--color-ink)' : 'var(--color-ink-2)',
                   letterSpacing: '-0.02em',
                   lineHeight: '1.1',
-                  textShadow: isWinner ? '0 0 12px #45D7CF' : '0 1px 4px rgba(0,0,0,0.8)',
+                  textShadow: isWinner ? '0 0 12px var(--color-brand)' : '0 1px 4px rgba(0,0,0,0.8)',
                 }}
               >
                 {room.label}
@@ -346,7 +348,7 @@ export default function HouseScene({
                 style={{
                   fontSize: '7px',
                   fontWeight: 800,
-                  color: isWinner ? '#45D7CF' : '#BFC7C9',
+                  color: isWinner ? 'var(--color-brand)' : 'var(--color-ink-3)',
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
                   marginTop: '1px',
@@ -384,8 +386,8 @@ export default function HouseScene({
             inset: '-10px',
             borderRadius: '50%',
             background: isBusy
-              ? 'radial-gradient(circle, rgba(69, 215, 207, 0.7) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(18, 175, 169, 0.35) 0%, transparent 70%)',
+              ? 'radial-gradient(circle, rgb(86 211 216 / 70%) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgb(58 184 190 / 35%) 0%, transparent 70%)',
             pointerEvents: 'none',
             animation: isBusy ? 'pulse 0.5s infinite' : 'none',
           }}
@@ -397,11 +399,11 @@ export default function HouseScene({
             width: '44px',
             height: '44px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle at 35% 35%, #0f2b2e 0%, #030809 100%)',
-            border: '2px solid #45D7CF',
+            background: 'radial-gradient(circle at 35% 35%, var(--color-surface) 0%, var(--color-canvas) 100%)',
+            border: '2px solid var(--color-brand)',
             boxShadow: isBusy
-              ? '0 0 25px rgba(69, 215, 207, 0.9), 0 8px 20px rgba(0,0,0,0.8), inset 0 0 10px rgba(6, 63, 66, 0.9)'
-              : '0 0 12px rgba(18, 175, 169, 0.5), 0 8px 20px rgba(0,0,0,0.8), inset 0 0 10px rgba(6, 63, 66, 0.9)',
+              ? '0 0 25px rgb(86 211 216 / 90%), 0 8px 20px rgba(0,0,0,0.8), inset 0 0 10px rgb(10 34 41 / 90%)'
+              : '0 0 12px rgb(58 184 190 / 50%), 0 8px 20px rgba(0,0,0,0.8), inset 0 0 10px rgb(10 34 41 / 90%)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -415,7 +417,7 @@ export default function HouseScene({
               position: 'absolute',
               inset: '3px',
               borderRadius: '50%',
-              border: '1px solid rgba(191, 199, 201, 0.35)',
+              border: '1px solid rgb(155 177 181 / 35%)',
               pointerEvents: 'none',
             }}
           />
@@ -425,7 +427,7 @@ export default function HouseScene({
             style={{
               fontSize: '11px',
               fontWeight: 900,
-              color: '#FFFFFF',
+              color: 'var(--color-ink)',
               letterSpacing: '0.04em',
               lineHeight: '1',
               textShadow: '0 1px 3px rgba(0,0,0,0.9)',

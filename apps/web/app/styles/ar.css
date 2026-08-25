@@ -1,7 +1,11 @@
 /* Live-camera (tier C) overlay chrome: the video feed fills the stage, the SceneRenderer canvas
-   and the HUD SVG sit on top. The base stage/chip styles live in legacy.css; these extend them. */
+   and the HUD SVG sit on top. The base stage/chip styles live in legacy.css; these extend them.
+
+   Every colour here comes from the --color-ar-* group in theme.css. It used to come from twelve
+   literals built around #5ce1e6 — a teal four values off the brand's #56d3d8, which meant the AR
+   view was the one screen in the store painted in a colour the store did not own. */
 .ar-camera {
-  background: #000;
+  background: var(--color-ar-void);
   position: relative;
   overflow: hidden;
 }
@@ -27,51 +31,57 @@
   z-index: 2;
 }
 .ar-surface-box rect {
-  fill: rgba(92, 225, 230, 0.08);
-  stroke: rgba(92, 225, 230, 0.5);
+  fill: var(--color-ar-wash);
+  stroke: var(--color-ar-line);
   stroke-dasharray: 6 6;
 }
 .ar-surface-box text {
-  fill: rgba(92, 225, 230, 0.95);
-  font: 12px / 16px sans-serif;
+  fill: var(--color-ar-line-strong);
+  font: 12px / 16px var(--font-ui);
+}
+/* The surface the product actually needs, once it is found: solid, not dashed. */
+.ar-surface-box--target rect {
+  stroke: var(--color-brand);
+  stroke-dasharray: none;
+  stroke-width: 2;
 }
 .ar-footprint {
   fill: none;
   stroke-width: 2;
 }
 .ar-footprint--ok {
-  stroke: rgba(92, 225, 230, 0.95);
+  stroke: var(--color-ar-line-strong);
 }
 .ar-footprint--dim {
-  stroke: rgba(255, 209, 102, 0.7);
+  stroke: var(--color-ar-warn);
 }
 .ar-footprint--warn {
-  stroke: rgba(255, 112, 112, 0.9);
+  stroke: var(--color-ar-danger);
 }
 .ar-anchor-dot {
-  fill: #5ce1e6;
-  stroke: rgba(255, 255, 255, 0.9);
+  fill: var(--color-brand);
+  stroke: var(--color-header-ink);
   stroke-width: 2;
 }
 .ar-calib-line {
-  stroke: #5ce1e6;
+  stroke: var(--color-brand);
   stroke-width: 2;
 }
 .ar-calib-dot {
-  fill: #5ce1e6;
-  stroke: rgba(255, 255, 255, 0.9);
+  fill: var(--color-brand);
+  stroke: var(--color-header-ink);
   stroke-width: 2;
 }
 
 /* Camera HUD overlays */
 .ar-hud-glass {
-  background: rgba(15, 23, 42, 0.78);
+  background: var(--color-ar-panel);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  color: #fff;
-  border-radius: 9999px;
+  border: 1px solid var(--color-ar-hair);
+  box-shadow: 0 8px 32px 0 var(--color-ar-shadow);
+  color: var(--color-header-ink);
+  border-radius: var(--radius-pill);
 }
 
 .ar-hud-pill {
@@ -84,7 +94,12 @@
   letter-spacing: -0.01em;
 }
 
-.ar-wall-banner {
+/*
+ * The surface prompt. This is the sentence that tells someone their camera is pointed at the
+ * wrong thing — "Point your camera at a wall to place this" — so it is the most-read text in
+ * the AR view and it must survive being laid over an arbitrary photograph of a room.
+ */
+.ar-surface-prompt {
   position: absolute;
   top: 68px;
   left: 50%;
@@ -93,31 +108,37 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 18px;
-  border-radius: 12px;
-  background: rgba(239, 68, 68, 0.9);
-  backdrop-filter: blur(8px);
-  color: #fff;
+  max-width: min(92vw, 420px);
+  padding: 9px 18px;
+  border-radius: var(--radius-lg);
+  background: var(--color-ar-danger);
+  color: var(--color-on-brand);
   font-size: 13px;
+  line-height: 18px;
   font-weight: 600;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  animation: arPulse 2s infinite ease-in-out;
-  white-space: nowrap;
+  text-align: left;
+  box-shadow: 0 4px 20px var(--color-ar-shadow);
+  animation: ar-seek 2s infinite ease-in-out;
 }
-
-.ar-wall-banner--ok {
-  background: rgba(16, 185, 129, 0.85);
+.ar-surface-prompt svg {
+  flex: none;
+}
+.ar-surface-prompt--ok {
+  background: var(--color-ar-ok);
   animation: none;
 }
+.ar-surface-prompt--seeking {
+  background: var(--color-ar-warn);
+}
 
-@keyframes arPulse {
+@keyframes ar-seek {
   0%,
   100% {
-    opacity: 0.95;
+    opacity: 0.96;
     transform: translateX(-50%) scale(1);
   }
   50% {
-    opacity: 0.8;
-    transform: translateX(-50%) scale(0.98);
+    opacity: 0.82;
+    transform: translateX(-50%) scale(0.985);
   }
 }

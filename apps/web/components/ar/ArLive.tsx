@@ -65,12 +65,12 @@ export default function ArLive({
         // reticle
         const reticle = new THREE.Mesh(
           new THREE.RingGeometry(0.06, 0.075, 48).rotateX(-Math.PI / 2),
-          new THREE.MeshBasicMaterial({ color: 0x5ce1e6, transparent: true, opacity: 0.9 }),
+          new THREE.MeshBasicMaterial({ color: 0x56d3d8, transparent: true, opacity: 0.9 }),
         );
         reticle.matrixAutoUpdate = false;
         reticle.visible = false;
         scene.add(reticle);
-        const dot = new THREE.Mesh(new THREE.CircleGeometry(0.008, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x5ce1e6 }));
+        const dot = new THREE.Mesh(new THREE.CircleGeometry(0.008, 24).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: 0x56d3d8 }));
         reticle.add(dot);
 
         // model at true scale (metres) + contact shadow

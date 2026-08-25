@@ -14,7 +14,7 @@ export default async function CartPage() {
   return (
     <div className="page shell">
       <header className="page-head">
-        <p className="kicker">BO Commerce · Andhra Pradesh & Telangana</p>
+        <p className="kicker">Your order</p>
         <h1 className="display page-title">BO Cart & Materials</h1>
         <p className="page-sub max-w-[60ch]">
           Review your selected building materials at verified dealer prices with transparent GST. Redeem your earned BO Coins for instant discounts (1 BO Coin =

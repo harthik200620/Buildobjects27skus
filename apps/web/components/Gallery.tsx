@@ -246,7 +246,7 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
             onClick={() => setViewMode('photos')}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
               viewMode === 'photos'
-                ? 'bg-teal-500/20 border border-teal-500/40 text-teal-200 shadow-sm'
+                ? 'bg-[var(--color-teal-50)] border border-[var(--color-teal-600)] text-[var(--color-brand)] shadow-sm'
                 : 'bg-[var(--card-face)] border border-[var(--rule-hairline)] text-[var(--ink-2)] hover:text-[var(--ink-1)]'
             }`}
           >
@@ -259,32 +259,32 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
             onClick={() => setViewMode('3d')}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
               viewMode === '3d'
-                ? 'bg-teal-500/20 border border-teal-500/40 text-teal-200 shadow-sm'
+                ? 'bg-[var(--color-teal-50)] border border-[var(--color-teal-600)] text-[var(--color-brand)] shadow-sm'
                 : 'bg-[var(--card-face)] border border-[var(--rule-hairline)] text-[var(--ink-2)] hover:text-[var(--ink-1)]'
             }`}
           >
             <IconRoom size={14} />
             <span>3D Model & AR (360°)</span>
-            <span className="px-1.5 py-0.2 text-[9px] font-bold rounded bg-teal-400/20 text-teal-300">1:1 SCALE</span>
+            <span className="px-1.5 py-0.2 text-[9px] font-bold rounded bg-[var(--color-teal-50)] text-[var(--color-teal-300)]">1:1 SCALE</span>
           </button>
         </div>
       )}
 
       {/* ── 3D View Mode ─────────────────────────────────────────────────── */}
       {viewMode === '3d' && skuCode ? (
-        <div className="relative w-full aspect-square min-h-[380px] sm:min-h-[460px] flex items-center justify-center select-none overflow-hidden rounded-2xl bg-gradient-to-b from-slate-900/80 to-slate-950/95 border border-[var(--rule-hairline)]">
+        <div className="relative w-full aspect-square min-h-[380px] sm:min-h-[460px] flex items-center justify-center select-none overflow-hidden rounded-2xl bg-[var(--color-canvas-2)] border border-[var(--rule-hairline)]">
           <div ref={canvas3dRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
           {is3dLoading && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 backdrop-blur-sm bg-slate-950/60 z-10">
-              <div className="w-9 h-9 border-3 border-teal-500/30 border-t-teal-400 rounded-full animate-spin" />
-              <p className="text-xs font-medium text-slate-300">Loading photoreal 3D model…</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 backdrop-blur-sm bg-[var(--scrim-ink)] z-10">
+              <div className="w-9 h-9 border-3 border-[var(--color-line)] border-t-[var(--color-brand)] rounded-full animate-spin" />
+              <p className="text-xs font-medium text-[var(--color-ink-2)]">Loading photoreal 3D model…</p>
             </div>
           )}
 
           {threeError && (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10">
-              <p className="text-xs text-rose-300 mb-2">{threeError}</p>
+              <p className="text-xs text-[var(--color-danger)] mb-2">{threeError}</p>
               <Link href={`/ar/${skuCode.toLowerCase()}`} className="btn btn-sm btn-ghost text-xs">
                 Open AR Page
               </Link>
@@ -293,11 +293,11 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
 
           {!is3dLoading && !threeError && (
             <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
-              <span className="px-2.5 py-1 text-[10.5px] font-semibold tracking-wide uppercase rounded-md bg-teal-950/80 border border-teal-500/30 text-teal-300 shadow-sm backdrop-blur-md">
+              <span className="px-2.5 py-1 text-[10.5px] font-semibold tracking-wide uppercase rounded-md bg-[var(--color-teal-50)] border border-[var(--color-line)] text-[var(--color-teal-300)] shadow-sm backdrop-blur-md">
                 1:1 Real-World Scale
               </span>
               {dims && (
-                <span className="px-2.5 py-1 text-[10.5px] font-mono rounded-md bg-slate-900/80 border border-slate-700/50 text-slate-300 shadow-sm backdrop-blur-md">
+                <span className="px-2.5 py-1 text-[10.5px] font-mono rounded-md bg-[var(--color-surface-2)] border border-[var(--color-line)] text-[var(--color-ink-2)] shadow-sm backdrop-blur-md">
                   {dims.w} × {dims.h} × {dims.d} mm
                 </span>
               )}
@@ -310,7 +310,9 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
                 type="button"
                 onClick={() => setAutoRotate(!autoRotate)}
                 className={`pointer-events-auto px-3 py-1.5 rounded-lg text-xs font-medium backdrop-blur-md border transition-all flex items-center gap-1.5 shadow-md ${
-                  autoRotate ? 'bg-teal-600/20 border-teal-500/40 text-teal-200' : 'bg-slate-900/80 border-slate-700/60 text-slate-300 hover:bg-slate-800'
+                  autoRotate
+                    ? 'bg-[var(--color-teal-50)] border-[var(--color-teal-600)] text-[var(--color-brand)]'
+                    : 'bg-[var(--color-surface-2)] border-[var(--color-line)] text-[var(--color-ink-2)] hover:bg-[var(--color-surface-2)]'
                 }`}
                 title="Toggle 360 Turntable Orbit"
               >
@@ -320,7 +322,7 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
 
               <Link
                 href={`/ar/${skuCode.toLowerCase()}`}
-                className="pointer-events-auto px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 shadow-lg shadow-teal-500/20 flex items-center gap-1.5 transition-transform active:scale-95"
+                className="pointer-events-auto px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--color-teal-700)] hover:bg-[var(--color-teal-800)] text-[var(--color-on-brand)] shadow-lg flex items-center gap-1.5 transition-transform active:scale-95"
               >
                 <IconRoom size={15} />
                 <span>View in Room AR</span>

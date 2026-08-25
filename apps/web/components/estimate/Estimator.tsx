@@ -37,6 +37,7 @@ import { inr } from '@/lib/media';
 import { readPicks, removePick, setPickQty } from '@/lib/picks';
 import Donut, { seriesColor } from './Donut';
 import DrawingUpload from './DrawingUpload';
+import HouseRender from './HouseRender';
 
 type Field = 'plot' | 'floors' | 'bua' | 'type';
 const STATES: { code: StateCode; name: string }[] = [
@@ -48,10 +49,11 @@ const fmtQty = (n: number) => n.toLocaleString('en-IN', { maximumFractionDigits:
 const fmtSqft = (n: number) => formatNumber(Math.round(n));
 
 /**
- * The calculator page body: three-step wizard on the left (all editable after), the live output
- * on the right. Every number on screen is estimate(inputs, catalog) — nothing is computed twice.
+ * BO Estimator — the page body. Three plain questions on the left, a house that builds itself
+ * and the running total on the right. Every number on screen is estimate(inputs, catalog);
+ * LivingHouse is driven by the same object, so the picture can never disagree with the figure.
  */
-export default function Calculator({
+export default function Estimator({
   initialInputs,
   catalog: initialCatalog,
   shareId,
@@ -512,6 +514,14 @@ export default function Calculator({
 
       {/* ── the output ───────────────────────────────────────────────────── */}
       <section className="out" aria-live="polite" aria-label="Estimate">
+        {/*
+         * The house comes before the number. Someone building one house in their life does not
+         * read "₹42,80,000 · 1,850 sqft built-up" and picture anything; they see a G+1 with a
+         * plastered finish and know immediately whether it is what they meant. The render is
+         * chosen by the same `result` that produces the total, so it cannot disagree with the
+         * figure under it, and it changes the moment the storeys or the finish change.
+         */}
+        <HouseRender result={result} highlight={active} />
         {unconfirmed && (
           <div className="derived no-print" style={{ borderLeft: '2px solid var(--accent)', color: 'var(--ink-2)' }}>
             <span>

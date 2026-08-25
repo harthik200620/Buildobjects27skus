@@ -95,7 +95,7 @@ const OUT_OF_AREA: Serviceability = {
   name: 'Outside AP / TS',
   state: null,
   deliveryDays: null,
-  note: 'Not serviceable yet — we deliver in Andhra Pradesh and Telangana',
+  note: 'We do not deliver to this pincode yet — today we cover Andhra Pradesh and Telangana',
 };
 
 /**

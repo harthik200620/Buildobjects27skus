@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { AR_DEMO_HREF, type NavCategory } from './header/types';
 import { IconChevronUp } from './icons';
+import Wordmark from './Wordmark';
 
 /** "Back to top" on header-2, three columns (Shop / Tools / About) on the header colour, one bottom line. */
 export default function Footer({ categories }: { categories: NavCategory[] }) {
@@ -34,7 +35,7 @@ export default function Footer({ categories }: { categories: NavCategory[] }) {
             <h3>Tools</h3>
             <ul>
               <li>
-                <Link href="/estimate">Cost Calculator</Link>
+                <Link href="/estimate">BO Estimator</Link>
               </li>
               <li>
                 <Link href={AR_DEMO_HREF}>View in your room</Link>
@@ -54,7 +55,7 @@ export default function Footer({ categories }: { categories: NavCategory[] }) {
                 <Link href="/">Build Objects</Link>
               </li>
               <li>Every price is GST-stated per unit and carries its source and date</li>
-              <li>Delivery across Andhra Pradesh and Telangana</li>
+              <li>Delivering today across Andhra Pradesh and Telangana</li>
               <li>
                 <a href="/api/health">Service status</a>
               </li>
@@ -63,10 +64,9 @@ export default function Footer({ categories }: { categories: NavCategory[] }) {
         </div>
         <div className="footer-bottom">
           <span className="footer-brand">
-            <img src="/logo-mark-128.png" width={22} height={22} alt="" />
-            <span className="wordmark">Build Objects</span>
+            <Wordmark size={22} />
           </span>
-          <span>© {year} Build Objects · Construction materials for Andhra Pradesh and Telangana</span>
+          <span>© {year} Build Objects · Construction materials for India</span>
         </div>
       </div>
     </footer>

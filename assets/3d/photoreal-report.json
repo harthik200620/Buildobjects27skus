@@ -1,56 +1,44 @@
 {
-  "generated_at": "2026-08-23T19:18:23.280Z",
+  "generated_at": "2026-08-25T11:16:30.334Z",
   "dry_run": false,
   "provider_pref": "auto",
   "providers": [
     "meshy: key present",
     "tripo: no key"
   ],
-  "max_spend_usd": 30,
-  "estimated_spend_usd": 0.4,
-  "ledger_spend_usd": 2.8,
+  "max_spend_usd": 20,
+  "estimated_spend_usd": 0.8,
+  "ledger_spend_usd": 15.200000000000008,
   "results": [
     {
-      "sku": "BUL-PHI-ACESAVER9WB22",
-      "category": "bulbs",
-      "outcome": "photoreal",
+      "sku": "FIR-CEA-MAP90-4KG",
+      "category": "fire-extinguishers",
+      "outcome": "rejected",
+      "reason": "normalise rejected (meshy, retry): aspect mismatch 131 % vs spec 140×445×190 mm (reject > 85 %)",
       "provider": "meshy",
-      "job_id": "01a0300d-4b61-799a-a2ee-63e505655796",
+      "job_id": "01a0387d-119f-797b-af40-b27efeceefbe",
       "mode": "single",
       "images": [
         {
-          "key": "skus/1b/BUL-PHI-ACESAVER9WB22/img/1-orig.jpg",
+          "key": "skus/03/FIR-CEA-MAP90-4KG/img/1-orig.png",
           "role": "front",
-          "source": "cutout"
+          "source": "orig"
         }
       ],
-      "cutouts": 2,
+      "cutouts": 0,
       "est_cost_usd": 0.4,
       "warnings": [
-        "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-        "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
+        "meshy: simplified 1,01,586 → 98,000 triangles",
+        "meshy: simplified 1,00,760 → 97,999 triangles"
       ],
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.019490056937544048,
-        "warnings": [
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
-      "file": "BUL-PHI-ACESAVER9WB22.glb",
-      "attempts": 1
+      "attempts": 2
     }
   ],
   "totals": {
-    "photoreal": 1,
+    "photoreal": 0,
     "planned": 0,
     "skipped": 0,
     "failed": 0,
-    "rejected": 0
+    "rejected": 1
   }
 }

@@ -3,23 +3,20 @@ import localFont from 'next/font/local';
 import './globals.css';
 
 /**
- * Type — the Build Objects type program.
+ * Type — the Build Objects type program. Two faces, down from three.
  *
- *   Display 2 (Audiowide)     — the wordmark, and nothing else (.wordmark). NO ₹ glyph: never a price.
  *   Sans 5    (Encode Sans)   — every figure (tabular-nums, a true ₹, static 300–700 cuts).
  *   Sans 3    (Arimo)         — every piece of body and UI text.
+ *
+ * Display 2 (Audiowide) is gone. It was loaded on every page to set two words — the wordmark —
+ * and the wordmark is now drawn as vector in components/Wordmark.tsx, where the O of OBJECTS can
+ * actually be the brand teal at the mark's own size. A webfont for a logo is a webfont for a
+ * picture; this deletes ~19 KB from every first paint and removes a face nothing else could use.
  *
  * Single-word fallbacks ONLY in localFont: next/font writes the list into the CSS variable
  * unquoted, and an unquoted multi-word family is invalid CSS that discards the whole
  * declaration. The ₹-bearing fallbacks live in --font-figure in theme.css, quoted.
  */
-const display = localFont({
-  src: [{ path: '../public/fonts/BuildObjectsDisplay2-Regular.woff2', weight: '400', style: 'normal' }],
-  display: 'swap',
-  variable: '--font-display-face',
-  fallback: ['system-ui', 'sans-serif'],
-});
-
 const ui = localFont({
   src: [
     { path: '../public/fonts/BuildObjectsSans3-Regular.woff2', weight: '400', style: 'normal' },
@@ -48,14 +45,14 @@ const figure = localFont({
 export const metadata: Metadata = {
   title: { default: 'Build Objects', template: '%s · Build Objects' },
   description:
-    'Construction products for Andhra Pradesh and Telangana — GST-stated prices per unit, every product viewable in your own room, and a house cost calculator built for AP and TS.',
+    'Construction materials for India — every price per unit with GST shown, every product viewable at true size in your own room, and an estimator that tells you what your house will cost. Delivering today across Andhra Pradesh and Telangana.',
   applicationName: 'Build Objects',
 };
 
-/** The mobile browser chrome takes the header colour; the page itself is light. */
+/** The mobile browser chrome takes the header colour, and the page is the same family of teal. */
 export const viewport: Viewport = {
-  themeColor: '#0b2a30',
-  colorScheme: 'light',
+  themeColor: '#04141a',
+  colorScheme: 'dark',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
@@ -63,8 +60,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // One appearance: light, no theme toggle and no prefers-color-scheme branch.
-    <html lang="en" className={`${display.variable} ${ui.variable} ${figure.variable}`}>
+    // One appearance: deep teal and silver. No theme toggle, no prefers-color-scheme branch.
+    <html lang="en" className={`${ui.variable} ${figure.variable}`}>
       <body>{children}</body>
     </html>
   );

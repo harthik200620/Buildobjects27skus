@@ -12,6 +12,131 @@
    ──────────────────────────────────────────────────────────────────────────── */
 
 @layer components {
+  /* ── the hero, and the advertisement inside it ───────────────────────────────
+     The brief asked for an advertisement panel "integrated into the background of
+     the home page, not presented as a separate foreground section". So there is no
+     banner: there is a full-bleed field behind the top of the page — a teal wash, a
+     faint construction grid, a soft brand glow — and the headline, the promise line
+     and the ad slot all sit inside that one composition.
+
+     The slot is empty today and says so, quietly, in the corner. An empty rectangle
+     that pretends to be content is worse than a considered space that is honest
+     about waiting for a creative. Homepage only: no other surface carries it. */
+  .hero {
+    position: relative;
+    margin: 0 calc(50% - 50vw) var(--s-6);
+    padding: var(--s-8) calc(50vw - 50%) var(--s-7);
+    overflow: hidden;
+    background: var(--color-canvas-2);
+    border-bottom: 1px solid var(--color-line-2);
+    isolation: isolate;
+  }
+  /* the field: a grid, and a glow where the brand teal would fall */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image: linear-gradient(var(--color-line-2) 1px, transparent 1px), linear-gradient(90deg, var(--color-line-2) 1px, transparent 1px);
+    background-size: 56px 56px;
+    /* A mask reads only the alpha channel, so these two stops are opacity, not colour. */
+    mask-image: radial-gradient(120% 90% at 18% 0%, rgb(0 0 0 / 100%) 0%, transparent 72%);
+    opacity: 0.6;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -30% -10% auto -20%;
+    height: 150%;
+    background: radial-gradient(46% 52% at 22% 22%, var(--color-teal-50) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-in {
+    display: grid;
+    gap: var(--s-6);
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .hero-in {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: var(--s-7);
+    }
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-brand);
+  }
+  .hero-title {
+    margin-top: var(--s-3);
+    font: 700 30px / 36px var(--font-ui);
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: 40px;
+      line-height: 46px;
+    }
+  }
+  .hero-lede {
+    margin-top: var(--s-3);
+    max-width: 52ch;
+    font-size: 15px;
+    line-height: 23px;
+    color: var(--color-ink-2);
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: var(--s-5);
+  }
+  .hero-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    margin-top: var(--s-5);
+    font-size: 13px;
+    color: var(--color-ink-2);
+  }
+  .hero-facts b {
+    color: var(--color-ink);
+    font-family: var(--font-figure);
+    font-weight: 700;
+  }
+
+  /* the advertisement slot: part of the field, not a box dropped onto it */
+  .hero-ad {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 220px;
+    aspect-ratio: 16 / 9;
+    padding: var(--s-4);
+    border: 1px dashed var(--color-line);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(150deg, var(--color-surface) 0%, transparent 70%);
+  }
+  .hero-ad-note {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-3);
+  }
+  @media (max-width: 1023.98px) {
+    .hero-ad {
+      min-height: 150px;
+    }
+  }
+
   .sec-sub {
     margin-top: 2px;
     font-size: 13px;

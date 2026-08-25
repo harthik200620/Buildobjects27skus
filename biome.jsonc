@@ -159,7 +159,8 @@
         "infra/**",
         "services/pipeline/**",
         "packages/db/src/*.ts",
-        "packages/assets3d/src/**"
+        "packages/assets3d/src/**",
+        "packages/assets3d/tools/**"
       ],
       "linter": {
         "rules": {

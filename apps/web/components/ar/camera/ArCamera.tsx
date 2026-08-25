@@ -3,18 +3,27 @@
 import {
   type Anchor,
   anchorFromPixel,
+  areaPrompt,
   type CompositeResult,
   cameraPosition,
   cameraRotationFromQuat,
   DEFAULT_CAMERA_HEIGHT_M,
+  defaultDropPoint,
+  hasOpenArea,
   intrinsicsFor,
   type Mat3,
+  matchSurface,
   type PlacementRule,
   type ProductDims,
   pitchFromHorizon,
+  productNoun,
   type Quat,
   type SceneAnalysis,
+  SURFACE_LABEL,
   type Surface,
+  type SurfaceMatch,
+  surfaceDistanceM,
+  surfacePrompt,
   type Vec3,
 } from '@buildobjects/ar-engine';
 import React from 'react';
@@ -49,12 +58,17 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   const draggingRef = React.useRef<boolean>(false);
   const lastPoseRef = React.useRef<{ q: Quat; R: Mat3; C: Vec3 } | null>(null);
 
-  const [surface, setSurface] = React.useState<Surface>(rule.surfaces.includes('wall') ? 'wall' : rule.surfaces[0]);
+  /* The mount starts at the rule's own first choice, not at 'wall'. PLACEMENT_RULES lists a
+     category's surfaces in preference order — cement is ['floor','ground'], CCTV is
+     ['wall','ceiling'] — so this is the only line needed to make every category start right. */
+  const [surface, setSurface] = React.useState<Surface>(rule.surfaces[0]);
   const [scaleMult, setScaleMult] = React.useState<number>(1.8);
   const [yaw, setYaw] = React.useState<number>(0);
   const [facingMode, setFacingMode] = React.useState<'environment' | 'user'>('environment');
-  const [wallDetected, setWallDetected] = React.useState<boolean | null>(null);
-  const [wallConfidence, setWallConfidence] = React.useState<number>(0);
+  const [match, setMatch] = React.useState<SurfaceMatch>({ surface: null, detection: null, confidence: 0 });
+  /* False until the analysis has answered once. Telling someone their wall is missing before
+     anything has looked for it is how a working feature gets reported as broken. */
+  const [analysed, setAnalysed] = React.useState(false);
   const [sceneAnalysis, setSceneAnalysis] = React.useState<SceneAnalysis | null>(null);
   const [busy, setBusy] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<(CompositeResult & { dataUrl: string; ms: number; fallback?: boolean }) | null>(null);
@@ -62,6 +76,15 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
 
   // Device orientation gyro feed
   const orientationFeed = useOrientation(true);
+
+  /*
+   * The sentence over the feed. Everything it says comes from the placement rule, so it is
+   * right for all twenty-seven SKUs without a per-category branch: "Point your camera at a wall
+   * to place this fire extinguisher", "…at a floor to place this cement bag".
+   */
+  const noun = React.useMemo(() => productNoun(category), [category]);
+  const prompt = React.useMemo(() => surfacePrompt(rule, match, analysed, noun), [rule, match, analysed, noun]);
+  const areaOk = React.useMemo(() => hasOpenArea(rule, sceneAnalysis), [rule, sceneAnalysis]);
 
   /*
    * ── 1. Camera stream ──────────────────────────────────────────────────────
@@ -89,6 +112,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
 
   const ruleRef = React.useRef(rule);
   ruleRef.current = rule;
+  /* Read through a ref inside the render loop and the placement callbacks: the match changes
+     every few seconds as the analysis returns, and closing over it would re-create the loop. */
+  const matchRef = React.useRef(match);
+  matchRef.current = match;
   const dimsRef = React.useRef(dims);
   dimsRef.current = dims;
 
@@ -162,21 +189,21 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
           rendererRef.current.setLighting(analysis.lighting);
         }
 
-        // Evaluate wall recognition from Gemini
-        const walls = (analysis.surfaces ?? []).filter((s) => s.type === 'wall');
-        const wall = walls.sort((a, b) => b.confidence - a.confidence)[0];
-        if (wall && wall.confidence >= 0.35) {
-          setWallDetected(true);
-          setWallConfidence(Math.round(wall.confidence * 100));
-        } else {
-          setWallDetected(false);
-          setWallConfidence(0);
-        }
+        /* Which of THIS product's surfaces is in view. `matchSurface` walks the rule's own
+           preference order and treats floor/ground as interchangeable, so a cement bag anchors
+           to the ground outdoors and the floor indoors without a second code path. */
+        const m = matchSurface(ruleRef.current, analysis);
+        setMatch(m);
+        setAnalysed(true);
+        /* Follow the surface the room actually offers. Someone pointing a phone at the floor
+           for a fire extinguisher should get the floor mount, not a silent refusal. */
+        if (m.surface) setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
       },
       onError: (err) => {
-        if (err.status === 503) {
-          setWallDetected(true);
-        }
+        /* 503 = the vision model is unavailable, not "there is no surface". Refusing to place
+           anything because the analyser is down would make the whole view useless offline, so
+           the geometry takes over and the prompt stops claiming to know. */
+        if (err.status === 503) setAnalysed(true);
       },
     });
 
@@ -206,7 +233,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         v,
         surface: targetSurface,
         yawDeg: yaw,
-        wallDistanceM: 2.2,
+        wallDistanceM: surfaceDistanceM(targetSurface, matchRef.current),
       });
 
       if (newAnchor) {
@@ -224,10 +251,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     (targetSurface: Surface = surface) => {
       const map = coverMapRef.current;
       if (!map) return;
-      // Upper-middle of visible camera frame (x: 50%, y: 35%)
-      const midU = map.x0 + map.cw * 0.5;
-      const midV = map.y0 + map.ch * 0.35;
-      placeAtPixel(midU, midV, targetSurface);
+      /* Where the product belongs in frame depends on what it stands on. A fixed y = 0.35 put
+         wall items right and dropped every cement bag, tile and total station into mid-air. */
+      const drop = defaultDropPoint(ruleRef.current, targetSurface);
+      placeAtPixel(map.x0 + map.cw * drop.u, map.y0 + map.ch * drop.v, targetSurface);
     },
     [placeAtPixel, surface],
   );
@@ -281,20 +308,19 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       schedulerRef.current?.tick();
     }
 
-    // Auto-place on first valid frame
+    // Auto-place on first valid frame, at the point this category's surface actually is
     if (!autoPlacedRef.current) {
       autoPlacedRef.current = true;
-      const midU = map.x0 + map.cw * 0.5;
-      const midV = map.y0 + map.ch * 0.35;
+      const drop = defaultDropPoint(ruleRef.current, surface);
       const initAnchor = anchorFromPixel({
         K,
         R,
         C,
-        u: midU,
-        v: midV,
+        u: map.x0 + map.cw * drop.u,
+        v: map.y0 + map.ch * drop.v,
         surface,
         yawDeg: yaw,
-        wallDistanceM: 2.2,
+        wallDistanceM: surfaceDistanceM(surface, matchRef.current),
       });
       if (initAnchor) {
         anchorRef.current = initAnchor;
@@ -306,27 +332,26 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       renderer.setAnchor(anchorRef.current, yaw);
     }
 
-    // Check if the bulb is currently visible inside the camera view
+    // Check whether the product is currently visible inside the camera view
     if (anchorRef.current && !draggingRef.current && hasVideo) {
       const bounds = renderer.screenBounds();
       const isVisible = bounds !== null && bounds.x + bounds.w > -20 && bounds.x < map.w + 20 && bounds.y + bounds.h > -20 && bounds.y < map.h + 20;
 
       if (!isVisible) {
         offScreenFramesRef.current += 1;
-        // If bulb has been out of camera view for > 35 frames (~0.6s), automatically recenter it into visible middle!
+        // Out of view for > 35 frames (~0.6 s): bring it back to this category's drop point.
         if (offScreenFramesRef.current > 35) {
           offScreenFramesRef.current = 0;
-          const midU = map.x0 + map.cw * 0.5;
-          const midV = map.y0 + map.ch * 0.35;
+          const drop = defaultDropPoint(ruleRef.current, surface);
           const reAnchor = anchorFromPixel({
             K,
             R,
             C,
-            u: midU,
-            v: midV,
+            u: map.x0 + map.cw * drop.u,
+            v: map.y0 + map.ch * drop.v,
             surface,
             yawDeg: yaw,
-            wallDistanceM: 2.2,
+            wallDistanceM: surfaceDistanceM(surface, matchRef.current),
           });
           if (reAnchor) {
             anchorRef.current = reAnchor;
@@ -504,7 +529,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   };
 
   return (
-    <div className="ar-stage ar-camera" style={{ position: 'relative', width: '100%', height: '100%', minHeight: '540px', background: '#0f172a' }}>
+    <div className="ar-stage ar-camera" style={{ position: 'relative', width: '100%', height: '100%', minHeight: '540px', background: 'var(--color-canvas)' }}>
       {/* 1. Live Camera Video Feed */}
       <video
         ref={videoRef}
@@ -553,7 +578,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(15, 23, 42, 0.88)',
+            background: 'var(--color-ar-panel)',
             backdropFilter: 'blur(8px)',
             padding: '24px',
             textAlign: 'center',
@@ -565,23 +590,23 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
               width: 68,
               height: 68,
               borderRadius: '50%',
-              background: 'rgba(92, 225, 230, 0.15)',
+              background: 'var(--color-ar-wash)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: 16,
-              border: '1px solid rgba(92, 225, 230, 0.4)',
+              border: '1px solid var(--color-ar-line)',
             }}
           >
             <span style={{ fontSize: 32 }}>🎥</span>
           </div>
           <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: '#fff' }}>Start Live Camera AR</h3>
-          <p style={{ fontSize: 14, color: 'rgba(255, 255, 255, 0.75)', maxWidth: 380, marginBottom: 24, lineHeight: '20px' }}>
+          <p style={{ fontSize: 14, color: 'var(--color-ink-2)', maxWidth: 380, marginBottom: 24, lineHeight: '20px' }}>
             {camStatus === 'requesting'
               ? 'Opening camera feed and starting 3D tracking…'
               : camStatus === 'denied'
-                ? 'Camera permission is needed to view the 3D bulb on your wall. Please click below to allow camera access.'
-                : 'Click below to enable your camera and anchor the 3D bulb in real-time on your wall.'}
+                ? `Camera access is needed to place ${noun} on your ${rule.surfaceLabel} at its real size. Allow it below.`
+                : `Turn on your camera and see ${noun} on your ${rule.surfaceLabel}, at its true size, right where it will go.`}
           </p>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
             <button
@@ -598,18 +623,12 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         </div>
       )}
 
-      {/* 5. Surface Detection Banner */}
-      {!result && camStatus === 'streaming' && wallDetected === false && (
-        <div className="ar-wall-banner">
-          <span>⚠️</span>
-          <span>Point camera at your wall or ceiling to lock placement</span>
-        </div>
-      )}
-
-      {!result && camStatus === 'streaming' && wallDetected === true && (
-        <div className="ar-wall-banner ar-wall-banner--ok">
-          <span>🟢</span>
-          <span>Wall detected · Locked in room ({wallConfidence}%)</span>
+      {/* 5. Surface prompt — the one instruction, in the rule's own words */}
+      {!result && camStatus === 'streaming' && (
+        <div className={`ar-surface-prompt${prompt.tone === 'ok' ? ' ar-surface-prompt--ok' : prompt.tone === 'seeking' ? ' ar-surface-prompt--seeking' : ''}`}>
+          <span aria-hidden>{prompt.tone === 'ok' ? '◉' : prompt.tone === 'seeking' ? '◌' : '⌖'}</span>
+          <span>{!areaOk && prompt.tone === 'ok' ? areaPrompt(rule) : prompt.text}</span>
+          {prompt.tone === 'ok' && match.confidence > 0 && <span style={{ opacity: 0.75 }}>{match.confidence}%</span>}
         </div>
       )}
 
@@ -692,7 +711,12 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
                 <IconRuler size={13} /> 1:1 True size
               </button>
             )}
-            <button type="button" className="ar-hud-glass ar-hud-pill cursor-pointer" onClick={() => autoPlaceInMiddle(surface)} aria-label="Re-center bulb">
+            <button
+              type="button"
+              className="ar-hud-glass ar-hud-pill cursor-pointer"
+              onClick={() => autoPlaceInMiddle(surface)}
+              aria-label="Re-centre the product in view"
+            >
               <IconRefresh size={13} /> Re-center
             </button>
             <button type="button" className="ar-hud-glass ar-hud-pill cursor-pointer" onClick={onExit} aria-label="Exit AR mode">
@@ -707,38 +731,30 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         <div className="ar-hud" style={{ bottom: '16px', zIndex: 5, flexWrap: 'wrap', gap: 8 }}>
           <div className="ar-hud-glass ar-hud-pill">
             <span>Mount:</span>
-            <button
-              type="button"
-              className="chip"
-              style={{
-                padding: '2px 8px',
-                fontSize: 12,
-                background: surface === 'wall' ? 'var(--accent)' : 'transparent',
-                color: surface === 'wall' ? '#000' : '#fff',
-              }}
-              onClick={() => {
-                setSurface('wall');
-                autoPlaceInMiddle('wall');
-              }}
-            >
-              Wall
-            </button>
-            <button
-              type="button"
-              className="chip"
-              style={{
-                padding: '2px 8px',
-                fontSize: 12,
-                background: surface === 'ceiling' ? 'var(--accent)' : 'transparent',
-                color: surface === 'ceiling' ? '#000' : '#fff',
-              }}
-              onClick={() => {
-                setSurface('ceiling');
-                autoPlaceInMiddle('ceiling');
-              }}
-            >
-              Ceiling
-            </button>
+            {/* One button per surface this category may sit on, from PLACEMENT_RULES. It was a
+                fixed Wall / Ceiling pair, which meant twenty-four of the twenty-seven SKUs could
+                only be mounted somewhere they do not belong. */}
+            {rule.surfaces.map((sf) => (
+              <button
+                key={sf}
+                type="button"
+                className="chip"
+                aria-pressed={surface === sf}
+                style={{
+                  padding: '2px 8px',
+                  fontSize: 12,
+                  textTransform: 'capitalize',
+                  background: surface === sf ? 'var(--color-brand)' : 'transparent',
+                  color: surface === sf ? 'var(--color-on-brand)' : 'var(--color-header-ink)',
+                }}
+                onClick={() => {
+                  setSurface(sf);
+                  autoPlaceInMiddle(sf);
+                }}
+              >
+                {SURFACE_LABEL[sf] ?? sf}
+              </button>
+            ))}
           </div>
 
           <div className="ar-hud-glass ar-hud-pill">
@@ -785,7 +801,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
             left: '16px',
             right: '16px',
             zIndex: 6,
-            background: 'rgba(239,68,68,.9)',
+            background: 'var(--color-ar-danger)',
             color: '#fff',
             padding: '8px 16px',
             borderRadius: 8,
