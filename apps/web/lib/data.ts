@@ -1,5 +1,5 @@
 import 'server-only';
-import { DEPARTMENTS } from '@buildobjects/catalog';
+import { CATEGORIES, PRODUCT_CATEGORY } from '@buildobjects/catalog';
 import { categories, getDb, products, regions as regionsTable } from '@buildobjects/db';
 import { asc, eq, sql } from 'drizzle-orm';
 import { cookies } from 'next/headers';
@@ -143,69 +143,71 @@ export async function loadSession(): Promise<SessionClaims | null> {
   return verifySession(jar.get(SESSION_COOKIE)?.value);
 }
 
-/** One of the thirteen categories, with the products that sit inside it. */
-export interface DepartmentCard {
-  key: string;
+/** One of the thirty-five categories, with any products that sit inside it. */
+export interface CategoryGroup {
+  slug: string;
   name: string;
-  /** The products in it — cement, bricks and steel under Construction Materials. */
+  /** The products in it — Cement inside Concreting. Empty for the twenty-six not stocked yet. */
   products: CategoryCard[];
-  productCount: number;
-  liveProducts: number;
   skuCount: number;
   brandCount: number;
   /**
-   * Borrowed from the best product in the category: a category has no photograph of its own,
-   * and a real picture of cement says "construction materials" better than any drawing of the
-   * idea would. Prefers a stocked product, since those have real photography rather than
-   * generated art.
+   * A category has no photograph of its own, so it borrows one from a product inside it — a real
+   * picture of cement says "concreting" better than a drawing of the idea would. The twenty-six
+   * with no products fall back to the art generated for their own row.
    */
   heroImageKey: string | null;
   status: 'live' | 'upcoming';
 }
 
 /**
- * The catalogue's top level: thirteen categories, each carrying its products.
+ * The catalogue's top level: the thirty-five categories of `PRODUCTS LIST.xlsx`.
  *
- * Derived from `loadCategories()` rather than queried, because the department is already a
- * column on every product row — there is no thirteen-row table to fetch and nothing to keep in
- * step. `DEPARTMENTS` fixes the order, which is the workbook's order.
+ * Built by folding the `categories` table onto `CATEGORIES`. Twenty-six of those rows ARE a
+ * category and pass straight through; nine are products and are filed under the category the
+ * workbook puts them in; seven categories have no row at all and exist only here, because the
+ * table was seeded before anyone noticed cement was not a category.
+ *
+ * No migration: the rows keep their slugs, their art and their SKUs, and this decides which of
+ * the two levels each one is.
  */
-export async function loadDepartments(): Promise<DepartmentCard[]> {
-  const all = await loadCategories();
-  return DEPARTMENTS.map(({ key, name }) => {
-    const inIt = all.filter((c) => c.department === key);
-    const live = inIt.filter((c) => c.status === 'live');
-    /* A stocked product's hero first; otherwise whatever art the first product has. */
-    const hero = (live.find((c) => c.heroImageKey) ?? inIt.find((c) => c.heroImageKey))?.heroImageKey ?? null;
+export async function loadCatalogueCategories(): Promise<CategoryGroup[]> {
+  const rows = await loadCategories();
+  const bySlug = new Map(rows.map((r) => [r.slug, r]));
+
+  return CATEGORIES.map(({ slug, name }) => {
+    const own = bySlug.get(slug);
+    const products = rows.filter((r) => PRODUCT_CATEGORY[r.slug] === slug);
+    const live = products.some((c) => c.status === 'live') || (products.length === 0 && own?.status === 'live');
+    /* A stocked product's photograph first; it is a real one, where a category's own art is generated. */
+    const hero =
+      products.find((c) => c.status === 'live' && c.heroImageKey)?.heroImageKey ??
+      products.find((c) => c.heroImageKey)?.heroImageKey ??
+      own?.heroImageKey ??
+      null;
     return {
-      key,
+      slug,
       name,
-      products: inIt,
-      productCount: inIt.length,
-      liveProducts: live.length,
-      skuCount: inIt.reduce((n, c) => n + (c.stats?.sku_count ?? 0), 0),
-      brandCount: inIt.reduce((n, c) => n + c.brandCount, 0),
+      products,
+      skuCount: products.reduce((n, c) => n + (c.stats?.sku_count ?? 0), 0),
+      brandCount: products.reduce((n, c) => n + c.brandCount, 0),
       heroImageKey: hero,
-      status: live.length ? ('live' as const) : ('upcoming' as const),
+      status: live ? ('live' as const) : ('upcoming' as const),
     };
-  }).filter((d) => d.productCount > 0);
+  });
 }
 
 /**
- * THE THREE LEVELS, AND WHAT THE WORKBOOK CALLS THEM.
+ * A ROW IN `categories` — which is either a category or a product, and the table cannot tell you
+ * which.
  *
- * `WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx` names them in the first row of every sheet:
+ * The tree is CATEGORY → PRODUCT → SKU, and `PRODUCTS LIST.xlsx` is the authority on the top of
+ * it: thirty-five sheets, one per category. Cement is not among them — CONCRETING is, and cement
+ * is a product on that sheet. Twenty-six rows in this table are categories, nine are products,
+ * and `PRODUCT_CATEGORY` in @buildobjects/catalog is what separates them.
  *
- *     CEMENT  ·  Construction Materials  ·  3 brands  ·  52 specifications  ·  unit: bag
- *     ^product   ^category                  ^the SKUs underneath it
- *
- * So the tree is CATEGORY → PRODUCT → SKU. Cement is a product; the category it sits in is
- * Construction Materials. Tiles and Glass are two products in one category, Building Materials.
- *
- * The database calls the middle level `categories` and the top level `department`, and those
- * column names are not worth a migration — but the names the store *shows* have to be the
- * workbook's, because that is the tree the buyer is being sold. `Department` here means the
- * thirteen the workbook calls categories, and `CategoryCard` is one product within one.
+ * Renaming the table is not worth a migration; deciding the level at load time is
+ * (`loadCatalogueCategories`).
  */
 export interface CategoryCard {
   slug: string;

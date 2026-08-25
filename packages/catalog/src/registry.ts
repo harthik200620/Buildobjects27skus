@@ -126,6 +126,102 @@ export function slugKey(label: string): string {
  * the nav, the sidebar and the homepage cannot drift from each other.
  * `services/pipeline/registry/taxonomy.json` is validated against these keys at seed time.
  */
+/**
+ * THE THIRTY-FIVE CATEGORIES, and the nine products that sit inside them.
+ *
+ * The source is `Desktop/Build Objects/PRODUCTS LIST.xlsx` — one sheet per category, thirty-five
+ * of them, in this order. Cement is not one: CONCRETING is, and cement is a product in it. The
+ * same is true of every flagship the store sells today.
+ *
+ *     category            product              why
+ *     CONCRETING          Cement               the gap file's own index reads
+ *                                              "CEMENT, LIME, GYPSUM & BINDER GRADES -> CONCRETING"
+ *     FLOORING            Tiles                22 tile rows on that sheet; it is the subject
+ *     DOORS & WINDOWS     Glass                20 glass rows; "DOORS, WINDOWS, GLASS & ARCHITECTURAL"
+ *     ELECTRICALS         Bulbs                "Bulbs", "LED Bulbs"
+ *     SECURITY SYSTEMS    CCTV                 the sheet's subject; ELECTRICALS lists only its cables
+ *     SOLAR               Solar Panels         "Solar panels"
+ *     FIRE SYSTEM         Fire Extinguishers   "Fire Extinguishers"
+ *     DRAFTING & MEAS.    Total Stations       "Total Stations"; the other sheets list it as a tool
+ *     WATER PROOFING      Epoxy                the construction-chemicals sheet - admixtures, bonding
+ *                                              agents, injection grouts. A judgement call: epoxy grout
+ *                                              also appears under FLOORING and RAILINGS.
+ *
+ * Twenty-six of the thirty-five have no products yet. They are still real, clickable places —
+ * an upcoming category is a promise the buyer can see, not a dead link.
+ */
+export const CATEGORIES = [
+  { slug: 'safety-equipment', name: 'Safety Tools & Equipment' },
+  { slug: 'excavation', name: 'Excavation' },
+  { slug: 'centering', name: 'Centering' },
+  { slug: 'steel', name: 'Steel' },
+  { slug: 'concreting', name: 'Concreting' },
+  { slug: 'bricks-and-blocks', name: 'Bricks & Blocks' },
+  { slug: 'doors-windows', name: 'Doors & Windows' },
+  { slug: 'flooring', name: 'Flooring' },
+  { slug: 'painting', name: 'Painting' },
+  { slug: 'electricals', name: 'Electricals' },
+  { slug: 'roofing', name: 'Roofing' },
+  { slug: 'plumbing', name: 'Plumbing' },
+  { slug: 'hvac-materials', name: 'HVAC Materials' },
+  { slug: 'fire-system', name: 'Fire System' },
+  { slug: 'railings', name: 'Railings' },
+  { slug: 'internal-works', name: 'Internal Works' },
+  { slug: 'kitchen-ware', name: 'Kitchen Ware' },
+  { slug: 'waterproofing', name: 'Water Proofing' },
+  { slug: 'security-systems', name: 'Security Systems' },
+  { slug: 'solar', name: 'Solar' },
+  { slug: 'lift-elevators', name: 'Lift Elevators' },
+  { slug: 'external-works', name: 'External Works' },
+  { slug: 'heavy-equipment', name: 'Heavy Construction Equipment' },
+  { slug: 'transport-systems', name: 'Transport Systems' },
+  { slug: 'machineries', name: 'Machineries' },
+  { slug: 'branding', name: 'Company Identity & Branding' },
+  { slug: 'administration', name: 'Administration Items' },
+  { slug: 'stationery', name: 'Stationery Items' },
+  { slug: 'paper-sheet', name: 'Paper & Sheet Items' },
+  { slug: 'electronic-printing', name: 'Electronic & Printing Items' },
+  { slug: 'communication-furniture', name: 'Communication & Furniture Items' },
+  { slug: 'drafting-measurement', name: 'Drafting & Measurement Items' },
+  { slug: 'finance-accounting', name: 'Finance & Accounting Items' },
+  { slug: 'storage-packaging', name: 'Storage & Packaging Items' },
+  { slug: 'presentation', name: 'Presentation Items' },
+] as const;
+
+export type CategorySlug = (typeof CATEGORIES)[number]['slug'];
+
+/**
+ * Product slug -> the category it belongs to.
+ *
+ * Only the nine the store stocks are here. Every other row in the `categories` table IS one of
+ * the thirty-five, and needs no entry.
+ */
+export const PRODUCT_CATEGORY: Record<string, string> = {
+  cement: 'concreting',
+  tiles: 'flooring',
+  glass: 'doors-windows',
+  bulbs: 'electricals',
+  cctv: 'security-systems',
+  'solar-panels': 'solar',
+  'fire-extinguishers': 'fire-system',
+  'total-stations': 'drafting-measurement',
+  epoxy: 'waterproofing',
+};
+
+/** The category a row belongs to: itself when it is a category, its parent when it is a product. */
+export function categoryOf(slug: string): string {
+  return PRODUCT_CATEGORY[slug] ?? slug;
+}
+
+export function categoryName(slug: string): string {
+  return CATEGORIES.find((c) => c.slug === slug)?.name ?? slug;
+}
+
+/** True when the slug names a product the store sells rather than a category it sells within. */
+export function isProduct(slug: string): boolean {
+  return slug in PRODUCT_CATEGORY;
+}
+
 export const DEPARTMENTS = [
   { key: 'construction-materials', name: 'Construction Materials' },
   { key: 'building-materials', name: 'Building Materials' },

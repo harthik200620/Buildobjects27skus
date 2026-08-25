@@ -1,4 +1,4 @@
-import { departmentName } from '@buildobjects/catalog';
+import { categoryName, categoryOf } from '@buildobjects/catalog';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -10,7 +10,7 @@ import { CategoryIcon, IconArrow } from '@/components/icons';
 import Pagination from '@/components/Pagination';
 import ProductCard from '@/components/ProductCard';
 import { allCategories, loadFacetConfig, searchSkus } from '@/lib/catalog';
-import { type DepartmentCard, loadCategory, loadDepartments, loadSession, serviceability } from '@/lib/data';
+import { type CategoryGroup, loadCatalogueCategories, loadCategory, loadSession, serviceability } from '@/lib/data';
 import { deliverBy } from '@/lib/delivery';
 import { parseFilters } from '@/lib/filters';
 import { inr } from '@/lib/media';
@@ -27,27 +27,29 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       description: `${cat.name} from the brands engineers specify — GST-stated prices, datasheets, and every product viewable in your room.`,
     };
   }
-  const dept = (await loadDepartments()).find((d) => d.key === category);
-  return dept
-    ? { title: dept.name, description: `${dept.productCount} products in ${dept.name} — ${dept.products.map((c) => c.name).join(', ')}.` }
+  const group = (await loadCatalogueCategories()).find((g) => g.slug === category);
+  return group
+    ? { title: group.name, description: `${group.products.length} products in ${group.name} — ${group.products.map((c) => c.name).join(', ')}.` }
     : { title: 'Category' };
 }
 
 export default async function CategoryPage({ params, searchParams }: { params: Promise<Params>; searchParams: Promise<Search> }) {
   const { category } = await params;
   const sp = await searchParams;
-  const cat = await loadCategory(category);
   /*
    * One route, two levels of the tree.
    *
-   * `/c/cement` is a product and lists the items in it; `/c/construction-materials` is the
-   * category cement sits in and lists the products. A product wins the slug when both could
-   * match — `external-works` is registered as both a category and its own only product, and the
-   * product is the one with items, filters and a price to show.
+   * `/c/concreting` is a category and lists the products in it; `/c/cement` is a product and
+   * lists the items. A slug that names a category holding products always resolves as the
+   * category — `waterproofing` and `drafting-measurement` are rows in the table AND categories
+   * with a product filed under them, and the category is the level above.
    */
+  const group = (await loadCatalogueCategories()).find((g) => g.slug === category);
+  if (group && group.products.length > 0) return <CategoryLanding group={group} />;
+
+  const cat = await loadCategory(category);
   if (!cat) {
-    const dept = (await loadDepartments()).find((d) => d.key === category);
-    if (dept) return <CategoryLanding dept={dept} />;
+    if (group) return <CategoryLanding group={group} />;
     notFound();
   }
   const state = parseFilters(sp);
@@ -65,7 +67,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
         <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
           /
         </span>
-        <Link href={`/c/${cat.department}`}>{departmentName(cat.department)}</Link>
+        <Link href={`/c/${categoryOf(cat.slug)}`}>{categoryName(categoryOf(cat.slug))}</Link>
         <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
           /
         </span>
@@ -167,14 +169,15 @@ export default async function CategoryPage({ params, searchParams }: { params: P
 }
 
 /**
- * A category: the thirteen the workbook names in the first row of every product sheet.
+ * A category: one of the thirty-five sheets in `PRODUCTS LIST.xlsx`.
  *
  * It has no filters and no price rail because a category does not have specifications — its
- * products do. What it owes the buyer is the answer to "what is in here", which is a grid of the
- * products and, when any of them are stocked, a way straight through to the shelf.
+ * products do. What it owes the buyer is the answer to "what is in here": the products, and when
+ * any of them are stocked, a way straight through to the shelf. Twenty-six of the thirty-five
+ * have nothing in them yet and say so rather than pretending otherwise.
  */
-function CategoryLanding({ dept }: { dept: DepartmentCard }) {
-  const live = dept.products.filter((c) => c.status === 'live');
+function CategoryLanding({ group }: { group: CategoryGroup }) {
+  const live = group.products.filter((c) => c.status === 'live');
 
   return (
     <div className="page shell">
@@ -183,51 +186,59 @@ function CategoryLanding({ dept }: { dept: DepartmentCard }) {
         <span className="mx-2" style={{ color: 'var(--ink-3)' }}>
           /
         </span>
-        <span aria-current="page">{dept.name}</span>
+        <span aria-current="page">{group.name}</span>
       </nav>
       <header className="page-head" style={{ paddingBottom: 'var(--s-3)' }}>
-        <h1 className="display page-title">{dept.name}</h1>
+        <h1 className="display page-title">{group.name}</h1>
         <p className="page-sub">
-          <span className="fig">{dept.productCount}</span> {dept.productCount === 1 ? 'product' : 'products'}
-          {dept.skuCount > 0 && (
+          {group.products.length === 0 ? (
+            'Arriving soon — nothing on the shelf in this category yet.'
+          ) : (
             <>
-              {' · '}
-              <span className="fig">{dept.skuCount}</span> {dept.skuCount === 1 ? 'item' : 'items'} on the shelf from{' '}
-              <span className="fig">{dept.brandCount}</span> {dept.brandCount === 1 ? 'brand' : 'brands'}
+              <span className="fig">{group.products.length}</span> {group.products.length === 1 ? 'product' : 'products'}
+              {group.skuCount > 0 && (
+                <>
+                  {' · '}
+                  <span className="fig">{group.skuCount}</span> {group.skuCount === 1 ? 'item' : 'items'} on the shelf from{' '}
+                  <span className="fig">{group.brandCount}</span> {group.brandCount === 1 ? 'brand' : 'brands'}
+                </>
+              )}
             </>
           )}
         </p>
       </header>
 
-      <ul className="cat-grid" style={{ marginTop: 'var(--s-4)' }}>
-        {dept.products.map((c, i) => (
-          <li key={c.slug}>
-            <CategoryTile
-              href={`/c/${c.slug}`}
-              name={c.name}
-              heroImageKey={c.heroImageKey}
-              soon={c.status !== 'live'}
-              priority={i < 4}
-              meta={
-                c.status === 'live' ? (
-                  <>
-                    <span className="fig">{c.brandCount}</span> {c.brandCount === 1 ? 'brand' : 'brands'}
-                    <span className="cat-dot" aria-hidden>
-                      ·
-                    </span>
-                    <span className="fig">{c.stats?.sku_count ?? 0}</span> {(c.stats?.sku_count ?? 0) === 1 ? 'item' : 'items'}
-                  </>
-                ) : undefined
-              }
-            />
-          </li>
-        ))}
-      </ul>
+      {group.products.length > 0 && (
+        <ul className="cat-grid" style={{ marginTop: 'var(--s-4)' }}>
+          {group.products.map((c, i) => (
+            <li key={c.slug}>
+              <CategoryTile
+                href={`/c/${c.slug}`}
+                name={c.name}
+                heroImageKey={c.heroImageKey}
+                soon={c.status !== 'live'}
+                priority={i < 4}
+                meta={
+                  c.status === 'live' ? (
+                    <>
+                      <span className="fig">{c.brandCount}</span> {c.brandCount === 1 ? 'brand' : 'brands'}
+                      <span className="cat-dot" aria-hidden>
+                        ·
+                      </span>
+                      <span className="fig">{c.stats?.sku_count ?? 0}</span> {(c.stats?.sku_count ?? 0) === 1 ? 'item' : 'items'}
+                    </>
+                  ) : undefined
+                }
+              />
+            </li>
+          ))}
+        </ul>
+      )}
 
       {live.length > 0 && (
         <p className="sec" style={{ marginTop: 'var(--s-6)' }}>
           <Link href={`/search?category=${live[0].slug}`} className="sec-more">
-            See everything stocked in {dept.name} <IconArrow size={14} style={{ display: 'inline', verticalAlign: -1 }} />
+            See everything stocked in {group.name} <IconArrow size={14} style={{ display: 'inline', verticalAlign: -1 }} />
           </Link>
         </p>
       )}

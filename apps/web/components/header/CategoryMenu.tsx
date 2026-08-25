@@ -1,6 +1,6 @@
 'use client';
 
-import { DEPARTMENTS } from '@buildobjects/catalog';
+import { CATEGORIES, categoryOf, isProduct } from '@buildobjects/catalog';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -62,11 +62,12 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
 
   const close = () => setOpen(false);
   const panelId = `${id}-panel`;
-  const live = categories.filter((c) => c.status === 'live');
-  const byDepartment = DEPARTMENTS.map((d) => ({
-    ...d,
-    categories: categories.filter((c) => c.department === d.key && c.status !== 'live'),
-  })).filter((d) => d.categories.length > 0);
+  /* The thirty-five categories of PRODUCTS LIST.xlsx. The nine that stock something lead, each
+     naming the products inside it; the rest follow as places the catalogue will reach. */
+  const products = categories.filter((c) => isProduct(c.slug));
+  const groups = CATEGORIES.map((d) => ({ key: d.slug, name: d.name, categories: products.filter((c) => categoryOf(c.slug) === d.slug) }));
+  const live = groups.filter((g) => g.categories.some((c) => c.status === 'live'));
+  const byDepartment = groups.filter((g) => !g.categories.some((c) => c.status === 'live'));
   return (
     <div className="cat-menu-wrap" ref={wrap}>
       {variant === 'all' ? (
@@ -107,46 +108,40 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
             </div>
             <div className="cat-menu-scroll">
               <ul className="cat-menu-list">
-                {live.map((c, i) => (
-                  <li key={c.slug}>
+                {live.map((g, i) => (
+                  <li key={g.key}>
                     <Link
                       ref={i === 0 ? first : undefined}
-                      href={`/c/${c.slug}`}
+                      href={`/c/${g.key}`}
                       className="cat-menu-row"
-                      aria-current={pathname === `/c/${c.slug}` ? 'page' : undefined}
+                      aria-current={pathname === `/c/${g.key}` ? 'page' : undefined}
                       onClick={close}
                     >
-                      <CategoryIcon icon={c.icon ?? 'cement'} size={22} />
-                      <span className="cat-menu-name">{c.name}</span>
+                      <CategoryIcon icon={g.categories[0]?.icon ?? 'cement'} size={22} />
+                      <span className="cat-menu-name">{g.name}</span>
+                      <span className="cat-menu-in">{g.categories.map((c) => c.name).join(', ')}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
-              {byDepartment.map((d) => (
-                <div key={d.key} className="cat-menu-dept">
-                  <h3 className="cat-menu-dept-name">
-                    {/* The heading is the category itself — cement lives inside this, not beside it. */}
-                    <Link href={`/c/${d.key}`} onClick={close}>
-                      {d.name}
-                    </Link>
-                  </h3>
-                  <ul className="cat-menu-list">
-                    {d.categories.map((c) => (
-                      <li key={c.slug}>
-                        <Link
-                          href={`/c/${c.slug}`}
-                          className="cat-menu-row is-soon"
-                          aria-current={pathname === `/c/${c.slug}` ? 'page' : undefined}
-                          onClick={close}
-                        >
-                          <CategoryIcon icon={c.icon ?? 'cement'} size={20} />
-                          <span className="cat-menu-name">{c.name}</span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              <div className="cat-menu-dept">
+                <h3 className="cat-menu-dept-name">On the way</h3>
+                <ul className="cat-menu-list">
+                  {byDepartment.map((g) => (
+                    <li key={g.key}>
+                      <Link
+                        href={`/c/${g.key}`}
+                        className="cat-menu-row is-soon"
+                        aria-current={pathname === `/c/${g.key}` ? 'page' : undefined}
+                        onClick={close}
+                      >
+                        <CategoryIcon icon={g.key} size={20} />
+                        <span className="cat-menu-name">{g.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
             <div className="cat-menu-foot">
               <Link href="/search" className="link" onClick={close}>

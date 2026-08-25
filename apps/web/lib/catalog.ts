@@ -372,7 +372,24 @@ export const allCategories = memoOnce(async (): Promise<CategoryRef[]> => {
       .from(categories)
       .orderBy(asc(categories.displayOrder));
   } catch {
-    return [];
+    /*
+     * No database: the frozen catalogue has every row this needs.
+     *
+     * This used to return an empty array, and because the nav strip, the category dropdown, the
+     * sidebar rail and the footer all read from here, a deployment without a database served a
+     * store whose every category list was blank — while the pages themselves rendered fine from
+     * the snapshot. The two paths have to fall back to the same place.
+     */
+    const { staticCategories } = await import('./static-catalogue');
+    return staticCategories.map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      nameTe: c.nameTe,
+      nameHi: c.nameHi,
+      icon: c.icon,
+      department: c.department,
+      status: c.status,
+    }));
   }
 });
 

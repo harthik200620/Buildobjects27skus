@@ -1,6 +1,6 @@
 'use client';
 
-import { DEPARTMENTS } from '@buildobjects/catalog';
+import { CATEGORIES, categoryOf, isProduct } from '@buildobjects/catalog';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -9,16 +9,12 @@ import { useDismiss } from '@/components/useDismiss';
 import { AR_DEMO_HREF, type NavCategory } from './types';
 
 /**
- * The department strip under the header, and the panel of categories each one drops.
+ * The category strip under the header, and the products each one drops.
  *
- * The strip used to list all nine categories flat, which worked at nine and stops working at
- * thirty-seven. Departments are the level the specification workbook already organised the
- * catalogue by — Electrical Items over Bulbs, Surveying Equipment over Total Stations — so a
- * buyer reads eight words instead of thirty-seven, and the products are one hover away.
- *
- * Only departments that stock something today get a place in the strip; the rest of the tree
- * lives behind "All" and on the category pages, where an empty shelf is stated rather than
- * dressed up as a destination.
+ * These are the categories of `PRODUCTS LIST.xlsx` — Concreting over Cement, Flooring over
+ * Tiles — so the strip reads the same tree the home page does. Only the ones that stock
+ * something get a place here; the other twenty-six live behind "All" and on their own pages,
+ * where an empty shelf is stated rather than dressed up as a destination.
  */
 export default function NavLinks({ categories, arHref = AR_DEMO_HREF }: { categories: NavCategory[]; arHref?: string }) {
   const pathname = usePathname();
@@ -58,9 +54,9 @@ export default function NavLinks({ categories, arHref = AR_DEMO_HREF }: { catego
    */
   const departments = React.useMemo(
     () =>
-      DEPARTMENTS.map((d) => {
-        const mine = categories.filter((c) => c.department === d.key);
-        return { ...d, categories: [...mine.filter((c) => c.status === 'live'), ...mine.filter((c) => c.status !== 'live')] };
+      CATEGORIES.map((d) => {
+        const mine = categories.filter((c) => isProduct(c.slug) && categoryOf(c.slug) === d.slug);
+        return { key: d.slug, name: d.name, categories: [...mine.filter((c) => c.status === 'live'), ...mine.filter((c) => c.status !== 'live')] };
       }).filter((d) => d.categories.some((c) => c.status === 'live')),
     [categories],
   );
@@ -73,11 +69,10 @@ export default function NavLinks({ categories, arHref = AR_DEMO_HREF }: { catego
       {departments.map((d) => {
         const expanded = open === d.key;
         const here = d.categories.some((c) => pathname === `/c/${c.slug}`);
-        // A department with one category and nothing coming is a link, not a menu of one.
+        // A category holding one product is a link to the category, not a menu of one.
         if (d.categories.length === 1) {
-          const only = d.categories[0];
           return (
-            <Link key={d.key} href={`/c/${only.slug}`} className="nav-link" aria-current={here ? 'page' : undefined}>
+            <Link key={d.key} href={`/c/${d.key}`} className="nav-link" aria-current={here ? 'page' : undefined}>
               {d.name}
             </Link>
           );

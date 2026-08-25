@@ -2,7 +2,7 @@ import Link from 'next/link';
 import CategoryTile from '@/components/CategoryTile';
 import { IconArrow, IconClockCheck, IconEstimate, IconPin, IconRoom, IconShield, IconStorefront } from '@/components/icons';
 import { loadFlagshipSkus } from '@/lib/catalog';
-import { loadDepartments } from '@/lib/data';
+import { loadCatalogueCategories } from '@/lib/data';
 import { inr } from '@/lib/media';
 
 export const revalidate = 60;
@@ -13,19 +13,16 @@ const EAGER = 4;
 /**
  * The front door shows CATEGORIES. Only categories.
  *
- * The tree is the one the product workbook sets out in the first row of every sheet —
- * `CEMENT · Construction Materials · 3 brands` — which reads category, product, then the brands
- * underneath. So cement is not a category: it is a product inside Construction Materials, next to
- * bricks and steel. This page used to show all thirty-seven products as tiles and then a grid of
- * every SKU below them, which put the leaves of the tree on the page that exists to show its
- * branches.
+ * There are thirty-five of them and `PRODUCTS LIST.xlsx` is the authority — one sheet each, in
+ * this order. Cement is not one of them: CONCRETING is, and cement is a product on that sheet,
+ * the same way tiles are a product on FLOORING and glass on DOORS & WINDOWS.
  *
- * Thirteen tiles now. Each opens its category, and the products are in there.
+ * Thirty-five tiles. Each opens its category, and the products are in there.
  */
 export default async function Home() {
-  const [depts, skus] = await Promise.all([loadDepartments(), loadFlagshipSkus()]);
-  const productCount = depts.reduce((n, d) => n + d.productCount, 0);
-  const liveCategories = depts.filter((d) => d.status === 'live').length;
+  const [cats, skus] = await Promise.all([loadCatalogueCategories(), loadFlagshipSkus()]);
+  const productCount = cats.reduce((n, c) => n + c.products.length, 0);
+  const liveCategories = cats.filter((c) => c.status === 'live').length;
 
   return (
     <div className="page shell home">
@@ -57,7 +54,7 @@ export default async function Home() {
             </div>
             <p className="hero-facts">
               <span>
-                <b>{depts.length}</b> categories
+                <b>{cats.length}</b> categories
               </span>
               <span>
                 <b>{productCount}</b> products
@@ -71,7 +68,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── the catalogue's top level: thirteen categories, nothing below them ── */}
+      {/* ── the catalogue's top level: thirty-five categories, nothing below them ── */}
       <section className="sec" aria-labelledby="cats-h">
         <div className="sec-head">
           <div>
@@ -79,8 +76,8 @@ export default async function Home() {
               Shop by category
             </h2>
             <p className="sec-sub">
-              <span className="fig">{liveCategories}</span> of <span className="fig">{depts.length}</span> stocked today. Open one to see the products in it —
-              cement and steel are in Construction Materials, tiles and glass in Building Materials.
+              <span className="fig">{liveCategories}</span> of <span className="fig">{cats.length}</span> stocked today. Open one to see the products in it —
+              cement is in Concreting, tiles in Flooring, glass in Doors &amp; Windows.
             </p>
           </div>
           <Link href="/search" className="sec-more">
@@ -88,30 +85,28 @@ export default async function Home() {
           </Link>
         </div>
 
-        {depts.length === 0 ? (
+        {cats.length === 0 ? (
           <EmptyShelves />
         ) : (
           <ul className="cat-grid">
-            {depts.map((d, i) => (
-              <li key={d.key}>
+            {cats.map((c, i) => (
+              <li key={c.slug}>
                 <CategoryTile
-                  href={`/c/${d.key}`}
-                  name={d.name}
-                  heroImageKey={d.heroImageKey}
-                  soon={d.status !== 'live'}
+                  href={`/c/${c.slug}`}
+                  name={c.name}
+                  heroImageKey={c.heroImageKey}
+                  soon={c.status !== 'live'}
                   priority={i < EAGER}
                   meta={
-                    <>
-                      <span className="fig">{d.productCount}</span> {d.productCount === 1 ? 'product' : 'products'}
-                      {d.skuCount > 0 && (
-                        <>
-                          <span className="cat-dot" aria-hidden>
-                            ·
-                          </span>
-                          <span className="fig">{d.skuCount}</span> on the shelf
-                        </>
-                      )}
-                    </>
+                    c.products.length > 0 ? (
+                      <>
+                        <span className="fig">{c.products.length}</span> {c.products.length === 1 ? 'product' : 'products'}
+                        <span className="cat-dot" aria-hidden>
+                          ·
+                        </span>
+                        <span className="fig">{c.skuCount}</span> on the shelf
+                      </>
+                    ) : undefined
                   }
                 />
               </li>
