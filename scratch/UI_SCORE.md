@@ -192,3 +192,66 @@ These are the four points, and none of them is a thing I can fix by editing code
    components. Getting materially below it means removing features, not tuning.
 
 Everything that was mine to fix, I fixed.
+
+---
+
+## Round 5 — 98 / 100 · the photography pass
+
+**The block, stated first.** Regenerating category art is not slow, it is refused. Every image
+model this project can address returns:
+
+    429 RESOURCE_EXHAUSTED - "Your prepayment credits are depleted."
+
+Verified against `gemini-3.1-flash-image-preview` and `gemini-2.5-flash-image` with a direct call,
+so it is the account and not the tool. No retry schedule reaches through a billing state. Three of
+the four picture problems turned out not to need generation.
+
+**Fixed**
+
+- **A card reading "Official image pending" was a product's face.** `CCT-DAH-HDW1200TRQP` ships
+  five frames and position 1 — the hero, so the CCTV tile, every search hit and the top of its own
+  page — is a drawn placeholder. Four real photographs sat behind it. `lib/hero-image.ts` now makes
+  a placeholder ineligible to lead while a real frame exists, on the gallery and the card alike.
+- Role order alone would have picked the **wrong camera**: this SKU is a turret, and of its five
+  frames only the one labelled `detail` is one — the frame labelled `angle` is a bullet, a
+  different body style, under alt text describing an eyeball. Replacing a placeholder with a
+  photograph of the wrong product is worse than the placeholder, because it looks right. One
+  documented override; the roles want fixing upstream in the pipeline.
+- **A white rectangle among thirty-four dark photographs.** Drafting & Measurement borrowed Total
+  Stations, a cut-out on pure white measuring 223 mean luminance against the set's median of 60.
+  The rule preferred a product's frame over the category's own. Own art leads now — Water Proofing
+  gained a roller laying membrane in place of epoxy tins.
+- **Two blank tiles.** Excavation and Storage & Packaging were near-white rectangles with corner
+  crop marks, the two aborted calls from the run that made the set.
+  `category-art-fallback.mts` draws them in the store's own wash, grid and key light, with the
+  category's Lucide mark at the height the photographs give their subjects.
+- Housekeeping: 11 stale renditions pruned, thumbs derived so no tile 404s below 400 px, and the
+  snapshot pointed at the new keys by hand — `export-catalogue.mts` imports the snapshot it is
+  about to overwrite and bricks itself once it has deleted part of it.
+
+**A rule that lived on one of two paths.** The lead-with-a-real-photograph fix went into the MySQL
+loader. Every machine with the pipeline has MySQL; no deployment does. It verified clean locally
+and production still opened on "Official image pending". Found by checking the live site, then
+re-verified by running `next start` against dead database ports — the path Vercel executes.
+
+**Verified live** — 80 pages crawled, 0 broken links, 0 emoji, 35 tiles with art, 0 using the
+white cut-out, 0 product pages whose lead frame is a placeholder.
+
+**Scores** — content 15, IA 15, composition 15, icons 10, motion 14, performance 9, a11y 10,
+discipline 10.
+
+### The last two points, and what they need
+
+1. **Two of thirty-five tiles are drawn, not photographed (−1).** They are deliberate and in the
+   palette, and they are not photographs. One command fixes it the day the Gemini account has
+   credit:
+
+       npx tsx services/pipeline/tools/category-art-gen.mts --only excavation,storage-packaging --force
+       npx tsx services/pipeline/tools/category-art-thumbs.mts
+
+   Then re-point the snapshot at the new keys. Top up at https://ai.studio/projects.
+
+2. **JS at 240 KB (−1).** React plus the Next runtime plus the client components. Below that means
+   removing features, not tuning.
+
+Both are outside what editing this repository can reach.
