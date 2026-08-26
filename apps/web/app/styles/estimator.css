@@ -566,6 +566,10 @@
     gap: var(--s-6);
     margin-bottom: var(--s-4);
   }
+  /* The total is money, so it takes the money accent like the heaviest month does. It is the
+     same figure size as the two beside it — leading by POSITION rather than by growing, so the
+     row stays one rank of three rather than a headline with two footnotes. */
+  .time-total,
   .time-months,
   .time-peak {
     font-family: var(--font-figure);
@@ -578,6 +582,7 @@
   .time-months {
     color: var(--color-brand);
   }
+  .time-total,
   .time-peak {
     color: var(--color-coin-ink);
   }

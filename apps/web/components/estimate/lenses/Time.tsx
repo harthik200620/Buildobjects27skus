@@ -69,6 +69,15 @@ export default function Time({ result, decisions }: TimeProps) {
     <div className="lens-time">
       {/* ── the build, and the money, on one axis ─────────────────────────── */}
       <div className="time-head">
+        {/* The total leads. A section called "when the money leaves" that never says how much
+            money there is asks the reader to hold the figure in their head from another card. */}
+        <div>
+          <p className="micro">In all</p>
+          <p className="time-total fig">{formatRupees(result.grandTotal)}</p>
+          {/* Not "across N months" — the stat beside this one already says N months. The average
+              is the thing a reader is actually working out in their head from the two. */}
+          <p className="time-sub">{formatRupees(Math.round(result.grandTotal / Math.max(1, schedule.months)))} a month on average</p>
+        </div>
         <div>
           <p className="micro">This house takes</p>
           <p className="time-months fig">{schedule.months} months</p>
