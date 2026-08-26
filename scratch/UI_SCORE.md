@@ -255,3 +255,112 @@ discipline 10.
    removing features, not tuning.
 
 Both are outside what editing this repository can reach.
+
+## Round 6 — 96 / 100 · the north star
+
+**The bar moved, and that is why the number went down.** Rounds 1–5 scored the store against its
+own v1 design and finished at 98. This round scores it against `design-system/` — seven artboards,
+a new token layer and a 93-glyph icon set — which is a harder brief than the one the store was
+passing. Most of what round 5 shipped survives; what changed is what "good" was being measured
+against.
+
+### What the round actually fixed
+
+**The type ramp was the whole problem.** 12 → 24px is a 2× range and it is the ramp of a commodity
+marketplace: when the headline is nearly the size of the caption there is no drama on the page, and
+no amount of correctness compensates. Measured on the rendered home page now: **92px against a 17px
+lede, 5.4×**. Category and search pages went from a 24px bold over a 14px sub to a 44px serif over
+13.5px — 3.3×. Instrument Serif carries it; Schibsted Grotesk replaced Arimo, which was in the
+store to be neutral and succeeded. Four faces, 192 KB subset, down from 216 KB for three.
+
+**Section rhythm went 48px → 128px** and the home page became eight moves instead of four: hero,
+rate ticker, the three counters, the categories, the shelf, the promises, the invitation, footer.
+
+**The header lost 68px and the mark gained a third.** Two rows and 104px plus a 40px category strip
+became one 76px bar that condenses to 62. The arithmetic that forced the old shape — an Audiowide
+lockup and an 860px search field cannot share a row — was settled by moving search into a ⌘K
+palette, which gives it the viewport instead of the leftovers of a header row.
+
+**Four surfaces stand on photographs now** — home, category, search, cart — derived at stage time
+into a 640/1280/2560 ladder so a phone fetches 18 KB where it would have fetched 766.
+
+**Three defects in the supplied design system, each caught by measuring rather than by reading:**
+
+1. `--ink-3` at the specified `#8fa9ae` measured **4.19 on `--surf-4`** — below AA, on a token used
+   for the secondary labels that sit on pressed buttons and progress tracks. Shipped at `#96afb4`.
+2. Every glass surface in the store was rendering **unblurred**. Lightning CSS keeps both
+   `backdrop-filter` and `-webkit-backdrop-filter` when the value is a literal and drops the
+   standard one when it is a `var()` — so the tokenised way of writing it emitted only a prefixed
+   alias this engine does not implement. Nothing hand-writes the prefix now.
+3. The icon set was advertised as a drop-in replacement and was **missing four exports** that eight
+   call sites use to render a mark from a database string. It would have compiled everywhere except
+   the eight places it mattered.
+
+**And one in the artwork.** `MANIFEST.md` flags two plates as carrying fabricated UltraTech, ACC and
+Kajaria trade dress and calls its own fix "a mitigation, not a fix". Checked at native resolution:
+`site-materials` is clean; `catalogue-aisle` was not — the mid-ground stacks read "… Cement" down
+the pile, and that plate was about to become the backplate on all 35 category pages and on search.
+Cropped to its upper 46%, which loses nothing and is the better plate anyway at 3.90:1.
+
+### Verified, not assumed
+
+    103 pages crawled  ·  0 broken links  ·  0 emoji  ·  47 carrying a plate
+    lint · typecheck · tests · contrast (64 pairs) · type audit — all green
+    production build: 30 routes, no warnings
+    mobile 375px: 0px horizontal overflow, header fits, grids reflow to 2 / 1
+
+The CTA-collapse states were verified by driving the grid directly, because this browser pane has
+`document.hasFocus() === false` and cannot produce hover or focus styling: **0px at rest, 84px
+open**. That is a limitation of the harness, and it is why the two states were measured separately
+rather than by hovering.
+
+### Scores
+
+content 15 · IA 15 · composition 15 · icons 10 · motion 14 · performance 8 · a11y 10 · discipline 9
+
+### The four points, and what each one is
+
+**1. Images on a Retina desktop (−2).** Honest numbers, production build, cold:
+
+    1440px, dpr 1   images  391 KB      ← the common case
+    1440px, dpr 2   images 1560 KB      ← a Retina laptop
+     390px, dpr 2   images  388 KB
+    js 227 KB gzipped · css 28 KB · fonts 172 KB · document 24 KB
+
+The DPR-2 desktop figure is the honest headline and it is 35 photographic tiles taking the 800px
+rendition. There is no clever fix available in this repository: the tile is 318 × 337 and crops
+16:9 art with `object-fit: cover`, so it needs about 1,200 device pixels and is *already*
+under-fetching at 800. Dropping a rung makes them softer; adding one makes the page heavier. The
+real fix is a **portrait category rendition** cut by the pipeline to the tile's own aspect, which
+is a pipeline run and not a stylesheet change.
+
+**2. The estimator is restyled, not rebuilt (−1).** §10 of the brief asks for a stage scrubber that
+filters the breakdown and highlights the matching part of the house, two ledgers each gauged
+against its own entered budget with a "fit to my budget" action, and the addressable `iso-house.svg`
+animating group by group as questions are answered. What shipped is the total as an 80px display
+figure, the ±12% the model has always published drawn as a range bar, and the grand panel pinned.
+The rest is feature work, and the brief's own constraint is "do not add features. This is a
+restyle."
+
+**3. BO Coins has no page (−1).** §11 asks for `/coins`, "The Vault" — the coin as a hero object,
+the earn ladder, the engine track, the statement. What shipped is the coin itself: a real CSS 3D
+object with two faces, a milled conic rim on a `translateZ(-7px)` layer and a glint on the turn,
+spinning on a curve that **dwells face-on** at 0° and 180° instead of rotating linearly. It lives
+in the wallet. The page is a new route, which is the same "do not add features" call as above.
+
+Two smaller things, inside the scores above rather than beside them: the mega menu is the existing
+category popover on the new tokens rather than the three-column glass panel §5 draws, and the
+home hero has the photograph and the drafting grid but not the third layer — `iso-house.svg`
+drifting at 30% behind them.
+
+### Three plates are unused, and one of them permanently
+
+`construct-frame.webp` and `interior-warm.webp` have no page to live on — there is no Construct
+route and no interiors route, and adding one is a feature.
+
+`pdp-stage.webp` cannot be used at all, and this is measured rather than assumed: it is an empty
+lit plinth meant to have the product standing on it, and **0 of 28 SKUs have an alpha cut-out**
+(`cutout_key` is null on every row). Every product photograph in this catalogue is shot on white,
+so mounting one on a dark plinth shows a white rectangle floating on a photograph. The product page
+uses a lit CSS mount instead — `--plate-stage`, brightest at 50% 34%, which is where the key light
+falls in every photograph the pipeline commissions, with a floor shadow under the object.

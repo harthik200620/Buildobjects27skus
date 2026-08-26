@@ -90,3 +90,90 @@ Dated log of choices and one-line rationale. Newest at the bottom.
 - **The curated files no longer carry the fabrications.** 13,065 values — the "Verified Industry Standard" family, the `_parameter_#N` keys invented to hold "Certified Architectural Standard", and attributes no registry defines — are gone, taking those files from 4.1 MB to 0.6 MB and keeping 1,486 real values. Their `key_specs` lists were resynced to the workbook; they still named `product_type`, `grade` and `mix_ratio`, attributes that no longer exist.
 - **`pnpm validate` is part of `pnpm check` and of CI.** The validator already forbade a `verified` value without two sources — it simply was never run, which is how 12,895 of them survived. Wiring it in found three more things: those stale `key_specs`, a `cavity_gas` attribute no registry defines, and a `TypeError` in the validator itself, where a non-null assertion on an unknown key crashed the run before it could report anything else.
 - **`assets/3d/photoreal/raw/` is not tracked.** 19 MB of untouched provider downloads for one SKU that nothing reads back. The deliverable is `assets/3d/{SKU}.glb`; `jobs.json`, the ledger that stops the provider being paid twice, stays tracked.
+
+## 2026-08-26 · the north-star rebuild
+
+The irreversible choices from the `design-system/` restyle. Each one closes a door;
+the reasoning is here so the door is not reopened by accident.
+
+- **Two type faces added, one retired.** Instrument Serif is the display face and Schibsted
+  Grotesk is the UI face; Arimo is gone. The store's ramp ran 12 → 24px, a 2× range, and a page
+  whose headline is nearly the size of its caption has no drama in it however correct the rest is
+  — that, not the palette, is what made a well-engineered store read as a commodity marketplace.
+  Arimo is a Helvetica metric clone and was in the store to be neutral; it succeeded. Four faces
+  subset to 192 KB, down from 216 for three, because Schibsted ships as one variable file covering
+  400–800 where Arimo needed four static cuts. Measured on the rendered home page: 92px headline
+  against a 17px lede, a 5.4× range.
+- **Instrument Serif ships WITHOUT its italic.** `fetch-fonts.mts` fetches it; `layout.tsx` does
+  not declare it. Nothing in the store sets an italic headline, and a declared source is a preload
+  the first paint waits on whether or not a glyph asks for it — the same reasoning that removed
+  Encode Sans Light. One line to add back.
+- **`scripts/fetch-fonts.mts` exists, and the faces have provenance.** The four faces in this
+  repository arrived by hand and had no recorded version or origin. They are fetched from pinned
+  paths in google/fonts now, converted TTF → woff2 by fontTools, and their OFL comes down with
+  them. The app links `BuildObjectsSans3`, never `Schibsted Grotesk`, so replacing the UI face is
+  a change to that file and not a rename across forty stylesheets.
+- **The token layer is v2; the v1 names are aliases onto it, and that is the migration.** About
+  nine hundred declarations across forty stylesheets speak `--color-ink-2` and `--color-surface`.
+  Rewriting all nine hundred by hand to land the same pixels is a nine-hundred-line diff in which
+  one typo is a silently wrong colour. Aliasing lands the new ladder everywhere in one edit, and
+  each surface moves to the canonical vocabulary as it is restyled. The aliases are semantic, not
+  mechanical: `--color-line` and `--color-line-2` both resolve to `--hair`, because an alpha
+  hairline is correct on every surface and removes the reason there were two.
+- **`--ink-3` shipped at `#96afb4`, not the `#8fa9ae` the token file specified.** The specified
+  value measured 4.19 on `--surf-4` — below AA — and surf-4 is a pressed button and a progress
+  track, both of which carry secondary labels. The seven-unit lift is invisible as a hue change
+  and restores the property this palette's predecessor was retuned to have: every ink is legal on
+  every surface, with no pair anyone has to remember to avoid.
+- **Nothing hand-writes `-webkit-backdrop-filter` any more.** Lightning CSS keeps both properties
+  when the value is a literal and DROPS the standard one when it is a `var()`. Every glass surface
+  written the tokenised way was therefore emitting only the prefixed alias, which this Chromium
+  does not implement — the header, the palette, the buy column and the price board were all
+  rendering unblurred. Writing only the standard property makes the toolchain emit both.
+- **`legacy.css` is deleted, not deprecated.** It carried the v1 class vocabulary on thirty
+  private token aliases, and v2 made that arrangement impossible rather than merely untidy: it
+  defined `--ink-2` as `var(--color-ink-2)`, which v2 defines as `var(--ink-2)`. A custom property
+  defined in terms of itself is invalid at computed-value time, so every element it coloured would
+  have lost its colour — silently, with no error anywhere. Every call site was rewritten to the
+  token it actually meant and the surviving rules moved into `store.css`.
+- **`lucide-react` is out of the storefront.** 93 custom glyphs replace it, on a 24-unit grid with
+  a 4.6-unit chamfer on every container shape and exactly one accent element per icon. A stock
+  icon pack is the fastest way for a visitor to file a site under "template", and this project's
+  own brand rules ban one in as many words. The package survives as a devDependency of
+  `services/pipeline`, where `category-art-fallback.mts` reads glyph geometry out of it to draw a
+  tile for a category that has no photograph yet.
+- **The supplied icon file was NOT a drop-in replacement, and saying so is the point.** It was
+  advertised as one and was missing `CATEGORY_ICONS`, `CategoryIcon`, `SPEC_GROUP_ICONS` and
+  `SpecGroupIcon` — four exports that eight call sites use to render a mark from a string that
+  comes out of the database. Dropping it in would have compiled everywhere except the eight places
+  it mattered. They are rebuilt against the new set at the foot of `components/icons.tsx`.
+- **Search is a ⌘K overlay and the header is one row.** The header was two rows and 104px plus a
+  40px category strip — 144px of chrome above every page — and the reason was arithmetic: an
+  Audiowide lockup and an 860px search field cannot share a row, so the mark was cut to 22px and
+  the store's own name was the least legible thing on the screen. The overlay settles that in
+  search's favour rather than against it: the full width of the viewport instead of the leftovers
+  of a header row, a 20px input, and room for the scope chips that were a cramped `<select>`. The
+  mark goes to 44px, a third larger than it has ever been.
+- **`--wm-size` is the MARK's height and the name is set at 0.75 of it.** Driving both from one
+  number put "BUILD OBJECTS" at 633px in a 1329px bar. Optical, not arithmetic: a wordmark whose
+  capitals match the mark's full height always looks too big, because the mark has margin inside
+  it and the letters do not.
+- **The rate ticker carries no up/down deltas.** The north star draws them. The store has no price
+  history — the catalogue holds one selling price per SKU and the timestamp it was read, and
+  nothing anywhere records what cement cost yesterday. A ± beside a number is a claim about change
+  over time. A percentage off MRP was the obvious substitute and is worse: printing "−73% off
+  list" beside a bulb turns a strip whose job is "these are today's rates" into a strip that
+  shouts about discounts, on a store whose whole promise is that the price is the price.
+- **`catalogue-aisle.webp` is cropped to its upper 46%, permanently.** `MANIFEST.md` flags it and
+  `site-materials.webp` as carrying fabricated packaging — invented UltraTech, ACC, Kajaria and
+  Finolex trade dress, some of it misspelled — and records the fix as a defocus it calls "a
+  mitigation, not a fix". Checked at native resolution: `site-materials` is clean, and this one
+  was not — the mid-ground shelving stayed sharp and the stacks read "… Cement" down the pile.
+  The plate ships at 2560px on a public CDN and is the backplate on all 35 category pages and on
+  search, so "you cannot read it at the size we display it" is not the test. Blurring fails on
+  this composition (the corridor between the two stacks is a seventh of the frame), so it is
+  cropped to the ceiling and the lamp run. It is the better plate as well: 3.90:1 against 1.79,
+  and every slot it fills is a wide banner.
+- **The backplates are derived at stage time, not committed.** Seven 2560px frames become a
+  640/1280/2560 ladder in `stage-media.mts`, so one copy of each plate lives in git and a phone
+  fetches 18 KB where it would have fetched 766.
