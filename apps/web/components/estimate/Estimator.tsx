@@ -263,7 +263,6 @@ export default function Estimator({
         {/* step 1 — location */}
         <div className="wz-step">
           <div className="wz-head">
-            <span className="wz-num fig">1</span>
             <span className="wz-title">Location</span>
           </div>
           <div className="seg" role="group" aria-label="State">
@@ -314,7 +313,6 @@ export default function Estimator({
         {/* step 2 — the building */}
         <div className="wz-step">
           <div className="wz-head">
-            <span className="wz-num fig">2</span>
             <span className="wz-title">The building</span>
           </div>
           <div className="seg" role="group" aria-label="Plot input">
@@ -416,7 +414,9 @@ export default function Estimator({
               </button>
             </div>
           </div>
-          <div className="wz-row">
+          {/* The same list the add-ons use one card down. Two priced options styled one way here
+              and another way there is the kind of thing that reads as unconsidered. */}
+          <div className="addons">
             <label className="check-row">
               <input type="checkbox" className="check" checked={inputs.parking} onChange={(e) => set({ parking: e.target.checked })} /> Car parking porch
             </label>
@@ -463,7 +463,6 @@ export default function Estimator({
         {/* step 3 — quality tier + add-ons */}
         <div className="wz-step">
           <div className="wz-head">
-            <span className="wz-num fig">3</span>
             <span className="wz-title">Quality tier</span>
           </div>
           {/* The plain three-way segment used to live here and the priced comparison lived in
@@ -489,14 +488,16 @@ export default function Estimator({
                 ? 'Premium PPC cement, table-moulded red bricks, 600×600 GVT vitrified tiles, laminated doors, weatherproof exterior paint, partial false ceiling.'
                 : 'OPC 53-grade cement, wire-cut bricks, 600×1200 PGVT tiles, teak-finish doors, high-performance architectural glass, full modular interiors.'}
           </p>
-          <div className="wz-row">
+          {/* Three of them in a two-column grid orphaned the third and wrapped the other two
+              onto second lines. One column, one hairline between each — see estimator.css. */}
+          <div className="addons">
             <label className="check-row">
               <input
                 type="checkbox"
                 className="check"
                 checked={inputs.addons.solar}
                 onChange={(e) => set({ addons: { ...inputs.addons, solar: e.target.checked } })}
-              />{' '}
+              />
               Solar rooftop system
             </label>
             <label className="check-row">
@@ -505,7 +506,7 @@ export default function Estimator({
                 className="check"
                 checked={inputs.addons.cctv}
                 onChange={(e) => set({ addons: { ...inputs.addons, cctv: e.target.checked } })}
-              />{' '}
+              />
               HD CCTV security package
             </label>
             <label className="check-row">
@@ -514,8 +515,8 @@ export default function Estimator({
                 className="check"
                 checked={inputs.addons.fireSafety}
                 onChange={(e) => set({ addons: { ...inputs.addons, fireSafety: e.target.checked } })}
-              />{' '}
-              Fire safety & extinguishers
+              />
+              Fire safety &amp; extinguishers
             </label>
           </div>
           <DrawingUpload onReading={onReading} />
@@ -525,34 +526,34 @@ export default function Estimator({
         {picks.length > 0 && (
           <div className="wz-step">
             <div className="wz-head">
-              <span className="wz-num fig">+</span>
               <span className="wz-title">Your store picks</span>
+              <span className="wz-note">priced from the shelf</span>
             </div>
-            {picks.map((p) => {
-              const s = catalog[p.sku_code];
-              return (
-                <div key={p.sku_code} className="flex items-center gap-3 text-[13px]" style={{ padding: '8px 0', borderTop: '1px solid var(--hair)' }}>
-                  <Link href={`/p/${p.sku_code.toLowerCase()}`} className="flex-1 min-w-0 truncate" style={{ color: 'var(--ink-1)' }}>
-                    {s ? `${s.brand} ${s.name}` : p.sku_code}
-                  </Link>
-                  <div className="qty" role="group" aria-label={`Quantity of ${p.sku_code}`}>
-                    <button type="button" onClick={() => setPickQty(p.sku_code, p.qty - 1)} aria-label="Decrease">
-                      <IconMinus size={14} />
-                    </button>
-                    <span className="qty-val fig">{p.qty}</span>
-                    <button type="button" onClick={() => setPickQty(p.sku_code, p.qty + 1)} aria-label="Increase">
-                      <IconPlus size={14} />
+            <div className="addons">
+              {picks.map((p) => {
+                const s = catalog[p.sku_code];
+                return (
+                  <div key={p.sku_code} className="pick-row">
+                    <Link href={`/p/${p.sku_code.toLowerCase()}`} className="pick-name">
+                      {s ? `${s.brand} ${s.name}` : p.sku_code}
+                    </Link>
+                    <div className="qty" role="group" aria-label={`Quantity of ${p.sku_code}`}>
+                      <button type="button" onClick={() => setPickQty(p.sku_code, p.qty - 1)} aria-label="Decrease">
+                        <IconMinus size={14} />
+                      </button>
+                      <span className="qty-val fig">{p.qty}</span>
+                      <button type="button" onClick={() => setPickQty(p.sku_code, p.qty + 1)} aria-label="Increase">
+                        <IconPlus size={14} />
+                      </button>
+                    </div>
+                    <span className="fig pick-amt">{s?.selling_price ? inr(s.selling_price * p.qty) : '—'}</span>
+                    <button type="button" className="icon-btn" style={{ width: 32, height: 32 }} aria-label="Remove" onClick={() => removePick(p.sku_code)}>
+                      <IconClose size={14} />
                     </button>
                   </div>
-                  <span className="fig" style={{ minWidth: 72, textAlign: 'right' }}>
-                    {s?.selling_price ? inr(s.selling_price * p.qty) : '—'}
-                  </span>
-                  <button type="button" className="icon-btn" style={{ width: 32, height: 32 }} aria-label="Remove" onClick={() => removePick(p.sku_code)}>
-                    <IconClose size={14} />
-                  </button>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
       </section>
@@ -593,36 +594,40 @@ export default function Estimator({
             {/* The ±12% the note has always stated, drawn. See components/estimate/CostRange.tsx. */}
             <CostRange total={result.grandTotal} pct={result.accuracy.pct} />
           </div>
-          <div className="ledger-fig">
-            <p className="grand-label">{LEDGER_LABEL.structure}</p>
-            <p className="fig">{inr(result.ledgers.structure.subtotal)}</p>
-            {/*
-             * The split was one sentence with two 16px figures embedded in 13px prose —
-             * "material ₹18,49,080 · labour ₹7,62,039 (41% of civil)" — which reads as neither
-             * a sentence nor a table, and puts two large numbers where the eye cannot compare
-             * them. It is a two-row breakdown now: labels left, figures right, tabular, so the
-             * two amounts line up under each other and under the subtotal above them.
-             */}
-            <dl className="ledger-split">
-              <div>
-                <dt>Material</dt>
-                <dd className="fig">{inr(result.ledgers.structure.material)}</dd>
-              </div>
-              <div>
-                <dt>
-                  Labour <span className="ledger-share">{Math.round(result.ledgers.structure.labourShare * 100)}% of civil</span>
-                </dt>
-                <dd className="fig">{inr(result.ledgers.structure.labour)}</dd>
-              </div>
-            </dl>
-          </div>
-          <div className="ledger-fig">
-            <p className="grand-label">{LEDGER_LABEL.interior}</p>
-            <p className="fig">{inr(result.ledgers.interior.subtotal)}</p>
-            <p className="grand-sub">
-              doors, tiles, paint, fittings, bulbs{inputs.tier !== 'basic' ? ', false ceiling' : ''}, modular{picks.length ? ', your picks' : ''}
-            </p>
-          </div>
+          {/*
+           * ONE TABLE, NOT TWO HALF-CARDS.
+           * The two ledgers had different anatomy — structure got a two-row breakdown, interior
+           * got a sentence — and both subtotals sat left-aligned on lines of their own while
+           * their parts were right-aligned underneath. So ₹26,00,577 and ₹18,34,125 shared no
+           * edge, and nothing on the card could be read against anything else on it.
+           *
+           * Every amount is a row of one table now. Labels in the left track, money in the
+           * right, tabular, subtotal and part alike — which is the whole of what "structured"
+           * means for a ledger. The grid is in estimator.css.
+           */}
+          <dl className="grand-ledger">
+            <div className="gl-row gl-row--sum">
+              <dt>{LEDGER_LABEL.structure}</dt>
+              <dd className="fig">{inr(result.ledgers.structure.subtotal)}</dd>
+            </div>
+            <div className="gl-row">
+              <dt>Material</dt>
+              <dd className="fig">{inr(result.ledgers.structure.material)}</dd>
+            </div>
+            <div className="gl-row">
+              <dt>
+                Labour <span className="gl-note">{Math.round(result.ledgers.structure.labourShare * 100)}% of civil</span>
+              </dt>
+              <dd className="fig">{inr(result.ledgers.structure.labour)}</dd>
+            </div>
+            <div className="gl-row gl-row--sum">
+              <dt>{LEDGER_LABEL.interior}</dt>
+              <dd className="fig">{inr(result.ledgers.interior.subtotal)}</dd>
+              <dd className="gl-cover">
+                doors, tiles, paint, fittings, bulbs{inputs.tier !== 'basic' ? ', false ceiling' : ''}, modular{picks.length ? ', your picks' : ''}
+              </dd>
+            </div>
+          </dl>
         </div>
 
         <div className="glass-card donut-wrap" style={{ borderRadius: 'var(--r-2)' }}>

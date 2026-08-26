@@ -28,9 +28,13 @@ export default function CostRange({ total, pct }: { total: number; pct: number }
           <b className="micro">Floor</b>
           <span className="fig">{inr(floor)}</span>
         </span>
+        {/* This used to reprint the total — the same ten glyphs the reader had just read,
+            40px lower, which is the one thing on the bar they did not need. The middle says
+            how wide the band is instead, which is the only fact about it the two ends do not
+            already give away. */}
         <span className="range-mid">
-          <b className="micro">Likely</b>
-          <span className="fig">{inr(total)}</span>
+          <b className="micro">Spread</b>
+          <span className="fig">±{pct}%</span>
         </span>
         <span className="range-top">
           <b className="micro">Ceiling</b>

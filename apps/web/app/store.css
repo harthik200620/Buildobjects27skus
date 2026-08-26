@@ -3701,23 +3701,6 @@
       align-items: start;
     }
   }
-  .wz-head {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .wz-num {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--color-teal-700);
-    color: #fff;
-    font-size: var(--t-cap);
-    font-weight: 700;
-  }
   .wz-title {
     font-family: var(--font-brand);
     font-weight: 400;
@@ -3768,8 +3751,6 @@
     font-weight: 600;
   }
   .drawing-drop {
-    padding: 24px;
-    text-align: center;
     border: 1px dashed var(--color-line-strong);
     border-radius: var(--radius-md);
     font-size: 14px;
@@ -3827,12 +3808,6 @@
     font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
-  }
-  .ledger-fig .fig {
-    font-size: 22px;
-    line-height: 28px;
-    font-weight: 700;
-    color: var(--color-ink);
   }
   .tier {
     padding: 12px 16px;

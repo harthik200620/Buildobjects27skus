@@ -78,15 +78,18 @@ export default function DrawingUpload({ onReading }: { onReading: (reading: Draw
             e.target.value = '';
           }}
         />
-        <IconUpload size={22} style={{ color: 'var(--color-brand)', margin: '0 auto 8px' }} />
+        {/* Three centred lines around a centred icon made this the emptiest thing in the
+            column. Two short lines, left of the icon's right edge, at the height of a control. */}
+        <IconUpload size={18} style={{ color: 'var(--color-brand)', flex: 'none' }} />
         {busy ? (
-          <span className="flex items-center justify-center gap-2">
-            <span className="skel" style={{ width: 14, height: 14, borderRadius: 7 }} /> Reading your drawing…
+          <span className="dz-t">
+            <span className="skel" style={{ width: 12, height: 12, borderRadius: 6, display: 'inline-block', verticalAlign: -1, marginRight: 6 }} />
+            Reading your drawing…
           </span>
         ) : (
           <span>
-            <strong style={{ color: 'var(--ink-1)' }}>Upload a design</strong> — drop a floor plan, elevation or 3D render (image or PDF), or tap to choose. We
-            prefill the wizard from it; you confirm before anything is priced.
+            <span className="dz-t">Upload a design</span>
+            <span className="dz-s">Floor plan, elevation or render — we fill the form, you confirm.</span>
           </span>
         )}
       </div>

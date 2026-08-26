@@ -333,17 +333,6 @@
     margin-top: 2px;
   }
 
-  .est-split {
-    display: grid;
-    gap: var(--s-5);
-  }
-  @media (min-width: 1024px) {
-    .est-split {
-      grid-template-columns: minmax(0, 1fr) minmax(360px, 420px);
-      align-items: start;
-    }
-  }
-
   /* The two lines under the estimator's heading: what it does, then what its numbers are worth.
      Splitting them is the point - the second is a provenance note, not part of the pitch. */
   .estimate-lede {
@@ -464,22 +453,128 @@
 
      Deleted with it: the z-index it needed to sit over the breakdown, and the shadow that
      existed only to make "pinned" read as pinned. */
-  /* The grand panel gives the hero figure a column of its own rather than a third of
-     a row — at 80px the total cannot share a line with two ledgers. */
+  /* ════════════════════════════════════════════════════════════════════════════
+     THE COST CARD — ONE FIGURE, ITS SPAN, AND ONE COLUMN OF MONEY
+     ════════════════════════════════════════════════════════════════════════════
+     Three faults, every one of them structural rather than decorative.
+
+     THE TOTAL FILLED ITS CARD EDGE TO EDGE. Measured: 73px across a 540px column put ten
+     glyphs at 540px — exactly 100 % of the room they had. A figure with no air around it
+     does not read as important, it reads as cropped, and cropped is the whole of why that
+     number looked cheap. It is sized from the card now rather than from the viewport, 34px
+     on a phone to 56px at the widest, which leaves about a quarter of the line empty at
+     every width.
+
+     THE FIGURES DID NOT LINE UP. A subtotal sat left-aligned on a line of its own while its
+     two parts were right-aligned in rows underneath, so ₹26,00,577 and ₹18,34,125 shared no
+     edge and could not be read against each other. And the two halves had different anatomy
+     entirely — structure got a table, interior got a sentence — which is why they did not
+     look like two parts of one card. Every amount is one right-aligned tabular column now,
+     subtotal and part alike, on a two-track grid so the column is as wide as its widest
+     figure and not a pixel wider.
+
+     Deleted with all that: the `inline-block; min-width: 46%` that stood the two ledgers
+     beside each other, which is a float in everything but name. */
+  .grand {
+    display: block;
+    padding: var(--s-5);
+  }
   @media (min-width: 640px) {
     .grand {
-      grid-template-columns: 1fr;
-      gap: var(--s-6);
+      padding: var(--s-6);
     }
-    .grand-total {
-      padding-bottom: var(--s-5);
-      border-bottom: 1px solid var(--hair);
-    }
-    .grand .ledger-fig {
-      display: inline-block;
-      min-width: 46%;
-      vertical-align: top;
-    }
+  }
+  .grand-total {
+    padding-bottom: var(--s-5);
+    border-bottom: 1px solid var(--hair);
+  }
+  .grand-total .hero-figure {
+    font-size: clamp(2.125rem, 1.05rem + 3.35vw, 3.5rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+
+  /* Rows, and the rule belongs to the ROW rather than to the cells in it.
+     The first cut of this was a two-track grid with the border on `dt` and `dd`, which looked
+     right in the stylesheet and was visibly wrong on the page: baseline-aligning an 11px label
+     against a 22px figure puts their box tops 10px apart, so each subtotal drew its rule as two
+     segments at two different heights with a gutter between them. A flex row has one box to
+     carry one rule, and space-between still lands every figure on a common right edge — which
+     is the alignment that matters, because the figures are tabular and right-set. */
+  .grand-ledger {
+    margin: 0;
+  }
+  .gl-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0 var(--s-4);
+    padding: 6px 0;
+  }
+  .gl-row dt {
+    min-width: 0;
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 18px;
+  }
+  .gl-row dd {
+    flex: none;
+    margin: 0 0 0 auto;
+    color: var(--ink-2);
+    font-family: var(--font-figure);
+    font-size: var(--t-fig);
+    line-height: 20px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  /* A subtotal opens a block: a rule across the whole card, the label in the same eyebrow voice
+     the rest of the store gives a section, the figure a step up from its own parts. The first
+     block needs no rule — the card's own divider under the total is already there. */
+  .grand-ledger > .gl-row--sum {
+    margin-top: var(--s-3);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--hair);
+  }
+  .grand-ledger > .gl-row--sum:first-child {
+    margin-top: 0;
+    border-top: 0;
+  }
+  .gl-row--sum dt {
+    color: var(--ink-3);
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    letter-spacing: var(--track-micro);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .gl-row--sum dd {
+    color: var(--ink-1);
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 700;
+  }
+  /* Interior has no material/labour split to print, so its detail row is what it covers. It
+     wraps to its own line inside the same row rather than becoming a loose paragraph — that
+     mismatch is exactly what made the two halves of this card look unrelated.
+
+     `font-variant-numeric: normal` undoes the tabular figures it would otherwise inherit: the
+     tabular comma is a wide glyph built to sit between digits, and in a prose list it printed
+     "doors , tiles , paint" with a space in front of every comma. */
+  dd.gl-cover {
+    flex: 1 0 100%;
+    margin: 2px 0 0;
+    font-family: var(--font-ui);
+    font-size: var(--t-fine);
+    line-height: 17px;
+    font-weight: 400;
+    font-variant-numeric: normal;
+    color: var(--ink-3);
+  }
+  .gl-note {
+    color: var(--ink-4);
+    font-size: var(--t-fine);
+    font-variant-numeric: normal;
   }
 
   /* ═══════════════════════════════════════════════════════════════════════════
@@ -490,42 +585,6 @@
      report bolted beside it, so the wizard is a plain column now and each step carries
      the card. Four cards a side: Where / The building / Finish / Your picks against the
      total / where the money goes / when it leaves / check a quote. */
-  /* The exterior/structure split: labels left, figures right, tabular so the two amounts sit
-     under each other and under the subtotal above them. */
-  .ledger-split {
-    margin-top: var(--s-2);
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .ledger-split > div {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--s-4);
-    padding: 4px 0;
-    border-top: 1px solid var(--hair);
-  }
-  .ledger-split dt {
-    color: var(--ink-2);
-    font-size: var(--t-cap);
-  }
-  /* Scoped past `.ledger-fig .fig`, which sets 22px on every figure in this block. The parts of
-     a subtotal must not be the same size as the subtotal — flat sizing here read as three equal
-     figures rather than one total and its two components. */
-  .ledger-fig .ledger-split dd {
-    margin: 0;
-    color: var(--ink-1);
-    font-size: var(--t-fig);
-    line-height: 24px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-  .ledger-share {
-    color: var(--ink-4);
-    font-size: var(--t-fine);
-  }
-
   /* Everything below the two columns: the timeline, the quote check, the store links and the
      actions. It spans both tracks, which is what lets the columns above it match. */
   .est-wide {
@@ -544,29 +603,114 @@
     background: none;
     box-shadow: none;
   }
+  /* ONE GAP GOVERNS THE WHOLE CARD.
+     Measured, the rhythm inside these cards ran 16 · 0 · 12 · 0 · 0 · 0 · 16 · 0 — every block
+     spaced by whatever margin it happened to bring with it, and several spaced by nothing at
+     all, leaning on a label's leading to look like separation. That is the structural fault in
+     the input column: not one bad value but no value at all. A flex column with a single gap
+     spaces every block in every card identically, and the blocks stop carrying margins of their
+     own. */
   .wz-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
     padding: var(--s-5);
     border: 1px solid var(--hair);
     border-radius: var(--r-2);
     background: var(--surf-2);
     box-shadow: var(--specular);
   }
+  /* THE NUMBERED DISCS ARE GONE.
+     A 22px hairline circle carrying an 11px numeral, set beside an 18px display title, is two
+     mismatched masses on one line, and it was the first thing the eye caught in every card on
+     this side of the page. It was also saying something untrue: these are not steps you pass
+     through. All four are live at once and the total moves the instant any of them changes,
+     so numbering them promised a sequence the page does not have.
+
+     What is left is the store's own section head — title left, a quiet note right — the shape
+     the home and product pages already use. The estimator's cards and the store's sections
+     read as one thing now. */
   .wz-head {
-    margin-bottom: var(--s-4);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
   }
-  /* The step number was a filled disc competing with the heading beside it. It is a
-     figure in the accent, and the heading is the thing you read. */
-  .wz-num {
-    display: inline-grid;
-    place-items: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 1px solid var(--hair-2);
-    background: none;
-    color: var(--color-brand);
-    font-size: var(--t-micro);
-    font-variant-numeric: tabular-nums;
+  .wz-note {
+    flex: none;
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    line-height: 17px;
+  }
+
+  /* Three add-ons in a two-column grid left one of them orphaned in the left cell and wrapped
+     the other two onto second lines — ragged, in a card whose whole job is to look ordered.
+     One column, a hairline between each, and nothing wraps at any width this column takes. */
+  /* A hairline list: add-ons, the two building options, and the store picks all take it, so
+     the three lists in this column share one grammar instead of three. */
+  .addons {
+    border-top: 1px solid var(--hair);
+  }
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: var(--t-cap);
+    line-height: 18px;
+    color: var(--ink-2);
+  }
+  .addons .check-row {
+    padding: 9px 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  .check-row .check {
+    flex: none;
+  }
+  .pick-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: 9px 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: var(--t-cap);
+    line-height: 18px;
+  }
+  .pick-row .pick-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--ink-1);
+  }
+  .pick-row .pick-amt {
+    min-width: 72px;
+    text-align: right;
+  }
+
+  /* The drop target was 24px of padding around a centred icon and three centred lines of
+     prose — the largest and emptiest thing in the input column, sitting directly under the
+     densest card on the page. It is a row now: icon, two short lines, left-aligned, at the
+     height of a control rather than of a poster. */
+  .drawing-drop {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    text-align: left;
+  }
+  .dz-t {
+    display: block;
+    color: var(--ink-1);
+    font-size: var(--t-cap);
+    line-height: 18px;
+    font-weight: 600;
+  }
+  .dz-s {
+    display: block;
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    line-height: 16px;
   }
 
   /* The tier comparison, now an input on the left. Three prices in a 5fr column, so the
