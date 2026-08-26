@@ -4,7 +4,7 @@
  * Every other gate in here reads a page that is standing still. The bar's whole job is what it
  * does while the page MOVES, and three separate defects shipped because nothing measured that:
  *
- *   · The ⌘K palette is `position: fixed; inset: 0` and lived inside the header, which carries a
+ *   · Search was `position: fixed; inset: 0` and lived inside the header, which carries a
  *     backdrop-filter — and a backdrop-filter makes an element a containing block for fixed
  *     descendants exactly the way a transform does. So `inset: 0` resolved to the BAR. Measured on
  *     the shipped page at 1024×680: the overlay laid out at 1009×143 and its scrim at 1009×61.
@@ -272,24 +272,41 @@ console.log('\nthe overlays:');
 await page.setViewportSize({ width: 1024, height: 680 });
 await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
 
-await page.click('.search-cue');
-await page.waitForSelector('.palette');
-/* Written out twice rather than through a `box(sel)` helper: tsx compiles a named inner arrow to
-   esbuild's __name, which does not exist in the page. */
-const palette = await page.evaluate(() => {
-  const p = document.querySelector('.palette')?.getBoundingClientRect();
-  const s = document.querySelector('.palette-scrim')?.getBoundingClientRect();
+/*
+ * SEARCH IS ONE FIELD, AND ITS SUGGESTIONS HANG OFF IT.
+ *
+ * This used to assert that the ⌘K palette covered the screen — the right test for an overlay,
+ * and there is no overlay any more. The header carried a BUTTON dressed as a search field that
+ * opened a second, real field in a modal; two search bars, and the one you pressed was not the
+ * one you typed into.
+ *
+ * What replaces it is the invariant that keeps that from coming back: exactly ONE text input in
+ * the header, the keystrokes land in it, and the suggestions are laid out against IT rather than
+ * against the viewport. That last part is the same containing-block trap as before, from the
+ * other side — the header's backdrop-filter would capture anything fixed, so the panel has to be
+ * absolute inside the bar, and the way to prove it is that its left edge is the bar's left edge.
+ */
+await page.click('.search-input');
+await page.keyboard.type('cem');
+await page.waitForSelector('.search-drop');
+const search = await page.evaluate(() => {
+  const bar = document.querySelector('.search')?.getBoundingClientRect();
+  const drop = document.querySelector('.search-drop')?.getBoundingClientRect();
   return {
-    palette: p ? [Math.round(p.width), Math.round(p.height)] : null,
-    scrim: s ? [Math.round(s.width), Math.round(s.height)] : null,
-    screen: [document.documentElement.clientWidth, window.innerHeight],
+    inputs: document.querySelectorAll('header input[type="text"], header .search-input').length,
+    focused: document.activeElement?.className ?? '',
+    bar: bar ? [Math.round(bar.left), Math.round(bar.right)] : null,
+    drop: drop ? [Math.round(drop.left), Math.round(drop.right), Math.round(drop.top)] : null,
+    barBottom: bar ? Math.round(bar.bottom) : 0,
   };
 });
-const covers = (b: number[] | null) => !!b && b[0] === palette.screen[0] && b[1] === palette.screen[1];
+check(search.inputs === 1, `one search field in the header   found ${search.inputs}`);
+check(search.focused.includes('search-input'), `the keystrokes land in it   focus is .${search.focused || '(none)'}`);
 check(
-  covers(palette.palette) && covers(palette.scrim),
-  `⌘K covers the screen   palette ${palette.palette?.join('×')}   scrim ${palette.scrim?.join('×')}   screen ${palette.screen.join('×')}`,
+  !!search.bar && !!search.drop && Math.abs(search.drop[0] - search.bar[0]) <= 1 && Math.abs(search.drop[1] - search.bar[1]) <= 1,
+  `the suggestions hang off the field   bar ${search.bar?.join('→')}   drop ${search.drop?.slice(0, 2).join('→')}`,
 );
+check(!!search.drop && search.drop[2] >= search.barBottom, `and below it   field ends ${search.barBottom}   drop starts ${search.drop?.[2]}`);
 await page.keyboard.press('Escape');
 
 const menu = await page.evaluate(async () => {

@@ -178,7 +178,7 @@ for (const width of WIDTHS) {
      * number that says how close the row is to failing is the field's own clipped width.
      */
     const spacer = document.querySelector('.header-spacer') as HTMLElement;
-    const cue = document.querySelector('.search-cue') as HTMLElement;
+    const cue = document.querySelector('.search') as HTMLElement;
     return {
       hits,
       barOverflow: Math.round(row.scrollWidth - row.clientWidth),

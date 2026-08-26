@@ -4,33 +4,50 @@ import type { SkuSearchDoc } from '@buildobjects/catalog';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
-import { createPortal } from 'react-dom';
 import { inr, mediaUrl } from '@/lib/media';
 import Highlight from './Highlight';
 import { CategoryIcon, IconClockCheck, IconClose, IconSearch } from './icons';
-import { useScrollLock } from './useDismiss';
 
 /**
- * Search, as a command palette.
+ * ONE SEARCH BAR. The one in the header. It is the field you type into.
  *
- * It used to be an 860 px field welded into the header, and that field is the whole reason the
- * header was two rows and 104 px tall: Audiowide is a very wide face, the lockup measured 392 px
- * at a 30 px cap, and a lockup and a usable search field could not share one row. So the mark
- * spent months at 22 px — the brand, illegible, to protect a control most visitors use once.
+ * ── WHAT THIS REPLACES, AND WHY ─────────────────────────────────────────────────────────────
+ * The header used to carry a BUTTON dressed as a search field — an icon, grey placeholder text,
+ * a ⌘K keycap, a border, the lot — and pressing it opened a full-screen command palette with a
+ * SECOND, real field in it. Two search bars, and the one you pressed was not the one you typed
+ * into. The reported symptom was exactly that: "when I click search bar it is opening some other
+ * search bar."
  *
- * Moving search into an overlay settles that argument in search's favour rather than against it.
- * The bar keeps a 250 px affordance with the keycaps printed on it, which is *more* discoverable
- * than a bare field because it advertises the shortcut. Opening it gives search the full width of
- * the viewport instead of the leftovers of a header row, a 20 px input instead of a 14 px one, and
- * room for the scope chips that were previously a cramped <select>. The header gets its 28 px
- * back and the mark goes to 44 px.
+ * The palette was not a bad idea. It was a good answer to a layout problem — Audiowide is a very
+ * wide face, and a lockup plus a usable field could not share a 46px header row, so search moved
+ * out and the mark got its size back. But it solved that by making the visible search bar a lie,
+ * and a control that looks like a field and refuses your keystrokes is a trick played on the
+ * reader every single time.
  *
- * Everything behind it is unchanged: 80 ms debounce, one round trip to /api/search/suggest, the
- * grouped listbox, recent searches in localStorage, and `mark.hl` highlighting from Meilisearch.
- * The ARIA contract is kept as it was — role=combobox on the input, aria-controls=search-listbox,
- * role=listbox/option on the results — because it was correct.
+ * The layout problem is gone anyway: --search-w is 560px at rest now, not 250. There is room for
+ * a real field, so there is a real field.
  *
- * Shortcuts: ⌘K / Ctrl-K toggles. `/` opens, as it always did. Escape closes.
+ * ── THE SHAPE IT TAKES INSTEAD ──────────────────────────────────────────────────────────────
+ * A combobox. One input in the header; suggestions drop UNDER it, anchored to it, the way every
+ * search field a person has ever used behaves. The page keeps scrolling behind them because a
+ * dropdown is not a modal, so there is no scroll lock to get wrong and no scrim to mis-position.
+ *
+ * Three whole classes of bug leave with the overlay: `position: fixed` resolving against the
+ * header's backdrop-filter instead of the screen, the header's z-index clamping the palette's,
+ * and two scroll locks fighting over the reader's place. None of them can happen to a dropdown.
+ *
+ * ⌘K and `/` now FOCUS the field rather than opening anything, which is what those shortcuts
+ * mean when the field is already on screen. Escape closes the suggestions and keeps the text.
+ *
+ * ── NARROW SCREENS ──────────────────────────────────────────────────────────────────────────
+ * Under 720px the header cannot hold a 560px field, so the bar collapses to its icon — and
+ * focusing it expands it across the header row IN PLACE. Still one field, still the same one,
+ * still the same input element receiving the keystrokes.
+ *
+ * Everything behind it is unchanged: 80ms debounce, one round trip to /api/search/suggest, the
+ * grouped listbox, recent searches in localStorage, `mark.hl` highlighting from Meilisearch, and
+ * the ARIA contract — role=combobox on the input, aria-controls=search-listbox, role=listbox and
+ * role=option on the results — because that part was correct.
  */
 type Suggest = {
   skus: SkuSearchDoc[];
@@ -59,9 +76,10 @@ const ICON_BY_SLUG: Record<string, string> = {
 export default function SearchBar({ categories = [] }: { categories?: { slug: string; name: string }[] }) {
   const router = useRouter();
   const pathname = usePathname();
+  /* `open` means the suggestions are showing, not that a modal exists. There is nothing to
+     scroll-lock: a dropdown lets the page behind it scroll, like every other dropdown. */
   const [open, setOpen] = React.useState(false);
-  /* Covers the viewport, so the page behind it must not scroll — see useScrollLock. */
-  useScrollLock(open);
+  const wrap = React.useRef<HTMLDivElement>(null);
 
   /*
    * The query is read from the URL after mount, not through `useSearchParams`.
@@ -100,15 +118,16 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
     setOpen(false);
   }, [pathname]);
 
+  /* The shortcuts FOCUS the field. When the field is already on the screen, that is what ⌘K has
+     always meant — there is nothing left for it to open. */
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
       const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName) || el.isContentEditable;
-      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) {
+      if (((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) {
         e.preventDefault();
-        setOpen((o) => !o);
-      } else if (e.key === '/' && !typing) {
-        e.preventDefault();
+        ref.current?.focus({ preventScroll: true });
+        ref.current?.select();
         setOpen(true);
       } else if (e.key === 'Escape') {
         setOpen(false);
@@ -118,22 +137,14 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  /*
-   * Focus the input. THE SCROLL LOCK IS NOT HERE — `useScrollLock(open)` above owns it.
-   *
-   * This effect used to carry its own copy: body overflow hidden plus a paddingRight to
-   * compensate for the scrollbar. Two locks fighting is how ⌘K lost the reader's place — the
-   * private one ran first, hiding body's overflow reassigned the viewport's scroll to zero, and
-   * by the time the shared lock read the offset there was nothing left to remember. Opened at
-   * 300px down, closed at 0.
-   *
-   * `preventScroll` because the palette is `position: fixed; inset: 0`: without it the browser
-   * scrolls the input into view, which means scrolling the page underneath it.
-   */
+  /* Anywhere outside the bar closes the suggestions, and leaves what was typed alone. */
   React.useEffect(() => {
     if (!open) return;
-    const id = requestAnimationFrame(() => ref.current?.focus({ preventScroll: true }));
-    return () => cancelAnimationFrame(id);
+    const away = (e: Event) => {
+      if (!wrap.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('pointerdown', away, true);
+    return () => document.removeEventListener('pointerdown', away, true);
   }, [open]);
 
   const fetchSuggest = React.useCallback((value: string) => {
@@ -232,152 +243,129 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
   const scopeName = scope ? (categories.find((c) => c.slug === scope)?.name ?? null) : null;
 
   return (
-    <>
-      {/* The affordance. A button, not a field — it opens something rather than accepting text,
-          and typing into a box that then throws your keystrokes at a different box is a trick. */}
-      <button type="button" className="search-cue" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open}>
+    <div className="search" ref={wrap} data-open={open ? 'true' : undefined}>
+      <form
+        role="search"
+        className="search-field"
+        onSubmit={(e) => {
+          e.preventDefault();
+          go(q);
+        }}
+      >
         <IconSearch size={18} />
-        <span className="search-cue-text">{scopeName ? `Search in ${scopeName}` : 'Search the catalogue'}</span>
-        <kbd className="search-keys">
-          <span>{mac ? '⌘' : 'Ctrl'}</span>
-          <span>K</span>
-        </kbd>
-      </button>
+        <input
+          ref={ref}
+          className="search-input"
+          value={q}
+          onChange={(e) => {
+            setQ(e.target.value);
+            fetchSuggest(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          onKeyDown={onKeyDown}
+          placeholder={scopeName ? `Search in ${scopeName}` : 'Search the catalogue'}
+          aria-label="Search products"
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-autocomplete="list"
+          aria-expanded={open && rows.length > 0}
+          aria-controls="search-listbox"
+          autoComplete="off"
+          enterKeyHint="search"
+        />
+        {q ? (
+          <button
+            type="button"
+            className="search-clear"
+            aria-label="Clear search"
+            onClick={() => {
+              setQ('');
+              setData(null);
+              ref.current?.focus({ preventScroll: true });
+            }}
+          >
+            <IconClose size={16} />
+          </button>
+        ) : (
+          <kbd className="search-keys">
+            <span>{mac ? '⌘' : 'Ctrl'}</span>
+            <span>K</span>
+          </kbd>
+        )}
+      </form>
 
-      {open &&
-        /*
-         * THE PALETTE IS RENDERED AT THE TOP OF THE DOCUMENT, not inside the bar.
-         *
-         * It is `position: fixed; inset: 0` and it was a descendant of the header, which
-         * carries a backdrop-filter — and a backdrop-filter makes an element a containing block
-         * for fixed descendants exactly the way a transform does. So `inset: 0` resolved to the
-         * BAR, not the screen. Measured on the shipped page at 1024x680: the overlay laid out
-         * at 1009x143 and its scrim at 1009x61, which is why pressing the dimmed page below the
-         * palette did not close it — there was no scrim down there to press. The panel itself
-         * overflowed its box and drew in roughly the right place, so it looked fine and was not.
-         *
-         * The header is also z-index: 40, which clamped this overlay's z-index: 90 to 40.
-         */
-        createPortal(
-          <div className="palette" role="dialog" aria-modal="true" aria-label="Search">
-            {/* The scrim is a sibling button so dismissing works with a pointer and with a screen
-              reader's own close affordance, without a click handler on a <div>. */}
-            <button type="button" className="palette-scrim" aria-label="Close search" onClick={() => setOpen(false)} />
-            <div className="palette-panel">
-              <form
-                role="search"
-                className="palette-field"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  go(q);
-                }}
-              >
-                <IconSearch size={22} />
-                <input
-                  ref={ref}
-                  value={q}
-                  className="palette-input"
-                  onChange={(e) => {
-                    setQ(e.target.value);
-                    fetchSuggest(e.target.value);
-                  }}
-                  onKeyDown={onKeyDown}
-                  placeholder="Cement, bulbs, tiles, solar, CCTV…"
-                  aria-label="Search products"
-                  role="combobox"
-                  aria-haspopup="listbox"
-                  aria-autocomplete="list"
-                  aria-expanded={rows.length > 0}
-                  aria-controls="search-listbox"
-                  autoComplete="off"
-                  enterKeyHint="search"
-                />
-                {q && (
-                  <button
-                    type="button"
-                    className="palette-clear"
-                    aria-label="Clear search"
+      {/* The suggestions hang off the field, not off the viewport. Absolute inside a relative
+          wrapper — so the header's backdrop-filter, which would have captured a fixed overlay,
+          is irrelevant to it. */}
+      {open && (
+        <div className="search-drop">
+          {categories.length > 0 && (
+            <div className="search-scopes" role="group" aria-label="Search in">
+              <button type="button" className="scope-chip" aria-pressed={scope === ''} onClick={() => setScope('')}>
+                Everything
+              </button>
+              {categories.slice(0, 6).map((c) => (
+                <button key={c.slug} type="button" className="scope-chip" aria-pressed={scope === c.slug} onClick={() => setScope(c.slug)}>
+                  {c.name}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="search-results" id="search-listbox" role="listbox" aria-label="Suggestions">
+            {zero && (
+              <div className="search-empty">
+                <p className="h4">No products for “{q.trim()}”.</p>
+                <p className="meta">Try a product name, a brand, or a specification.</p>
+              </div>
+            )}
+            {!q.trim() && rows.length === 0 && <p className="search-empty meta">Start typing — every price here was checked this morning.</p>}
+            {rows.map((r, i) => {
+              const groupStart = i === 0 || rows[i - 1].kind !== r.kind;
+              return (
+                <React.Fragment key={`${r.kind}-${r.href}`}>
+                  {groupStart && groupLabel(r.kind) && <p className="search-group micro">{groupLabel(r.kind)}</p>}
+                  <Link
+                    href={r.href}
+                    role="option"
+                    aria-selected={sel === i}
+                    className="search-row"
+                    onMouseEnter={() => setSel(i)}
                     onClick={() => {
-                      setQ('');
-                      setData(null);
-                      ref.current?.focus({ preventScroll: true });
+                      if (r.kind === 'query' || r.kind === 'recent') remember(r.kind === 'recent' ? r.label : q.trim());
+                      setOpen(false);
                     }}
                   >
-                    <IconClose size={18} />
-                  </button>
-                )}
-                <kbd className="search-keys">
-                  <span>esc</span>
-                </kbd>
-              </form>
-
-              {/* Scope. A row of chips rather than the old <select>, because a select hides every
-                option but one and the whole point of the overlay is that there is room. */}
-              <div className="palette-scopes" role="group" aria-label="Search in">
-                <button type="button" className="scope-chip" aria-pressed={scope === ''} onClick={() => setScope('')}>
-                  Everything
-                </button>
-                {categories.slice(0, 8).map((c) => (
-                  <button key={c.slug} type="button" className="scope-chip" aria-pressed={scope === c.slug} onClick={() => setScope(c.slug)}>
-                    {c.name}
-                  </button>
-                ))}
-              </div>
-
-              <div className="palette-results" id="search-listbox" role="listbox" aria-label="Suggestions">
-                {zero && (
-                  <div className="palette-empty">
-                    <p className="h4">No products for “{q.trim()}”.</p>
-                    <p className="meta">Try a product name, a brand, or a specification.</p>
-                  </div>
-                )}
-                {!q.trim() && rows.length === 0 && <p className="palette-empty meta">Fifteen thousand items, priced this morning. Start typing.</p>}
-                {rows.map((r, i) => {
-                  const groupStart = i === 0 || rows[i - 1].kind !== r.kind;
-                  return (
-                    <React.Fragment key={`${r.kind}-${r.href}`}>
-                      {groupStart && groupLabel(r.kind) && <p className="palette-group micro">{groupLabel(r.kind)}</p>}
-                      <Link
-                        href={r.href}
-                        role="option"
-                        aria-selected={sel === i}
-                        className="palette-row"
-                        onMouseEnter={() => setSel(i)}
-                        onClick={() => {
-                          if (r.kind === 'query' || r.kind === 'recent') remember(r.kind === 'recent' ? r.label : q.trim());
-                        }}
-                      >
-                        {r.kind === 'sku' ? (
-                          <span className="palette-thumb">{r.thumb ? <img src={r.thumb} alt="" loading="lazy" width={44} height={44} /> : null}</span>
-                        ) : r.kind === 'category' ? (
-                          <span className="palette-thumb palette-thumb--icon">
-                            <CategoryIcon icon={r.icon ?? 'cement'} size={22} />
-                          </span>
-                        ) : r.kind === 'recent' ? (
-                          <span className="palette-thumb palette-thumb--icon">
-                            <IconClockCheck size={20} />
-                          </span>
-                        ) : (
-                          <span className="palette-thumb palette-thumb--icon">
-                            <IconSearch size={20} />
-                          </span>
-                        )}
-                        <span className="palette-main">
-                          <span className="block truncate">
-                            <Highlight formatted={r.html} fallback={r.label} />
-                          </span>
-                          {r.sub && <span className="palette-sub block truncate">{r.sub}</span>}
-                        </span>
-                        {r.price && <span className="palette-price fig">{r.price}</span>}
-                      </Link>
-                    </React.Fragment>
-                  );
-                })}
-              </div>
-            </div>
-          </div>,
-          document.body,
-        )}
-    </>
+                    {r.kind === 'sku' ? (
+                      <span className="search-thumb">{r.thumb ? <img src={r.thumb} alt="" loading="lazy" width={40} height={40} /> : null}</span>
+                    ) : r.kind === 'category' ? (
+                      <span className="search-thumb search-thumb--icon">
+                        <CategoryIcon icon={r.icon ?? 'cement'} size={20} />
+                      </span>
+                    ) : r.kind === 'recent' ? (
+                      <span className="search-thumb search-thumb--icon">
+                        <IconClockCheck size={18} />
+                      </span>
+                    ) : (
+                      <span className="search-thumb search-thumb--icon">
+                        <IconSearch size={18} />
+                      </span>
+                    )}
+                    <span className="search-main">
+                      <span className="block truncate">
+                        <Highlight formatted={r.html} fallback={r.label} />
+                      </span>
+                      {r.sub && <span className="search-sub block truncate">{r.sub}</span>}
+                    </span>
+                    {r.price && <span className="search-price fig">{r.price}</span>}
+                  </Link>
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

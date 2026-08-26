@@ -324,6 +324,12 @@ export const IconFinance = (p: IconProps) => (
    there is — which is also what keeps scripts/type-audit.mts quiet. It is filled
    rather than stroked because a letterform is a shape, not a path: stroking it would
    draw the outline of the outline.
+
+   13, not 12.4. Audiowide's cap is about 0.72em, so 12.8 would have given exactly the 9.2
+   units the old circle measured — and 12.8 is a type size that exists nowhere else in the
+   store. scripts/scale-audit.mts counts distinct sizes per route and this glyph is in the
+   header of every one of them, so an off-scale value here put four pages over budget at
+   once. 13 is already on the scale and lands the letter within a fifth of a unit.
 */
 export const IconCoin = (p: IconProps) => (
   <Ico {...p}>
@@ -336,7 +342,7 @@ export const IconCoin = (p: IconProps) => (
       dominantBaseline="central"
       fontFamily="var(--font-brand)"
       fontWeight="400"
-      fontSize="12.4"
+      fontSize="13"
       fill="currentColor"
       stroke="none"
     >

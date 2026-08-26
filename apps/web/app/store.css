@@ -172,7 +172,7 @@
    * nothing below the bar reflows.
    *
    * The at-rest state is `transform: none` on purpose. ANY transform makes the header a
-   * containing block for `position: fixed` descendants, and both the ⌘K palette (fixed,
+   * containing block for `position: fixed` descendants, and both the old ⌘K palette (fixed,
    * inset: 0) and the catalogue menu (fixed, at coordinates measured off the trigger) used
    * to live in here. They are portalled to <body> now — see components/SearchBar.tsx — and
    * this keeps the trap shut even so.
@@ -343,10 +343,6 @@
     gap: var(--s-2);
   }
 
-  /* ── the search cue ───────────────────────────────────────────────────────
-     Not an input. It opens the palette, and a box that looks like a field but
-     forwards your keystrokes elsewhere costs a keystroke every time. The keycaps
-     are the point: they teach the shortcut. */
   /* ── search ───────────────────────────────────────────────────────────────
      THE ONE CONTROL IN THE BAR THAT IS ALLOWED TO GROW, and the only one that can be
      asked to. Everything else in the row overflows onto its neighbour when it is
@@ -358,43 +354,171 @@
      landing wherever the lockup and the nav happen to end — and it is 560px at rest
      rather than 250, which is the difference between a button that opens search and a
      field you can see yourself typing into. */
-  .search-cue {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  /* ONE FIELD, AND IT IS THE ONE YOU TYPE INTO.
+     This was a BUTTON dressed as a search field — icon, placeholder, keycap, border — which
+     opened an overlay containing a second, real field. A control that looks like a field and
+     refuses your keystrokes is a trick played on the reader every time they use it. */
+  .search {
+    position: relative;
     flex: 0 1 var(--search-w);
     width: var(--search-w);
     min-width: 0;
+  }
+  .search-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     height: 46px;
-    padding: 0 12px 0 16px;
+    padding: 0 10px 0 16px;
     border-radius: var(--r-2);
     background: rgb(255 255 255 / 4.5%);
     border: 1px solid var(--hair-2);
     color: var(--ink-3);
-    font-size: 14px;
-    text-align: left;
-    cursor: pointer;
     transition:
       border-color var(--dur-2) var(--ease-out),
-      background-color var(--dur-2) var(--ease-out),
-      color var(--dur-2) var(--ease-out);
+      background-color var(--dur-2) var(--ease-out);
   }
-  .search-cue:hover {
+  .search-field:hover {
     border-color: var(--hair-brand);
     background: rgb(255 255 255 / 7%);
-    color: var(--ink-2);
   }
-  .search-cue-text {
+  /* The focus ring goes on the FIELD, not on the input inside it — the input has no border of
+     its own, so a ring on it would float unattached in the middle of the control. */
+  .search-field:focus-within {
+    border-color: var(--color-brand);
+    background: rgb(255 255 255 / 8%);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-brand) 20%, transparent);
+  }
+  .search-input {
     flex: 1;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    height: 100%;
+    border: 0;
+    background: none;
+    color: var(--ink-1);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .search-input::placeholder {
+    color: var(--ink-3);
+  }
+  .search-input:focus {
+    outline: none;
+  }
+  .search-clear {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: var(--r-1);
+    color: var(--ink-3);
+  }
+  .search-clear:hover {
+    color: var(--ink-1);
+    background: rgb(255 255 255 / 8%);
   }
   .search-keys {
     display: flex;
     gap: 3px;
     flex: none;
+  }
+
+  /* THE SUGGESTIONS HANG OFF THE FIELD. Absolute inside a relative wrapper, so the header's
+     backdrop-filter — which makes it a containing block for anything FIXED, and which is what
+     laid the old overlay out at the size of the bar instead of the screen — cannot reach them.
+     A dropdown is not a modal: the page keeps scrolling behind it, so there is no scroll lock
+     here to lose the reader's place with. */
+  .search-drop {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    max-height: min(66vh, 560px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--s-3);
+    border: 1px solid var(--hair-2);
+    border-radius: var(--r-2);
+    background: var(--surf-3);
+    box-shadow: 0 24px 60px -18px rgb(0 0 0 / 70%);
+    animation: search-drop var(--dur-2) var(--ease-out) both;
+  }
+  @keyframes search-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .search-drop {
+      animation: none;
+    }
+  }
+  .search-scopes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-bottom: var(--s-3);
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .search-group {
+    padding: var(--s-3) 8px 4px;
+    color: var(--ink-3);
+  }
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 8px;
+    border-radius: var(--r-1);
+    color: var(--ink-1);
+    font-size: var(--t-cap);
+    line-height: 18px;
+  }
+  .search-row[aria-selected="true"],
+  .search-row:hover {
+    background: rgb(255 255 255 / 7%);
+  }
+  .search-thumb {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: var(--r-1);
+    background: var(--plate-1);
+  }
+  .search-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .search-thumb--icon {
+    background: rgb(255 255 255 / 6%);
+    color: var(--ink-2);
+  }
+  .search-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .search-sub {
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    line-height: 16px;
+  }
+  .search-price {
+    flex: none;
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+  .search-empty {
+    padding: var(--s-4) 8px;
+    color: var(--ink-3);
   }
   .search-keys span {
     display: grid;
@@ -411,177 +535,6 @@
     color: var(--ink-3);
   }
 
-  /* ── the command palette ──────────────────────────────────────────────────── */
-  .palette {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    padding: min(14vh, 132px) var(--gutter) var(--s-7);
-  }
-  .palette-scrim {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    border: 0;
-    background: var(--scrim-ink);
-    backdrop-filter: blur(6px);
-    cursor: default;
-    animation: palette-scrim var(--dur-2) var(--ease-out) both;
-  }
-  @keyframes palette-scrim {
-    from {
-      opacity: 0;
-    }
-  }
-  .palette-panel {
-    position: relative;
-    z-index: 1;
-    width: min(720px, 100%);
-    margin: 0 auto;
-    border-radius: var(--r-4);
-    border: 1px solid var(--hair-2);
-    background: var(--glass-strong);
-    backdrop-filter: var(--glass-blur-heavy);
-    box-shadow: var(--specular-strong), var(--sh-3);
-    overflow: hidden;
-    animation: palette-in var(--dur-3) var(--ease-glide) both;
-  }
-  @keyframes palette-in {
-    from {
-      opacity: 0;
-      transform: translateY(-12px) scale(0.985);
-    }
-  }
-  .palette-field {
-    display: flex;
-    align-items: center;
-    gap: var(--s-3);
-    height: 68px;
-    padding: 0 var(--s-5);
-    border-bottom: 1px solid var(--hair);
-    color: var(--ink-3);
-  }
-  .palette-input {
-    flex: 1;
-    min-width: 0;
-    height: 100%;
-    border: 0;
-    background: none;
-    outline: none;
-    font-size: 20px;
-    color: var(--ink-1);
-  }
-  .palette-input::placeholder {
-    color: var(--ink-4);
-  }
-  .palette-clear {
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border: 0;
-    border-radius: var(--r-pill);
-    background: rgb(255 255 255 / 7%);
-    color: var(--ink-2);
-    cursor: pointer;
-  }
-  .palette-clear:hover {
-    background: rgb(255 255 255 / 12%);
-    color: var(--ink-1);
-  }
-  .palette-scopes {
-    display: flex;
-    gap: var(--s-2);
-    padding: var(--s-3) var(--s-5);
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    border-bottom: 1px solid var(--hair);
-  }
-  .palette-scopes::-webkit-scrollbar {
-    display: none;
-  }
-  .scope-chip {
-    flex: none;
-    height: 30px;
-    padding: 0 13px;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--hair-2);
-    background: none;
-    color: var(--ink-3);
-    font-size: var(--t-fine);
-    white-space: nowrap;
-    cursor: pointer;
-    transition:
-      color var(--dur-1) var(--ease-out),
-      border-color var(--dur-1) var(--ease-out),
-      background-color var(--dur-1) var(--ease-out);
-  }
-  .scope-chip:hover {
-    color: var(--ink-1);
-    border-color: var(--hair-3);
-  }
-  .scope-chip[aria-pressed="true"] {
-    background: var(--teal-100);
-    border-color: var(--hair-brand);
-    color: var(--teal-800);
-  }
-  .palette-results {
-    max-height: min(52vh, 520px);
-    overflow-y: auto;
-    padding: var(--s-2) 0 var(--s-3);
-    overscroll-behavior: contain;
-  }
-  .palette-group {
-    padding: var(--s-4) var(--s-5) var(--s-2);
-  }
-  .palette-empty {
-    padding: var(--s-6) var(--s-5);
-    text-align: center;
-  }
-  .palette-row {
-    display: flex;
-    align-items: center;
-    gap: var(--s-3);
-    padding: 9px var(--s-5);
-    color: var(--ink-2);
-  }
-  .palette-row[aria-selected="true"] {
-    background: rgb(255 255 255 / 5%);
-    color: var(--ink-1);
-  }
-  .palette-thumb {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--r-2);
-    background: linear-gradient(160deg, var(--plate-2), var(--plate-1));
-    overflow: hidden;
-  }
-  .palette-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-  .palette-thumb--icon {
-    background: rgb(255 255 255 / 5%);
-    color: var(--ink-3);
-  }
-  .palette-main {
-    flex: 1;
-    min-width: 0;
-  }
-  .palette-sub {
-    font-size: var(--t-fine);
-    color: var(--ink-3);
-  }
-  .palette-price {
-    flex: none;
-    color: var(--ink-1);
-  }
-
   /* ── the degradation ladder ───────────────────────────────────────────────
      The bar at full dress needs about 1400px of viewport. That is wider than the
      laptop most people browse on, so it has to give something up on the way down, and
@@ -593,7 +546,7 @@
        < 1400   the cart and account drop their labels. A trolley with a count badge and
                 a person glyph are both unambiguous, and this is where 1366 lives.
        < 1200   the nav keeps its glyphs and drops its words, and the cue narrows.
-       <  720   the cue is a glyph, the palette is a full sheet, and the account
+       <  720   the search field collapses to its glyph and expands on focus, and the account
                 keeps its icon only.
 
      Measured at each step rather than guessed — scripts/scale-audit.mts renders the
@@ -662,28 +615,39 @@
     .header-logo {
       --wm-size: 26px;
     }
-    .search-cue {
+    /* Under 720px the header cannot hold a 560px field, so the bar collapses to its icon — and
+       focusing it expands it ACROSS THE HEADER ROW IN PLACE. Still one field, still the same
+       input element receiving the keystrokes; only its width changed. */
+    .search {
       flex: none;
       width: 42px;
+      transition: width var(--dur-3) var(--ease-out);
+    }
+    .search:focus-within,
+    .search[data-open="true"] {
+      position: absolute;
+      left: var(--gutter);
+      right: var(--gutter);
+      width: auto;
+      z-index: 2;
+    }
+    .search-field {
       padding: 0;
       justify-content: center;
     }
-    .search-cue-text,
-    .search-cue .search-keys {
+    .search:focus-within .search-field,
+    .search[data-open="true"] .search-field {
+      padding: 0 10px 0 16px;
+      justify-content: flex-start;
+      background: var(--surf-3);
+    }
+    .search-input,
+    .search .search-keys {
       display: none;
     }
-    .palette {
-      padding: 0;
-    }
-    .palette-panel {
-      width: 100%;
-      height: 100dvh;
-      border: 0;
-      border-radius: 0;
-    }
-    .palette-results {
-      max-height: none;
-      height: calc(100dvh - 68px - 55px);
+    .search:focus-within .search-input,
+    .search[data-open="true"] .search-input {
+      display: block;
     }
   }
 
@@ -1135,181 +1099,17 @@
     font-weight: 700;
   }
 
-  /* ── search: the dominant element ───────────────────────────────────────── */
-  /* Row two. `flex-basis: 100%` is what forces the wrap, so the cap on how wide the field may
-     actually get belongs on the form inside it — a max-width here would clamp the basis and the
-     field could end up back on row one on a wide screen. */
-  .search {
-    position: relative;
-    order: 10;
-    flex: 0 0 100%;
-    min-width: 0;
-    height: 48px;
-    padding-bottom: 8px;
-  }
-  .search-form {
-    display: flex;
-    max-width: 860px;
-    height: 40px;
-    background: var(--color-surface);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-  }
-  .search-form:focus-within {
-    box-shadow: 0 0 0 3px var(--color-brand);
-  }
-  .search-scope {
-    flex: none;
-    height: 100%;
-    max-width: 132px;
-    padding: 0 26px 0 10px;
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
-    border: 0;
-    border-right: 1px solid var(--color-line);
-    border-radius: 0;
-    background: var(--color-surface-2)
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23565959' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
-      no-repeat right 8px center;
-    color: var(--color-ink-2);
-    font-size: var(--t-fine);
-    line-height: 16px;
-  }
-  .search-scope:hover {
-    background-color: var(--color-surface-3);
-    color: var(--color-ink);
-  }
-  .search-scope:focus-visible {
-    outline: none;
-  }
-  .search-input {
-    flex: 1 1 auto;
-    min-width: 0;
-    height: 100%;
-    padding: 0 10px;
-    border: 0;
-    background: transparent;
-    color: var(--color-ink);
-    font-size: 15px;
-    line-height: 20px;
-  }
-  .search-input::placeholder {
-    color: var(--color-ink-3);
-    opacity: 1;
-  }
-  .search-input:focus-visible {
-    outline: none;
-  }
-  .search-clear {
-    flex: none;
-    width: 32px;
-    height: 100%;
-    display: grid;
-    place-items: center;
-    border: 0;
-    background: none;
-    color: var(--color-ink-2);
-    cursor: pointer;
-  }
-  .search-clear:hover {
-    color: var(--color-ink);
-  }
-  .search-btn {
-    flex: none;
-    width: 46px;
-    height: 100%;
-    padding: 0;
-    border-radius: 0;
-  }
-  .search-pop {
-    left: 0;
-    right: 0;
-    top: calc(100% + 6px);
-    max-height: min(70dvh, 560px);
-    overflow: auto;
-    overscroll-behavior: contain;
-    padding: 6px;
-  }
-  .search-group {
-    padding: 8px 10px 4px;
-    font-size: var(--t-fine);
-    line-height: 16px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-ink-3);
-  }
-  .search-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 48px;
-    padding: 4px 10px;
-    border-radius: var(--radius-sm);
-    color: var(--color-ink);
-    text-decoration: none;
-    cursor: pointer;
-  }
-  .search-row[aria-selected="true"],
-  .search-row:hover {
-    background: var(--color-surface-2);
-  }
-  .search-thumb {
-    flex: none;
-    width: 40px;
-    height: 40px;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    background: var(--color-surface);
-    border: 1px solid var(--color-line-2);
-    border-radius: var(--radius-sm);
-    color: var(--color-teal-700);
-  }
-  .search-thumb--muted {
-    color: var(--color-ink-3);
-  }
-  .search-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 3px;
-  }
-  .search-main {
-    flex: 1 1 auto;
-    min-width: 0;
-    font-size: 14px;
-    line-height: 18px;
-  }
-  .search-sub {
-    font-size: var(--t-fine);
-    line-height: 16px;
-    color: var(--color-ink-3);
-  }
-  .search-price {
-    flex: none;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .search-empty {
-    padding: 12px 10px;
-    font-size: 14px;
-    line-height: 20px;
-    color: var(--color-ink-2);
-  }
-  .search-ms {
-    padding: 4px 10px 2px;
-    text-align: right;
-    font-size: 11px;
-    line-height: 14px;
-    color: var(--color-ink-3);
-  }
-  @media (max-width: 639.98px) {
-    .search-scope {
-      display: none;
-    }
-  }
+  /* ── the two-row header's search is gone ───────────────────────────────────
+     About 175 lines styling a search that lived on its own row under the header:
+     .search as a flex-basis:100% row-breaker, .search-form, .search-scope and the
+     suggestion list that hung below them. The row itself went when the header became
+     one bar, and this outlived it by months.
+
+     It was not merely dead, it was ACTIVE: half its class names — .search, .search-input,
+     .search-clear, .search-thumb, .search-main, .search-sub — are the names the header's
+     own search uses, and being later in this file it won every one of them. `flex: 0 0 100%`
+     off this block is what made the new field 996px wide inside a 1024px bar, overflowed the
+     header by 590px and pushed the Catalogue link to x = -200. Dead CSS is not free. */
 
   /* ── the nav strip is gone ─────────────────────────────────────────────────
      Forty pixels of --color-header-2 under the header, carrying "All", the eight
