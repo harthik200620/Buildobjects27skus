@@ -48,3 +48,7 @@ infra/seed/*
 # what lets Vercel serve 309 MB of photographs and models statically without a second copy in git.
 apps/web/public/media/
 apps/web/public/3d/
+# Same reasoning, one folder along: the backplates are DERIVED here — stage-media.mts cuts the
+# 640/1280/2560 ladder from the single 2752px frame in design-system/art/ on every build. Twenty-one
+# files and 1.7 MB that regenerate from one tracked source, so they do not belong in git.
+apps/web/public/art/

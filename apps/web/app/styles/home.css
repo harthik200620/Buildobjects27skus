@@ -101,8 +101,26 @@
     overflow: hidden;
   }
   .hero-plate {
-    /* Taller than the copy so the photograph runs behind the ticker's top edge. */
     inset: 0 0 -1px 0;
+  }
+  /*
+   * THE HERO GETS A LIGHTER SCRIM THAN THE REST OF THE SET.
+   *
+   * The shared `.plate-scrim` is tuned for a 208px banner where a title sits directly on the
+   * photograph and legibility is the only thing that matters — it lands around 88% canvas at the
+   * left edge. On an 838px hero that same recipe crushed the photograph to a faint smudge in the
+   * top right: the frame was there, paid for, and invisible.
+   *
+   * So this one is rebalanced rather than removed. It stays heavy on the LEFT, where the headline
+   * and the lede sit, and opens up across the right half where the building is; vertically it is
+   * heavy under the bar, opens through the middle, and closes to the canvas at the bottom so the
+   * section ends without a seam. The measured result behind the headline is in the commit that
+   * introduced it — contrast is what decides this, not taste.
+   */
+  .hero-plate .plate-scrim {
+    background:
+      linear-gradient(180deg, rgb(6 24 29 / 92%) 0%, rgb(6 24 29 / 38%) 26%, rgb(6 24 29 / 46%) 68%, var(--color-canvas) 100%),
+      linear-gradient(90deg, rgb(6 24 29 / 88%) 0%, rgb(6 24 29 / 62%) 34%, rgb(6 24 29 / 16%) 68%, rgb(6 24 29 / 6%) 100%);
   }
   .hero-grid {
     position: absolute;

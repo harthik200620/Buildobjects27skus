@@ -12,25 +12,57 @@ than the page. Ship the `.webp` files in this folder.
 
 | Original | Became |
 |---|---|
-| `11_22AM.jpg` | `home-hero.webp` |
+| `11_22AM.jpg` | `home-hero.webp` — **replaced 26 Aug, see below** |
 | `11_24AM.jpg` | `pdp-stage.webp` |
 | `11_25AM.jpg` | `site-materials.webp` |
 | `11_27AM.jpg` | `catalogue-aisle.webp` |
 | `11_28AM.jpg` | `construct-frame.webp` |
 | `11_30AM.jpg` | `cart-yard.webp` |
 | `11_33AM.jpg` | `interior-warm.webp` |
+| `4_00PM.jpg` | `home-hero.webp` (the one that ships) |
 
 ## The manifest
 
 | File | 2560px unless noted | Page / slot | Notes |
 |---|---|---|---|
-| `home-hero.webp` | 2752px | Home — behind the headline | The best of the set. Dusk G+1 house: parapet, mumty with the black Sintex tank, chajjas over every window, MS grills, portico, raised plinth, compound wall and gate, coconut palm, bougainvillea, wet street. Correct AP vernacular throughout. |
+| `home-hero.webp` | 2752px | Home — behind the headline | Dusk contemporary villa: cantilevered slabs, sandstone cladding, a full-height timber louvre screen, a lit double-height living room, reflecting pool, porch, sandstone compound wall with a sliding MS gate, coconut palms and frangipani, wet paving. Correct AP vernacular throughout, and checked at native resolution for signage — there is none. |
 | `catalogue-aisle.webp` | | Category and search pages | One-point perspective down a materials aisle, amber lamp run vanishing into black. |
 | `site-materials.webp` | | Home — the materials band | Cement, rebar and sand in a raking sunbeam. Top third is empty for copy. |
 | `construct-frame.webp` | | Construct pages | RCC frame with shuttering props and starter bars. The only daylight frame in the set — its sky is pulled down to the canvas so it matches the other six. |
 | `cart-yard.webp` | | Cart and checkout | Loaded truck at a site gate in the rain, one sodium lamp. Warmest frame in the set. |
 | `interior-warm.webp` | | Interiors, lifestyle, Livspace-facing pages | Finished living room at dusk — vitrified floor, Kota stone wall, brass lamp, ceiling fan, MS grills. |
 | `pdp-stage.webp` | | Product detail — the gallery stage | An empty lit plinth. The product renders **on** this. Nothing else may occupy the plinth. |
+
+### The hero was replaced, 26 Aug 2026
+
+The frame this shipped with was a dusk G+1 house and it was the best of the original set. It was
+replaced with a contemporary villa on the same 2752 × 1536 canvas — a different kind of house, and
+one closer to what the store's customers are commissioning.
+
+Two things came out of doing it that are worth keeping:
+
+**The grade is a tool now.** This file said the plates were "graded to the canvas and optimised"
+and never said how, which meant the only way to match the set was to eyeball it. The house style,
+measured off the seven that shipped, is `mean rgb 32,59,60 · median 46 · p90 95` — blue at or above
+green, red well below both, everything sitting in the canvas's own hue and nothing near white.
+`services/pipeline/tools/grade-plate.mts` solves the per-channel gain that lands a new frame on
+that, iteratively, and reports what it converged to. The new hero came in at `62,87,82 / 78` and
+went out at `31,71,76 / 60` — an exact match on the channel means to the plate it replaced.
+
+**The hero has its own scrim.** The shared `.plate-scrim` is tuned for a 208px banner where a title
+sits directly on the photograph. On an 838px hero it crushed the frame to a faint smudge in the top
+right — the photograph was there, paid for, and invisible. `.hero-plate .plate-scrim` in
+`styles/home.css` stays heavy on the left where the copy is and opens across the right half where
+the building is. Measured on the rendered page rather than judged:
+
+    width   headline            lede
+    1440    9.12:1  AAA         5.97:1  AA
+    1024    8.71:1  AAA         5.19:1  AA
+     768    7.22:1  AAA         4.77:1  AA
+     390    9.20:1  AAA         4.80:1  AA
+
+Each figure is against the single BRIGHTEST pixel behind that block, which is the worst case; most
+of each band sits far darker.
 
 ## How they are used
 
