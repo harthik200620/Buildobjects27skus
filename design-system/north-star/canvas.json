@@ -1,0 +1,20 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",      "x": 0,    "y": 0,    "w": 1440, "h": 4520, "title": "Home" },
+    { "file": "Nav.dc.html",       "x": 1600, "y": 0,    "w": 1440, "h": 1180, "title": "Nav bar + cart rig" },
+    { "file": "System.dc.html",    "x": 1600, "y": 1380, "w": 1440, "h": 2760, "title": "The system" },
+    { "file": "Listing.dc.html",   "x": 3200, "y": 0,    "w": 1440, "h": 2160, "title": "Listing + card anatomy" },
+    { "file": "Product.dc.html",   "x": 3200, "y": 2360, "w": 1440, "h": 2080, "title": "Product page" },
+    { "file": "Estimator.dc.html", "x": 4800, "y": 0,    "w": 1440, "h": 2400, "title": "The Build Machine" },
+    { "file": "Coins.dc.html",     "x": 4800, "y": 2600, "w": 1440, "h": 2600, "title": "The BO Vault" }
+  ],
+  "annotations": [
+    { "id": "brief", "x": 0, "y": -300, "w": 620,
+      "text": "BUILD OBJECTS — UI UPGRADE NORTH STAR\n\nKept: the #06181D canvas, the Audiowide wordmark, and Encode Sans for figures.\nEverything else is new.\n\nDisplay: Instrument Serif (was 21px Arimo headings — a 2x ramp is why the store read cheap).\nUI: Schibsted Grotesk (was Arimo, a Helvetica metric clone with no voice).\nIcons: 93 custom glyphs replacing Lucide, one file, same export names.\n\nStart at Home, then The system." },
+    { "id": "nav-note", "x": 1600, "y": -300, "w": 520,
+      "text": "The old header was two rows and 104px because an Audiowide lockup and an 860px search field could not share one row.\n\nSearch moves to a Cmd-K overlay. The mark goes 34 -> 44px and the bar drops to 76px." },
+    { "id": "est-note", "x": 4800, "y": -300, "w": 560,
+      "text": "THE BUILD MACHINE\n\nThe house is one SVG with addressable groups (plinth, g0, g1, parapet, mumty, portico, wall). Changing floors animates the group in — it is not a picture of a house, it is the model being costed.\n\nTwo ledgers, each against its own entered budget, per the BuildO spec." }
+  ],
+  "launch": { "view": "canvas" }
+}

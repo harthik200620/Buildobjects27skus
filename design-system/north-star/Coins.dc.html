@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;family=Encode+Sans:wght@400;500;600;700&amp;family=Audiowide&amp;display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#06181D;color:#C3D6D9;
+  font:400 15px/24px 'Schibsted Grotesk','Segoe UI',system-ui,sans-serif;letter-spacing:-.003em;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:#7FE2E6;text-decoration:none}a:hover{color:#B4F1F3}
+h1,h2,h3,h4,p,ul,ol,figure,dl,dd{margin:0}ul,ol{padding:0;list-style:none}
+/* ── the ambient field: bloom + warm wash + vignette + film grain ── */
+.field{position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(120% 90% at 12% -10%,rgba(86,211,216,.13) 0%,transparent 62%),
+             radial-gradient(90% 80% at 96% 108%,rgba(245,180,10,.055) 0%,transparent 58%),
+             radial-gradient(140% 120% at 50% 40%,transparent 42%,rgba(2,9,12,.62) 100%);
+  animation:drift 90s cubic-bezier(.65,0,.35,1) infinite alternate}
+.grain{position:absolute;inset:-50%;pointer-events:none;z-index:0;opacity:.038;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-2%,1.5%,0) scale(1.06)}}
+@keyframes grain{0%{transform:translate3d(0,0,0)}20%{transform:translate3d(-8%,2%,0)}40%{transform:translate3d(-2%,7%,0)}
+  60%{transform:translate3d(5%,0,0)}80%{transform:translate3d(-6%,-3%,0)}100%{transform:translate3d(0,0,0)}}
+/* ── type contract ── */
+.d1{font:400 92px/.94 'Instrument Serif',Georgia,serif;letter-spacing:-.028em;color:#F2F8F9;text-wrap:balance}
+.d2{font:400 64px/1.02 'Instrument Serif',Georgia,serif;letter-spacing:-.022em;color:#F2F8F9;text-wrap:balance}
+.d3{font:400 44px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.016em;color:#F2F8F9;text-wrap:balance}
+.h2{font:600 24px/30px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.014em;color:#F2F8F9}
+.h3{font:600 19px/26px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.014em;color:#F2F8F9}
+.h4{font:600 16px/22px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.01em;color:#F2F8F9}
+.lede{font-size:17px;line-height:28px;color:#C3D6D9;text-wrap:pretty}
+.meta{font-size:13.5px;line-height:20px;color:#8FA9AE}
+.micro{font:600 11px/14px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8FA9AE}
+.fig{font-family:'Encode Sans',system-ui,sans-serif;font-weight:600;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
+.figh{font-family:'Encode Sans',system-ui,sans-serif;font-weight:700;font-size:76px;line-height:.96;
+  font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.03em;color:#F2F8F9}
+.wm{font-family:'Audiowide',system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;
+  white-space:nowrap;color:#F2F8F9;line-height:1}
+.wm i{color:#56D3D8;font-style:normal}
+/* ── surfaces ── */
+.card{background:#0E2A33;border:1px solid rgba(255,255,255,.07);border-radius:14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 4px 12px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4)}
+.glass{background:rgba(14,42,51,.76);backdrop-filter:blur(24px) saturate(1.6);
+  border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 12px 28px rgba(0,0,0,.55)}
+.plate{background:linear-gradient(160deg,#F6F9F9,#E9EEEF);border-radius:10px}
+.rule{height:1px;background:rgba(255,255,255,.07);border:0}
+/* ── controls ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:48px;padding:0 22px;
+  border-radius:10px;border:1px solid transparent;font:600 15px/1 'Schibsted Grotesk',system-ui,sans-serif;
+  cursor:pointer;white-space:nowrap;transition:transform .2s cubic-bezier(.16,1,.3,1),background-color .12s,box-shadow .2s}
+.btn-p{background:#56D3D8;color:#04171B;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 40px -8px rgba(86,211,216,.45)}
+.btn-p:hover{background:#7FE2E6;transform:translateY(-2px)}
+.btn-s{background:rgba(255,255,255,.04);color:#F2F8F9;border-color:rgba(255,255,255,.14)}
+.btn-s:hover{background:rgba(255,255,255,.08);border-color:rgba(86,211,216,.34);transform:translateY(-2px)}
+.nowrap{white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:999px;
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);font-size:12.5px;color:#C3D6D9}
+/* ── the live dot ── */
+.live{display:inline-flex;align-items:center;gap:8px;color:#7FE2E6}
+.live::before{content:"";width:6px;height:6px;border-radius:999px;background:#56D3D8;animation:pd 2.4s cubic-bezier(.22,1,.36,1) infinite}
+@keyframes pd{0%{box-shadow:0 0 0 0 rgba(86,211,216,.6)}70%{box-shadow:0 0 0 9px rgba(86,211,216,0)}100%{box-shadow:0 0 0 0 rgba(86,211,216,0)}}
+/* ── entrances ── */
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.rv{animation:rise .64s cubic-bezier(.16,1,.3,1) both}
+/* ── the drafting grid used behind heroes ── */
+.grid-bg{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(86,211,216,.07) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(86,211,216,.07) 1px,transparent 1px);
+  background-size:72px 72px;
+  -webkit-mask-image:radial-gradient(90% 70% at 50% 40%,#000 0%,transparent 78%);
+          mask-image:radial-gradient(90% 70% at 50% 40%,#000 0%,transparent 78%)}
+
+
+.wrap{position:relative;width:1440px;overflow:hidden;background:#06181D;padding-bottom:90px}
+.shell{position:relative;z-index:3;width:1240px;margin:0 auto}
+.vault{position:relative;padding:96px 0 80px;overflow:hidden}
+.dial{position:absolute;left:50%;top:44%;width:1180px;height:1180px;transform:translate(-50%,-50%);z-index:1;
+  animation:turn 120s linear infinite}
+@keyframes turn{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.bloom{position:absolute;left:50%;top:40%;width:1000px;height:1000px;transform:translate(-50%,-50%);z-index:0;
+  background:radial-gradient(closest-side,rgba(245,180,10,.16),rgba(245,180,10,.05) 46%,transparent 72%);
+  animation:pulseb 7s ease-in-out infinite alternate}
+@keyframes pulseb{from{opacity:.7;transform:translate(-50%,-50%) scale(.94)}to{opacity:1;transform:translate(-50%,-50%) scale(1.06)}}
+/* ── THE COIN: a real struck disc in CSS 3D ── */
+.coinbox{perspective:1400px;width:280px;height:280px;margin:0 auto 46px;position:relative;z-index:4}
+.coin{position:relative;width:280px;height:280px;transform-style:preserve-3d;
+  animation:spin 11s cubic-bezier(.65,0,.35,1) infinite}
+/* Dwells face-on at 0 and 180 and transits the edge quickly, so the coin is a
+   readable object almost all of the time instead of a gold sliver half the loop. */
+@keyframes spin{
+  0%,16%{transform:rotateX(-14deg) rotateY(0)}
+  46%,62%{transform:rotateX(-14deg) rotateY(180deg)}
+  92%,100%{transform:rotateX(-14deg) rotateY(360deg)}}
+.face{position:absolute;inset:0;border-radius:50%;backface-visibility:hidden;display:grid;place-items:center;
+  background:
+    radial-gradient(60% 55% at 32% 26%,#FFE39B 0%,#FFCB4D 24%,#F5B40A 52%,#C98F06 78%,#7A5504 100%);
+  box-shadow:inset 0 0 0 9px rgba(122,85,4,.42),inset 0 0 46px rgba(122,85,4,.5),0 0 70px rgba(245,180,10,.4)}
+.face--b{transform:rotateY(180deg)}
+.rim{position:absolute;inset:0;border-radius:50%;transform:translateZ(-7px);
+  background:conic-gradient(from 0deg,#7A5504,#F5B40A 4%,#7A5504 8%,#E5A408 12%,#7A5504 16%,#FFCB4D 20%,#7A5504 24%,
+    #F5B40A 28%,#7A5504 32%,#E5A408 36%,#7A5504 40%,#FFCB4D 44%,#7A5504 48%,#F5B40A 52%,#7A5504 56%,#E5A408 60%,
+    #7A5504 64%,#FFCB4D 68%,#7A5504 72%,#F5B40A 76%,#7A5504 80%,#E5A408 84%,#7A5504 88%,#FFCB4D 92%,#7A5504 96%,#7A5504 100%)}
+.glint{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:linear-gradient(122deg,transparent 34%,rgba(255,255,255,.5) 47%,transparent 58%);
+  animation:glint 11s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes glint{0%,58%{opacity:0}66%{opacity:1}100%{opacity:0}}
+.coinmark{filter:drop-shadow(0 2px 0 rgba(122,85,4,.6)) drop-shadow(0 -1px 0 rgba(255,227,155,.5))}
+/* ── ladder ── */
+.earn{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.earnc{position:relative;padding:26px 24px;border-radius:16px;background:rgba(14,42,51,.66);
+  border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);overflow:hidden;
+  transition:transform .34s cubic-bezier(.16,1,.3,1),border-color .2s}
+.earnc:hover{transform:translateY(-5px);border-color:rgba(245,180,10,.34)}
+.earnc::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(245,180,10,.14),transparent)}
+.arc{position:relative;width:52px;height:52px;margin-bottom:18px}
+/* ── engine track ── */
+.engine{position:relative;padding:44px;border-radius:22px;overflow:hidden;
+  background:linear-gradient(160deg,#0C2831,#071B21);border:1px solid rgba(255,255,255,.08)}
+.track{position:relative;height:180px;margin-top:30px}
+.rail{position:absolute;left:0;right:0;top:88px;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(245,180,10,.42) 12%,rgba(245,180,10,.42) 88%,transparent)}
+.node{position:absolute;top:60px;width:58px;height:58px;margin-left:-29px;border-radius:50%;
+  background:rgba(4,20,26,.9);border:1px solid rgba(245,180,10,.3);display:grid;place-items:center;color:#FFCB4D}
+.node.hit{border-color:#F5B40A;box-shadow:0 0 34px rgba(245,180,10,.5);background:rgba(245,180,10,.14)}
+.node span{position:absolute;top:70px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  font:600 10.5px/13px 'Schibsted Grotesk';letter-spacing:.12em;text-transform:uppercase;color:#8FA9AE}
+.token{position:absolute;top:74px;width:30px;height:30px;border-radius:50%;
+  background:radial-gradient(60% 55% at 34% 28%,#FFE39B,#F5B40A 58%,#C98F06);
+  box-shadow:0 0 26px rgba(245,180,10,.75);animation:travel 5.4s cubic-bezier(.16,1,.3,1) infinite}
+@keyframes travel{0%{left:2%;transform:scale(.7)}12%{transform:scale(1)}
+  70%{left:76%}84%,100%{left:76%;transform:scale(1.08)}}
+/* ── statement ── */
+.stmt{width:100%;border-collapse:collapse}
+.stmt th{text-align:left;padding:0 0 12px;font:600 10.5px/13px 'Schibsted Grotesk';letter-spacing:.14em;
+  text-transform:uppercase;color:#61797E;border-bottom:1px solid rgba(255,255,255,.08)}
+.stmt td{padding:15px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px;color:#C3D6D9}
+.stmt td:last-child,.stmt th:last-child{text-align:right}
+
+</style>
+</helmet>
+
+<div class="wrap">
+  <div class="field"></div><div class="grain"></div>
+
+  <section class="vault">
+    <div class="bloom"></div>
+    <svg class="dial" viewBox="0 0 1180 1180" aria-hidden="true"><circle cx="590" cy="590" r="180" fill="none" stroke="#F5B40A" stroke-opacity=".10" stroke-width="1"/><circle cx="590" cy="590" r="268" fill="none" stroke="#F5B40A" stroke-opacity=".08" stroke-width="1"/><circle cx="590" cy="590" r="356" fill="none" stroke="#F5B40A" stroke-opacity=".07" stroke-width="1"/><circle cx="590" cy="590" r="444" fill="none" stroke="#F5B40A" stroke-opacity=".06" stroke-width="1"/><circle cx="590" cy="590" r="520" fill="none" stroke="#F5B40A" stroke-opacity=".10" stroke-width="1"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(0 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(3 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(6 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(9 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(12 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(15 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(18 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(21 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(24 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(27 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(30 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(33 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(36 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(39 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(42 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(45 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(48 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(51 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(54 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(57 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(60 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(63 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(66 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(69 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(72 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(75 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(78 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(81 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(84 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(87 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(90 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(93 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(96 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(99 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(102 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(105 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(108 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(111 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(114 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(117 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(120 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(123 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(126 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(129 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(132 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(135 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(138 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(141 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(144 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(147 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(150 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(153 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(156 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(159 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(162 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(165 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(168 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(171 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(174 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(177 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(180 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(183 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(186 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(189 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(192 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(195 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(198 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(201 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(204 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(207 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(210 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(213 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(216 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(219 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(222 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(225 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(228 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(231 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(234 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(237 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(240 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(243 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(246 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(249 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(252 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(255 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(258 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(261 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(264 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(267 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(270 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(273 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(276 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(279 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(282 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(285 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(288 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(291 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(294 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(297 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(300 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(303 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(306 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(309 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(312 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(315 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(318 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(321 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(324 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(327 590 590)"/><line x1="590" y1="80" x2="590" y2="114" stroke="#F5B40A" stroke-opacity=".5" stroke-width="2" transform="rotate(330 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(333 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(336 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(339 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(342 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(345 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(348 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(351 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(354 590 590)"/><line x1="590" y1="80" x2="590" y2="98" stroke="#F5B40A" stroke-opacity=".22" stroke-width="1" transform="rotate(357 590 590)"/></svg>
+    <div class="shell" style="text-align:center">
+      <div class="coinbox">
+        <div class="coin">
+          <div class="rim"></div>
+          <div class="face">
+            <img class="coinmark" src="logo-mark.png" alt="" width="128" height="128" style="width:128px;height:128px;opacity:.9;mix-blend-mode:multiply">
+            <div class="glint"></div>
+          </div>
+          <div class="face face--b">
+            <span style="font-family:'Audiowide';font-size:52px;color:rgba(122,85,4,.72);letter-spacing:.02em">BO</span>
+            <div class="glint"></div>
+          </div>
+        </div>
+      </div>
+      <p class="micro live" style="justify-content:center;display:inline-flex;margin-bottom:22px">The vault · one coin is one rupee</p>
+      <h1 class="figh" style="font-size:104px;color:#FFCB4D;text-shadow:0 0 60px rgba(245,180,10,.4)">240</h1>
+      <p class="d3" style="margin-top:14px;font-size:34px">coins in your wallet</p>
+      <p class="lede" style="margin:20px auto 0;max-width:52ch">Worth <span class="fig" style="color:#F2F8F9">₹240</span>
+        off your next order. Redeem them in the cart before you check out — they never expire, and they are never
+        withdrawn once credited.</p>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:32px">
+        <a href="#" class="btn btn-p" style="background:#F5B40A;color:#1A1204;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 48px -6px rgba(245,180,10,.6)">Spend them in the cart</a>
+        <a href="#" class="btn btn-s">See how coins are earned</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell" style="padding-top:36px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:30px">
+      <div><p class="micro" style="color:#FFCB4D;margin-bottom:14px">Three ways in</p>
+        <h2 class="d3">How coins are earned</h2></div>
+      <p class="meta" style="max-width:36ch">No streaks, no daily check-ins, no expiry clock. Coins come from building
+        a house, which is the only thing this store is for.</p>
+    </div>
+    <div class="earn">
+      <div class="earnc"><div class="arc">
+        <svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="3"/>
+        <circle cx="26" cy="26" r="22" fill="none" stroke="#F5B40A" stroke-width="3" stroke-linecap="round"
+          stroke-dasharray="138" stroke-dashoffset="52" transform="rotate(-90 26 26)"/>
+        <text x="26" y="31" text-anchor="middle" font-family="Encode Sans" font-weight="700" font-size="14" fill="#FFCB4D">62</text></svg></div>
+        <h3 class="h3" style="margin-bottom:9px;position:relative">Buy anything</h3>
+        <p class="meta" style="position:relative">1 coin for every ₹100 you spend, credited the moment the order is confirmed.</p></div><div class="earnc"><div class="arc">
+        <svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="3"/>
+        <circle cx="26" cy="26" r="22" fill="none" stroke="#F5B40A" stroke-width="3" stroke-linecap="round"
+          stroke-dasharray="138" stroke-dashoffset="0" transform="rotate(-90 26 26)"/>
+        <text x="26" y="31" text-anchor="middle" font-family="Encode Sans" font-weight="700" font-size="14" fill="#FFCB4D">100</text></svg></div>
+        <h3 class="h3" style="margin-bottom:9px;position:relative">Cost a house</h3>
+        <p class="meta" style="position:relative">500 coins the first time you accept an estimate and take it to a cart.</p></div><div class="earnc"><div class="arc">
+        <svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="3"/>
+        <circle cx="26" cy="26" r="22" fill="none" stroke="#F5B40A" stroke-width="3" stroke-linecap="round"
+          stroke-dasharray="138" stroke-dashoffset="91" transform="rotate(-90 26 26)"/>
+        <text x="26" y="31" text-anchor="middle" font-family="Encode Sans" font-weight="700" font-size="14" fill="#FFCB4D">34</text></svg></div>
+        <h3 class="h3" style="margin-bottom:9px;position:relative">Stand it in your room</h3>
+        <p class="meta" style="position:relative">50 coins for placing an item in your own room before you buy it.</p></div>
+    </div>
+  </section>
+
+  <section class="shell" style="padding-top:72px">
+    <div class="engine">
+      <p class="micro" style="color:#FFCB4D;margin-bottom:14px">The BO Engine</p>
+      <h2 class="d3" style="max-width:22ch">A coin travels the house you are building.</h2>
+      <p class="lede" style="margin-top:16px;max-width:60ch">One spin a day. The token runs the construction sequence and
+        stops at a stage — the further it gets, the more it pays. Where it lands is decided before it leaves, so the
+        animation is showing you a result rather than deciding one.</p>
+      <div class="track">
+        <div class="rail"></div>
+        <div class="node" style="left:6%"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6"/></svg><span>Footing</span></div><div class="node" style="left:24%"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6"/></svg><span>Plinth</span></div><div class="node" style="left:42%"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6"/></svg><span>Slab</span></div><div class="node" style="left:60%"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6"/></svg><span>Brickwork</span></div><div class="node hit" style="left:76%"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6"/></svg><span>Finishes</span></div><div class="node" style="left:94%"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6"/></svg><span>Handover</span></div>
+        <div class="token"></div>
+      </div>
+      <div style="display:flex;gap:14px;margin-top:56px;align-items:center">
+        <a href="#" class="btn btn-p" style="background:#F5B40A;color:#1A1204">Spin the engine</a>
+        <p class="meta">Next spin available in <span class="fig" style="color:#F2F8F9">14h 22m</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell" style="padding-top:72px">
+    <p class="micro" style="color:#FFCB4D;margin-bottom:14px">Statement</p>
+    <h2 class="d3" style="margin-bottom:26px">Every coin, and where it came from</h2>
+    <table class="stmt">
+      <thead><tr><th>Activity</th><th>Date</th><th>Coins</th></tr></thead>
+      <tbody><tr><td style="color:#F2F8F9">Order BO-24817 · 38 items</td><td class="meta">26 Aug</td><td class="fig" style="font-size:15px;color:#56E08C">+1,482</td></tr><tr><td style="color:#F2F8F9">Redeemed against BO-24810</td><td class="meta">24 Aug</td><td class="fig" style="font-size:15px;color:#FF8F8F">−900</td></tr><tr><td style="color:#F2F8F9">Estimate accepted · 2,678 sqft</td><td class="meta">22 Aug</td><td class="fig" style="font-size:15px;color:#56E08C">+500</td></tr><tr><td style="color:#F2F8F9">Placed Kajaria 600×600 in your room</td><td class="meta">21 Aug</td><td class="fig" style="font-size:15px;color:#56E08C">+50</td></tr><tr><td style="color:#F2F8F9">Order BO-24796 · 11 items</td><td class="meta">19 Aug</td><td class="fig" style="font-size:15px;color:#56E08C">+318</td></tr></tbody>
+    </table>
+  </section>
+</div>
+
+</x-dc>
+</body>
+</html>

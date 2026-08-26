@@ -1,0 +1,576 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;family=Encode+Sans:wght@400;500;600;700&amp;family=Audiowide&amp;display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#06181D;color:#C3D6D9;
+  font:400 15px/24px 'Schibsted Grotesk','Segoe UI',system-ui,sans-serif;letter-spacing:-.003em;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:#7FE2E6;text-decoration:none}a:hover{color:#B4F1F3}
+h1,h2,h3,h4,p,ul,ol,figure,dl,dd{margin:0}ul,ol{padding:0;list-style:none}
+/* ── the ambient field: bloom + warm wash + vignette + film grain ── */
+.field{position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(120% 90% at 12% -10%,rgba(86,211,216,.13) 0%,transparent 62%),
+             radial-gradient(90% 80% at 96% 108%,rgba(245,180,10,.055) 0%,transparent 58%),
+             radial-gradient(140% 120% at 50% 40%,transparent 42%,rgba(2,9,12,.62) 100%);
+  animation:drift 90s cubic-bezier(.65,0,.35,1) infinite alternate}
+.grain{position:absolute;inset:-50%;pointer-events:none;z-index:0;opacity:.038;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-2%,1.5%,0) scale(1.06)}}
+@keyframes grain{0%{transform:translate3d(0,0,0)}20%{transform:translate3d(-8%,2%,0)}40%{transform:translate3d(-2%,7%,0)}
+  60%{transform:translate3d(5%,0,0)}80%{transform:translate3d(-6%,-3%,0)}100%{transform:translate3d(0,0,0)}}
+/* ── type contract ── */
+.d1{font:400 92px/.94 'Instrument Serif',Georgia,serif;letter-spacing:-.028em;color:#F2F8F9;text-wrap:balance}
+.d2{font:400 64px/1.02 'Instrument Serif',Georgia,serif;letter-spacing:-.022em;color:#F2F8F9;text-wrap:balance}
+.d3{font:400 44px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.016em;color:#F2F8F9;text-wrap:balance}
+.h2{font:600 24px/30px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.014em;color:#F2F8F9}
+.h3{font:600 19px/26px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.014em;color:#F2F8F9}
+.h4{font:600 16px/22px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.01em;color:#F2F8F9}
+.lede{font-size:17px;line-height:28px;color:#C3D6D9;text-wrap:pretty}
+.meta{font-size:13.5px;line-height:20px;color:#8FA9AE}
+.micro{font:600 11px/14px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8FA9AE}
+.fig{font-family:'Encode Sans',system-ui,sans-serif;font-weight:600;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
+.figh{font-family:'Encode Sans',system-ui,sans-serif;font-weight:700;font-size:76px;line-height:.96;
+  font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.03em;color:#F2F8F9}
+.wm{font-family:'Audiowide',system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;
+  white-space:nowrap;color:#F2F8F9;line-height:1}
+.wm i{color:#56D3D8;font-style:normal}
+/* ── surfaces ── */
+.card{background:#0E2A33;border:1px solid rgba(255,255,255,.07);border-radius:14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 4px 12px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4)}
+.glass{background:rgba(14,42,51,.76);backdrop-filter:blur(24px) saturate(1.6);
+  border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 12px 28px rgba(0,0,0,.55)}
+.plate{background:linear-gradient(160deg,#F6F9F9,#E9EEEF);border-radius:10px}
+.rule{height:1px;background:rgba(255,255,255,.07);border:0}
+/* ── controls ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:48px;padding:0 22px;
+  border-radius:10px;border:1px solid transparent;font:600 15px/1 'Schibsted Grotesk',system-ui,sans-serif;
+  cursor:pointer;white-space:nowrap;transition:transform .2s cubic-bezier(.16,1,.3,1),background-color .12s,box-shadow .2s}
+.btn-p{background:#56D3D8;color:#04171B;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 40px -8px rgba(86,211,216,.45)}
+.btn-p:hover{background:#7FE2E6;transform:translateY(-2px)}
+.btn-s{background:rgba(255,255,255,.04);color:#F2F8F9;border-color:rgba(255,255,255,.14)}
+.btn-s:hover{background:rgba(255,255,255,.08);border-color:rgba(86,211,216,.34);transform:translateY(-2px)}
+.nowrap{white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:999px;
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);font-size:12.5px;color:#C3D6D9}
+/* ── the live dot ── */
+.live{display:inline-flex;align-items:center;gap:8px;color:#7FE2E6}
+.live::before{content:"";width:6px;height:6px;border-radius:999px;background:#56D3D8;animation:pd 2.4s cubic-bezier(.22,1,.36,1) infinite}
+@keyframes pd{0%{box-shadow:0 0 0 0 rgba(86,211,216,.6)}70%{box-shadow:0 0 0 9px rgba(86,211,216,0)}100%{box-shadow:0 0 0 0 rgba(86,211,216,0)}}
+/* ── entrances ── */
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.rv{animation:rise .64s cubic-bezier(.16,1,.3,1) both}
+/* ── the drafting grid used behind heroes ── */
+.grid-bg{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(86,211,216,.07) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(86,211,216,.07) 1px,transparent 1px);
+  background-size:72px 72px;
+  -webkit-mask-image:radial-gradient(90% 70% at 50% 40%,#000 0%,transparent 78%);
+          mask-image:radial-gradient(90% 70% at 50% 40%,#000 0%,transparent 78%)}
+
+
+.wrap{position:relative;width:1440px;overflow:hidden;background:#06181D}
+.shell{position:relative;z-index:3;width:1240px;margin:0 auto}
+/* ── HERO ── */
+.hero{position:relative;padding:120px 0 104px;overflow:hidden}
+.hero-sky{position:absolute;left:0;right:0;bottom:-30px;height:400px;z-index:1;opacity:.72;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 52%,#000 86%,transparent 100%);
+          mask-image:linear-gradient(180deg,transparent 0%,#000 52%,#000 86%,transparent 100%)}
+.hero-scrim{position:absolute;left:0;right:0;bottom:-30px;height:400px;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,#06181D 0%,rgba(6,24,29,.86) 26%,rgba(6,24,29,.62) 58%,rgba(6,24,29,.9) 100%)}
+.hero-iso{position:absolute;right:-140px;top:40px;width:900px;opacity:.30;z-index:1;
+  animation:isofloat 26s cubic-bezier(.65,0,.35,1) infinite alternate}
+@keyframes isofloat{from{transform:translate3d(0,0,0)}to{transform:translate3d(-14px,-20px,0)}}
+.hero-grid{position:absolute;inset:0;z-index:1;opacity:.6;
+  background-image:linear-gradient(rgba(86,211,216,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.06) 1px,transparent 1px);
+  background-size:80px 80px;
+  -webkit-mask-image:radial-gradient(80% 60% at 26% 34%,#000,transparent 76%);
+          mask-image:radial-gradient(80% 60% at 26% 34%,#000,transparent 76%)}
+.hero-in{position:relative;z-index:3;display:grid;grid-template-columns:1fr 388px;gap:64px;align-items:start}
+.stats{display:flex;gap:0;margin-top:46px;border-top:1px solid rgba(255,255,255,.09)}
+.stats>div{flex:1;padding:20px 24px 0 0}
+.stats>div+div{padding-left:24px;border-left:1px solid rgba(255,255,255,.07)}
+.stats dt{font:600 11px/14px 'Schibsted Grotesk';letter-spacing:.16em;text-transform:uppercase;color:#8FA9AE;margin-bottom:9px}
+.stats dd{font-family:'Encode Sans';font-weight:700;font-size:38px;line-height:1;letter-spacing:-.03em;color:#F2F8F9;
+  font-variant-numeric:tabular-nums}
+/* ── the live board ── */
+.board{position:relative;padding:20px;border-radius:20px;overflow:hidden}
+.board-media{position:relative;height:212px;border-radius:12px;overflow:hidden;
+  background:linear-gradient(158deg,#F6F9F9 0%,#E4EBEC 62%,#D3DDDE 100%);display:grid;place-items:center}
+.board-media::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(60% 45% at 32% 22%,rgba(255,255,255,.9),transparent 70%)}
+.dwell{position:absolute;left:20px;right:20px;bottom:18px;height:2px;background:rgba(255,255,255,.10);border-radius:2px;overflow:hidden}
+.dwell i{display:block;height:100%;width:44%;background:#56D3D8;border-radius:2px;animation:dwell 5s linear infinite}
+@keyframes dwell{from{width:0}to{width:100%}}
+/* ── SPINE ── */
+.spine{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;background:rgba(14,42,51,.5)}
+.spine>div{padding:34px 32px;position:relative}
+.spine>div+div{border-left:1px solid rgba(255,255,255,.07)}
+.spine .n{font-family:'Instrument Serif';font-size:56px;line-height:1;color:rgba(86,211,216,.22);margin-bottom:14px}
+.spine::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(86,211,216,.7),transparent);animation:sweep 5.5s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes sweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+/* ── TICKER ── */
+.tick{display:flex;align-items:center;gap:0;height:56px;border-top:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(255,255,255,.07);overflow:hidden;background:rgba(10,32,39,.55)}
+.tick-h{display:flex;align-items:center;gap:9px;padding:0 22px;height:100%;flex:none;
+  border-right:1px solid rgba(255,255,255,.07);background:rgba(86,211,216,.06)}
+.tick-w{flex:1;overflow:hidden;height:100%;display:flex;align-items:center}
+.tick-t{display:flex;gap:0;animation:march 34s linear infinite;white-space:nowrap}
+@keyframes march{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick-t i{display:inline-flex;align-items:center;gap:9px;padding:0 26px;font-style:normal;font-size:13.5px;color:#C3D6D9;
+  border-right:1px solid rgba(255,255,255,.06)}
+.up{color:#56E08C}.dn{color:#FF8F8F}
+/* ── CATEGORY TILES ── */
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.tile{position:relative;aspect-ratio:1/1.06;border-radius:16px;overflow:hidden;background:#0A2027;
+  border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
+  transition:transform .34s cubic-bezier(.16,1,.3,1),border-color .2s,box-shadow .34s}
+.tile:hover{transform:translateY(-6px);border-color:rgba(86,211,216,.34);box-shadow:0 18px 40px rgba(0,0,0,.5)}
+.tile-art{position:absolute;inset:0;transition:transform .64s cubic-bezier(.16,1,.3,1)}
+.tile:hover .tile-art{transform:scale(1.06)}
+.tile-sh{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(4,16,20,.86) 100%)}
+.tile-n{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.tile .arw{opacity:0;transform:translateX(-6px);transition:all .34s cubic-bezier(.16,1,.3,1);color:#56D3D8}
+.tile:hover .arw{opacity:1;transform:none}
+/* ── PRODUCT RAIL ── */
+.rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.pc{position:relative;border-radius:16px;overflow:hidden;background:#0E2A33;border:1px solid rgba(255,255,255,.07);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:transform .34s cubic-bezier(.16,1,.3,1),border-color .2s}
+.pc:hover{transform:translateY(-5px);border-color:rgba(86,211,216,.3)}
+.pc-m{position:relative;aspect-ratio:4/3.4;background:linear-gradient(158deg,#F6F9F9,#DFE7E8);display:grid;place-items:center;overflow:hidden}
+.pc-m::after{content:"";position:absolute;left:12%;right:12%;bottom:9%;height:14px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(20,32,34,.34),transparent)}
+.pc-b{padding:15px 16px 17px}
+.pc-cta{display:flex;gap:8px;margin-top:14px;opacity:0;max-height:0;overflow:hidden;
+  transition:opacity .2s,max-height .34s cubic-bezier(.16,1,.3,1)}
+.pc:hover .pc-cta{opacity:1;max-height:60px}
+/* ── PROMISES ── */
+.prom{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid rgba(255,255,255,.08)}
+.prom>li{padding:30px 26px 0 0}
+.prom>li+li{padding-left:26px;border-left:1px solid rgba(255,255,255,.07)}
+/* ── section heads ── */
+.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:34px}
+.more{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#7FE2E6}
+.more svg{transition:transform .2s cubic-bezier(.16,1,.3,1)}.more:hover svg{transform:translateX(4px)}
+/* ── CTA band ── */
+.band{position:relative;border-radius:24px;overflow:hidden;padding:64px 60px;
+  background:linear-gradient(126deg,#0B2A32,#071D24 60%);border:1px solid rgba(255,255,255,.08)}
+.band::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(60% 120% at 12% 0%,rgba(86,211,216,.18),transparent 60%),
+             radial-gradient(50% 100% at 92% 100%,rgba(245,180,10,.13),transparent 62%)}
+.foot{border-top:1px solid rgba(255,255,255,.08);margin-top:0;padding:56px 0 44px}
+.foot h4{margin-bottom:14px}
+.foot li a{display:block;padding:5px 0;font-size:14px;color:#8FA9AE}
+.foot li a:hover{color:#F2F8F9}
+
+</style>
+</helmet>
+
+<div class="wrap">
+  <div class="field"></div><div class="grain"></div>
+
+  <!-- ══ NAV ══ -->
+  <div style="position:relative;z-index:20;padding:20px 0">
+    <div class="shell">
+      <div class="glass" style="display:flex;align-items:center;gap:24px;height:76px;padding:0 26px;border-radius:18px">
+        <a href="#" style="display:flex;align-items:center;gap:15px">
+          <img src="logo-mark.png" alt="" width="44" height="44" style="display:block;width:44px;height:44px">
+          <span class="wm" style="font-size:33px">Build <i>O</i>bjects</span></a>
+        <span style="width:1px;height:30px;background:rgba(255,255,255,.10)"></span>
+        <nav style="display:flex;gap:2px">
+          <a href="#" style="display:flex;align-items:center;height:40px;padding:0 13px;border-radius:9px;font-size:14px;font-weight:500;color:#F2F8F9;background:rgba(255,255,255,.05);white-space:nowrap">Catalogue</a>
+          <a href="#" style="display:flex;align-items:center;height:40px;padding:0 13px;font-size:14px;font-weight:500;color:#C3D6D9;white-space:nowrap">Estimator</a>
+          <a href="#" style="display:flex;align-items:center;height:40px;padding:0 13px;font-size:14px;font-weight:500;color:#C3D6D9;white-space:nowrap">See in room</a>
+          <a href="#" style="display:flex;align-items:center;height:40px;padding:0 13px;font-size:14px;font-weight:500;color:#C3D6D9;white-space:nowrap">Construct</a>
+        </nav>
+        <div style="flex:1"></div>
+        <div style="display:flex;align-items:center;gap:10px;height:42px;width:250px;padding:0 15px;border-radius:10px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.10);color:#8FA9AE;font-size:14px;white-space:nowrap">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M18 10.6a7.4 7.4 0 1 1-14.8 0 7.4 7.4 0 0 1 14.8 0Z"/><path d="m15.9 15.9 4.7 4.7" stroke="#56D3D8"/></svg>
+          <span>Search 15,000 items</span></div>
+        <div style="display:flex;align-items:center;gap:8px;height:40px;padding:0 14px 0 11px;border-radius:999px;background:rgba(245,180,10,.10);border:1px solid rgba(245,180,10,.34);color:#FFCB4D">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="animation:coinspin 7s linear infinite"><circle cx="12" cy="12" r="8.4"/><circle cx="12" cy="12" r="4.6" stroke="#F5B40A"/></svg>
+          <span class="fig" style="font-size:14px">240</span></div>
+        <a href="#" style="position:relative;display:flex;align-items:center;color:#F2F8F9">
+          <svg width="42" height="40" viewBox="0 0 46 44" fill="none">
+            <g stroke="#8FA9AE" stroke-width="2.6" stroke-linecap="round"><circle cx="7" cy="12" r="3.4" fill="#8FA9AE" stroke="none"/><path d="M7 16v8M7 19l6 3M7 24l-2.6 7M7 24l3.4 7"/></g>
+            <path d="M14 22.5h4" stroke="#8FA9AE" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M18.5 8.5h13.8l4.4 4.6v11.4H18.5z" fill="#0E2A33" stroke="#56D3D8" stroke-width="1.9"/>
+            <path d="M32.3 8.5v4.6h4.4" stroke="#56D3D8" stroke-width="1.6"/>
+            <rect x="16.4" y="26.6" width="22.6" height="2.8" rx="1.4" fill="#F2F8F9"/>
+            <circle cx="22" cy="35.5" r="3.9" fill="#F2F8F9"/><circle cx="34" cy="35.5" r="3.9" fill="#F2F8F9"/></svg>
+          <span style="position:absolute;top:-2px;right:-4px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#56D3D8;color:#04171B;font:700 11px/19px 'Encode Sans';text-align:center;box-shadow:0 0 0 2px #0A2027">3</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <svg class="hero-sky" viewBox="0 0 1440 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<defs>
+  <linearGradient id="dusk" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#0B3A44"/><stop offset="46%" stop-color="#0A2830"/><stop offset="100%" stop-color="#06181D"/>
+  </linearGradient>
+  <radialGradient id="sun" cx="76%" cy="86%" r="42%">
+    <stop offset="0%" stop-color="#F5B40A" stop-opacity=".34"/><stop offset="100%" stop-color="#F5B40A" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<rect width="1440" height="560" fill="url(#dusk)"/>
+<rect width="1440" height="560" fill="url(#sun)"/>
+<g opacity=".5" filter="url(#soft)"><g><rect x="120" y="360" width="150" height="200" fill="#04141A"/><rect x="116" y="353" width="158" height="7" fill="#061A21"/><rect x="236" y="320" width="26" height="33" fill="#04141A"/><ellipse cx="249" cy="316" rx="9" ry="6" fill="#0A2027"/><rect x="136" y="382" width="17" height="24" fill="#F5B40A" opacity=".55"/><rect x="132" y="376" width="25" height="4" fill="#020E12"/><rect x="175" y="382" width="17" height="24" fill="#F5B40A" opacity=".55"/><rect x="171" y="376" width="25" height="4" fill="#020E12"/><rect x="215" y="382" width="17" height="24" fill="#F5B40A" opacity=".55"/><rect x="211" y="376" width="25" height="4" fill="#020E12"/><rect x="136" y="428" width="17" height="24" fill="#F5B40A" opacity=".55"/><rect x="132" y="422" width="25" height="4" fill="#020E12"/><rect x="175" y="428" width="17" height="24" fill="#F5B40A" opacity=".55"/><rect x="171" y="422" width="25" height="4" fill="#020E12"/><rect x="215" y="428" width="17" height="24" fill="#F5B40A" opacity=".55"/><rect x="211" y="422" width="25" height="4" fill="#020E12"/></g><g><rect x="1180" y="330" width="170" height="230" fill="#04141A"/><rect x="1176" y="323" width="178" height="7" fill="#061A21"/><rect x="1316" y="290" width="26" height="33" fill="#04141A"/><ellipse cx="1329" cy="286" rx="9" ry="6" fill="#0A2027"/><rect x="1196" y="352" width="17" height="24" fill="#F5B40A" opacity=".5"/><rect x="1192" y="346" width="25" height="4" fill="#020E12"/><rect x="1242" y="352" width="17" height="24" fill="#F5B40A" opacity=".5"/><rect x="1238" y="346" width="25" height="4" fill="#020E12"/><rect x="1288" y="352" width="17" height="24" fill="#F5B40A" opacity=".5"/><rect x="1284" y="346" width="25" height="4" fill="#020E12"/><rect x="1196" y="398" width="17" height="24" fill="#F5B40A" opacity=".5"/><rect x="1192" y="392" width="25" height="4" fill="#020E12"/><rect x="1242" y="398" width="17" height="24" fill="#F5B40A" opacity=".5"/><rect x="1238" y="392" width="25" height="4" fill="#020E12"/><rect x="1288" y="398" width="17" height="24" fill="#F5B40A" opacity=".5"/><rect x="1284" y="392" width="25" height="4" fill="#020E12"/></g></g>
+<g><rect x="-20" y="310" width="190" height="250" fill="#04141A"/><rect x="-24" y="303" width="198" height="7" fill="#061A21"/><rect x="136" y="270" width="26" height="33" fill="#04141A"/><ellipse cx="149" cy="266" rx="9" ry="6" fill="#0A2027"/><rect x="-4" y="332" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="-8" y="326" width="25" height="4" fill="#020E12"/><rect x="49" y="332" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="45" y="326" width="25" height="4" fill="#020E12"/><rect x="101" y="332" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="97" y="326" width="25" height="4" fill="#020E12"/><rect x="-4" y="378" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="-8" y="372" width="25" height="4" fill="#020E12"/><rect x="49" y="378" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="45" y="372" width="25" height="4" fill="#020E12"/><rect x="101" y="378" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="97" y="372" width="25" height="4" fill="#020E12"/></g><g><rect x="200" y="260" width="210" height="300" fill="#04141A"/><rect x="196" y="253" width="218" height="7" fill="#061A21"/><rect x="376" y="220" width="26" height="33" fill="#04141A"/><ellipse cx="389" cy="216" rx="9" ry="6" fill="#0A2027"/><rect x="216" y="282" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="212" y="276" width="25" height="4" fill="#020E12"/><rect x="260" y="282" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="256" y="276" width="25" height="4" fill="#020E12"/><rect x="305" y="282" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="301" y="276" width="25" height="4" fill="#020E12"/><rect x="350" y="282" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="346" y="276" width="25" height="4" fill="#020E12"/><rect x="216" y="328" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="212" y="322" width="25" height="4" fill="#020E12"/><rect x="260" y="328" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="256" y="322" width="25" height="4" fill="#020E12"/><rect x="305" y="328" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="301" y="322" width="25" height="4" fill="#020E12"/><rect x="350" y="328" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="346" y="322" width="25" height="4" fill="#020E12"/></g><g><rect x="440" y="345" width="160" height="215" fill="#04141A"/><rect x="436" y="338" width="168" height="7" fill="#061A21"/><rect x="456" y="367" width="17" height="24" fill="#F5B40A" opacity=".8"/><rect x="452" y="361" width="25" height="4" fill="#020E12"/><rect x="499" y="367" width="17" height="24" fill="#F5B40A" opacity=".8"/><rect x="495" y="361" width="25" height="4" fill="#020E12"/><rect x="541" y="367" width="17" height="24" fill="#F5B40A" opacity=".8"/><rect x="537" y="361" width="25" height="4" fill="#020E12"/><rect x="456" y="413" width="17" height="24" fill="#F5B40A" opacity=".8"/><rect x="452" y="407" width="25" height="4" fill="#020E12"/><rect x="499" y="413" width="17" height="24" fill="#F5B40A" opacity=".8"/><rect x="495" y="407" width="25" height="4" fill="#020E12"/><rect x="541" y="413" width="17" height="24" fill="#F5B40A" opacity=".8"/><rect x="537" y="407" width="25" height="4" fill="#020E12"/></g>
+<g><rect x="630" y="230" width="230" height="330" fill="#04141A"/><rect x="626" y="223" width="238" height="7" fill="#061A21"/><rect x="826" y="190" width="26" height="33" fill="#04141A"/><ellipse cx="839" cy="186" rx="9" ry="6" fill="#0A2027"/><rect x="646" y="252" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="642" y="246" width="25" height="4" fill="#020E12"/><rect x="696" y="252" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="692" y="246" width="25" height="4" fill="#020E12"/><rect x="745" y="252" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="741" y="246" width="25" height="4" fill="#020E12"/><rect x="794" y="252" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="790" y="246" width="25" height="4" fill="#020E12"/><rect x="646" y="298" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="642" y="292" width="25" height="4" fill="#020E12"/><rect x="696" y="298" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="692" y="292" width="25" height="4" fill="#020E12"/><rect x="745" y="298" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="741" y="292" width="25" height="4" fill="#020E12"/><rect x="794" y="298" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="790" y="292" width="25" height="4" fill="#020E12"/></g><g><rect x="900" y="315" width="180" height="245" fill="#04141A"/><rect x="896" y="308" width="188" height="7" fill="#061A21"/><rect x="1046" y="275" width="26" height="33" fill="#04141A"/><ellipse cx="1059" cy="271" rx="9" ry="6" fill="#0A2027"/><rect x="916" y="337" width="17" height="24" fill="#F5B40A" opacity=".85"/><rect x="912" y="331" width="25" height="4" fill="#020E12"/><rect x="965" y="337" width="17" height="24" fill="#F5B40A" opacity=".85"/><rect x="961" y="331" width="25" height="4" fill="#020E12"/><rect x="1015" y="337" width="17" height="24" fill="#F5B40A" opacity=".85"/><rect x="1011" y="331" width="25" height="4" fill="#020E12"/><rect x="916" y="383" width="17" height="24" fill="#F5B40A" opacity=".85"/><rect x="912" y="377" width="25" height="4" fill="#020E12"/><rect x="965" y="383" width="17" height="24" fill="#F5B40A" opacity=".85"/><rect x="961" y="377" width="25" height="4" fill="#020E12"/><rect x="1015" y="383" width="17" height="24" fill="#F5B40A" opacity=".85"/><rect x="1011" y="377" width="25" height="4" fill="#020E12"/></g><g><rect x="1110" y="270" width="200" height="290" fill="#04141A"/><rect x="1106" y="263" width="208" height="7" fill="#061A21"/><rect x="1276" y="230" width="26" height="33" fill="#04141A"/><ellipse cx="1289" cy="226" rx="9" ry="6" fill="#0A2027"/><rect x="1126" y="292" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="1122" y="286" width="25" height="4" fill="#020E12"/><rect x="1168" y="292" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="1164" y="286" width="25" height="4" fill="#020E12"/><rect x="1210" y="292" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="1206" y="286" width="25" height="4" fill="#020E12"/><rect x="1252" y="292" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="1248" y="286" width="25" height="4" fill="#020E12"/><rect x="1126" y="338" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="1122" y="332" width="25" height="4" fill="#020E12"/><rect x="1168" y="338" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="1164" y="332" width="25" height="4" fill="#020E12"/><rect x="1210" y="338" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="1206" y="332" width="25" height="4" fill="#020E12"/><rect x="1252" y="338" width="17" height="24" fill="#F5B40A" opacity=".9"/><rect x="1248" y="332" width="25" height="4" fill="#020E12"/></g>
+<g><rect x="1340" y="345" width="180" height="215" fill="#04141A"/><rect x="1336" y="338" width="188" height="7" fill="#061A21"/><rect x="1356" y="367" width="17" height="24" fill="#F5B40A" opacity=".7"/><rect x="1352" y="361" width="25" height="4" fill="#020E12"/><rect x="1405" y="367" width="17" height="24" fill="#F5B40A" opacity=".7"/><rect x="1401" y="361" width="25" height="4" fill="#020E12"/><rect x="1455" y="367" width="17" height="24" fill="#F5B40A" opacity=".7"/><rect x="1451" y="361" width="25" height="4" fill="#020E12"/><rect x="1356" y="413" width="17" height="24" fill="#F5B40A" opacity=".7"/><rect x="1352" y="407" width="25" height="4" fill="#020E12"/><rect x="1405" y="413" width="17" height="24" fill="#F5B40A" opacity=".7"/><rect x="1401" y="407" width="25" height="4" fill="#020E12"/><rect x="1455" y="413" width="17" height="24" fill="#F5B40A" opacity=".7"/><rect x="1451" y="407" width="25" height="4" fill="#020E12"/></g>
+<g stroke="#0A2027" stroke-width="4" fill="none">
+  <path d="M0 528h1440"/><path d="M0 542h1440" stroke="#061A21"/>
+</g>
+<g opacity=".85">
+  <path d="M60 560v-46M60 514q-16-10-20-26M60 514q16-10 20-26M60 496q-13-8-16-22M60 496q13-8 16-22" stroke="#04141A" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M1392 560v-56M1392 512q-18-12-22-30M1392 512q18-12 22-30" stroke="#04141A" stroke-width="5" fill="none" stroke-linecap="round"/>
+</g>
+</svg>
+    <div class="hero-scrim"></div>
+    <div class="hero-grid"></div>
+    <img class="hero-iso" src="iso-house.svg" alt="">
+    <div class="shell">
+      <div class="hero-in">
+        <div>
+          <p class="micro live rv" style="margin-bottom:26px">Andhra Pradesh &amp; Telangana · priced this morning</p>
+          <h1 class="d1 rv" style="animation-delay:.08s;max-width:15ch">Know what it costs before you order it.</h1>
+          <p class="lede rv" style="animation-delay:.16s;margin-top:26px;max-width:56ch">
+            Cement, steel, tiles, glass, lighting, solar and safety — from the brands your engineer already writes into
+            the specification. Every price is the tax-paid price per unit, landed at your pincode, and you can stand any
+            item in your own room at its true size before you commit to it.</p>
+          <div class="rv" style="animation-delay:.24s;display:flex;gap:12px;margin-top:34px">
+            <a href="#" class="btn btn-p"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 9.6h16V20H4z"/><path d="M3.2 9.6 5.6 4h12.8l2.4 5.6"/><path d="M9.6 20v-6h4.8v6" stroke="#04171B"/></svg> Browse the catalogue</a>
+            <a href="#" class="btn btn-s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.5 4h11.9L20.5 9.1V20H3.5z"/><path d="M7 8.6h6.4M7 12h4"/><path d="M7 16.2h10" stroke="#56D3D8"/></svg> Cost a whole house</a>
+          </div>
+          <dl class="stats rv" style="animation-delay:.32s">
+            <div><dt>Categories</dt><dd>35</dd></div>
+            <div><dt>Priced today</dt><dd>15,412</dd></div>
+            <div><dt>Brands</dt><dd>128</dd></div>
+            <div><dt>Delivering to</dt><dd style="font-size:26px;line-height:38px">520010</dd></div>
+          </dl>
+        </div>
+
+        <div class="board glass rv" style="animation-delay:.4s">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:15px">
+            <p class="micro live">On the shelf</p>
+            <p class="meta" style="font-size:12px">1 of 6</p>
+          </div>
+          <div class="board-media">
+            <svg width="124" height="124" viewBox="0 0 24 24" fill="none" stroke="#7E8F91" stroke-width="1" opacity=".6" style="position:relative;z-index:2">
+              <path d="M5.6 6.6C5.6 5 7.2 4 12 4s6.4 1 6.4 2.6v11.8C18.4 19.6 16 20 12 20s-6.4-.4-6.4-1.6z"/>
+              <path d="M5.6 8.6c1.6.9 11.2.9 12.8 0" stroke="#C9A24B"/><path d="M9.6 4.2v3.8"/></svg>
+          </div>
+          <p class="micro" style="color:#56D3D8;margin:16px 0 7px">UltraTech · Concreting</p>
+          <p class="h3" style="margin-bottom:12px">PPC Cement, 50 kg bag</p>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between">
+            <p><span class="fig" style="font-size:32px;color:#F2F8F9">₹412</span>
+               <span class="meta" style="font-size:13px"> / bag</span></p>
+            <span class="chip" style="border-color:rgba(86,211,216,.3);color:#7FE2E6">BIS IS 1489</span>
+          </div>
+          <p class="meta" style="font-size:12px;margin-top:9px">Inclusive of 28% GST · 40 bags to a tonne</p>
+          <div class="dwell"><i></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TICKER ══ -->
+  <div class="tick">
+    <div class="tick-h"><span class="micro live">Today's rates</span></div>
+    <div class="tick-w"><div class="tick-t"><i>Cement · Hyderabad <span class="fig" style="color:#F2F8F9">₹412</span> <span class="up fig" style="font-size:12px">+3</span></i><i>TMT Fe550 · Vijayawada <span class="fig" style="color:#F2F8F9">₹58.40</span> <span class="dn fig" style="font-size:12px">−0.6</span></i><i>M-Sand · Guntur <span class="fig" style="color:#F2F8F9">₹1,180</span> <span class="up fig" style="font-size:12px">+40</span></i><i>Aggregate 20mm <span class="fig" style="color:#F2F8F9">₹980</span> <span class="up fig" style="font-size:12px">+15</span></i><i>Bricks · red clay <span class="fig" style="color:#F2F8F9">₹8.20</span> <span class="dn fig" style="font-size:12px">−0.1</span></i><i>RMC M25 <span class="fig" style="color:#F2F8F9">₹4,650</span> <span class="up fig" style="font-size:12px">+90</span></i><i>Cement · Hyderabad <span class="fig" style="color:#F2F8F9">₹412</span> <span class="up fig" style="font-size:12px">+3</span></i><i>TMT Fe550 · Vijayawada <span class="fig" style="color:#F2F8F9">₹58.40</span> <span class="dn fig" style="font-size:12px">−0.6</span></i><i>M-Sand · Guntur <span class="fig" style="color:#F2F8F9">₹1,180</span> <span class="up fig" style="font-size:12px">+40</span></i><i>Aggregate 20mm <span class="fig" style="color:#F2F8F9">₹980</span> <span class="up fig" style="font-size:12px">+15</span></i><i>Bricks · red clay <span class="fig" style="color:#F2F8F9">₹8.20</span> <span class="dn fig" style="font-size:12px">−0.1</span></i><i>RMC M25 <span class="fig" style="color:#F2F8F9">₹4,650</span> <span class="up fig" style="font-size:12px">+90</span></i></div></div>
+  </div>
+
+  <!-- ══ THE SPINE ══ -->
+  <section class="shell" style="padding:104px 0 0">
+    <div class="sh">
+      <div>
+        <p class="micro" style="color:#56D3D8;margin-bottom:16px">One project, three counters</p>
+        <h2 class="d2" style="max-width:19ch">The drawing already knows what your house costs.</h2>
+      </div>
+      <p class="lede" style="max-width:34ch;padding-bottom:6px">Every wall implies bricks. Every room implies lights.
+        Design it once here and the bill of materials, the cart and the contract all come from the same file.</p>
+    </div>
+    <div class="spine">
+      <div><p class="n">01</p><h3 class="h3" style="margin-bottom:9px">Design</h3>
+        <p class="meta" style="max-width:32ch">Plot dimensions, family, budget and Vastu in. Compliant, costed, sanction-grade drawings out.</p></div>
+      <div><p class="n">02</p><h3 class="h3" style="margin-bottom:9px">Buy</h3>
+        <p class="meta" style="max-width:32ch">One tap turns the takeoff into a staged cart — every bag, tile and fitting, priced and editable.</p></div>
+      <div><p class="n">03</p><h3 class="h3" style="margin-bottom:9px">Build</h3>
+        <p class="meta" style="max-width:32ch">The same drawing becomes the scope of work: milestones, escrow, and a site you can watch rise.</p></div>
+    </div>
+  </section>
+
+  <!-- ══ CATEGORIES ══ -->
+  <section class="shell" style="padding:104px 0 0">
+    <div class="sh">
+      <div><p class="micro" style="color:#56D3D8;margin-bottom:16px">The catalogue</p>
+        <h2 class="d2">Every category we carry</h2>
+        <p class="lede" style="margin-top:16px;max-width:52ch"><span class="fig">27</span> of <span class="fig">35</span> are stocked today.
+          The rest are shelves we are filling — open one and it will tell you plainly where it stands.</p></div>
+      <a href="#" class="more">Browse everything <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></a>
+    </div>
+    <div class="cats"><a href="#" class="tile" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.00s both">
+  <span class="tile-art" style="background:
+    radial-gradient(70% 55% at 28% 18%,#1B4B55,transparent 68%),
+    radial-gradient(80% 70% at 82% 88%,#0D2E36,transparent 70%),
+    linear-gradient(155deg,#0C2831,#071C22)"></span>
+  <span class="tile-art" style="opacity:.5;background-image:
+    linear-gradient(rgba(86,211,216,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.10) 1px,transparent 1px);
+    background-size:26px 26px"></span>
+  <span class="tile-sh"></span>
+  <span class="tile-n">
+    <span style="display:block">
+      <span class="h4" style="display:block;margin-bottom:5px">Concreting</span>
+      <span class="meta" style="font-size:12.5px">412 items · <span class="fig">from ₹340</span></span>
+    </span>
+    <span class="arw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></span>
+  </span></a><a href="#" class="tile" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.06s both">
+  <span class="tile-art" style="background:
+    radial-gradient(70% 55% at 28% 18%,#173F4A,transparent 68%),
+    radial-gradient(80% 70% at 82% 88%,#0B2830,transparent 70%),
+    linear-gradient(155deg,#0C2831,#071C22)"></span>
+  <span class="tile-art" style="opacity:.5;background-image:
+    linear-gradient(rgba(86,211,216,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.10) 1px,transparent 1px);
+    background-size:26px 26px"></span>
+  <span class="tile-sh"></span>
+  <span class="tile-n">
+    <span style="display:block">
+      <span class="h4" style="display:block;margin-bottom:5px">Steel &amp; Reinforcement</span>
+      <span class="meta" style="font-size:12.5px">286 items · <span class="fig">from ₹58 / kg</span></span>
+    </span>
+    <span class="arw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></span>
+  </span></a><a href="#" class="tile" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.12s both">
+  <span class="tile-art" style="background:
+    radial-gradient(70% 55% at 28% 18%,#1E4D48,transparent 68%),
+    radial-gradient(80% 70% at 82% 88%,#0D2E2C,transparent 70%),
+    linear-gradient(155deg,#0C2831,#071C22)"></span>
+  <span class="tile-art" style="opacity:.5;background-image:
+    linear-gradient(rgba(86,211,216,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.10) 1px,transparent 1px);
+    background-size:26px 26px"></span>
+  <span class="tile-sh"></span>
+  <span class="tile-n">
+    <span style="display:block">
+      <span class="h4" style="display:block;margin-bottom:5px">Flooring</span>
+      <span class="meta" style="font-size:12.5px">1,240 items · <span class="fig">from ₹42 / sqft</span></span>
+    </span>
+    <span class="arw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></span>
+  </span></a><a href="#" class="tile" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.18s both">
+  <span class="tile-art" style="background:
+    radial-gradient(70% 55% at 28% 18%,#204A3D,transparent 68%),
+    radial-gradient(80% 70% at 82% 88%,#0E2C26,transparent 70%),
+    linear-gradient(155deg,#0C2831,#071C22)"></span>
+  <span class="tile-art" style="opacity:.5;background-image:
+    linear-gradient(rgba(86,211,216,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.10) 1px,transparent 1px);
+    background-size:26px 26px"></span>
+  <span class="tile-sh"></span>
+  <span class="tile-n">
+    <span style="display:block">
+      <span class="h4" style="display:block;margin-bottom:5px">Doors &amp; Windows</span>
+      <span class="meta" style="font-size:12.5px">508 items · <span class="fig">from ₹4,200</span></span>
+    </span>
+    <span class="arw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></span>
+  </span></a><a href="#" class="tile" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.24s both">
+  <span class="tile-art" style="background:
+    radial-gradient(70% 55% at 28% 18%,#2A4550,transparent 68%),
+    radial-gradient(80% 70% at 82% 88%,#122B33,transparent 70%),
+    linear-gradient(155deg,#0C2831,#071C22)"></span>
+  <span class="tile-art" style="opacity:.5;background-image:
+    linear-gradient(rgba(86,211,216,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.10) 1px,transparent 1px);
+    background-size:26px 26px"></span>
+  <span class="tile-sh"></span>
+  <span class="tile-n">
+    <span style="display:block">
+      <span class="h4" style="display:block;margin-bottom:5px">Painting</span>
+      <span class="meta" style="font-size:12.5px">337 items · <span class="fig">from ₹268</span></span>
+    </span>
+    <span class="arw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></span>
+  </span></a><a href="#" class="tile" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.30s both">
+  <span class="tile-art" style="background:
+    radial-gradient(70% 55% at 28% 18%,#154650,transparent 68%),
+    radial-gradient(80% 70% at 82% 88%,#0A2A31,transparent 70%),
+    linear-gradient(155deg,#0C2831,#071C22)"></span>
+  <span class="tile-art" style="opacity:.5;background-image:
+    linear-gradient(rgba(86,211,216,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.10) 1px,transparent 1px);
+    background-size:26px 26px"></span>
+  <span class="tile-sh"></span>
+  <span class="tile-n">
+    <span style="display:block">
+      <span class="h4" style="display:block;margin-bottom:5px">Plumbing</span>
+      <span class="meta" style="font-size:12.5px">921 items · <span class="fig">from ₹96</span></span>
+    </span>
+    <span class="arw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></span>
+  </span></a><a href="#" class="tile" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.36s both">
+  <span class="tile-art" style="background:
+    radial-gradient(70% 55% at 28% 18%,#1A424F,transparent 68%),
+    radial-gradient(80% 70% at 82% 88%,#0C2831,transparent 70%),
+    linear-gradient(155deg,#0C2831,#071C22)"></span>
+  <span class="tile-art" style="opacity:.5;background-image:
+    linear-gradient(rgba(86,211,216,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.10) 1px,transparent 1px);
+    background-size:26px 26px"></span>
+  <span class="tile-sh"></span>
+  <span class="tile-n">
+    <span style="display:block">
+      <span class="h4" style="display:block;margin-bottom:5px">Electrical</span>
+      <span class="meta" style="font-size:12.5px">1,106 items · <span class="fig">from ₹18 / m</span></span>
+    </span>
+    <span class="arw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></span>
+  </span></a><a href="#" class="tile" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.42s both">
+  <span class="tile-art" style="background:
+    radial-gradient(70% 55% at 28% 18%,#3A3A2E,transparent 68%),
+    radial-gradient(80% 70% at 82% 88%,#1E2019,transparent 70%),
+    linear-gradient(155deg,#0C2831,#071C22)"></span>
+  <span class="tile-art" style="opacity:.5;background-image:
+    linear-gradient(rgba(86,211,216,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(86,211,216,.10) 1px,transparent 1px);
+    background-size:26px 26px"></span>
+  <span class="tile-sh"></span>
+  <span class="tile-n">
+    <span style="display:block">
+      <span class="h4" style="display:block;margin-bottom:5px">Lighting</span>
+      <span class="meta" style="font-size:12.5px">864 items · <span class="fig">from ₹340</span></span>
+    </span>
+    <span class="arw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></span>
+  </span></a></div>
+  </section>
+
+  <!-- ══ ON THE SHELF ══ -->
+  <section class="shell" style="padding:104px 0 0">
+    <div class="sh">
+      <div><p class="micro live" style="margin-bottom:16px">Priced today</p>
+        <h2 class="d2">On the shelf now</h2></div>
+      <a href="#" class="more">Open in search <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></a>
+    </div>
+    <div class="rail"><article class="pc" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.00s both">
+  <div class="pc-m">
+    <svg width="112" height="112" viewBox="0 0 24 24" fill="none" stroke="#8A9A9C" stroke-width="1.1" opacity=".55">
+      <path d="M5.6 6.6C5.6 5 7.2 4 12 4s6.4 1 6.4 2.6v11.8C18.4 19.6 16 20 12 20s-6.4-.4-6.4-1.6z"/>
+      <path d="M5.6 8.6c1.6.9 11.2.9 12.8 0" stroke="#C9A24B"/><path d="M9.6 4.2v3.8"/></svg>
+  </div>
+  <div class="pc-b">
+    <p class="micro" style="color:#56D3D8;margin-bottom:7px">UltraTech</p>
+    <p class="h4" style="margin-bottom:9px;min-height:44px">PPC Cement, 50 kg bag</p>
+    <p style="display:flex;align-items:baseline;gap:6px">
+      <span class="fig" style="font-size:22px;color:#F2F8F9">₹412</span>
+      <span class="meta" style="font-size:12.5px">/ bag</span></p>
+    <p class="meta" style="font-size:12px;margin-top:5px">Incl. 28% GST · lands 28 Aug</p>
+    <p style="font-size:12.5px;color:#56E08C;margin-top:7px;font-weight:500">In stock</p>
+    <div class="pc-cta">
+      <button class="btn btn-p" style="height:36px;font-size:13px;padding:0 14px;flex:1">Add to estimate</button>
+      <button class="btn btn-s" style="height:36px;font-size:13px;padding:0 12px">See in room</button>
+    </div>
+  </div></article><article class="pc" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.07s both">
+  <div class="pc-m">
+    <svg width="112" height="112" viewBox="0 0 24 24" fill="none" stroke="#8A9A9C" stroke-width="1.1" opacity=".55">
+      <path d="M5.6 6.6C5.6 5 7.2 4 12 4s6.4 1 6.4 2.6v11.8C18.4 19.6 16 20 12 20s-6.4-.4-6.4-1.6z"/>
+      <path d="M5.6 8.6c1.6.9 11.2.9 12.8 0" stroke="#C9A24B"/><path d="M9.6 4.2v3.8"/></svg>
+  </div>
+  <div class="pc-b">
+    <p class="micro" style="color:#56D3D8;margin-bottom:7px">TATA Tiscon</p>
+    <p class="h4" style="margin-bottom:9px;min-height:44px">Fe 550D TMT, 12 mm</p>
+    <p style="display:flex;align-items:baseline;gap:6px">
+      <span class="fig" style="font-size:22px;color:#F2F8F9">₹5,840</span>
+      <span class="meta" style="font-size:12.5px">/ 100 kg</span></p>
+    <p class="meta" style="font-size:12px;margin-top:5px">Incl. 28% GST · lands 28 Aug</p>
+    <p style="font-size:12.5px;color:#56E08C;margin-top:7px;font-weight:500">In stock</p>
+    <div class="pc-cta">
+      <button class="btn btn-p" style="height:36px;font-size:13px;padding:0 14px;flex:1">Add to estimate</button>
+      <button class="btn btn-s" style="height:36px;font-size:13px;padding:0 12px">See in room</button>
+    </div>
+  </div></article><article class="pc" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.14s both">
+  <div class="pc-m">
+    <svg width="112" height="112" viewBox="0 0 24 24" fill="none" stroke="#8A9A9C" stroke-width="1.1" opacity=".55">
+      <path d="M5.6 6.6C5.6 5 7.2 4 12 4s6.4 1 6.4 2.6v11.8C18.4 19.6 16 20 12 20s-6.4-.4-6.4-1.6z"/>
+      <path d="M5.6 8.6c1.6.9 11.2.9 12.8 0" stroke="#C9A24B"/><path d="M9.6 4.2v3.8"/></svg>
+  </div>
+  <div class="pc-b">
+    <p class="micro" style="color:#56D3D8;margin-bottom:7px">Kajaria</p>
+    <p class="h4" style="margin-bottom:9px;min-height:44px">Vitrified 600×600, Ivory</p>
+    <p style="display:flex;align-items:baseline;gap:6px">
+      <span class="fig" style="font-size:22px;color:#F2F8F9">₹68</span>
+      <span class="meta" style="font-size:12.5px">/ sqft</span></p>
+    <p class="meta" style="font-size:12px;margin-top:5px">Incl. 28% GST · lands 28 Aug</p>
+    <p style="font-size:12.5px;color:#FFCB4D;margin-top:7px;font-weight:500">Only a few left</p>
+    <div class="pc-cta">
+      <button class="btn btn-p" style="height:36px;font-size:13px;padding:0 14px;flex:1">Add to estimate</button>
+      <button class="btn btn-s" style="height:36px;font-size:13px;padding:0 12px">See in room</button>
+    </div>
+  </div></article><article class="pc" style="animation:rise .64s cubic-bezier(.16,1,.3,1) 0.21s both">
+  <div class="pc-m">
+    <svg width="112" height="112" viewBox="0 0 24 24" fill="none" stroke="#8A9A9C" stroke-width="1.1" opacity=".55">
+      <path d="M5.6 6.6C5.6 5 7.2 4 12 4s6.4 1 6.4 2.6v11.8C18.4 19.6 16 20 12 20s-6.4-.4-6.4-1.6z"/>
+      <path d="M5.6 8.6c1.6.9 11.2.9 12.8 0" stroke="#C9A24B"/><path d="M9.6 4.2v3.8"/></svg>
+  </div>
+  <div class="pc-b">
+    <p class="micro" style="color:#56D3D8;margin-bottom:7px">Asian Paints</p>
+    <p class="h4" style="margin-bottom:9px;min-height:44px">Apcolite Emulsion, 20 L</p>
+    <p style="display:flex;align-items:baseline;gap:6px">
+      <span class="fig" style="font-size:22px;color:#F2F8F9">₹6,420</span>
+      <span class="meta" style="font-size:12.5px">/ can</span></p>
+    <p class="meta" style="font-size:12px;margin-top:5px">Incl. 28% GST · lands 28 Aug</p>
+    <p style="font-size:12.5px;color:#56E08C;margin-top:7px;font-weight:500">In stock</p>
+    <div class="pc-cta">
+      <button class="btn btn-p" style="height:36px;font-size:13px;padding:0 14px;flex:1">Add to estimate</button>
+      <button class="btn btn-s" style="height:36px;font-size:13px;padding:0 12px">See in room</button>
+    </div>
+  </div></article></div>
+  </section>
+
+  <!-- ══ PROMISES ══ -->
+  <section class="shell" style="padding:104px 0 0">
+    <ul class="prom">
+      <li><span style="color:#C3D6D9;display:block;margin-bottom:16px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 3.2 19.6 6v6.4c0 4.2-3.2 6.9-7.6 8.4-4.4-1.5-7.6-4.2-7.6-8.4V6z"/><path d="m8.6 12.2 2.6 2.7 4.4-5.4" stroke="#56D3D8"/></svg></span><h3 class="h4" style="margin-bottom:9px">The price is the price</h3><p class="meta">What you see per unit is the tax-paid figure, and the GST rate inside it is printed beside it. Nothing is added at the end.</p></li><li><span style="color:#C3D6D9;display:block;margin-bottom:16px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M20.4 12a8.4 8.4 0 1 1-16.8 0 8.4 8.4 0 0 1 16.8 0Z"/><path d="M12 7v5.3l3.4 2"/><path d="M12 3.6v1.2" stroke="#56D3D8"/></svg></span><h3 class="h4" style="margin-bottom:9px">Every figure says where it came from</h3><p class="meta">Read from the brand, cross-checked, or filled from the class standard — each row on a specification tells you which.</p></li><li><span style="color:#C3D6D9;display:block;margin-bottom:16px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.6 3.6v16.8h16.8"/><path d="M3.6 16.4 12 20.4l8.4-4"/><path d="M9.4 9h5.2v6.6H9.4z" stroke="#56D3D8"/></svg></span><h3 class="h4" style="margin-bottom:9px">See it in the room first</h3><p class="meta">Point your camera at the wall or the floor and the item stands there at true size, before you have spent anything.</p></li><li><span style="color:#C3D6D9;display:block;margin-bottom:16px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 21c4-4.6 6-8 6-10.6a6 6 0 1 0-12 0C6 13 8 16.4 12 21Z"/><path d="M14.4 10.2a2.4 2.4 0 1 1-4.8 0 2.4 2.4 0 0 1 4.8 0Z" stroke="#56D3D8"/></svg></span><h3 class="h4" style="margin-bottom:9px">Landed at your pincode</h3><p class="meta">Set the pincode once and every price on the site becomes the delivered price, not the yard price.</p></li>
+    </ul>
+  </section>
+
+  <!-- ══ CTA ══ -->
+  <section class="shell" style="padding:104px 0 0">
+    <div class="band">
+      <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:60px;flex-wrap:wrap">
+        <div><p class="micro" style="color:#56D3D8;margin-bottom:18px">Free, and it takes about two minutes</p>
+          <h2 class="d2" style="max-width:16ch">Cost your whole house before you buy a single bag.</h2></div>
+        <a href="#" class="btn btn-p" style="height:56px;padding:0 30px;font-size:16px">Open the estimator <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 12h15.6"/><path d="M13.6 5.6 20 12l-6.4 6.4" stroke="#56D3D8"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="shell foot" style="margin-top:104px">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px">
+      <div>
+        <span style="display:flex;align-items:center;gap:13px;margin-bottom:18px">
+          <img src="logo-mark.png" alt="" width="36" height="36" style="display:block;width:36px;height:36px">
+          <span class="wm" style="font-size:27px">Build <i>O</i>bjects</span></span>
+        <p class="meta" style="max-width:38ch">Materials, fittings and finishes for houses in Andhra Pradesh and Telangana.
+          Prices are tax-paid, per unit, and landed at your pincode.</p>
+      </div>
+      <div><h4 class="micro">Catalogue</h4><ul><li><a href="#">All categories</a></li><li><a href="#">Brands</a></li><li><a href="#">On the shelf</a></li><li><a href="#">Today's rates</a></li></ul></div>
+      <div><h4 class="micro">Tools</h4><ul><li><a href="#">House estimator</a></li><li><a href="#">See it in your room</a></li><li><a href="#">Pincode &amp; delivery</a></li><li><a href="#">BO Coins</a></li></ul></div>
+      <div><h4 class="micro">Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Delivery</a></li><li><a href="#">GST &amp; invoicing</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+    <hr class="rule" style="margin:40px 0 22px">
+    <div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <p class="meta" style="font-size:12.5px">© 2026 Build Objects. All prices include GST at the rate shown on each item.</p>
+      <p class="meta" style="font-size:12.5px">Vijayawada · Hyderabad · Guntur · Visakhapatnam</p>
+    </div>
+  </footer>
+</div>
+<style>@keyframes coinspin{from{transform:rotateY(0)}to{transform:rotateY(360deg)}}</style>
+
+</x-dc>
+</body>
+</html>

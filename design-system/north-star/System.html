@@ -1,0 +1,137 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;family=Encode+Sans:wght@400;500;600;700&amp;family=Audiowide&amp;display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#06181D;color:#C3D6D9;
+  font:400 15px/24px 'Schibsted Grotesk','Segoe UI',system-ui,sans-serif;letter-spacing:-.003em;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:#7FE2E6;text-decoration:none}a:hover{color:#B4F1F3}
+h1,h2,h3,h4,p,ul,ol,figure,dl,dd{margin:0}ul,ol{padding:0;list-style:none}
+/* ── the ambient field: bloom + warm wash + vignette + film grain ── */
+.field{position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(120% 90% at 12% -10%,rgba(86,211,216,.13) 0%,transparent 62%),
+             radial-gradient(90% 80% at 96% 108%,rgba(245,180,10,.055) 0%,transparent 58%),
+             radial-gradient(140% 120% at 50% 40%,transparent 42%,rgba(2,9,12,.62) 100%);
+  animation:drift 90s cubic-bezier(.65,0,.35,1) infinite alternate}
+.grain{position:absolute;inset:-50%;pointer-events:none;z-index:0;opacity:.038;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 8s steps(10) infinite}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-2%,1.5%,0) scale(1.06)}}
+@keyframes grain{0%{transform:translate3d(0,0,0)}20%{transform:translate3d(-8%,2%,0)}40%{transform:translate3d(-2%,7%,0)}
+  60%{transform:translate3d(5%,0,0)}80%{transform:translate3d(-6%,-3%,0)}100%{transform:translate3d(0,0,0)}}
+/* ── type contract ── */
+.d1{font:400 92px/.94 'Instrument Serif',Georgia,serif;letter-spacing:-.028em;color:#F2F8F9;text-wrap:balance}
+.d2{font:400 64px/1.02 'Instrument Serif',Georgia,serif;letter-spacing:-.022em;color:#F2F8F9;text-wrap:balance}
+.d3{font:400 44px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.016em;color:#F2F8F9;text-wrap:balance}
+.h2{font:600 24px/30px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.014em;color:#F2F8F9}
+.h3{font:600 19px/26px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.014em;color:#F2F8F9}
+.h4{font:600 16px/22px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:-.01em;color:#F2F8F9}
+.lede{font-size:17px;line-height:28px;color:#C3D6D9;text-wrap:pretty}
+.meta{font-size:13.5px;line-height:20px;color:#8FA9AE}
+.micro{font:600 11px/14px 'Schibsted Grotesk',system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8FA9AE}
+.fig{font-family:'Encode Sans',system-ui,sans-serif;font-weight:600;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
+.figh{font-family:'Encode Sans',system-ui,sans-serif;font-weight:700;font-size:76px;line-height:.96;
+  font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.03em;color:#F2F8F9}
+.wm{font-family:'Audiowide',system-ui,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.01em;
+  white-space:nowrap;color:#F2F8F9;line-height:1}
+.wm i{color:#56D3D8;font-style:normal}
+/* ── surfaces ── */
+.card{background:#0E2A33;border:1px solid rgba(255,255,255,.07);border-radius:14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 4px 12px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.4)}
+.glass{background:rgba(14,42,51,.76);backdrop-filter:blur(24px) saturate(1.6);
+  border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 12px 28px rgba(0,0,0,.55)}
+.plate{background:linear-gradient(160deg,#F6F9F9,#E9EEEF);border-radius:10px}
+.rule{height:1px;background:rgba(255,255,255,.07);border:0}
+/* ── controls ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:48px;padding:0 22px;
+  border-radius:10px;border:1px solid transparent;font:600 15px/1 'Schibsted Grotesk',system-ui,sans-serif;
+  cursor:pointer;white-space:nowrap;transition:transform .2s cubic-bezier(.16,1,.3,1),background-color .12s,box-shadow .2s}
+.btn-p{background:#56D3D8;color:#04171B;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 40px -8px rgba(86,211,216,.45)}
+.btn-p:hover{background:#7FE2E6;transform:translateY(-2px)}
+.btn-s{background:rgba(255,255,255,.04);color:#F2F8F9;border-color:rgba(255,255,255,.14)}
+.btn-s:hover{background:rgba(255,255,255,.08);border-color:rgba(86,211,216,.34);transform:translateY(-2px)}
+.nowrap{white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:999px;
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);font-size:12.5px;color:#C3D6D9}
+/* ── the live dot ── */
+.live{display:inline-flex;align-items:center;gap:8px;color:#7FE2E6}
+.live::before{content:"";width:6px;height:6px;border-radius:999px;background:#56D3D8;animation:pd 2.4s cubic-bezier(.22,1,.36,1) infinite}
+@keyframes pd{0%{box-shadow:0 0 0 0 rgba(86,211,216,.6)}70%{box-shadow:0 0 0 9px rgba(86,211,216,0)}100%{box-shadow:0 0 0 0 rgba(86,211,216,0)}}
+/* ── entrances ── */
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.rv{animation:rise .64s cubic-bezier(.16,1,.3,1) both}
+/* ── the drafting grid used behind heroes ── */
+.grid-bg{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(86,211,216,.07) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(86,211,216,.07) 1px,transparent 1px);
+  background-size:72px 72px;
+  -webkit-mask-image:radial-gradient(90% 70% at 50% 40%,#000 0%,transparent 78%);
+          mask-image:radial-gradient(90% 70% at 50% 40%,#000 0%,transparent 78%)}
+
+
+.wrap{position:relative;width:1440px;overflow:hidden;background:#06181D;padding:64px 0 80px}
+.shell{position:relative;z-index:3;width:1240px;margin:0 auto}
+.sec{margin-top:64px}
+.sw{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.sw>div{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.sw .c{height:78px}
+.sw .t{padding:11px 12px;background:rgba(10,32,39,.7)}
+.iconwall{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px}
+.iw{aspect-ratio:1;border-radius:11px;background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.07);
+  display:grid;place-items:center;color:#C3D6D9;transition:all .2s cubic-bezier(.16,1,.3,1)}
+.iw:hover{background:rgba(86,211,216,.10);border-color:rgba(86,211,216,.34);color:#F2F8F9;transform:translateY(-3px)}
+.ramp>div{display:flex;align-items:baseline;gap:26px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.ramp .k{width:130px;flex:none;font:600 10.5px/13px 'Schibsted Grotesk';letter-spacing:.14em;text-transform:uppercase;color:#61797E}
+.mo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.mo>div{padding:20px;border-radius:14px;background:rgba(14,42,51,.6);border:1px solid rgba(255,255,255,.07)}
+.mo .b{height:5px;border-radius:99px;background:rgba(255,255,255,.09);margin:16px 0 12px;position:relative;overflow:hidden}
+.mo .b i{position:absolute;left:0;top:0;bottom:0;width:36%;border-radius:99px;background:#56D3D8}
+.mo:hover .b i{}
+.d1s{animation:sl1 2.6s cubic-bezier(.22,1,.36,1) infinite}
+.d2s{animation:sl1 2.6s cubic-bezier(.34,1.56,.64,1) infinite}
+.d3s{animation:sl1 2.6s cubic-bezier(.65,0,.35,1) infinite}
+.d4s{animation:sl1 2.6s cubic-bezier(.16,1,.3,1) infinite}
+@keyframes sl1{0%{left:0}50%{left:64%}100%{left:0}}
+
+</style>
+</head><body>
+
+
+<div class="wrap"><div class="field"></div><div class="grain"></div>
+  <div class="shell">
+    <p class="micro live" style="margin-bottom:20px">The system</p>
+    <h1 class="d2" style="max-width:20ch">One vocabulary, and no way around it</h1>
+    <p class="lede" style="margin-top:18px;max-width:66ch">Everything on the other artboards is assembled from what is on
+      this one. A page that needs a value not here does not get to invent it — the value gets added here first, once.</p>
+
+    <div class="sec"><p class="micro" style="color:#56D3D8;margin-bottom:20px">Type ramp — 11 to 92, a 8.4× range</p>
+      <div class="ramp">
+        <div><span class="k">Display 1</span><span class="d1" style="flex:1">Know what it costs</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">92 / .94 · Instrument Serif 400 · −.028em</span></div><div><span class="k">Display 2</span><span class="d2" style="flex:1">The drawing already knows</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">64 / 1.02 · −.022em</span></div><div><span class="k">Display 3</span><span class="d3" style="flex:1">Where every rupee goes</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">44 / 1.1 · −.016em</span></div><div><span class="k">Heading 2</span><span class="h2" style="flex:1">Every category we carry</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">24 / 30 · Schibsted Grotesk 600</span></div><div><span class="k">Heading 3</span><span class="h3" style="flex:1">PPC Cement, 50 kg bag</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">19 / 26 · 600</span></div><div><span class="k">Lede</span><span class="lede" style="flex:1">Cement, steel, tiles and glass.</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">17 / 28 · 400</span></div><div><span class="k">Body</span><span class="body" style="flex:1">The price is the tax-paid price.</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">15 / 24 · 400</span></div><div><span class="k">Meta</span><span class="meta" style="flex:1">Inclusive of 28% GST</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">13.5 / 20 · ink-3</span></div><div><span class="k">Micro</span><span class="micro" style="flex:1">ON THE SHELF</span><span class="meta" style="font-size:12px;width:290px;text-align:right;flex:none">11 / 14 · .16em · 600</span></div>
+      </div>
+      <p class="meta" style="margin-top:18px;max-width:70ch">The old ramp ran 12 → 24px. Two times. A ramp that narrow
+        cannot make a headline feel like a headline, which is why correctness alone never made the store look expensive.</p>
+    </div>
+
+    <div class="sec"><p class="micro" style="color:#56D3D8;margin-bottom:20px">Colour — canvas unchanged, everything else rebuilt</p>
+      <div class="sw">
+        <div><div class="c" style="background:#06181D"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">canvas</p><p class="fig" style="font-size:11px;color:#61797E">#06181D</p><p class="meta" style="font-size:11px">the one thing kept</p></div></div><div><div class="c" style="background:#0A2027"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">surf-1</p><p class="fig" style="font-size:11px;color:#61797E">#0A2027</p></div></div><div><div class="c" style="background:#0E2A33"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">surf-2</p><p class="fig" style="font-size:11px;color:#61797E">#0E2A33</p><p class="meta" style="font-size:11px">cards</p></div></div><div><div class="c" style="background:#133741"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">surf-3</p><p class="fig" style="font-size:11px;color:#61797E">#133741</p><p class="meta" style="font-size:11px">raised</p></div></div><div><div class="c" style="background:#1A4552"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">surf-4</p><p class="fig" style="font-size:11px;color:#61797E">#1A4552</p><p class="meta" style="font-size:11px">pressed</p></div></div><div><div class="c" style="background:#F2F8F9"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">ink-1</p><p class="fig" style="font-size:11px;color:#61797E">#F2F8F9</p><p class="meta" style="font-size:11px">17.4:1</p></div></div><div><div class="c" style="background:#C3D6D9"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">ink-2</p><p class="fig" style="font-size:11px;color:#61797E">#C3D6D9</p><p class="meta" style="font-size:11px">12.0:1</p></div></div><div><div class="c" style="background:#8FA9AE"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">ink-3</p><p class="fig" style="font-size:11px;color:#61797E">#8FA9AE</p><p class="meta" style="font-size:11px">6.9:1</p></div></div><div><div class="c" style="background:#61797E"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">ink-4</p><p class="fig" style="font-size:11px;color:#61797E">#61797E</p><p class="meta" style="font-size:11px">3.6 — decorative</p></div></div><div><div class="c" style="background:#E9EEEF"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">plate</p><p class="fig" style="font-size:11px;color:#61797E">#E9EEEF</p><p class="meta" style="font-size:11px">photography</p></div></div><div><div class="c" style="background:#10525E"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">teal-300</p><p class="fig" style="font-size:11px;color:#61797E">#10525E</p></div></div><div><div class="c" style="background:#2E9AA8"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">teal-500</p><p class="fig" style="font-size:11px;color:#61797E">#2E9AA8</p></div></div><div><div class="c" style="background:#56D3D8"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">teal-700</p><p class="fig" style="font-size:11px;color:#61797E">#56D3D8</p><p class="meta" style="font-size:11px">brand</p></div></div><div><div class="c" style="background:#7FE2E6"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">teal-800</p><p class="fig" style="font-size:11px;color:#61797E">#7FE2E6</p><p class="meta" style="font-size:11px">hover</p></div></div><div><div class="c" style="background:#B4F1F3"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">teal-900</p><p class="fig" style="font-size:11px;color:#61797E">#B4F1F3</p><p class="meta" style="font-size:11px">links</p></div></div><div><div class="c" style="background:#7A5504"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">amber-300</p><p class="fig" style="font-size:11px;color:#61797E">#7A5504</p></div></div><div><div class="c" style="background:#C98F06"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">amber-500</p><p class="fig" style="font-size:11px;color:#61797E">#C98F06</p></div></div><div><div class="c" style="background:#F5B40A"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">amber-700</p><p class="fig" style="font-size:11px;color:#61797E">#F5B40A</p><p class="meta" style="font-size:11px">the coin</p></div></div><div><div class="c" style="background:#FFCB4D"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">amber-800</p><p class="fig" style="font-size:11px;color:#61797E">#FFCB4D</p><p class="meta" style="font-size:11px">the figure</p></div></div><div><div class="c" style="background:#FFE39B"></div><div class="t"><p style="font-size:12.5px;color:#F2F8F9;font-weight:500">amber-900</p><p class="fig" style="font-size:11px;color:#61797E">#FFE39B</p></div></div>
+      </div>
+    </div>
+
+    <div class="sec"><p class="micro" style="color:#56D3D8;margin-bottom:20px">Icons — 24px grid, 1.75 stroke, one chamfer, one accent</p>
+      <div class="iconwall"><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M5.6 6.6C5.6 5 7.2 4 12 4s6.4 1 6.4 2.6v11.8C18.4 19.6 16 20 12 20s-6.4-.4-6.4-1.6z"/><path d="M5.6 8.6c1.6.9 11.2.9 12.8 0" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4.4 4.6v14.8M12 4.6v14.8M19.6 4.6v14.8"/><path d="M3.2 8.2h17.6M3.2 12h17.6M3.2 15.8h17.6" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.4 6.2h17.2v5.6H3.4zM3.4 11.8h17.2v5.6H3.4z"/><path d="M9.4 6.2v5.6M15.4 11.8v5.6" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.6 3.6h16.8v16.8H3.6z"/><path d="M12 3.6v16.8M3.6 12h16.8"/><path d="M12 12h8.4v8.4H12z" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 3.6h16v16.8H4z"/><path d="m7.2 17 9.6-9.6M12.4 17l4.4-4.4" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4.4 3.6h13.2v5.2H4.4z"/><path d="M17.6 6.2h2.8v4.8h-8.8v3"/><path d="M9.6 14h4.8v6.4H9.6z" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4 8.4h6.4v7.2H4zM13.6 8.4H20v7.2h-6.4z"/><path d="M10.4 10.6h3.2v2.8h-3.2zM12 3.6v4.8M12 15.6v4.8" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 3.4a5.6 5.6 0 0 0-3.4 10v2.4h6.8V13.4A5.6 5.6 0 0 0 12 3.4Z"/><path d="M9.4 18.4h5.2M10.2 20.6h3.6" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M2.8 15.4 5.4 8h13.2l2.6 7.4z"/><path d="M8.6 8 7 15.4M15.4 8l1.6 7.4M4.4 11.7h15.2"/><path d="M12 20.4v-5" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 3.6c3.6 4.5 5.4 7.6 5.4 9.8a5.4 5.4 0 1 1-10.8 0c0-2.2 1.8-5.3 5.4-9.8Z"/><path d="M9.4 13.8a2.6 2.6 0 0 0 2.6 2.6" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4.6 15.4a7.4 7.4 0 0 1 14.8 0z"/><path d="M9.4 15.4V8a2.6 2.6 0 0 1 5.2 0v7.4" stroke="#56D3D8"/><path d="M3.4 18.4h17.2"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M4.6 5.4h9.6L18 9v5.4H4.6z"/><path d="M3.2 17.4h17.6" stroke="#56D3D8"/><path d="M9 21a1.3 1.3 0 1 1-2.6 0 1.3 1.3 0 0 1 2.6 0ZM18.6 21a1.3 1.3 0 1 1-2.6 0 1.3 1.3 0 0 1 2.6 0Z"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M20.4 12a8.4 8.4 0 1 1-16.8 0 8.4 8.4 0 0 1 16.8 0Z"/><path d="M16.6 12a4.6 4.6 0 1 1-9.2 0 4.6 4.6 0 0 1 9.2 0Z" stroke="#F5B40A"/><path d="M12 3.6v1.4M12 19v1.4M3.6 12H5M19 12h1.4"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.5 4h11.9L20.5 9.1V20H3.5z"/><path d="M7 8.6h6.4M7 12h4"/><path d="M7 16.2h10" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 21c4-4.6 6-8 6-10.6a6 6 0 1 0-12 0C6 13 8 16.4 12 21Z"/><path d="M14.4 10.2a2.4 2.4 0 1 1-4.8 0 2.4 2.4 0 0 1 4.8 0Z" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M2.6 6h10.8v10.4H2.6z"/><path d="M13.4 9.4h3.8l3.2 3.4v3.6h-7z"/><path d="M8 18.6a1.6 1.6 0 1 1-3.2 0 1.6 1.6 0 0 1 3.2 0ZM19.2 18.6a1.6 1.6 0 1 1-3.2 0 1.6 1.6 0 0 1 3.2 0Z" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 3.2 19.6 6v6.4c0 4.2-3.2 6.9-7.6 8.4-4.4-1.5-7.6-4.2-7.6-8.4V6z"/><path d="m8.6 12.2 2.6 2.7 4.4-5.4" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.6 3.6v16.8h16.8"/><path d="M3.6 16.4 12 20.4l8.4-4"/><path d="M9.4 9h5.2v6.6H9.4z" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M12 3.6 4.6 20.4M12 3.6l7.4 16.8"/><path d="M7.4 14.2h9.2" stroke="#56D3D8"/><path d="M13.4 4.6a1.4 1.4 0 1 1-2.8 0 1.4 1.4 0 0 1 2.8 0Z"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.4 15.2 15.2 3.4l5.4 5.4L8.8 20.6z"/><path d="m7.4 11.2 2 2M10.6 8l2 2M13.8 4.8l2 2" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.6 20.4V8.4L12 3.6l8.4 4.8v12z"/><path d="M9.6 20.4v-6.8h4.8v6.8" stroke="#56D3D8"/><path d="M3.6 12h16.8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M7.4 3.6h9.2v5.6a4.6 4.6 0 0 1-9.2 0z"/><path d="M7.4 5.4H4.2v1.8a3.2 3.2 0 0 0 3.2 3.2M16.6 5.4h3.2v1.8a3.2 3.2 0 0 1-3.2 3.2"/><path d="M12 13.8v3.4M8.2 20.4h7.6" stroke="#56D3D8"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M3.4 5.6h17.2v3H3.4z"/><path d="M6.4 8.6v11.8M12 8.6v11.8M17.6 8.6v11.8" stroke="#56D3D8"/><path d="M3.4 14.4h17.2"/></svg></div><div class="iw"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="butt" stroke-linejoin="miter"><path d="M2.6 12 12 4.4 21.4 12"/><path d="M4.8 14.4h14.4M4.8 18h14.4" stroke="#56D3D8"/></svg></div></div>
+      <p class="meta" style="margin-top:18px;max-width:70ch">Butt caps and mitre joins, a 4.6-unit chamfer on the
+        top-right of every container, and exactly one element per glyph in the accent. Rounded corners are what every
+        icon pack does; a chamfer is what a drafting pen does.</p>
+    </div>
+
+    <div class="sec"><p class="micro" style="color:#56D3D8;margin-bottom:20px">Motion — four durations, five curves, nothing invents a sixth</p>
+      <div class="mo">
+        <div><p class="h4">dur-1 · 120ms</p><p class="fig" style="font-size:12px;color:#7FE2E6;margin-top:4px">ease-out</p><div class="b"><i class="d1s"></i></div><p class="meta" style="font-size:12.5px">State flips — colour, border, opacity.</p></div><div><p class="h4">dur-2 · 200ms</p><p class="fig" style="font-size:12px;color:#7FE2E6;margin-top:4px">ease-spring</p><div class="b"><i class="d2s"></i></div><p class="meta" style="font-size:12.5px">Anything the pointer is touching.</p></div><div><p class="h4">dur-3 · 340ms</p><p class="fig" style="font-size:12px;color:#7FE2E6;margin-top:4px">ease-inout</p><div class="b"><i class="d3s"></i></div><p class="meta" style="font-size:12.5px">Panels, popovers, anything with size.</p></div><div><p class="h4">dur-4 · 640ms</p><p class="fig" style="font-size:12px;color:#7FE2E6;margin-top:4px">ease-glide</p><div class="b"><i class="d4s"></i></div><p class="meta" style="font-size:12.5px">Entrances. A section arriving on scroll.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>
