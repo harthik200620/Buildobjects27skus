@@ -116,8 +116,10 @@ export default function CartButton() {
           aria-label={count > 0 ? `BO Cart, ${count} ${count === 1 ? 'item' : 'items'}` : 'BO Cart'}
         >
           <span className="header-action-icon relative">
-            {/* The count is the arrival trigger: add something and the trolley lands again. */}
-            <BoCartMark size={24} arriveKey={count} />
+            {/* The count is the arrival trigger: add something and the trolley lands again.
+                The porter is on at 30px — he was off at 24 because he was illegible there, and
+                the one-row header gave the rig the six pixels that changes. */}
+            <BoCartMark size={30} arriveKey={count} driver />
             {count > 0 && (
               <span className="header-count" aria-hidden="true">
                 {count > 99 ? '99+' : count}

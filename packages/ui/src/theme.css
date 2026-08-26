@@ -165,8 +165,24 @@
      deep teal is a hole in the page, so every photograph sits on a mount. */
   --plate-1: #e9eeef;
   --plate-2: #f6f9f9;
+  /* The shadowed end of the mount. A flat plate is a rectangle behind a photograph; a
+     plate that is brighter where the key light falls and darker at its edges is a
+     surface the object is standing on. --plate-0 is what the gallery stage falls to. */
+  --plate-0: #c4d0d1;
   --on-plate-1: #0c1113; /* 16.9 on plate */
   --on-plate-2: #52605f; /*  5.4 on plate */
+
+  /* THE LIT STAGE. One recipe, used by the product gallery and by anything else that
+     has to make a single object look photographed rather than pasted. The bright centre
+     sits at 50% 34% because that is where the key light is in every photograph the
+     pipeline commissions, so the mount and the product agree about the light. */
+  --plate-stage: radial-gradient(
+    62% 52% at 50% 34%,
+    var(--plate-2) 0%,
+    var(--plate-1) 44%,
+    color-mix(in oklab, var(--plate-1) 52%, var(--plate-0)) 78%,
+    var(--plate-0) 100%
+  );
 
   /* ── 5. HAIRLINES AND EDGES ───────────────────────────────────────────────
      Alpha, not hex. A hex line is only correct on the one surface it was picked

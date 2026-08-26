@@ -20,13 +20,15 @@ import React from 'react';
  * is the part nobody redrew. The chassis is what got cut back: one flat deck bar and two solid
  * wheels, with real clearance between the mark and the metal so they read as separate objects.
  *
- * The figure is off by default. It was the busiest element and it is illegible below about 40 px;
- * `driver` brings it back where there is room.
+ * The figure is off by default and the header turns it on at 30 px. It was the busiest element
+ * and it is illegible much below that; `driver` is what brings it back where there is room.
  *
- * The entrance is the Blinkit idea: it does not fade in, it arrives. The rig drops from above the
- * header, compresses on landing, the wheels spin up and settle. `arriveKey` replays it — the
+ * The entrance does not fade in, it arrives — drop, land, push, settle, on one 1260ms timeline
+ * that the wheels and the porter's legs are both driven from, so the rig rolls rather than
+ * slides. The sequence and its timings are documented on `.bocart-rig` in store.css, which is
+ * where they can be read next to the keyframes that implement them. `arriveKey` replays it: the
  * header passes the cart's item count, so adding something has a physical consequence in the
- * chrome. All of it is off under prefers-reduced-motion.
+ * chrome. All of it is off under prefers-reduced-motion, at the settled frame.
  */
 
 export interface BoCartMarkProps {

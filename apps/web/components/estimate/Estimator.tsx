@@ -35,6 +35,7 @@ import {
 } from '@/components/icons';
 import { inr } from '@/lib/media';
 import { readPicks, removePick, setPickQty } from '@/lib/picks';
+import CostRange from './CostRange';
 import Donut, { seriesColor } from './Donut';
 import DrawingUpload from './DrawingUpload';
 import HouseRender from './HouseRender';
@@ -548,6 +549,8 @@ export default function Estimator({
               <span className="fig">{inr(Math.round(result.perSqft))}</span> per sqft · <span className="fig">{fmtSqft(result.derived.builtUpSqft)}</span> sqft
               built-up · {result.derived.floorsLabel} · {result.derived.cityName}
             </p>
+            {/* The ±12% the note has always stated, drawn. See components/estimate/CostRange.tsx. */}
+            <CostRange total={result.grandTotal} pct={result.accuracy.pct} />
           </div>
           <div className="ledger-fig">
             <p className="grand-label">{LEDGER_LABEL.structure}</p>

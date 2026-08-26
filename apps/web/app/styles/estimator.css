@@ -423,3 +423,97 @@
     }
   }
 }
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   THE RANGE BAR, AND THE OUTPUT COLUMN THAT HOLDS IT
+   ─────────────────────────────────────────────────────────────────────────────
+   The estimator answers one question with one number, and that number is a band.
+   The band was a sentence — "Estimate ±12%" — under a figure, which is the least
+   read position on any page. Drawn, it is the first thing the eye lands on after
+   the total, which is the correct order for a figure nobody should treat as a quote.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  .range {
+    margin-top: var(--s-5);
+  }
+  /* Teal in the middle, falling away at both ends: the gradient IS the claim. A flat
+     bar would say the floor and the ceiling are as likely as the middle. */
+  .range-bar {
+    position: relative;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--teal-300) 0%, var(--teal-600) 50%, var(--teal-300) 100%);
+    opacity: 0.85;
+  }
+  .range-mark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3px;
+    height: 18px;
+    margin-left: -1.5px;
+    transform: translateY(-50%);
+    border-radius: 2px;
+    background: var(--ink-1);
+    box-shadow: 0 0 0 3px var(--surf-2);
+  }
+  .range-ends {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-top: var(--s-3);
+  }
+  .range-ends > span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+  .range-ends .fig {
+    color: var(--ink-2);
+  }
+  .range-mid {
+    align-items: center;
+    text-align: center;
+  }
+  .range-mid .fig {
+    color: var(--ink-1);
+  }
+  .range-top {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  /* THE TOTAL TRAVELS WITH THE READER, and only the total.
+     The whole output column was tried first and is wrong: it is 2,200px of breakdown
+     against a 1,100px control column, so pinning it means capping it at the viewport
+     and giving it its own scrollbar — a nested scroll region on the one screen where
+     the reader is already moving between two columns. The grand panel is ~300px, it is
+     the answer the page exists to give, and keeping it in view while the breakdown
+     that explains it scrolls underneath is the whole benefit with none of the cost. */
+  @media (min-width: 1024px) {
+    .grand {
+      position: sticky;
+      top: calc(var(--header-h) + var(--header-inset) + var(--s-4));
+      z-index: 2;
+    }
+  }
+  /* The grand panel gives the hero figure a column of its own rather than a third of
+     a row — at 80px the total cannot share a line with two ledgers. */
+  @media (min-width: 640px) {
+    .grand {
+      grid-template-columns: 1fr;
+      gap: var(--s-6);
+    }
+    .grand-total {
+      padding-bottom: var(--s-5);
+      border-bottom: 1px solid var(--hair);
+    }
+    .grand .ledger-fig {
+      display: inline-block;
+      min-width: 46%;
+      vertical-align: top;
+    }
+  }
+}

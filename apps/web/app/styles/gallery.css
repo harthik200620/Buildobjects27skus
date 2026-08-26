@@ -217,3 +217,111 @@
     color: var(--color-ink-3);
   }
 }
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   THE ROOM BAND
+   ─────────────────────────────────────────────────────────────────────────────
+   The full-bleed invitation between the specification and the comparison grid. It is
+   the one place on a product page that asks for an action rather than describing the
+   product, so it is also the one place that gets both accents: teal from the top right,
+   the coin's amber from the bottom left, at 20% and 11%.
+
+   The reticle is three rings on one 3.2s cycle offset by a third each, which is what
+   makes the pulse continuous without ever doubling up. It is decorative: the copy beside
+   it carries every fact, including the real dimensions.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  .room-band {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    min-height: 340px;
+    margin-top: var(--s-9);
+    padding: var(--s-8) var(--s-7);
+    border-radius: 22px;
+    border: 1px solid var(--hair-2);
+    background: linear-gradient(122deg, var(--surf-2), var(--color-canvas) 64%);
+    overflow: hidden;
+  }
+  .room-band::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(56% 110% at 82% 30%, rgb(86 211 216 / 20%), transparent 62%), radial-gradient(46% 90% at 14% 100%, rgb(245 180 10 / 11%), transparent 62%);
+  }
+  .room-say {
+    position: relative;
+    max-width: 46ch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-4);
+  }
+  .room-say .btn {
+    margin-top: var(--s-3);
+  }
+
+  .reticle {
+    position: absolute;
+    right: 96px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 230px;
+    height: 230px;
+    color: var(--color-brand);
+  }
+  .reticle i {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--hair-brand);
+    border-radius: 16px;
+    animation: reticle-pulse 3.2s var(--ease-out) infinite;
+  }
+  .reticle i:nth-child(2) {
+    animation-delay: 1.06s;
+  }
+  .reticle i:nth-child(3) {
+    animation-delay: 2.13s;
+  }
+  @keyframes reticle-pulse {
+    0% {
+      transform: scale(0.72);
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.12);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reticle i {
+      animation: none;
+    }
+    .reticle i:nth-child(2),
+    .reticle i:nth-child(3) {
+      display: none;
+    }
+  }
+  /* Below 900 the reticle would sit on the copy, and a decoration that obscures the
+     sentence it decorates is worse than no decoration. */
+  @media (max-width: 899.98px) {
+    .room-band {
+      padding: var(--s-7) var(--s-5);
+      min-height: 0;
+    }
+    .reticle {
+      display: none;
+    }
+    .room-say {
+      max-width: none;
+    }
+  }
+}

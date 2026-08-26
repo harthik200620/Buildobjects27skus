@@ -8,10 +8,13 @@ import Img from './Img';
 import PriceBlock from './PriceBlock';
 
 /**
- * The product card: a 1:1 white image, brand in 12 px, a two-line title that is
- * a stretched link over the whole card, the spec line, the price block, the "Estimated price"
- * badge when the price is not fetched, the delivery line when the page knows the pincode, the
- * stock line, and a CTA row (Add to Estimate · View in room) that sits above the stretched link.
+ * The product card. Seven decisions, all of them documented next to the rules that implement
+ * them in store.css: a 4:3.3 photograph on a silver plate with a floor shadow under it, the brand
+ * as a tracked micro eyebrow, a title with 44 px reserved so a two-line name does not shift the
+ * price, one 34 px teal rule that draws in on hover, the spec line, the price block, the
+ * "Estimated price" badge when the price is not fetched, the delivery line when the page knows
+ * the pincode, stock as coloured text, and a CTA row that takes zero height until the card is
+ * hovered or focused.
  *
  *   grid     — the PLP / search grid and "similar" rows
  *   row      — a 220 px card for scroll-snap rails (home)
@@ -82,6 +85,9 @@ export default function ProductCard({
             <Highlight formatted={formatted} fallback={compact ? sku.name : skuTitle(sku.name, sku.brand, sku.variant_label)} />
           </Link>
         </h3>
+        {/* The card's one accent gesture — see .prod-rule in store.css. It is decorative
+            and carries no information, so it is hidden from assistive tech. */}
+        {!compact && <span className="prod-rule" aria-hidden="true" />}
         {!compact && specs && (
           <p className="prod-specs" title={specs}>
             {specs}
@@ -100,14 +106,21 @@ export default function ProductCard({
           </p>
         )}
         <p className={`stock ${stock.cls}`}>{stock.label}</p>
+        {/* Three elements, and each one does exactly one job — the grid that animates, the
+            clip that hides, and the row that lays out and carries the gap. See .prod-cta in
+            store.css for why the gap cannot live on the clip. */}
         {!compact && (
           <div className="prod-cta">
-            <AddToEstimate skuCode={sku.sku_code} size="sm" />
-            {sku.ar && (
-              <Link href={`/ar/${sku.sku_code.toLowerCase()}`} className="btn btn-tertiary btn--sm">
-                View in room
-              </Link>
-            )}
+            <div className="prod-cta-clip">
+              <div className="prod-cta-row">
+                <AddToEstimate skuCode={sku.sku_code} size="sm" />
+                {sku.ar && (
+                  <Link href={`/ar/${sku.sku_code.toLowerCase()}`} className="btn btn-tertiary btn--sm">
+                    View in room
+                  </Link>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>

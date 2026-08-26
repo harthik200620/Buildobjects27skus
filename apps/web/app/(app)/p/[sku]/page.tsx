@@ -7,6 +7,7 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import BrochureViewer from '@/components/BrochureViewer';
 import BuyPanel from '@/components/BuyPanel';
 import Gallery from '@/components/Gallery';
+import { IconReticle, IconRoom } from '@/components/icons';
 import Markdown from '@/components/Markdown';
 import ProductCard from '@/components/ProductCard';
 import SpecSheet from '@/components/SpecSheet';
@@ -137,6 +138,42 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           )}
         </aside>
       </div>
+
+      {/*
+       * ── see it in the room ──────────────────────────────────────────────
+       * A full-bleed band with a pulsing reticle, between the specification and the
+       * comparison. It is placed here on purpose: a reader who has got past the spec
+       * sheet has decided the product is right and is now deciding whether it FITS,
+       * which is the one question a photograph cannot answer and the camera can.
+       *
+       * It states the real dimensions from the catalogue rather than a claim, and it
+       * only appears for a SKU that actually has a room view — an invitation to open a
+       * camera that then 404s is worse than no invitation.
+       */}
+      {data.dims && (
+        <section className="room-band" data-reveal>
+          <div className="room-say">
+            <p className="micro micro--live">Works on this item</p>
+            <h2 className="d3">See it in the room before you spend anything.</h2>
+            <p className="lede">
+              Point your camera at the floor. It stands there at its real size — <span className="fig">{data.dims.w}</span> ×{' '}
+              <span className="fig">{data.dims.d}</span> × <span className="fig">{data.dims.h}</span> mm — so you know what it will do to the space before it
+              arrives.
+            </p>
+            <Link href={`/ar/${data.sku.code.toLowerCase()}`} className="btn btn-primary btn--lg">
+              <IconRoom size={18} /> Open the camera
+            </Link>
+          </div>
+          {/* Three rings on one 3.2s cycle, offset by a third each, so the pulse never
+              stops and never doubles. Decorative — the copy carries the meaning. */}
+          <span className="reticle" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <IconReticle size={54} />
+          </span>
+        </section>
+      )}
 
       {/* ── similar products ───────────────────────────────────────────── */}
       {similar.length > 0 && (

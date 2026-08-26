@@ -55,7 +55,11 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
   const warrantyRow = sku.keySpecs.find((k) => /warranty/i.test(k.label));
 
   return (
-    <div className="glass-card buy-panel" style={{ borderRadius: 'var(--r-2)' }}>
+    /* .buy-panel owns its own glass now — radius, blur, edge and shadow together, in
+       store.css. The inline radius here was overriding it from a stylesheet nobody
+       would think to look in, which is the reason inline styles for anything the theme
+       already names are a rule this project keeps. */
+    <div className="buy-panel">
       <p className="buy-brand">{brand.name}</p>
       <h1 className="buy-name fig font-semibold">{product.name}</h1>
       {sku.variant && (

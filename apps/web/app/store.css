@@ -1656,10 +1656,31 @@
      real gap — the load is 62% of the height, the chassis is 30%, and the 8%
      between them is what keeps "logo" and "metal" legible as separate things.
 
-     The arrival does not fade in, it lands: the rig drops from above the header,
-     compresses on impact, and the wheels spin up and settle. Every part is one
-     keyframe on one element, replayed when something joins the cart. Under
-     prefers-reduced-motion all of it is off, not shortened. */
+     The arrival does not fade in, it lands. The sequence and its timings are
+     documented on .bocart-rig below. */
+  /* ── the cart rig ─────────────────────────────────────────────────────────
+     A porter pushing the Build Objects mark on a trolley.
+
+     THE SEQUENCE IS ONE TIMELINE, 1260ms, and everything on the rig is driven from
+     it so the parts cannot drift apart:
+
+       drop    420ms   translateY(-150%) → 0, opacity 0 → 1
+       land    120ms   scaleY(.9) scaleX(1.08) → scale(1)
+       push    720ms   translateX −26% → +16% → −6% → 0
+       settle          rests
+
+     The wheels rotate off the SAME timeline — 0 → −150° → +110° → −40° → 0 — which
+     is what makes the rig roll rather than slide. A wheel spinning on its own clock
+     is the single tell that separates an animated icon from a moving object: the eye
+     reads the mismatch between the ground speed and the rotation long before it can
+     say what is wrong. The porter's legs step off it too.
+
+     It replays on every change to the item count, so adding something to the cart has
+     a physical consequence in the chrome.
+
+     Under prefers-reduced-motion the whole rig renders at its settled frame and never
+     animates. Not "fast" — a person who asked for stillness did not ask for a quicker
+     trolley. */
   .bocart {
     position: relative;
     display: inline-flex;
@@ -1667,7 +1688,7 @@
     justify-content: center;
     flex: none;
     line-height: 0;
-    color: var(--color-header-ink);
+    color: var(--ink-1);
   }
   .bocart-rig {
     position: relative;
@@ -1677,7 +1698,7 @@
     justify-content: flex-end;
     width: 100%;
     height: 100%;
-    animation: bocart-drop 880ms cubic-bezier(0.3, 1.5, 0.4, 1) both;
+    animation: bocart-run 1260ms var(--ease-glide) both;
   }
   /* The load and the deck are sized in pixels by the component — see BoCartMark for why
      percentages could not resolve here. These rules only own display and flow. */
@@ -1685,6 +1706,9 @@
     display: block;
     width: auto;
     flex: none;
+    transform-origin: 50% 100%;
+    /* The load rocks a beat behind the chassis, the way a load does. */
+    animation: bocart-load 1260ms var(--ease-glide) 40ms both;
   }
   .bocart-chassis {
     display: block;
@@ -1692,89 +1716,110 @@
     flex: none;
   }
 
-  @keyframes bocart-drop {
+  @keyframes bocart-run {
     0% {
       opacity: 0;
-      transform: translateY(-150%) rotate(-12deg);
+      transform: translate3d(0, -150%, 0);
     }
-    46% {
+    /* 420ms — the drop lands */
+    33.3% {
       opacity: 1;
-      transform: translateY(0) rotate(0deg) scaleY(0.88) scaleX(1.06);
+      transform: translate3d(0, 0, 0) scaleY(0.9) scaleX(1.08);
     }
-    64% {
-      transform: translateY(0) rotate(2.5deg) scaleY(1.03) scaleX(0.98);
+    /* 540ms — 120ms of compression released */
+    42.9% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
     }
-    80% {
-      transform: translateY(0) rotate(-1deg) scale(1);
+    /* 540 → 1260ms — pushed left, right, and settled */
+    57.1% {
+      transform: translate3d(-26%, 0, 0);
+    }
+    71.4% {
+      transform: translate3d(16%, 0, 0);
+    }
+    85.7% {
+      transform: translate3d(-6%, 0, 0);
     }
     100% {
-      transform: translateY(0) rotate(0) scale(1);
+      transform: translate3d(0, 0, 0);
     }
   }
 
-  /* the load rocks a beat behind the chassis, the way a load does */
-  .bocart-load {
-    animation: bocart-settle 880ms cubic-bezier(0.3, 1.4, 0.4, 1) 60ms both;
-    transform-origin: 50% 100%;
-  }
-  @keyframes bocart-settle {
+  @keyframes bocart-load {
     0% {
-      transform: translateY(-30%) rotate(-7deg);
+      transform: translateY(-24%) rotate(-6deg);
     }
-    52% {
-      transform: translateY(2%) rotate(4deg);
+    33.3% {
+      transform: translateY(2%) rotate(3deg);
     }
-    74% {
+    42.9% {
       transform: translateY(0) rotate(-1.5deg);
     }
+    57.1% {
+      transform: rotate(3deg);
+    }
+    71.4% {
+      transform: rotate(-2deg);
+    }
     100% {
-      transform: translateY(0) rotate(0);
+      transform: rotate(0);
     }
   }
 
-  /* wheels spin up on landing and stop; the second lags the first */
+  /* The wheels: the same timeline, expressed as rotation. */
   .bocart-wheel {
     transform-box: fill-box;
     transform-origin: 50% 50%;
-    animation: bocart-roll 800ms cubic-bezier(0.1, 0.8, 0.2, 1) 360ms both;
-  }
-  .bocart-wheel--b {
-    animation-delay: 410ms;
+    animation: bocart-roll 1260ms var(--ease-glide) both;
   }
   @keyframes bocart-roll {
-    from {
+    0%,
+    42.9% {
       transform: rotate(0);
     }
-    to {
-      transform: rotate(300deg);
+    57.1% {
+      transform: rotate(-150deg);
+    }
+    71.4% {
+      transform: rotate(110deg);
+    }
+    85.7% {
+      transform: rotate(-40deg);
+    }
+    100% {
+      transform: rotate(0);
     }
   }
 
-  /* the figure, only where there is room for it (see BoCartMark: `driver`) */
-  .bocart--driver {
-    padding-left: 42%;
-  }
+  /* The porter steps with the push. A 1.4px stride at a 30px rig: enough to read as
+     walking, small enough that it never looks like the figure is detaching. */
   .bocart-person {
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 40%;
-    height: 92%;
-    color: var(--color-header-ink-2);
-    animation: bocart-walk-in 740ms cubic-bezier(0.2, 0.9, 0.25, 1) 120ms both;
+    height: 78%;
+    width: auto;
+    color: var(--ink-3);
+    animation: bocart-step 1260ms var(--ease-glide) both;
   }
-  @keyframes bocart-walk-in {
-    from {
-      opacity: 0;
-      transform: translateX(-38%);
+  @keyframes bocart-step {
+    0%,
+    42.9% {
+      transform: none;
+    }
+    57.1% {
+      transform: translateX(-1.4px);
+    }
+    71.4% {
+      transform: translateX(1px);
+    }
+    100% {
+      transform: none;
     }
   }
-
-  /* a hovered cart nudges forward, because a trolley is a thing you push */
-  .header-action--cart:hover .bocart-rig,
-  .header-action--cart:focus-visible .bocart-rig {
-    transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.25, 1);
-    transform: translateX(2px);
+  .bocart--driver .bocart-rig {
+    margin-left: 26%;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1782,10 +1827,7 @@
     .bocart-load,
     .bocart-wheel,
     .bocart-person {
-      animation: none;
-    }
-    .header-action--cart:hover .bocart-rig {
-      transform: none;
+      animation: none !important;
     }
   }
 
@@ -1827,55 +1869,90 @@
     flex: none;
   }
 
-  /* ── product card ───────────────────────────────────────────────────────── */
+  /* ── the product card ─────────────────────────────────────────────────────
+     Seven decisions, and the artboard names all seven. The ones that changed from
+     v1 are the ones worth stating:
+
+     1. MEDIA IS 4 : 3.3, NOT 1 : 1. A square photograph of a rectangular object wastes
+        the two bands at top and bottom on nothing, and every product in this catalogue
+        — a bag, a bulb, a tile, a panel — is wider than it is tall or close to it. The
+        shorter frame also puts the price 40px higher up a 60-card grid.
+     2. THE PLATE HAS A FLOOR. A soft elliptical shadow under the object, so it stands
+        on the mount instead of floating in front of it. It is one radial gradient.
+     3. BRAND IS A TRACKED MICRO EYEBROW and never part of the title. The search index
+        glues variant_label onto name, so a card that printed `name` whole under a brand
+        chip said the brand twice and the pack size twice.
+     4. THE TITLE RESERVES 44px. Two lines' worth, always — otherwise a one-line name
+        and a two-line name put their prices at different heights and a grid of them
+        reads as a broken table.
+     5. ONE ACCENT GESTURE. A 34px teal rule draws in under the title on hover. v1 moved
+        the border, the shadow, the title colour and the CTA row all at once, which is
+        four things saying the same thing and reads as a page that cannot keep still.
+     6. ACTIONS TAKE ZERO HEIGHT AT REST. They appear on hover and on focus-within, so a
+        60-card grid is calm and a keyboard still reaches them. `grid-template-rows:
+        0fr → 1fr` is what animates an unknown height without measuring it.
+     7. CERTIFICATION IS A BADGE ON THE MEDIA; STOCK IS COLOURED TEXT, NEVER A BADGE.
+        Two badges on one card is a card with no hierarchy. */
   .prod-card {
     position: relative;
     display: flex;
     flex-direction: column;
     min-width: 0;
-    background: var(--color-surface);
-    color: var(--color-ink);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
+    background: var(--surf-2);
+    color: var(--ink-1);
+    border: 1px solid var(--hair);
+    border-radius: 16px;
     overflow: hidden;
+    box-shadow: var(--specular);
     transition:
-      box-shadow 0.15s ease,
-      border-color 0.15s ease;
+      transform var(--dur-3) var(--ease-glide),
+      border-color var(--dur-2) var(--ease-out);
   }
-  .prod-card:hover {
-    box-shadow: var(--shadow-1);
-    border-color: var(--color-line-strong);
-  }
+  .prod-card:hover,
   .prod-card:focus-within {
-    border-color: var(--color-teal-700);
-    box-shadow: 0 0 0 1px var(--color-teal-700);
+    transform: translateY(-5px);
+    border-color: var(--hair-brand);
   }
-  /* Every product photograph in the store sits on the silver plate (theme.css .plate) — a card,
-     a search row, the PDP gallery and the cart line all mount them the same way. */
+
+  /* Every product photograph in the store sits on the silver plate — a card, a search
+     row, the PDP gallery and the cart line all mount them the same way. */
   .prod-media {
     position: relative;
-    aspect-ratio: 1 / 1;
-    background: var(--color-plate);
-    background-image: linear-gradient(160deg, var(--color-plate-2) 0%, var(--color-plate) 62%);
-    border-bottom: 1px solid var(--color-line-2);
+    aspect-ratio: 4 / 3.4;
+    background: linear-gradient(158deg, var(--plate-2), var(--plate-1));
     overflow: hidden;
   }
+  /* The floor. Without it the object is a cut-out pasted on a rectangle. */
+  .prod-media::after {
+    content: "";
+    position: absolute;
+    left: 12%;
+    right: 12%;
+    bottom: 9%;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(12 17 19 / 34%), transparent);
+  }
   .prod-media img {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 8%;
+    padding: 9%;
     display: block;
   }
-  .prod-media .badge-estimated {
+  .prod-media .badge-estimated,
+  .prod-media .badge-cert {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    z-index: 1;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
   }
   .prod-noimg {
     position: absolute;
     inset: 0;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1883,34 +1960,42 @@
     gap: 4px;
     padding: 16px;
     text-align: center;
-    background: var(--color-canvas-2);
-    color: var(--color-ink-3);
+    background: var(--surf-1);
+    color: var(--ink-3);
     font-size: 12px;
     line-height: 16px;
   }
   .prod-noimg b {
     font-size: 16px;
     line-height: 22px;
-    color: var(--color-ink-2);
+    color: var(--ink-2);
   }
+
   .prod-body {
+    position: relative;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 10px 12px 12px;
+    gap: 5px;
+    padding: 15px 16px 17px;
   }
   .prod-brand {
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-ink-2);
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    letter-spacing: var(--track-micro);
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-brand);
   }
   .prod-title {
+    position: relative;
     margin: 0;
-    font-size: 16px;
+    /* Two lines' worth, reserved whether or not the name needs it. */
+    min-height: 44px;
+    font-size: var(--t-h4);
     line-height: 22px;
-    font-weight: 400;
-    color: var(--color-ink);
+    font-weight: 600;
+    color: var(--ink-1);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -1926,17 +2011,29 @@
     position: absolute;
     inset: 0;
   }
-  .prod-title a:hover {
-    color: var(--color-teal-800);
-  }
   .prod-title a:focus-visible {
     outline: none;
   }
+  /* The one accent gesture. 34px of brand teal, drawn from the left. */
+  .prod-rule {
+    display: block;
+    width: 34px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-3) var(--ease-glide);
+  }
+  .prod-card:hover .prod-rule,
+  .prod-card:focus-within .prod-rule {
+    transform: scaleX(1);
+  }
   .prod-specs {
     margin: 0;
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 18px;
-    color: var(--color-ink-2);
+    color: var(--ink-3);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1948,43 +2045,93 @@
   /* The delivery promise and the stock line: the two facts a buyer scans for after the price. */
   .deliver {
     margin: 0;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 18px;
-    color: var(--color-ink-2);
+    color: var(--ink-3);
   }
   .deliver b {
-    color: var(--color-ink);
-    font-weight: 700;
+    color: var(--ink-2);
+    font-weight: 600;
   }
   .stock {
     margin: 0;
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 18px;
     font-weight: 500;
   }
   .stock--in {
-    color: var(--color-success);
+    color: var(--ok);
   }
   .stock--low {
-    color: var(--color-warn);
+    color: var(--warn);
   }
   .stock--preorder {
-    color: var(--color-ink-2);
+    color: var(--ink-3);
   }
   .stock--out {
-    color: var(--color-danger);
+    color: var(--bad);
   }
+
+  /* Zero height at rest.
+     0fr → 1fr on a single grid row is the only way to transition to a height the
+     browser has to measure; max-height with a guessed ceiling either clips a tall row
+     or eases against empty space for most of its duration. Three elements, the same
+     shape as .spec-group-body / .spec-group-clip in styles/spec.css:
+
+       .prod-cta       the grid, whose one row goes 0fr → 1fr
+       .prod-cta-clip  min-height 0 and overflow hidden, and NOTHING else
+       .prod-cta-row   the buttons, and the 12px that separates them from the price
+
+     The gap has to live on the innermost element. Putting it on the clip left 12px of
+     padding standing at the bottom of every card at rest, because overflow: hidden
+     clips content and not padding — measured at 12px against the 0 it is supposed to
+     be, across a sixty-card grid. */
   .prod-cta {
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-rows: 0fr;
+    margin-top: auto;
+    transition: grid-template-rows var(--dur-3) var(--ease-glide);
+  }
+  .prod-cta-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .prod-cta-row {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: auto;
-    padding-top: 8px;
+    padding-top: 12px;
+    opacity: 0;
+    transition: opacity var(--dur-2) var(--ease-out);
   }
+  .prod-card:hover .prod-cta,
+  .prod-card:focus-within .prod-cta {
+    grid-template-rows: 1fr;
+  }
+  .prod-card:hover .prod-cta-row,
+  .prod-card:focus-within .prod-cta-row {
+    opacity: 1;
+  }
+  /* A coarse pointer has no hover, so the actions are simply always there. */
+  @media (pointer: coarse) {
+    .prod-cta {
+      grid-template-rows: 1fr;
+    }
+    .prod-cta-row {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .prod-card:hover,
+    .prod-card:focus-within {
+      transform: none;
+    }
+  }
+
   .prod-card--row {
-    width: 220px;
+    width: 240px;
     flex: none;
     scroll-snap-align: start;
   }
@@ -1993,14 +2140,22 @@
     align-items: center;
     gap: 12px;
     padding: 8px;
+    border-radius: var(--r-2);
+  }
+  .prod-card--compact:hover,
+  .prod-card--compact:focus-within {
+    transform: none;
   }
   .prod-card--compact .prod-media {
     flex: none;
     width: 64px;
     height: 64px;
     aspect-ratio: auto;
-    border: 1px solid var(--color-line-2);
-    border-radius: var(--radius-sm);
+    border: 1px solid var(--hair);
+    border-radius: var(--r-1);
+  }
+  .prod-card--compact .prod-media::after {
+    display: none;
   }
   .prod-card--compact .prod-media img {
     padding: 4px;
@@ -2010,6 +2165,7 @@
     gap: 2px;
   }
   .prod-card--compact .prod-title {
+    min-height: 0;
     font-size: 14px;
     line-height: 18px;
   }
@@ -3000,44 +3156,65 @@
     margin: 12px 0 16px;
   }
 
-  /* ── product page (v1 Gallery / BuyPanel / SpecSheet / BrandStrip) ──────── */
+  /* ── product page ─────────────────────────────────────────────────────────
+     Two columns: a gallery stage on the left, a sticky glass buy column on the right.
+     The stage is the change. It was a 1:1 flat plate with the photograph mounted on it;
+     it is now a LIT stage — a radial mount that is brightest where the key light falls,
+     a real floor shadow under the object, and a slow drift so the product is a thing in
+     a room rather than a cut-out on a rectangle. */
   .pdp {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
+    gap: var(--s-6);
   }
   @media (min-width: 1024px) {
     .pdp {
-      grid-template-columns: minmax(0, 7fr) minmax(320px, 5fr);
-      gap: 32px;
+      grid-template-columns: minmax(0, 1fr) 424px;
+      gap: var(--s-7);
       align-items: start;
     }
   }
   .pdp-sticky {
     position: sticky;
-    top: calc(var(--header-h) + 16px);
+    top: calc(var(--header-h) + var(--header-inset) + var(--s-4));
   }
   .gallery {
     position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid var(--hair-2);
+    background: linear-gradient(168deg, var(--surf-2), var(--color-canvas) 88%);
+    box-shadow: var(--specular);
   }
-  /* The silver plate. Brand photography is shot on white; on #06181d an untreated shot reads
-     as a torn hole in the page, and the product's own white background bleeds into nothing.
-     Mounting it on plate makes that white deliberate — see .plate in theme.css. */
+  /* The lit stage. The gradient's bright centre sits at 50% 34%, which is where the key
+     light is in every product photograph the pipeline commissions — so the mount and the
+     photograph agree about where the light is coming from. */
   .gallery-main {
     position: relative;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3.2;
     overflow: hidden;
-    background: var(--color-plate);
-    background-image: linear-gradient(160deg, var(--color-plate-2) 0%, var(--color-plate) 62%);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
+    background: var(--plate-stage);
     touch-action: pan-y;
     cursor: zoom-in;
   }
+  /* The floor. Without it the object is pasted on; with it, it stands. */
+  .gallery-main::after {
+    content: "";
+    position: absolute;
+    left: 24%;
+    right: 24%;
+    bottom: 14%;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(12 17 19 / 32%), transparent);
+    pointer-events: none;
+  }
   .gallery-track {
+    position: relative;
+    z-index: 1;
     display: flex;
     height: 100%;
-    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition: transform var(--dur-3) var(--ease-glide);
     will-change: transform;
   }
   .gallery-slide {
@@ -3049,9 +3226,26 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 6%;
+    padding: 7%;
     display: block;
+    /* Seven seconds, fourteen pixels. Slow enough that nobody catches it moving and
+       present enough that the object reads as suspended rather than printed. */
+    animation: gallery-float 7s var(--ease-inout) infinite alternate;
   }
+  @keyframes gallery-float {
+    from {
+      transform: translateY(0) rotate(-1deg);
+    }
+    to {
+      transform: translateY(-12px) rotate(1deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-slide img {
+      animation: none;
+    }
+  }
+
   .gallery-arrow {
     position: absolute;
     top: 50%;
@@ -3078,6 +3272,9 @@
   .gallery-main:hover .gallery-lens[data-on="true"] {
     opacity: 1;
   }
+  /* ── the thumbnail strip ─────────────────────────────────────────────────
+     66px squares on their own plate. The current one carries a teal ring rather than a
+     heavier border, so the strip's rhythm does not change when the selection moves. */
   .thumbs {
     display: flex;
     gap: 8px;
@@ -3085,15 +3282,18 @@
     overflow-x: auto;
   }
   .thumb {
-    flex: 0 0 64px;
-    width: 64px;
-    height: 64px;
+    flex: 0 0 66px;
+    width: 66px;
+    height: 66px;
     padding: 0;
     overflow: hidden;
-    background: var(--color-plate);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
+    background: linear-gradient(160deg, var(--plate-2), var(--plate-1));
+    border: 1px solid var(--hair-2);
+    border-radius: 9px;
     cursor: pointer;
+    transition:
+      border-color var(--dur-2) var(--ease-out),
+      box-shadow var(--dur-2) var(--ease-out);
   }
   .thumb img {
     width: 100%;
@@ -3102,8 +3302,8 @@
     padding: 6px;
   }
   .thumb[aria-current="true"] {
-    border-color: var(--color-teal-700);
-    box-shadow: 0 0 0 1px var(--color-teal-700);
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 2px rgb(86 211 216 / 28%);
   }
   .lightbox {
     position: fixed;
@@ -3166,8 +3366,16 @@
     line-height: 16px;
     font-weight: 600;
   }
+  /* The buy column. Glass, because it is the one panel that stays with you while the
+     page scrolls — a solid card that follows the reader reads as a thing stuck to the
+     screen, and a glass one reads as a thing floating over the page. */
   .buy-panel {
-    padding: 20px;
+    padding: var(--s-6);
+    border-radius: var(--r-4);
+    background: color-mix(in oklab, var(--surf-2) 78%, transparent);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--hair-2);
+    box-shadow: var(--specular-strong), var(--sh-3);
   }
   .buy-brand {
     font-size: 13px;
@@ -3543,15 +3751,23 @@
       align-items: end;
     }
   }
+  /* THE TOTAL IS A HERO FIGURE. It was clamp(28, 4vw, 36) — a heading, on the one
+     screen in the store whose entire purpose is to answer a single number. It is the
+     figure the visitor came for, and everything else on the page is an explanation of
+     it, so it takes the display figure size and nothing else on the page competes. */
   .grand-total .hero-figure {
-    font-size: clamp(28px, 4vw, 36px);
-    line-height: 1.1;
+    font-size: var(--t-fig-hero);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    color: var(--ink-1);
   }
   .grand-label {
-    font-size: 13px;
-    line-height: 18px;
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    letter-spacing: var(--track-micro);
+    text-transform: uppercase;
     font-weight: 600;
-    color: var(--color-ink-2);
+    color: var(--ink-3);
   }
   .grand-sub {
     margin-top: 4px;
