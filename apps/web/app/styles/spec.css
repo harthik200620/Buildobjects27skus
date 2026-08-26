@@ -42,7 +42,7 @@
   }
   .spec-sub {
     margin-top: 2px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -67,7 +67,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-2);
     cursor: help;
@@ -135,7 +135,7 @@
     color: var(--color-ink);
   }
   .spec-hits {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -258,7 +258,7 @@
     gap: var(--s-2);
     width: 52%;
     padding: 9px var(--s-3) 9px var(--s-4);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     font-weight: 400;
     color: var(--color-ink-2);
@@ -273,7 +273,7 @@
   .spec-table td {
     padding: 9px var(--s-4) 9px var(--s-3);
     font-family: var(--font-figure);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     font-weight: 600;
     font-variant-numeric: tabular-nums lining-nums;

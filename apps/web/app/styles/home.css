@@ -36,6 +36,12 @@
   .home .sec:first-child {
     margin-top: 0;
   }
+  /* The page ends on the category grid. Without this the last row sits against the footer
+     rule with nothing under it, which reads as the page having been cut off rather than
+     having finished. */
+  .home .sec--last {
+    padding-bottom: var(--s-9);
+  }
   .sec-head {
     display: flex;
     align-items: flex-end;
@@ -109,18 +115,12 @@
     -webkit-mask-image: radial-gradient(80% 60% at 26% 34%, #000, transparent 76%);
     mask-image: radial-gradient(80% 60% at 26% 34%, #000, transparent 76%);
   }
+  /* One column. It was a two-column grid with a rotating stock panel on the right, and
+     that panel was a price — so the copy has the width now, and the photograph behind it
+     has the room a photograph wants. */
   .hero-in {
     position: relative;
     z-index: 2;
-    display: grid;
-    gap: var(--s-8);
-    align-items: start;
-  }
-  @media (min-width: 1024px) {
-    .hero-in {
-      grid-template-columns: minmax(0, 1fr) 388px;
-      gap: var(--s-8);
-    }
   }
   .hero-title {
     margin-top: var(--s-6);
@@ -172,278 +172,17 @@
     }
   }
 
-  /* ── the live stock panel ─────────────────────────────────────────────────
-     Glass, because it floats over the photograph. Everything in it is real: a stocked
-     item, its price, its GST rate, its certification. It rotates on a dwell timer with
-     a progress ring, and it pauses when a pointer or the keyboard is inside it. */
-  .board {
-    position: relative;
-    padding: var(--s-5);
-    border-radius: var(--r-4);
-    border: 1px solid var(--hair-2);
-    background: var(--glass);
-    backdrop-filter: var(--glass-blur);
-    box-shadow: var(--specular-strong), var(--sh-3);
-    overflow: hidden;
-  }
-  .board-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-3);
-    margin-bottom: var(--s-4);
-  }
-  .board-kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--s-2);
-    font-size: var(--t-micro);
-    line-height: var(--t-micro-lh);
-    letter-spacing: var(--track-micro);
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--teal-800);
-  }
-  /* The dwell ring: a hairline that fills as the panel counts down to its next item. */
-  .board-ring {
-    position: absolute;
-    left: var(--s-5);
-    right: var(--s-5);
-    bottom: var(--s-4);
-    height: 2px;
-    border-radius: 2px;
-    background: var(--hair-2);
-    overflow: hidden;
-  }
-  .board-ring::after {
-    content: "";
-    display: block;
-    height: 100%;
-    border-radius: 2px;
-    background: var(--color-brand);
-    animation: board-dwell linear both;
-    animation-duration: inherit;
-  }
-  @keyframes board-dwell {
-    from {
-      width: 0;
-    }
-    to {
-      width: 100%;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .board-ring {
-      display: none;
-    }
-  }
+  /* ── what the home page no longer has ─────────────────────────────────────
+     The live stock panel, the rate ticker, the shelf rail, the four promises and the
+     closing band are gone, and about 320 lines of CSS went with them.
 
-  .board-item {
-    display: block;
-    animation: board-swap var(--dur-4) var(--ease-glide) both;
-  }
-  @keyframes board-swap {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .board-item {
-      animation: none;
-    }
-  }
-  .board-shot {
-    position: relative;
-    display: grid;
-    place-items: center;
-    height: 212px;
-    border-radius: var(--r-3);
-    background: linear-gradient(158deg, var(--plate-2) 0%, var(--plate-1) 100%);
-    overflow: hidden;
-  }
-  .board-shot::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(60% 45% at 32% 22%, rgb(255 255 255 / 90%), transparent 70%);
-  }
-  .board-img {
-    position: relative;
-    z-index: 1;
-    max-width: 78%;
-    max-height: 78%;
-    object-fit: contain;
-  }
-  .board-text {
-    display: block;
-    padding-top: var(--s-4);
-  }
-  .board-cat,
-  .board-brand {
-    font-size: var(--t-micro);
-    line-height: var(--t-micro-lh);
-    letter-spacing: var(--track-micro);
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--color-brand);
-  }
-  .board-brand::before {
-    content: " · ";
-  }
-  .board-name {
-    display: block;
-    margin: var(--s-2) 0 var(--s-3);
-    font-size: var(--t-h3);
-    line-height: var(--t-h3-lh);
-    font-weight: 600;
-    color: var(--ink-1);
-  }
-  .board-price {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-  }
-  .board-price b {
-    font-family: var(--font-figure);
-    font-size: 32px;
-    line-height: 1;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--ink-1);
-  }
-  .board-unit {
-    font-size: 13px;
-    color: var(--ink-3);
-  }
-  .board-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-3);
-    margin-top: var(--s-3);
-    padding-bottom: var(--s-4);
-    font-size: 12px;
-    color: var(--ink-3);
-  }
-  .board-gst,
-  .board-go {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .board-go {
-    color: var(--teal-800);
-    font-weight: 600;
-  }
-  .board-go svg {
-    transition: transform var(--dur-2) var(--ease-glide);
-  }
-  .board:hover .board-go svg {
-    transform: translateX(3px);
-  }
-  .board-dots {
-    display: flex;
-    gap: 6px;
-    margin-top: var(--s-4);
-  }
-  .board-dot {
-    width: 22px;
-    height: 3px;
-    border: 0;
-    border-radius: 2px;
-    background: var(--hair-2);
-    cursor: pointer;
-    transition: background-color var(--dur-2) var(--ease-out);
-  }
-  .board-dot:hover {
-    background: var(--hair-3);
-  }
-  .board-dot.is-on {
-    background: var(--color-brand);
-  }
+     Two rules, and both are the page's: it shows CATEGORIES and shows nothing after
+     them, and it carries NO PRICES. The panel and the ticker were prices; the shelf,
+     the promises and the band were all after the grid. The promises moved to nowhere
+     because they were already on the product pages, which is where somebody is asking
+     the question they answer.
 
-  /* ── the rate ticker ──────────────────────────────────────────────────────
-     A rule top and bottom, a fixed label, and a marquee. It is the cheapest possible
-     proof the store is alive — and everything on it is a figure the catalogue holds.
-     See components/home/RateTicker.tsx for why there are no up/down deltas. */
-  .tick {
-    display: flex;
-    align-items: stretch;
-    height: 56px;
-    border-top: 1px solid var(--hair);
-    border-bottom: 1px solid var(--hair);
-    background: color-mix(in oklab, var(--surf-1) 55%, transparent);
-    overflow: hidden;
-  }
-  .tick-head {
-    display: flex;
-    align-items: center;
-    flex: none;
-    padding: 0 var(--s-5);
-    border-right: 1px solid var(--hair);
-    background: rgb(86 211 216 / 6%);
-    white-space: nowrap;
-  }
-  .tick-window {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-  }
-  .tick-track {
-    display: flex;
-    white-space: nowrap;
-    animation: tick-march 46s linear infinite;
-  }
-  .tick-track .contents {
-    display: contents;
-  }
-  @keyframes tick-march {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  /* Text that will not hold still cannot be read, so it stops for anyone who reaches
-     for it — and never starts for anyone who asked for stillness. */
-  .tick:hover .tick-track,
-  .tick:focus-within .tick-track {
-    animation-play-state: paused;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tick-track {
-      animation: none;
-    }
-    .tick-window {
-      overflow-x: auto;
-    }
-  }
-  .tick-item {
-    display: inline-flex;
-    align-items: baseline;
-    gap: var(--s-2);
-    padding: 0 var(--s-6);
-    border-right: 1px solid var(--hair);
-    font-size: 13.5px;
-    color: var(--ink-2);
-  }
-  .tick-item:hover {
-    color: var(--ink-1);
-  }
-  .tick-brand {
-    color: var(--ink-3);
-  }
-  .tick-price {
-    color: var(--ink-1);
-  }
-  .tick-unit {
-    font-size: 12px;
-    color: var(--ink-3);
-  }
+     Deleted: .board*, .tick*, .shelf-rail, .promise-grid, .band*. */
 
   /* ── the spine ────────────────────────────────────────────────────────────
      Three panels in one bordered block with a light sweeping across its top edge. The
@@ -526,7 +265,7 @@
     position: relative;
     display: block;
     aspect-ratio: 1 / 1.06;
-    border-radius: 16px;
+    border-radius: var(--r-3);
     overflow: hidden;
     background: var(--surf-1);
     border: 1px solid var(--hair);
@@ -597,7 +336,7 @@
     overflow: hidden;
   }
   .cat-meta {
-    font-size: 12.5px;
+    font-size: var(--t-fine);
     color: var(--ink-3);
   }
   .cat-meta .fig {
@@ -613,7 +352,7 @@
     background: rgb(6 24 29 / 78%);
     border: 1px solid var(--hair-2);
     backdrop-filter: blur(6px);
-    font-size: 10.5px;
+    font-size: var(--t-micro);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     font-weight: 600;
@@ -628,109 +367,6 @@
     .cat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--s-3);
-    }
-  }
-
-  /* ── the shelf ────────────────────────────────────────────────────────────── */
-  .shelf-rail {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--s-4);
-  }
-  @media (max-width: 1099.98px) {
-    .shelf-rail {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  @media (max-width: 767.98px) {
-    .shelf-rail {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--s-3);
-    }
-  }
-
-  /* ── the promises ─────────────────────────────────────────────────────────── */
-  .promise-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    border-top: 1px solid var(--hair-2);
-  }
-  .promise-grid li {
-    padding: var(--s-6) var(--s-5) 0 0;
-  }
-  .promise-grid li + li {
-    padding-left: var(--s-5);
-    border-left: 1px solid var(--hair);
-  }
-  .promise-grid svg {
-    display: block;
-    margin-bottom: var(--s-4);
-    color: var(--ink-2);
-  }
-  .promise-grid h3 {
-    margin-bottom: var(--s-2);
-  }
-  @media (max-width: 1023.98px) {
-    .promise-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0 var(--s-5);
-    }
-    .promise-grid li:nth-child(3) {
-      padding-left: 0;
-      border-left: 0;
-    }
-  }
-  @media (max-width: 519.98px) {
-    .promise-grid {
-      grid-template-columns: 1fr;
-    }
-    .promise-grid li + li {
-      padding-left: 0;
-      border-left: 0;
-    }
-  }
-
-  /* ── the closing band ─────────────────────────────────────────────────────
-     The one place on the page where teal and amber are both allowed, because it is
-     the one place that is asking for something rather than describing something. */
-  .band {
-    position: relative;
-    isolation: isolate;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--s-8);
-    padding: var(--s-8) var(--s-8);
-    border-radius: 24px;
-    border: 1px solid var(--hair-2);
-    background: linear-gradient(126deg, var(--surf-2), var(--color-canvas) 68%);
-    overflow: hidden;
-  }
-  .band::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      radial-gradient(60% 120% at 12% 0%, rgb(86 211 216 / 18%), transparent 60%), radial-gradient(50% 100% at 92% 100%, rgb(245 180 10 / 13%), transparent 62%);
-  }
-  .band-say {
-    max-width: 46ch;
-  }
-  .band-say .d2 {
-    margin-bottom: var(--s-4);
-  }
-  .band-do {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-3);
-    flex: none;
-  }
-  @media (max-width: 899.98px) {
-    .band {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: var(--s-7) var(--s-6);
     }
   }
 

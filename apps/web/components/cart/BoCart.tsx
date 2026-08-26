@@ -1,6 +1,7 @@
 'use client';
 
 import type { CatalogPrices } from '@buildobjects/estimator';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import {
@@ -21,7 +22,7 @@ import { skuTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
 import { clearPicks, type PickItem, readPicks, removePick, setPickQty } from '@/lib/picks';
 
-export default function BoCart({ initialCatalog }: { initialCatalog: CatalogPrices }) {
+export default function BoCart({ initialCatalog, images = {} }: { initialCatalog: CatalogPrices; images?: Record<string, string | null> }) {
   const [picks, setPicks] = React.useState<PickItem[]>([]);
   const catalog = initialCatalog;
   const [coins, setCoins] = React.useState(0);
@@ -139,6 +140,16 @@ export default function BoCart({ initialCatalog }: { initialCatalog: CatalogPric
               const price = sku?.selling_price ?? 0;
               return (
                 <li key={p.sku_code} className="cart-line">
+                  {/* The same picture the product page shows, on the same plate. A cart of names
+                      and figures is a receipt; a cart with the things in it is a cart.
+
+                      next/image rather than a bare <img> so lib/image-loader.ts picks a
+                      rendition: a 72px slot at 2× needs 144px and gets the 240px thumb, where a
+                      raw src would have served the 480px card — four times the pixels for a
+                      thumbnail, on every line of every cart. */}
+                  <Link href={`/p/${p.sku_code.toLowerCase()}`} className="cart-line-shot" tabIndex={-1} aria-hidden="true">
+                    {images[p.sku_code] ? <Image src={images[p.sku_code] as string} alt="" width={72} height={72} sizes="72px" /> : null}
+                  </Link>
                   <div className="cart-line-what">
                     <Link href={`/p/${p.sku_code.toLowerCase()}`} className="cart-line-name">
                       {sku ? skuTitle(sku.name, sku.brand) : p.sku_code}

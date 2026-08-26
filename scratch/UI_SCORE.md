@@ -382,3 +382,75 @@ lit plinth meant to have the product standing on it, and **0 of 28 SKUs have an 
 so mounting one on a dark plinth shows a white rectangle floating on a photograph. The product page
 uses a lit CSS mount instead — `--plate-stage`, brightest at 50% 34%, which is where the key light
 falls in every photograph the pipeline commissions, with a floor shadow under the object.
+
+## Round 7 — the front door, subtracted
+
+Not a rescore. One instruction, acted on: *show only the categories, nothing after them, no prices
+on the home page, and make the cart cleaner.*
+
+### What came off the front door
+
+Eight product cards, four promise columns, a closing call-to-action band, a rate ticker and a
+rotating stock panel. The page is a hero, the three counters a project passes through, and
+thirty-five categories — and then it stops.
+
+**It stops on purpose.** A front door is a place you pass through. A page that keeps talking after
+it has shown you the doors does not trust them, and every one of those five sections was the store
+explaining itself to somebody who had already been given the thirty-five things they came for. The
+promises were already on the product pages, where they answer a question somebody is actually
+asking. The shelf is search, one click away and better presented there.
+
+**And no prices, anywhere on it.** Not on a tile, not in the hero, not in a strip. "from ₹410"
+under a category commits the store to a number before the visitor has chosen anything and answers
+a question nobody asks at that level. Verified rather than asserted: **zero ₹ characters in the
+rendered page.** `fromPrice` is gone from `CategoryGroup` and `minPrice()` is deleted, so there is
+no path by which one comes back.
+
+    home page   5 sections → 3      images 391 KB → 302 KB      document 175 KB → 112 KB
+                364 lines of CSS deleted with the sections they styled
+
+### The cart
+
+**The trolley carries the mark and nothing else.** A pushing figure had been drawn beside it, and
+at 28px it was four strokes of grey attached to the logo — the busiest element in the chrome, on
+the second-most-used control in the store.
+
+**And it rolls in.** It used to drop from above, squash, then get shoved left and right before
+settling: four movements in 1260ms in a 28px box. Each was defensible and together they were
+fidgeting. A trolley is a thing you push, so it arrives from the side, once, decelerating — and the
+wheels turn **742°**, which is the distance divided by the circumference and not a round number,
+because the arithmetic does not produce one. That is the whole difference between rolling and
+sliding, and the eye reads the mismatch long before it can say what is wrong.
+
+**The cart lines have the product in them.** It was a list of names, quantities and figures, which
+is a receipt. Each line now carries the same picture the product page shows, on the same silver
+plate a card, a search row and the gallery mount it on — through `next/image`, so a 72px slot gets
+the 240px thumb rather than the 480px card it would have taken from a bare `src`.
+
+### The sprawl, counted and gated
+
+"It looks cheap" is the hardest complaint to act on because nobody points at a radius. Measured on
+the rendered home page: **seven distinct corner radii and seventeen distinct type sizes**, against
+a scale offering six and eleven. The strays were 5px and 9px corners and 10.5, 12.5 and 13.5px
+type — none of them a token, every one of them a single increment from one.
+
+`--t-cap` (13) and `--t-fine` (12) are real tokens now, because fifty-odd declarations across nine
+stylesheets were already using those sizes without naming them. `--t-meta` was 13.5 — half a pixel
+from 13, which is the same mush the ink ladder was retuned to remove — and is the same size now
+with its own looser line height. `--r-3` was 14, which nothing used: every card in the store
+hardcoded 16 and the token disagreed with all of them.
+
+132 declarations snapped to the scale. **Home: 7 radii and 17 sizes → 5 and 14.**
+
+`scripts/scale-audit.mts` is new and holds it. It counts distinct radii and type sizes on the real
+DOM of six routes and fails over budget, and the budgets are what each page measures today plus
+one — plus one and no more, because a budget with slack in it is a note rather than a gate.
+
+    ✓ /                  5/6 radii   14/15 sizes
+    ✓ /search            6/7          10/11
+    ✓ /c/bulbs           6/7          11/12
+    ✓ /p/cem-ult-ppc50   7/8          13/14
+    ✓ /cart              6/7          10/11
+    ✓ /estimate          6/7          14/15
+
+`pnpm check` green · type audit clean on nine routes · 103 pages crawled, 0 broken links, 0 emoji.

@@ -29,7 +29,7 @@
     border-radius: var(--radius-md);
     background: var(--color-surface);
     color: var(--color-ink-2);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     font-weight: 600;
     cursor: pointer;
@@ -105,12 +105,12 @@
     text-align: center;
     background: var(--scrim-ink);
     backdrop-filter: blur(3px);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
   .gal-3d-error {
-    font-size: 13px;
+    font-size: var(--t-cap);
     color: var(--color-danger);
   }
   @keyframes gal-spin {
@@ -185,7 +185,7 @@
     background: var(--color-surface-2);
     backdrop-filter: blur(6px);
     color: var(--color-ink-2);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     font-weight: 600;
     cursor: pointer;
@@ -212,7 +212,7 @@
     left: 0;
     right: 0;
     text-align: center;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-3);
   }
@@ -279,7 +279,7 @@
     position: absolute;
     inset: 0;
     border: 1px solid var(--hair-brand);
-    border-radius: 16px;
+    border-radius: var(--r-3);
     animation: reticle-pulse 3.2s var(--ease-out) infinite;
   }
   .reticle i:nth-child(2) {

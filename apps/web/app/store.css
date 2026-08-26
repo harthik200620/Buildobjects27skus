@@ -187,7 +187,7 @@
     gap: 7px;
     height: 40px;
     padding: 0 13px;
-    border-radius: 9px;
+    border-radius: var(--r-2);
     font-size: 14px;
     font-weight: 500;
     color: var(--ink-2);
@@ -276,11 +276,11 @@
     min-width: 20px;
     height: 20px;
     padding: 0 5px;
-    border-radius: 5px;
+    border-radius: var(--r-1);
     background: rgb(255 255 255 / 7%);
     border: 1px solid var(--hair-2);
     font-family: var(--font-ui);
-    font-size: 10.5px;
+    font-size: var(--t-micro);
     line-height: 1;
     color: var(--ink-3);
   }
@@ -382,7 +382,7 @@
     border: 1px solid var(--hair-2);
     background: none;
     color: var(--ink-3);
-    font-size: 12.5px;
+    font-size: var(--t-fine);
     white-space: nowrap;
     cursor: pointer;
     transition:
@@ -447,7 +447,7 @@
     min-width: 0;
   }
   .palette-sub {
-    font-size: 12.5px;
+    font-size: var(--t-fine);
     color: var(--ink-3);
   }
   .palette-price {
@@ -531,7 +531,7 @@
     border-radius: var(--radius-pill);
     background: var(--color-coin-wash);
     color: var(--color-coin-ink);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 700;
     cursor: pointer;
@@ -640,7 +640,7 @@
     font-weight: 600;
   }
   .wallet-balance-worth {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-2);
   }
@@ -648,7 +648,7 @@
     color: var(--color-ink);
   }
   .wallet-note {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 17px;
     color: var(--color-ink-3);
   }
@@ -678,7 +678,7 @@
     align-items: baseline;
     justify-content: space-between;
     gap: var(--s-3);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
   }
   .wallet-history-what {
@@ -728,7 +728,7 @@
     white-space: nowrap;
   }
   .account-who-phone {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-2);
   }
@@ -739,7 +739,7 @@
     border-radius: var(--radius-sm);
     background: none;
     color: var(--link);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 600;
     cursor: pointer;
@@ -836,7 +836,7 @@
   }
   .deliver-to-label {
     display: block;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 14px;
     color: var(--color-header-ink-2);
   }
@@ -923,7 +923,7 @@
     background: none;
     color: #fff;
     cursor: pointer;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
   }
   .deliver-strip-btn > svg {
@@ -977,7 +977,7 @@
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23565959' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
       no-repeat right 8px center;
     color: var(--color-ink-2);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
   }
   .search-scope:hover {
@@ -1036,7 +1036,7 @@
   }
   .search-group {
     padding: 8px 10px 4px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -1086,7 +1086,7 @@
     line-height: 18px;
   }
   .search-sub {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-3);
   }
@@ -1194,7 +1194,7 @@
   .cat-menu-in {
     margin-left: auto;
     padding-left: 12px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     color: var(--color-ink-3);
     white-space: nowrap;
     overflow: hidden;
@@ -1253,7 +1253,7 @@
   }
   .cat-menu-te {
     display: block;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-3);
   }
@@ -1282,7 +1282,7 @@
     height: 48px;
     background: var(--color-header-2);
     color: #fff;
-    font-size: 13px;
+    font-size: var(--t-cap);
     font-weight: 600;
     text-decoration: none;
   }
@@ -1333,7 +1333,7 @@
     display: flex;
     align-items: flex-start;
     gap: var(--s-2);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 19px;
     color: var(--color-header-ink-2);
     text-wrap: pretty;
@@ -1349,7 +1349,7 @@
   }
   .footer-note {
     margin-top: var(--s-3);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 18px;
     color: var(--color-header-ink-2);
     opacity: 0.85;
@@ -1359,7 +1359,7 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 600;
     color: var(--color-header-ink-2);
@@ -1376,7 +1376,7 @@
     gap: 8px 24px;
     padding: 16px 0 calc(16px + env(safe-area-inset-bottom, 0px));
     border-top: 1px solid var(--color-chrome-hair);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
   }
   .footer-brand {
@@ -1500,28 +1500,26 @@
      The arrival does not fade in, it lands. The sequence and its timings are
      documented on .bocart-rig below. */
   /* ── the cart rig ─────────────────────────────────────────────────────────
-     A porter pushing the Build Objects mark on a trolley.
+     The Build Objects mark on a trolley, and nothing else on it.
 
-     THE SEQUENCE IS ONE TIMELINE, 1260ms, and everything on the rig is driven from
-     it so the parts cannot drift apart:
+     IT ROLLS IN. It used to drop from above, squash on landing, then get shoved left
+     and right before settling — four movements in 1260ms, in a 28px box, in the corner
+     of the chrome. Each one was defensible and together they were fidgeting. A trolley
+     is a thing you PUSH, so it arrives the way a pushed thing arrives: from the side,
+     once, decelerating into place.
 
-       drop    420ms   translateY(-150%) → 0, opacity 0 → 1
-       land    120ms   scaleY(.9) scaleX(1.08) → scale(1)
-       push    720ms   translateX −26% → +16% → −6% → 0
-       settle          rests
+     THE WHEELS TURN AS FAR AS THE DISTANCE IMPLIES, and that is the whole difference
+     between rolling and sliding. The rig travels 130% of its own width; a wheel is 10
+     units across a 100-unit deck, so its circumference is π × 20 ≈ 63 units against
+     that 130-unit travel — about 2.06 turns, or 742°. Not a round number, because the
+     arithmetic does not produce one, and the eye reads the mismatch long before it can
+     say what is wrong.
 
-     The wheels rotate off the SAME timeline — 0 → −150° → +110° → −40° → 0 — which
-     is what makes the rig roll rather than slide. A wheel spinning on its own clock
-     is the single tell that separates an animated icon from a moving object: the eye
-     reads the mismatch between the ground speed and the rotation long before it can
-     say what is wrong. The porter's legs step off it too.
+     The load lags. A mass on a trolley leans back as it accelerates and rocks forward
+     as it stops, so it starts at −7° and settles through +3° to 0 on its own delay.
 
-     It replays on every change to the item count, so adding something to the cart has
-     a physical consequence in the chrome.
-
-     Under prefers-reduced-motion the whole rig renders at its settled frame and never
-     animates. Not "fast" — a person who asked for stillness did not ask for a quicker
-     trolley. */
+     Under prefers-reduced-motion the rig renders at its settled frame and never moves.
+     Not "faster" — a person who asked for stillness did not ask for a quicker trolley. */
   .bocart {
     position: relative;
     display: inline-flex;
@@ -1530,6 +1528,8 @@
     flex: none;
     line-height: 0;
     color: var(--ink-1);
+    /* The rig starts outside its own box, and the header must not scroll sideways for it. */
+    overflow: hidden;
   }
   .bocart-rig {
     position: relative;
@@ -1539,7 +1539,7 @@
     justify-content: flex-end;
     width: 100%;
     height: 100%;
-    animation: bocart-run 1260ms var(--ease-glide) both;
+    animation: bocart-roll-in 720ms var(--ease-glide) both;
   }
   /* The load and the deck are sized in pixels by the component — see BoCartMark for why
      percentages could not resolve here. These rules only own display and flow. */
@@ -1548,8 +1548,7 @@
     width: auto;
     flex: none;
     transform-origin: 50% 100%;
-    /* The load rocks a beat behind the chassis, the way a load does. */
-    animation: bocart-load 1260ms var(--ease-glide) 40ms both;
+    animation: bocart-lean 720ms var(--ease-glide) 40ms both;
   }
   .bocart-chassis {
     display: block;
@@ -1557,118 +1556,69 @@
     flex: none;
   }
 
-  @keyframes bocart-run {
-    0% {
+  @keyframes bocart-roll-in {
+    from {
       opacity: 0;
-      transform: translate3d(0, -150%, 0);
+      transform: translate3d(-130%, 0, 0);
     }
-    /* 420ms — the drop lands */
-    33.3% {
+    30% {
       opacity: 1;
-      transform: translate3d(0, 0, 0) scaleY(0.9) scaleX(1.08);
     }
-    /* 540ms — 120ms of compression released */
-    42.9% {
+    to {
       opacity: 1;
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-    /* 540 → 1260ms — pushed left, right, and settled */
-    57.1% {
-      transform: translate3d(-26%, 0, 0);
-    }
-    71.4% {
-      transform: translate3d(16%, 0, 0);
-    }
-    85.7% {
-      transform: translate3d(-6%, 0, 0);
-    }
-    100% {
       transform: translate3d(0, 0, 0);
     }
   }
 
-  @keyframes bocart-load {
-    0% {
-      transform: translateY(-24%) rotate(-6deg);
-    }
-    33.3% {
-      transform: translateY(2%) rotate(3deg);
-    }
-    42.9% {
-      transform: translateY(0) rotate(-1.5deg);
-    }
-    57.1% {
-      transform: rotate(3deg);
-    }
-    71.4% {
-      transform: rotate(-2deg);
-    }
-    100% {
-      transform: rotate(0);
-    }
-  }
-
-  /* The wheels: the same timeline, expressed as rotation. */
+  /* 742° = 130% of the rig's width divided by the wheel's circumference. See above. */
   .bocart-wheel {
     transform-box: fill-box;
     transform-origin: 50% 50%;
-    animation: bocart-roll 1260ms var(--ease-glide) both;
+    animation: bocart-turn 720ms var(--ease-glide) both;
   }
-  @keyframes bocart-roll {
-    0%,
-    42.9% {
-      transform: rotate(0);
+  @keyframes bocart-turn {
+    from {
+      transform: rotate(-742deg);
     }
-    57.1% {
-      transform: rotate(-150deg);
-    }
-    71.4% {
-      transform: rotate(110deg);
-    }
-    85.7% {
-      transform: rotate(-40deg);
-    }
-    100% {
+    to {
       transform: rotate(0);
     }
   }
 
-  /* The porter steps with the push. A 1.4px stride at a 30px rig: enough to read as
-     walking, small enough that it never looks like the figure is detaching. */
-  .bocart-person {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 78%;
-    width: auto;
-    color: var(--ink-3);
-    animation: bocart-step 1260ms var(--ease-glide) both;
-  }
-  @keyframes bocart-step {
-    0%,
-    42.9% {
-      transform: none;
+  @keyframes bocart-lean {
+    from {
+      transform: rotate(-7deg);
     }
-    57.1% {
-      transform: translateX(-1.4px);
+    68% {
+      transform: rotate(3deg);
     }
-    71.4% {
-      transform: translateX(1px);
-    }
-    100% {
-      transform: none;
+    to {
+      transform: rotate(0);
     }
   }
-  .bocart--driver .bocart-rig {
-    margin-left: 26%;
+
+  /* A hovered cart rolls on a little, because a trolley is a thing you push. The wheels
+     go with it — 46° for 8% of the width, by the same arithmetic as the entrance. */
+  .header-action--cart:hover .bocart-rig,
+  .header-action--cart:focus-visible .bocart-rig {
+    transition: transform var(--dur-3) var(--ease-glide);
+    transform: translateX(3px);
+  }
+  .header-action--cart:hover .bocart-wheel,
+  .header-action--cart:focus-visible .bocart-wheel {
+    transition: transform var(--dur-3) var(--ease-glide);
+    transform: rotate(46deg);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .bocart-rig,
     .bocart-load,
-    .bocart-wheel,
-    .bocart-person {
+    .bocart-wheel {
       animation: none !important;
+    }
+    .header-action--cart:hover .bocart-rig,
+    .header-action--cart:hover .bocart-wheel {
+      transform: none;
     }
   }
 
@@ -1742,7 +1692,7 @@
     background: var(--surf-2);
     color: var(--ink-1);
     border: 1px solid var(--hair);
-    border-radius: 16px;
+    border-radius: var(--r-3);
     overflow: hidden;
     box-shadow: var(--specular);
     transition:
@@ -1803,7 +1753,7 @@
     text-align: center;
     background: var(--surf-1);
     color: var(--ink-3);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
   }
   .prod-noimg b {
@@ -1872,7 +1822,7 @@
   }
   .prod-specs {
     margin: 0;
-    font-size: 12.5px;
+    font-size: var(--t-fine);
     line-height: 18px;
     color: var(--ink-3);
     white-space: nowrap;
@@ -1886,7 +1836,7 @@
   /* The delivery promise and the stock line: the two facts a buyer scans for after the price. */
   .deliver {
     margin: 0;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 18px;
     color: var(--ink-3);
   }
@@ -1896,7 +1846,7 @@
   }
   .stock {
     margin: 0;
-    font-size: 12.5px;
+    font-size: var(--t-fine);
     line-height: 18px;
     font-weight: 500;
   }
@@ -2267,7 +2217,7 @@
     display: none;
   }
   .welcome-figure-caption {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -2284,7 +2234,7 @@
     margin: 0 auto;
   }
   .welcome-eyebrow {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -2357,7 +2307,7 @@
     background: none;
     border: 0;
     color: var(--color-teal-700);
-    font-size: 13px;
+    font-size: var(--t-cap);
     cursor: pointer;
   }
   .welcome-again:hover {
@@ -2378,7 +2328,7 @@
     align-items: center;
     gap: 6px;
     text-align: center;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-2);
   }
@@ -2390,7 +2340,7 @@
     align-items: center;
     gap: 6px;
     margin-top: 20px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-3);
   }
@@ -2604,7 +2554,7 @@
   .kicker,
   .eyebrow {
     font-family: var(--font-ui);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -2682,7 +2632,7 @@
     color: var(--color-ink);
   }
   .note {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -2897,7 +2847,7 @@
     justify-content: space-between;
     gap: 12px 24px;
     padding: 24px 0 0;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-3);
   }
@@ -2958,7 +2908,7 @@
   }
   .range-row .field {
     height: 32px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     width: 100%;
     min-width: 0;
   }
@@ -2997,12 +2947,12 @@
     }
   }
   .prod-mrp {
-    font-size: 13px;
+    font-size: var(--t-cap);
     color: var(--color-ink-3);
     text-decoration: line-through;
   }
   .prod-off {
-    font-size: 13px;
+    font-size: var(--t-cap);
     color: var(--color-success);
   }
   .sheet-scrim {
@@ -3162,7 +3112,7 @@
     overflow: hidden;
     background: linear-gradient(160deg, var(--plate-2), var(--plate-1));
     border: 1px solid var(--hair-2);
-    border-radius: 9px;
+    border-radius: var(--r-2);
     cursor: pointer;
     transition:
       border-color var(--dur-2) var(--ease-out),
@@ -3235,7 +3185,7 @@
     border-radius: var(--radius-sm);
     background: var(--color-warn-bg);
     color: var(--color-warn);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 600;
   }
@@ -3251,7 +3201,7 @@
     box-shadow: var(--specular-strong), var(--sh-3);
   }
   .buy-brand {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -3265,13 +3215,13 @@
   }
   .buy-variant {
     margin-top: 4px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
   .rating-none {
     margin-top: 8px;
-    font-size: 12.5px;
+    font-size: var(--t-fine);
     line-height: 17px;
     color: var(--color-ink-3);
   }
@@ -3293,7 +3243,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 6px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-2);
   }
@@ -3309,7 +3259,7 @@
   }
   .pin-result {
     margin-top: 8px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -3342,7 +3292,7 @@
     align-items: center;
     gap: 4px;
     text-align: center;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-2);
   }
@@ -3428,7 +3378,7 @@
   }
   .acc-count {
     margin-left: 12px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     color: var(--color-ink-3);
   }
   .acc-body {
@@ -3480,7 +3430,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px 16px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
   }
   @media (min-width: 1024px) {
@@ -3489,7 +3439,7 @@
     }
   }
   .intel-k {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 600;
     color: var(--color-ink-2);
@@ -3537,7 +3487,7 @@
     border-radius: 50%;
     background: var(--color-teal-700);
     color: #fff;
-    font-size: 13px;
+    font-size: var(--t-cap);
     font-weight: 700;
   }
   .wz-title {
@@ -3554,7 +3504,7 @@
   .wz-label {
     display: block;
     margin-bottom: 4px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     font-weight: 600;
     color: var(--color-ink);
@@ -3566,7 +3516,7 @@
     font-size: 14px;
   }
   .wz-hint {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -3578,7 +3528,7 @@
     padding: 12px 16px;
     background: var(--color-surface-2);
     border-radius: var(--radius-md);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -3602,7 +3552,7 @@
     background: var(--color-teal-50);
   }
   .from-drawing {
-    font-size: 12px;
+    font-size: var(--t-fine);
     color: var(--color-teal-700);
     text-transform: none;
     letter-spacing: 0;
@@ -3644,7 +3594,7 @@
   }
   .grand-sub {
     margin-top: 4px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -3675,7 +3625,7 @@
   }
   .tier-k {
     display: block;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 700;
     text-transform: uppercase;
@@ -3708,7 +3658,7 @@
   .legend-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink);
   }
@@ -3716,7 +3666,7 @@
     padding: 6px 0;
     border-bottom: 1px solid var(--color-line);
     text-align: left;
-    font-size: 12px;
+    font-size: var(--t-fine);
     font-weight: 700;
     color: var(--color-ink-2);
   }
@@ -3741,7 +3691,7 @@
     vertical-align: -1px;
   }
   .legend-sub {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-2);
   }
@@ -3833,7 +3783,7 @@
     background: var(--color-surface);
     border: 1px solid var(--color-line);
     color: var(--color-ink);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     cursor: pointer;
   }
@@ -3857,7 +3807,7 @@
     line-height: 20px;
   }
   .ar-tier {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     letter-spacing: 0.04em;
     text-transform: uppercase;

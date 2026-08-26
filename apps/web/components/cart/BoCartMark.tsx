@@ -20,28 +20,28 @@ import React from 'react';
  * is the part nobody redrew. The chassis is what got cut back: one flat deck bar and two solid
  * wheels, with real clearance between the mark and the metal so they read as separate objects.
  *
- * The figure is off by default and the header turns it on at 30 px. It was the busiest element
- * and it is illegible much below that; `driver` is what brings it back where there is room.
+ * THE TROLLEY CARRIES THE MARK AND NOTHING ELSE. A pushing figure was drawn beside it for a
+ * while, and at 30 px it was four strokes of grey that read as a smudge attached to the logo —
+ * the busiest element in the chrome, decorating the second-most-used control in the store. What
+ * is left is the load, a deck and two wheels, which is the whole idea.
  *
- * The entrance does not fade in, it arrives — drop, land, push, settle, on one 1260ms timeline
- * that the wheels and the porter's legs are both driven from, so the rig rolls rather than
- * slides. The sequence and its timings are documented on `.bocart-rig` in store.css, which is
- * where they can be read next to the keyframes that implement them. `arriveKey` replays it: the
- * header passes the cart's item count, so adding something has a physical consequence in the
- * chrome. All of it is off under prefers-reduced-motion, at the settled frame.
+ * The entrance does not fade in, it ARRIVES — the rig rolls in from the left and comes to rest,
+ * and the wheels turn exactly as far as that distance implies. The sequence and the arithmetic
+ * behind the rotation are documented on `.bocart-rig` in store.css, next to the keyframes that
+ * implement them. `arriveKey` replays it: the header passes the cart's item count, so adding
+ * something has a physical consequence in the chrome. Off under prefers-reduced-motion, at the
+ * settled frame.
  */
 
 export interface BoCartMarkProps {
   /** Height of the whole rig in CSS pixels. */
   size?: number;
-  /** Bump this to replay the landing — the header passes the cart's item count. */
+  /** Bump this to replay the arrival — the header passes the cart's item count. */
   arriveKey?: number | string;
-  /** Show the figure pushing it. Off by default: it is illegible below ~40 px. */
-  driver?: boolean;
   className?: string;
 }
 
-export default function BoCartMark({ size = 26, arriveKey, driver = false, className }: BoCartMarkProps) {
+export default function BoCartMark({ size = 26, arriveKey, className }: BoCartMarkProps) {
   /*
    * A CSS animation only replays if the element is re-created, so the key changes with
    * `arriveKey` and React swaps the node. Derived during render rather than in an effect: the
@@ -68,18 +68,7 @@ export default function BoCartMark({ size = 26, arriveKey, driver = false, class
   const gapH = Math.max(1, size - loadH - deckH);
 
   return (
-    <span
-      key={seq}
-      className={`bocart${driver ? ' bocart--driver' : ''}${className ? ` ${className}` : ''}`}
-      style={{ width: Math.round(size * 1.16), height: size }}
-      aria-hidden="true"
-    >
-      {driver && (
-        <svg className="bocart-person" viewBox="0 0 44 100" fill="none" aria-hidden="true">
-          <circle cx="20" cy="15" r="9" fill="currentColor" />
-          <path d="M20 26 v25 M20 33 L40 41 M20 51 L10 80 M20 51 L31 80" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )}
+    <span key={seq} className={className ? `bocart ${className}` : 'bocart'} style={{ width: Math.round(size * 1.16), height: size }} aria-hidden="true">
       <span className="bocart-rig">
         {/* The load: the real mark, not a redrawing of it. */}
         <img className="bocart-load" src="/logo-mark-128.png" alt="" draggable={false} style={{ height: loadH, marginBottom: gapH }} />

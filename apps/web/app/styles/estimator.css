@@ -40,7 +40,7 @@
     color: var(--color-ink);
   }
   .lh-cap-sub {
-    font-size: 13px;
+    font-size: var(--t-cap);
     color: var(--color-ink-2);
   }
 
@@ -193,7 +193,7 @@
     color: var(--color-header-ink);
   }
   .hr-cap-sub {
-    font-size: 13px;
+    font-size: var(--t-cap);
     color: var(--color-header-ink-2);
   }
   .hr-cap-dot {
@@ -210,11 +210,11 @@
     background: var(--color-surface);
   }
   .hr-foot-k {
-    font-size: 13px;
+    font-size: var(--t-cap);
     color: var(--color-ink);
   }
   .hr-foot-x {
-    font-size: 13px;
+    font-size: var(--t-cap);
     color: var(--color-ink-2);
   }
 
@@ -238,7 +238,7 @@
     backdrop-filter: blur(10px);
     border: 1px solid var(--color-ar-hair);
     color: var(--color-header-ink);
-    font-size: 13px;
+    font-size: var(--t-cap);
     font-weight: 600;
     cursor: pointer;
     transition:
@@ -272,7 +272,7 @@
     text-align: center;
     background: var(--color-canvas-2);
     color: var(--color-ink-2);
-    font-size: 13px;
+    font-size: var(--t-cap);
   }
   .ht-hud {
     position: absolute;
@@ -317,7 +317,7 @@
     border-radius: var(--radius-pill);
     background: var(--color-teal-50);
     color: var(--color-brand);
-    font-size: 12px;
+    font-size: var(--t-fine);
     font-weight: 700;
     font-family: var(--font-figure);
   }
@@ -327,7 +327,7 @@
     color: var(--color-ink);
   }
   .est-q-hint {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
     margin-top: 2px;
@@ -367,7 +367,7 @@
     }
   }
   .est-total-sub {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
     margin-top: 2px;
@@ -392,7 +392,7 @@
   }
   .estimate-rates {
     margin-top: var(--s-2);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 17px;
     color: var(--color-ink-3);
   }
@@ -467,7 +467,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     color: var(--ink-3);
   }
   .range-ends .fig {

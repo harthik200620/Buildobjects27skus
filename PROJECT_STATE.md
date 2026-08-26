@@ -2,7 +2,7 @@
 
 Short on purpose. If it grows past two screens it has stopped being read.
 
-Last updated **26 Aug 2026**, after the north-star UI rebuild.
+Last updated **26 Aug 2026**, after the north-star UI rebuild and the front-door subtraction.
 
 ## What this is
 
@@ -30,6 +30,8 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
 - **The v2 visual layer** — four type faces, a new token layer, 93 custom icons, a one-row header
   with a ⌘K palette, photographic backplates on four surfaces. See `DECISIONS.md` for the
   irreversible choices and `scratch/UI_SCORE.md` Round 6 for what is and is not finished.
+- **The front door is categories and nothing else** — no shelf, no promises, no closing band, and
+  no prices anywhere on it. Round 7.
 
 ## Next, in order
 
@@ -63,8 +65,13 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
 `pnpm check` runs lint, typecheck, tests, the contrast gate and the pipeline validator. Two more
 are worth running by hand after any visual change:
 
-    pnpm --filter @buildobjects/web type:audit    # no synthesised font weights on any route
-    pnpm --filter @buildobjects/web build         # the production build is the only honest one
+    pnpm --filter @buildobjects/web type:audit     # no synthesised font weights on any route
+    pnpm --filter @buildobjects/web scale:audit    # no page over its radius / type-size budget
+    pnpm --filter @buildobjects/web build          # the production build is the only honest one
+
+Both audits drive a real browser against `localhost:3001`, which means they check whatever that
+server last built. Run `build` first or they will cheerfully pass against a stale one — that is
+how the type audit was reported clean before it was.
 
 The contrast gate is four gates in one file: every colour pair measured, `--ink-4` rejected on
 anything above 12px, no untokenised colour in any stylesheet, and no Tailwind colour utility in any

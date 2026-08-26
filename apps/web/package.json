@@ -4,19 +4,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3000",
-    "stage": "tsx scripts/stage-media.mts",
     "build": "tsx scripts/stage-media.mts && next build",
-    "start": "next start",
-    "test": "vitest run --passWithNoTests",
-    "typecheck": "tsc -p tsconfig.json",
+    "contrast": "tsx scripts/contrast.ts",
+    "dev": "next dev -p 3000",
+    "fonts:fetch": "tsx scripts/fetch-fonts.mts",
+    "fonts:subset": "tsx scripts/subset-fonts.mts",
     "lighthouse": "tsx scripts/lighthouse.ts",
+    "scale:audit": "tsx scripts/scale-audit.mts",
     "shots": "tsx scripts/shots.ts",
     "shots:strict": "tsx scripts/shots.ts --strict",
-    "contrast": "tsx scripts/contrast.ts",
-    "fonts:subset": "tsx scripts/subset-fonts.mts",
+    "stage": "tsx scripts/stage-media.mts",
+    "start": "next start",
+    "test": "vitest run --passWithNoTests",
     "type:audit": "tsx scripts/type-audit.mts",
-    "fonts:fetch": "tsx scripts/fetch-fonts.mts"
+    "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

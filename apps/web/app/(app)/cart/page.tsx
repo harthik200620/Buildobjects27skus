@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import BoCart from '@/components/cart/BoCart';
 import Plate from '@/components/Plate';
+import { loadFlagshipSkus } from '@/lib/catalog';
 import { loadCalculatorCatalog } from '@/lib/estimator';
+import { mediaUrl } from '@/lib/media';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -13,6 +15,21 @@ export const metadata: Metadata = {
 
 export default async function CartPage() {
   const catalog = await loadCalculatorCatalog([]);
+
+  /*
+   * The picture for each line.
+   *
+   * The cart was the one surface in the store with no product photography on it — a list of
+   * names, quantities and figures, which is a receipt rather than a cart. What is missing is
+   * exactly what the visitor has been looking at for the whole journey, so it is the SAME
+   * picture: the SKU's hero on the same silver plate a card, a search row and the gallery
+   * mount it on.
+   *
+   * It comes down as a map rather than being fetched per line: the cart's contents live in
+   * localStorage and the server cannot know them, and twenty-seven keys is smaller than one
+   * of the images it names.
+   */
+  const images = Object.fromEntries((await loadFlagshipSkus()).map((s) => [s.sku_code, s.hero_image_key ? mediaUrl(s.hero_image_key) : null]));
 
   return (
     <div className="page shell">
@@ -31,7 +48,7 @@ export default async function CartPage() {
           </div>
         </div>
       </header>
-      <BoCart initialCatalog={catalog} />
+      <BoCart initialCatalog={catalog} images={images} />
     </div>
   );
 }

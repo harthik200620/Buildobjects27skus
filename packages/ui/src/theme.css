@@ -109,8 +109,21 @@
   --t-lede-lh: 1.75rem; /* 17/28 — the paragraph under a headline */
   --t-body: 0.9375rem;
   --t-body-lh: 1.5rem; /* 15/24 — was 14/20, which is a table, not prose */
-  --t-meta: 0.84375rem;
-  --t-meta-lh: 1.25rem; /* 13.5/20 */
+  /* The two steps the store was already using and had never named. Fifty-odd declarations
+     across nine stylesheets set 12px or 13px by hand, and another nine set 12.5px — three
+     sizes doing one job, which is the kind of thing a reader registers as "cheap" without
+     being able to point at it.
+
+     ONE SIZE, TWO RHYTHMS. --t-meta was 13.5px, half a pixel from the 13 that fifty
+     declarations were already using, which is the same mush the ink ladder was retuned to
+     remove. It is the same size now and keeps its looser line height, because a paragraph of
+     meta and a cell in a specification table want different leading and not different type. */
+  --t-cap: 0.8125rem;
+  --t-cap-lh: 1.125rem; /* 13/18 — a caption, a spec cell, a chip */
+  --t-meta: var(--t-cap);
+  --t-meta-lh: 1.25rem; /* 13/20 — the same size, set as prose */
+  --t-fine: 0.75rem;
+  --t-fine-lh: 1rem; /* 12/16 — the smallest thing that is still prose */
   --t-micro: 0.6875rem;
   --t-micro-lh: 0.875rem; /* 11/14 — eyebrows only, always uppercase + tracked */
 
@@ -281,7 +294,9 @@
      a badge at 6 is three radii doing the job of one and reads as a template.     */
   --r-1: 6px; /* chips, badges, inline code */
   --r-2: 10px; /* buttons, inputs, small tiles */
-  --r-3: 14px; /* cards */
+  --r-3: 16px; /* cards — the tile, the product card, the empty state. Was 14, which
+                  nothing used: every card in the store hardcoded 16 and the token
+                  disagreed with all of them. */
   --r-4: 20px; /* panels, modals, the sticky buy column */
   --r-5: 28px; /* full-bleed sections, the hero plate, media stages */
   --r-pill: 999px;
@@ -933,7 +948,7 @@
   .btn--sm {
     height: 32px;
     padding: 0 12px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
   }
   .btn--md {
@@ -1006,7 +1021,7 @@
   .input--sm {
     height: 32px;
     padding: 0 8px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
   }
   .input--lg {
@@ -1032,7 +1047,7 @@
   .field-label {
     display: block;
     margin-bottom: 4px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     font-weight: 600;
     color: var(--color-ink);
@@ -1040,14 +1055,14 @@
   .field-hint {
     display: block;
     margin-top: 4px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-3);
   }
   .field-error {
     display: block;
     margin-top: 4px;
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-danger);
   }
@@ -1117,7 +1132,7 @@
     gap: 8px;
     min-height: 32px;
     padding-right: 4px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink);
     cursor: pointer;
@@ -1144,7 +1159,7 @@
     color: var(--color-ink);
     border: 1px solid var(--color-line);
     border-radius: var(--radius-pill);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     white-space: nowrap;
     cursor: pointer;
@@ -1175,7 +1190,7 @@
   .chip--sm {
     height: 28px;
     padding: 0 10px;
-    font-size: 12px;
+    font-size: var(--t-fine);
   }
   /* A chip that carries a sentence (a product name) wraps instead of overflowing the page. */
   .chip--wrap {
@@ -1201,7 +1216,7 @@
     height: 20px;
     padding: 0 6px;
     border-radius: var(--radius-sm);
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     font-weight: 600;
     white-space: nowrap;
@@ -1235,7 +1250,7 @@
 
   /* Stock lines are text, not pills — the status belongs in the reading order, not beside it. */
   .stock {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
   }
   .stock--in {
@@ -1280,7 +1295,7 @@
   }
   .price-unit {
     font-family: var(--font-ui);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 16px;
     font-weight: 400;
     color: var(--color-ink-2);
@@ -1319,7 +1334,7 @@
     flex-wrap: wrap;
     align-items: baseline;
     gap: 0 6px;
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -1333,19 +1348,19 @@
     color: var(--color-success);
   }
   .price-gst {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-3);
   }
   .price-src {
-    font-size: 12px;
+    font-size: var(--t-fine);
     line-height: 16px;
     color: var(--color-ink-3);
   }
 
   /* "Get it by Tue, 26 Aug" */
   .deliver {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink);
   }
@@ -1363,7 +1378,7 @@
      thing that writes this markup; four pages used to write it by hand with the separator's
      colour set inline in each. */
   .crumbs {
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
@@ -1716,7 +1731,7 @@
     margin-bottom: 4px;
     padding: 8px 12px 12px;
     border-bottom: 1px solid var(--color-line-2);
-    font-size: 13px;
+    font-size: var(--t-cap);
     line-height: 18px;
     color: var(--color-ink-2);
   }
