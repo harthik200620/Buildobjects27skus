@@ -35,19 +35,20 @@ export default function BoCoin({ size = 120, className }: { size?: number; class
   );
 }
 
-/** The device struck into both faces: the B and the O of the wordmark, as one figure. */
+/**
+ * The device struck into both faces: the Build Objects mark itself.
+ *
+ * It used to be a hand-drawn B and O — two stroked bowls and a circle, redrawn here in an SVG
+ * that lived nowhere else. It was a reasonable likeness and it was not the logo: the real mark
+ * has three ruled strokes leading into the bowl, and none of them survived the redrawing. A
+ * currency that carries an approximation of the brand's mark is a currency that looks
+ * counterfeit, which is the one thing this component exists to avoid.
+ *
+ * So it is the mark, from the same 128px file the header uses, as a MASK over currentColor. That
+ * matters twice over: the geometry is the artwork rather than a copy of it, and because the
+ * colour is painted rather than baked, the face keeps its struck-metal treatment — the amber it
+ * already had, with the two drop shadows in store.css that read as an engraving.
+ */
 function BoCoinMark() {
-  return (
-    <svg viewBox="0 0 48 48" className="bocoin-mark" fill="none" aria-hidden="true">
-      <title>BO</title>
-      <path
-        d="M13 12h9.4a5.6 5.6 0 0 1 0 11.2H13zM13 23.2h10.2a6.4 6.4 0 0 1 0 12.8H13z"
-        stroke="currentColor"
-        strokeWidth="2.6"
-        strokeLinejoin="miter"
-        strokeLinecap="butt"
-      />
-      <circle cx="35.2" cy="24" r="7.6" stroke="currentColor" strokeWidth="2.6" />
-    </svg>
-  );
+  return <span className="bocoin-mark" aria-hidden="true" />;
 }

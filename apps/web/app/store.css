@@ -4164,10 +4164,16 @@
       opacity: 0;
     }
   }
+  /* The mark is MASKED rather than drawn, so the geometry is the artwork and the colour is
+     still ours to set — which is what keeps the two drop shadows below reading as an engraving
+     in the face rather than as a shadow under a picture. */
   .bocoin-mark {
     position: relative;
-    width: 46%;
-    height: 46%;
+    width: 54%;
+    height: 54%;
+    background: currentColor;
+    -webkit-mask: url("/logo-mark-mono-128.png") center / contain no-repeat;
+    mask: url("/logo-mark-mono-128.png") center / contain no-repeat;
     filter: drop-shadow(0 2px 0 rgb(122 85 4 / 60%)) drop-shadow(0 -1px 0 rgb(255 227 155 / 50%));
   }
   /* Stopped face-on: the frame that carries the meaning. */

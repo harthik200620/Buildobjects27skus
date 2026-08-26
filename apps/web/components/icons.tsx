@@ -308,12 +308,40 @@ export const IconFinance = (p: IconProps) => (
   </Ico>
 );
 
-/* The coin is a struck disc seen slightly off-axis, with a milled edge. It is the
-   only glyph in the set that owns amber. */
+/*
+   The coin is a struck disc seen slightly off-axis, with a milled edge. It is the
+   only glyph in the set that owns amber.
+
+   THE DEVICE STRUCK INTO IT IS THE WORDMARK'S OWN O, not a drawn circle. It was a
+   second concentric ring, which is a perfectly good icon of a coin and says nothing
+   at all about whose coin it is — and the brand already has an O with a shape: the
+   one in OBJECTS, in Audiowide, which is the letter the wordmark paints teal. A
+   drawn circle is a circle; the real glyph has Audiowide's flat sides and its
+   squared-off counter, and at 15px that is the difference between a token and a mark.
+
+   Set, not traced. The face is loaded on every page for the headings, the outline
+   comes from the same file the wordmark uses, and one weight (400) is the only cut
+   there is — which is also what keeps scripts/type-audit.mts quiet. It is filled
+   rather than stroked because a letterform is a shape, not a path: stroking it would
+   draw the outline of the outline.
+*/
 export const IconCoin = (p: IconProps) => (
   <Ico {...p}>
     <path d="M20.4 12a8.4 8.4 0 1 1-16.8 0 8.4 8.4 0 0 1 16.8 0Z" />
-    <path className="ic-a" d="M16.6 12a4.6 4.6 0 1 1-9.2 0 4.6 4.6 0 0 1 9.2 0Z" />
+    <text
+      className="ic-a"
+      x="12"
+      y="12.1"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontFamily="var(--font-brand)"
+      fontWeight="400"
+      fontSize="12.4"
+      fill="currentColor"
+      stroke="none"
+    >
+      O
+    </text>
     <path d="M12 3.6v1.4M12 19v1.4M3.6 12H5M19 12h1.4" />
   </Ico>
 );
