@@ -41,6 +41,7 @@ import DrawingUpload from './DrawingUpload';
 import HouseRender from './HouseRender';
 import Time from './lenses/Time';
 import Truth from './lenses/Truth';
+import RulerInput from './RulerInput';
 
 type Field = 'plot' | 'floors' | 'bua' | 'type';
 const STATES: { code: StateCode; name: string }[] = [
@@ -341,29 +342,22 @@ export default function Estimator({
             </button>
           </div>
           {plotMode === 'dims' && isPlotByDims(inputs.plot) ? (
-            <div className="wz-row">
-              <label>
-                <span className="wz-label">Length (ft) {from('plot') && <span className="from-drawing">from your drawing — tap to correct</span>}</span>
-                <input
-                  className="field fig"
-                  type="number"
-                  min={8}
-                  max={1000}
-                  value={inputs.plot.lengthFt}
-                  onChange={(e) => set({ plot: { lengthFt: Number(e.target.value) || 0, widthFt: (inputs.plot as { widthFt: number }).widthFt } })}
-                />
-              </label>
-              <label>
-                <span className="wz-label">Width (ft)</span>
-                <input
-                  className="field fig"
-                  type="number"
-                  min={8}
-                  max={1000}
-                  value={inputs.plot.widthFt}
-                  onChange={(e) => set({ plot: { lengthFt: (inputs.plot as { lengthFt: number }).lengthFt, widthFt: Number(e.target.value) || 0 } })}
-                />
-              </label>
+            /* TWO MEASURING TAPES, NOT TWO NUMBER FIELDS.
+               A plot is a measurement and almost nobody types one: they know it as "about thirty
+               by forty" and want to feel the difference between 30 and 32. The tape runs 5 to
+               100 ft, which covers every residential plot in the two states this prices, and the
+               figure above each one is still an input for anyone who does know their number. */
+            <div className="wz-rulers">
+              <RulerInput
+                label={<>Length {from('plot') && <span className="from-drawing">from your drawing — scroll to correct</span>}</>}
+                value={inputs.plot.lengthFt}
+                onChange={(v) => set({ plot: { lengthFt: v, widthFt: (inputs.plot as { widthFt: number }).widthFt } })}
+              />
+              <RulerInput
+                label="Width"
+                value={inputs.plot.widthFt}
+                onChange={(v) => set({ plot: { lengthFt: (inputs.plot as { lengthFt: number }).lengthFt, widthFt: v } })}
+              />
             </div>
           ) : (
             <label>

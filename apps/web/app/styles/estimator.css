@@ -636,6 +636,136 @@
     justify-content: space-between;
     gap: var(--s-3);
   }
+  /* ═══════════════════════════════════════════════════════════════════════════
+     THE MEASURING TAPE
+     ═══════════════════════════════════════════════════════════════════════════
+     A plot's length is a measurement, and a number field asks the reader to have already
+     decided one. See components/estimate/RulerInput.tsx for why it is a tape.
+
+     It is a real overflow scroller, which is where the risk is on a page this store has
+     already had scroll bugs on. Three lines contain it: `overscroll-behavior-x: contain` so
+     running out of tape does not start scrolling the page behind it, `scroll-snap-type`
+     so it always rests ON a foot, and `touch-action: pan-x` so a thumb dragging across the
+     tape cannot be mistaken for a thumb scrolling the page. */
+  /* Two tapes stack rather than sit side by side: a 12px tick at half a column is four feet of
+     tape on screen, which is not a scale, it is a texture. */
+  .wz-rulers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+  .ruler {
+    position: relative;
+  }
+  .ruler-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-bottom: 4px;
+  }
+  .ruler-value {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 3px;
+  }
+  /* The readout is an input, so a plot somebody already knows can simply be typed. Drawn as a
+     figure rather than as a field — a box around it would make the tape look like decoration. */
+  .ruler-field {
+    width: 4.5ch;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink-1);
+    font-family: var(--font-figure);
+    font-size: var(--t-fig);
+    line-height: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  .ruler-field::-webkit-outer-spin-button,
+  .ruler-field::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .ruler-field:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+  .ruler-unit {
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+  }
+  .ruler-tape {
+    position: relative;
+    height: 46px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    touch-action: pan-x;
+    border: 1px solid var(--hair-2);
+    border-radius: var(--r-2);
+    background: linear-gradient(180deg, rgb(0 0 0 / 20%), rgb(0 0 0 / 6%));
+    /* The scrollbar is the tape's own ticks; a second one under them is noise. */
+    scrollbar-width: none;
+  }
+  .ruler-tape::-webkit-scrollbar {
+    display: none;
+  }
+  .ruler-tape:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+  .ruler-strip {
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+    /* Half the viewport at each end, so the FIRST and LAST foot can reach the needle. Without
+       it the tape can never show its own minimum. */
+    padding: 0 calc(50% - 6px);
+  }
+  .ruler-tick {
+    position: relative;
+    flex: none;
+    width: 12px;
+    height: 11px;
+    scroll-snap-align: center;
+    border-left: 1px solid var(--hair-2);
+  }
+  .ruler-tick.is-major {
+    height: 20px;
+    border-left-color: var(--ink-4);
+  }
+  .ruler-num {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    transform: translateX(-50%);
+    padding-bottom: 3px;
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    line-height: 14px;
+  }
+  /* Where the reading is taken. It sits over the tape rather than in it, so it never scrolls. */
+  .ruler-needle {
+    position: absolute;
+    left: 50%;
+    bottom: 1px;
+    width: 2px;
+    height: 30px;
+    margin-left: -1px;
+    border-radius: 1px;
+    background: var(--color-brand);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-brand) 18%, transparent);
+    pointer-events: none;
+  }
+
   .wz-note {
     flex: none;
     color: var(--ink-3);
