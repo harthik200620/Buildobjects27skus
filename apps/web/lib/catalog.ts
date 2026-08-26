@@ -186,7 +186,18 @@ async function loadSkuPageOrStatic(code: string): Promise<SkuPageData | null> {
     /* fall through to the snapshot */
   }
   const { staticSkuPage } = await import('./static-catalogue');
-  return (staticSkuPage(code) as SkuPageData | null) ?? null;
+  const page = (staticSkuPage(code) as SkuPageData | null) ?? null;
+  if (!page) return null;
+  /*
+   * The same lead-with-a-real-photograph rule the database path gets.
+   *
+   * It was applied only where the rows are read from MySQL, which is every machine that has the
+   * pipeline — and no deployment. Vercel serves the frozen snapshot, so the fix that had been
+   * verified locally was not the code production ran, and the Dahua product page still opened on
+   * "Official image pending" while its own card in search showed the camera. A rule that lives on
+   * one of two paths is not a rule.
+   */
+  return { ...page, images: leadWithRealPhoto(code, page.images) };
 }
 
 const skuPage = memo((code: string) => loadSkuPageOrStatic(code), { max: 5_000 });
