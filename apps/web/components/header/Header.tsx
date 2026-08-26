@@ -11,7 +11,7 @@ import type { NavCategory } from './types';
 /**
  * The header, in one row.
  *
- *   the lockup · | · Catalogue ▾ · Estimator · See in room · ——— · ⌘K · coins · cart · account
+ *   the lockup · | · Catalogue ▾ · Estimator · —— · ⌘K · —— · coins · cart · account
  *
  * It was two rows and 104 px, plus a 40 px category strip under it: 144 px of chrome above every
  * page. The reason was arithmetic rather than taste — Audiowide is a very wide face, the lockup
@@ -58,8 +58,11 @@ export default function Header({
             <CategoryMenu categories={categories} variant="all" />
             <NavTools />
           </nav>
+          {/* TWO spacers, one either side of search: equal flex, so the field lands in the middle
+              of the row rather than wherever the left-hand group happens to end. */}
           <span className="header-spacer" />
           <SearchBar categories={categories} />
+          <span className="header-spacer" />
           <CartButton />
           <AccountMenu phone={phone} />
         </div>

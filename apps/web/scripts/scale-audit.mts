@@ -172,12 +172,19 @@ for (const width of WIDTHS) {
       if (!hits.includes(note)) hits.push(note);
     }
 
+    /*
+     * The spacers are no longer where the give is. Search takes the middle and shrinks to fit, so
+     * a spacer at 0 means "the field absorbed the room", not "one character from breaking" — the
+     * number that says how close the row is to failing is the field's own clipped width.
+     */
     const spacer = document.querySelector('.header-spacer') as HTMLElement;
+    const cue = document.querySelector('.search-cue') as HTMLElement;
     return {
       hits,
       barOverflow: Math.round(row.scrollWidth - row.clientWidth),
       pageOverflow: Math.round(document.documentElement.scrollWidth - document.documentElement.clientWidth),
       slack: Math.round(spacer ? spacer.getBoundingClientRect().width : 0),
+      cue: Math.round(cue ? cue.getBoundingClientRect().width : 0),
     };
   });
   const bad = bar.hits.length > 0 || bar.barOverflow > 0 || bar.pageOverflow > 0;
@@ -187,7 +194,9 @@ for (const width of WIDTHS) {
     bar.barOverflow > 0 ? `bar overflows by ${bar.barOverflow}px` : '',
     bar.pageOverflow > 0 ? `page scrolls sideways by ${bar.pageOverflow}px` : '',
   ].filter(Boolean);
-  console.log(`${bad ? '✗' : '✓'} ${String(width).padStart(5)}px   slack ${String(bar.slack).padStart(4)}px${notes.length ? `   ${notes.join('   ')}` : ''}`);
+  console.log(
+    `${bad ? '✗' : '✓'} ${String(width).padStart(5)}px   search ${String(bar.cue).padStart(3)}px   spare ${String(bar.slack).padStart(3)}px${notes.length ? `   ${notes.join('   ')}` : ''}`,
+  );
 }
 
 await browser.close();

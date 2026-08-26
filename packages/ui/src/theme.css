@@ -373,6 +373,10 @@
   --header-h: 76px; /* one row now, not two — search moved to a ⌘K overlay */
   --header-h-scrolled: 62px;
   --nav-h: 40px;
+  /* The search field's resting width. It is a token because the bar's breakpoint ladder steps
+     it down four times, and a `width` and a `flex-basis` that disagree is how a field ends up
+     one size and reserves another. */
+  --search-w: 560px;
   /*
    * THE ONE OFFSET EVERY PINNED PANEL USES.
    *

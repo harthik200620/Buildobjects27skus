@@ -194,7 +194,11 @@
   .header-bar {
     display: flex;
     align-items: center;
-    gap: var(--s-5);
+    /* 16, not 24. Seven gaps in this row, so the step is 56px — and the row is FULL at every
+       desktop width: measured at 1920 the six controls and their gaps used 1,098 of the 1,464
+       available, leaving 366 for search. The gap is the only place that width was available
+       without taking it off the lockup. */
+    gap: var(--s-4);
     height: 100%;
     max-width: var(--shell-wide);
     margin: 0 auto;
@@ -342,14 +346,26 @@
      Not an input. It opens the palette, and a box that looks like a field but
      forwards your keystrokes elsewhere costs a keystroke every time. The keycaps
      are the point: they teach the shortcut. */
+  /* ── search ───────────────────────────────────────────────────────────────
+     THE ONE CONTROL IN THE BAR THAT IS ALLOWED TO GROW, and the only one that can be
+     asked to. Everything else in the row overflows onto its neighbour when it is
+     squeezed narrower than its content; this is a single line of placeholder that
+     ellipses, so giving it the slack costs nothing and buys the field its size back.
+
+     It takes the middle rather than a fixed slot on the right. `.header-spacer` sits on
+     BOTH sides of it with equal flex, so the field is centred in the row instead of
+     landing wherever the lockup and the nav happen to end — and it is 560px at rest
+     rather than 250, which is the difference between a button that opens search and a
+     field you can see yourself typing into. */
   .search-cue {
     display: flex;
     align-items: center;
     gap: 10px;
-    flex: none;
-    width: 250px;
-    height: 42px;
-    padding: 0 12px 0 15px;
+    flex: 0 1 var(--search-w);
+    width: var(--search-w);
+    min-width: 0;
+    height: 46px;
+    padding: 0 12px 0 16px;
     border-radius: var(--r-2);
     background: rgb(255 255 255 / 4.5%);
     border: 1px solid var(--hair-2);
@@ -376,7 +392,7 @@
     white-space: nowrap;
   }
   :root[data-scrolled] .search-cue {
-    height: 36px;
+    height: 38px;
   }
   .search-keys {
     display: flex;
@@ -592,6 +608,9 @@
     .coin-pill-word {
       display: none;
     }
+    :root {
+      --search-w: 460px;
+    }
   }
   /* 1400, not 1360. At 1366 — a laptop width a lot of people are on — the row fitted
      with exactly ZERO pixels to spare: no overlap, and one more character of copy away
@@ -600,13 +619,8 @@
     .header-action-label {
       display: none;
     }
-    .header-bar {
-      gap: var(--s-4);
-    }
-  }
-  @media (max-width: 1199.98px) {
-    .search-cue {
-      width: 190px;
+    :root {
+      --search-w: 420px;
     }
   }
   /* The mark loses its name. At a 34px mark the lockup is 284px — 42% of the row at
@@ -620,16 +634,21 @@
     .header-logo [role="img"] {
       display: none;
     }
+    :root {
+      --search-w: 240px;
+    }
   }
   /* The last rung. At 360px the row is five controls and five gaps in 290px of usable
      width; the gaps and the padding are the only things left to give. Measured at 360,
      390 and 430 — the three widths a phone actually reports. */
   @media (max-width: 1199.98px) {
+    :root {
+      --search-w: 300px;
+    }
     .header-div {
       display: none;
     }
     .header-bar {
-      gap: var(--s-4);
       padding: 0 var(--s-3) 0 var(--s-4);
     }
     .navlink {
@@ -646,6 +665,7 @@
       --wm-size: 26px;
     }
     .search-cue {
+      flex: none;
       width: 42px;
       padding: 0;
       justify-content: center;
