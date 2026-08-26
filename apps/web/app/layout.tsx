@@ -32,17 +32,21 @@ import './globals.css';
  * unquoted, and an unquoted multi-word family is invalid CSS that discards the whole
  * declaration. The ₹-bearing fallbacks live in --font-figure in theme.css, quoted.
  */
-const display = localFont({
-  /* Regular only. Instrument Serif ships an italic and the display tier is headlines, none of
-     which are italic — a declared source is a preload the first paint waits on whether or not a
-     glyph ever asks for it, and this one is 24 KB. `fetch-fonts.mts` still fetches the italic, so
-     adding it back is one line here rather than a round trip. */
-  src: [{ path: '../public/fonts/BuildObjectsDisplay1-Regular.woff2', weight: '400', style: 'normal' }],
-  display: 'swap',
-  variable: '--font-display-face',
-  fallback: ['Georgia', 'serif'],
-});
-
+/*
+ * INSTRUMENT SERIF IS NOT LOADED ANY MORE, and the reason is worth the note.
+ *
+ * A declared source is a preload the first paint waits on whether or not a glyph ever asks for
+ * it — 23.5 KB on the critical path of every route in the store. What it was still setting, at
+ * the end, was three ghost numerals on the front door and one empty-state line. The numerals are
+ * figures and now use the figure face; the empty state is a title and now uses the brand face.
+ *
+ * That leaves two families, which is the right number for this store: Audiowide names things and
+ * Encode Sans counts them. A third face is not a third voice, it is a third thing to keep in
+ * step, and this one had already fallen out of step without anybody noticing.
+ *
+ * The file is still in public/fonts and fetch-fonts.mts still fetches it, so bringing it back is
+ * one declaration here rather than a round trip.
+ */
 const brand = localFont({
   src: [{ path: '../public/fonts/BuildObjectsDisplay2-Regular.woff2', weight: '400', style: 'normal' }],
   display: 'swap',
@@ -59,11 +63,19 @@ const ui = localFont({
 });
 
 const figure = localFont({
-  /* No 300: nothing in the app sets a weight below 400, and a declared source is a preload the
-     first paint waits on whether or not a glyph ever asks for it. */
+  /*
+   * NO MEDIUM. A declared source is a preload the first paint waits on whether or not a glyph
+   * ever asks for it, and nothing in this store sets a figure at 500 — 21.2 KB on the critical
+   * path of every page for a weight no number is ever set at.
+   *
+   * Regular was dropped with it on the same reasoning and PUT BACK, because the reasoning was
+   * wrong: `.price--card` sets 400, and the sampler that said otherwise only looked at elements
+   * with direct text children while that price lives in nested spans. scripts/type-audit.mts
+   * caught it on four routes within the minute — "wants figure 400, which is not a declared cut"
+   * — which is precisely why that gate exists and why this note names it.
+   */
   src: [
     { path: '../public/fonts/BuildObjectsSans5-Regular.woff2', weight: '400', style: 'normal' },
-    { path: '../public/fonts/BuildObjectsSans5-Medium.woff2', weight: '500', style: 'normal' },
     { path: '../public/fonts/BuildObjectsSans5-SemiBold.woff2', weight: '600', style: 'normal' },
     { path: '../public/fonts/BuildObjectsSans5-Bold.woff2', weight: '700', style: 'normal' },
   ],
@@ -91,7 +103,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     // One appearance: deep teal and silver. No theme toggle, no prefers-color-scheme branch.
-    <html lang="en" className={`${display.variable} ${brand.variable} ${ui.variable} ${figure.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${brand.variable} ${ui.variable} ${figure.variable}`} suppressHydrationWarning>
       <head>
         {/*
          * Arms the scroll choreography before the browser paints, which is the only place it can

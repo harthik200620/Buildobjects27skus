@@ -246,11 +246,18 @@
       opacity: 0.4;
     }
   }
+  /* The step numerals are FIGURES, so they are set in the figure face like every other numeral
+     in the store. They were the last thing in the building using Instrument Serif — a third type
+     family, and a 23.5 KB webfont preloaded on the critical path of every route, to draw three
+     ghost numbers. Two families now: Audiowide names things, Encode Sans counts them. */
   .spine-n {
-    font-family: var(--font-display);
+    font-family: var(--font-figure);
     font-size: 56px;
     line-height: 1;
-    color: rgb(86 211 216 / 22%);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    color: color-mix(in oklab, var(--color-brand) 22%, transparent);
     margin-bottom: var(--s-4);
   }
   .spine h3 {

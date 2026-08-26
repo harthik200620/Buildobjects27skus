@@ -72,7 +72,8 @@
        ui       Schibsted Grotesk  every control, label, body, nav — the working face
        figure   Encode Sans        money, quantities, dimensions, counts
        brand    Audiowide          the wordmark. Nothing else. It has no ₹ glyph.   */
-  --font-display: var(--font-display-face), "Instrument Serif", Georgia, "Times New Roman", serif;
+  /* --font-display is gone with the face. Two families is the right number for this store:
+     Audiowide names things and Encode Sans counts them. See app/layout.tsx. */
   --font-ui: var(--font-ui-face), "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
   --font-figure: var(--font-figure-face), "Encode Sans", "Segoe UI Variable Text", system-ui, sans-serif;
   --font-brand: var(--font-brand-face), "Audiowide", system-ui, sans-serif;
@@ -897,10 +898,19 @@
     text-decoration: underline;
   }
 
+  /* THE SEARCH HIGHLIGHT MARKS BY GROUND, NEVER BY WEIGHT.
+     It asked for 600 and it INHERITS its face — and on a search results page that face is
+     Audiowide, which has exactly one cut at 400. So every matched word in every product title
+     was a browser-synthesised bold: the smeared outline this store's whole type program exists
+     to avoid, on the one page whose entire job is to be scanned.
+
+     `font-weight: inherit` is the fix and it is also the better mark. A tinted ground already
+     says "this is the bit you searched for" louder than a weight change does, and it says it
+     identically whatever face the surrounding text happens to be in. */
   mark.hl {
     background: var(--color-teal-100);
     color: inherit;
-    font-weight: 600;
+    font-weight: inherit;
     border-radius: 2px;
     padding: 0 1px;
   }

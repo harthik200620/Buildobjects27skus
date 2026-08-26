@@ -2580,15 +2580,19 @@
    * Body copy, labels and every figure stay in their own faces: Audiowide has no ₹ glyph and is
    * unreadable below about 18 px.
    */
-  /* The v1 display class. It meant Audiowide; --font-display is Instrument Serif
-     now, so every heading that carried it became editorial without being touched.
-     Weight stays pinned at 400 because the face has exactly one cut and a browser
-     asked for 700 will smear it. Prefer .d1/.d2/.d3 on anything restyled — they
-     carry the size and the tracking too, which this cannot. */
+  /* The v1 display class, and it means Audiowide again — which is what it meant when it was
+     written, and what every title in this store is required to be. It was pointed at Instrument
+     Serif at some point, which turned every heading carrying it editorial without anybody
+     touching the heading; the reason nothing looked wrong is that `.page-title` sets the brand
+     face after it and won on all three pages that use both.
+
+     Weight pinned at 400: the face has exactly one cut and a browser asked for 700 smears it,
+     which scripts/type-audit.mts fails. Prefer .d1/.d2/.d3 on anything restyled — they carry the
+     size and the tracking too, which this cannot. */
   .display {
-    font-family: var(--font-display);
+    font-family: var(--font-brand);
     font-weight: 400;
-    letter-spacing: var(--track-d3);
+    letter-spacing: 0;
     color: var(--ink-1);
   }
   .hero-figure {
