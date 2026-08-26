@@ -1,135 +1,444 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   Build Objects theme — deep teal and silver
+   BUILD OBJECTS — "THE DRAFTING TABLE"
+   The v2 token layer.
    ─────────────────────────────────────────────────────────────────────────────
-   A dark store. Deep teal canvas, silver ink, one brand teal that now carries
-   its own weight. The light Amazon-style theme this replaces spent teal three
-   ways and never a fourth, because #56d3d8 measures 1.79:1 on white and could
-   only ever be a fill. On #06181d it measures 10.12:1 — so the brand colour is
-   finally allowed to be text, a link, a border and a focus ring, and the store
-   stops needing a second, duller teal to say the same things.
 
-   Rules that are engineering, not taste:
-   1. Every text token clears WCAG AA on every surface it is allowed on —
-      measured by apps/web/scripts/contrast.ts, which parses this file. Unlike
-      the light theme, there is no forbidden pair: ink-3 on surface-3 was 4.2
-      there and is 4.73 here, so every ink is legal on every surface.
-   2. Elevation is luminance. On white, depth came from a 1 px border and a
-      shadow, because a white card on a white page has nothing else. Here each
-      step up the surface ladder is lighter than the one below it, and that is
-      the primary signal; the border is the secondary one, and a shadow is only
-      spent on something that genuinely floats.
-   3. Product photography never sits directly on the canvas. Brand photographs
-      are shot on white, and a white rectangle on deep teal is a hole in the
-      page. Every photo sits on --color-plate, a silver ground that reads as a
-      deliberate mount rather than an accident.
-   4. Everything below sits in Tailwind components layer so that a utility
-      class on the same element (mt-3, h-11, hidden) still wins.
+   WHAT CHANGED AND WHY — read this before editing anything below.
+
+   The v1 theme was engineered well and looked cheap, and those two facts are not
+   in tension. Every colour cleared AA, every duration came from one list, no
+   emoji survived anywhere. What it never had was AMBITION IN SCALE. The type
+   ramp ran 12 → 24px, a 2× range, which is the ramp of a commodity marketplace.
+   Premium editorial work runs 6–8×. When headline and caption are almost the
+   same size, no amount of correctness reads as expensive — there is simply no
+   drama on the page.
+
+   Five changes carry the entire upgrade:
+
+   1. A DISPLAY TIER THAT DID NOT EXIST. Three display sizes in a serif, topping
+      out at 92px. This alone is most of the difference.
+   2. THE INK LADDER WAS MUSH. ink-2 (#b0c5c9) and ink-3 (#9bb1b5) sat 8% apart
+      in lightness — the eye cannot separate them, so the page had one grey, not
+      three. The new ladder steps 17.4 / 12.0 / 6.9 / 3.6 against the canvas.
+   3. HAIRLINES BECAME ALPHA. --color-line was an opaque teal (#1e4a55) that only
+      looked right on one surface, so raised cards drew borders darker than their
+      own ground. Alpha hairlines are correct on every surface by construction.
+   4. THE CANVAS GOT A FIELD. A flat #06181D div is a flat #06181D div. Three
+      stacked ambient layers — a teal bloom, an amber wash and 3.5% film grain —
+      turn it into a lit room. The background COLOUR is unchanged, as instructed;
+      what sits on it is new.
+   5. SPECULAR EDGES. One inset top highlight on every raised surface. It is the
+      cheapest expensive-looking trick in interface design and the store had none.
+
+   WHAT DID NOT CHANGE, DELIBERATELY:
+   · --color-canvas is still #06181D. The dark teal ground was right.
+   · Audiowide is still the wordmark face, and still touches nothing else.
+   · Encode Sans is still the figure face. It has a true ₹, it is already subset,
+     and its tabular figures are correct. Churning it would cost the font budget
+     and buy nothing.
+   · The four-duration / three-curve discipline. It is extended, not replaced.
+
+   ─────────────────────────────────────────────────────────────────────────────
+   ON THE TWO NAMES FOR EVERY COLOUR
+
+   The canonical names are the short ones — --ink-2, --surf-2, --hair, --r-3.
+   The v1 names (--color-ink-2, --color-surface, --color-line, --radius-lg) are
+   kept as ALIASES in section 16, and they are not deprecated decoration: about
+   nine hundred declarations across forty stylesheets speak them, and rewriting
+   all nine hundred by hand to land the same pixels would be a nine-hundred-line
+   diff in which a single typo is a silently wrong colour.
+
+   Aliasing instead means the whole store adopts the new ladder in one edit, and
+   each surface is then moved to the canonical vocabulary as it is restyled. Two
+   consequences worth knowing:
+
+   · The aliases are SEMANTIC, not mechanical. --color-line and --color-line-2
+     both resolve to --hair, because point 3 above removes the reason there were
+     two: an alpha hairline is correct on every surface, so the store no longer
+     needs a second, darker line for the surfaces the first one was wrong on.
+   · Tailwind generates utilities from --color-* names, so bg-teal-700 and
+     text-ink-2 keep working and keep meaning what they meant.
 
    @theme static (never inline): the tokens must exist as real custom
-   properties — components read var(--color-*) from inline styles and SVG.
+   properties — components read var(--…) from inline styles and from SVG.
    ───────────────────────────────────────────────────────────────────────────── */
 
 @theme static {
-  /* ── type faces ────────────────────────────────────────────────────────────
-     Audiowide (Display 2) sets the brand name and nothing else — it is the
-     brand's voice, and it lives behind .wordmark and components/Wordmark.tsx.
-     Arimo (Sans 3) for every piece of UI text; Encode Sans (Sans 5) for figures,
-     which has a true ₹ and static 300–700 cuts. Audiowide has NO ₹ glyph, so it
-     must never touch a price. */
-  --font-display: var(--font-display-face), "Audiowide", system-ui, sans-serif;
-  --font-ui: var(--font-ui-face), Arial, "Helvetica Neue", Helvetica, "Segoe UI", system-ui, sans-serif;
+  /* ── 1. TYPEFACES ─────────────────────────────────────────────────────────
+     Four faces, four jobs, no overlap. A face used for two jobs is a face that
+     does neither well.
+
+       display  Instrument Serif   headlines and section titles. Nothing else.
+       ui       Schibsted Grotesk  every control, label, body, nav — the working face
+       figure   Encode Sans        money, quantities, dimensions, counts
+       brand    Audiowide          the wordmark. Nothing else. It has no ₹ glyph.   */
+  --font-display: var(--font-display-face), "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-ui: var(--font-ui-face), "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
   --font-figure: var(--font-figure-face), "Encode Sans", "Segoe UI Variable Text", system-ui, sans-serif;
+  --font-brand: var(--font-brand-face), "Audiowide", system-ui, sans-serif;
 
-  /* ── ink (contrast on canvas) ───────────────────────────────────────────── */
-  --color-ink: #eaf2f3; /* 16.0 */
-  --color-ink-2: #b0c5c9; /* 10.1 */
-  --color-ink-3: #9bb1b5; /* 8.1 — legal on every surface, including surface-3 */
+  /* Instrument Serif has one weight (400) and an italic. Display sizes get their
+     weight from SIZE, not from a bold — never synthesise a bold on it. */
 
-  /* ── canvases and surfaces: each step lighter than the one below ────────── */
-  --color-canvas: #06181d;
-  --color-canvas-2: #0a2229; /* home, estimator, table headers */
-  --color-surface: #0d2a32; /* cards */
-  --color-surface-2: #113640; /* raised, selected rows, wallet */
-  --color-surface-3: #17444f; /* disabled, donut track */
+  /* ── 2. TYPE SCALE ────────────────────────────────────────────────────────
+     A 1.28 ratio through the UI tier, opening to 1.45 across the display tier,
+     because display steps are chosen by eye and body steps by arithmetic.
 
-  /* ── the silver plate: the only light ground in the store ───────────────── */
-  --color-plate: #e9eeef; /* product photography sits here */
-  --color-plate-2: #f5f8f8; /* the brighter half of the plate gradient */
-  --color-on-plate: #0f1111; /* 16.2 — anything written over a plate */
-  --color-on-plate-2: #565959; /* 6.0 */
+     Every display size is a clamp: the ceiling is what a 1440px monitor sees,
+     the floor is what a 360px phone sees, and there is no breakpoint in between
+     because there does not need to be one.                                       */
 
-  /* ── lines ──────────────────────────────────────────────────────────────── */
-  --color-line: #1e4a55;
-  --color-line-2: #163a43;
-  --color-line-strong: #54939d; /* inputs, 5.2 on canvas / 4.3 on a card */
+  /* Display — Instrument Serif. Only headlines. Never a label, never a control. */
+  --t-d1: clamp(2.75rem, 1.6rem + 5.1vw, 5.75rem); /*  44 → 92 */
+  --t-d1-lh: 0.94;
+  --t-d2: clamp(2.125rem, 1.4rem + 3.2vw, 4rem); /*  34 → 64 */
+  --t-d2-lh: 1.02;
+  --t-d3: clamp(1.625rem, 1.2rem + 1.9vw, 2.75rem); /*  26 → 44 */
+  --t-d3-lh: 1.1;
 
-  /* ── brand ──────────────────────────────────────────────────────────────── */
-  --color-brand: #56d3d8;
-  --color-on-brand: #04171b; /* 10.2 on brand */
+  /* UI — Schibsted Grotesk. */
+  --t-h1: 2rem;
+  --t-h1-lh: 2.375rem; /* 32/38 */
+  --t-h2: 1.5rem;
+  --t-h2-lh: 1.875rem; /* 24/30 */
+  --t-h3: 1.1875rem;
+  --t-h3-lh: 1.625rem; /* 19/26 */
+  --t-h4: 1rem;
+  --t-h4-lh: 1.375rem; /* 16/22 */
+  --t-lede: 1.0625rem;
+  --t-lede-lh: 1.75rem; /* 17/28 — the paragraph under a headline */
+  --t-body: 0.9375rem;
+  --t-body-lh: 1.5rem; /* 15/24 — was 14/20, which is a table, not prose */
+  --t-meta: 0.84375rem;
+  --t-meta-lh: 1.25rem; /* 13.5/20 */
+  --t-micro: 0.6875rem;
+  --t-micro-lh: 0.875rem; /* 11/14 — eyebrows only, always uppercase + tracked */
 
-  /* ── teal ladder ────────────────────────────────────────────────────────────
-     Inverted from the light theme: on a dark ground, stronger means lighter.
-     700/800/900 stay the primary-button ramp so every existing call site reads
-     correctly; they now go up in luminance on hover and press instead of down. */
-  --color-teal-50: #0f333b; /* selected background */
-  --color-teal-100: #164852; /* focus halo, highlight mark */
-  --color-teal-300: #7ee3e7; /* links (12.1 on canvas) */
-  --color-teal-600: #3ab8be; /* decoration */
-  --color-teal-700: #56d3d8; /* primary button fill (dark ink on it) */
-  --color-teal-800: #74dee2; /* hover */
-  --color-teal-900: #93e8eb; /* pressed */
+  /* Figures — Encode Sans, tabular everywhere. */
+  --t-fig-hero: clamp(2.5rem, 1.5rem + 4.4vw, 5rem); /* 40 → 80: the estimator total, the coin balance */
+  --t-fig-lg: 1.75rem; /* 28: card totals, section figures */
+  --t-fig: 1rem; /* 16: prices in a grid */
+  --t-fig-sm: 0.8125rem; /* 13: table cells */
 
-  /* ── header chrome: the deepest teal in the store ───────────────────────── */
-  --color-header: #04141a;
-  --color-header-2: #082228;
-  --color-header-ink: #ffffff;
-  --color-header-ink-2: #a8c4c8; /* 10.2 on header */
+  /* Tracking. Display goes tight because it is large; micro goes wide because
+     it is small and uppercase. Both are optical corrections, not decisions. */
+  --track-d1: -0.028em;
+  --track-d2: -0.022em;
+  --track-d3: -0.016em;
+  --track-h: -0.014em;
+  --track-body: -0.003em;
+  --track-micro: 0.16em;
 
-  /* ── status ─────────────────────────────────────────────────────────────── */
-  --color-success: #4ade80;
-  --color-success-bg: #0c2b1d;
-  --color-warn: #fbbf24; /* Estimated price, low stock, unconfirmed drawing */
-  --color-warn-bg: #2f2107;
-  --color-danger: #fb8b8b;
-  --color-danger-bg: #331419;
+  /* ── 3. INK ───────────────────────────────────────────────────────────────
+     Four steps with real distance between them. Contrast ratios measured on
+     --color-canvas (#06181D) and verified by scripts/contrast.ts.
 
-  /* ── BO Coins ───────────────────────────────────────────────────────────────
-     Amber survives the repaint, and only here. A BO Coin is a currency, and a
-     teal coin reads as a token rather than as money — so the glyph and the
-     figure stay gold while every surface they sat on became a theme surface.
-     The wallet used to carry its own near-black panel, its own white ladder and
-     its own shadow because it was a dark island on a light store; the store is
-     dark now, so those nine tokens were nine ways of saying surface-2. */
-  --color-coin: #f5b40a; /* the coin itself, borders, rules */
-  --color-coin-ink: #fbbf24; /* the figure — 7.7 on surface-2 */
-  --color-coin-line: rgb(245 180 10 / 32%);
+     ink-4 is DECORATIVE ONLY at 3.9:1 — rules, disabled glyphs, watermark
+     figures. It must never carry a word the user has to read. The contrast gate
+     enforces this by rejecting --ink-4 on any selector that also sets a
+     font-size above 12px.                                                        */
+  --ink-1: #f2f8f9; /* 17.4 — display, headings, the price */
+  --ink-2: #c3d6d9; /* 12.0 — body copy */
+  --ink-3: #96afb4; /*  7.9 — meta, captions, secondary labels */
+  --ink-4: #61797e; /*  3.9 — DECORATIVE ONLY. Never body text. */
+
+  /* ink-3 was specified as #8fa9ae and shipped as #96afb4, a seven-unit lift.
+     #8fa9ae measured 4.19 on --surf-4, which is below AA for text, and surf-4 is a
+     pressed button and a progress track — both of which carry secondary labels. The
+     lift is invisible as a hue change and it restores the property this palette's
+     predecessor was retuned to have and this one claims to keep: EVERY INK IS LEGAL
+     ON EVERY SURFACE, with no pair anyone has to remember to avoid. It also evens the
+     ladder, which now steps 17.4 / 12.0 / 7.9 / 3.9 — gaps of 5.4, 4.1 and 4.0.
+     scripts/contrast.ts is what caught it and what holds it. */
+
+  /* ── 4. SURFACES ──────────────────────────────────────────────────────────
+     Elevation is luminance, exactly as v1 had it — that idea was right. What is
+     new is a fifth step and slightly warmer mixing, so a card on a card on the
+     canvas still reads as three planes.                                          */
+  --color-canvas: #06181d; /* UNCHANGED — the one thing that was already right */
+  --surf-1: #0a2027;
+  --surf-2: #0e2a33; /* the default card */
+  --surf-3: #133741; /* raised: popovers, sticky panels, selected rows */
+  --surf-4: #1a4552; /* pressed, disabled fill, progress track */
+
+  /* The silver plate. Product photography is shot on white; a white rectangle on
+     deep teal is a hole in the page, so every photograph sits on a mount. */
+  --plate-1: #e9eeef;
+  --plate-2: #f6f9f9;
+  --on-plate-1: #0c1113; /* 16.9 on plate */
+  --on-plate-2: #52605f; /*  5.4 on plate */
+
+  /* ── 5. HAIRLINES AND EDGES ───────────────────────────────────────────────
+     Alpha, not hex. A hex line is only correct on the one surface it was picked
+     against; an alpha line is correct on all five by construction. This single
+     change removes the whole class of "the border is darker than the card" bugs
+     that v1's chrome hairlines existed to work around.                           */
+  --hair: rgb(255 255 255 / 7%); /* the default rule */
+  --hair-2: rgb(255 255 255 / 12%); /* hover, active, emphasis */
+  --hair-3: rgb(255 255 255 / 20%); /* input borders, focus-adjacent */
+  --hair-brand: rgb(86 211 216 / 34%); /* selected, live, brand-owned edges */
+  --hair-amber: rgb(245 180 10 / 34%); /* coin-owned edges */
+
+  /* THE SPECULAR EDGE — one inset highlight along the top of anything raised.
+     Real objects catch light on their top edge. Interfaces that skip this look
+     printed rather than lit, and it costs one line of CSS. */
+  --specular: inset 0 1px 0 rgb(255 255 255 / 8%);
+  --specular-strong: inset 0 1px 0 rgb(255 255 255 / 14%);
+  --bevel: inset 0 1px 0 rgb(255 255 255 / 9%), inset 0 -1px 0 rgb(0 0 0 / 34%);
+
+  /* ── 6. TEAL — the brand ramp, perceptually even ──────────────────────────
+     v1's ladder was hand-picked hex and stepped unevenly: 300 → 600 was a bigger
+     visual jump than 700 → 900, so hover states moved further than press states.
+     This ramp is built in OKLCH and flattened to hex, so each step is the same
+     perceived distance and a hover always feels like a hover.                    */
+  --teal-100: #052a30;
+  --teal-200: #0a3c45;
+  --teal-300: #10525e;
+  --teal-400: #1c7382;
+  --teal-500: #2e9aa8;
+  --teal-600: #45bfc8;
+  --teal-700: #56d3d8; /* THE BRAND. 10.1 on canvas — a colour that can be text. */
+  --teal-800: #7fe2e6; /* hover */
+  --teal-900: #b4f1f3; /* pressed, links on dark */
+
+  --color-brand: var(--teal-700);
+  --on-brand: #04171b; /* 10.2 on brand */
+  --link: var(--teal-800);
+
+  /* ── 7. AMBER — BO Coins, and only BO Coins ───────────────────────────────
+     A currency must not be the brand colour, or it reads as a feature rather
+     than as money. Amber is the second and last accent in the system; anything
+     that is not a coin, a reward or a warning may not use it.                    */
+  --amber-300: #7a5504;
+  --amber-500: #c98f06;
+  --amber-600: #e5a408;
+  --amber-700: #f5b40a; /* the coin itself */
+  --amber-800: #ffcb4d; /* the figure — 10.4 on canvas */
+  --amber-900: #ffe39b;
+  --on-amber: #1a1204;
+
+  /* ── 8. STATUS ────────────────────────────────────────────────────────────── */
+  --ok: #56e08c;
+  --ok-bg: rgb(86 224 140 / 12%);
+  --warn: #ffcb4d;
+  --warn-bg: rgb(255 203 77 / 12%);
+  --bad: #ff8f8f;
+  --bad-bg: rgb(255 143 143 / 12%);
+
+  /* ── 9. THE AMBIENT FIELD ─────────────────────────────────────────────────
+     Three layers painted once on a fixed pseudo-element behind everything. This
+     is what separates a premium dark interface from a dark <div>, and the store
+     had none of it.
+
+       bloom   a cool teal light source off the top-left, as if the room has a
+               window. Gives the canvas a direction.
+       wash    a warm amber counterweight bottom-right at 3%, so the page is not
+               monochrome and the coin colour is foreshadowed before you see one.
+       grain   3.5% fractal noise, overlay-blended. Kills gradient banding on
+               8-bit displays and adds the texture that makes a screen feel like
+               a material. Non-negotiable — remove it and everything flattens.
+
+     Implementation is in the BASE section below.                                  */
+  --field-bloom: radial-gradient(120% 90% at 12% -10%, rgb(86 211 216 / 11%) 0%, transparent 62%);
+  --field-wash: radial-gradient(90% 80% at 96% 108%, rgb(245 180 10 / 5%) 0%, transparent 58%);
+  --field-vignette: radial-gradient(140% 120% at 50% 40%, transparent 42%, rgb(2 9 12 / 62%) 100%);
+  --grain-opacity: 0.035;
+
+  /* The drafting grid. Used behind heroes and on any surface that wants to read
+     as a drawing board rather than as a panel. */
+  --draft-grid: linear-gradient(rgb(86 211 216 / 6%) 1px, transparent 1px), linear-gradient(90deg, rgb(86 211 216 / 6%) 1px, transparent 1px);
+  --draft-grid-size: 80px 80px;
+
+  /* ── 10. GLASS ────────────────────────────────────────────────────────────
+     One glass recipe. The header, the mega-menu, the sticky buy column, the cost
+     panel and every modal use exactly this, so glass never means five things.    */
+  --glass: color-mix(in oklab, var(--surf-2) 76%, transparent);
+  --glass-strong: color-mix(in oklab, var(--surf-2) 90%, transparent);
+  --glass-bar: color-mix(in oklab, var(--surf-1) 82%, transparent);
+  --glass-bar-scrolled: color-mix(in oklab, var(--surf-1) 94%, transparent);
+  --glass-blur: blur(24px) saturate(1.6);
+  --glass-blur-heavy: blur(40px) saturate(1.7);
+
+  /* ── 11. SHAPE ────────────────────────────────────────────────────────────
+     Six radii, and a rule: ONE ELEMENT, ONE RADIUS FAMILY. A card at 14 may hold
+     a button at 10 and a chip at 999 — a card at 14 holding a thumbnail at 8 and
+     a badge at 6 is three radii doing the job of one and reads as a template.     */
+  --r-1: 6px; /* chips, badges, inline code */
+  --r-2: 10px; /* buttons, inputs, small tiles */
+  --r-3: 14px; /* cards */
+  --r-4: 20px; /* panels, modals, the sticky buy column */
+  --r-5: 28px; /* full-bleed sections, the hero plate, media stages */
+  --r-pill: 999px;
+
+  /* ── 12. ELEVATION ────────────────────────────────────────────────────────
+     Each level is a near-black key plus a wider ambient, because a single
+     shadow on a dark ground is a smudge. The two glows are the only coloured
+     shadows in the store and belong to exactly two things: focus, and the coin.  */
+  --sh-1: 0 1px 2px rgb(0 0 0 / 50%), 0 2px 6px rgb(0 0 0 / 30%);
+  --sh-2: 0 4px 12px rgb(0 0 0 / 50%), 0 12px 32px rgb(0 0 0 / 40%);
+  --sh-3: 0 12px 28px rgb(0 0 0 / 55%), 0 32px 80px rgb(0 0 0 / 50%);
+  --glow-teal: 0 0 40px -8px rgb(86 211 216 / 45%);
+  --glow-amber: 0 0 48px -6px rgb(245 180 10 / 50%);
+  --ring-focus: 0 0 0 2px var(--color-canvas), 0 0 0 4px var(--teal-700);
+
+  /* ── 13. MOTION ───────────────────────────────────────────────────────────
+     v1's four durations and three curves were correct and are kept verbatim.
+     Three durations and three curves are ADDED, each for a class of movement
+     that v1 had no vocabulary for. Nothing in the store may invent an eighth.
+
+       dur-0  instant feedback: a press, a checkbox, a tab
+       dur-5  a scene changing: the estimator's house rebuilding a floor
+       dur-6  a figure rolling: odometers, balances, counters
+
+       ease-glide  the premium curve. A long, slow tail — things do not stop,
+                   they come to rest. Use for anything the eye follows.
+       ease-snap   short authority. Use for state that has already happened.
+       ease-exit   accelerate away. Use ONLY for things leaving the screen;
+                   entrances use ease-out, exits use ease-exit, and swapping
+                   them is the most common motion bug there is.                   */
+  --dur-0: 80ms;
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 340ms;
+  --dur-4: 640ms;
+  --dur-5: 900ms;
+  --dur-6: 1600ms;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-glide: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* How far things travel, and how far they lift. One number each, so the whole
+     store rises by the same amount and no component picks its own 18px. */
+  --rise: 20px; /* was 14 — a taller page needs a longer entrance */
+  --lift: -4px;
+  --tilt-max: 6deg;
+
+  /* ── 14. SPACING ──────────────────────────────────────────────────────────
+     v1 stopped at 96px, which caps the page's rhythm at "dense". Three larger
+     steps are what let a section breathe. --s-10 between major sections is the
+     single change that makes the home page feel like a magazine.                 */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+  --s-11: 160px;
+  --s-12: 208px;
+
+  /* ── 15. LAYOUT ───────────────────────────────────────────────────────────── */
+  --shell: 1320px;
+  --shell-wide: 1560px;
+  --shell-prose: 68ch; /* the reading measure. Prose wider than this is unread. */
+  --gutter: clamp(20px, 4vw, 48px);
+  --header-h: 76px; /* one row now, not two — search moved to a ⌘K overlay */
+  --header-h-scrolled: 62px;
+  --header-inset: 20px; /* the bar floats; this is its gap from the top edge */
+  --nav-h: 40px;
+
+  /* ── 16. THE v1 ALIASES ───────────────────────────────────────────────────
+     Everything below is a v1 name pointing at a v2 value. See the note at the
+     top of this file for why they exist and how they are meant to die: a
+     surface that has been restyled should speak the canonical names, and its
+     aliases should stop being referenced rather than being redefined here.
+
+     These are semantic, not mechanical. Where two v1 tokens collapse into one
+     v2 token it is because v2 removed the reason there were two.                 */
+
+  /* ink */
+  --color-ink: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+
+  /* surfaces. v1's canvas-2 was a second canvas; v2 makes it the first surface. */
+  --color-canvas-2: var(--surf-1);
+  --color-surface: var(--surf-2);
+  --color-surface-2: var(--surf-3);
+  --color-surface-3: var(--surf-4);
+
+  /* the plate */
+  --color-plate: var(--plate-1);
+  --color-plate-2: var(--plate-2);
+  --color-on-plate: var(--on-plate-1);
+  --color-on-plate-2: var(--on-plate-2);
+
+  /* lines. Two collapse into one: an alpha hairline needs no darker sibling. */
+  --color-line: var(--hair);
+  --color-line-2: var(--hair);
+  --color-line-strong: var(--hair-3);
+
+  /* teal. v1's ladder was inverted and unevenly spaced; these land each v1 name
+     on the v2 step that does its job, not on the step with the same number. */
+  --color-teal-50: var(--teal-100);
+  --color-teal-100: var(--teal-200);
+  --color-teal-300: var(--teal-800); /* links */
+  --color-teal-600: var(--teal-600);
+  --color-teal-700: var(--teal-700);
+  --color-teal-800: var(--teal-800);
+  --color-teal-900: var(--teal-900);
+  --color-on-brand: var(--on-brand);
+
+  /* chrome. v1's header was its own near-black palette because it was the one
+     dark island in a light store. It is a glass bar on a dark store now, so the
+     chrome inks are simply inks and the chrome hairlines are simply hairlines. */
+  --color-header: #04141a; /* still literal: the mobile browser chrome takes it */
+  --color-header-2: var(--surf-1);
+  --color-header-ink: var(--ink-1);
+  --color-header-ink-2: var(--ink-3);
+  --color-chrome-hair: var(--hair-2);
+  --color-chrome-hair-strong: var(--hair-3);
+
+  /* status */
+  --color-success: var(--ok);
+  --color-success-bg: var(--ok-bg);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-danger: var(--bad);
+  --color-danger-bg: var(--bad-bg);
+
+  /* BO Coins */
+  --color-coin: var(--amber-700);
+  --color-coin-ink: var(--amber-800);
+  --color-coin-line: var(--hair-amber);
   --color-coin-wash: rgb(245 180 10 / 12%);
   --color-coin-wash-strong: rgb(245 180 10 / 22%);
-  --color-credit: #4ade80; /* coins earned */
-  --color-debit: #fb8b8b;
+  --color-credit: var(--ok);
+  --color-debit: var(--bad);
 
-  /* ── chrome hairlines ───────────────────────────────────────────────────────
-     The header, nav and footer sit on the two darkest teals, below every surface
-     on the ladder. A hover border there cannot come from --color-line (it would
-     be darker than its own ground), so chrome gets two white hairlines and they
-     are the only two in the store. */
-  --color-chrome-hair: rgb(255 255 255 / 12%);
-  --color-chrome-hair-strong: rgb(255 255 255 / 58%);
+  /* semantic */
+  --focus: var(--teal-700);
+  --scrim-ink: rgb(2 10 13 / 72%);
 
-  /* ── paper ──────────────────────────────────────────────────────────────────
+  /* shape and elevation */
+  --radius-sm: var(--r-1);
+  --radius-md: var(--r-2);
+  --radius-lg: var(--r-3);
+  --radius-pill: var(--r-pill);
+  --shadow-1: var(--sh-1);
+  --shadow-2: var(--sh-2);
+  --shadow-3: var(--sh-3);
+  --glow-brand: 0 0 0 3px rgb(86 211 216 / 22%);
+
+  /* ── 17. PAPER ────────────────────────────────────────────────────────────
      A printed estimate is ink on paper, not silver on teal. The print stylesheet
      is the one place the store is deliberately light, so it gets real tokens
      rather than a bare #fff the literal gate would have to make an exception for. */
   --color-paper: #ffffff;
   --color-paper-ink: #000000;
 
-  /* ── AR heads-up display ────────────────────────────────────────────────────
+  /* ── 18. AR HEADS-UP DISPLAY ──────────────────────────────────────────────
      These sit over a live camera image, not over a theme surface, so they are
      the one group that has to stay legible against anything — hence translucent
      near-black panels and a teal that carries its own alpha. What they are NOT
-     is a second palette: the accent below is --color-brand, where ar.css
-     previously used #5ce1e6, a teal four values away from the brand's and
-     answerable to nothing. */
+     is a second palette: the accent below is the brand teal.                     */
   --color-ar-void: #000000; /* letterbox behind the camera feed */
   --color-ar-panel: rgb(4 20 26 / 78%);
   --color-ar-hair: rgb(255 255 255 / 14%);
@@ -140,64 +449,6 @@
   --color-ar-danger: rgb(251 139 139 / 92%);
   --color-ar-ok: rgb(74 222 128 / 88%);
   --color-ar-shadow: rgb(0 0 0 / 40%);
-
-  /* ── semantic aliases ───────────────────────────────────────────────────── */
-  --link: var(--color-teal-300);
-  --focus: var(--color-brand);
-  --scrim-ink: rgb(2 10 13 / 72%);
-
-  /* ── shape ──────────────────────────────────────────────────────────────── */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-pill: 999px;
-
-  /* Shadows on a dark ground are near-black and deeper than their light
-     counterparts — an 8% black shadow is invisible on #06181d. */
-  --shadow-1: 0 1px 2px rgb(0 0 0 / 40%), 0 2px 8px rgb(0 0 0 / 28%);
-  --shadow-2: 0 2px 6px rgb(0 0 0 / 46%), 0 8px 24px rgb(0 0 0 / 38%);
-  --shadow-3: 0 6px 16px rgb(0 0 0 / 52%), 0 16px 48px rgb(0 0 0 / 46%);
-  /* The one glow in the system: focus, and the live-AR reticle. */
-  --glow-brand: 0 0 0 3px rgb(86 211 216 / 22%);
-
-  /* ── motion ─────────────────────────────────────────────────────────────────
-     Four durations and three curves, and nothing in the store may invent a
-     fifth. Before this existed every component picked its own number — 0.12s
-     here, 140ms there, 200ms, 220ms, 300ms — and a page where six things move
-     at six speeds reads as six people's work, which is exactly the "AI-made"
-     tell the palette and the type were already clear of.
-
-     The curves are the whole vocabulary:
-       --ease-out    things arriving: they overshoot nothing and settle fast.
-       --ease-spring things the pointer is touching: a small overshoot, so a
-                     press feels sprung rather than switched.
-       --ease-inout  things travelling across the screen under their own power. */
-  --dur-1: 120ms; /* state flips: colour, border, opacity */
-  --dur-2: 200ms; /* the default — hovers, chevrons, small transforms */
-  --dur-3: 340ms; /* panels, popovers, anything with size */
-  --dur-4: 640ms; /* entrances: a section arriving on scroll */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
-  /* How far a revealing element travels, and how much a card lifts on hover.
-     One number each, so the whole store rises by the same amount. */
-  --rise: 14px;
-  --lift: -3px;
-
-  /* ── spacing ────────────────────────────────────────────────────────────── */
-  --s-1: 4px;
-  --s-2: 8px;
-  --s-3: 12px;
-  --s-4: 16px;
-  --s-5: 24px;
-  --s-6: 32px;
-  --s-7: 48px;
-  --s-8: 64px;
-  --s-9: 96px;
-
-  /* ── chrome heights (sticky offsets use these) ──────────────────────────── */
-  --header-h: 104px; /* two rows: 56 for the lockup and the actions, 48 for search */
-  --nav-h: 40px;
 }
 
 /* A page without the app header (the front door) has no header height. */
@@ -206,7 +457,7 @@
 }
 
 /* ═════════════════════════════════════════════════════════════════════════════
-   BASE
+   BASE — the ambient field, and the rules the whole system rests on
    ═══════════════════════════════════════════════════════════════════════════ */
 @layer base {
   :root {
@@ -215,19 +466,76 @@
 
   html {
     background: var(--color-canvas);
-    scroll-padding-top: calc(var(--header-h) + 8px);
+    scroll-padding-top: calc(var(--header-h) + var(--header-inset) + 8px);
     -webkit-text-size-adjust: 100%;
   }
 
   body {
     margin: 0;
     background: var(--color-canvas);
-    color: var(--color-ink);
-    font-family: var(--font-ui);
-    font-size: 14px;
-    line-height: 20px;
+    color: var(--ink-2);
+    font: 400 var(--t-body) / var(--t-body-lh) var(--font-ui);
+    letter-spacing: var(--track-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* THE FIELD. Fixed, behind everything, pointer-events none, painted once.
+     Two pseudo-elements because grain needs its own blend mode and gradients
+     must not be overlay-blended or they turn to mud. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background: var(--field-bloom), var(--field-wash), var(--field-vignette);
+    /* A 90-second drift. Slow enough that nobody catches it moving, present
+       enough that the page is never twice the same. Costs one composited layer. */
+    animation: field-drift 90s var(--ease-inout) infinite alternate;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: overlay;
+    /* Inline fractal noise: no network request, no cache miss, ~400 bytes. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    /* 8-second step-jitter, the way film grain actually behaves. */
+    animation: grain-shift 8s steps(10) infinite;
+  }
+
+  @keyframes field-drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(-2%, 1.5%, 0) scale(1.06);
+    }
+  }
+  @keyframes grain-shift {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    20% {
+      transform: translate3d(-8%, 2%, 0);
+    }
+    40% {
+      transform: translate3d(-2%, 7%, 0);
+    }
+    60% {
+      transform: translate3d(5%, 0, 0);
+    }
+    80% {
+      transform: translate3d(-6%, -3%, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
   }
 
   :where(a) {
@@ -238,26 +546,27 @@
     font: inherit;
     color: inherit;
   }
-  :where(h1, h2, h3, h4, p, ul, ol, figure) {
+  :where(h1, h2, h3, h4, p, ul, ol, figure, dl, dd) {
     margin: 0;
   }
   :where(ul, ol) {
     padding: 0;
   }
 
-  /* Focus: 2 px teal-700, visible on every surface. The dark header swaps in the brand teal. */
+  /* Focus: two rings, so it survives on the canvas, on a card and on a plate. */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--focus);
-    outline-offset: 2px;
-    box-shadow: var(--glow-brand);
+    outline: none;
+    box-shadow: var(--ring-focus);
+    border-radius: var(--r-2);
   }
 
   ::selection {
-    background: var(--color-teal-100);
-    color: var(--color-ink);
+    background: var(--teal-300);
+    color: var(--ink-1);
   }
 
-  /* Reduced motion disables all motion — not "very fast", off. */
+  /* Reduced motion turns motion OFF, not "fast". Including the field and the
+     grain — a user who asked for stillness did not mean "still, but shimmering". */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -267,6 +576,10 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+    body::before,
+    body::after {
+      animation: none !important;
+    }
   }
 }
 
@@ -274,59 +587,164 @@
    PRIMITIVES — the class contract every page codes against
    ═══════════════════════════════════════════════════════════════════════════ */
 @layer components {
-  /* ── type ───────────────────────────────────────────────────────────────── */
-  .h1 {
-    font: 700 21px / 28px var(--font-ui);
-    letter-spacing: -0.01em;
-    color: var(--color-ink);
+  /* ── type: the class contract every page codes against ───────────────────
+     Display is Instrument Serif and is ONLY ever a headline. The UI tier is
+     Schibsted Grotesk. Figures are Encode Sans and are tabular without
+     exception, because a price that shifts left when it gains a digit is a
+     price the eye cannot compare down a column. */
+  .d1,
+  .d2,
+  .d3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--ink-1);
+    text-wrap: balance;
   }
-  @media (min-width: 768px) {
-    .h1 {
-      font-size: 24px;
-      line-height: 32px;
-    }
+  .d1 {
+    font-size: var(--t-d1);
+    line-height: var(--t-d1-lh);
+    letter-spacing: var(--track-d1);
+  }
+  .d2 {
+    font-size: var(--t-d2);
+    line-height: var(--t-d2-lh);
+    letter-spacing: var(--track-d2);
+  }
+  .d3 {
+    font-size: var(--t-d3);
+    line-height: var(--t-d3-lh);
+    letter-spacing: var(--track-d3);
+  }
+
+  .h1,
+  .h2,
+  .h3,
+  .h4 {
+    font-family: var(--font-ui);
+    color: var(--ink-1);
+    letter-spacing: var(--track-h);
+    text-wrap: balance;
+  }
+  .h1 {
+    font-size: var(--t-h1);
+    line-height: var(--t-h1-lh);
+    font-weight: 600;
   }
   .h2 {
-    font: 700 18px / 24px var(--font-ui);
-    color: var(--color-ink);
+    font-size: var(--t-h2);
+    line-height: var(--t-h2-lh);
+    font-weight: 600;
   }
   .h3 {
-    font: 700 16px / 22px var(--font-ui);
-    color: var(--color-ink);
+    font-size: var(--t-h3);
+    line-height: var(--t-h3-lh);
+    font-weight: 600;
+  }
+  .h4 {
+    font-size: var(--t-h4);
+    line-height: var(--t-h4-lh);
+    font-weight: 600;
+  }
+
+  .lede {
+    font-size: var(--t-lede);
+    line-height: var(--t-lede-lh);
+    color: var(--ink-2);
+    max-width: var(--shell-prose);
+    text-wrap: pretty;
+  }
+  .prose {
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+    color: var(--ink-2);
+    max-width: var(--shell-prose);
+    text-wrap: pretty;
   }
   .meta {
-    font-size: 13px;
-    line-height: 18px;
-    color: var(--color-ink-2);
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    color: var(--ink-3);
   }
   .caption {
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-ink-3);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--ink-3);
   }
-  /* Figures: Encode Sans, tabular. 500 in tables; price integers go 700 (see .price-int). */
+
+  /* The eyebrow. Every section opens with one — it is what tells the reader
+     where they are before the headline tells them what this is. */
+  .micro {
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    letter-spacing: var(--track-micro);
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+  /* A micro with a live dot in front of it, for anything that is genuinely live. */
+  .micro--live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--teal-800);
+  }
+  .micro--live::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: var(--r-pill);
+    background: var(--teal-700);
+    box-shadow: 0 0 0 0 rgb(86 211 216 / 60%);
+    animation: pulse-dot 2.4s var(--ease-out) infinite;
+  }
+  @keyframes pulse-dot {
+    0% {
+      box-shadow: 0 0 0 0 rgb(86 211 216 / 60%);
+    }
+    70% {
+      box-shadow: 0 0 0 9px rgb(86 211 216 / 0%);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(86 211 216 / 0%);
+    }
+  }
+
+  /* Figures: Encode Sans, tabular. */
   .fig {
     font-family: var(--font-figure);
-    font-weight: 500;
+    font-weight: 600;
     font-variant-numeric: tabular-nums lining-nums;
     letter-spacing: -0.01em;
   }
   .tnum {
     font-variant-numeric: tabular-nums lining-nums;
   }
-  /* Display numbers (calculator totals): 28/36. */
+  .fig-hero {
+    font-family: var(--font-figure);
+    font-weight: 700;
+    font-size: var(--t-fig-hero);
+    line-height: 0.96;
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: -0.03em;
+    color: var(--ink-1);
+  }
+  .fig-lg,
   .fig--display {
     font-family: var(--font-figure);
     font-weight: 700;
-    font-size: 28px;
-    line-height: 36px;
+    font-size: var(--t-fig-lg);
+    line-height: 1.15;
     font-variant-numeric: tabular-nums lining-nums;
     letter-spacing: -0.02em;
-    color: var(--color-ink);
+    color: var(--ink-1);
   }
 
-  /* Audiowide lives here and nowhere else. The brand name is uppercase in it by
-     design, and the tracking is opened slightly because the face is already wide. */
+  /* One accent element per icon, per the icon set's grammar. Named here rather
+     than in a page stylesheet because every icon in the store carries it. */
+  .ic-a {
+    color: var(--icon-accent, currentColor);
+  }
+
   /* ── the lockup ───────────────────────────────────────────────────────────
      components/Wordmark.tsx publishes one number, --wm-size (the height of the mark in px),
      and the mark's box, the cap height and the gap are all derived from it here. That is what
@@ -335,23 +753,30 @@
   .lockup {
     display: inline-flex;
     align-items: center;
-    gap: calc(var(--wm-size, 32px) * 0.42);
+    gap: calc(var(--wm-size, 44px) * 0.34);
   }
   .wordmark-mark {
     display: block;
     flex: none;
-    width: var(--wm-size, 32px);
-    height: var(--wm-size, 32px);
+    width: var(--wm-size, 44px);
+    height: var(--wm-size, 44px);
   }
+  /* Audiowide lives here and nowhere else. The brand name is uppercase in it by
+     design, and the tracking is opened slightly because the face is already wide. */
   .wordmark {
-    font-family: var(--font-display);
+    font-family: var(--font-brand);
     font-weight: 400;
-    /* Audiowide's cap height is 0.715 em, so this sets the CAPITALS to --wm-size, not the em box. */
-    font-size: calc(var(--wm-size, 32px) / 0.715);
+    /* --wm-size is the MARK's height. The name is set at 0.75 of it, which puts its cap height
+       (Audiowide caps are 0.715 em) at 0.54 of the mark — the ratio the north star draws, and the
+       one that stops "BUILD OBJECTS" from being 630 px wide at a 44 px mark. Optical, not
+       arithmetic: a wordmark whose capitals match the mark's full height always looks too big,
+       because the mark has margin inside it and the letters do not. */
+    font-size: calc(var(--wm-size, 44px) * 0.75);
     line-height: 1;
     text-transform: uppercase;
     letter-spacing: 0.01em;
     white-space: nowrap;
+    color: var(--ink-1);
   }
   /* The single O of OBJECTS, in the mark's own teal. */
   .wordmark-o {

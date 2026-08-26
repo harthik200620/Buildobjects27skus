@@ -1,243 +1,236 @@
 /* -----------------------------------------------------------------------------
-   Home: the catalogue as a taxonomy.
+   Home: the catalogue as a taxonomy, on a photograph.
 
-   Thirty-five categories in ONE register - one card, one grid, one rhythm. Stocked and
-   upcoming differ by a pill and a quieter photograph, not by a different card in a different
-   grid the way they once did.
+   Thirty-five categories in ONE register — one card, one grid, one rhythm. Stocked and
+   upcoming differ by a pill and a quieter photograph, not by a different card in a
+   different grid the way they once did.
 
-   Every measurement here is on the --s-* scale and every duration and curve on the --dur-* /
-   --ease-* pair from theme.css. Hand-picked numbers are the specific thing a reader registers
-   as "cheap" without being able to name it: six paddings on one page and no rule behind them.
+   WHAT CHANGED IN v2. The page was correct and flat. Sections sat 48px apart, the
+   headline was 30px against a 13px subtitle, and the hero was a teal gradient with a
+   grid drawn on it. Three changes carry the difference:
+
+     · SECTION RHYTHM IS --s-10 (128px), not 48. A front door is scanned, and a
+       scanned page needs air between its moves or every move reads as equally
+       urgent, which is the same as none of them being urgent.
+     · THE HEADLINE IS DISPLAY TIER. 44 → 92px of Instrument Serif against a 17px
+       lede. That is the 6× range the v1 ramp never had.
+     · THE HERO STANDS ON A PHOTOGRAPH — a dusk G+1 house with a parapet, a mumty,
+       chajjas and a compound wall. See components/Plate.tsx for the scrim, which is
+       two layers and both are load-bearing.
+
+   Every measurement here is on the --s-* scale and every duration and curve on the
+   --dur-* / --ease-* pair from theme.css. Hand-picked numbers are the specific thing
+   a reader registers as "cheap" without being able to name it: six paddings on one
+   page and no rule behind them.
    ---------------------------------------------------------------------------- */
 
 @layer components {
-  /* Sections breathe further apart here than on a listing page: this page is scanned, not read. */
-  .home .sec {
-    margin-top: var(--s-7);
+  .home {
+    padding-bottom: var(--s-10);
   }
-  .home .sec-head {
+
+  /* ── section rhythm ───────────────────────────────────────────────────────── */
+  .home .sec {
+    margin-top: var(--s-10);
+  }
+  .home .sec:first-child {
+    margin-top: 0;
+  }
+  .sec-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-9);
+    margin-bottom: var(--s-7);
+  }
+  .sec-eyebrow {
+    color: var(--color-brand);
     margin-bottom: var(--s-4);
   }
-  /* A section heading on the front door carries more weight than one inside a listing. */
-  .home .sec-title {
-    font-size: 22px;
-    line-height: 28px;
-    letter-spacing: -0.01em;
+  .sec-sub {
+    margin-top: var(--s-4);
+    max-width: 52ch;
   }
-
-  /* ── the hero, and the advertisement inside it ───────────────────────────────
-     The brief asked for an advertisement panel "integrated into the background of
-     the home page, not presented as a separate foreground section". So there is no
-     banner: there is a full-bleed field behind the top of the page — a teal wash, a
-     faint construction grid, a soft brand glow — and the headline, the promise line
-     and the ad slot all sit inside that one composition.
-
-     The slot carries no label. It used to say "Advertising space — available" in the
-     corner over a dashed border, which is a box announcing its own emptiness; a
-     considered space that simply holds its ground reads as design, and the same
-     rectangle takes a creative the day there is one. Homepage only. */
-  .hero {
-    position: relative;
-    margin: 0 calc(50% - 50vw) var(--s-6);
-    padding: var(--s-8) calc(50vw - 50%) var(--s-7);
-    overflow: hidden;
-    background: var(--color-canvas-2);
-    border-bottom: 1px solid var(--color-line-2);
-    isolation: isolate;
+  .sec-aside {
+    max-width: 34ch;
+    padding-bottom: 6px;
   }
-  /* the field: a grid, and a glow where the brand teal would fall */
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    background-image: linear-gradient(var(--color-line-2) 1px, transparent 1px), linear-gradient(90deg, var(--color-line-2) 1px, transparent 1px);
-    background-size: 56px 56px;
-    /* A mask reads only the alpha channel, so these two stops are opacity, not colour. */
-    mask-image: radial-gradient(120% 90% at 18% 0%, rgb(0 0 0 / 100%) 0%, transparent 72%);
-    opacity: 0.6;
-  }
-  .hero::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: -30% -10% auto -20%;
-    height: 150%;
-    background: radial-gradient(46% 52% at 22% 22%, var(--color-teal-50) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-in {
-    display: grid;
-    gap: var(--s-6);
-    align-items: center;
-  }
-  @media (min-width: 1024px) {
-    .hero-in {
-      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-      gap: var(--s-7);
-    }
-  }
-  /* The words arrive first and the panel a beat later, so the eye lands on the headline rather
-     than on the thing that moved most. No observer needed - this runs once, on load. */
-  .hero-say > * {
-    animation: hero-in var(--dur-4) var(--ease-out) both;
-  }
-  .hero-say > :nth-child(1) {
-    animation-delay: 40ms;
-  }
-  .hero-say > :nth-child(2) {
-    animation-delay: 100ms;
-  }
-  .hero-say > :nth-child(3) {
-    animation-delay: 170ms;
-  }
-  .hero-say > :nth-child(4) {
-    animation-delay: 240ms;
-  }
-  .hero-say > :nth-child(5) {
-    animation-delay: 310ms;
-  }
-  .hero-board {
-    animation: hero-in var(--dur-4) var(--ease-out) 380ms both;
-  }
-  @keyframes hero-in {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-say > *,
-    .hero-board {
-      animation: none;
-    }
-  }
-  .hero-eyebrow {
+  .sec-more {
     display: inline-flex;
     align-items: center;
     gap: var(--s-2);
-    font-size: 12px;
-    line-height: 16px;
+    flex: none;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-brand);
+    color: var(--teal-800);
   }
-  .hero-title {
-    margin-top: var(--s-3);
-    /* Audiowide, like every other display heading — see .display in legacy.css. */
-    font: 400 30px / 38px var(--font-display);
-    letter-spacing: -0.005em;
-    color: var(--color-ink);
-    text-wrap: balance;
+  .sec-more svg {
+    transition: transform var(--dur-2) var(--ease-glide);
   }
-  @media (min-width: 768px) {
-    .hero-title {
-      font-size: 40px;
-      line-height: 46px;
+  .sec-more:hover svg {
+    transform: translateX(4px);
+  }
+  @media (max-width: 899.98px) {
+    .sec-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--s-5);
+    }
+    .sec-aside {
+      max-width: none;
     }
   }
+
+  /* ── the hero ─────────────────────────────────────────────────────────────
+     Four layers: the photograph and its scrim (.plate), the drafting grid, the copy,
+     and the live stock panel. The grid sits between the photograph and the copy so it
+     reads as drawn ON the scene rather than under it — the store sells to people who
+     read drawings, and a drafting grid over a real building is the whole proposition
+     in one image. */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    padding: var(--s-10) 0 var(--s-9);
+    margin-bottom: 0;
+    overflow: hidden;
+  }
+  .hero-plate {
+    /* Taller than the copy so the photograph runs behind the ticker's top edge. */
+    inset: 0 0 -1px 0;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.55;
+    background-image: var(--draft-grid);
+    background-size: var(--draft-grid-size);
+    -webkit-mask-image: radial-gradient(80% 60% at 26% 34%, #000, transparent 76%);
+    mask-image: radial-gradient(80% 60% at 26% 34%, #000, transparent 76%);
+  }
+  .hero-in {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: var(--s-8);
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .hero-in {
+      grid-template-columns: minmax(0, 1fr) 388px;
+      gap: var(--s-8);
+    }
+  }
+  .hero-title {
+    margin-top: var(--s-6);
+    max-width: 15ch;
+  }
   .hero-lede {
-    margin-top: var(--s-3);
-    max-width: 52ch;
-    font-size: 15px;
-    line-height: 23px;
-    color: var(--color-ink-2);
+    margin-top: var(--s-6);
+    max-width: 56ch;
   }
   .hero-cta {
     display: flex;
     flex-wrap: wrap;
     gap: var(--s-3);
-    margin-top: var(--s-5);
-  }
-  /* Three figures as a description list, which is what they are: a label and its value. They
-     used to be one run of inline text - "35 categories 9 products 28 items on the shelf" - where
-     the numbers and the words carried the same weight and none of it was scannable. */
-  .hero-facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-3) var(--s-6);
-    margin-top: var(--s-6);
-    padding-top: var(--s-4);
-    border-top: 1px solid var(--color-line-2);
-  }
-  .hero-facts div {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-  .hero-facts dt {
-    font-size: 11px;
-    line-height: 16px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-ink-3);
-  }
-  .hero-facts dd {
-    margin: 0;
-    font-family: var(--font-figure);
-    font-size: 26px;
-    line-height: 32px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums lining-nums;
-    letter-spacing: -0.02em;
-    color: var(--color-ink);
+    margin-top: var(--s-7);
   }
 
-  /* the stock panel -------------------------------------------------------
-     What used to be an empty 16:9 rectangle held open for an advertisement. It now carries the
-     shop's own stock, one item at a time - see components/home/PriceBoard.tsx. */
-  .board {
+  /* The three counters. A rule above and a rule between, no boxes — the numbers are
+     large enough to be the structure. */
+  .hero-facts {
     display: flex;
-    flex-direction: column;
-    gap: var(--s-3);
-    padding: var(--s-4);
-    background: linear-gradient(155deg, var(--color-surface) 0%, var(--color-canvas-2) 100%);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-2);
+    margin-top: var(--s-8);
+    border-top: 1px solid var(--hair-2);
+  }
+  .hero-facts > div {
+    flex: 1;
+    min-width: 0;
+    padding: var(--s-5) var(--s-5) 0 0;
+  }
+  .hero-facts > div + div {
+    padding-left: var(--s-5);
+    border-left: 1px solid var(--hair);
+  }
+  .hero-facts dt {
+    margin-bottom: var(--s-2);
+  }
+  .hero-facts dd {
+    font-size: 38px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink-1);
+  }
+  @media (max-width: 519.98px) {
+    .hero {
+      padding: var(--s-8) 0 var(--s-7);
+    }
+    .hero-facts dd {
+      font-size: 28px;
+    }
+  }
+
+  /* ── the live stock panel ─────────────────────────────────────────────────
+     Glass, because it floats over the photograph. Everything in it is real: a stocked
+     item, its price, its GST rate, its certification. It rotates on a dwell timer with
+     a progress ring, and it pauses when a pointer or the keyboard is inside it. */
+  .board {
+    position: relative;
+    padding: var(--s-5);
+    border-radius: var(--r-4);
+    border: 1px solid var(--hair-2);
+    background: var(--glass);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--specular-strong), var(--sh-3);
+    overflow: hidden;
   }
   .board-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--s-3);
+    margin-bottom: var(--s-4);
   }
   .board-kicker {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    font-size: 11px;
-    line-height: 16px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    gap: var(--s-2);
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    letter-spacing: var(--track-micro);
     text-transform: uppercase;
-    color: var(--color-ink-2);
+    font-weight: 600;
+    color: var(--teal-800);
   }
-  /* The dwell timer, drawn. A conic gradient swept by one animated angle - one property, on the
-     compositor, and it restarts with the item because React keys it. */
-  @property --sweep {
-    syntax: "<angle>";
-    inherits: false;
-    initial-value: 0deg;
-  }
-  @keyframes board-sweep {
-    to {
-      --sweep: 360deg;
-    }
-  }
+  /* The dwell ring: a hairline that fills as the panel counts down to its next item. */
   .board-ring {
-    width: 14px;
-    height: 14px;
-    flex: none;
-    border-radius: 50%;
-    background: conic-gradient(var(--color-brand) var(--sweep), var(--color-line) 0);
-    mask: radial-gradient(circle, transparent 52%, rgb(0 0 0 / 100%) 54%);
-    animation: board-sweep linear both;
+    position: absolute;
+    left: var(--s-5);
+    right: var(--s-5);
+    bottom: var(--s-4);
+    height: 2px;
+    border-radius: 2px;
+    background: var(--hair-2);
+    overflow: hidden;
+  }
+  .board-ring::after {
+    content: "";
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--color-brand);
+    animation: board-dwell linear both;
+    animation-duration: inherit;
+  }
+  @keyframes board-dwell {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .board-ring {
@@ -246,33 +239,13 @@
   }
 
   .board-item {
-    display: flex;
-    gap: var(--s-3);
-    align-items: flex-start;
-    min-height: 116px;
-    padding: var(--s-3);
-    border: 1px solid var(--color-line-2);
-    border-radius: var(--radius-md);
-    background: var(--color-canvas-2);
-    color: var(--color-ink);
-    text-decoration: none;
-    animation: board-swap var(--dur-3) var(--ease-out) both;
-    transition:
-      border-color var(--dur-2) var(--ease-out),
-      background-color var(--dur-2) var(--ease-out);
-  }
-  .board-item:hover {
-    border-color: var(--color-line-strong);
-    background: var(--color-surface);
+    display: block;
+    animation: board-swap var(--dur-4) var(--ease-glide) both;
   }
   @keyframes board-swap {
     from {
       opacity: 0;
-      transform: translateY(6px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
+      transform: translateY(10px);
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -280,441 +253,372 @@
       animation: none;
     }
   }
-  /* Brand photography is shot on white. On deep teal that is a hole in the page, so it sits on
-     the silver plate - the store's one light ground - exactly as it does everywhere else. */
   .board-shot {
-    flex: none;
+    position: relative;
     display: grid;
     place-items: center;
-    width: 84px;
-    height: 84px;
-    padding: 6px;
-    border-radius: var(--radius-md);
-    background: linear-gradient(160deg, var(--color-plate-2), var(--color-plate));
+    height: 212px;
+    border-radius: var(--r-3);
+    background: linear-gradient(158deg, var(--plate-2) 0%, var(--plate-1) 100%);
     overflow: hidden;
   }
+  .board-shot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(60% 45% at 32% 22%, rgb(255 255 255 / 90%), transparent 70%);
+  }
   .board-img {
-    width: 100%;
-    height: 100%;
+    position: relative;
+    z-index: 1;
+    max-width: 78%;
+    max-height: 78%;
     object-fit: contain;
   }
   .board-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
+    display: block;
+    padding-top: var(--s-4);
   }
-  .board-cat {
-    font-size: 11px;
-    line-height: 15px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+  .board-cat,
+  .board-brand {
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    letter-spacing: var(--track-micro);
     text-transform: uppercase;
+    font-weight: 600;
     color: var(--color-brand);
   }
-  .board-brand {
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-ink-3);
+  .board-brand::before {
+    content: " · ";
   }
   .board-name {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    overflow: hidden;
-    font-size: 14px;
-    line-height: 19px;
+    display: block;
+    margin: var(--s-2) 0 var(--s-3);
+    font-size: var(--t-h3);
+    line-height: var(--t-h3-lh);
     font-weight: 600;
-    color: var(--color-ink);
+    color: var(--ink-1);
   }
   .board-price {
     display: flex;
     align-items: baseline;
     gap: 6px;
-    margin-top: 3px;
   }
   .board-price b {
     font-family: var(--font-figure);
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 32px;
+    line-height: 1;
     font-weight: 700;
-    color: var(--color-ink);
+    letter-spacing: -0.02em;
+    color: var(--ink-1);
   }
   .board-unit {
-    font-size: 12px;
-    color: var(--color-ink-3);
+    font-size: 13px;
+    color: var(--ink-3);
   }
-
   .board-foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--s-3);
+    margin-top: var(--s-3);
+    padding-bottom: var(--s-4);
     font-size: 12px;
-    line-height: 16px;
-    color: var(--color-ink-3);
+    color: var(--ink-3);
   }
   .board-gst,
   .board-go {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-  }
-  .board-gst svg {
-    color: var(--color-success);
+    gap: 6px;
   }
   .board-go {
-    color: var(--link);
+    color: var(--teal-800);
     font-weight: 600;
   }
   .board-go svg {
-    transition: transform var(--dur-2) var(--ease-out);
+    transition: transform var(--dur-2) var(--ease-glide);
   }
   .board:hover .board-go svg {
     transform: translateX(3px);
   }
-
   .board-dots {
     display: flex;
-    gap: 5px;
+    gap: 6px;
+    margin-top: var(--s-4);
   }
   .board-dot {
-    position: relative;
-    width: 26px;
+    width: 22px;
     height: 3px;
-    padding: 0;
     border: 0;
-    border-radius: var(--radius-pill);
-    background: var(--color-line);
+    border-radius: 2px;
+    background: var(--hair-2);
     cursor: pointer;
     transition: background-color var(--dur-2) var(--ease-out);
   }
   .board-dot:hover {
-    background: var(--color-line-strong);
+    background: var(--hair-3);
   }
   .board-dot.is-on {
     background: var(--color-brand);
   }
-  /* A 3 px bar is not a 44 px target. The hit area is padded out with a pseudo-element rather
-     than by making the bar itself taller. */
-  .board-dot::before {
-    content: "";
-    position: absolute;
-    /* 3 px of bar plus 21 px above and below is a 45 px target, which clears the 44 px floor a
-       thumb needs. Measured, not guessed: a sweep of the mobile viewport reported these at 3 px
-       until the pseudo-element was widened. */
-    inset: -21px -4px;
+
+  /* ── the rate ticker ──────────────────────────────────────────────────────
+     A rule top and bottom, a fixed label, and a marquee. It is the cheapest possible
+     proof the store is alive — and everything on it is a figure the catalogue holds.
+     See components/home/RateTicker.tsx for why there are no up/down deltas. */
+  .tick {
+    display: flex;
+    align-items: stretch;
+    height: 56px;
+    border-top: 1px solid var(--hair);
+    border-bottom: 1px solid var(--hair);
+    background: color-mix(in oklab, var(--surf-1) 55%, transparent);
+    overflow: hidden;
+  }
+  .tick-head {
+    display: flex;
+    align-items: center;
+    flex: none;
+    padding: 0 var(--s-5);
+    border-right: 1px solid var(--hair);
+    background: rgb(86 211 216 / 6%);
+    white-space: nowrap;
+  }
+  .tick-window {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .tick-track {
+    display: flex;
+    white-space: nowrap;
+    animation: tick-march 46s linear infinite;
+  }
+  .tick-track .contents {
+    display: contents;
+  }
+  @keyframes tick-march {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  /* Text that will not hold still cannot be read, so it stops for anyone who reaches
+     for it — and never starts for anyone who asked for stillness. */
+  .tick:hover .tick-track,
+  .tick:focus-within .tick-track {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tick-track {
+      animation: none;
+    }
+    .tick-window {
+      overflow-x: auto;
+    }
+  }
+  .tick-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    padding: 0 var(--s-6);
+    border-right: 1px solid var(--hair);
+    font-size: 13.5px;
+    color: var(--ink-2);
+  }
+  .tick-item:hover {
+    color: var(--ink-1);
+  }
+  .tick-brand {
+    color: var(--ink-3);
+  }
+  .tick-price {
+    color: var(--ink-1);
+  }
+  .tick-unit {
+    font-size: 12px;
+    color: var(--ink-3);
   }
 
-  /* ── the category grid ────────────────────────────────────────────────── */
+  /* ── the spine ────────────────────────────────────────────────────────────
+     Three panels in one bordered block with a light sweeping across its top edge. The
+     numerals are the display serif at 56px in brand teal at 22% — large enough to be
+     structure, quiet enough not to compete with the headings. */
+  .spine {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border: 1px solid var(--hair-2);
+    border-radius: 18px;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--surf-2) 50%, transparent);
+  }
+  .spine > li {
+    padding: var(--s-6) var(--s-6) var(--s-7);
+  }
+  .spine > li + li {
+    border-left: 1px solid var(--hair);
+  }
+  .spine::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(86 211 216 / 70%), transparent);
+    animation: spine-sweep 5.5s var(--ease-inout) infinite;
+  }
+  @keyframes spine-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    60%,
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spine::after {
+      animation: none;
+      opacity: 0.4;
+    }
+  }
+  .spine-n {
+    font-family: var(--font-display);
+    font-size: 56px;
+    line-height: 1;
+    color: rgb(86 211 216 / 22%);
+    margin-bottom: var(--s-4);
+  }
+  .spine h3 {
+    margin-bottom: var(--s-2);
+  }
+  .spine .meta {
+    max-width: 32ch;
+  }
+  @media (max-width: 899.98px) {
+    .spine {
+      grid-template-columns: 1fr;
+    }
+    .spine > li + li {
+      border-left: 0;
+      border-top: 1px solid var(--hair);
+    }
+  }
+
+  /* ── the category grid ────────────────────────────────────────────────────
+     The photograph IS the tile. The name and its meta sit on the photograph under a
+     bottom-weighted shade, and the only things that move on hover are the card (up
+     4px), its edge (to brand teal) and the photograph itself (1.06). One gesture per
+     property; nothing flashes. */
   .cat-grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--s-4);
   }
-
-  /* The card takes .lift in the markup for its elevation, so the only rules here are the ones
-     unique to a category tile: the photograph, and the teal edge that lights along the top. */
   .cat-card {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    display: block;
+    aspect-ratio: 1 / 1.06;
+    border-radius: 16px;
     overflow: hidden;
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-lg);
-    color: var(--color-ink);
-    text-decoration: none;
+    background: var(--surf-1);
+    border: 1px solid var(--hair);
+    transition:
+      transform var(--dur-3) var(--ease-glide),
+      border-color var(--dur-2) var(--ease-out),
+      box-shadow var(--dur-3) var(--ease-glide);
   }
-  /* A 2 px brand rule that wipes in from the left along the top edge. Cheap - one scaled
-     pseudo-element, no layout - and it gives the grid a direction on hover rather than
-     thirty-five cards that each just get taller. */
-  .cat-card::after {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    z-index: 2;
-    height: 2px;
-    background: linear-gradient(90deg, var(--color-brand), var(--color-teal-600));
-    transform: scaleX(0);
-    transform-origin: 0 50%;
-    transition: transform var(--dur-3) var(--ease-out);
+  .cat-card:hover,
+  .cat-card:focus-visible {
+    transform: translateY(-6px);
+    border-color: var(--hair-brand);
+    box-shadow: 0 18px 40px rgb(0 0 0 / 50%);
   }
-  .cat-card:hover::after,
-  .cat-card:focus-visible::after {
-    transform: scaleX(1);
-  }
-  .cat-card:hover .cat-photo img {
-    transform: scale(1.05);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .cat-card::after,
-    .cat-photo img,
-    .cat-card:hover .cat-photo img {
-      transition: none;
-      transform: none;
-    }
-  }
-
   .cat-photo {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    background: var(--color-canvas-2);
+    position: absolute;
+    inset: 0;
+    transition: transform var(--dur-4) var(--ease-glide);
   }
   .cat-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform var(--dur-4) var(--ease-out);
   }
-  /* A category with nothing to sell yet is quieter — the same card, turned down. */
+  .cat-card:hover .cat-photo {
+    transform: scale(1.06);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cat-card:hover .cat-photo {
+      transform: none;
+    }
+  }
+  /* The shade. Transparent for the top third so the photograph is a photograph, then
+     down to near-black so the name has something to sit on whatever is behind it. */
+  .cat-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 30%, rgb(6 24 29 / 90%) 100%);
+  }
   .cat-card--soon .cat-photo img {
-    filter: saturate(0.55) brightness(0.74);
+    opacity: 0.55;
+    filter: saturate(0.7);
   }
   .cat-card--soon:hover .cat-photo img {
-    filter: saturate(0.8) brightness(0.88);
+    opacity: 0.72;
   }
-  /* "Arriving soon", on twenty-six of the thirty-five tiles. At that count a solid dark pill on
-     every card is the loudest thing in the grid, and what it repeats twenty-six times is an
-     absence. It is quiet by default and firms up on hover, where the reader has actually asked
-     about that one tile. */
-  .cat-pill {
-    position: absolute;
-    top: var(--s-2);
-    left: var(--s-2);
-    padding: 3px var(--s-2);
-    border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--color-canvas) 78%, transparent);
-    border: 1px solid var(--color-line-2);
-    color: var(--color-ink-2);
-    font-size: 11px;
-    line-height: 15px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    backdrop-filter: blur(4px);
-    transition:
-      background-color var(--dur-2) var(--ease-out),
-      color var(--dur-2) var(--ease-out);
-  }
-  .cat-card:hover .cat-pill {
-    background: var(--color-canvas);
-    color: var(--color-ink);
-  }
-
   .cat-band {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--s-4);
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    flex: 1 1 auto;
-    padding: var(--s-3) var(--s-3) var(--s-4);
+    gap: 4px;
   }
-  /* Names wrap. "Communication & Furniture" and "Heavy Construction Equipment" were both
-     clipped by the ellipsis this replaces, and a truncated name is a category the reader
-     cannot identify. Two lines are reserved either way so the grid keeps a baseline. */
   .cat-name {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    overflow: hidden;
-    min-height: 40px;
-    font-size: 15px;
-    line-height: 20px;
+    font-size: var(--t-h4);
+    line-height: 1.3;
     font-weight: 600;
-    color: var(--color-ink);
+    color: var(--ink-1);
+    /* Names WRAP. "Communication & Furniture" and "Heavy Construction Equipment" were
+       both clipped by an ellipsis; two lines costs nothing and says the whole thing. */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .cat-meta {
-    display: block;
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--color-ink-2);
+    font-size: 12.5px;
+    color: var(--ink-3);
   }
   .cat-meta .fig {
-    font-weight: 700;
-    color: var(--color-ink);
+    color: var(--ink-2);
   }
-  .cat-dot {
-    padding: 0 5px;
-    color: var(--color-ink-3);
-  }
-
-  /* ── the department blocks under "On the way" ─────────────────────────── */
-  .dept-block {
-    margin-top: var(--s-6);
-    padding-top: var(--s-5);
-    border-top: 1px solid var(--color-line-2);
-  }
-  .dept-head {
-    display: flex;
-    align-items: baseline;
-    gap: var(--s-3);
-    font-size: 16px;
-    line-height: 22px;
-    font-weight: 700;
-    color: var(--color-ink);
-  }
-  .dept-count {
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--color-ink-2);
-  }
-  .dept {
-    margin-top: var(--s-5);
-  }
-  .dept-name {
-    margin-bottom: var(--s-3);
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+  .cat-pill {
+    position: absolute;
+    top: var(--s-3);
+    left: var(--s-3);
+    z-index: 1;
+    padding: 4px 9px;
+    border-radius: var(--r-pill);
+    background: rgb(6 24 29 / 78%);
+    border: 1px solid var(--hair-2);
+    backdrop-filter: blur(6px);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-ink-2);
-  }
-
-  /* ── "On the shelf now": every stocked product, one line each ──────────
-     Deliberately not a product grid. This page is the taxonomy; a wall of photographs and
-     prices below it would put twenty-seven products in front of thirty-seven categories and
-     bury what the page is for. A name and a price says "this exists and it costs this" — the
-     card, the specification and the room view all live on the product page. */
-  .stock-strip {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: var(--s-3);
-  }
-  /* Two lines and a price column, not one run of text.
-     The old chip was brand, name and price on one baseline with the name ellipsed, and because
-     `name` in the search index carries the variant glued onto it, what actually rendered was
-     "ULTRATECH CEMENT UltraTech Portland Pozzolana Cement (PPC) 50 kg bag ₹415" cut off
-     mid-word. Brand and price now share the top line - which puts every price in the grid on the
-     same right edge, so the column can be read down - and the title has the room to finish. */
-  .stock-chip {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    height: 100%;
-    padding: var(--s-3);
-    border: 1px solid var(--color-line-2);
-    border-radius: var(--radius-md);
-    background: var(--color-surface);
-    color: var(--color-ink);
-    text-decoration: none;
-  }
-  .stock-chip-top {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--s-2);
-  }
-  .stock-chip:hover {
-    border-color: var(--color-line-strong);
-    background: var(--color-surface-2);
-    transform: translateY(-1px);
-  }
-  .stock-chip {
-    transition:
-      border-color var(--dur-1) var(--ease-out),
-      background-color var(--dur-1) var(--ease-out),
-      transform var(--dur-1) var(--ease-out);
-  }
-  .stock-chip-brand {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 11px;
-    line-height: 16px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-ink-3);
-  }
-  .stock-chip-name {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    overflow: hidden;
-    font-size: 13px;
-    line-height: 18px;
     font-weight: 600;
-    color: var(--color-ink);
+    color: var(--ink-3);
   }
-  .stock-chip-variant {
-    font-size: 11px;
-    line-height: 15px;
-    color: var(--color-ink-3);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .stock-chip-price {
-    flex: none;
-    font-family: var(--font-figure);
-    font-size: 14px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums lining-nums;
-    color: var(--color-brand);
-  }
-
-  /* what every price carries -----------------------------------------------
-     Four statements of fact, each one a thing the store does. "Quality materials" and "Trusted
-     brands" used to sit here as two of four; they are things any competitor could also write,
-     which means neither of them said anything. */
-  .promises {
-    padding-top: var(--s-6);
-    border-top: 1px solid var(--color-line-2);
-  }
-  .promise-grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--s-5);
-  }
-  .promise-grid li {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-2);
-  }
-  .promise-grid svg {
-    color: var(--color-brand);
-  }
-  .promise-grid h3 {
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 700;
-    color: var(--color-ink);
-  }
-  .promise-grid p {
-    font-size: 13px;
-    line-height: 19px;
-    color: var(--color-ink-2);
-    text-wrap: pretty;
-  }
-  @media (max-width: 1023.98px) {
-    .promise-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--s-5) var(--s-4);
-    }
-  }
-  @media (max-width: 519.98px) {
-    .promise-grid {
-      grid-template-columns: 1fr;
-      gap: var(--s-4);
-    }
-  }
-
   @media (max-width: 1099.98px) {
     .cat-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -725,9 +629,117 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--s-3);
     }
-    .cat-name {
-      font-size: 14px;
-      min-height: 38px;
+  }
+
+  /* ── the shelf ────────────────────────────────────────────────────────────── */
+  .shelf-rail {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-4);
+  }
+  @media (max-width: 1099.98px) {
+    .shelf-rail {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+  }
+  @media (max-width: 767.98px) {
+    .shelf-rail {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-3);
+    }
+  }
+
+  /* ── the promises ─────────────────────────────────────────────────────────── */
+  .promise-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--hair-2);
+  }
+  .promise-grid li {
+    padding: var(--s-6) var(--s-5) 0 0;
+  }
+  .promise-grid li + li {
+    padding-left: var(--s-5);
+    border-left: 1px solid var(--hair);
+  }
+  .promise-grid svg {
+    display: block;
+    margin-bottom: var(--s-4);
+    color: var(--ink-2);
+  }
+  .promise-grid h3 {
+    margin-bottom: var(--s-2);
+  }
+  @media (max-width: 1023.98px) {
+    .promise-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 var(--s-5);
+    }
+    .promise-grid li:nth-child(3) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+  @media (max-width: 519.98px) {
+    .promise-grid {
+      grid-template-columns: 1fr;
+    }
+    .promise-grid li + li {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  /* ── the closing band ─────────────────────────────────────────────────────
+     The one place on the page where teal and amber are both allowed, because it is
+     the one place that is asking for something rather than describing something. */
+  .band {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-8);
+    padding: var(--s-8) var(--s-8);
+    border-radius: 24px;
+    border: 1px solid var(--hair-2);
+    background: linear-gradient(126deg, var(--surf-2), var(--color-canvas) 68%);
+    overflow: hidden;
+  }
+  .band::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 120% at 12% 0%, rgb(86 211 216 / 18%), transparent 60%), radial-gradient(50% 100% at 92% 100%, rgb(245 180 10 / 13%), transparent 62%);
+  }
+  .band-say {
+    max-width: 46ch;
+  }
+  .band-say .d2 {
+    margin-bottom: var(--s-4);
+  }
+  .band-do {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    flex: none;
+  }
+  @media (max-width: 899.98px) {
+    .band {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: var(--s-7) var(--s-6);
+    }
+  }
+
+  /* ── the empty state ──────────────────────────────────────────────────────── */
+  .empty {
+    padding: var(--s-8);
+    text-align: center;
+  }
+  .empty .d3 {
+    margin: var(--s-3) 0 var(--s-4);
   }
 }

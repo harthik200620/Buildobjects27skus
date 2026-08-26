@@ -22,6 +22,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
 
 const HERE = import.meta.dirname;
 const REPO = path.resolve(HERE, '..', '..', '..');
@@ -38,6 +39,16 @@ interface Job {
   pick?: (rel: string) => boolean;
   /** A second source, used only for paths the first one does not have. */
   fallbackFrom?: string;
+  /**
+   * Widths to derive, instead of staging the file as it is.
+   *
+   * Everything else here is pre-derived by the pipeline and staging is a hard link. The backplates
+   * are not: they arrived as seven single 2560 px frames, and serving a 766 KB hero to a phone to
+   * paint 390 CSS px of it is most of a page's weight spent on something nobody looks directly at.
+   * Deriving at stage time rather than committing the renditions keeps one copy of each plate in
+   * git and lets the ladder be re-cut by changing this line.
+   */
+  derive?: number[];
 }
 
 const JOBS: Job[] = [
@@ -56,6 +67,28 @@ const JOBS: Job[] = [
      * twenty-eight rather than a 404 for seven. 1.3 MB for the set.
      */
     fallbackFrom: path.join(REPO, 'assets', '3d', 'placeholders'),
+  },
+  /*
+   * The photographic backplates.
+   *
+   * Seven graded frames that sit behind the opening section of a page, full-bleed, under a scrim.
+   * They live in `design-system/art/` because that is the design bundle they were graded in and
+   * where their manifest explains what each one is; staging rather than copying keeps one copy in
+   * git instead of two, and keeps the manifest next to the files it describes.
+   *
+   * `.webp` only: the folder also holds the manifest, the prompt pack, the fetch script and
+   * `iso-house.svg`, none of which the storefront serves. The iso house is inlined by the
+   * estimator, not fetched.
+   */
+  {
+    from: path.join(REPO, 'design-system', 'art'),
+    to: path.join(PUBLIC, 'art'),
+    label: 'plates',
+    pick: (rel) => !rel.includes('/') && rel.endsWith('.webp'),
+    /* 640 covers a phone at 1x and a small tablet; 1280 covers a laptop and a 2x phone; 2560 is
+       the source and covers a 2x desktop. A plate is behind a scrim at 30–80% opacity, so it can
+       take a heavier quantiser than a product photograph — 72 rather than 86. */
+    derive: [640, 1280, 2560],
   },
 ];
 
@@ -84,6 +117,10 @@ let staged = 0;
 let bytes = 0;
 let unchanged = 0;
 let removed = 0;
+/* Derived outputs are named after their source and their width, so they never appear in the
+   source listing the prune compares against. Recording them keeps the prune from deleting
+   everything it just made. */
+const derived = new Set<string>();
 
 for (const job of JOBS) {
   const keep = (rel: string) => !SKIP.some((re) => re.test(rel)) && (job.pick?.(rel) ?? true);
@@ -96,8 +133,27 @@ for (const job of JOBS) {
 
   for (const rel of wanted) {
     const from = path.join(source(rel), rel);
-    const to = path.join(job.to, rel);
     const src = fs.statSync(from);
+
+    if (job.derive) {
+      for (const width of job.derive) {
+        const to = path.join(job.to, rel.replace(/\.webp$/, `-${width}.webp`));
+        const dst = fs.existsSync(to) ? fs.statSync(to) : null;
+        /* No size check here — the output is not a copy of the input, so only age can tell. */
+        if (dst && dst.mtimeMs >= src.mtimeMs) {
+          unchanged++;
+          continue;
+        }
+        fs.mkdirSync(path.dirname(to), { recursive: true });
+        await sharp(from).resize({ width, withoutEnlargement: true }).webp({ quality: 72 }).toFile(to);
+        derived.add(path.relative(job.to, to).split(path.sep).join('/'));
+        staged++;
+        bytes += fs.statSync(to).size;
+      }
+      continue;
+    }
+
+    const to = path.join(job.to, rel);
     /* Same size and no older than the source means the staged copy is already right. */
     const dst = fs.existsSync(to) ? fs.statSync(to) : null;
     if (dst && dst.size === src.size && dst.mtimeMs >= src.mtimeMs) {
@@ -113,13 +169,16 @@ for (const job of JOBS) {
   /* Anything staged by an earlier run that the source no longer has would otherwise be served
      forever — a deleted photograph that stays live is worse than a missing one. */
   for (const rel of walk(job.to)) {
-    if (want.has(rel)) continue;
+    if (want.has(rel) || derived.has(rel)) continue;
     fs.rmSync(path.join(job.to, rel));
     removed++;
   }
 
-  const total = wanted.reduce((n, rel) => n + fs.statSync(path.join(source(rel), rel)).size, 0);
-  process.stdout.write(`  ${job.label.padEnd(6)} ${String(wanted.length).padStart(5)} files  ${(total / 1048576).toFixed(1).padStart(7)} MB\n`);
+  /* A deriving job's sources are not what ships, so it reports what it wrote instead. Reporting
+     the inputs would have claimed 3.5 MB for a folder holding 1.8 MB. */
+  const listed = job.derive ? walk(job.to) : wanted;
+  const total = listed.reduce((n, rel) => n + fs.statSync(job.derive ? path.join(job.to, rel) : path.join(source(rel), rel)).size, 0);
+  process.stdout.write(`  ${job.label.padEnd(6)} ${String(listed.length).padStart(5)} files  ${(total / 1048576).toFixed(1).padStart(7)} MB\n`);
 }
 
 process.stdout.write(`staged ${staged} file(s), ${(bytes / 1048576).toFixed(1)} MB · ${unchanged} already current${removed ? ` · ${removed} removed` : ''}\n`);

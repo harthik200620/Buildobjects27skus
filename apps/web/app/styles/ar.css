@@ -1,5 +1,5 @@
 /* Live-camera (tier C) overlay chrome: the video feed fills the stage, the SceneRenderer canvas
-   and the HUD SVG sit on top. The base stage/chip styles live in legacy.css; these extend them.
+   and the HUD SVG sit on top. The base stage/chip styles live in store.css; these extend them.
 
    Every colour here comes from the --color-ar-* group in theme.css. It used to come from twelve
    literals built around #5ce1e6 — a teal four values off the brand's #56d3d8, which meant the AR
@@ -77,7 +77,6 @@
 .ar-hud-glass {
   background: var(--color-ar-panel);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--color-ar-hair);
   box-shadow: 0 8px 32px 0 var(--color-ar-shadow);
   color: var(--color-header-ink);

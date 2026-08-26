@@ -1,262 +1,847 @@
-import {
-  Anvil,
-  Aperture,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUpDown,
-  Atom,
-  AudioLines,
-  BadgeCheck,
-  Blocks,
-  Bolt,
-  Bookmark,
-  Boxes,
-  Building2,
-  Camera,
-  Cctv,
-  Check,
-  CheckCheck,
-  ChefHat,
-  ChevronDown,
-  ChevronRight,
-  ChevronUp,
-  Circle,
-  CircleCheck,
-  CircleDot,
-  Cog,
-  Coins,
-  Compass,
-  Construction,
-  Crosshair,
-  DoorOpen,
-  Download,
-  Droplets,
-  Factory,
-  Fence,
-  FileClock,
-  Files,
-  FileText,
-  FireExtinguisher,
-  Flame,
-  FlaskConical,
-  Frame,
-  Gauge,
-  Gift,
-  GitCompare,
-  Grid3x3,
-  Handshake,
-  HardHat,
-  Hourglass,
-  House,
-  IndianRupee,
-  Info,
-  Leaf,
-  Lightbulb,
-  LogOut,
-  MapPin,
-  Menu,
-  Minus,
-  Mountain,
-  Move3d,
-  Package,
-  PackageOpen,
-  PaintRoller,
-  Palette,
-  PartyPopper,
-  PencilRuler,
-  Phone,
-  Plus,
-  Presentation,
-  Printer,
-  ReceiptIndianRupee,
-  RefreshCw,
-  RotateCcw,
-  RotateCw,
-  Ruler,
-  Scale,
-  Scan,
-  ScrollText,
-  Search,
-  Settings2,
-  Share2,
-  ShieldCheck,
-  ShoppingCart,
-  Shovel,
-  SlidersHorizontal,
-  Sofa,
-  Sparkles,
-  Star,
-  Store,
-  SunMedium,
-  SwitchCamera,
-  Tag,
-  Target,
-  Telescope,
-  Thermometer,
-  Timer,
-  Tractor,
-  Trees,
-  TriangleAlert,
-  Trophy,
-  Truck,
-  Umbrella,
-  Upload,
-  User,
-  Video,
-  Volume2,
-  VolumeX,
-  Wallet,
-  Wind,
-  Wrench,
-  X,
-  Zap,
-  ZoomIn,
-} from 'lucide-react';
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE BUILD OBJECTS ICON SET
+   A drop-in replacement for apps/web/components/icons.tsx
+   ═══════════════════════════════════════════════════════════════════════════════
+
+   WHY THIS FILE EXISTS
+
+   The store shipped 93 Lucide icons. Lucide is a good library and it is on
+   several million websites, which is exactly the problem: a stock icon pack is
+   the single fastest way for a visitor to file a site under "template". The
+   BuildO brief bans them in as many words — "custom iconography (no stock
+   icon-pack look)" — and every one of the 93 was a violation.
+
+   The props contract is identical to the old file's and so is every icon name,
+   with one exception that mattered: the old file also exported CATEGORY_ICONS,
+   CategoryIcon, SPEC_GROUP_ICONS and SpecGroupIcon, and eight call sites render
+   a mark through them from a string that comes out of the database. Those four
+   are rebuilt at the foot of this file against the set below — the swap is not
+   complete without them, and dropping them in would have compiled everywhere
+   except the eight places it mattered.
+
+   lucide-react is gone from this app's dependencies. It survives as a devDependency
+   of services/pipeline, where category-art-fallback.mts reads glyph geometry out of
+   the installed package to draw a tile for a category that has no photograph yet.
+
+   ── THE GRAMMAR ────────────────────────────────────────────────────────────────
+
+   Five rules. An icon that breaks one does not belong in the family.
+
+   1. GRID          24 × 24. Art lives inside 3 → 21, never touching the edge.
+   2. STROKE        1.75, uniform. No icon is heavier or lighter than its
+                    neighbours, because a toolbar where one glyph is bolder reads
+                    as a mistake before it reads as emphasis.
+   3. CORNERS       BUTT CAPS, MITER JOINS, and a 4.6-unit 45° CHAMFER on the
+                    top-right of every container shape. This is the signature.
+                    Rounded corners are what every icon pack does; a chamfer is
+                    what a drafting pen does, and BuildO sells to people who read
+                    drawings. It is the one detail that makes the set unmistakably
+                    ours at 16px, where nothing else survives.
+   4. ACCENT        Exactly one element per icon carries `.ic-a`, which resolves
+                    to --icon-accent (brand teal) and falls back to currentColor.
+                    One accent — never two — so the eye lands in the same place on
+                    every glyph and a row of icons has a rhythm instead of noise.
+   5. OPTICAL SIZE  Icons are drawn for 20px. 16px strokes up to 1.9 and 28px+
+                    down to 1.6 automatically, because a 1.75 stroke that is
+                    correct at 20 is spindly at 16 and heavy at 32.
+
+   ── HOW TO USE ─────────────────────────────────────────────────────────────────
+
+     <IconCement size={20} />                    accent inherits the brand teal
+     <IconCement size={20} accent="none" />      monochrome, for dense tables
+     <IconCoin size={20} accent="var(--amber-700)" />   the coin owns amber
+
+   Put this in the stylesheet once:
+
+     .ic-a { color: var(--icon-accent, currentColor); }
+
+   ═════════════════════════════════════════════════════════════════════════════ */
+
 import type React from 'react';
 
+export interface IconProps extends Omit<React.SVGProps<SVGSVGElement>, 'width' | 'height'> {
+  /** Rendered size in CSS pixels. Drawn for 20; stroke compensates outside 18–26. */
+  size?: number;
+  /** Accent colour for the one `.ic-a` element. `'none'` makes the icon monochrome. */
+  accent?: string;
+  /** Given a label, the icon becomes an image to assistive tech instead of decoration. */
+  title?: string;
+}
+
+/** Optical stroke compensation. Below 18px a 1.75 stroke disappears; above 26 it
+ *  reads as a drawing rather than an icon. Two linear corrections, clamped. */
+function strokeFor(size: number): number {
+  if (size <= 16) return 1.95;
+  if (size >= 32) return 1.5;
+  if (size >= 26) return 1.6;
+  return 1.75;
+}
+
+function Ico({ size = 20, accent, title, children, style, ...rest }: IconProps & { children: React.ReactNode }) {
+  const monochrome = accent === 'none';
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeFor(size)}
+      strokeLinecap="butt"
+      strokeLinejoin="miter"
+      role={title ? 'img' : undefined}
+      aria-label={title}
+      aria-hidden={title ? undefined : true}
+      focusable="false"
+      style={{
+        flex: 'none',
+        ...(monochrome ? { ['--icon-accent' as string]: 'currentColor' } : accent ? { ['--icon-accent' as string]: accent } : null),
+        ...style,
+      }}
+      {...rest}
+    >
+      {children}
+    </svg>
+  );
+}
+
+/* ── shared geometry ──────────────────────────────────────────────────────────
+   Two primitives every container in the set is built from, so a box in one icon
+   is the same box in every other. The chamfer constant is 4.6 units. */
+const BOX = 'M3.5 4h11.9L20.5 9.1V20H3.5z'; //  chamfered container, top-right cut, 4.6 units
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   1. CHROME — navigation, state, controls
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+export const IconCheck = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 12.6 9.2 18 20 6.4" />
+  </Ico>
+);
+
+export const IconCheckCircle = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20.5 12a8.5 8.5 0 1 1-3.2-6.65" />
+    <path className="ic-a" d="M7.8 12.2 11 15.6 20.8 5.4" />
+  </Ico>
+);
+
+export const IconDone = IconCheckCircle;
+
+export const IconAlert = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 3.4 21.4 20H2.6z" />
+    <path className="ic-a" d="M12 9.4v4.4" />
+    <path d="M12 16.6v.9" />
+  </Ico>
+);
+
+export const IconInfo = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20.5 12a8.5 8.5 0 1 1-17 0 8.5 8.5 0 0 1 17 0Z" />
+    <path className="ic-a" d="M12 11.2v5.2" />
+    <path d="M12 7.6v1" />
+  </Ico>
+);
+
+export const IconClose = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M5.2 5.2 18.8 18.8" />
+    <path className="ic-a" d="M18.8 5.2 5.2 18.8" />
+  </Ico>
+);
+
+export const IconBack = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20 12H4.4" />
+    <path className="ic-a" d="M10.4 5.6 4 12l6.4 6.4" />
+  </Ico>
+);
+
+export const IconArrow = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 12h15.6" />
+    <path className="ic-a" d="M13.6 5.6 20 12l-6.4 6.4" />
+  </Ico>
+);
+
+export const IconChevron = (p: IconProps) => (
+  <Ico {...p}>
+    <path className="ic-a" d="M9 4.8 16.2 12 9 19.2" />
+  </Ico>
+);
+
+export const IconChevronDown = (p: IconProps) => (
+  <Ico {...p}>
+    <path className="ic-a" d="M4.8 9 12 16.2 19.2 9" />
+  </Ico>
+);
+
+export const IconChevronUp = (p: IconProps) => (
+  <Ico {...p}>
+    <path className="ic-a" d="M4.8 15 12 7.8 19.2 15" />
+  </Ico>
+);
+
+/* The menu is three rules of a drawing sheet, not three equal bars — the short
+   one is the accent and it is where the eye lands. */
+export const IconMenu = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 6.6h16.8" />
+    <path className="ic-a" d="M3.6 12h10.4" />
+    <path d="M3.6 17.4h16.8" />
+  </Ico>
+);
+
+/* Search is a lens over a drawing, so the handle is a dimension leader, not a stick. */
+export const IconSearch = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M18 10.6a7.4 7.4 0 1 1-14.8 0 7.4 7.4 0 0 1 14.8 0Z" />
+    <path className="ic-a" d="m15.9 15.9 4.7 4.7" />
+  </Ico>
+);
+
+export const IconFilter = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 6.8h16.8M3.6 12h16.8M3.6 17.2h16.8" />
+    <path className="ic-a" d="M8.6 4.8v4M15.4 10v4M11 15.2v4" />
+  </Ico>
+);
+
+export const IconPlus = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 4.4v15.2" />
+    <path className="ic-a" d="M4.4 12h15.2" />
+  </Ico>
+);
+
+export const IconMinus = (p: IconProps) => (
+  <Ico {...p}>
+    <path className="ic-a" d="M4.4 12h15.2" />
+  </Ico>
+);
+
+export const IconRefresh = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20 12a8 8 0 1 1-2.6-5.9" />
+    <path className="ic-a" d="M20.4 3.6v4.8h-4.8" />
+  </Ico>
+);
+
+export const IconRotateLeft = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 12a8 8 0 1 0 2.6-5.9" />
+    <path className="ic-a" d="M3.6 3.6v4.8h4.8" />
+  </Ico>
+);
+
+export const IconRotateRight = IconRefresh;
+
+export const IconMove = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 3.4v17.2M3.4 12h17.2" />
+    <path className="ic-a" d="M9.4 6 12 3.4 14.6 6M18 9.4 20.6 12 18 14.6M14.6 18 12 20.6 9.4 18M6 14.6 3.4 12 6 9.4" />
+  </Ico>
+);
+
+export const IconExternalWorks = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12.4 4H4v16h16v-8.4" />
+    <path className="ic-a" d="M13.6 10.4 20.4 3.6M15.2 3.6h5.2v5.2" />
+  </Ico>
+);
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   2. ACCOUNT, TRUST, TRANSACTION
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+export const IconUser = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M15.6 8.2a3.6 3.6 0 1 1-7.2 0 3.6 3.6 0 0 1 7.2 0Z" />
+    <path className="ic-a" d="M4.4 20.4v-1.6c0-2.8 3.4-5 7.6-5s7.6 2.2 7.6 5v1.6" />
+  </Ico>
+);
+
+export const IconLogout = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M9.6 4H4v16h5.6" />
+    <path d="M20 12H9.2" />
+    <path className="ic-a" d="M15.4 7.4 20 12l-4.6 4.6" />
+  </Ico>
+);
+
+export const IconPhone = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M7.4 3.4h9.2v17.2H7.4z" />
+    <path className="ic-a" d="M10.4 17.8h3.2" />
+    <path d="M7.4 6.8h9.2" />
+  </Ico>
+);
+
+export const IconStar = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="m12 3.4 2.66 5.72 6.14.78-4.5 4.3 1.16 6.14L12 17.4l-5.46 2.94 1.16-6.14-4.5-4.3 6.14-.78z" />
+  </Ico>
+);
+
+export const IconShield = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 3.2 19.6 6v6.4c0 4.2-3.2 6.9-7.6 8.4-4.4-1.5-7.6-4.2-7.6-8.4V6z" />
+    <path className="ic-a" d="m8.6 12.2 2.6 2.7 4.4-5.4" />
+  </Ico>
+);
+
+export const IconClockCheck = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20.4 12a8.4 8.4 0 1 1-16.8 0 8.4 8.4 0 0 1 16.8 0Z" />
+    <path d="M12 7v5.3l3.4 2" />
+    <path className="ic-a" d="M12 3.6v1.2" />
+  </Ico>
+);
+
+export const IconFinance = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 20.4h16.8" />
+    <path d="M6.4 20.4v-6.2M11 20.4V9.4M15.6 20.4v-8.6" />
+    <path className="ic-a" d="M20.2 20.4V4.8" />
+  </Ico>
+);
+
+/* The coin is a struck disc seen slightly off-axis, with a milled edge. It is the
+   only glyph in the set that owns amber. */
+export const IconCoin = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20.4 12a8.4 8.4 0 1 1-16.8 0 8.4 8.4 0 0 1 16.8 0Z" />
+    <path className="ic-a" d="M16.6 12a4.6 4.6 0 1 1-9.2 0 4.6 4.6 0 0 1 9.2 0Z" />
+    <path d="M12 3.6v1.4M12 19v1.4M3.6 12H5M19 12h1.4" />
+  </Ico>
+);
+
+export const IconGift = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 9.6h16.8V20H3.6z" />
+    <path d="M3.6 9.6 6.4 6h11.2l2.8 3.6" />
+    <path className="ic-a" d="M12 6v14" />
+  </Ico>
+);
+
+export const IconTrophy = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M7.4 3.6h9.2v5.6a4.6 4.6 0 0 1-9.2 0z" />
+    <path d="M7.4 5.4H4.2v1.8a3.2 3.2 0 0 0 3.2 3.2M16.6 5.4h3.2v1.8a3.2 3.2 0 0 1-3.2 3.2" />
+    <path className="ic-a" d="M12 13.8v3.4M8.2 20.4h7.6" />
+  </Ico>
+);
+
+export const IconCelebrate = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="m3.6 20.4 5-13.2 8.2 8.2z" />
+    <path className="ic-a" d="M14.8 3.6v3M19 5.4l-2.2 2.2M20.4 10.4h-3" />
+  </Ico>
+);
+
+export const IconSpark = (p: IconProps) => (
+  <Ico {...p}>
+    <path className="ic-a" d="M12 3.2 13.9 9.7 20.4 12l-6.5 2.3L12 20.8l-1.9-6.5L3.6 12l6.5-2.3z" />
+  </Ico>
+);
+
+export const IconSave = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M5.6 3.6h12.8v16.8L12 15.8l-6.4 4.6z" />
+    <path className="ic-a" d="M9 8.4h6" />
+  </Ico>
+);
+
+export const IconShare = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 15.2V3.8" />
+    <path className="ic-a" d="M8.2 7.6 12 3.8l3.8 3.8" />
+    <path d="M5 11.6v8.8h14v-8.8" />
+  </Ico>
+);
+
+export const IconCompare = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M7 20.4V6.6M17 3.6v13.8" />
+    <path className="ic-a" d="M3.6 10 7 6.6l3.4 3.4M20.4 14 17 17.4 13.6 14" />
+  </Ico>
+);
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   3. COMMERCE
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* The cart is the trolley in the header at rest: a chamfered load box on a deck
+   with two wheels. It is deliberately the same silhouette as <BoCartMark>, so the
+   animated header rig and the static icon are recognisably one object. */
+export const IconCart = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4.6 5.4h9.6L18 9v5.4H4.6z" />
+    <path className="ic-a" d="M3.2 17.4h17.6" />
+    <path d="M9 21a1.3 1.3 0 1 1-2.6 0 1.3 1.3 0 0 1 2.6 0ZM18.6 21a1.3 1.3 0 1 1-2.6 0 1.3 1.3 0 0 1 2.6 0Z" />
+  </Ico>
+);
+
+export const IconStorefront = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 9.6h16V20H4z" />
+    <path d="M3.2 9.6 5.6 4h12.8l2.4 5.6" />
+    <path className="ic-a" d="M9.6 20v-6h4.8v6" />
+  </Ico>
+);
+
+export const IconTruck = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M2.6 6h10.8v10.4H2.6z" />
+    <path d="M13.4 9.4h3.8l3.2 3.4v3.6h-7z" />
+    <path className="ic-a" d="M8 18.6a1.6 1.6 0 1 1-3.2 0 1.6 1.6 0 0 1 3.2 0ZM19.2 18.6a1.6 1.6 0 1 1-3.2 0 1.6 1.6 0 0 1 3.2 0Z" />
+  </Ico>
+);
+
+export const IconPin = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 21c4-4.6 6-8 6-10.6a6 6 0 1 0-12 0C6 13 8 16.4 12 21Z" />
+    <path className="ic-a" d="M14.4 10.2a2.4 2.4 0 1 1-4.8 0 2.4 2.4 0 0 1 4.8 0Z" />
+  </Ico>
+);
+
+export const IconStorage = (p: IconProps) => (
+  <Ico {...p}>
+    <path d={BOX} />
+    <path d="M3.5 12h17" />
+    <path className="ic-a" d="M10 8h4M10 16h4" />
+  </Ico>
+);
+
+export const IconTransport = IconTruck;
+
+export const IconReturn = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20.4 13.6a6.6 6.6 0 0 0-6.6-6.6H4.2" />
+    <path className="ic-a" d="M8.6 2.8 4 7.4l4.6 4.6" />
+    <path d="M20.4 13.6v6.8" />
+  </Ico>
+);
+
+export const IconTarget = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20.4 12a8.4 8.4 0 1 1-16.8 0 8.4 8.4 0 0 1 16.8 0Z" />
+    <path d="M16.2 12a4.2 4.2 0 1 1-8.4 0 4.2 4.2 0 0 1 8.4 0Z" />
+    <path className="ic-a" d="M12 10.4v3.2M10.4 12h3.2" />
+  </Ico>
+);
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   4. THE STUDIO — drawings, estimating, rooms
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* The estimator is a quantity sheet: a chamfered sheet with a total rule under it. */
+export const IconEstimate = (p: IconProps) => (
+  <Ico {...p}>
+    <path d={BOX} />
+    <path d="M7 8.6h6.4M7 12h4" />
+    <path className="ic-a" d="M7 16.2h10" />
+  </Ico>
+);
+
+export const IconDrafting = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 3.6 4.6 20.4M12 3.6l7.4 16.8" />
+    <path className="ic-a" d="M7.4 14.2h9.2" />
+    <path d="M13.4 4.6a1.4 1.4 0 1 1-2.8 0 1.4 1.4 0 0 1 2.8 0Z" />
+  </Ico>
+);
+
+export const IconRuler = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.4 15.2 15.2 3.4l5.4 5.4L8.8 20.6z" />
+    <path className="ic-a" d="m7.4 11.2 2 2M10.6 8l2 2M13.8 4.8l2 2" />
+  </Ico>
+);
+
+export const IconTotalStation = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M7.4 3.6h9.2v6.8H7.4z" />
+    <path className="ic-a" d="M12 10.4v3.6M6 20.4l6-6.4 6 6.4" />
+    <path d="M10 7h4" />
+  </Ico>
+);
+
+/* "See it in your room" — a room corner with the object standing in it. */
+export const IconRoom = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 3.6v16.8h16.8" />
+    <path d="M3.6 16.4 12 20.4l8.4-4" />
+    <path className="ic-a" d="M9.4 9h5.2v6.6H9.4z" />
+  </Ico>
+);
+
+export const IconSeeking = (p: IconProps) => (
+  <Ico {...p}>
+    <path className="ic-a" d="M3.6 8.4V3.6h4.8M15.6 3.6h4.8v4.8M20.4 15.6v4.8h-4.8M8.4 20.4H3.6v-4.8" />
+    <path d="M14.4 12a2.4 2.4 0 1 1-4.8 0 2.4 2.4 0 0 1 4.8 0Z" />
+  </Ico>
+);
+
+export const IconReticle = IconSeeking;
+
+export const IconCamera = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.4 7.4h4L9 5h6l1.6 2.4h4v12.2H3.4z" />
+    <path className="ic-a" d="M15.4 13.4a3.4 3.4 0 1 1-6.8 0 3.4 3.4 0 0 1 6.8 0Z" />
+  </Ico>
+);
+
+export const IconFlipCamera = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.4 7.4h17.2v12.2H3.4z" />
+    <path className="ic-a" d="M8.6 13.4a3.4 3.4 0 0 1 5.8-2.4M15.4 13.4a3.4 3.4 0 0 1-5.8 2.4M14.8 8.6v2.4h-2.4M9.2 18.2v-2.4h2.4" />
+  </Ico>
+);
+
+export const IconVideo = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.4 6.6h11.2v10.8H3.4z" />
+    <path className="ic-a" d="m14.6 12 6-3.6v7.2z" />
+  </Ico>
+);
+
+export const IconZoom = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M18 10.6a7.4 7.4 0 1 1-14.8 0 7.4 7.4 0 0 1 14.8 0Z" />
+    <path className="ic-a" d="M10.6 7.8v5.6M7.8 10.6h5.6" />
+    <path d="m15.9 15.9 4.7 4.7" />
+  </Ico>
+);
+
+export const IconPresentation = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.4 4h17.2v11.4H3.4z" />
+    <path className="ic-a" d="M7.6 11.8V9M12 11.8V7M16.4 11.8v-4" />
+    <path d="M12 15.4v2.2M8.6 20.4 12 17.6l3.4 2.8" />
+  </Ico>
+);
+
+export const IconPaper = (p: IconProps) => (
+  <Ico {...p}>
+    <path d={BOX} />
+    <path className="ic-a" d="M15.4 4v5.1h5.1" />
+  </Ico>
+);
+
+export const IconDoc = (p: IconProps) => (
+  <Ico {...p}>
+    <path d={BOX} />
+    <path className="ic-a" d="M15.4 4v5.1h5.1" />
+    <path d="M7 13h8M7 16.6h5.4" />
+  </Ico>
+);
+
+export const IconDownload = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 3.6v11.2" />
+    <path className="ic-a" d="M7.6 10.4 12 14.8l4.4-4.4" />
+    <path d="M4 16.8v3.6h16v-3.6" />
+  </Ico>
+);
+
+export const IconUpload = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 14.8V3.6" />
+    <path className="ic-a" d="M7.6 8 12 3.6 16.4 8" />
+    <path d="M4 16.8v3.6h16v-3.6" />
+  </Ico>
+);
+
+export const IconPrint = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M7 3.6h10v4.4H7z" />
+    <path d="M3.6 8h16.8v7.4H3.6z" />
+    <path className="ic-a" d="M7 13h10v7.4H7z" />
+  </Ico>
+);
+
+export const IconPrinting = IconPrint;
+
+export const IconSettings = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 7.6h16M4 12h16M4 16.4h16" />
+    <path className="ic-a" d="M9 5.6v4M15.8 10v4M7.4 14.4v4" />
+  </Ico>
+);
+
+export const IconAdministration = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 20.4V8.4L12 3.6l8.4 4.8v12z" />
+    <path className="ic-a" d="M9.6 20.4v-6.8h4.8v6.8" />
+    <path d="M3.6 12h16.8" />
+  </Ico>
+);
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   5. THE MATERIALS — the 35 category marks
+   Each is the material's real silhouette on site, not a generic box.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* A cement bag: the pillow shape with the folded seam at the top. */
+export const IconCement = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M5.6 6.6C5.6 5 7.2 4 12 4s6.4 1 6.4 2.6v11.8C18.4 19.6 16 20 12 20s-6.4-.4-6.4-1.6z" />
+    <path className="ic-a" d="M5.6 8.6c1.6.9 11.2.9 12.8 0" />
+    <path d="M9.6 4.2v3.8" />
+  </Ico>
+);
+
+/* Steel: three rebar ends in section with the rib pattern. */
+export const IconSteel = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4.4 4.6v14.8M12 4.6v14.8M19.6 4.6v14.8" />
+    <path className="ic-a" d="M3.2 8.2h17.6M3.2 12h17.6M3.2 15.8h17.6" />
+  </Ico>
+);
+
+export const IconBricks = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.4 6.2h17.2v5.6H3.4zM3.4 11.8h17.2v5.6H3.4z" />
+    <path className="ic-a" d="M9.4 6.2v5.6M15.4 11.8v5.6" />
+  </Ico>
+);
+
+export const IconExcavation = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 20.4h16.8" />
+    <path className="ic-a" d="M3.6 20.4 8 13.4h8l4.4 7" />
+    <path d="M12 3.6v6.4M9 6.6l3-3 3 3" />
+  </Ico>
+);
+
+export const IconCentering = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.4 5.6h17.2v3H3.4z" />
+    <path className="ic-a" d="M6.4 8.6v11.8M12 8.6v11.8M17.6 8.6v11.8" />
+    <path d="M3.4 14.4h17.2" />
+  </Ico>
+);
+
+export const IconRoofing = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M2.6 12 12 4.4 21.4 12" />
+    <path className="ic-a" d="M4.8 14.4h14.4M4.8 18h14.4" />
+  </Ico>
+);
+
+export const IconTiles = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 3.6h16.8v16.8H3.6z" />
+    <path d="M12 3.6v16.8M3.6 12h16.8" />
+    <path className="ic-a" d="M12 12h8.4v8.4H12z" />
+  </Ico>
+);
+
+export const IconGlass = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 3.6h16v16.8H4z" />
+    <path className="ic-a" d="m7.2 17 9.6-9.6M12.4 17l4.4-4.4" />
+  </Ico>
+);
+
+export const IconPainting = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4.4 3.6h13.2v5.2H4.4z" />
+    <path d="M17.6 6.2h2.8v4.8h-8.8v3" />
+    <path className="ic-a" d="M9.6 14h4.8v6.4H9.6z" />
+  </Ico>
+);
+
+export const IconWaterproofing = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 3.6c3.6 4.5 5.4 7.6 5.4 9.8a5.4 5.4 0 1 1-10.8 0c0-2.2 1.8-5.3 5.4-9.8Z" />
+    <path className="ic-a" d="M9.4 13.8a2.6 2.6 0 0 0 2.6 2.6" />
+  </Ico>
+);
+
+export const IconEpoxy = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M8.4 3.6h7.2v4.2l3.4 6.6v6H5v-6l3.4-6.6z" />
+    <path className="ic-a" d="M5 14.4h14" />
+  </Ico>
+);
+
+export const IconPlumbing = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 8.4h6.4v7.2H4z" />
+    <path d="M13.6 8.4H20v7.2h-6.4z" />
+    <path className="ic-a" d="M10.4 10.6h3.2v2.8h-3.2zM12 3.6v4.8M12 15.6v4.8" />
+  </Ico>
+);
+
+export const IconHvac = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 5.6h16.8v6.8H3.6z" />
+    <path className="ic-a" d="M7 15.6c0 1.6 1.4 1.6 1.4 3.2M12 15.6c0 1.6 1.4 1.6 1.4 3.2M17 15.6c0 1.6 1.4 1.6 1.4 3.2" />
+    <path d="M7 8.6h10" />
+  </Ico>
+);
+
+export const IconBulb = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M12 3.4a5.6 5.6 0 0 0-3.4 10v2.4h6.8V13.4A5.6 5.6 0 0 0 12 3.4Z" />
+    <path className="ic-a" d="M9.4 18.4h5.2M10.2 20.6h3.6" />
+  </Ico>
+);
+
+export const IconSolar = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M2.8 15.4 5.4 8h13.2l2.6 7.4z" />
+    <path d="M8.6 8 7 15.4M15.4 8l1.6 7.4M4.4 11.7h15.2" />
+    <path className="ic-a" d="M12 20.4v-5" />
+  </Ico>
+);
+
+export const IconRailings = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 6.4h16.8" />
+    <path className="ic-a" d="M3.6 9.4h16.8" />
+    <path d="M6.4 6.4v14M12 6.4v14M17.6 6.4v14" />
+  </Ico>
+);
+
+export const IconFurniture = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 11.4V7.6h16v3.8" />
+    <path d="M2.8 11.4h18.4v5.4H2.8z" />
+    <path className="ic-a" d="M5.4 16.8v3.2M18.6 16.8v3.2" />
+  </Ico>
+);
+
+export const IconKitchen = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 3.6h16.8v16.8H3.6z" />
+    <path d="M3.6 11.4h16.8" />
+    <path className="ic-a" d="M9.4 7.4h5.2M9.4 15.4h5.2" />
+  </Ico>
+);
+
+export const IconLift = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4.4 3.6h15.2v16.8H4.4z" />
+    <path d="M12 3.6v16.8" />
+    <path className="ic-a" d="M8.2 10.6 6.4 8l1.8-2.6M15.8 13.4l1.8 2.6-1.8 2.6" />
+  </Ico>
+);
+
+export const IconCctv = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="m3.6 8.4 13-3.4 1.8 6.6-13 3.4z" />
+    <path className="ic-a" d="M18.4 11.6h2.4" />
+    <path d="M10 13.6v3.4M6.6 20.4h6.8" />
+  </Ico>
+);
+
+export const IconExtinguisher = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M7.6 8.6h6.8v11.8H7.6z" />
+    <path className="ic-a" d="M9.6 4.4h2.8v4.2H9.6z" />
+    <path d="M14.4 6.4h2.6v6M7.6 12.4h6.8" />
+  </Ico>
+);
+
+export const IconSafety = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4.6 15.4a7.4 7.4 0 0 1 14.8 0z" />
+    <path className="ic-a" d="M9.4 15.4V8a2.6 2.6 0 0 1 5.2 0v7.4" />
+    <path d="M3.4 18.4h17.2" />
+  </Ico>
+);
+
+export const IconMachinery = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4.4 8.4h8.2v7.2H4.4z" />
+    <path d="M12.6 11.4h4.2l2.8 4.2v3.4" />
+    <path className="ic-a" d="M8.5 19a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0ZM20.5 19a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+  </Ico>
+);
+
+export const IconHeavyEquipment = IconMachinery;
+
+export const IconBranding = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 4h16.8v11.4H3.6z" />
+    <path className="ic-a" d="M8 8.4h8M8 11.4h4.8" />
+    <path d="M9.4 15.4v5M6.4 20.4h11.2" />
+  </Ico>
+);
+
+export const IconStationery = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M8.4 3.6h7.2v13L12 20.4l-3.6-3.8z" />
+    <path className="ic-a" d="M8.4 8.4h7.2" />
+    <path d="M12 12v5" />
+  </Ico>
+);
+
+export const IconInternalWorks = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 20.4V9.2L12 3.6l8.4 5.6v11.2z" />
+    <path className="ic-a" d="M8.4 20.4v-6h7.2v6" />
+  </Ico>
+);
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   6. THE ENGINE
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* The BO Engine: a coin on a track, which is literally what the reward machine is. */
+export const IconEngine = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20.4 12a8.4 8.4 0 1 1-16.8 0 8.4 8.4 0 0 1 16.8 0Z" />
+    <path className="ic-a" d="M12 6.6V12l3.8 2.2" />
+    <path d="M12 3.6v1.4M20.4 12H19M12 20.4V19M3.6 12H5" />
+  </Ico>
+);
+
+export const IconVolumeOn = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 9.2h3.6L12.6 5v14L7.6 14.8H4z" />
+    <path className="ic-a" d="M16 9.4a3.6 3.6 0 0 1 0 5.2M18.6 6.8a7.2 7.2 0 0 1 0 10.4" />
+  </Ico>
+);
+
+export const IconVolumeOff = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4 9.2h3.6L12.6 5v14L7.6 14.8H4z" />
+    <path className="ic-a" d="m16.2 9.8 4.6 4.4M20.8 9.8l-4.6 4.4" />
+  </Ico>
+);
+
+/* ── aliases kept so no import breaks ─────────────────────────────────────── */
+export const IconDoneAll = IconCheckCircle;
+
+/* Every export from the previous file, accounted for. If a name is missing at
+   build time the compiler will say so — that is the migration test. */
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE TAXONOMY MAPS
+   ═══════════════════════════════════════════════════════════════════════════════
+   Two lookup tables and their components. They were in the previous file and are
+   NOT optional: eight call sites across the header menu, the category rail, the
+   category strip, the search results and the specification sheet render a mark
+   chosen by a string that comes out of the database, not out of the source.
+
+   The set above is a drop-in replacement for the previous file's ICONS. It is not
+   a drop-in replacement for these, because the previous SPEC_GROUP_ICONS reached
+   past the store's own icons into Lucide directly — twenty-eight raw imports for
+   marks that had no BuildObjects glyph. Those twenty-eight are re-pointed here at
+   the closest member of this family, which is the whole point of having a family.
+   ═════════════════════════════════════════════════════════════════════════════ */
+
 /**
- * One icon family, drawn by Lucide.
- *
- * This file used to hold seventy-five hand-cut SVG paths and a comment saying "nothing imported
- * from an icon pack". The rule was meant to buy consistency — one hand, one grid, one stroke — and
- * at that count it bought the opposite. Optical correction is what separates an icon family from a
- * set of shapes on a grid: a circle and a square of the same nominal size do not read as the same
- * size, a diagonal needs a different weight from a vertical, and thirty-seven category marks drawn
- * by hand drift apart in exactly those ways. They read as cheap because they were.
- *
- * So the drawing is Lucide's (MIT, 1,780 icons, one editorial hand) and this module stays the only
- * import point, which is why no call site changed when the paths underneath them did.
- *
- * The store draws at 22/1.6 rather than Lucide's 24/2 — the chrome is dense and a 2px stroke at
- * 16px is a blob — so every export carries those defaults and callers override per use.
+ * Category → mark. The keys are the `icon` column in the taxonomy, and they
+ * outnumber the categories: a category may name any mark, and several share one.
  */
-type P = React.SVGProps<SVGSVGElement> & { size?: number; strokeWidth?: number };
-
-type LucideComponent = React.ComponentType<
-  Omit<React.SVGProps<SVGSVGElement>, 'ref'> & { size?: string | number; strokeWidth?: string | number; absoluteStrokeWidth?: boolean }
->;
-
-const icon =
-  (C: LucideComponent) =>
-  ({ size = 22, strokeWidth = 1.6, ...rest }: P) => <C size={size} strokeWidth={strokeWidth} aria-hidden focusable="false" {...rest} />;
-
-/* ── chrome and actions ────────────────────────────────────────────────── */
-export const IconCheck = icon(Check);
-export const IconCheckCircle = icon(CircleCheck);
-export const IconAlert = icon(TriangleAlert);
-export const IconInfo = icon(Info);
-export const IconClose = icon(X);
-export const IconBack = icon(ArrowLeft);
-export const IconArrow = icon(ArrowRight);
-export const IconChevron = icon(ChevronRight);
-export const IconChevronDown = icon(ChevronDown);
-export const IconChevronUp = icon(ChevronUp);
-export const IconMenu = icon(Menu);
-export const IconSearch = icon(Search);
-export const IconFilter = icon(SlidersHorizontal);
-export const IconUser = icon(User);
-export const IconLogout = icon(LogOut);
-export const IconPhone = icon(Phone);
-export const IconStar = icon(Star);
-export const IconPlus = icon(Plus);
-export const IconMinus = icon(Minus);
-export const IconRefresh = icon(RefreshCw);
-export const IconCompare = icon(GitCompare);
-export const IconSave = icon(Bookmark);
-export const IconShare = icon(Share2);
-export const IconPrint = icon(Printer);
-export const IconDoc = icon(FileText);
-export const IconDownload = icon(Download);
-export const IconUpload = icon(Upload);
-export const IconZoom = icon(ZoomIn);
-export const IconCamera = icon(Camera);
-export const IconSpark = icon(Sparkles);
-export const IconRuler = icon(Ruler);
-export const IconRotateLeft = icon(RotateCcw);
-export const IconRotateRight = icon(RotateCw);
-export const IconMove = icon(Move3d);
-export const IconTarget = icon(Target);
-export const IconReticle = icon(CircleDot);
-export const IconSeeking = icon(Circle);
-export const IconVideo = icon(Video);
-export const IconFlipCamera = icon(SwitchCamera);
-export const IconSettings = icon(Settings2);
-export const IconVolumeOn = icon(Volume2);
-export const IconVolumeOff = icon(VolumeX);
-export const IconTrophy = icon(Trophy);
-export const IconGift = icon(Gift);
-export const IconCelebrate = icon(PartyPopper);
-export const IconDone = icon(CheckCheck);
-
-/* ── the BO layer: coins, the cart, the engine ─────────────────────────────
-   A currency and a shop need marks, and the three they had were 🪙, 🛒 and ⚡ — the same three
-   glyphs every other shop on the internet ships, rendered by the reader's operating system in
-   whatever colour and weight it feels like. An emoji is not an icon: it does not take
-   currentColor, it does not take a stroke width, it changes shape between Windows and Android,
-   and next to a 1.6 px Lucide stroke it reads as a sticker. These are the replacements. */
-export const IconCoin = icon(Coins);
-export const IconCart = icon(ShoppingCart);
-export const IconEngine = icon(Zap);
-
-/* ── the promises the store makes ──────────────────────────────────────── */
-export const IconStorefront = icon(Store);
-/** The estimate is money, in rupees — not a calculation. */
-export const IconEstimate = icon(ReceiptIndianRupee);
-export const IconPin = icon(MapPin);
-export const IconTruck = icon(Truck);
-export const IconReturn = icon(RotateCcw);
-export const IconShield = icon(ShieldCheck);
-/** Provenance: every price says where it came from and when. */
-export const IconClockCheck = icon(FileClock);
-/** The AR frame — see it standing in your own room. */
-export const IconRoom = icon(Scan);
-
-/* ── the thirty-seven categories ───────────────────────────────────────── */
-export const IconCement = icon(Package);
-export const IconEpoxy = icon(FlaskConical);
-export const IconExtinguisher = icon(FireExtinguisher);
-export const IconSolar = icon(SunMedium);
-export const IconCctv = icon(Cctv);
-export const IconTiles = icon(Grid3x3);
-export const IconGlass = icon(Frame);
-export const IconTotalStation = icon(Crosshair);
-export const IconBulb = icon(Lightbulb);
-export const IconSafety = icon(HardHat);
-export const IconExcavation = icon(Shovel);
-export const IconCentering = icon(Construction);
-export const IconSteel = icon(Bolt);
-export const IconBricks = icon(Blocks);
-export const IconPainting = icon(PaintRoller);
-export const IconRoofing = icon(House);
-export const IconPlumbing = icon(Droplets);
-export const IconHvac = icon(Wind);
-export const IconRailings = icon(Fence);
-export const IconInternalWorks = icon(DoorOpen);
-export const IconKitchen = icon(ChefHat);
-export const IconWaterproofing = icon(Umbrella);
-export const IconLift = icon(ArrowUpDown);
-export const IconExternalWorks = icon(Trees);
-export const IconHeavyEquipment = icon(Tractor);
-export const IconTransport = icon(Truck);
-export const IconMachinery = icon(Cog);
-export const IconBranding = icon(Palette);
-export const IconAdministration = icon(Building2);
-export const IconStationery = icon(PencilRuler);
-export const IconPaper = icon(Files);
-export const IconPrinting = icon(Printer);
-export const IconFurniture = icon(Sofa);
-export const IconDrafting = icon(Compass);
-export const IconFinance = icon(Wallet);
-export const IconStorage = icon(Boxes);
-export const IconPresentation = icon(Presentation);
-
-/**
- * Taxonomy `icon` key → glyph, for the places a category is named without a photograph beside it:
- * the nav dropdown and the department menus. Category *tiles* use no glyph at all — all
- * thirty-seven have real photography, and a line drawing laid over a photograph is the thing that
- * made the grid look cheap.
- */
-export const CATEGORY_ICONS: Record<string, (p: P) => React.JSX.Element> = {
+export const CATEGORY_ICONS: Record<string, (p: IconProps) => React.JSX.Element> = {
   /* live */
   cement: IconCement,
   epoxy: IconEpoxy,
@@ -298,58 +883,60 @@ export const CATEGORY_ICONS: Record<string, (p: P) => React.JSX.Element> = {
   presentation: IconPresentation,
 };
 
-export function CategoryIcon({ icon: key, ...p }: P & { icon: string }) {
+/** A key the taxonomy adds later still gets a mark rather than a hole in the row. */
+export function CategoryIcon({ icon: key, ...p }: IconProps & { icon: string }) {
   const C = CATEGORY_ICONS[key] ?? IconCement;
   return <C {...p} />;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════════════════
    Specification-sheet group marks
-   ═══════════════════════════════════════════════════════════════════════════
-   One mark per heading on a product's specification sheet. The headings themselves come from
-   the database — registry/spec-groups.json decides them per category, so a bulb reads "Light
-   output" and cement reads "Strength & structure" — and only the mark is chosen here.
+   ═══════════════════════════════════════════════════════════════════════════════
+   One mark per heading on a product's specification sheet. The headings come from
+   the database — registry/spec-groups.json decides them per category, so a bulb
+   reads "Light output" and cement reads "Strength & structure" — and only the mark
+   is chosen here.
 
-   These were twenty-eight emoji: 📋 💡 ⚡ 🔭 🎥 📐 🔊 🌡️ 🏗️ 🪨 ⚖️ 🧪 🧱 ⚙️ 📏 ⏳ ⏱️ 💨 🔥 🛡️ 🏠
-   📜 ✅ ✨ 🛠️ 📦 💰 🤝. Twenty-eight pictures, at twenty-eight different optical weights, none
-   of them able to take the ink colour of the row they sat in. A specification sheet is the most
-   technical surface in the store — it is where a site engineer checks a compressive strength
-   against a drawing — and decorating it with party stickers is what made a serious document read
-   as a toy.
-   ═════════════════════════════════════════════════════════════════════════ */
-export const SPEC_GROUP_ICONS: Record<string, (p: P) => React.JSX.Element> = {
-  product_identity: icon(Tag),
-  light_output: icon(Lightbulb),
-  electrical: icon(Zap),
-  optical: icon(Telescope),
-  imaging: icon(Aperture),
-  measurement: icon(Ruler),
-  acoustic: icon(AudioLines),
-  thermal: icon(Thermometer),
-  strength: icon(Anvil),
-  surface: icon(Mountain),
-  physical: icon(Scale),
-  chemical: icon(FlaskConical),
-  composition: icon(Atom),
-  manufacturing: icon(Factory),
-  dimensions: icon(Ruler),
-  durability: icon(Hourglass),
-  cure: icon(Timer),
-  pressure: icon(Gauge),
-  performance: icon(Flame),
-  environmental: icon(Leaf),
-  application: icon(House),
-  standards: icon(ScrollText),
-  quality_control: icon(BadgeCheck),
-  appearance: icon(Sparkles),
-  installation: icon(Wrench),
-  packaging: icon(PackageOpen),
-  commercial: icon(IndianRupee),
-  warranty: icon(Handshake),
+   These were twenty-eight emoji before they were twenty-eight Lucide glyphs. A
+   specification sheet is the most technical surface in the store — it is where a
+   site engineer checks a compressive strength against a drawing — so the marks are
+   deliberately quiet and drawn from the same twenty-four-unit grid as everything
+   else, rather than being twenty-eight pictures at twenty-eight optical weights.
+   ═════════════════════════════════════════════════════════════════════════════ */
+export const SPEC_GROUP_ICONS: Record<string, (p: IconProps) => React.JSX.Element> = {
+  product_identity: IconDoc,
+  light_output: IconBulb,
+  electrical: IconSpark,
+  optical: IconTotalStation,
+  imaging: IconCamera,
+  measurement: IconRuler,
+  acoustic: IconVolumeOn,
+  thermal: IconHvac,
+  strength: IconSteel,
+  surface: IconTiles,
+  physical: IconCompare,
+  chemical: IconEpoxy,
+  composition: IconBricks,
+  manufacturing: IconMachinery,
+  dimensions: IconDrafting,
+  durability: IconClockCheck,
+  cure: IconRefresh,
+  /* Pressure ratings are a plumbing figure far more often than a gauge is a mark. */
+  pressure: IconPlumbing,
+  performance: IconEngine,
+  environmental: IconSolar,
+  application: IconRoom,
+  standards: IconPaper,
+  quality_control: IconCheckCircle,
+  appearance: IconPainting,
+  installation: IconSettings,
+  packaging: IconStorage,
+  commercial: IconCoin,
+  warranty: IconShield,
 };
 
 /** Any heading the registry adds later still gets a mark, rather than a hole in the column. */
-export function SpecGroupIcon({ group, ...p }: P & { group: string }) {
+export function SpecGroupIcon({ group, ...p }: IconProps & { group: string }) {
   const C = SPEC_GROUP_ICONS[group] ?? IconDoc;
   return <C {...p} />;
 }

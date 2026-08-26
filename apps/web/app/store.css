@@ -27,14 +27,40 @@
   /* ── page frame ─────────────────────────────────────────────────────────── */
   .shell {
     width: 100%;
-    max-width: 1500px;
+    max-width: var(--shell-wide);
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 var(--gutter);
   }
-  @media (min-width: 1024px) {
-    .shell {
-      padding: 0 24px;
-    }
+
+  /* ── the photographic backplate ───────────────────────────────────────────
+     Used by components/Plate.tsx on the opening section of a page. The scrim is TWO
+     gradients and both are load-bearing:
+
+       vertical    fades the plate down into the canvas at the section's bottom edge,
+                   so the photograph ends without a seam;
+       horizontal  darkens the LEFT, which is where every headline on this site sits.
+                   Without it the copy fights the photograph at exactly the width most
+                   people browse at — legible in a screenshot, unreadable at 1440.
+
+     The plate is never shown at full brightness and is never a foreground image. */
+  .plate {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .plate img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .plate-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, var(--color-canvas) 0%, rgb(6 24 29 / 30%) 34%, rgb(6 24 29 / 82%) 100%),
+      linear-gradient(90deg, rgb(6 24 29 / 88%) 0%, rgb(6 24 29 / 10%) 62%);
   }
   /* Longhands on purpose: a `padding` shorthand here would wipe .shell's horizontal padding. */
   .page {
@@ -76,129 +102,416 @@
     opacity: 1;
   }
 
-  /* ── header: sticky, and it knows when it is floating ───────────────────── */
+  /* ── the bar ──────────────────────────────────────────────────────────────
+     One row, floating, glass. See components/header/Header.tsx for why the two-row
+     header existed and what removing search from it bought.
+
+     Three things move together on scroll and nothing is removed: height 76 → 62,
+     radius 18 → 14, and the fill from 82% to 94% opaque. Condensing rather than
+     hiding means the reader never loses a control they were reaching for. */
   .header {
     position: sticky;
-    top: 0;
+    top: var(--header-inset);
     z-index: 40;
+    padding: 0 var(--gutter);
+    /* The sticky box is only ever as tall as the bar; the inset is the gap above it. */
     height: var(--header-h);
-    background: var(--color-header);
-    color: var(--color-header-ink);
-    /* Flat while the page is at rest against it; lifted once content runs underneath. Both
-       properties are cheap to animate and neither moves anything on the page. */
-    box-shadow: none;
-    transition:
-      box-shadow var(--dur-3) var(--ease-out),
-      background-color var(--dur-3) var(--ease-out);
+    transition: height var(--dur-3) var(--ease-glide);
   }
   :root[data-scrolled] .header {
-    box-shadow:
-      0 1px 0 var(--color-chrome-hair),
-      var(--shadow-2);
+    height: var(--header-h-scrolled);
   }
-  .header :focus-visible,
-  .nav :focus-visible,
-  .deliver-strip :focus-visible,
-  .footer :focus-visible {
-    outline-color: var(--color-brand);
-  }
-  /* Two rows at every width. `flex-wrap` plus a 100%-basis search field is the same mechanism
-     the mobile header always used; making it the only mechanism means one layout to keep right
-     instead of two that drift. */
-  .header-in {
+  .header-bar {
     display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
     align-items: center;
-    gap: 0 8px;
+    gap: var(--s-5);
     height: 100%;
+    max-width: var(--shell-wide);
+    margin: 0 auto;
+    padding: 0 var(--s-5) 0 var(--s-6);
+    border: 1px solid rgb(255 255 255 / 9%);
+    border-radius: 18px;
+    background: var(--glass-bar);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--specular-strong), var(--sh-3);
+    transition:
+      border-radius var(--dur-3) var(--ease-glide),
+      background-color var(--dur-3) var(--ease-glide),
+      backdrop-filter var(--dur-3) var(--ease-glide);
   }
-  .header-menu,
-  .header-logo,
-  .header-action,
-  .account-wrap,
-  .deliver-wrap--header,
-  .header-spacer {
-    height: 56px;
+  :root[data-scrolled] .header-bar {
+    border-radius: 14px;
+    background: var(--glass-bar-scrolled);
+    backdrop-filter: var(--glass-blur-heavy);
   }
+
   .header-logo {
-    --wm-size: 34px;
+    --wm-size: 44px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
     flex: none;
-    padding: 0 6px;
-    margin-left: -6px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    color: #fff;
-  }
-  /* The lockup steps down as the row narrows. Audiowide is wide: the full name measures ~506 px
-     at a 34 px cap and ~419 px at 28. See the chrome rules further down for what yields to it. */
-  @media (max-width: 1099.98px) {
-    .header-logo {
-      --wm-size: 28px;
-    }
+    color: var(--ink-1);
+    transition: opacity var(--dur-2) var(--ease-out);
   }
   .header-logo:hover {
-    border-color: var(--color-chrome-hair-strong);
+    opacity: 0.86;
   }
-  .header-menu {
-    display: none;
+  :root[data-scrolled] .header-logo {
+    --wm-size: 34px;
+  }
+  .header-div {
+    flex: none;
+    width: 1px;
+    height: 30px;
+    background: var(--hair-2);
+  }
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
   }
   .header-spacer {
     flex: 1 1 0;
     min-width: 0;
   }
 
-  /* A 56 × 48 icon + label action; the estimate one carries the brand-coloured count pill. */
-  .header-action {
+  /* ── a nav link, and the one accent gesture in the bar ────────────────────
+     A 1.5 px rule that scales in from the left. It is the only thing in the header
+     that uses the brand colour as movement, which is what makes it read as an
+     answer rather than as decoration. */
+  .navlink {
     position: relative;
-    flex: none;
     display: inline-flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 2px;
-    min-width: 60px;
-    height: 48px;
-    padding: 0 8px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    color: #fff;
+    gap: 7px;
+    height: 40px;
+    padding: 0 13px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-2);
+    white-space: nowrap;
     background: none;
+    border: 0;
     cursor: pointer;
-    text-decoration: none;
-    font-size: 12px;
-    line-height: 14px;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
   }
-  .header-action:hover {
-    border-color: var(--color-chrome-hair-strong);
+  .navlink:hover {
+    color: var(--ink-1);
+    background: rgb(255 255 255 / 5%);
   }
-  .header-action-icon {
-    position: relative;
-    display: inline-flex;
+  .navlink::after {
+    content: "";
+    position: absolute;
+    left: 13px;
+    right: 13px;
+    bottom: 4px;
+    height: 1.5px;
+    background: var(--color-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-3) var(--ease-glide);
   }
-  .header-action-label {
-    font-weight: 700;
+  .navlink:hover::after,
+  .navlink[aria-current="page"]::after,
+  .navlink[aria-expanded="true"]::after {
+    transform: scaleX(1);
+  }
+  .navlink[aria-current="page"],
+  .navlink[aria-expanded="true"] {
+    color: var(--ink-1);
+  }
+
+  /* ── the search cue ───────────────────────────────────────────────────────
+     Not an input. It opens the palette, and a box that looks like a field but
+     forwards your keystrokes elsewhere costs a keystroke every time. The keycaps
+     are the point: they teach the shortcut. */
+  .search-cue {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+    width: 250px;
+    height: 42px;
+    padding: 0 12px 0 15px;
+    border-radius: var(--r-2);
+    background: rgb(255 255 255 / 4.5%);
+    border: 1px solid var(--hair-2);
+    color: var(--ink-3);
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color var(--dur-2) var(--ease-out),
+      background-color var(--dur-2) var(--ease-out),
+      color var(--dur-2) var(--ease-out),
+      height var(--dur-3) var(--ease-glide);
+  }
+  .search-cue:hover {
+    border-color: var(--hair-brand);
+    background: rgb(255 255 255 / 7%);
+    color: var(--ink-2);
+  }
+  .search-cue-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .header-count {
-    position: absolute;
-    top: -6px;
-    left: calc(100% - 8px);
-    min-width: 18px;
-    height: 18px;
+  :root[data-scrolled] .search-cue {
+    height: 36px;
+  }
+  .search-keys {
+    display: flex;
+    gap: 3px;
+    flex: none;
+  }
+  .search-keys span {
+    display: grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
     padding: 0 5px;
-    border-radius: var(--radius-pill);
-    background: var(--color-brand);
-    color: var(--color-on-brand);
-    font-family: var(--font-figure);
-    font-size: 11px;
-    line-height: 18px;
-    font-weight: 700;
+    border-radius: 5px;
+    background: rgb(255 255 255 / 7%);
+    border: 1px solid var(--hair-2);
+    font-family: var(--font-ui);
+    font-size: 10.5px;
+    line-height: 1;
+    color: var(--ink-3);
+  }
+
+  /* ── the command palette ──────────────────────────────────────────────────── */
+  .palette {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    padding: min(14vh, 132px) var(--gutter) var(--s-7);
+  }
+  .palette-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    border: 0;
+    background: var(--scrim-ink);
+    backdrop-filter: blur(6px);
+    cursor: default;
+    animation: palette-scrim var(--dur-2) var(--ease-out) both;
+  }
+  @keyframes palette-scrim {
+    from {
+      opacity: 0;
+    }
+  }
+  .palette-panel {
+    position: relative;
+    z-index: 1;
+    width: min(720px, 100%);
+    margin: 0 auto;
+    border-radius: var(--r-4);
+    border: 1px solid var(--hair-2);
+    background: var(--glass-strong);
+    backdrop-filter: var(--glass-blur-heavy);
+    box-shadow: var(--specular-strong), var(--sh-3);
+    overflow: hidden;
+    animation: palette-in var(--dur-3) var(--ease-glide) both;
+  }
+  @keyframes palette-in {
+    from {
+      opacity: 0;
+      transform: translateY(-12px) scale(0.985);
+    }
+  }
+  .palette-field {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    height: 68px;
+    padding: 0 var(--s-5);
+    border-bottom: 1px solid var(--hair);
+    color: var(--ink-3);
+  }
+  .palette-input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    background: none;
+    outline: none;
+    font-size: 20px;
+    color: var(--ink-1);
+  }
+  .palette-input::placeholder {
+    color: var(--ink-4);
+  }
+  .palette-clear {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: rgb(255 255 255 / 7%);
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+  .palette-clear:hover {
+    background: rgb(255 255 255 / 12%);
+    color: var(--ink-1);
+  }
+  .palette-scopes {
+    display: flex;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-5);
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--hair);
+  }
+  .palette-scopes::-webkit-scrollbar {
+    display: none;
+  }
+  .scope-chip {
+    flex: none;
+    height: 30px;
+    padding: 0 13px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--hair-2);
+    background: none;
+    color: var(--ink-3);
+    font-size: 12.5px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
+  }
+  .scope-chip:hover {
+    color: var(--ink-1);
+    border-color: var(--hair-3);
+  }
+  .scope-chip[aria-pressed="true"] {
+    background: var(--teal-100);
+    border-color: var(--hair-brand);
+    color: var(--teal-800);
+  }
+  .palette-results {
+    max-height: min(52vh, 520px);
+    overflow-y: auto;
+    padding: var(--s-2) 0 var(--s-3);
+    overscroll-behavior: contain;
+  }
+  .palette-group {
+    padding: var(--s-4) var(--s-5) var(--s-2);
+  }
+  .palette-empty {
+    padding: var(--s-6) var(--s-5);
     text-align: center;
   }
+  .palette-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: 9px var(--s-5);
+    color: var(--ink-2);
+  }
+  .palette-row[aria-selected="true"] {
+    background: rgb(255 255 255 / 5%);
+    color: var(--ink-1);
+  }
+  .palette-thumb {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-2);
+    background: linear-gradient(160deg, var(--plate-2), var(--plate-1));
+    overflow: hidden;
+  }
+  .palette-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .palette-thumb--icon {
+    background: rgb(255 255 255 / 5%);
+    color: var(--ink-3);
+  }
+  .palette-main {
+    flex: 1;
+    min-width: 0;
+  }
+  .palette-sub {
+    font-size: 12.5px;
+    color: var(--ink-3);
+  }
+  .palette-price {
+    flex: none;
+    color: var(--ink-1);
+  }
+
+  /* ── narrow ───────────────────────────────────────────────────────────────
+     Below 1280 the mark steps down. Below 1024 the nav keeps its glyphs and drops
+     its words. Below 720 the search cue collapses to its glyph and the palette
+     becomes a full sheet, because a 720 px dialog on a 390 px phone is a scroll. */
+  @media (max-width: 1279.98px) {
+    .header-logo {
+      --wm-size: 34px;
+    }
+    .search-cue {
+      width: 190px;
+    }
+  }
+  @media (max-width: 1023.98px) {
+    .header-div {
+      display: none;
+    }
+    .header-bar {
+      gap: var(--s-4);
+      padding: 0 var(--s-3) 0 var(--s-4);
+    }
+    .navlink {
+      padding: 0 9px;
+      font-size: 0;
+      gap: 0;
+    }
+    .navlink svg {
+      font-size: 14px;
+    }
+  }
+  @media (max-width: 719.98px) {
+    .header-logo {
+      --wm-size: 26px;
+    }
+    .search-cue {
+      width: 42px;
+      padding: 0;
+      justify-content: center;
+    }
+    .search-cue-text,
+    .search-cue .search-keys {
+      display: none;
+    }
+    .palette {
+      padding: 0;
+    }
+    .palette-panel {
+      width: 100%;
+      height: 100dvh;
+      border: 0;
+      border-radius: 0;
+    }
+    .palette-results {
+      max-height: none;
+      height: calc(100dvh - 68px - 55px);
+    }
+  }
+
   /* ── the coin balance, and the wallet behind it ──────────────────────────
      The one place amber is allowed in the chrome. A BO Coin is money, and money in the brand's
      own teal would read as a token you can only spend inside a game. */
@@ -553,11 +866,24 @@
   .deliver-scrim {
     display: none;
   }
-  /* Mobile row 3: a 36 px strip under the sticky header. */
+  /* ── the deliver-to strip ─────────────────────────────────────────────────
+     A thin line under the bar, at every width now rather than only on phones.
+
+     It used to be desktop-only-in-the-header and mobile-only-as-a-strip. Search
+     leaving the header row took the deliver-to control with it, and a one-row bar
+     has no space to put it back — so the strip became the single presentation.
+     That is the better answer anyway: the pincode is what every price on the site
+     is quoted against, and a line that says so under the masthead states the
+     store's central promise instead of hiding it behind a chevron. */
   .deliver-strip {
-    display: none;
-    background: var(--color-header-2);
-    color: #fff;
+    display: block;
+    margin-top: var(--s-3);
+    padding: 0 var(--gutter);
+    color: var(--ink-3);
+  }
+  .deliver-strip > .shell {
+    max-width: var(--shell-wide);
+    border-bottom: 1px solid var(--hair);
   }
   /* Row one has to hold the lockup and still fit, and what gives way is the chrome, not the logo.
      A labelled action reads perfectly well as an icon, and deliver-to has a second presentation
@@ -567,9 +893,6 @@
   @media (max-width: 1279.98px) {
     .deliver-wrap--header {
       display: none;
-    }
-    .deliver-strip {
-      display: block;
     }
     .header-action-label {
       display: none;
@@ -2172,5 +2495,1316 @@
     overflow-y: auto;
     border-radius: 32px;
     box-shadow: var(--shadow-3);
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   ABSORBED FROM legacy.css — 26 Aug 2026
+   ─────────────────────────────────────────────────────────────────────────────
+   These rules were a shim. They carried the v1 "Patina" class vocabulary
+   (glass-card, display, kicker, hero-figure, prov, facet, wizard…) through the
+   repaint on a private set of token aliases — --ink, --accent, --rule-soft,
+   --radius-glass and twenty-six more, each one a second name for something the
+   theme already named.
+
+   The v2 token layer made that arrangement impossible rather than merely untidy.
+   --ink-2 is now a REAL token (body copy, 12.0:1 on the canvas), and the shim
+   defined --ink-2 as var(--color-ink-2), which v2 defines as var(--ink-2). A
+   custom property defined in terms of itself is invalid at computed-value time,
+   so every element the shim coloured would have lost its colour — silently, with
+   no error anywhere.
+
+   So the aliases are gone. Every call site was rewritten to the canonical token
+   it actually meant, and what is left is ordinary CSS that speaks the same
+   vocabulary as the rest of the store. It lives here because store.css is where
+   shared widgets live, and a file named "legacy" is an invitation to add to it.
+
+   Page-specific rules still belong in app/styles/*.css, not here.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  /* ── panes → white cards ────────────────────────────────────────────────── */
+  .glass,
+  .glass-card,
+  .glass-strong,
+  .glass-quiet {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+  }
+  .toast.glass,
+  .toast.glass-strong {
+    background: var(--color-ink);
+    color: #fff;
+    border: 0;
+  }
+  .lift {
+    transition:
+      box-shadow 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .lift:hover {
+    box-shadow: var(--shadow-1);
+    border-color: var(--color-line-strong);
+  }
+  .anim {
+    transition:
+      background-color 0.12s ease,
+      border-color 0.12s ease,
+      color 0.12s ease,
+      opacity 0.12s ease;
+  }
+  @keyframes legacy-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .fade-up,
+  .sheet-up,
+  .sheet-in,
+  .tray-in {
+    animation: legacy-fade-up 0.16s ease both;
+  }
+  .rule-t {
+    border-top: 1px solid var(--color-line-2);
+  }
+  .rule-b {
+    border-bottom: 1px solid var(--color-line-2);
+  }
+
+  /* ── type ───────────────────────────────────────────────────────────────── */
+  /*
+   * Display headings are set in Audiowide — the brand's own face, not the UI face at a heavier
+   * weight. It is a wide display cut, so the tracking is pulled back in and the weight drops to
+   * 400 (the only cut it has); at 700 the browser synthesises a bold that thickens the joints.
+   * Body copy, labels and every figure stay in their own faces: Audiowide has no ₹ glyph and is
+   * unreadable below about 18 px.
+   */
+  /* The v1 display class. It meant Audiowide; --font-display is Instrument Serif
+     now, so every heading that carried it became editorial without being touched.
+     Weight stays pinned at 400 because the face has exactly one cut and a browser
+     asked for 700 will smear it. Prefer .d1/.d2/.d3 on anything restyled — they
+     carry the size and the tracking too, which this cannot. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: var(--track-d3);
+    color: var(--ink-1);
+  }
+  .hero-figure {
+    font-family: var(--font-figure);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: -0.02em;
+    background: none;
+    color: var(--color-ink);
+    -webkit-text-fill-color: currentColor;
+  }
+  .kicker,
+  .eyebrow {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-teal-700);
+  }
+  .page-head {
+    padding: 16px 0 12px;
+  }
+  /*
+   * The page heading.
+   *
+   * It carried font-weight: 700, and every page heading in the store is written as
+   * `class="display page-title"` — .display being the Audiowide rule. Audiowide ships ONE cut, at
+   * 400. Asking a single-weight face for 700 does not get a bolder face: the browser smears the
+   * 400 outward, and faux-bold on a wide geometric display face is unmistakable once seen. The
+   * brand's own voice was being rendered wrong on the title of every page except the home page,
+   * which sets its own rule.
+   *
+   * 700 stays for headings that are NOT in the display face — .page-title on its own is still a
+   * bold UI heading. Only the pairing is corrected.
+   */
+  .page-title {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+  .display.page-title {
+    font-weight: 400;
+  }
+  .page-sub {
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-ink-2);
+  }
+  .home-title {
+    font-size: 28px;
+    line-height: 36px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .note {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .sec {
+    margin-top: 32px;
+  }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .sec-title {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .sec-more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding-left: 8px;
+    font-size: 14px;
+    color: var(--color-teal-700);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .sec-more:hover {
+    color: var(--color-teal-800);
+    text-decoration: underline;
+  }
+  .empty .display {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .empty .kicker {
+    margin-bottom: -4px;
+  }
+
+  /* ── controls ───────────────────────────────────────────────────────────── */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 16px;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn-ghost:hover {
+    background: var(--color-surface-2);
+  }
+  .btn-ghost:disabled {
+    background: var(--color-surface-3);
+    color: var(--color-ink-2);
+    cursor: not-allowed;
+  }
+  .field {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    padding: 0 12px;
+    font-size: 14px;
+  }
+  .field::placeholder {
+    color: var(--color-ink-3);
+    opacity: 1;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-teal-700);
+    box-shadow: 0 0 0 3px var(--color-teal-100);
+  }
+  select.field {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 30px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f1111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+  .seg {
+    display: inline-flex;
+    align-items: stretch;
+    max-width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .seg button {
+    flex: 1 1 0;
+    min-height: 38px;
+    padding: 0 12px;
+    background: transparent;
+    border: 0;
+    border-left: 1px solid var(--color-line);
+    color: var(--color-ink-2);
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .seg button:first-child {
+    border-left: 0;
+  }
+  .seg button:hover {
+    background: var(--color-surface-2);
+    color: var(--color-ink);
+  }
+  .seg button[aria-pressed="true"] {
+    background: var(--color-teal-50);
+    color: var(--color-ink);
+    box-shadow: inset 0 0 0 1px var(--color-teal-700);
+  }
+  .slider {
+    width: 100%;
+    accent-color: var(--color-teal-700);
+  }
+  .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .dot-green {
+    background: var(--color-success);
+  }
+  .dot-amber {
+    background: var(--color-warn);
+  }
+  .dot-grey {
+    background: var(--color-line-strong);
+  }
+  .prov {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 6px;
+    border: 1px solid var(--color-line-2);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-2);
+    color: var(--color-ink-2);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .prov-derived {
+    border-color: var(--color-line-strong);
+  }
+  .prov-typical {
+    background: var(--color-warn-bg);
+    border-color: var(--color-warn-bg);
+    color: var(--color-warn);
+  }
+  .prov-unknown {
+    border-style: dashed;
+  }
+  .skel-card {
+    aspect-ratio: 1 / 1.42;
+  }
+  .skel-line {
+    height: 12px;
+    border-radius: 6px;
+  }
+
+  .cat-head-icon {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--color-teal-50);
+    color: var(--color-teal-800);
+  }
+  .trust-mini {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--color-line-2);
+    border-bottom: 1px solid var(--color-line-2);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-ink-2);
+  }
+  .trust-mini span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .trust-mini svg {
+    color: var(--color-teal-700);
+  }
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding: 24px 0 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-3);
+  }
+  .foot a {
+    color: var(--color-ink-2);
+  }
+  .foot a:hover {
+    color: var(--color-teal-700);
+    text-decoration: underline;
+  }
+
+  /* ── listing (v1 FilterRail + pages) ───────────────────────────────────── */
+  /* Explicit areas: the v1 rail returns sibling fragments into this grid, so each child is pinned to its area and the results can never wrap under the rail. */
+  .plp {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "toolbar" "chips" "results";
+    gap: 12px 24px;
+    align-items: start;
+  }
+  .plp > .results-head {
+    grid-area: toolbar;
+    margin-bottom: 0;
+  }
+  .plp > .applied {
+    grid-area: chips;
+    margin-bottom: 0;
+  }
+  .plp > aside[data-rail] {
+    grid-area: rail;
+  }
+  .plp > section[aria-label="Results"] {
+    grid-area: results;
+    min-width: 0;
+  }
+  @media (min-width: 1024px) {
+    .plp {
+      grid-template-columns: 240px minmax(0, 1fr);
+      grid-template-areas: "toolbar toolbar" "chips chips" "rail results";
+      gap: 12px 32px;
+    }
+  }
+  .rail-sticky {
+    position: sticky;
+    top: calc(var(--header-h) + 16px);
+  }
+  aside[data-rail].glass-card {
+    border: 0;
+    padding: 0 !important;
+    border-radius: 0;
+    background: transparent;
+  }
+  .range-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  .range-row .field {
+    height: 32px;
+    font-size: 13px;
+    width: 100%;
+    min-width: 0;
+  }
+  .applied {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .results-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 40px;
+    margin-bottom: 12px;
+  }
+  .results-count {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-ink);
+  }
+  .results-count .fig {
+    font-weight: 700;
+  }
+  .prod-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 479.98px) {
+    .prod-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+  }
+  .prod-mrp {
+    font-size: 13px;
+    color: var(--color-ink-3);
+    text-decoration: line-through;
+  }
+  .prod-off {
+    font-size: 13px;
+    color: var(--color-success);
+  }
+  .sheet-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: var(--scrim-ink);
+  }
+  .sheet:has(> .sheet-grip) {
+    padding: 0 16px;
+  }
+  .sheet:has(> .sheet-grip) > .sheet-foot {
+    margin: 12px -16px 0;
+  }
+  .sheet-grip {
+    flex: none;
+    width: 36px;
+    height: 4px;
+    margin: 8px auto 12px;
+    border-radius: 2px;
+    background: var(--color-line);
+  }
+  .cat-strip-wrap {
+    margin: 12px 0 16px;
+  }
+
+  /* ── product page (v1 Gallery / BuyPanel / SpecSheet / BrandStrip) ──────── */
+  .pdp {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  @media (min-width: 1024px) {
+    .pdp {
+      grid-template-columns: minmax(0, 7fr) minmax(320px, 5fr);
+      gap: 32px;
+      align-items: start;
+    }
+  }
+  .pdp-sticky {
+    position: sticky;
+    top: calc(var(--header-h) + 16px);
+  }
+  .gallery {
+    position: relative;
+  }
+  /* The silver plate. Brand photography is shot on white; on #06181d an untreated shot reads
+     as a torn hole in the page, and the product's own white background bleeds into nothing.
+     Mounting it on plate makes that white deliberate — see .plate in theme.css. */
+  .gallery-main {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--color-plate);
+    background-image: linear-gradient(160deg, var(--color-plate-2) 0%, var(--color-plate) 62%);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    touch-action: pan-y;
+    cursor: zoom-in;
+  }
+  .gallery-track {
+    display: flex;
+    height: 100%;
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+  .gallery-slide {
+    position: relative;
+    flex: 0 0 100%;
+    height: 100%;
+  }
+  .gallery-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6%;
+    display: block;
+  }
+  .gallery-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-1);
+  }
+  .gallery-arrow--l {
+    left: 12px;
+  }
+  .gallery-arrow--r {
+    right: 12px;
+  }
+  .gallery-lens {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 120ms;
+  }
+  .gallery-main:hover .gallery-lens[data-on="true"] {
+    opacity: 1;
+  }
+  .thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    overflow-x: auto;
+  }
+  .thumb {
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    overflow: hidden;
+    background: var(--color-plate);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6px;
+  }
+  .thumb[aria-current="true"] {
+    border-color: var(--color-teal-700);
+    box-shadow: 0 0 0 1px var(--color-teal-700);
+  }
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* No plate here. A full-viewport viewer wants the darkest ground in the store so the
+       photograph is the only lit thing on screen — the plate is for a photo *in* a layout. */
+    background: var(--color-ar-void);
+    touch-action: none;
+  }
+  .lightbox img {
+    max-width: 100vw;
+    max-height: 100dvh;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: calc(16px + env(safe-area-inset-top, 0px));
+    right: 16px;
+    z-index: 2;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+  }
+  .pdp-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+  .pdp-dot {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-line-strong);
+    transition: width 0.16s ease;
+  }
+  .pdp-dot[aria-current="true"] {
+    width: 18px;
+    background: var(--color-teal-700);
+  }
+  .est-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: var(--radius-sm);
+    background: var(--color-warn-bg);
+    color: var(--color-warn);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+  }
+  .buy-panel {
+    padding: 20px;
+  }
+  .buy-brand {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .buy-name {
+    margin-top: 4px;
+    font-family: var(--font-ui);
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .buy-variant {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .rating-none {
+    margin-top: 8px;
+    font-size: 12.5px;
+    line-height: 17px;
+    color: var(--color-ink-3);
+  }
+  .price-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .price-main .hero-figure {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .price-block {
+    margin-top: 12px;
+  }
+  .provenance-line {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+  }
+  .pin-check {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .pin-check .field {
+    height: 40px;
+    flex: 1;
+    min-width: 0;
+  }
+  .pin-result {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .buy-actions {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+    margin-top: 16px;
+  }
+  .buy-actions .btn-primary,
+  .buy-actions .btn-ghost {
+    height: 44px;
+    font-size: 14px;
+  }
+  .buy-ghost-row {
+    margin-top: 12px;
+  }
+  .assurance {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-line-2);
+  }
+  .assurance-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+  }
+  .assurance-item svg {
+    color: var(--color-teal-700);
+  }
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-ink);
+  }
+  .spec-table th,
+  .spec-table td {
+    padding: 8px 12px;
+    border: 1px solid var(--color-line-2);
+    vertical-align: top;
+    text-align: left;
+  }
+  .spec-table th {
+    width: 40%;
+    background: var(--color-canvas-2);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .prose {
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--color-ink);
+  }
+  .prose h3 {
+    margin: 20px 0 8px;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 700;
+    color: var(--color-ink);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .prose h3:first-child {
+    margin-top: 0;
+  }
+  .prose p {
+    margin: 0 0 12px;
+  }
+  .prose ul {
+    margin: 0 0 12px;
+    padding-left: 1.2em;
+    list-style: disc;
+  }
+  .prose li {
+    margin-bottom: 4px;
+  }
+  .prose strong {
+    font-weight: 700;
+  }
+  .prose a {
+    color: var(--color-teal-700);
+    text-decoration: underline;
+  }
+  .acc {
+    border-top: 1px solid var(--color-line-2);
+  }
+  .acc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 0;
+    background: none;
+    border: 0;
+    color: var(--color-ink);
+    text-align: left;
+    cursor: pointer;
+  }
+  .acc-title {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .acc-count {
+    margin-left: 12px;
+    font-size: 12px;
+    color: var(--color-ink-3);
+  }
+  .acc-body {
+    padding-bottom: 16px;
+  }
+  .pdf-frame {
+    width: 100%;
+    height: 520px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+  }
+  .doc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--color-line-2);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .brand-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
+  @media (min-width: 768px) {
+    .brand-strip {
+      grid-template-columns: 160px 1fr;
+    }
+  }
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 72px;
+    padding: 12px;
+    background: var(--color-surface-2);
+    border-radius: var(--radius-md);
+  }
+  .brand-logo img {
+    max-width: 100%;
+    max-height: 56px;
+    object-fit: contain;
+  }
+  .intel-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 16px;
+    font-size: 13px;
+    line-height: 18px;
+  }
+  @media (min-width: 1024px) {
+    .intel-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .intel-k {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    color: var(--color-ink-2);
+  }
+  .intel-v {
+    margin-top: 2px;
+    color: var(--color-ink);
+  }
+
+  /* ── calculator (v1 Calculator.tsx) ─────────────────────────────────────── */
+  .est {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  @media (min-width: 1024px) {
+    .est {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 32px;
+      align-items: start;
+    }
+  }
+  .wizard {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px;
+  }
+  .wz-step {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .wz-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .wz-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-teal-700);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .wz-title {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .wz-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .wz-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .wz-row .field,
+  .wz-step .field {
+    height: 40px;
+    width: 100%;
+    font-size: 14px;
+  }
+  .wz-hint {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .derived {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--color-surface-2);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .derived .fig {
+    font-size: 18px;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  .drawing-drop {
+    padding: 24px;
+    text-align: center;
+    border: 1px dashed var(--color-line-strong);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-ink-2);
+    cursor: pointer;
+  }
+  .drawing-drop[data-over="true"] {
+    border-color: var(--color-teal-700);
+    background: var(--color-teal-50);
+  }
+  .from-drawing {
+    font-size: 12px;
+    color: var(--color-teal-700);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .out {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .grand {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
+  @media (min-width: 640px) {
+    .grand {
+      grid-template-columns: 1.2fr 1fr 1fr;
+      align-items: end;
+    }
+  }
+  .grand-total .hero-figure {
+    font-size: clamp(28px, 4vw, 36px);
+    line-height: 1.1;
+  }
+  .grand-label {
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    color: var(--color-ink-2);
+  }
+  .grand-sub {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink-2);
+  }
+  .ledger-fig .fig {
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .tier-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .tier {
+    padding: 12px 16px;
+    text-align: left;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    color: var(--color-ink-2);
+    cursor: pointer;
+  }
+  .tier[aria-pressed="true"] {
+    background: var(--color-teal-50);
+    border-color: var(--color-teal-700);
+    color: var(--color-ink);
+  }
+  .tier-k {
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .tier-v {
+    margin-top: 2px;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .donut-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px;
+  }
+  @media (min-width: 768px) {
+    .donut-wrap {
+      grid-template-columns: 260px 1fr;
+      align-items: start;
+    }
+  }
+  .donut {
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+  .legend-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-ink);
+  }
+  .legend-table th {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--color-line);
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-ink-2);
+  }
+  .legend-table td {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-line-2);
+    vertical-align: top;
+  }
+  .legend-table td.r,
+  .legend-table th.r {
+    text-align: right;
+  }
+  .legend-table tr:last-child td {
+    border-bottom: 0;
+  }
+  .swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 8px;
+    border-radius: 3px;
+    vertical-align: -1px;
+  }
+  .legend-sub {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--color-ink-2);
+  }
+  .phase-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .phase {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .phase-bar {
+    grid-column: 1 / -1;
+    height: 6px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: var(--color-surface-3);
+  }
+  .phase-bar i {
+    display: block;
+    height: 100%;
+    background: var(--color-teal-700);
+  }
+  /* "Priced from the store" lists whole product names as chips — let them wrap rather than overflow the page. */
+  .est a.chip {
+    height: auto;
+    min-height: 32px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    white-space: normal;
+    text-align: left;
+  }
+
+  /* ── AR chrome (v1 ArStage) — the stage itself is imagery and stays dark ─── */
+  .ar-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    max-height: 80dvh;
+    overflow: hidden;
+    background: var(--color-ar-void);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    color: #fff;
+  }
+  @media (min-width: 1024px) {
+    .ar-stage {
+      aspect-ratio: 16 / 10;
+    }
+  }
+  .ar-stage video,
+  .ar-stage canvas,
+  .ar-stage img.ar-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ar-overlay {
+    position: absolute;
+    inset: 0;
+    touch-action: none;
+  }
+  .ar-hud {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+  .ar-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+    font-size: 13px;
+    line-height: 18px;
+    cursor: pointer;
+  }
+  .ar-chip--warn {
+    background: var(--color-warn-bg);
+    border-color: var(--color-warn);
+    color: var(--color-warn);
+  }
+  .ar-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 32px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .ar-tier {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+  }
+  .ar-progress {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: var(--scrim-ink);
+    color: #fff;
+    font-size: 14px;
+  }
+  .ar-reticle {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    border: 1.5px solid var(--color-brand);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .ar-reticle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-brand);
+    transform: translate(-50%, -50%);
   }
 }

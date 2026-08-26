@@ -78,14 +78,14 @@ export default function DrawingUpload({ onReading }: { onReading: (reading: Draw
             e.target.value = '';
           }}
         />
-        <IconUpload size={22} style={{ color: 'var(--accent)', margin: '0 auto 8px' }} />
+        <IconUpload size={22} style={{ color: 'var(--color-brand)', margin: '0 auto 8px' }} />
         {busy ? (
           <span className="flex items-center justify-center gap-2">
             <span className="skel" style={{ width: 14, height: 14, borderRadius: 7 }} /> Reading your drawing…
           </span>
         ) : (
           <span>
-            <strong style={{ color: 'var(--ink)' }}>Upload a design</strong> — drop a floor plan, elevation or 3D render (image or PDF), or tap to choose. We
+            <strong style={{ color: 'var(--ink-1)' }}>Upload a design</strong> — drop a floor plan, elevation or 3D render (image or PDF), or tap to choose. We
             prefill the wizard from it; you confirm before anything is priced.
           </span>
         )}
@@ -97,7 +97,7 @@ export default function DrawingUpload({ onReading }: { onReading: (reading: Draw
         </p>
       )}
       {error && (
-        <p className="note mt-2" style={{ color: 'var(--accent)' }}>
+        <p className="note mt-2" style={{ color: 'var(--color-brand)' }}>
           {error}
         </p>
       )}

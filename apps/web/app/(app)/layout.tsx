@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Header from '@/components/header/Header';
-import NavStrip from '@/components/header/NavStrip';
 import Reveal from '@/components/Reveal';
 import ScrollProgress from '@/components/ScrollProgress';
 import SkipLink from '@/components/SkipLink';
@@ -10,9 +9,13 @@ import { allCategories } from '@/lib/catalog';
 import { loadSession, serviceability } from '@/lib/data';
 
 /**
- * Every page behind the door shares the shell: skip link, the sticky header (deliver-to,
- * search, estimate, account), the category nav strip, main, footer. The proxy already gated
- * the request; this second check covers the case where the proxy matcher is bypassed.
+ * Every page behind the door shares the shell: skip link, the floating header bar, the
+ * deliver-to strip, main, footer. The proxy already gated the request; this second check covers
+ * the case where the proxy matcher is bypassed.
+ *
+ * The 40 px category strip that used to sit under the header is gone — the catalogue tree it
+ * carried is the header's own mega menu now, and two rows of navigation for one taxonomy was the
+ * chrome equivalent of saying everything twice.
  */
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await loadSession();
@@ -25,7 +28,6 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <ScrollProgress />
       <Reveal />
       <Header pincode={session.pincode} phone={session.phone} regionName={svc.name} deliveryDays={svc.deliveryDays} categories={categories} />
-      <NavStrip categories={categories} />
       <main id="main">{children}</main>
       <Footer categories={categories} />
       <ToastHost />

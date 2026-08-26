@@ -16,3 +16,20 @@ its stated license; the licenses are shipped in `fonts/LICENSES/`.
 | texgyreheros | texgyreheros-regular.otf | 133,600 | `6ae1a09d5a940367b7aaaa91ee8bd8a2c333bfe193e7096e23f931357d62081f` | GUST Font License | https://mirrors.ctan.org/fonts/tex-gyre/opentype/texgyreheros-regular.otf |
 | texgyreheros | texgyreheros-bold.otf | 135,204 | `b170162835f4efc288886dd4231406dc47e19b614cf4416836635599d44a7d60` | GUST Font License | https://mirrors.ctan.org/fonts/tex-gyre/opentype/texgyreheros-bold.otf |
 | texgyreheros | GUST-FONT-LICENSE.txt | 1,417 | `5eb61bb836bb1845ef668717cb15b382e997748ce2629e4388cc5e4c3fa4e433` | GUST Font License | http://www.gust.org.pl/fonts/licenses/GUST-FONT-LICENSE.txt |
+
+<!-- fetch-fonts.mts owns everything below this line -->
+
+BuildObjectsDisplay1-Regular.woff2
+  Instrument Serif
+  Display 1 — headlines and section titles
+  SIL Open Font License 1.1 — google/fonts/ofl/instrumentserif
+
+BuildObjectsDisplay1-Italic.woff2
+  Instrument Serif Italic
+  Display 1 italic — emphasis inside a headline
+  SIL Open Font License 1.1 — google/fonts/ofl/instrumentserif
+
+BuildObjectsSans3-Variable.woff2
+  Schibsted Grotesk (variable, 400–800)
+  Sans 3 — every control, label, body and nav
+  SIL Open Font License 1.1 — google/fonts/ofl/schibstedgrotesk

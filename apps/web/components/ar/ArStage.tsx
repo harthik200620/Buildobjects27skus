@@ -539,7 +539,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
       {mode === 'menu' && (
         <div className="ar-stage">
           <div className="ar-empty">
-            <IconInfo size={22} style={{ color: 'var(--accent)' }} />
+            <IconInfo size={22} style={{ color: 'var(--color-brand)' }} />
             <span>
               This device supports {tier?.tier === 'L' ? 'live AR' : 'AR Quick Look'} — place the {product.categoryName.toLowerCase()} at true physical size, or
               use a photo of the room.
@@ -570,7 +570,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
               <video ref={videoRef} playsInline muted style={{ display: streaming ? 'block' : 'none' }} />
               {!streaming && (
                 <div className="ar-empty">
-                  <IconCamera size={28} style={{ color: 'var(--accent)' }} />
+                  <IconCamera size={28} style={{ color: 'var(--color-brand)' }} />
                   <span>{error ?? 'Point the camera at the spot where this goes, or upload a photo of the room.'}</span>
                   <div className="flex gap-2 flex-wrap justify-center">
                     <button type="button" className="btn-primary h-11 px-5" onClick={startCamera}>
@@ -730,7 +730,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
                     type="button"
                     className="ar-chip"
                     aria-pressed={surface === s}
-                    style={surface === s ? { borderColor: 'var(--accent)', color: 'var(--accent)', fontWeight: 600 } : undefined}
+                    style={surface === s ? { borderColor: 'var(--color-brand)', color: 'var(--color-brand)', fontWeight: 600 } : undefined}
                     onClick={() => {
                       dispatch({ type: 'surfaceChosen', surface: s, rule });
                     }}
@@ -753,7 +753,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
                 >
                   − Size
                 </button>
-                <span className="ar-chip" style={{ color: 'var(--accent)', fontWeight: 600 }}>
+                <span className="ar-chip" style={{ color: 'var(--color-brand)', fontWeight: 600 }}>
                   {Math.round(dims.w_mm * scaleMult)} × {Math.round(dims.h_mm * scaleMult)} mm ({Math.round(scaleMult * 100)}%)
                   {scaleMult > 1.01 ? ' · enlarged to see' : ''}
                 </span>
@@ -806,7 +806,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
                     type="button"
                     className="ar-chip"
                     aria-pressed={calibRef.kind === c.kind}
-                    style={calibRef.kind === c.kind ? { borderColor: 'var(--accent)', color: 'var(--accent)' } : undefined}
+                    style={calibRef.kind === c.kind ? { borderColor: 'var(--color-brand)', color: 'var(--color-brand)' } : undefined}
                     onClick={() => {
                       setCalibRef(c);
                       dispatch({ type: 'calibrateStarted' });
@@ -869,7 +869,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
       <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3 text-[12px]" style={{ color: 'var(--ink-3)' }}>
         <span>
           True size{' '}
-          <span className="fig" style={{ color: 'var(--ink)' }}>
+          <span className="fig" style={{ color: 'var(--ink-1)' }}>
             {dims.w_mm} × {dims.h_mm} × {dims.d_mm} mm
           </span>
         </span>
@@ -891,7 +891,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
           </span>
         )}
         {result?.note && <span>{result.note}</span>}
-        {error && step !== 'capture' && <span style={{ color: 'var(--accent)' }}>{error}</span>}
+        {error && step !== 'capture' && <span style={{ color: 'var(--color-brand)' }}>{error}</span>}
       </div>
       {product.pdpHref && (
         <p className="mt-4 text-[13px]">

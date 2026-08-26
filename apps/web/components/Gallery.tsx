@@ -345,7 +345,7 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
                       backgroundImage: `url(${mediaUrl(cur.zoom)})`,
                       backgroundSize: '240%',
                       backgroundPosition: `${lens.x}% ${lens.y}%`,
-                      backgroundColor: 'var(--card-face)',
+                      backgroundColor: 'var(--surf-2)',
                     }
                   : undefined
               }

@@ -27,7 +27,7 @@ export default function Donut({
   const big = total >= 1e7 ? `₹${(total / 1e7).toFixed(2)} Cr` : total >= 1e5 ? `₹${(total / 1e5).toFixed(1)} L` : inr(total);
   return (
     <svg viewBox="0 0 220 220" className="donut" role="img" aria-label={`Cost share by material group, total ${inr(total)}`}>
-      <circle cx="110" cy="110" r={r} fill="none" stroke="var(--fill)" strokeWidth="24" />
+      <circle cx="110" cy="110" r={r} fill="none" stroke="var(--surf-3)" strokeWidth="24" />
       {groups.map((g, i) => {
         const len = Math.max(0, g.share) * c;
         const el = (
@@ -62,7 +62,7 @@ export default function Donut({
         x="110"
         y="106"
         textAnchor="middle"
-        fill="var(--ink)"
+        fill="var(--ink-1)"
         fontSize="21"
         style={{ fontFamily: 'var(--font-figure)', fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}
       >
@@ -72,7 +72,7 @@ export default function Donut({
         {active ? (groups.find((g) => g.key === active)?.label ?? '').toUpperCase().slice(0, 28) : 'GRAND TOTAL'}
       </text>
       {active && (
-        <text x="110" y="142" textAnchor="middle" fill="var(--accent)" fontSize="12" style={{ fontFamily: 'var(--font-figure)' }}>
+        <text x="110" y="142" textAnchor="middle" fill="var(--color-brand)" fontSize="12" style={{ fontFamily: 'var(--font-figure)' }}>
           {Math.round((groups.find((g) => g.key === active)?.share ?? 0) * 100)}%
         </text>
       )}

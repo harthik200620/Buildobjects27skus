@@ -9,6 +9,7 @@ import type { ImageLoaderProps } from 'next/image';
  *
  *   products    skus/xx/CODE/img/1-card.webp          → 1-thumb / 1-card / 1-gallery / 1-zoom
  *   categories  categories/cement/hero-card-a1b2.webp → hero-thumb- / hero-card- / hero-gallery-
+ *   backplates  /art/home-hero-2560.webp              → -640 / -1280 / -2560
  *
  * The category hash is the content version of the original and is shared by every rendition of
  * it, so the segment is the only part that moves. Anything matching neither shape — logo PNGs,
@@ -31,6 +32,13 @@ const CATEGORY_LADDER: [number, string][] = [
   [1600, 'gallery'],
 ];
 
+/**
+ * Backplates name their renditions by width, because unlike the catalogue they have no role
+ * vocabulary — a plate is one photograph at three sizes, not a hero and an angle and a detail.
+ * Derived at stage time by scripts/stage-media.mts; the widths here must match the ones there.
+ */
+const PLATE_LADDER = [640, 1280, 2560];
+
 const pick = (ladder: [number, string][], width: number) => (ladder.find(([w]) => w >= width) ?? ladder[ladder.length - 1])[1];
 
 export default function imageLoader({ src, width }: ImageLoaderProps): string {
@@ -44,6 +52,13 @@ export default function imageLoader({ src, width }: ImageLoaderProps): string {
   if (category) {
     const query = category[5] ? `${category[5]}&w=${width}` : `?w=${width}`;
     return `${category[1]}-${pick(CATEGORY_LADDER, width)}-${category[3]}.${category[4]}${query}`;
+  }
+
+  const plate = src.match(/^(.*\/art\/[a-z0-9-]+?)-(?:640|1280|2560)\.webp(\?.*)?$/);
+  if (plate) {
+    const chosen = PLATE_LADDER.find((w) => w >= width) ?? PLATE_LADDER[PLATE_LADDER.length - 1];
+    const query = plate[2] ? `${plate[2]}&w=${width}` : `?w=${width}`;
+    return `${plate[1]}-${chosen}.webp${query}`;
   }
 
   return src;

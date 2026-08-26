@@ -837,7 +837,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         <div className="ar-hud" style={{ top: 'calc(var(--s-3) + env(safe-area-inset-top))', bottom: 'auto', zIndex: 5, justifyContent: 'space-between' }}>
           <div className="ar-hud-glass ar-hud-pill">
             <span style={{ fontWeight: 600 }}>{name}</span>
-            <span style={{ color: 'var(--accent)' }}>
+            <span style={{ color: 'var(--color-brand)' }}>
               · {dims.w_mm}×{dims.h_mm} mm
             </span>
             <span style={{ opacity: 0.8 }}>· {Math.round(scaleMult * 100)}% scale</span>

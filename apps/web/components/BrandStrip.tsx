@@ -37,7 +37,7 @@ export default function BrandStrip({ brand }: { brand: SkuPageData['brand'] }) {
   );
   const logo = mediaUrl(brand.logoKey);
   return (
-    <div className="glass-card brand-strip" style={{ borderRadius: 'var(--radius-glass)' }}>
+    <div className="glass-card brand-strip" style={{ borderRadius: 'var(--r-2)' }}>
       <div>
         <div className="brand-logo">
           {logo ? <img src={logo} alt={`${brand.name} logo`} /> : <span className="fig font-semibold text-[16px]">{brand.name}</span>}

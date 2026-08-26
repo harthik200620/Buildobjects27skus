@@ -23,6 +23,12 @@
       "!packages/db/drizzle",
       "!services/pipeline/data",
       "!services/pipeline/registry",
+      // The design reference: seven standalone artboards, their tokens and their prompt pack.
+      // They are mockups, not application code — every anchor in them is href="#" because
+      // nothing in an artboard navigates, and linting them means 500 diagnostics about a
+      // deliberate property of the medium. The rules they must obey are checked by
+      // apps/web/scripts/contrast.ts against what actually shipped.
+      "!design-system",
       "!pnpm-lock.yaml"
     ]
   },

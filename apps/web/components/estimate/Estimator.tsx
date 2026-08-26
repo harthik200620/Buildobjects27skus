@@ -189,10 +189,10 @@ export default function Estimator({
   return (
     <div className="est">
       {/* ── the wizard ───────────────────────────────────────────────────── */}
-      <section className="glass-card wizard no-print" style={{ borderRadius: 'var(--radius-glass)' }} aria-label="Estimate inputs">
+      <section className="glass-card wizard no-print" style={{ borderRadius: 'var(--r-2)' }} aria-label="Estimate inputs">
         {drawing && (
-          <div className="derived" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8, borderLeft: '2px solid var(--accent)' }}>
-            <span style={{ color: 'var(--ink)' }}>
+          <div className="derived" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8, borderLeft: '2px solid var(--color-brand)' }}>
+            <span style={{ color: 'var(--ink-1)' }}>
               {drawing.confirmed ? 'Drawing values confirmed' : 'Prefilled from your drawing'} · <span className="fig">{drawing.name}</span>
             </span>
             {!drawing.confirmed && (
@@ -489,8 +489,8 @@ export default function Estimator({
             {picks.map((p) => {
               const s = catalog[p.sku_code];
               return (
-                <div key={p.sku_code} className="flex items-center gap-3 text-[13px]" style={{ padding: '8px 0', borderTop: '1px solid var(--rule-soft)' }}>
-                  <Link href={`/p/${p.sku_code.toLowerCase()}`} className="flex-1 min-w-0 truncate" style={{ color: 'var(--ink)' }}>
+                <div key={p.sku_code} className="flex items-center gap-3 text-[13px]" style={{ padding: '8px 0', borderTop: '1px solid var(--hair)' }}>
+                  <Link href={`/p/${p.sku_code.toLowerCase()}`} className="flex-1 min-w-0 truncate" style={{ color: 'var(--ink-1)' }}>
                     {s ? `${s.brand} ${s.name}` : p.sku_code}
                   </Link>
                   <div className="qty" role="group" aria-label={`Quantity of ${p.sku_code}`}>
@@ -526,14 +526,14 @@ export default function Estimator({
          */}
         <HouseRender result={result} highlight={active} />
         {unconfirmed && (
-          <div className="derived no-print" style={{ borderLeft: '2px solid var(--accent)', color: 'var(--ink-2)' }}>
+          <div className="derived no-print" style={{ borderLeft: '2px solid var(--color-brand)', color: 'var(--ink-2)' }}>
             <span>
-              <IconInfo size={14} style={{ display: 'inline', verticalAlign: -2, marginRight: 6, color: 'var(--accent)' }} />
+              <IconInfo size={14} style={{ display: 'inline', verticalAlign: -2, marginRight: 6, color: 'var(--color-brand)' }} />
               Drawing values not confirmed yet — this total is a preview, not an estimate.
             </span>
           </div>
         )}
-        <div className="glass-card grand" style={{ borderRadius: 'var(--radius-glass)' }}>
+        <div className="glass-card grand" style={{ borderRadius: 'var(--r-2)' }}>
           <div className="grand-total">
             <p className="grand-label">
               {unconfirmed ? 'Preview total' : 'Estimated cost'} · {TIER_LABEL[inputs.tier]}
@@ -576,7 +576,7 @@ export default function Estimator({
           ))}
         </div>
 
-        <div className="glass-card donut-wrap" style={{ borderRadius: 'var(--radius-glass)' }}>
+        <div className="glass-card donut-wrap" style={{ borderRadius: 'var(--r-2)' }}>
           <Donut groups={result.groups} total={result.grandTotal} active={active} onActive={setActive} />
           <div>
             <div className="sec-head" style={{ marginBottom: 8 }}>
@@ -601,7 +601,7 @@ export default function Estimator({
                       <tr
                         onMouseEnter={() => setActive(g.key)}
                         onMouseLeave={() => setActive(null)}
-                        style={{ cursor: 'pointer', background: active === g.key ? 'var(--fill)' : undefined }}
+                        style={{ cursor: 'pointer', background: active === g.key ? 'var(--surf-3)' : undefined }}
                         onClick={() => setOpen((o) => ({ ...o, [g.key]: !o[g.key] }))}
                       >
                         <td>
@@ -623,12 +623,12 @@ export default function Estimator({
                       </tr>
                       {isOpen &&
                         (linesByGroup.get(g.key) ?? []).map((l) => (
-                          <tr key={l.key} style={{ background: 'var(--fill)' }}>
+                          <tr key={l.key} style={{ background: 'var(--surf-3)' }}>
                             <td colSpan={2} style={{ paddingLeft: 26 }}>
                               <div>
                                 {l.label}
                                 {l.sku_code && (
-                                  <Link href={`/p/${l.sku_code.toLowerCase()}`} className="ml-2" style={{ color: 'var(--accent)' }}>
+                                  <Link href={`/p/${l.sku_code.toLowerCase()}`} className="ml-2" style={{ color: 'var(--color-brand)' }}>
                                     store <IconArrow size={11} style={{ display: 'inline', verticalAlign: -1 }} />
                                   </Link>
                                 )}
@@ -658,7 +658,7 @@ export default function Estimator({
           </div>
         </div>
 
-        <div className="glass-card" style={{ borderRadius: 'var(--radius-glass)', padding: 'var(--s-5)' }}>
+        <div className="glass-card" style={{ borderRadius: 'var(--r-2)', padding: 'var(--s-5)' }}>
           <div className="sec-head" style={{ marginBottom: 12 }}>
             <h2 className="sec-title">Stage-wise phasing</h2>
             <span className="legend-sub">progress-billing split</span>
@@ -679,7 +679,7 @@ export default function Estimator({
         </div>
 
         {result.storeLinks.length > 0 && (
-          <div className="glass-card" style={{ borderRadius: 'var(--radius-glass)', padding: 'var(--s-5)' }}>
+          <div className="glass-card" style={{ borderRadius: 'var(--r-2)', padding: 'var(--s-5)' }}>
             <div className="sec-head" style={{ marginBottom: 8 }}>
               <h2 className="sec-title">Priced from the store</h2>
               <span className="legend-sub">one price truth</span>
@@ -717,7 +717,7 @@ export default function Estimator({
           {saved && (
             <span className="legend-sub">
               Link:{' '}
-              <span className="fig" style={{ color: 'var(--ink)' }}>
+              <span className="fig" style={{ color: 'var(--ink-1)' }}>
                 /estimate?e={saved.id}
               </span>
             </span>

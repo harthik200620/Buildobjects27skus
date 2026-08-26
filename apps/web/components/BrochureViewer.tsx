@@ -33,9 +33,9 @@ export default function BrochureViewer({
             className="flex items-center gap-2 text-left"
             onClick={() => setActive(i)}
             aria-current={i === active ? 'true' : undefined}
-            style={{ color: i === active ? 'var(--ink)' : 'var(--ink-2)' }}
+            style={{ color: i === active ? 'var(--ink-1)' : 'var(--ink-2)' }}
           >
-            <IconDoc size={16} style={{ color: 'var(--accent)' }} />
+            <IconDoc size={16} style={{ color: 'var(--color-brand)' }} />
             <span>
               {doc.title}
               <span className="ml-2 text-[11px]" style={{ color: 'var(--ink-3)' }}>

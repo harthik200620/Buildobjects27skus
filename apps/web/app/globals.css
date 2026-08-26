@@ -14,10 +14,3 @@
 @import "./styles/gallery.css";
 @import "./styles/estimator.css";
 @import "./styles/ar.css";
-
-/*
- * Older class vocabulary (glass-card, display, kicker, prov, facet, wizard…) mapped onto the
- * current tokens. Pages still speak it; each one that is restyled should take its rules into
- * store.css or a styles/ file and delete them from here.
- */
-@import "./legacy.css";

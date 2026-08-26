@@ -55,7 +55,7 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
   const warrantyRow = sku.keySpecs.find((k) => /warranty/i.test(k.label));
 
   return (
-    <div className="glass-card buy-panel" style={{ borderRadius: 'var(--radius-glass)' }}>
+    <div className="glass-card buy-panel" style={{ borderRadius: 'var(--r-2)' }}>
       <p className="buy-brand">{brand.name}</p>
       <h1 className="buy-name fig font-semibold">{product.name}</h1>
       {sku.variant && (
@@ -138,7 +138,7 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
       </div>
       {svc && (
         <p className="pin-result flex items-center gap-1.5">
-          {svc.serviceable ? <IconCheck size={14} style={{ color: 'var(--fresh)' }} /> : <IconInfo size={14} style={{ color: 'var(--accent)' }} />}
+          {svc.serviceable ? <IconCheck size={14} style={{ color: 'var(--ok)' }} /> : <IconInfo size={14} style={{ color: 'var(--color-brand)' }} />}
           {svc.note}
         </p>
       )}
@@ -164,7 +164,7 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
         <Link
           href={`/ar/${sku.code.toLowerCase()}`}
           className="btn btn-secondary btn--block"
-          style={{ border: '1px solid var(--accent)', color: 'var(--accent)' }}
+          style={{ border: '1px solid var(--color-brand)', color: 'var(--color-brand)' }}
         >
           <IconRoom size={18} /> View in your room (Live AR)
         </Link>
@@ -172,7 +172,7 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
       {qty > 1 && sku.price !== null && (
         <p className="text-[12px] mt-3" style={{ color: 'var(--ink-2)' }}>
           Line total{' '}
-          <span className="fig" style={{ color: 'var(--ink)' }}>
+          <span className="fig" style={{ color: 'var(--ink-1)' }}>
             {inr(sku.price * qty, { decimals: true })}
           </span>{' '}
           for {qty} {sku.unit}

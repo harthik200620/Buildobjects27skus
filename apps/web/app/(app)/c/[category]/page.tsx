@@ -154,7 +154,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
           />
           <section aria-label="Results">
             {result.hits.length === 0 ? (
-              <div className="empty glass-card" style={{ borderRadius: 'var(--radius-glass)' }}>
+              <div className="empty glass-card" style={{ borderRadius: 'var(--r-2)' }}>
                 <p className="kicker">{displayName(cat.slug, cat.name)}</p>
                 <p className="display">{(stats?.sku_count ?? 0) === 0 ? 'Nothing on this shelf yet' : 'No products match those filters'}</p>
                 <p>
