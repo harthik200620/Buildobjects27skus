@@ -58,6 +58,10 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
   rule does not work; three separate "bugs" this round were stale CSS.
 - **Never hand-write `-webkit-backdrop-filter`.** Lightning CSS drops the standard property when
   both are present and the value is a `var()`. Write the standard one and let the toolchain prefix.
+- **Nothing in the header bar may shrink.** Every child is `flex: none`; the spacer takes the
+  slack and breakpoints change what is in the row. A flex item narrower than its content does not
+  wrap or clip — it overflows onto its neighbour, which is how "See in room" ended up running
+  through the search field on every 1440px laptop.
 - **The Render API key in `.env` was pasted in plaintext and should be rotated.**
 
 ## The gates
@@ -66,7 +70,8 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
 are worth running by hand after any visual change:
 
     pnpm --filter @buildobjects/web type:audit     # no synthesised font weights on any route
-    pnpm --filter @buildobjects/web scale:audit    # no page over its radius / type-size budget
+    pnpm --filter @buildobjects/web scale:audit    # radius / type-size budgets, and the header
+                                                   # bar checked at 15 real viewport widths
     pnpm --filter @buildobjects/web build          # the production build is the only honest one
 
 Both audits drive a real browser against `localhost:3001`, which means they check whatever that

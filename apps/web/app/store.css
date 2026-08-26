@@ -114,8 +114,17 @@
     top: var(--header-inset);
     z-index: 40;
     padding: 0 var(--gutter);
-    /* The sticky box is only ever as tall as the bar; the inset is the gap above it. */
     height: var(--header-h);
+    /*
+     * The inset is a MARGIN, not just a sticky offset.
+     *
+     * `top` alone moves the bar down visually once it sticks and reserves nothing in the
+     * flow, so at rest the bar painted from 20 to 96 while the next element in the
+     * document started at 76 — the deliver-to strip was rendering eight pixels underneath
+     * the floating bar, which is what "Deliver to Hyderabad" was doing tucked against its
+     * bottom edge. The margin makes the gap real for everything below it.
+     */
+    margin-top: var(--header-inset);
     transition: height var(--dur-3) var(--ease-glide);
   }
   :root[data-scrolled] .header {
@@ -165,15 +174,26 @@
     height: 30px;
     background: var(--hair-2);
   }
+  /* NOTHING IN THE BAR SHRINKS. Every child is flex: none and the spacer takes all the
+     slack, so the row either fits or a breakpoint below changes what is in it. Letting
+     items shrink is what produced the collision this replaces: `.header-nav` had
+     shrink: 1, so past about 1560px it was squeezed narrower than its own labels and
+     "See in room" ran straight through the search field's magnifier. A flex item
+     narrower than its content does not wrap or clip — it overflows, and the overflow
+     lands on whatever is beside it. */
   .header-nav {
     display: flex;
     align-items: center;
+    flex: none;
     gap: 2px;
-    min-width: 0;
   }
   .header-spacer {
     flex: 1 1 0;
     min-width: 0;
+  }
+  .header-right,
+  .account-wrap {
+    flex: none;
   }
 
   /* ── a nav link, and the one accent gesture in the bar ────────────────────
@@ -223,6 +243,52 @@
   .navlink[aria-current="page"],
   .navlink[aria-expanded="true"] {
     color: var(--ink-1);
+  }
+
+  /* ── the cart and account actions ─────────────────────────────────────────
+     An icon and its label, side by side, on one line.
+
+     This rule went missing when the two-row header was rewritten, and the buttons fell
+     back to `display: block` — so the glyph and the words became inline content that
+     wrapped wherever the box ran out. "BO Cart" broke onto two lines under its trolley,
+     the account sat 9px higher than the cart beside it, and the two most-used controls
+     in the store were laid out by accident. */
+  .header-action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    flex: none;
+    height: 40px;
+    padding: 0 var(--s-2);
+    border: 0;
+    border-radius: var(--r-2);
+    background: none;
+    color: var(--ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      background-color var(--dur-1) var(--ease-out);
+  }
+  .header-action:hover {
+    color: var(--ink-1);
+    background: rgb(255 255 255 / 5%);
+  }
+  .header-action-icon {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+  }
+  .header-action-label {
+    white-space: nowrap;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
   }
 
   /* ── the search cue ───────────────────────────────────────────────────────
@@ -455,19 +521,63 @@
     color: var(--ink-1);
   }
 
-  /* ── narrow ───────────────────────────────────────────────────────────────
-     Below 1280 the mark steps down. Below 1024 the nav keeps its glyphs and drops
-     its words. Below 720 the search cue collapses to its glyph and the palette
-     becomes a full sheet, because a 720 px dialog on a 390 px phone is a scroll. */
-  @media (max-width: 1279.98px) {
+  /* ── the degradation ladder ───────────────────────────────────────────────
+     The bar at full dress needs about 1400px of viewport. That is wider than the
+     laptop most people browse on, so it has to give something up on the way down, and
+     the order it gives things up in is the design:
+
+       < 1500   the lockup steps to 34px, and the coin pill drops the word "Coins".
+                The mark is the most expensive thing in the row at 367px, and 34px
+                still reads; a coin glyph beside a figure needs no noun.
+       < 1400   the cart and account drop their labels. A trolley with a count badge and
+                a person glyph are both unambiguous, and this is where 1366 lives.
+       < 1200   the nav keeps its glyphs and drops its words, and the cue narrows.
+       <  720   the cue is a glyph, the palette is a full sheet, and the account
+                keeps its icon only.
+
+     Measured at each step rather than guessed — scripts/scale-audit.mts renders the
+     bar and the header check below reports the first width at which two children
+     overlap. */
+  @media (max-width: 1499.98px) {
     .header-logo {
       --wm-size: 34px;
     }
+    .coin-pill-word {
+      display: none;
+    }
+  }
+  /* 1400, not 1360. At 1366 — a laptop width a lot of people are on — the row fitted
+     with exactly ZERO pixels to spare: no overlap, and one more character of copy away
+     from one. A rung that leaves nothing behind it is a rung in the wrong place. */
+  @media (max-width: 1399.98px) {
+    .header-action-label {
+      display: none;
+    }
+    .header-bar {
+      gap: var(--s-4);
+    }
+  }
+  @media (max-width: 1199.98px) {
     .search-cue {
       width: 190px;
     }
   }
-  @media (max-width: 1023.98px) {
+  /* The mark loses its name. At a 34px mark the lockup is 284px — 42% of the row at
+     768px, and the whole reason the bar overflowed there by 39px. The mark on its own
+     is 34px and is what the brand is recognised by at this size anyway.
+
+     It targets the word by its ROLE and not its tag: it used to be an <svg> and is now
+     set type, and a selector naming the tag silently stopped hiding anything the moment
+     that changed. */
+  @media (max-width: 899.98px) {
+    .header-logo [role="img"] {
+      display: none;
+    }
+  }
+  /* The last rung. At 360px the row is five controls and five gaps in 290px of usable
+     width; the gaps and the padding are the only things left to give. Measured at 360,
+     390 and 430 — the three widths a phone actually reports. */
+  @media (max-width: 1199.98px) {
     .header-div {
       display: none;
     }
@@ -509,6 +619,22 @@
     .palette-results {
       max-height: none;
       height: calc(100dvh - 68px - 55px);
+    }
+  }
+
+  /* The last rung, and it has to be LAST: the ≤1023 block further down this file sets the
+     bar's gap and padding too, and at 360px both blocks match, so whichever comes later in
+     source order wins. This one was written above it and was silently doing nothing —
+     measured 16px gaps at 360px when it asked for 10. Equal specificity, so position is the
+     whole argument.
+
+     At 360px the row is five controls and five gaps inside 318px, and the gaps and the
+     padding are all that is left to give. Measured at 360, 390 and 430 — the three widths a
+     phone actually reports. */
+  @media (max-width: 429.98px) {
+    .header-bar {
+      gap: 10px;
+      padding: 0 var(--s-2);
     }
   }
 
@@ -1425,11 +1551,7 @@
        narrowest layout keeps the mark and drops the word beside it. Targets the word by its
        role rather than by tag: it used to be an <svg> and is now set type, and a selector
        naming the tag silently stopped hiding anything the moment that changed. */
-    @media (max-width: 479.98px) {
-      .header-logo [role="img"] {
-        display: none;
-      }
-    }
+
     .account-wrap {
       display: flex;
       align-items: center;

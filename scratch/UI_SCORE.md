@@ -454,3 +454,59 @@ one — plus one and no more, because a budget with slack in it is a note rather
     ✓ /estimate          6/7          14/15
 
 `pnpm check` green · type audit clean on nine routes · 103 pages crawled, 0 broken links, 0 emoji.
+
+## Round 8 — the bar was broken on a 1440 laptop, and nothing was watching
+
+Reported from a screenshot, not from a gate: "See in room" running through the search field's
+magnifier, "BO Cart" wrapped onto two lines under its trolley, and the deliver-to strip tucked
+under the bar's bottom edge. Three separate faults in the three centimetres a visitor looks at
+first.
+
+### Why it happened, and why nothing caught it
+
+**The bar needed 1559px of viewport.** Below that `.header-nav` was the only thing allowed to
+shrink, so it was squeezed narrower than its own labels. A flex item narrower than its content
+does not wrap and does not clip — it OVERFLOWS, onto whatever is beside it. Everything the store
+measured read one viewport width, and 1440 was not it.
+
+**`.header-action` had no rule at all.** It was lost when the two-row header was rewritten, so the
+cart and account buttons fell back to `display: block` and their glyph and label became inline
+content that wrapped wherever the box ran out — which is why "BO Cart" broke onto two lines and
+the account sat nine pixels higher than the cart beside it.
+
+**The floating bar's 20px inset was a sticky `top` and nothing else.** `top` reserves no space in
+the flow, so the bar painted from 20 to 96 while the next element in the document started at 76.
+The deliver strip was rendering eight pixels underneath it. It is a `margin-top` now.
+
+### "See in room" is a product's link, and it is only on products now
+
+It needs a SKU to stand in the room, and the chrome has no SKU — so the nav link, the footer link
+and the catalogue-menu link all pointed at one hardcoded cement bag. Offering to show a visitor
+"your room" and landing them on somebody else's cement is a demo wired into the masthead. All
+three are gone and `AR_DEMO_HREF` with them; every remaining entry point is `/ar/${sku}` on a
+card, a gallery, a buy panel or the product page's own band.
+
+### The ladder, and the gate that now holds it
+
+Nothing in the bar shrinks any more — every child is `flex: none` and the spacer takes the slack,
+so the row either fits or a breakpoint changes what is in it:
+
+    < 1500  the lockup steps to 34px and the coin pill drops the word "Coins"
+    < 1400  the cart and account drop their labels — this is where 1366 lives
+    < 1200  the nav keeps its glyphs and drops its words, the cue narrows
+    <  900  the mark loses its name: the lockup is 284px, 42% of a 768px row
+    <  430  gaps and padding tighten; it is all that is left to give
+
+**The first version of the gate would not have caught the bug it was written for.** Comparing the
+bar's children's boxes finds nothing when a box SHRINKS: the nav's box sat politely beside the
+search cue and only its text spilled. Proved by probe — with the shrink restored the gate reported
+a clean tick at 1440 while the bar was visibly broken. It measures `scrollWidth > clientWidth` on
+every element in the bar as well now, which is the direct question, and with the probe in place it
+names the fault at eleven widths including 1440.
+
+    1920 164px   1680 164   1600 108   1512  20   1440  69
+    1366 189px   1280 103   1180 266   1024 123    900  71
+     768 199px    600 193    430  31    390  33    360   3
+
+`pnpm check` green · type audit clean on nine routes · scale audit green on six routes and
+fifteen widths.

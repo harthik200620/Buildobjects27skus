@@ -7,7 +7,7 @@ import React from 'react';
 import { CategoryIcon, IconClose, IconMenu } from '@/components/icons';
 import Scrim from '@/components/Scrim';
 import { useDismiss } from '@/components/useDismiss';
-import { AR_DEMO_HREF, type NavCategory } from './types';
+import type { NavCategory } from './types';
 
 /**
  * "≡ All" → the whole catalogue, grouped by department: the categories that stock something
@@ -155,9 +155,6 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
               </Link>
               <Link href="/estimate" className="link" onClick={close}>
                 BO Estimator
-              </Link>
-              <Link href={AR_DEMO_HREF} className="link" onClick={close}>
-                View in your room
               </Link>
             </div>
           </div>

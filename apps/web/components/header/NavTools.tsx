@@ -2,14 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { IconEstimate, IconRoom } from '@/components/icons';
-import { AR_DEMO_HREF } from './types';
+import { IconEstimate } from '@/components/icons';
 
 /**
- * The two tool links in the bar, beside the catalogue menu.
+ * The tool link in the bar, beside the catalogue menu.
  *
- * They are a client component only because the current page decides which one is underlined, and
- * `usePathname` is the cheapest way to know. Keeping them out of Header means the header itself
+ * "See in room" used to sit here too and does not any more. A room view is of A PRODUCT — it needs
+ * a SKU to stand in the room — and the chrome has no product, so the link pointed at a hardcoded
+ * cement bag. Offering to show a visitor "your room" and then arriving on somebody else's cement
+ * is not a feature, it is a demo wired into the masthead. Every real entry point is on a product:
+ * the card's "View in room", the gallery's tabs, the buy panel, and the product page's own band.
+ *
+ * It is a client component only because the current page decides which link is underlined, and
+ * `usePathname` is the cheapest way to know. Keeping it out of Header means the header itself
  * stays a server component and the categories it renders are never serialised for the client.
  *
  * The underline is one gesture: a rule that scales in from the left over --dur-3. The page you
@@ -22,10 +27,6 @@ export default function NavTools() {
       <Link href="/estimate" className="navlink" aria-current={pathname.startsWith('/estimate') ? 'page' : undefined}>
         <IconEstimate size={17} />
         Estimator
-      </Link>
-      <Link href={AR_DEMO_HREF} className="navlink" aria-current={pathname.startsWith('/ar/') ? 'page' : undefined}>
-        <IconRoom size={17} />
-        See in room
       </Link>
     </>
   );

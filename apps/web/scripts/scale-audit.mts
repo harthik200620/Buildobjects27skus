@@ -115,6 +115,86 @@ for (const route of ROUTES) {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   The header bar, at every width a person actually browses at
+   ═══════════════════════════════════════════════════════════════════════════
+   The bar is one flex row holding a 367px lockup, a nav, a 250px search cue and three
+   actions, and for a while it needed 1560px of viewport to hold all of them. Below
+   that `.header-nav` was allowed to shrink, so it was squeezed narrower than its own
+   labels and "See in room" ran straight through the search field's magnifier — a flex
+   item narrower than its content does not wrap or clip, it overflows onto whatever is
+   beside it.
+
+   It shipped, and nothing caught it: every gate the store had reads ONE width, and
+   1440 — the width most people actually browse at — was not it.
+
+   So this walks the widths people use and fails if any two children of the bar
+   overlap, if the row overflows its own box, or if the document scrolls sideways.
+   Cheap, and it is the exact defect rather than a proxy for it.
+   ═════════════════════════════════════════════════════════════════════════ */
+const WIDTHS = [1920, 1680, 1600, 1512, 1440, 1366, 1280, 1180, 1024, 900, 768, 600, 430, 390, 360];
+let collisions = 0;
+console.log('\nthe header bar, across widths:');
+for (const width of WIDTHS) {
+  await page.setViewportSize({ width, height: 900 });
+  await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
+  const bar = await page.evaluate(() => {
+    const row = document.querySelector('.header-bar') as HTMLElement;
+    const kids = [...row.children]
+      .map((c) => {
+        const box = c.getBoundingClientRect();
+        return { cls: String((c as HTMLElement).className || c.tagName).split(' ')[0], left: box.left, right: box.right, w: box.width };
+      })
+      /* A zero-width child — a hidden divider, a collapsed spacer — cannot collide. */
+      .filter((k) => k.w > 0.5);
+    const hits: string[] = [];
+    for (let i = 0; i < kids.length - 1; i++) if (kids[i].right > kids[i + 1].left + 0.5) hits.push(`${kids[i].cls} → ${kids[i + 1].cls}`);
+
+    /*
+     * A SHRUNKEN BOX DOES NOT OVERLAP — ITS TEXT DOES, and box overlap alone misses it.
+     *
+     * That is exactly how the shipped bug looked: `.header-nav` had flex-shrink: 1, so at
+     * 1440 it was squeezed narrower than its own labels. Its BOX stayed politely beside the
+     * search cue's box and the check above reported no overlap; the text inside spilled out
+     * of the box and ran through the magnifier. Verified by probe: with the shrink restored
+     * this file reported a clean ✓ at 1440 while the bar was visibly broken.
+     *
+     * scrollWidth > clientWidth is the direct question — "is this element's content wider
+     * than the element?" — and it is the one that catches it.
+     */
+    for (const el of [row, ...row.querySelectorAll('*')]) {
+      const e = el as HTMLElement;
+      if (e.scrollWidth - e.clientWidth <= 1) continue;
+      /* Deliberately scrollable strips (the palette's scope chips, the ticker) opt out. */
+      if (getComputedStyle(e).overflowX !== 'visible') continue;
+      const name = String(e.className || e.tagName).split(' ')[0];
+      const note = `${name} content ${Math.round(e.scrollWidth - e.clientWidth)}px wider than its box`;
+      if (!hits.includes(note)) hits.push(note);
+    }
+
+    const spacer = document.querySelector('.header-spacer') as HTMLElement;
+    return {
+      hits,
+      barOverflow: Math.round(row.scrollWidth - row.clientWidth),
+      pageOverflow: Math.round(document.documentElement.scrollWidth - document.documentElement.clientWidth),
+      slack: Math.round(spacer ? spacer.getBoundingClientRect().width : 0),
+    };
+  });
+  const bad = bar.hits.length > 0 || bar.barOverflow > 0 || bar.pageOverflow > 0;
+  if (bad) collisions += 1;
+  const notes = [
+    bar.hits.length ? `OVERLAP ${bar.hits.join(', ')}` : '',
+    bar.barOverflow > 0 ? `bar overflows by ${bar.barOverflow}px` : '',
+    bar.pageOverflow > 0 ? `page scrolls sideways by ${bar.pageOverflow}px` : '',
+  ].filter(Boolean);
+  console.log(`${bad ? '✗' : '✓'} ${String(width).padStart(5)}px   slack ${String(bar.slack).padStart(4)}px${notes.length ? `   ${notes.join('   ')}` : ''}`);
+}
+
 await browser.close();
-console.log(over === 0 ? '\nevery page is inside its shape and type budget' : `\n${over} page(s) over budget`);
-process.exit(over === 0 ? 0 : 1);
+const failed = over + collisions;
+console.log(
+  failed === 0
+    ? '\nevery page is inside its shape and type budget, and the bar holds at every width'
+    : `\n${over} page(s) over budget, ${collisions} width(s) with a broken bar`,
+);
+process.exit(failed === 0 ? 0 : 1);

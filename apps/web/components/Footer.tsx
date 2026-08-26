@@ -1,6 +1,6 @@
 import { categoryName, categoryOf } from '@buildobjects/catalog';
 import Link from 'next/link';
-import { AR_DEMO_HREF, type NavCategory } from './header/types';
+import type { NavCategory } from './header/types';
 import { IconChevronUp, IconClockCheck, IconPin, IconRoom, IconShield } from './icons';
 import Wordmark from './Wordmark';
 
@@ -53,9 +53,6 @@ export default function Footer({ categories }: { categories: NavCategory[] }) {
             <ul>
               <li>
                 <Link href="/estimate">Cost your whole house</Link>
-              </li>
-              <li>
-                <Link href={AR_DEMO_HREF}>See an item in your room</Link>
               </li>
               <li>
                 <Link href="/cart">Your cart and BO Coins</Link>
