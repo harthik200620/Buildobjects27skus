@@ -352,6 +352,26 @@ export const IconCoin = (p: IconProps) => (
   </Ico>
 );
 
+/* The assistant. A speech box on the family's chamfered container, with the tail cut from the
+   same 45 degrees as the corner — so the one diagonal in the glyph appears twice and reads as
+   deliberate. The accent is the line being spoken, not the box. */
+export const IconChat = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M3.6 4.6h11.8l4.6 4.6V16.4H9.4l-4.4 3.6V16.4H3.6z" />
+    <path className="ic-a" d="M7.4 10.5h8.4" />
+    <path d="M7.4 13.6h5" />
+  </Ico>
+);
+
+/* Send. A stroke leaving to the right with its tail behind it: the only icon in the set that is
+   pure diagonal, which is what makes it findable in a row of boxes at 16px. */
+export const IconSend = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M20.4 3.6 3.6 10.2l7.2 2.9z" />
+    <path className="ic-a" d="m20.4 3.6-9.6 9.5.9 7.3z" />
+  </Ico>
+);
+
 export const IconGift = (p: IconProps) => (
   <Ico {...p}>
     <path d="M3.6 9.6h16.8V20H3.6z" />

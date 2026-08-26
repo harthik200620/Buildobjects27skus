@@ -134,9 +134,8 @@ export default function RulerInput({ label, value, min = 5, max = 100, step = 1,
         </span>
       </div>
 
-      {/* biome-ignore lint/a11y/useSemanticElements: a range input cannot be a tape — it has no
-          ticks, no labels and no momentum. This carries the slider role and the whole keyboard
-          contract instead. */}
+      {/* A range input cannot be a tape: no ticks, no labels, no momentum. This carries the
+          slider role and the whole keyboard contract itself. */}
       <div
         ref={tape}
         className="ruler-tape"

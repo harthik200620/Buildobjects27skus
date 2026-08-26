@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import ChatPanel from '@/components/ChatPanel';
 import Footer from '@/components/Footer';
 import Header from '@/components/header/Header';
 import Reveal from '@/components/Reveal';
@@ -30,6 +31,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <Header pincode={session.pincode} phone={session.phone} regionName={svc.name} deliveryDays={svc.deliveryDays} categories={categories} />
       <main id="main">{children}</main>
       <Footer categories={categories} />
+      {/* The assistant docks to the corner of every page inside the store, because the question it
+          answers — "what does this cost" — is one people have while looking at something else. */}
+      <ChatPanel />
       <ToastHost />
     </>
   );
