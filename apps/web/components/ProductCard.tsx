@@ -63,7 +63,10 @@ export default function ProductCard({
   const sizes = compact ? '64px' : variant === 'row' ? '220px' : '(max-width: 640px) 50vw, (max-width: 1280px) 33vw, 300px';
 
   return (
-    <article className={`prod-card prod-card--${variant} ${className}`.trim()} data-sku={sku.sku_code}>
+    /* `data-reveal` is the whole opt-in: components/Reveal.tsx finds it, and the stagger's own
+       delay comes off `--i`, which .stagger sets per position in store.css. No prop, no import,
+       no client boundary — a card that arrives is still a server component. */
+    <article className={`prod-card prod-card--${variant} ${className}`.trim()} data-sku={sku.sku_code} data-reveal="scale">
       {/* The mount behind the photograph is the colour the photograph is ON — sampled from its own
           border by scripts/blend-skus.mts. Seventeen suppliers shot on the shared silver, seven
           shipped artwork already on dark teal, and three on something else entirely; painting each

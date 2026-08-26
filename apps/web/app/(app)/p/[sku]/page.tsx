@@ -186,7 +186,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               All {data.category.name.toLowerCase()}
             </Link>
           </div>
-          <div className="prod-grid mt-3">
+          <div className="prod-grid stagger mt-3">
             {similar.slice(0, 4).map((s) => (
               <ProductCard key={s.id} sku={s} />
             ))}

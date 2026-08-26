@@ -40,7 +40,7 @@ export default function CategoryTile({
   const hero = mediaUrl(heroImageKey);
 
   return (
-    <Link href={href} className={`cat-card lift${soon ? ' cat-card--soon' : ''}`}>
+    <Link href={href} className={`cat-card lift${soon ? ' cat-card--soon' : ''}`} data-reveal="scale">
       <div className="cat-photo">
         {hero && (
           <Image

@@ -173,7 +173,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
             ) : (
               <>
                 {config?.lead_note && <p className="text-[13px] mb-3 text-[var(--color-ink-2)]">{config.lead_note}</p>}
-                <div className="prod-grid prod-grid--rail">
+                <div className="prod-grid prod-grid--rail stagger">
                   {result.hits.map((h, i) => (
                     <ProductCard key={h.id} sku={h} priority={i < 4} deliverBy={eta} />
                   ))}

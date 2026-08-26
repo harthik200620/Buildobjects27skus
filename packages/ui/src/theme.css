@@ -1953,8 +1953,49 @@
      The index comes from an inline --i, so the delay is arithmetic rather than
      forty hand-written rules. Capped at 10 steps: past about 600 ms of stagger a
      grid stops reading as choreography and starts reading as a slow page. */
+  /* THE STAGGER SETS ITS OWN INDEX.
+     `--i` was read here and set nowhere, so every child of every staggered grid in the store
+     resolved to the fallback 0 and arrived at the same instant — the machinery was complete and
+     connected to nothing. nth-child supplies it, which means a grid staggers by being a grid
+     rather than by every call site threading a map index down through a server component.
+
+     Ten steps and then it stops: 45ms x 10 is 450ms, and past that a visitor is waiting for a
+     row rather than watching one arrive. Everything from the eleventh on shares the last delay. */
   .stagger > * {
     --reveal-delay: calc(min(var(--i, 0), 10) * 45ms);
+  }
+  .stagger > *:nth-child(1) {
+    --i: 0;
+  }
+  .stagger > *:nth-child(2) {
+    --i: 1;
+  }
+  .stagger > *:nth-child(3) {
+    --i: 2;
+  }
+  .stagger > *:nth-child(4) {
+    --i: 3;
+  }
+  .stagger > *:nth-child(5) {
+    --i: 4;
+  }
+  .stagger > *:nth-child(6) {
+    --i: 5;
+  }
+  .stagger > *:nth-child(7) {
+    --i: 6;
+  }
+  .stagger > *:nth-child(8) {
+    --i: 7;
+  }
+  .stagger > *:nth-child(9) {
+    --i: 8;
+  }
+  .stagger > *:nth-child(10) {
+    --i: 9;
+  }
+  .stagger > *:nth-child(n + 11) {
+    --i: 10;
   }
 
   /* ── 3. lift: the one hover elevation, for every card in the store ─────────
