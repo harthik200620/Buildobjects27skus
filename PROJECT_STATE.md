@@ -2,7 +2,7 @@
 
 Short on purpose. If it grows past two screens it has stopped being read.
 
-Last updated **26 Aug 2026**, after the chrome round: the bar is flush and leaves on the way down.
+Last updated **26 Aug 2026**, after the chrome round and the delivery-led front door.
 
 ## What this is
 
@@ -73,6 +73,12 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
   slack and breakpoints change what is in the row. A flex item narrower than its content does not
   wrap or clip — it overflows onto its neighbour, which is how "See in room" ended up running
   through the search field on every 1440px laptop.
+- **`next start` reads `public/` once, at boot.** The backplates are staged into
+  `apps/web/public/art/` by the build and are gitignored, so a local production run started
+  before the stager has finished serves 404s for all twenty-one of them — every page loses its
+  photograph and it reads as a CSS bug rather than a missing file. `npx tsx
+  apps/web/scripts/stage-media.mts`, then restart the server. Vercel is unaffected: it builds
+  before it serves.
 - **The Render API key in `.env` was pasted in plaintext and should be rotated.**
 
 ## The gates

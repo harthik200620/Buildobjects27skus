@@ -49,25 +49,46 @@ export default async function Home() {
         <Plate name="home-hero" priority className="hero-plate" />
         <span className="hero-grid" aria-hidden="true" />
         <div className="shell hero-in">
-          <p className="micro micro--live" data-reveal>
-            Andhra Pradesh &amp; Telangana
-          </p>
-          <h1 id="home-h" className="d1 hero-title" data-reveal style={{ '--reveal-delay': '80ms' } as React.CSSProperties}>
-            Know what it costs before you order it.
+          {/*
+           * The line is about DELIVERY, not about price.
+           *
+           * It read "Know what it costs before you order it." above forty-eight words of
+           * everything the store can do. Knowing the price is a real thing this store fixes and
+           * it is not the thing somebody arrives needing: a house is not built by buying
+           * material, it is built by material ARRIVING. One house today means cement from one
+           * dealer, tiles from another and wiring from a third — eight relationships, eight
+           * phone calls, and eight delivery dates that never line up. That is the same loss for
+           * a builder in a city and for a family adding a room in a village, which is why it is
+           * the line that reaches every part of this market at once.
+           *
+           * The kicker above it — a pulsing dot reading "Andhra Pradesh & Telangana" — is gone.
+           * It is the least load-bearing element on the page and the deliver-to strip six inches
+           * below it already names the visitor's own pincode and their own lead time, which is
+           * the specific answer rather than the general one.
+           *
+           * THE SECOND LINE NAMES ONLY WHAT IS ON THE SHELF. It used to lead with "Cement,
+           * steel, ..." and there is no steel in this catalogue — nine of the thirty-seven
+           * categories stock anything, and steel, sand, brick, paint and plumbing are all still
+           * "on the way" on the grid directly below this hero. Seven of the nine are named here;
+           * the two left out are epoxy and total stations, which are trade items rather than
+           * things somebody building a home goes looking for.
+           */}
+          <h1 id="home-h" className="d1 hero-title" data-reveal>
+            Everything your home needs, in one order.
           </h1>
-          <p className="lede hero-lede" data-reveal style={{ '--reveal-delay': '160ms' } as React.CSSProperties}>
-            Cement, steel, tiles, glass, lighting, solar and safety, from the brands your engineer already writes into the specification. Every price is the
-            tax-paid price per unit, landed at your pincode — and you can stand any item in your own room at its true size before you commit to it.
+          <p className="lede hero-lede" data-reveal style={{ '--reveal-delay': '80ms' } as React.CSSProperties}>
+            Cement, tiles, glass, lighting, solar, cameras and safety — delivered to one address, instead of eight dealers and eight phone calls.
           </p>
-          <div className="hero-cta" data-reveal style={{ '--reveal-delay': '240ms' } as React.CSSProperties}>
+          <div className="hero-cta" data-reveal style={{ '--reveal-delay': '160ms' } as React.CSSProperties}>
             <Link href="/search" className="btn btn-primary btn--lg">
               <IconStorefront size={18} /> Browse the catalogue
             </Link>
+            {/* "Price", not "Cost". Cost as a verb is trade jargon; price is unmissable. */}
             <Link href="/estimate" className="btn btn-secondary btn--lg">
-              <IconEstimate size={18} /> Cost a whole house
+              <IconEstimate size={18} /> Price a whole house
             </Link>
           </div>
-          <dl className="hero-facts" data-reveal style={{ '--reveal-delay': '320ms' } as React.CSSProperties}>
+          <dl className="hero-facts" data-reveal style={{ '--reveal-delay': '240ms' } as React.CSSProperties}>
             <div>
               <dt className="micro">Categories</dt>
               <dd className="fig">

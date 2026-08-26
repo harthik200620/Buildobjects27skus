@@ -211,3 +211,30 @@ the reasoning is here so the door is not reopened by accident.
   element actually PAINTS the bar, not `.header` — which is block-level and therefore full width
   whatever the design is doing, so the first version of the check would have passed the floating
   bar it was written to catch. All five checks were proved by restoring their defect.
+- **The front door's line is about DELIVERY, not about price.** It read "Know what it costs before
+  you order it." above forty-eight words. Knowing the price is a real thing this store fixes and it
+  is not what somebody arrives needing: a house is not built by buying material, it is built by
+  material ARRIVING. One house today is cement from one dealer, tiles from another and wiring from
+  a third — eight relationships, eight phone calls, eight dates that never line up — and that is
+  the same loss for a builder in a city and for a family adding a room in a village, which is why
+  it is the line that reaches the whole market at once rather than one income band of it.
+  "Everything your home needs, in one order.", over eighteen words instead of forty-eight.
+- **The hero names only what is on the shelf.** The old line led with "Cement, steel, …" and there
+  is no steel in this catalogue — nine of the thirty-seven categories stock anything, and steel,
+  sand, brick, paint and plumbing are all "on the way" on the grid directly under the hero. Seven
+  of the nine live categories are named; epoxy and total stations are left out as trade items
+  rather than things somebody building a home goes looking for. The headline is still ahead of the
+  shelf and is meant to be — the second line and the grid under it are what keep that honest.
+- **The region came out of the hero and stays in the deliver-to strip.** The kicker read "ANDHRA
+  PRADESH & TELANGANA"; the strip six inches below it names the visitor's own pincode and their own
+  lead time, which is the specific answer rather than the general one. Nothing above it now claims
+  a reach the store does not have — six cities, all AP/TS, 2 to 4 days.
+- **Search takes the middle of the bar, and it is the one control allowed to shrink.** It was a
+  250px button whose own placeholder did not fit inside it. Every other child of the bar is
+  `flex: none` because a flex item narrower than its content overflows onto its neighbour; a single
+  line of placeholder that ellipses is the exception, so search carries `flex: 0 1 var(--search-w)`
+  and a rung per breakpoint. The width came from the gap — 24 to 16, which is 56px across seven
+  gaps — because the row was full: at 1920 six controls and their gaps used 1,098 of 1,464.
+  It is NOT pixel-centred and cannot be at this size: the left group is a 367px lockup plus a 230px
+  nav against 332px on the right, and centring a field between groups that differ by 265px caps it
+  at about 170px, smaller than the 250 it started at.
