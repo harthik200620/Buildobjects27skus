@@ -71,16 +71,22 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
   return (
     <div className="cat-menu-wrap" ref={wrap}>
       {variant === 'all' ? (
+        /* .navlink, the same class the two tool links beside it carry. It used to be its own
+           `.nav-all` — 32px tall, pure white, a 6px radius — sitting next to 40px links in
+           --ink-2 with a 9px radius, which is one control drawn twice by two different hands.
+           "Catalogue" rather than "All": it opens the catalogue tree, and "All" only answered
+           a question the strip above it used to be asking. */
         <button
           ref={btn}
           type="button"
-          className="nav-all"
+          className="navlink"
           onClick={toggle}
           aria-expanded={open}
           aria-controls={open ? panelId : undefined}
           aria-haspopup="dialog"
         >
-          <IconMenu size={20} /> All
+          <IconMenu size={17} />
+          <span>Catalogue</span>
         </button>
       ) : (
         <button

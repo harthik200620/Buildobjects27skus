@@ -348,10 +348,15 @@ object with two faces, a milled conic rim on a `translateZ(-7px)` layer and a gl
 spinning on a curve that **dwells face-on** at 0° and 180° instead of rotating linearly. It lives
 in the wallet. The page is a new route, which is the same "do not add features" call as above.
 
-Two smaller things, inside the scores above rather than beside them: the mega menu is the existing
-category popover on the new tokens rather than the three-column glass panel §5 draws, and the
-home hero has the photograph and the drafting grid but not the third layer — `iso-house.svg`
-drifting at 30% behind them.
+One smaller thing, inside the scores above rather than beside them: the home hero has the
+photograph and the drafting grid but not the third layer — `iso-house.svg` drifting at 30% behind
+them.
+
+The catalogue menu did make it. It was a 340px solid popover with a 10px radius hanging off an
+18px glass bar — one control drawn by two hands — and it is now 760px of the bar's own glass at the
+bar's own radius, in two columns. Not §5's three columns by construction stage with a featured
+live-priced item, which needs the component rewritten; the same markup on the same tokens, which is
+what a restyle is.
 
 ### Three plates are unused, and one of them permanently
 

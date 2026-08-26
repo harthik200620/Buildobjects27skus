@@ -1114,216 +1114,47 @@
     }
   }
 
-  /* ── nav strip: 40 px of --color-header-2, not sticky ───────────────────── */
-  .nav {
-    height: var(--nav-h);
-    background: var(--color-header-2);
-    color: var(--color-header-ink);
-  }
-  .nav-in {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    height: 100%;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .nav-in::-webkit-scrollbar {
-    display: none;
-  }
-  .nav-all {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    height: 32px;
-    padding: 0 10px 0 6px;
-    margin-right: 4px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    color: #fff;
-    background: none;
-    cursor: pointer;
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .nav-all:hover {
-    border-color: var(--color-chrome-hair-strong);
-  }
-  .nav-link {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    height: var(--nav-h);
-    padding: 0 10px;
-    border-top: 2px solid transparent;
-    border-bottom: 2px solid transparent;
-    color: #fff;
-    font-size: 14px;
-    line-height: 20px;
-    white-space: nowrap;
-    text-decoration: none;
-  }
-  /* A brand rule that grows out of the middle of the link, rather than an underline that snaps
-     on. The rule is the same one that marks the current page, so hovering shows you what
-     "you are here" will look like. */
-  .nav-link::after {
-    content: "";
-    position: absolute;
-    left: 10px;
-    right: 10px;
-    bottom: 0;
-    height: 2px;
-    background: var(--color-brand);
-    transform: scaleX(0);
-    transition: transform var(--dur-2) var(--ease-out);
-  }
-  .nav-link {
-    position: relative;
-  }
-  .nav-link:hover::after,
-  .nav-link:focus-visible::after {
-    transform: scaleX(1);
-  }
-  /* The bar replaces the underline rather than joining it: two rules under one word is one rule
-     too many, and the underline was landing on top of the current-page border. */
-  .nav-link[aria-current="page"] {
-    font-weight: 700;
-  }
-  .nav-link[aria-current="page"]::after {
-    transform: scaleX(1);
-  }
-  .nav-spacer {
-    flex: 1 1 auto;
-    min-width: 8px;
-  }
-  /* NavLinks is one flex child of .nav-in, so it has to spread itself the same way. */
-  .nav-depts {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    flex: 1 1 auto;
-    min-width: 0;
-    height: 100%;
-  }
-  .nav-dept {
-    display: contents;
-  }
-  .nav-dept-btn {
-    border: 0;
-    background: none;
-    cursor: pointer;
-    font-family: inherit;
-  }
-  .nav-dept-btn.is-here {
-    border-bottom-color: var(--color-brand);
-    font-weight: 700;
-  }
-  .nav-dept-caret {
-    opacity: 0.75;
-    transition: transform 0.12s ease;
-  }
-  .nav-dept-caret.is-open {
-    transform: rotate(180deg);
-  }
-  /* Fixed, because .nav-in scrolls sideways and would clip an absolutely positioned panel. */
-  .nav-dept-panel {
-    position: fixed;
-    z-index: 60;
-    min-width: 232px;
-    padding: 6px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-2);
-  }
-  .nav-dept-panel ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .nav-dept-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 36px;
-    padding: 6px 10px;
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    line-height: 20px;
-    color: var(--color-ink);
-    text-decoration: none;
-  }
-  .nav-dept-row:hover {
-    background: var(--color-surface-2);
-    color: var(--color-teal-800);
-  }
-  .nav-dept-row[aria-current="page"] {
-    font-weight: 700;
-    color: var(--color-teal-800);
-    background: var(--color-teal-50);
-  }
-  .nav-dept-row svg {
-    flex: none;
-    color: var(--color-ink-3);
-  }
-  .nav-dept-row:hover svg,
-  .nav-dept-row[aria-current="page"] svg {
-    color: var(--color-teal-700);
-  }
-  /* The category itself, above its products, with a rule to say so. */
-  .nav-dept-row.nav-dept-all {
-    margin-bottom: 4px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--color-line-2);
-    border-radius: 0;
-    font-weight: 700;
-  }
-  /* A subcategory the department will carry but does not stock yet. */
-  .nav-dept-row.is-soon {
-    color: var(--color-ink-2);
-  }
-  .nav-dept-soon {
-    margin-left: auto;
-    padding: 1px 6px;
-    border-radius: 999px;
-    background: var(--color-surface-3);
-    /* ink-3 on surface-3 is 4.23:1 — the pair pnpm contrast forbids, and it caught this. */
-    color: var(--color-ink-2);
-    font-size: 10.5px;
-    line-height: 15px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .nav-tool {
-    color: var(--color-header-ink-2);
-  }
-  .nav-tool:hover {
-    color: #fff;
-  }
-  .nav-tool svg {
-    color: var(--color-brand);
-  }
+  /* ── the nav strip is gone ─────────────────────────────────────────────────
+     Forty pixels of --color-header-2 under the header, carrying "All", the eight
+     departments with their dropdowns, and the two tools. Its whole job — the catalogue
+     tree — is the header bar's own mega menu now, and two rows of navigation for one
+     taxonomy was the chrome equivalent of saying everything twice.
+
+     Deleted with it: .nav, .nav-in, .nav-all, .nav-link, .nav-spacer, .nav-depts,
+     .nav-dept*, .nav-tool. About 180 lines styling components/header/NavStrip.tsx and
+     NavLinks.tsx, both of which no longer exist. */
 
   /* ── category menu: popover ≥ 768, left drawer below ────────────────────── */
   .cat-menu-wrap {
     position: relative;
     flex: none;
   }
+  /* The catalogue menu. It hangs off the header bar, so it is made of the same glass at the
+     same radius — a solid 10px panel under an 18px glass bar was one control drawn by two
+     hands. Two columns rather than one 340px scroller: thirty-five categories in a single
+     column is a list you scroll rather than a tree you read. */
   .cat-menu {
     position: fixed;
     z-index: 70;
-    width: 340px;
-    padding: 8px;
-    /* Pinned under the nav strip, so what is left below it is the viewport minus the shell.
-       The head and the foot hold their height and the tree between them takes the remainder. */
-    max-height: calc(100vh - var(--header-h) - var(--nav-h) - 24px);
+    width: min(760px, calc(100vw - var(--gutter) * 2));
+    padding: var(--s-3);
+    max-height: calc(100dvh - var(--header-h) - var(--header-inset) - var(--s-6));
     display: flex;
     flex-direction: column;
+    border-radius: 18px;
+    border: 1px solid var(--hair-2);
+    background: var(--glass);
+    backdrop-filter: var(--glass-blur-heavy);
+    box-shadow: var(--specular-strong), var(--sh-3);
+  }
+  @media (min-width: 768px) {
+    .cat-menu-list {
+      columns: 2;
+      column-gap: var(--s-4);
+    }
+    .cat-menu-list > li {
+      break-inside: avoid;
+    }
   }
   .cat-menu-scrim {
     display: none;
