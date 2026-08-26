@@ -309,6 +309,19 @@ Cropped to its upper 46%, which loses nothing and is the better plate anyway at 
     production build: 30 routes, no warnings
     mobile 375px: 0px horizontal overflow, header fits, grids reflow to 2 / 1
 
+**The type audit was reported clean once before it was.** It runs against `localhost:3001` — the
+production server — and that server was serving a build made before the font swap, so it was
+checking Arimo's four static cuts and passing. Run against the real build it reported twenty-seven
+synthesised weights, all of them false: it read `document.fonts`, parsed each face's weight with
+`parseInt`, and the UI face is one variable file declared `400 800`, which parses to 400. Every
+500, 600 and 700 in the store looked synthesised.
+
+The gate understands ranges now — a weight matches if it falls inside any range its family
+declares, and a static cut is the degenerate case where min equals max. Proved by probe before
+being trusted: `font-weight: 700` on Instrument Serif (one cut, 400) and `900` on Schibsted
+(400–800) were both caught, and both disappeared when the probe was removed. A gate that cries
+wolf gets switched off, which is worse than not having one.
+
 The CTA-collapse states were verified by driving the grid directly, because this browser pane has
 `document.hasFocus() === false` and cannot produce hover or focus styling: **0px at rest, 84px
 open**. That is a limitation of the harness, and it is why the two states were measured separately

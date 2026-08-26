@@ -18,6 +18,11 @@
  * one element in a rendered page. So this walks the real DOM of every route and reports any
  * element whose computed (family, weight) is not a face the document actually declares.
  *
+ * A declared face carries a weight RANGE — the UI face is one variable file covering 400–800 —
+ * so a weight matches if it falls inside any range declared for its family. Matching on equality
+ * against a parsed single number reported all twenty-seven of a correct program's weights as
+ * synthesised, which is the failure mode that gets a gate switched off.
+ *
  *   pnpm --filter @buildobjects/web type:audit
  *
  * Exits non-zero on a finding, so it can join the gate.
@@ -45,10 +50,41 @@ let bad = 0;
 for (const route of ROUTES) {
   await page.goto(`${BASE}${route}`, { waitUntil: 'networkidle' });
   const findings = await page.evaluate(() => {
-    const declared = new Set(
-      [...document.fonts].filter((f) => !f.family.includes('Fallback')).map((f) => `${f.family}|${Number.parseInt(String(f.weight), 10) || f.weight}`),
-    );
-    const families = new Set([...declared].map((d) => d.split('|')[0]));
+    /*
+     * A declared face is a family plus a RANGE of weights, not a single cut.
+     *
+     * This read `Number.parseInt(f.weight)` and matched on equality, which is correct for a
+     * static cut and silently wrong for a variable one: Schibsted Grotesk is declared
+     * `400 800`, parseInt returns 400, and every 500, 600 and 700 in the store was reported as
+     * synthesised — twenty-seven findings on a type program that is right. A gate that cries
+     * wolf gets switched off, which is worse than not having it.
+     *
+     * So each face contributes [min, max] and a weight matches if it falls inside any range
+     * declared for its family. A static cut is the degenerate case where min === max, so the
+     * original check is preserved exactly.
+     */
+    const ranges = new Map<string, [number, number][]>();
+    for (const f of document.fonts) {
+      if (f.family.includes('Fallback')) continue;
+      const parts = String(f.weight)
+        .trim()
+        .split(/\s+/)
+        .map(Number)
+        .filter((n) => !Number.isNaN(n));
+      if (!parts.length) continue;
+      const span: [number, number] = [parts[0], parts[parts.length - 1]];
+      const list = ranges.get(f.family) ?? [];
+      list.push(span);
+      ranges.set(f.family, list);
+    }
+    const families = new Set(ranges.keys());
+    const declared = {
+      has(key: string) {
+        const [family, weight] = key.split('|');
+        const w = Number(weight);
+        return (ranges.get(family) ?? []).some(([lo, hi]) => w >= lo && w <= hi);
+      },
+    };
     const out: { tag: string; cls: string; family: string; weight: string; text: string }[] = [];
     const seen = new Set<string>();
     for (const el of document.querySelectorAll<HTMLElement>('body *')) {
