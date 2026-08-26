@@ -2,7 +2,7 @@
 
 Short on purpose. If it grows past two screens it has stopped being read.
 
-Last updated **26 Aug 2026**, after the north-star UI rebuild and the front-door subtraction.
+Last updated **26 Aug 2026**, after the chrome round: the bar is flush and leaves on the way down.
 
 ## What this is
 
@@ -32,6 +32,9 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
   irreversible choices and `scratch/UI_SCORE.md` Round 6 for what is and is not finished.
 - **The front door is categories and nothing else** — no shelf, no promises, no closing band, and
   no prices anywhere on it. Round 7.
+- **The chrome** — a flush, full-bleed bar that leaves on the way down and returns on the way up,
+  one `--sticky-top` for every pinned panel in the store, and both viewport overlays portalled out
+  of the header. Round 9.
 
 ## Next, in order
 
@@ -58,6 +61,14 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
   rule does not work; three separate "bugs" this round were stale CSS.
 - **Never hand-write `-webkit-backdrop-filter`.** Lightning CSS drops the standard property when
   both are present and the value is a `var()`. Write the standard one and let the toolchain prefix.
+- **A `backdrop-filter` is a containing block for `position: fixed` descendants**, exactly like a
+  `transform`. The header carries one, so anything `fixed` rendered inside it is laid out against
+  the BAR and not the screen — and it will look fine, because it overflows its box and draws in
+  roughly the right place. The ⌘K palette shipped like that: `inset: 0` resolving to 1009×143.
+  Overlays that cover the viewport go through `createPortal` to `<body>`.
+- **No named inner arrows inside `page.evaluate()`.** tsx compiles `const f = () => …` to esbuild's
+  `__name` helper, which does not exist in the page, and the call dies with
+  `ReferenceError: __name is not defined` from a line that reads as valid JavaScript. Inline it.
 - **Nothing in the header bar may shrink.** Every child is `flex: none`; the spacer takes the
   slack and breakpoints change what is in the row. A flex item narrower than its content does not
   wrap or clip — it overflows onto its neighbour, which is how "See in room" ended up running
@@ -72,6 +83,9 @@ are worth running by hand after any visual change:
     pnpm --filter @buildobjects/web type:audit     # no synthesised font weights on any route
     pnpm --filter @buildobjects/web scale:audit    # radius / type-size budgets, and the header
                                                    # bar checked at 15 real viewport widths
+    pnpm --filter @buildobjects/web chrome:audit   # the bar under a real wheel: flush and full
+                                                   # width, away on the way down, every pinned
+                                                   # panel on one line, both overlays on-screen
     pnpm --filter @buildobjects/web build          # the production build is the only honest one
 
 Both audits drive a real browser against `localhost:3001`, which means they check whatever that

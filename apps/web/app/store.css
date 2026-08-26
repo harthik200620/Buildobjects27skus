@@ -95,41 +95,102 @@
     transform-origin: 0 50%;
     background: linear-gradient(90deg, var(--color-teal-600), var(--color-brand));
     opacity: 0;
-    transition: opacity var(--dur-2) var(--ease-out);
+    transition:
+      opacity var(--dur-2) var(--ease-out),
+      top var(--dur-3) var(--ease-glide);
     pointer-events: none;
   }
+  /* It is drawn on the bar's bottom edge, so it has to know which edge that is. The bar is
+     62px once the page has moved and this rule was pinned to the 76px mark, so the moment it
+     appeared it appeared TWELVE PIXELS BELOW the bar it belongs to — a loose teal line
+     floating over the content. */
   :root[data-scrolled] .scroll-progress {
+    top: calc(var(--header-h-scrolled) - 2px);
     opacity: 1;
+  }
+  /* And it leaves with the bar. */
+  :root[data-nav="away"] .scroll-progress {
+    opacity: 0;
   }
 
   /* ── the bar ──────────────────────────────────────────────────────────────
-     One row, floating, glass. See components/header/Header.tsx for why the two-row
-     header existed and what removing search from it bought.
+     Full width, flush to the top edge, and it gets out of the way when you read
+     downward. See components/header/Header.tsx for why the two-row header existed and
+     what removing search from it bought.
 
-     Three things move together on scroll and nothing is removed: height 76 → 62,
-     radius 18 → 14, and the fill from 82% to 94% opaque. Condensing rather than
-     hiding means the reader never loses a control they were reaching for. */
+     IT USED TO FLOAT: a 1560px capped bar with an 18px radius, inset 20px from the top
+     and from each side. That reads as a control panel laid ON the page, which is a fine
+     idea and the wrong one for a storefront: the bar is the top of the SHOP, not an
+     instrument hovering over it. Flush, it is architecture — and it buys real room. The
+     floating bar paid its gutter twice, once outside the bar and once inside it, so at
+     1512px the row had 20px of slack for six controls. Flush it has 76px, because the
+     bar's padding IS the page's gutter now and the lockup lines up with the first word of
+     every page underneath it.
+
+     Three things move together on scroll and nothing is removed: height 76 → 62, the fill
+     from 82% to 94% opaque, and the shadow arrives. Condensing rather than dropping
+     controls means the reader never loses one they were reaching for. */
   .header {
     position: sticky;
-    top: var(--header-inset);
+    top: 0;
     z-index: 40;
-    padding: 0 var(--gutter);
     height: var(--header-h);
-    /*
-     * The inset is a MARGIN, not just a sticky offset.
-     *
-     * `top` alone moves the bar down visually once it sticks and reserves nothing in the
-     * flow, so at rest the bar painted from 20 to 96 while the next element in the
-     * document started at 76 — the deliver-to strip was rendering eight pixels underneath
-     * the floating bar, which is what "Deliver to Hyderabad" was doing tucked against its
-     * bottom edge. The margin makes the gap real for everything below it.
-     */
-    margin-top: var(--header-inset);
-    transition: height var(--dur-3) var(--ease-glide);
+    background: var(--glass-bar);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--hair);
+    box-shadow: var(--specular);
+    transition:
+      height var(--dur-3) var(--ease-glide),
+      transform var(--dur-2) var(--ease-out),
+      background-color var(--dur-3) var(--ease-glide),
+      border-color var(--dur-3) var(--ease-glide),
+      backdrop-filter var(--dur-3) var(--ease-glide),
+      box-shadow var(--dur-3) var(--ease-glide);
   }
   :root[data-scrolled] .header {
     height: var(--header-h-scrolled);
+    background: var(--glass-bar-scrolled);
+    backdrop-filter: var(--glass-blur-heavy);
+    border-bottom-color: var(--hair-2);
+    box-shadow: var(--specular), var(--sh-2);
   }
+  /*
+   * AWAY, and back on the way up.
+   *
+   * A reader going down a category listing or a spec sheet is reading; the bar is 76px of
+   * the screen they are not reading with. It leaves on the way down and it is back the
+   * instant they move up, which is when a person wants it — they are going back for
+   * something. components/ScrollProgress.tsx decides, with a 6px deadband so a trackpad's
+   * jitter cannot flutter it, and a floor so it never leaves near the top of a page.
+   *
+   * `translate3d`, not `top`. On a sticky element `top` IS the sticky offset, so animating
+   * it fights the scroll rather than riding it; a transform is one composited layer and
+   * nothing below the bar reflows.
+   *
+   * The at-rest state is `transform: none` on purpose. ANY transform makes the header a
+   * containing block for `position: fixed` descendants, and both the ⌘K palette (fixed,
+   * inset: 0) and the catalogue menu (fixed, at coordinates measured off the trigger) used
+   * to live in here. They are portalled to <body> now — see components/SearchBar.tsx — and
+   * this keeps the trap shut even so.
+   */
+  :root[data-nav="away"] .header {
+    transform: translate3d(0, -100%, 0);
+    transition:
+      transform var(--dur-2) var(--ease-exit),
+      height var(--dur-3) var(--ease-glide);
+  }
+  /* Reduced motion does not mean "the same slide, faster". A bar that vanishes and returns
+     is motion; the preference is for it not to happen, so it does not. */
+  @media (prefers-reduced-motion: reduce) {
+    .header {
+      transition: none;
+    }
+    :root[data-nav="away"] .header {
+      transform: none;
+    }
+  }
+  /* The row inside the bar. It carries the page's own gutter and the page's own maximum,
+     so the mark sits exactly above the first character of the page beneath it. */
   .header-bar {
     display: flex;
     align-items: center;
@@ -137,21 +198,7 @@
     height: 100%;
     max-width: var(--shell-wide);
     margin: 0 auto;
-    padding: 0 var(--s-5) 0 var(--s-6);
-    border: 1px solid rgb(255 255 255 / 9%);
-    border-radius: 18px;
-    background: var(--glass-bar);
-    backdrop-filter: var(--glass-blur);
-    box-shadow: var(--specular-strong), var(--sh-3);
-    transition:
-      border-radius var(--dur-3) var(--ease-glide),
-      background-color var(--dur-3) var(--ease-glide),
-      backdrop-filter var(--dur-3) var(--ease-glide);
-  }
-  :root[data-scrolled] .header-bar {
-    border-radius: 14px;
-    background: var(--glass-bar-scrolled);
-    backdrop-filter: var(--glass-blur-heavy);
+    padding: 0 var(--gutter);
   }
 
   .header-logo {
@@ -1011,14 +1058,16 @@
      That is the better answer anyway: the pincode is what every price on the site
      is quoted against, and a line that says so under the masthead states the
      store's central promise instead of hiding it behind a chevron. */
+  /* The strip pays the page's gutter ONCE. It had `padding: 0 var(--gutter)` of its own and a
+     `.shell` inside it, and `.shell` is the thing that carries the gutter — so "Deliver to
+     Hyderabad 500001" started at 96px on a page whose every other element starts at 48px. The
+     same double payment the floating bar used to make. */
   .deliver-strip {
     display: block;
     margin-top: var(--s-3);
-    padding: 0 var(--gutter);
     color: var(--ink-3);
   }
   .deliver-strip > .shell {
-    max-width: var(--shell-wide);
     border-bottom: 1px solid var(--hair);
   }
   /* Row one has to hold the lockup and still fit, and what gives way is the chrome, not the logo.
@@ -1264,7 +1313,7 @@
     z-index: 70;
     width: min(760px, calc(100vw - var(--gutter) * 2));
     padding: var(--s-3);
-    max-height: calc(100dvh - var(--header-h) - var(--header-inset) - var(--s-6));
+    max-height: calc(100dvh - var(--header-h) - var(--s-6));
     display: flex;
     flex-direction: column;
     border-radius: 18px;
@@ -3014,7 +3063,7 @@
   }
   .rail-sticky {
     position: sticky;
-    top: calc(var(--header-h) + 16px);
+    top: var(--sticky-top);
   }
   aside[data-rail].glass-card {
     border: 0;
@@ -3121,7 +3170,7 @@
   }
   .pdp-sticky {
     position: sticky;
-    top: calc(var(--header-h) + var(--header-inset) + var(--s-4));
+    top: var(--sticky-top);
   }
   .gallery {
     position: relative;

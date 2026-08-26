@@ -25,7 +25,7 @@
     /* The total follows you down a long list of lines rather than sitting at the bottom of it. */
     .cart-side {
       position: sticky;
-      top: calc(var(--header-h) + var(--s-4));
+      top: var(--sticky-top);
     }
   }
   .cart-main {

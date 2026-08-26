@@ -4,6 +4,7 @@ import type { SkuSearchDoc } from '@buildobjects/catalog';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { inr, mediaUrl } from '@/lib/media';
 import Highlight from './Highlight';
 import { CategoryIcon, IconClockCheck, IconClose, IconSearch } from './icons';
@@ -241,125 +242,140 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
         </kbd>
       </button>
 
-      {open && (
-        <div className="palette" role="dialog" aria-modal="true" aria-label="Search">
-          {/* The scrim is a sibling button so dismissing works with a pointer and with a screen
+      {open &&
+        /*
+         * THE PALETTE IS RENDERED AT THE TOP OF THE DOCUMENT, not inside the bar.
+         *
+         * It is `position: fixed; inset: 0` and it was a descendant of the header, which
+         * carries a backdrop-filter — and a backdrop-filter makes an element a containing block
+         * for fixed descendants exactly the way a transform does. So `inset: 0` resolved to the
+         * BAR, not the screen. Measured on the shipped page at 1024x680: the overlay laid out
+         * at 1009x143 and its scrim at 1009x61, which is why pressing the dimmed page below the
+         * palette did not close it — there was no scrim down there to press. The panel itself
+         * overflowed its box and drew in roughly the right place, so it looked fine and was not.
+         *
+         * The header is also z-index: 40, which clamped this overlay's z-index: 90 to 40.
+         */
+        createPortal(
+          <div className="palette" role="dialog" aria-modal="true" aria-label="Search">
+            {/* The scrim is a sibling button so dismissing works with a pointer and with a screen
               reader's own close affordance, without a click handler on a <div>. */}
-          <button type="button" className="palette-scrim" aria-label="Close search" onClick={() => setOpen(false)} />
-          <div className="palette-panel">
-            <form
-              role="search"
-              className="palette-field"
-              onSubmit={(e) => {
-                e.preventDefault();
-                go(q);
-              }}
-            >
-              <IconSearch size={22} />
-              <input
-                ref={ref}
-                value={q}
-                className="palette-input"
-                onChange={(e) => {
-                  setQ(e.target.value);
-                  fetchSuggest(e.target.value);
+            <button type="button" className="palette-scrim" aria-label="Close search" onClick={() => setOpen(false)} />
+            <div className="palette-panel">
+              <form
+                role="search"
+                className="palette-field"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  go(q);
                 }}
-                onKeyDown={onKeyDown}
-                placeholder="Cement, bulbs, tiles, solar, CCTV…"
-                aria-label="Search products"
-                role="combobox"
-                aria-haspopup="listbox"
-                aria-autocomplete="list"
-                aria-expanded={rows.length > 0}
-                aria-controls="search-listbox"
-                autoComplete="off"
-                enterKeyHint="search"
-              />
-              {q && (
-                <button
-                  type="button"
-                  className="palette-clear"
-                  aria-label="Clear search"
-                  onClick={() => {
-                    setQ('');
-                    setData(null);
-                    ref.current?.focus();
+              >
+                <IconSearch size={22} />
+                <input
+                  ref={ref}
+                  value={q}
+                  className="palette-input"
+                  onChange={(e) => {
+                    setQ(e.target.value);
+                    fetchSuggest(e.target.value);
                   }}
-                >
-                  <IconClose size={18} />
-                </button>
-              )}
-              <kbd className="search-keys">
-                <span>esc</span>
-              </kbd>
-            </form>
+                  onKeyDown={onKeyDown}
+                  placeholder="Cement, bulbs, tiles, solar, CCTV…"
+                  aria-label="Search products"
+                  role="combobox"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  aria-expanded={rows.length > 0}
+                  aria-controls="search-listbox"
+                  autoComplete="off"
+                  enterKeyHint="search"
+                />
+                {q && (
+                  <button
+                    type="button"
+                    className="palette-clear"
+                    aria-label="Clear search"
+                    onClick={() => {
+                      setQ('');
+                      setData(null);
+                      ref.current?.focus();
+                    }}
+                  >
+                    <IconClose size={18} />
+                  </button>
+                )}
+                <kbd className="search-keys">
+                  <span>esc</span>
+                </kbd>
+              </form>
 
-            {/* Scope. A row of chips rather than the old <select>, because a select hides every
+              {/* Scope. A row of chips rather than the old <select>, because a select hides every
                 option but one and the whole point of the overlay is that there is room. */}
-            <div className="palette-scopes" role="group" aria-label="Search in">
-              <button type="button" className="scope-chip" aria-pressed={scope === ''} onClick={() => setScope('')}>
-                Everything
-              </button>
-              {categories.slice(0, 8).map((c) => (
-                <button key={c.slug} type="button" className="scope-chip" aria-pressed={scope === c.slug} onClick={() => setScope(c.slug)}>
-                  {c.name}
+              <div className="palette-scopes" role="group" aria-label="Search in">
+                <button type="button" className="scope-chip" aria-pressed={scope === ''} onClick={() => setScope('')}>
+                  Everything
                 </button>
-              ))}
-            </div>
+                {categories.slice(0, 8).map((c) => (
+                  <button key={c.slug} type="button" className="scope-chip" aria-pressed={scope === c.slug} onClick={() => setScope(c.slug)}>
+                    {c.name}
+                  </button>
+                ))}
+              </div>
 
-            <div className="palette-results" id="search-listbox" role="listbox" aria-label="Suggestions">
-              {zero && (
-                <div className="palette-empty">
-                  <p className="h4">No products for “{q.trim()}”.</p>
-                  <p className="meta">Try a product name, a brand, or a specification.</p>
-                </div>
-              )}
-              {!q.trim() && rows.length === 0 && <p className="palette-empty meta">Fifteen thousand items, priced this morning. Start typing.</p>}
-              {rows.map((r, i) => {
-                const groupStart = i === 0 || rows[i - 1].kind !== r.kind;
-                return (
-                  <React.Fragment key={`${r.kind}-${r.href}`}>
-                    {groupStart && groupLabel(r.kind) && <p className="palette-group micro">{groupLabel(r.kind)}</p>}
-                    <Link
-                      href={r.href}
-                      role="option"
-                      aria-selected={sel === i}
-                      className="palette-row"
-                      onMouseEnter={() => setSel(i)}
-                      onClick={() => {
-                        if (r.kind === 'query' || r.kind === 'recent') remember(r.kind === 'recent' ? r.label : q.trim());
-                      }}
-                    >
-                      {r.kind === 'sku' ? (
-                        <span className="palette-thumb">{r.thumb ? <img src={r.thumb} alt="" loading="lazy" width={44} height={44} /> : null}</span>
-                      ) : r.kind === 'category' ? (
-                        <span className="palette-thumb palette-thumb--icon">
-                          <CategoryIcon icon={r.icon ?? 'cement'} size={22} />
+              <div className="palette-results" id="search-listbox" role="listbox" aria-label="Suggestions">
+                {zero && (
+                  <div className="palette-empty">
+                    <p className="h4">No products for “{q.trim()}”.</p>
+                    <p className="meta">Try a product name, a brand, or a specification.</p>
+                  </div>
+                )}
+                {!q.trim() && rows.length === 0 && <p className="palette-empty meta">Fifteen thousand items, priced this morning. Start typing.</p>}
+                {rows.map((r, i) => {
+                  const groupStart = i === 0 || rows[i - 1].kind !== r.kind;
+                  return (
+                    <React.Fragment key={`${r.kind}-${r.href}`}>
+                      {groupStart && groupLabel(r.kind) && <p className="palette-group micro">{groupLabel(r.kind)}</p>}
+                      <Link
+                        href={r.href}
+                        role="option"
+                        aria-selected={sel === i}
+                        className="palette-row"
+                        onMouseEnter={() => setSel(i)}
+                        onClick={() => {
+                          if (r.kind === 'query' || r.kind === 'recent') remember(r.kind === 'recent' ? r.label : q.trim());
+                        }}
+                      >
+                        {r.kind === 'sku' ? (
+                          <span className="palette-thumb">{r.thumb ? <img src={r.thumb} alt="" loading="lazy" width={44} height={44} /> : null}</span>
+                        ) : r.kind === 'category' ? (
+                          <span className="palette-thumb palette-thumb--icon">
+                            <CategoryIcon icon={r.icon ?? 'cement'} size={22} />
+                          </span>
+                        ) : r.kind === 'recent' ? (
+                          <span className="palette-thumb palette-thumb--icon">
+                            <IconClockCheck size={20} />
+                          </span>
+                        ) : (
+                          <span className="palette-thumb palette-thumb--icon">
+                            <IconSearch size={20} />
+                          </span>
+                        )}
+                        <span className="palette-main">
+                          <span className="block truncate">
+                            <Highlight formatted={r.html} fallback={r.label} />
+                          </span>
+                          {r.sub && <span className="palette-sub block truncate">{r.sub}</span>}
                         </span>
-                      ) : r.kind === 'recent' ? (
-                        <span className="palette-thumb palette-thumb--icon">
-                          <IconClockCheck size={20} />
-                        </span>
-                      ) : (
-                        <span className="palette-thumb palette-thumb--icon">
-                          <IconSearch size={20} />
-                        </span>
-                      )}
-                      <span className="palette-main">
-                        <span className="block truncate">
-                          <Highlight formatted={r.html} fallback={r.label} />
-                        </span>
-                        {r.sub && <span className="palette-sub block truncate">{r.sub}</span>}
-                      </span>
-                      {r.price && <span className="palette-price fig">{r.price}</span>}
-                    </Link>
-                  </React.Fragment>
-                );
-              })}
+                        {r.price && <span className="palette-price fig">{r.price}</span>}
+                      </Link>
+                    </React.Fragment>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   );
 }

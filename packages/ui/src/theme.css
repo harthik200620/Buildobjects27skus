@@ -372,8 +372,21 @@
   --gutter: clamp(20px, 4vw, 48px);
   --header-h: 76px; /* one row now, not two — search moved to a ⌘K overlay */
   --header-h-scrolled: 62px;
-  --header-inset: 20px; /* the bar floats; this is its gap from the top edge */
   --nav-h: 40px;
+  /*
+   * THE ONE OFFSET EVERY PINNED PANEL USES.
+   *
+   * There were four of them: the filter rail sat at header + 16, the buy column and the grand
+   * total at header + inset + 16, and the estimator's running total at header + 12 — so four
+   * panels that are all "just under the bar" stopped at four different heights, and moving
+   * between two pages moved the line they hang from. One token, and they agree.
+   *
+   * It is measured off the CONDENSED bar, because nothing is pinned until the page has
+   * scrolled and the bar is 62px by then. And it never changes with scroll state: a sticky
+   * `top` that animates makes the panel itself move, which is the exact complaint this round
+   * was opened to fix.
+   */
+  --sticky-top: calc(var(--header-h-scrolled) + var(--s-3));
 
   /* ── 16. THE v1 ALIASES ───────────────────────────────────────────────────
      Everything below is a v1 name pointing at a v2 value. See the note at the
@@ -485,6 +498,7 @@
 /* A page without the app header (the front door) has no header height. */
 :root:not(:has(.header)) {
   --header-h: 0px;
+  --header-h-scrolled: 0px;
 }
 
 /* ═════════════════════════════════════════════════════════════════════════════
@@ -497,7 +511,7 @@
 
   html {
     background: var(--color-canvas);
-    scroll-padding-top: calc(var(--header-h) + var(--header-inset) + 8px);
+    scroll-padding-top: calc(var(--header-h) + 8px);
     -webkit-text-size-adjust: 100%;
   }
 

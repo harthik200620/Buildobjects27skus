@@ -510,3 +510,114 @@ names the fault at eleven widths including 1440.
 
 `pnpm check` green · type audit clean on nine routes · scale audit green on six routes and
 fifteen widths.
+
+## Round 9 — the bar comes down flush, and gets out of the way
+
+Reported: *"The navigation bar should be on top and complete screen should be taken by the nav
+bar and when I scroll down it should vanish and it should come back when I come up. The estimated
+cost card is moving when I am scrolling down."*
+
+### The bar was an instrument hovering over the page
+
+It was capped at 1560px, an 18px radius, inset 20px from the top and from each side. That is a
+control panel laid ON the storefront, and it cost real room: **the gutter was paid twice**, once
+outside the bar and once inside it, so at 1512px the row had 20px of slack for six controls and at
+360px it had three.
+
+Flush, the bar's padding IS the page's gutter, and the mark stands exactly above the first
+character of the page beneath it — the breadcrumb, the deliver-to line and the page plate all
+start on the same vertical. Slack, before and after:
+
+    1512   20px → 78px      1440   ~0 → 127px      1366  247px      360   3px → 45px
+
+Every route also dropped a radius from its shape budget, because the one 18px corner in the store
+was this bar's.
+
+### It leaves on the way down
+
+A reader going down a spec sheet is reading; the bar is 76px of screen they are not reading with.
+It leaves on the way down and it is back on the first notch up, which is when a person wants it —
+they are going back for something.
+
+`translate3d`, not `top`: on a sticky element `top` IS the sticky offset, so animating it fights
+the scroll rather than riding it. The at-rest state is `transform: none` on purpose (see below).
+It is the same single rAF-coalesced listener that already wrote `data-scrolled`, so no new work
+happens per frame and React never renders on scroll.
+
+Three things hold it still when it should be still: a **240px floor** (chrome that flinches at the
+first flick of the wheel reads as broken), an **8px-down / 4px-up deadband** (a trackpad emits
+sub-pixel deltas in both directions during one flick, and momentum rubber-bands at the end of
+every gesture — without a deadband this is the jitteriest thing on a page), and a hold while any
+scroll lock is on, so a bar cannot disappear because a modal opened and be missing when it closes.
+`focusin` inside the header brings it back, or a keyboard reader pressing Shift+Tab lands focus on
+a control drawn off the top of the screen.
+
+Under `prefers-reduced-motion` it does not leave at all. Reduced motion does not mean the same
+slide, faster.
+
+### The cost card had three faults, all of which read as "it moves"
+
+Measured on `/estimate` at 1440×820 before touching it: pinned at `top: 112px`, held — and then at
+`y: 2400` its top read **19px**. It releases at the end of its column, which is correct and
+unavoidable, and slid straight up *through the 82%-opaque floating bar*.
+
+1. **112px against a 62px bar.** Fifty pixels of nothing between the chrome and the answer. There
+   were four of these offsets — filter rail 92, buy column 112, cart total 92, estimator total 88
+   — so four panels that are all "just under the bar" stopped at four different heights, and
+   moving between two pages moved the line they hang from. `--sticky-top` is one token, measured
+   off the CONDENSED bar because nothing is pinned until the page has scrolled, and deliberately
+   constant: a sticky `top` that changes with scroll state makes the panel itself move, which is
+   the complaint.
+2. **No elevation at all.** An opaque panel with no shadow on a page its own colour: two thousand
+   pixels of breakdown slid underneath with nothing to say they were going under. Figures
+   vanished at a hairline.
+3. **The release went behind glass.** With the bar flush and gone-on-the-way-down, the release is
+   into clear space at the top of the screen, which is what a release should look like.
+
+It now pins for **1650px of scroll** and only pins where it FITS — below 620px of viewport height
+it scrolls with the page, because pinning a panel whose bottom half can never be reached is worse
+than not pinning it.
+
+### Two shipped bugs found by measuring rather than looking
+
+**The ⌘K palette did not cover the screen.** It is `position: fixed; inset: 0` and it lived inside
+the header — and a `backdrop-filter` makes an element a containing block for fixed descendants
+exactly the way a `transform` does. Measured at 1024×680: the overlay laid out at **1009×143** and
+its scrim at **1009×61**. The panel overflowed its box and drew in roughly the right place, so it
+looked correct; pressing the dimmed page below it did nothing, because there was no scrim down
+there to press. The catalogue menu was laid out against the same wrong box. Both are portalled to
+`<body>` now — which also unclamps them: `.header` is `z-index: 40` and therefore a stacking
+context, so the palette's 90 and the menu's 70 were both pinned to 40, under the filter sheet's 60.
+
+**The deliver-to strip paid the gutter twice** — its own `padding: 0 var(--gutter)` plus the
+`.shell` inside it, which is the element that carries the gutter. "Deliver to Hyderabad 500001"
+started at 96px on a page whose every other element starts at 48.
+
+### The gate, and the five probes it was made to fail
+
+`scripts/chrome-audit.mts` drives a **real wheel** — `scrollTo()` produces one clean jump that any
+implementation survives — and checks the four things that only exist in motion. Its first version
+measured `.header`'s own box, which is block-level and therefore full width whatever the design is
+doing; it would have passed the floating bar. It finds whichever element actually PAINTS the fill
+and measures that.
+
+Every check was proved by restoring its defect:
+
+    the bar floats again          → 9 widths, naming "fill 48→1392 of 1440 at y 20, radius 18"
+    the away transform removed    → "leaves on the way down   top 0 of 62"
+    one panel back at header + 16 → "/cart   OFF: cart-side at 92"
+    the palette un-portalled      → "palette 1024×143   scrim 1024×75   screen 1024×680"
+    the cost card unpinned        → "0px of scroll   fits false   elevated false"
+
+That last probe also caught a check that could not fail: `/cart` reported "0 pinned panel(s)"
+because the audit's cart was empty. A route with nothing pinned on it is not a pass, it is a check
+that did not run — it seeds the cart and fails on zero now.
+
+**And the numbers missed one thing the screenshot caught.** `align-self: start` is the reflex for
+a sticky item; `.out` is a flex COLUMN, so align-self runs across the row — it did not prevent a
+vertical stretch that never happens, it shrank the card to 466px inside a 764px column, narrower
+than the table directly beneath it. Every measurement in the gate still passed. The gate compares
+the card's width to its column now.
+
+`pnpm check` green · type audit clean on nine routes · scale audit green on six routes and fifteen
+widths · chrome audit green on nine widths, four routes and both overlays.

@@ -177,3 +177,37 @@ the reasoning is here so the door is not reopened by accident.
 - **The backplates are derived at stage time, not committed.** Seven 2560px frames become a
   640/1280/2560 ladder in `stage-media.mts`, so one copy of each plate lives in git and a phone
   fetches 18 KB where it would have fetched 766.
+- **The bar is flush, full-bleed, and leaves on the way down.** It floated: capped at 1560px, an
+  18px radius, inset 20px from the top and each side. That reads as an instrument hovering over the
+  storefront rather than the top of it, and it paid the page's gutter twice — once outside the bar
+  and once inside — so at 1512px the row had 20px of slack for six controls. Flush, the bar's
+  padding IS the page's gutter (78px of slack at 1512, 127 at 1440, 45 at 360) and the mark stands
+  above the first character of the page under it. It leaves with a `translate3d` on the way down and
+  is back on the first notch up: a 240px floor, an 8px-down/4px-up deadband against trackpad
+  jitter, held open while any scroll lock is on, and brought back by `focusin` so a keyboard reader
+  never lands focus off the top of the screen. `translate3d`, not `top` — on a sticky element `top`
+  IS the sticky offset and animating it fights the scroll. Under `prefers-reduced-motion` it does
+  not leave at all.
+- **One sticky offset for the whole store: `--sticky-top`.** There were four — filter rail 92, buy
+  column 112, cart total 92, estimator total 88 — so four panels that are all "just under the bar"
+  stopped at four different heights. It is measured off the CONDENSED bar, because nothing is
+  pinned until the page has scrolled, and it never changes with scroll state: a sticky `top` that
+  animates makes the panel itself move.
+- **`--header-inset` is deleted.** A token named "inset" on a bar that is flush is a lie a future
+  reader would have had to disprove.
+- **The ⌘K palette and the catalogue menu are portalled to `<body>`.** A `backdrop-filter` makes an
+  element a containing block for `position: fixed` descendants exactly the way a `transform` does,
+  and both overlays lived inside the header. Measured at 1024×680: the palette laid out at
+  **1009×143** and its scrim at **1009×61** instead of covering the screen — it drew in roughly the
+  right place by overflowing its box, so it looked correct and the dimmed page below it could not
+  be pressed to dismiss. Portalling also unclamps them: `.header` is `z-index: 40` and therefore a
+  stacking context, so the palette's 90 and the menu's 70 were both pinned to 40, below the filter
+  sheet's 60.
+- **The estimated cost card pins where it fits, and nowhere else.** Below 620px of viewport height
+  it scrolls with the page. Pinning a panel whose bottom half can never be reached is not a
+  degraded version of pinning it, it is a panel with unreachable content.
+- **`chrome-audit.mts` drives a real wheel.** `scrollTo()` produces one clean jump that any
+  implementation survives, and the deadband exists to survive real input. It measures whichever
+  element actually PAINTS the bar, not `.header` — which is block-level and therefore full width
+  whatever the design is doing, so the first version of the check would have passed the floating
+  bar it was written to catch. All five checks were proved by restoring their defect.

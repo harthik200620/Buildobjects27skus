@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsx scripts/stage-media.mts && next build",
+    "chrome:audit": "tsx scripts/chrome-audit.mts",
     "contrast": "tsx scripts/contrast.ts",
     "dev": "next dev -p 3000",
     "fonts:fetch": "tsx scripts/fetch-fonts.mts",

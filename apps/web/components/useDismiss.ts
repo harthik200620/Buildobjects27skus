@@ -19,11 +19,20 @@ import React from 'react';
  * target has already handled the press, so a control inside the panel that unmounts itself
  * would close the panel a second time.
  */
+type Ref = React.RefObject<HTMLElement | null>;
+
 export interface DismissRefs {
-  /** The overlay. A press outside it closes; a press inside is ignored. Omit to skip outside-click. */
-  panel?: React.RefObject<HTMLElement | null>;
+  /**
+   * The overlay. A press outside it closes; a press inside is ignored.
+   *
+   * Takes a LIST when the overlay is not one box. A panel rendered through a portal is no
+   * longer a descendant of the control that opened it, so "inside" is two subtrees rather than
+   * one — and passing only the panel makes pressing the trigger close and immediately reopen,
+   * which is a toggle that cannot be toggled off.
+   */
+  panel?: Ref | Ref[];
   /** The control that opened it. Focus returns here on Escape, so tab order is not lost. */
-  trigger?: React.RefObject<HTMLElement | null>;
+  trigger?: Ref;
 }
 
 export function useDismiss(open: boolean, close: () => void, { panel, trigger }: DismissRefs = {}): void {
@@ -35,8 +44,9 @@ export function useDismiss(open: boolean, close: () => void, { panel, trigger }:
   React.useEffect(() => {
     if (!open) return;
 
+    const panels = panel ? (Array.isArray(panel) ? panel : [panel]) : [];
     const onPointerDown = (e: MouseEvent | TouchEvent) => {
-      if (!panel?.current?.contains(e.target as Node)) closeRef.current();
+      if (!panels.some((r) => r.current?.contains(e.target as Node))) closeRef.current();
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;

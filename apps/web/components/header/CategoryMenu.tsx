@@ -4,6 +4,7 @@ import { CATEGORIES, categoryOf, isProduct } from '@buildobjects/catalog';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { CategoryIcon, IconClose, IconMenu } from '@/components/icons';
 import Scrim from '@/components/Scrim';
 import { useDismiss } from '@/components/useDismiss';
@@ -22,6 +23,7 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
   const [open, setOpen] = React.useState(false);
   const [pos, setPos] = React.useState<{ top: number; left: number } | null>(null);
   const wrap = React.useRef<HTMLDivElement | null>(null);
+  const panel = React.useRef<HTMLDivElement | null>(null);
   const btn = React.useRef<HTMLButtonElement | null>(null);
   const first = React.useRef<HTMLAnchorElement | null>(null);
 
@@ -36,7 +38,7 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
     setOpen(true);
   };
 
-  useDismiss(open, () => setOpen(false), { panel: wrap, trigger: btn });
+  useDismiss(open, () => setOpen(false), { panel: [panel, wrap], trigger: btn });
 
   React.useEffect(() => {
     if (open) first.current?.focus();
@@ -102,64 +104,80 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
           <IconMenu size={24} />
         </button>
       )}
-      {open && (
-        <>
-          <Scrim className="cat-menu-scrim" onDismiss={close} />
-          <div id={panelId} className="popover cat-menu fade-in" style={pos ?? undefined} role="dialog" aria-label="Shop by category">
-            <div className="cat-menu-head">
-              <span>Shop by category</span>
-              <button type="button" className="icon-btn" aria-label="Close" onClick={close}>
-                <IconClose size={20} />
-              </button>
-            </div>
-            <div className="cat-menu-scroll">
-              <ul className="cat-menu-list">
-                {live.map((g, i) => (
-                  <li key={g.key}>
-                    <Link
-                      ref={i === 0 ? first : undefined}
-                      href={`/c/${g.key}`}
-                      className="cat-menu-row"
-                      aria-current={pathname === `/c/${g.key}` ? 'page' : undefined}
-                      onClick={close}
-                    >
-                      <CategoryIcon icon={g.categories[0]?.icon ?? 'cement'} size={22} />
-                      <span className="cat-menu-name">{g.name}</span>
-                      <span className="cat-menu-in">{g.categories.map((c) => c.name).join(', ')}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="cat-menu-dept">
-                <h3 className="cat-menu-dept-name">On the way</h3>
+      {open &&
+        /*
+         * THE PANEL DOES NOT LIVE IN THE HEADER. It is `position: fixed` at coordinates measured
+         * off the trigger in VIEWPORT space, and the header carries a backdrop-filter — which
+         * makes it a containing block for fixed descendants exactly the way a transform does.
+         * So the menu was being laid out against the bar's padding box rather than the screen,
+         * and when the bar was inset it opened twenty pixels low and a gutter to the right of
+         * the button that opened it.
+         *
+         * The header also sets z-index: 40 and therefore a stacking context, which clamped this
+         * panel's z-index: 70 to the header's 40 — so any overlay on the page between the two
+         * (the filter sheet's scrim is 60) painted OVER the catalogue menu.
+         *
+         * Both go away by rendering it where it belongs: at the top of the document.
+         */
+        createPortal(
+          <>
+            <Scrim className="cat-menu-scrim" onDismiss={close} />
+            <div ref={panel} id={panelId} className="popover cat-menu fade-in" style={pos ?? undefined} role="dialog" aria-label="Shop by category">
+              <div className="cat-menu-head">
+                <span>Shop by category</span>
+                <button type="button" className="icon-btn" aria-label="Close" onClick={close}>
+                  <IconClose size={20} />
+                </button>
+              </div>
+              <div className="cat-menu-scroll">
                 <ul className="cat-menu-list">
-                  {byDepartment.map((g) => (
+                  {live.map((g, i) => (
                     <li key={g.key}>
                       <Link
+                        ref={i === 0 ? first : undefined}
                         href={`/c/${g.key}`}
-                        className="cat-menu-row is-soon"
+                        className="cat-menu-row"
                         aria-current={pathname === `/c/${g.key}` ? 'page' : undefined}
                         onClick={close}
                       >
-                        <CategoryIcon icon={g.key} size={20} />
+                        <CategoryIcon icon={g.categories[0]?.icon ?? 'cement'} size={22} />
                         <span className="cat-menu-name">{g.name}</span>
+                        <span className="cat-menu-in">{g.categories.map((c) => c.name).join(', ')}</span>
                       </Link>
                     </li>
                   ))}
                 </ul>
+                <div className="cat-menu-dept">
+                  <h3 className="cat-menu-dept-name">On the way</h3>
+                  <ul className="cat-menu-list">
+                    {byDepartment.map((g) => (
+                      <li key={g.key}>
+                        <Link
+                          href={`/c/${g.key}`}
+                          className="cat-menu-row is-soon"
+                          aria-current={pathname === `/c/${g.key}` ? 'page' : undefined}
+                          onClick={close}
+                        >
+                          <CategoryIcon icon={g.key} size={20} />
+                          <span className="cat-menu-name">{g.name}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="cat-menu-foot">
+                <Link href="/search" className="link" onClick={close}>
+                  All products
+                </Link>
+                <Link href="/estimate" className="link" onClick={close}>
+                  BO Estimator
+                </Link>
               </div>
             </div>
-            <div className="cat-menu-foot">
-              <Link href="/search" className="link" onClick={close}>
-                All products
-              </Link>
-              <Link href="/estimate" className="link" onClick={close}>
-                BO Estimator
-              </Link>
-            </div>
-          </div>
-        </>
-      )}
+          </>,
+          document.body,
+        )}
     </div>
   );
 }
