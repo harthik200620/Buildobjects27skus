@@ -84,9 +84,10 @@ export default function ScrollProgress() {
        * to gain by hiding it. And a page whose scroll has been locked — the ⌘K palette, a
        * filter sheet, the deliver-to sheet on a phone — still fires scroll events as the lock
        * is applied and released, and a bar that disappeared because a modal opened would be
-       * missing when the modal closed.
+       * missing when the modal closed. The lock pins <body> rather than hiding its overflow,
+       * so that is what this looks for; see useScrollLock for why.
        */
-      if (y <= FLOOR || document.body.style.overflow === 'hidden') {
+      if (y <= FLOOR || document.body.style.position === 'fixed') {
         if (away) show();
         return;
       }

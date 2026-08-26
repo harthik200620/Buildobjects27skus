@@ -6,6 +6,7 @@ import type * as THREE from 'three';
 import type { SkuImageView } from '@/lib/catalog';
 import { mediaUrl } from '@/lib/media';
 import { IconBack, IconCamera, IconChevron, IconClose, IconRefresh, IconRoom, IconZoom } from './icons';
+import { useScrollLock } from './useDismiss';
 
 /**
  * The PDP gallery. Main image (1:1, contain, `gallery` rendition) with swipe / arrow scroll
@@ -33,6 +34,9 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
   const [i, setI] = React.useState(0);
   const [lens, setLens] = React.useState<{ x: number; y: number } | null>(null);
   const [lightbox, setLightbox] = React.useState(false);
+  /* Covers the viewport, so the page behind it must not scroll — see useScrollLock. */
+  useScrollLock(lightbox);
+
   const [autoRotate, setAutoRotate] = React.useState(true);
   const [is3dLoading, setIs3dLoading] = React.useState(true);
   const [threeError, setThreeError] = React.useState<string | null>(null);
@@ -440,12 +444,8 @@ function Lightbox({ src, alt, onClose, onPrev, onNext }: { src: string; alt: str
   const [t, setT] = React.useState({ s: 1, x: 0, y: 0 });
   const pts = React.useRef(new Map<number, { x: number; y: number }>());
   const last = React.useRef<{ d: number; s: number; x: number; y: number; cx: number; cy: number } | null>(null);
-  React.useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
+  /* The scroll lock lives in one place — `useScrollLock(lightbox)` on the gallery above. A
+     second copy here is how two locks end up fighting over the same offset. */
   const clamp = (s: number) => Math.min(6, Math.max(1, s));
   const onWheel = (e: React.WheelEvent) => {
     e.preventDefault();

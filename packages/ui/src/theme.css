@@ -371,7 +371,6 @@
   --shell-prose: 68ch; /* the reading measure. Prose wider than this is unread. */
   --gutter: clamp(20px, 4vw, 48px);
   --header-h: 76px; /* one row now, not two — search moved to a ⌘K overlay */
-  --header-h-scrolled: 62px;
   --nav-h: 40px;
   /* The search field's resting width. It is a token because the bar's breakpoint ladder steps
      it down four times, and a `width` and a `flex-basis` that disagree is how a field ends up
@@ -385,12 +384,13 @@
    * panels that are all "just under the bar" stopped at four different heights, and moving
    * between two pages moved the line they hang from. One token, and they agree.
    *
-   * It is measured off the CONDENSED bar, because nothing is pinned until the page has
-   * scrolled and the bar is 62px by then. And it never changes with scroll state: a sticky
-   * `top` that animates makes the panel itself move, which is the exact complaint this round
-   * was opened to fix.
+   * The bar is ONE height now — it used to condense on scroll, and because a sticky element
+   * keeps its space in the flow, that shifted every page in the store by fourteen pixels the
+   * moment anybody scrolled. So this hangs off the only height there is, and it never changes
+   * with scroll state: a sticky `top` that animates makes the panel itself move, which is the
+   * complaint this token was created to fix.
    */
-  --sticky-top: calc(var(--header-h-scrolled) + var(--s-3));
+  --sticky-top: calc(var(--header-h) + var(--s-3));
 
   /* ── 16. THE v1 ALIASES ───────────────────────────────────────────────────
      Everything below is a v1 name pointing at a v2 value. See the note at the
@@ -502,7 +502,6 @@
 /* A page without the app header (the front door) has no header height. */
 :root:not(:has(.header)) {
   --header-h: 0px;
-  --header-h-scrolled: 0px;
 }
 
 /* ═════════════════════════════════════════════════════════════════════════════
@@ -515,6 +514,22 @@
 
   html {
     background: var(--color-canvas);
+    /*
+     * The scrollbar is always there, so its width never changes anything.
+     *
+     * This is here for the scroll lock. Pinning <body> to hold the reader's place removes the
+     * page's scrollable overflow, which on a classic scrollbar takes fifteen pixels away and
+     * shifts the whole page sideways for as long as a modal is open. Forcing the scrollbar means
+     * there is nothing to take away.
+     *
+     * `scrollbar-gutter: stable` is the modern spelling and it was tried first and is wrong here:
+     * where scrollbars are OVERLAY — macOS, and headless Chromium — it reserves a gutter that was
+     * never otherwise there, so a `position: fixed; inset: 0` overlay came out fifteen pixels
+     * narrower than the screen and left a strip of page uncovered down the right-hand edge.
+     * Measured at 1024: palette 1009, screen 1024. `overflow-y: scroll` does nothing at all under
+     * overlay scrollbars, which is exactly the behaviour wanted.
+     */
+    overflow-y: scroll;
     scroll-padding-top: calc(var(--header-h) + 8px);
     -webkit-text-size-adjust: 100%;
   }
@@ -1615,6 +1630,7 @@
     flex-direction: column;
     max-height: 88dvh;
     overflow: auto;
+    overscroll-behavior: contain;
     background: var(--color-surface);
     color: var(--color-ink);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -1663,6 +1679,7 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
+    overscroll-behavior: contain;
     background: var(--color-surface);
     color: var(--color-ink);
     box-shadow: var(--shadow-3);
@@ -1699,6 +1716,7 @@
     height: fit-content;
     max-height: 88dvh;
     overflow: auto;
+    overscroll-behavior: contain;
     padding: 24px;
     background: var(--color-surface);
     color: var(--color-ink);

@@ -86,10 +86,10 @@ export default function Welcome({
   }, []);
 
   React.useEffect(() => {
-    if (step === 'deliver') pinRef.current?.focus();
+    if (step === 'deliver') pinRef.current?.focus({ preventScroll: true });
   }, [step]);
   React.useEffect(() => {
-    if (step === 'verify') otpRef.current?.focus();
+    if (step === 'verify') otpRef.current?.focus({ preventScroll: true });
   }, [step]);
 
   /*

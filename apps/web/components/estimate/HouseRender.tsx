@@ -3,6 +3,7 @@
 import type { EstimateResult, Tier } from '@buildobjects/estimator';
 import React from 'react';
 import { IconRoom } from '@/components/icons';
+import { useScrollLock } from '@/components/useDismiss';
 import { mediaUrl } from '@/lib/media';
 import LivingHouse from './LivingHouse';
 
@@ -79,6 +80,8 @@ export default function HouseRender({ result, highlight = null }: { result: Esti
   const [incoming, setIncoming] = React.useState<string | null>(null);
   const [failed, setFailed] = React.useState(false);
   const [turntable, setTurntable] = React.useState(false);
+  /* Covers the viewport, so the page behind it must not scroll — see useScrollLock. */
+  useScrollLock(turntable);
 
   /*
    * Whether this configuration has a mesh at all. Asked once per configuration with a HEAD, so

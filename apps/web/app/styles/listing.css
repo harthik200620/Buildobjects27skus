@@ -409,6 +409,7 @@
   .sheet-scrollable-body {
     max-height: calc(80vh - 140px);
     overflow-y: auto;
+    overscroll-behavior-y: contain;
     padding-right: 4px;
   }
 }

@@ -41,7 +41,10 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
   useDismiss(open, () => setOpen(false), { panel: [panel, wrap], trigger: btn });
 
   React.useEffect(() => {
-    if (open) first.current?.focus();
+    /* preventScroll, always. Focusing anything inside an overlay makes the browser scroll it
+       into view, and for an overlay pinned to the top of the screen that means yanking the page
+       under it back to zero — the reader closes the menu and is somewhere else entirely. */
+    if (open) first.current?.focus({ preventScroll: true });
   }, [open]);
 
   /* The panel is absolutely positioned against the trigger, so any scroll or resize moves it

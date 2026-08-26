@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom';
 import { inr, mediaUrl } from '@/lib/media';
 import Highlight from './Highlight';
 import { CategoryIcon, IconClockCheck, IconClose, IconSearch } from './icons';
+import { useScrollLock } from './useDismiss';
 
 /**
  * Search, as a command palette.
@@ -59,6 +60,8 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
+  /* Covers the viewport, so the page behind it must not scroll — see useScrollLock. */
+  useScrollLock(open);
 
   /*
    * The query is read from the URL after mount, not through `useSearchParams`.
@@ -115,23 +118,22 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  /* Focus the input and hold the page still behind the scrim. Restoring the exact padding rather
-     than clearing it matters on Windows, where the scrollbar takes real width and clearing it
-     would shift the page under the overlay. */
+  /*
+   * Focus the input. THE SCROLL LOCK IS NOT HERE — `useScrollLock(open)` above owns it.
+   *
+   * This effect used to carry its own copy: body overflow hidden plus a paddingRight to
+   * compensate for the scrollbar. Two locks fighting is how ⌘K lost the reader's place — the
+   * private one ran first, hiding body's overflow reassigned the viewport's scroll to zero, and
+   * by the time the shared lock read the offset there was nothing left to remember. Opened at
+   * 300px down, closed at 0.
+   *
+   * `preventScroll` because the palette is `position: fixed; inset: 0`: without it the browser
+   * scrolls the input into view, which means scrolling the page underneath it.
+   */
   React.useEffect(() => {
     if (!open) return;
-    const { body } = document;
-    const gap = window.innerWidth - document.documentElement.clientWidth;
-    const overflow = body.style.overflow;
-    const pad = body.style.paddingRight;
-    body.style.overflow = 'hidden';
-    if (gap > 0) body.style.paddingRight = `${gap}px`;
-    const id = requestAnimationFrame(() => ref.current?.focus());
-    return () => {
-      cancelAnimationFrame(id);
-      body.style.overflow = overflow;
-      body.style.paddingRight = pad;
-    };
+    const id = requestAnimationFrame(() => ref.current?.focus({ preventScroll: true }));
+    return () => cancelAnimationFrame(id);
   }, [open]);
 
   const fetchSuggest = React.useCallback((value: string) => {
@@ -298,7 +300,7 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
                     onClick={() => {
                       setQ('');
                       setData(null);
-                      ref.current?.focus();
+                      ref.current?.focus({ preventScroll: true });
                     }}
                   >
                     <IconClose size={18} />

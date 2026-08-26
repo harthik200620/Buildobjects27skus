@@ -52,7 +52,8 @@ export function useDismiss(open: boolean, close: () => void, { panel, trigger }:
       if (e.key !== 'Escape') return;
       e.stopPropagation();
       closeRef.current();
-      trigger?.current?.focus();
+      /* preventScroll: the page is where the reader left it, and the trigger is on screen. */
+      trigger?.current?.focus({ preventScroll: true });
     };
 
     document.addEventListener('mousedown', onPointerDown);
@@ -67,22 +68,53 @@ export function useDismiss(open: boolean, close: () => void, { panel, trigger }:
 }
 
 /**
- * Stops the page behind a modal from scrolling while it is open, and gives back the scrollbar
- * width as padding so the layout does not jump sideways on desktop.
+ * Stops the page behind a modal from scrolling while it is open.
+ *
+ * It used to hand back the scrollbar's width as padding on <body>, to stop the page jumping
+ * sideways when the scrollbar disappeared. That fixed one jump and caused another: the header is
+ * a full-width sticky bar in body's flow, so padding on body narrowed the whole bar by fifteen
+ * pixels every time any modal opened. The scrollbar's space is reserved permanently now —
+ * `scrollbar-gutter: stable` on <html> — so there is nothing to compensate for and nothing moves.
+ *
+ * EVERY overlay that covers the viewport has to call this. An overlay that does not lets the page
+ * keep scrolling behind it, which is the commonest scroll complaint there is: the reader turns the
+ * wheel expecting the dialog to move and the page underneath moves instead.
  */
 export function useScrollLock(locked: boolean): void {
   React.useEffect(() => {
     if (!locked) return;
-    const { body, documentElement } = document;
-    const gutter = window.innerWidth - documentElement.clientWidth;
-    const overflow = body.style.overflow;
-    const paddingRight = body.style.paddingRight;
+    const { body } = document;
+    const y = window.scrollY;
+    const prev = { position: body.style.position, top: body.style.top, width: body.style.width };
 
-    body.style.overflow = 'hidden';
-    if (gutter > 0) body.style.paddingRight = `${gutter}px`;
+    /*
+     * PIN THE BODY, DO NOT HIDE THE OVERFLOW.
+     *
+     * `overflow: hidden` is the obvious lock and it loses the reader's place. Measured, both
+     * ways round: hiding <body>'s overflow propagates the value to the viewport and reassigns
+     * which element owns the scroll, dropping the offset — ⌘K opened at 300px down put the page
+     * at 0. Hiding the ROOT's overflow does the same, and once it is hidden there is no
+     * scrollable overflow left, so `scrollTo` cannot put the offset back either. Closing the
+     * dialog then returned the reader to the top of a page they were halfway through.
+     *
+     * Pinning the body holds the exact pixel: the page is lifted by the scroll offset it already
+     * had, so it does not appear to move, and the offset is a number we still hold and can hand
+     * back on release. It is also the only form of this that works on iOS Safari.
+     *
+     * The header keeps working. It is `position: sticky` inside body, and body's box still spans
+     * the viewport's top edge, so the bar stays stuck where it was.
+     *
+     * Nothing shifts sideways when the page's scrollbar goes away, because <html> reserves its
+     * space permanently — see `scrollbar-gutter: stable` in the theme.
+     */
+    body.style.position = 'fixed';
+    body.style.top = `-${y}px`;
+    body.style.width = '100%';
     return () => {
-      body.style.overflow = overflow;
-      body.style.paddingRight = paddingRight;
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.width = prev.width;
+      window.scrollTo(0, y);
     };
   }, [locked]);
 }

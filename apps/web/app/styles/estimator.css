@@ -333,46 +333,6 @@
     margin-top: 2px;
   }
 
-  /* ── the running total ──────────────────────────────────────────────────── */
-  .est-total {
-    position: sticky;
-    top: var(--sticky-top);
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-lg);
-    padding: 16px;
-  }
-  .est-total-fig {
-    font-family: var(--font-figure);
-    font-weight: 700;
-    font-size: 34px;
-    line-height: 40px;
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums lining-nums;
-    color: var(--color-ink);
-  }
-  /* The figure ticks rather than jumps, so a change reads as a consequence of the last edit. */
-  .est-total-fig[data-moved="true"] {
-    animation: est-tick 420ms ease-out;
-  }
-  @keyframes est-tick {
-    from {
-      color: var(--color-brand);
-      transform: translateY(-2px);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .est-total-fig[data-moved="true"] {
-      animation: none;
-    }
-  }
-  .est-total-sub {
-    font-size: var(--t-cap);
-    line-height: 18px;
-    color: var(--color-ink-2);
-    margin-top: 2px;
-  }
-
   .est-split {
     display: grid;
     gap: var(--s-5);
@@ -485,52 +445,25 @@
     text-align: right;
   }
 
-  /* THE TOTAL TRAVELS WITH THE READER, and only the total.
-     The whole output column was tried first and is wrong: it is 2,200px of breakdown
-     against a 1,100px control column, so pinning it means capping it at the viewport
-     and giving it its own scrollbar — a nested scroll region on the one screen where
-     the reader is already moving between two columns. The grand panel is ~460px, it is
-     the answer the page exists to give, and keeping it in view while the breakdown
-     that explains it scrolls underneath is the whole benefit with none of the cost.
+  /* THE TOTAL DOES NOT FOLLOW THE READER, AND THAT IS THE SECOND ANSWER TO THIS QUESTION.
+     It was pinned under the bar so the answer stayed in view while the breakdown that
+     explains it scrolled underneath. That is a good idea at 200px and a bad one at 460:
+     measured, this card covered 52 % of a 900px viewport, 66 % of a 700px one and 71 % at
+     1024 × 640. A panel that size does not "stay in view", it follows you down the page and
+     stands in front of the thing you scrolled to read.
 
-     THREE THINGS WERE WRONG WITH IT, all of which read as "the card moves":
+     Reported twice. The first fix kept it pinned and made it behave better — right offset,
+     real elevation, a clean release — which addressed every mechanical fault and none of the
+     actual complaint. The complaint was that it moves at all.
 
-     1. It pinned at 112px and the bar it was hanging from is 62px tall once the page
-        has scrolled. Fifty pixels of nothing between the chrome and the answer.
-        --sticky-top is measured off the condensed bar and every pinned panel in the
-        store now uses it.
+     So it does not. It sits where it is in the document and the page scrolls past it, like
+     everything else on the page. The answer is not lost: it is the largest thing on the
+     screen when you arrive, the figure is repeated in the phase table, and a reader who
+     wants it back scrolls up — which costs them one gesture and costs everybody else
+     nothing.
 
-     2. It had no elevation at all — an opaque panel, no shadow, sitting on a page the
-        same colour as itself. Two thousand pixels of breakdown slid UNDER it with
-        nothing to say they were going under: figures vanished at a hairline. A pinned
-        thing has to look pinned, so it carries the same shadow as the header does once
-        the page moves.
-
-     3. It stops being pinned when its column runs out, which is correct and is not
-        avoidable — but the floating bar used to be 20px down the screen with 82%
-        opacity, so the card released and slid up THROUGH it. Measured: pinned at 112px
-        for eleven hundred pixels of scroll, then top: 19px at the end, straight behind
-        the glass. The bar is flush and gone-on-the-way-down now, so the release is into
-        clear space at the top of the screen, which is what a release should look like.
-
-     No `align-self: start` on it, which is the reflex for a sticky item and is wrong here. `.out`
-     is a flex COLUMN, so align-self runs across the row — it does not stop a vertical stretch
-     that never happens, it shrinks the card to its own content width. Which it did: the panel
-     came out 466px wide inside a 764px column, narrower than the ledger table directly beneath
-     it, and every number this file measures still passed. The screenshot is what caught it.
-
-     It only pins where it FITS. A viewport shorter than the card plus its offset would
-     pin a panel whose bottom half can never be reached, and the reader would scroll and
-     scroll and never see the ceiling figure. Below that height it just scrolls with the
-     page, which is not a degradation — it is the only honest thing to do with it. */
-  @media (min-width: 1024px) and (min-height: 620px) {
-    .grand {
-      position: sticky;
-      top: var(--sticky-top);
-      z-index: 2;
-      box-shadow: var(--sh-2);
-    }
-  }
+     Deleted with it: the z-index it needed to sit over the breakdown, and the shadow that
+     existed only to make "pinned" read as pinned. */
   /* The grand panel gives the hero figure a column of its own rather than a third of
      a row — at 80px the total cannot share a line with two ledgers. */
   @media (min-width: 640px) {

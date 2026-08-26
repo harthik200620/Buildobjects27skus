@@ -95,17 +95,10 @@
     transform-origin: 0 50%;
     background: linear-gradient(90deg, var(--color-teal-600), var(--color-brand));
     opacity: 0;
-    transition:
-      opacity var(--dur-2) var(--ease-out),
-      top var(--dur-3) var(--ease-glide);
+    transition: opacity var(--dur-2) var(--ease-out);
     pointer-events: none;
   }
-  /* It is drawn on the bar's bottom edge, so it has to know which edge that is. The bar is
-     62px once the page has moved and this rule was pinned to the 76px mark, so the moment it
-     appeared it appeared TWELVE PIXELS BELOW the bar it belongs to — a loose teal line
-     floating over the content. */
   :root[data-scrolled] .scroll-progress {
-    top: calc(var(--header-h-scrolled) - 2px);
     opacity: 1;
   }
   /* And it leaves with the bar. */
@@ -127,9 +120,21 @@
      bar's padding IS the page's gutter now and the lockup lines up with the first word of
      every page underneath it.
 
-     Three things move together on scroll and nothing is removed: height 76 → 62, the fill
-     from 82% to 94% opaque, and the shadow arrives. Condensing rather than dropping
-     controls means the reader never loses one they were reaching for. */
+     THE BAR IS ONE HEIGHT, AND THAT IS A CORRECTION.
+     It used to condense 76 → 62 on scroll. A sticky element still occupies its space in the
+     flow, so that fourteen pixels came off the top of the document and EVERY ELEMENT ON EVERY
+     PAGE IN THE STORE MOVED UP BY FOURTEEN PIXELS the moment the reader scrolled past eight —
+     and back down again on the way home. Measured on the estimator: the cost card sat at
+     document y 836 at rest and y 822 once scrolled, which is what "the card comes down with
+     the scroll" was. It was never the card. It was the whole page, on every route.
+
+     Condensing existed to give a reader some screen back. The bar LEAVES ENTIRELY on the way
+     down now, which gives back all seventy-six pixels rather than fourteen, so the two are the
+     same feature and one of them is strictly better. Keeping both bought fourteen pixels and
+     cost a layout jump on every page in the store.
+
+     What still moves on scroll — and none of it is layout — is the fill going 82 % to 94 %
+     opaque, the hairline firming, and the shadow arriving. */
   .header {
     position: sticky;
     top: 0;
@@ -139,8 +144,8 @@
     backdrop-filter: var(--glass-blur);
     border-bottom: 1px solid var(--hair);
     box-shadow: var(--specular);
+    /* No `height` here on purpose. Everything transitioned below is paint, not layout. */
     transition:
-      height var(--dur-3) var(--ease-glide),
       transform var(--dur-2) var(--ease-out),
       background-color var(--dur-3) var(--ease-glide),
       border-color var(--dur-3) var(--ease-glide),
@@ -148,7 +153,6 @@
       box-shadow var(--dur-3) var(--ease-glide);
   }
   :root[data-scrolled] .header {
-    height: var(--header-h-scrolled);
     background: var(--glass-bar-scrolled);
     backdrop-filter: var(--glass-blur-heavy);
     border-bottom-color: var(--hair-2);
@@ -215,9 +219,6 @@
   }
   .header-logo:hover {
     opacity: 0.86;
-  }
-  :root[data-scrolled] .header-logo {
-    --wm-size: 34px;
   }
   .header-div {
     flex: none;
@@ -376,8 +377,7 @@
     transition:
       border-color var(--dur-2) var(--ease-out),
       background-color var(--dur-2) var(--ease-out),
-      color var(--dur-2) var(--ease-out),
-      height var(--dur-3) var(--ease-glide);
+      color var(--dur-2) var(--ease-out);
   }
   .search-cue:hover {
     border-color: var(--hair-brand);
@@ -390,9 +390,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  :root[data-scrolled] .search-cue {
-    height: 38px;
   }
   .search-keys {
     display: flex;
@@ -497,6 +494,7 @@
     gap: var(--s-2);
     padding: var(--s-3) var(--s-5);
     overflow-x: auto;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
     border-bottom: 1px solid var(--hair);
   }
@@ -864,6 +862,7 @@
     gap: 6px;
     max-height: 120px;
     overflow-y: auto;
+    overscroll-behavior-y: contain;
     list-style: none;
   }
   .wallet-history-list li {
@@ -1227,6 +1226,7 @@
     top: calc(100% + 6px);
     max-height: min(70dvh, 560px);
     overflow: auto;
+    overscroll-behavior: contain;
     padding: 6px;
   }
   .search-group {
@@ -1653,6 +1653,7 @@
       border: 0;
       padding: 0 8px 16px;
       overflow: auto;
+      overscroll-behavior: contain;
       box-shadow: var(--shadow-3);
     }
     .cat-menu-scrim {
@@ -1840,6 +1841,7 @@
     display: flex;
     gap: 8px;
     overflow-x: auto;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
     padding: 2px 0;
     margin: 12px 0 16px;
@@ -2170,6 +2172,7 @@
     display: flex;
     gap: 16px;
     overflow-x: auto;
+    overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     scrollbar-width: none;
@@ -2631,6 +2634,7 @@
     max-width: 1240px;
     max-height: 94dvh;
     overflow-y: auto;
+    overscroll-behavior-y: contain;
     border-radius: 32px;
     box-shadow: var(--shadow-3);
   }
@@ -3084,6 +3088,24 @@
   .rail-sticky {
     position: sticky;
     top: var(--sticky-top);
+    /*
+     * A PINNED PANEL MAY NEVER BE TALLER THAN THE SPACE IT IS PINNED INTO.
+     *
+     * Measured on a 1280 x 700 screen, which is an ordinary laptop: this filter rail is
+     * 1,267px tall — 181 % of the viewport. Pinned at 74px, its bottom six hundred pixels
+     * could not be reached by any gesture. The page scrolled past it, the rail stayed put,
+     * and the filters below the fold of the rail were simply unreachable. The buy panel on
+     * a product page was 662px against 700 — 95 % — which is not unreachable but is a panel
+     * standing in front of the whole screen.
+     *
+     * So every pinned panel is capped at the room it actually has and scrolls inside itself
+     * when it needs more. A nested scrollbar is the cost; content nobody can reach is not a
+     * cost, it is a bug. `overscroll-behavior: contain` stops the page taking over the
+     * moment the panel hits its end, which is what makes the nested scroll bearable.
+     */
+    max-height: calc(100dvh - var(--sticky-top) - var(--s-4));
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
   }
   aside[data-rail].glass-card {
     border: 0;
@@ -3188,9 +3210,14 @@
       align-items: start;
     }
   }
+  /* Capped for the reason written at .rail-sticky above: 662px of buy panel against a
+     700px screen is a panel standing in front of the page rather than beside it. */
   .pdp-sticky {
     position: sticky;
     top: var(--sticky-top);
+    max-height: calc(100dvh - var(--sticky-top) - var(--s-4));
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
   }
   .gallery {
     position: relative;
@@ -3294,6 +3321,7 @@
     gap: 8px;
     margin-top: 12px;
     overflow-x: auto;
+    overscroll-behavior-x: contain;
   }
   .thumb {
     flex: 0 0 66px;

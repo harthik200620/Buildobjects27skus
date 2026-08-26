@@ -41,7 +41,8 @@ export default function DeliverTo({
   useDismiss(open, () => setOpen(false), { panel: wrap, trigger });
 
   React.useEffect(() => {
-    if (open) input.current?.focus();
+    /* preventScroll — see the note in CategoryMenu. */
+    if (open) input.current?.focus({ preventScroll: true });
   }, [open]);
 
   async function apply(e: React.FormEvent) {

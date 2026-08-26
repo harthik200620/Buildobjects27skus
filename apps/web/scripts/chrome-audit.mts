@@ -162,12 +162,65 @@ bar = await readBar(page);
 check(!bar.away && bar.top === 0, `present at the top of the page   y ${bar.y}   top ${bar.top}`);
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   3. ONE OFFSET FOR EVERY PINNED PANEL
+   3. NOTHING MOVES UNDER THE READER
    ═══════════════════════════════════════════════════════════════════════════
-   Not "close enough": identical. Four panels that are all "just under the bar" stopping at four
-   different heights is what moving between two pages used to look like. */
-console.log('\nwhat every pinned panel hangs from:');
-const pinnedRoutes = ['/c/bulbs', '/p/cem-ult-ppc50', '/cart', '/estimate'];
+   This is the check that should have existed from the first round, and its absence is why the
+   same complaint had to be made three times.
+
+   The bar used to condense 76 → 62 on scroll. A sticky element keeps its space in the flow, so
+   those fourteen pixels came off the top of the document and EVERY ELEMENT ON EVERY PAGE moved up
+   by fourteen the moment anybody scrolled past eight — and back down on the way home. It was
+   reported as "the estimator's cost card comes down with the scroll", and both earlier fixes went
+   looking at the card. It was never the card. It was the page.
+
+   So: take an element's position in the DOCUMENT — its viewport rect plus the scroll offset — at
+   a spread of scroll positions including the two edges and the settling points either side of the
+   `data-scrolled` threshold. A page that does not reflow gives one number. Any second number is a
+   layout shift, and the routes below cover every page that carries the bar. */
+console.log('\nwhat moves when the reader scrolls:');
+const SHIFT_ROUTES: { path: string; sel: string }[] = [
+  { path: '/', sel: '.home' },
+  { path: '/c/bulbs', sel: '.prod-grid' },
+  { path: '/p/cem-ult-ppc50', sel: '.pdp' },
+  { path: '/cart', sel: '.cart' },
+  { path: '/estimate', sel: '.grand' },
+];
+for (const { path, sel } of SHIFT_ROUTES) {
+  await page.goto(`${BASE}${path}`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(500);
+  const seen = await page.evaluate(async (s) => {
+    const el = document.querySelector(s) as HTMLElement | null;
+    if (!el) return null;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const out = new Set<number>();
+    /* 5 and 20 straddle the 8px `data-scrolled` threshold, which is where the old shift fired. */
+    for (const y of [0, 5, 20, 60, 400, 1000, Math.max(0, max), 60, 0]) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 340));
+      out.add(Math.round(el.getBoundingClientRect().top + window.scrollY));
+    }
+    return [...out];
+  }, sel);
+  check(
+    seen !== null && seen.length === 1,
+    `${path.padEnd(20)} ${sel.padEnd(12)} ${seen === null ? 'ELEMENT ABSENT — the check did not run' : seen.length === 1 ? `holds at ${seen[0]}` : `MOVES: ${seen.join(', ')}`}`,
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   4. EVERY PINNED PANEL HANGS FROM ONE OFFSET, AND FITS THE ROOM IT IS PINNED INTO
+   ═══════════════════════════════════════════════════════════════════════════
+   Two rules, and the second one is not a nicety. Measured on a 1280 × 700 laptop before it was
+   fixed: the category page's filter rail was 1,267px tall — 181 % of the viewport — pinned at the
+   top, so its bottom six hundred pixels could not be reached by any gesture. The product page's
+   buy panel was 662px against 700, which is a panel standing in front of the whole screen rather
+   than beside it.
+
+   The estimator is deliberately NOT in this list. Its cost card is 460px, which pinned covers
+   two-thirds of a laptop screen and follows the reader down the page in front of the breakdown it
+   is meant to be explaining. It was reported twice; it scrolls with the page now. */
+console.log('\nwhat every pinned panel hangs from, and whether it fits:');
+const pinnedRoutes = ['/c/bulbs', '/p/cem-ult-ppc50', '/cart'];
 for (const path of pinnedRoutes) {
   await page.goto(`${BASE}${path}`, { waitUntil: 'networkidle' });
   const found = await page.evaluate(() => {
@@ -178,6 +231,7 @@ for (const path of pinnedRoutes) {
     const target = Math.round(Number.parseFloat(getComputedStyle(probe).top));
     probe.remove();
     const bad: string[] = [];
+    const tooTall: string[] = [];
     let n = 0;
     for (const el of document.querySelectorAll<HTMLElement>('*')) {
       const cs = getComputedStyle(el);
@@ -186,53 +240,31 @@ for (const path of pinnedRoutes) {
       /* top: 0 is a different job — a header inside a scroll region, not a panel under the bar. */
       if (!Number.isFinite(top) || top <= 0) continue;
       n += 1;
-      if (Math.round(top) !== target) bad.push(`${String(el.className).split(' ')[0] || el.tagName} at ${Math.round(top)}`);
+      const name = String(el.className).split(' ')[0] || el.tagName;
+      if (Math.round(top) !== target) bad.push(`${name} at ${Math.round(top)}`);
+      /* Taller than the room it is pinned into means the bottom of it is unreachable, unless it
+         scrolls inside itself. Either is fine; neither is optional. */
+      const room = window.innerHeight - top;
+      const h = el.getBoundingClientRect().height;
+      const scrollsItself = el.scrollHeight > el.clientHeight + 1 || getComputedStyle(el).overflowY === 'auto';
+      if (h > room + 1 && !scrollsItself) tooTall.push(`${name} ${Math.round(h)}px in ${Math.round(room)}px`);
     }
-    return { target, n, bad };
+    return { target, n, bad, tooTall };
   });
   /* A route with nothing pinned on it is not a pass, it is a check that did not run. */
+  const notes = [
+    found.bad.length ? `OFF: ${found.bad.join(', ')}` : '',
+    found.tooTall.length ? `UNREACHABLE: ${found.tooTall.join(', ')}` : '',
+    found.n === 0 ? 'NOTHING PINNED — the route did not render what this measures' : '',
+  ].filter(Boolean);
   check(
-    found.bad.length === 0 && found.n > 0,
-    `${path.padEnd(20)} ${found.n} pinned panel(s) at ${found.target}px${found.bad.length ? `   OFF: ${found.bad.join(', ')}` : ''}${found.n === 0 ? '   NOTHING PINNED — the route did not render what this measures' : ''}`,
+    found.bad.length === 0 && found.tooTall.length === 0 && found.n > 0,
+    `${path.padEnd(20)} ${found.n} pinned panel(s) at ${found.target}px${notes.length ? `   ${notes.join('   ')}` : ''}`,
   );
 }
 
-/* And the one on the estimator is the one the complaint was about: it must pin under the bar and
-   stay there for the length of the breakdown that explains it. */
-await page.goto(`${BASE}/estimate`, { waitUntil: 'networkidle' });
-const grand = await page.evaluate(async () => {
-  const el = document.querySelector('.grand') as HTMLElement;
-  const tops: number[] = [];
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  for (let y = 0; y <= max; y += 150) {
-    window.scrollTo(0, y);
-    /* Inlined, not a named `sleep`. tsx compiles a named inner arrow to esbuild's __name
-       helper, which does not exist in the page — the same trap scale-audit.mts hit. */
-    await new Promise((r) => setTimeout(r, 30));
-    tops.push(Math.round(el.getBoundingClientRect().top));
-  }
-  const cs = getComputedStyle(el);
-  const pinned = Math.round(Number.parseFloat(cs.top));
-  /* And it is as wide as the column it sits in. `align-self: start` is the reflex for a sticky
-     item and, in the flex COLUMN this lives in, runs across the row instead — it shrank the card
-     to its content width and every other number here still passed. */
-  const column = el.parentElement as HTMLElement;
-  return {
-    pinned,
-    held: tops.filter((t) => t === pinned).length * 150,
-    fits: Math.round(el.getBoundingClientRect().height) + pinned <= window.innerHeight,
-    elevated: cs.boxShadow !== 'none',
-    width: Math.round(el.getBoundingClientRect().width),
-    column: Math.round(column.getBoundingClientRect().width),
-  };
-});
-check(
-  grand.held > 800 && grand.fits && grand.elevated && grand.width === grand.column,
-  `the estimated cost card   pinned at ${grand.pinned}px for ${grand.held}px of scroll   fits ${grand.fits}   elevated ${grand.elevated}   ${grand.width}px wide in a ${grand.column}px column`,
-);
-
 /* ═══════════════════════════════════════════════════════════════════════════
-   4. THE OVERLAYS ARE LAID OUT AGAINST THE SCREEN
+   5. THE OVERLAYS ARE LAID OUT AGAINST THE SCREEN
    ═══════════════════════════════════════════════════════════════════════════
    This is the containing-block trap, and it is invisible by inspection: the panel overflows its
    wrong box and draws in roughly the right place. Only the numbers say so. */

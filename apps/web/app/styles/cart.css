@@ -23,9 +23,13 @@
       gap: var(--s-6);
     }
     /* The total follows you down a long list of lines rather than sitting at the bottom of it. */
+    /* Capped like every other pinned panel in the store — see .rail-sticky in store.css. */
     .cart-side {
       position: sticky;
       top: var(--sticky-top);
+      max-height: calc(100dvh - var(--sticky-top) - var(--s-4));
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
     }
   }
   .cart-main {
