@@ -481,4 +481,486 @@
       vertical-align: top;
     }
   }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     THE TWO COLUMNS, MATCHED
+     ═══════════════════════════════════════════════════════════════════════════
+     The left column was ONE card holding four numbered steps and the right was seven
+     stacked cards. Two halves of one instrument should not look like a form with a
+     report bolted beside it, so the wizard is a plain column now and each step carries
+     the card. Four cards a side: Where / The building / Finish / Your picks against the
+     total / where the money goes / when it leaves / check a quote. */
+  /* Everything below the two columns: the timeline, the quote check, the store links and the
+     actions. It spans both tracks, which is what lets the columns above it match. */
+  .est-wide {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+  .wizard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .wz-step {
+    padding: var(--s-5);
+    border: 1px solid var(--hair);
+    border-radius: var(--r-2);
+    background: var(--surf-2);
+    box-shadow: var(--specular);
+  }
+  .wz-head {
+    margin-bottom: var(--s-4);
+  }
+  /* The step number was a filled disc competing with the heading beside it. It is a
+     figure in the accent, and the heading is the thing you read. */
+  .wz-num {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--hair-2);
+    background: none;
+    color: var(--color-brand);
+    font-size: var(--t-micro);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The tier comparison, now an input on the left. Three prices in a 5fr column, so the
+     figures come down a step and the per-sqft line is the fine print it always was. */
+  .tier-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .tier {
+    padding: 10px 8px;
+    text-align: left;
+  }
+  .tier-v {
+    font-size: var(--t-cap);
+  }
+
+  /* ── the output sections ─────────────────────────────────────────────────
+     Same shape as a product page's sections: a sec-head, then the thing. Nothing
+     bespoke, so the two pages read as one store. */
+  .est-sec {
+    padding: var(--s-5);
+    border-radius: var(--r-2);
+  }
+  .est-sec .sec-head {
+    margin-bottom: var(--s-4);
+  }
+
+  /* ── TIME ────────────────────────────────────────────────────────────────── */
+  .time-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-6);
+    margin-bottom: var(--s-4);
+  }
+  .time-months,
+  .time-peak {
+    font-family: var(--font-figure);
+    font-size: var(--t-fig-lg);
+    line-height: 32px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Months are a measurement and money is money. The two accents never trade places. */
+  .time-months {
+    color: var(--color-brand);
+  }
+  .time-peak {
+    color: var(--color-coin-ink);
+  }
+  .time-sub {
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+  }
+  .time-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 104px;
+    margin-bottom: var(--s-3);
+  }
+  .time-bar {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .time-bar-fill {
+    width: 100%;
+    height: var(--h);
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(180deg, var(--color-coin-ink), rgb(255 255 255 / 8%));
+    transform-origin: 50% 100%;
+    animation: bar-rise var(--dur-3) var(--ease-out) both;
+    transition: filter var(--dur-1) var(--ease-out);
+  }
+  @keyframes bar-rise {
+    from {
+      transform: scaleY(0);
+    }
+  }
+  .time-bar:hover .time-bar-fill,
+  .time-bar.is-at .time-bar-fill {
+    filter: brightness(1.35);
+  }
+  .time-bar-n {
+    margin-top: 5px;
+    color: var(--ink-4);
+  }
+  .time-scrub {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-bottom: var(--s-5);
+  }
+  .time-scrub input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .time-scrub-at {
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    min-width: 18ch;
+  }
+
+  /* ── the regret curve ────────────────────────────────────────────────────── */
+  .regret {
+    margin-top: var(--s-5);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--hair);
+  }
+  .regret-lede,
+  .truth-hint {
+    max-width: 60ch;
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 20px;
+  }
+  .regret-picks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: var(--s-3) 0 var(--s-4);
+  }
+  .regret-pick {
+    padding: 6px 12px;
+    border: 1px solid var(--hair-2);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--ink-2);
+    font-size: var(--t-fine);
+    cursor: pointer;
+    transition:
+      border-color var(--dur-2) var(--ease-out),
+      color var(--dur-2) var(--ease-out);
+  }
+  .regret-pick.is-on {
+    border-color: var(--color-brand);
+    color: var(--ink-1);
+  }
+  .regret-chart {
+    width: 100%;
+    height: auto;
+    max-height: 260px;
+  }
+  .regret-axis {
+    stroke: var(--hair-2);
+    stroke-width: 1;
+  }
+  /* The band is money, and it widens as the build goes on — which is the honest message. */
+  .regret-band-fill {
+    fill: var(--color-coin-ink);
+    opacity: 0.16;
+  }
+  .regret-line {
+    fill: none;
+    stroke: var(--color-coin-ink);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: draw-line var(--dur-4) var(--ease-out) forwards;
+  }
+  @keyframes draw-line {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .regret-dot {
+    fill: var(--color-coin-ink);
+  }
+  .regret-now-line {
+    stroke: var(--color-brand);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+  .regret-tick {
+    fill: var(--ink-3);
+    font-size: var(--t-micro);
+  }
+  .regret-now {
+    margin-top: var(--s-4);
+  }
+  .regret-figure {
+    font-family: var(--font-figure);
+    font-size: var(--t-fig-lg);
+    line-height: 32px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-coin-ink);
+  }
+  .regret-band {
+    color: var(--ink-3);
+    font-size: var(--t-cap);
+    font-variant-numeric: tabular-nums;
+  }
+  .regret-terms {
+    margin-top: var(--s-3);
+  }
+  .regret-term {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: var(--t-cap);
+  }
+  .regret-term dt {
+    color: var(--ink-2);
+  }
+  .regret-term dd {
+    color: var(--ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .regret-term-sub {
+    color: var(--ink-3);
+  }
+  .regret-basis {
+    margin-top: var(--s-3);
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+  }
+  .regret-basis ul {
+    margin: 6px 0 6px 18px;
+  }
+
+  /* ── TRUTH ───────────────────────────────────────────────────────────────
+     THE EMPTY SPACE WAS THE PROBLEM. It opened as a tall textarea with a heading above
+     it and nothing at all beside it until you pasted something — most of a card, blank,
+     on a page that is otherwise dense. It is one row now: the drop target and the two
+     buttons side by side, at the height of a control rather than a document. The results
+     take the card when there are results. */
+  .truth-in {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--s-3);
+  }
+  @media (max-width: 767.98px) {
+    .truth-in {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .truth-paste {
+    width: 100%;
+    min-height: 84px;
+    padding: 10px var(--s-3);
+    border: 1px solid var(--hair-2);
+    border-radius: var(--r-2);
+    background: rgb(0 0 0 / 22%);
+    color: var(--ink-1);
+    font-family: var(--font-figure);
+    font-size: var(--t-cap);
+    line-height: 20px;
+    resize: vertical;
+    box-shadow: inset 0 2px 5px rgb(0 0 0 / 35%);
+  }
+  .truth-paste[data-over="true"] {
+    border-color: var(--color-brand);
+  }
+  .truth-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  @media (max-width: 767.98px) {
+    .truth-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+  .truth-privacy {
+    margin-top: var(--s-2);
+    color: var(--ink-3);
+  }
+  .truth-empty,
+  .truth-reading {
+    margin-top: var(--s-3);
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+  }
+  .truth-out {
+    margin-top: var(--s-5);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--hair);
+  }
+  .truth-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+    margin-bottom: var(--s-3);
+  }
+  .truth-count {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .truth-count-n {
+    font-family: var(--font-figure);
+    font-size: var(--t-fig-lg);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .truth-count-l {
+    color: var(--ink-3);
+    font-size: var(--t-cap);
+  }
+  .truth-count--ok .truth-count-n {
+    color: var(--color-success);
+  }
+  .truth-count--over .truth-count-n {
+    color: var(--color-coin-ink);
+  }
+  /* Below the range is a WARNING, not good news. An under-quote costs the house. */
+  .truth-count--under .truth-count-n {
+    color: var(--color-danger);
+  }
+  .truth-count--none .truth-count-n {
+    color: var(--ink-3);
+  }
+  .truth-totals {
+    margin-bottom: var(--s-4);
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 20px;
+  }
+  .truth-lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  .truth-line {
+    padding: var(--s-3);
+    border-left: 2px solid var(--hair-2);
+    border-radius: 0 var(--r-1) var(--r-1) 0;
+  }
+  .truth-line--above {
+    border-left-color: var(--color-coin-ink);
+  }
+  .truth-line--below {
+    border-left-color: var(--color-danger);
+  }
+  .truth-line--within {
+    border-left-color: var(--color-success);
+  }
+  .truth-line-head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+  .truth-line-label {
+    color: var(--ink-1);
+    font-size: var(--t-cap);
+  }
+  .truth-line-amt {
+    color: var(--ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .truth-bar {
+    position: relative;
+    height: 8px;
+    margin: 10px 0 6px;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 6%);
+  }
+  .truth-bar-range {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 16%);
+  }
+  .truth-bar-likely {
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    width: 1px;
+    background: var(--ink-3);
+  }
+  .truth-bar-quoted {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--color-coin-ink);
+  }
+  .truth-line--below .truth-bar-quoted {
+    background: var(--color-danger);
+  }
+  .truth-line-range {
+    color: var(--ink-3);
+  }
+  .truth-matched {
+    color: var(--ink-4);
+  }
+  .truth-line-note {
+    margin-top: 4px;
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 19px;
+  }
+  /* What the model said, kept visibly separate from what the rate card says. */
+  .truth-ai {
+    margin-top: 4px;
+    padding-left: 8px;
+    border-left: 1px solid var(--hair-2);
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    line-height: 17px;
+  }
+  .truth-cite {
+    margin-top: var(--s-4);
+    color: var(--ink-3);
+    line-height: 18px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .time-bar-fill,
+    .regret-line {
+      animation: none;
+    }
+    .regret-line {
+      stroke-dashoffset: 0;
+    }
+  }
 }

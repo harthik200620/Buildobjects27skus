@@ -4,6 +4,7 @@ import { formatNumber } from '@buildobjects/catalog';
 import {
   type CatalogPrices,
   CITIES,
+  type Decision,
   type DrawingExtraction,
   type EstimateInputs,
   type EstimateResult,
@@ -12,7 +13,6 @@ import {
   isPlotByDims,
   LEDGER_LABEL,
   type LineItem,
-  QUANTITIES,
   type StateCode,
   TIER_LABEL,
   TIERS,
@@ -39,6 +39,8 @@ import CostRange from './CostRange';
 import Donut, { seriesColor } from './Donut';
 import DrawingUpload from './DrawingUpload';
 import HouseRender from './HouseRender';
+import Time from './lenses/Time';
+import Truth from './lenses/Truth';
 
 type Field = 'plot' | 'floors' | 'bua' | 'type';
 const STATES: { code: StateCode; name: string }[] = [
@@ -187,10 +189,43 @@ export default function Estimator({
   }, [result]);
   const picks = inputs.picks ?? [];
 
+  /*
+   * What the timeline offers to price. Each is a real `EstimateInputs`, so the engine is re-run
+   * on it and the base delta carries the same provenance as every other figure on the page —
+   * nothing here is a rule of thumb about what a floor costs.
+   */
+  const decisions: Decision[] = React.useMemo(
+    () =>
+      [
+        inputs.floors < 4 ? { id: 'floors', label: `Add a floor (G+${inputs.floors + 1})`, to: { ...inputs, floors: inputs.floors + 1 } } : null,
+        {
+          id: 'bedroom',
+          label: 'Add a bedroom',
+          to: {
+            ...inputs,
+            rooms: {
+              bedrooms: (inputs.rooms?.bedrooms ?? Math.max(1, Math.round(result.derived.builtUpSqft / 450))) + 1,
+              bathrooms: (inputs.rooms?.bathrooms ?? 2) + 1,
+              kitchens: inputs.rooms?.kitchens ?? 1,
+            },
+          },
+        },
+        inputs.tier !== 'premium' ? { id: 'tier', label: 'Upgrade the finish', to: { ...inputs, tier: inputs.tier === 'basic' ? 'medium' : 'premium' } } : null,
+        { id: 'height', label: 'Raise the ceiling to 12 ft', to: { ...inputs, floorHeightFt: 12 } },
+      ].filter(Boolean) as Decision[],
+    [inputs, result.derived.builtUpSqft],
+  );
+
   return (
     <div className="est">
       {/* ── the wizard ───────────────────────────────────────────────────── */}
-      <section className="glass-card wizard no-print" style={{ borderRadius: 'var(--r-2)' }} aria-label="Estimate inputs">
+      {/*
+       * THE LEFT COLUMN IS FOUR CARDS, NOT ONE CARD WITH FOUR STEPS INSIDE IT.
+       * It was a single 1,100px panel against seven stacked cards on the right, which reads as
+       * a form with a report bolted beside it rather than as two halves of one instrument.
+       * `.wizard` is a plain column now and `.wz-step` carries the card — see estimator.css.
+       */}
+      <section className="wizard no-print" aria-label="Estimate inputs">
         {drawing && (
           <div className="derived" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8, borderLeft: '2px solid var(--color-brand)' }}>
             <span style={{ color: 'var(--ink-1)' }}>
@@ -431,10 +466,16 @@ export default function Estimator({
             <span className="wz-num fig">3</span>
             <span className="wz-title">Quality tier</span>
           </div>
-          <div className="seg" role="group" aria-label="Quality tier">
-            {TIERS.map((t) => (
-              <button key={t} type="button" aria-pressed={inputs.tier === t} onClick={() => set({ tier: t })}>
-                {TIER_LABEL[t]}
+          {/* The plain three-way segment used to live here and the priced comparison lived in
+              the output column, which is one control drawn twice: the same three buttons, one
+              of them knowing what it costs. This is that one, moved across — it is an INPUT and
+              it belongs with the inputs. */}
+          <div className="tier-strip" role="group" aria-label="Quality tier">
+            {TIERS.map((t: Tier) => (
+              <button key={t} type="button" className="tier" aria-pressed={inputs.tier === t} onClick={() => set({ tier: t })}>
+                <span className="tier-k">{TIER_LABEL[t]}</span>
+                <span className="tier-v fig block">{inr(result.tiers[t])}</span>
+                <span className="legend-sub">{inr(Math.round(result.tiers[t] / Math.max(1, result.derived.builtUpSqft)))}/sqft</span>
               </button>
             ))}
           </div>
@@ -569,16 +610,6 @@ export default function Estimator({
           </div>
         </div>
 
-        <div className="tier-strip no-print" role="group" aria-label="Compare tiers">
-          {TIERS.map((t: Tier) => (
-            <button key={t} type="button" className="tier" aria-pressed={inputs.tier === t} onClick={() => set({ tier: t })}>
-              <span className="tier-k">{TIER_LABEL[t]}</span>
-              <span className="tier-v fig block">{inr(result.tiers[t])}</span>
-              <span className="legend-sub">{inr(Math.round(result.tiers[t] / Math.max(1, result.derived.builtUpSqft)))}/sqft</span>
-            </button>
-          ))}
-        </div>
-
         <div className="glass-card donut-wrap" style={{ borderRadius: 'var(--r-2)' }}>
           <Donut groups={result.groups} total={result.grandTotal} active={active} onActive={setActive} />
           <div>
@@ -660,26 +691,42 @@ export default function Estimator({
             </table>
           </div>
         </div>
+      </section>
 
-        <div className="glass-card" style={{ borderRadius: 'var(--r-2)', padding: 'var(--s-5)' }}>
-          <div className="sec-head" style={{ marginBottom: 12 }}>
-            <h2 className="sec-title">Stage-wise phasing</h2>
-            <span className="legend-sub">progress-billing split</span>
+      {/*
+       * ── FULL WIDTH, UNDER BOTH COLUMNS ────────────────────────────────────
+       * A thirteen-month bar chart and a line-by-line quote comparison are wide things. Put
+       * them in the 7fr column and they wrap themselves into 850px of stack, which is both
+       * ugly and the reason the right column ran three times the height of the left. Below
+       * the fold of the two columns they are half as tall and twice as readable, and the two
+       * columns above them finally balance.
+       */}
+      <div className="est-wide">
+        {/*
+         * TIME. The phases this replaces listed the same six stages and stopped there; this puts
+         * them on a calendar, says what leaves the bank in each month, and prices what changing
+         * a decision costs once the work it touches has been done.
+         */}
+        <section className="glass-card est-sec" aria-labelledby="time-h">
+          <div className="sec-head">
+            <h2 id="time-h" className="sec-title">
+              When the money leaves
+            </h2>
+            <span className="legend-sub">and what changing your mind costs</span>
           </div>
-          <div className="phase-list">
-            {result.phases.map((p) => (
-              <div key={p.key} className="phase">
-                <span>{p.label}</span>
-                <span className="fig">
-                  {inr(p.amount)} <span className="legend-sub">· {Math.round(p.share * 100)}%</span>
-                </span>
-                <div className="phase-bar">
-                  <i style={{ width: `${Math.max(1, p.share * 100)}%` }} />
-                </div>
-              </div>
-            ))}
+          <Time result={result} decisions={decisions} />
+        </section>
+
+        {/* TRUTH. */}
+        <section className="glass-card est-sec" aria-labelledby="truth-h">
+          <div className="sec-head">
+            <h2 id="truth-h" className="sec-title">
+              Check a quote
+            </h2>
+            <span className="legend-sub">against this rate card</span>
           </div>
-        </div>
+          <Truth result={result} />
+        </section>
 
         {result.storeLinks.length > 0 && (
           <div className="glass-card" style={{ borderRadius: 'var(--r-2)', padding: 'var(--s-5)' }}>
@@ -728,9 +775,9 @@ export default function Estimator({
         </div>
 
         <p className="note">
-          {unconfirmed ? 'Unconfirmed drawing values — confirm them in step 2 before relying on this total.' : result.accuracy.note}. Quantities are published
-          thumb rules (cement ≈ {QUANTITIES.cement_bags_per_sqft[inputs.constructionType]} bags, steel ≈ {QUANTITIES.steel_kg_per_sqft[inputs.constructionType]}{' '}
-          kg, bricks ≈ {QUANTITIES.bricks_per_sqft} per sqft of built-up area); store-priced lines carry the store's own provenance.
+          Rate card <span className="fig">v{result.version}</span> · estimate ±{Math.round((100 - result.accuracy.pct) / 4)}% · every line says whether its
+          price was read from the brand or estimated for the class. Quantities are published thumb rules; store-priced lines carry the store&rsquo;s own
+          provenance.
         </p>
         <details className="note no-print" open={showFlags} onToggle={(e) => setShowFlags((e.target as HTMLDetailsElement).open)}>
           <summary style={{ cursor: 'pointer' }}>{result.needsVerification.length} rates flagged for verification</summary>
@@ -740,7 +787,7 @@ export default function Estimator({
             ))}
           </ul>
         </details>
-      </section>
+      </div>
       {toast && (
         <div className="toast glass-strong fade-up" role="status">
           {toast}

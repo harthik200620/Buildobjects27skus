@@ -1,4 +1,4 @@
-import { DEFAULT_INPUTS, type EstimateInputs, inputsFromQuery, RATES_VERSION } from '@buildobjects/estimator';
+import { DEFAULT_INPUTS, type EstimateInputs, inputsFromQuery } from '@buildobjects/estimator';
 import type { Metadata } from 'next';
 import Estimator from '@/components/estimate/Estimator';
 import { loadSavedEstimate } from '@/lib/estimates-store';
@@ -41,13 +41,12 @@ export default async function EstimatePage({ searchParams }: { searchParams: Pro
          */}
         <p className="kicker">Plan your build</p>
         <h1 className="display page-title">What will your house cost?</h1>
+        {/* Two lines, the way the front door does it. What used to be here ran to fifty-five words
+            of explanation before the reader had answered anything — and the page explains itself
+            perfectly well by being used. The rate card's version moved to the basis note at the
+            foot, beside the figures it actually qualifies. */}
         <p className="page-sub estimate-lede">
-          Three questions — where you are building, how big, and how it should be finished — and this returns the whole bill: civil and interior, material and
-          labour, split stage by stage. Cement, steel, tiles, lighting and solar are priced from the same catalogue the rest of the store sells from, so the
-          figure moves when the shelf does.
-        </p>
-        <p className="estimate-rates">
-          Rate card <span className="fig">v{RATES_VERSION}</span> · every line shows whether its price was read from the brand or estimated for the class
+          Three questions — where, how big, how finished — and this returns the whole bill: material and labour, stage by stage, at today&rsquo;s rates.
         </p>
       </header>
       <Estimator initialInputs={initial} catalog={catalog} shareId={resolvedShare} />
