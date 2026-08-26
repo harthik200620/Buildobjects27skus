@@ -130,6 +130,9 @@ export default function AccountMenu({ phone }: { phone: string }) {
             </div>
 
             {/* 3. Navigation Links */}
+            <Link href="/account" className="menu-row" role="menuitem" onClick={() => setOpen(false)}>
+              <IconUser size={18} /> BO Passport
+            </Link>
             <Link href="/cart" className="menu-row" role="menuitem" onClick={() => setOpen(false)}>
               <IconCart size={18} /> BO Cart
             </Link>
