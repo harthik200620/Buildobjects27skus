@@ -1,7 +1,9 @@
 import type { SkuSearchDoc } from '@buildobjects/catalog';
 import Link from 'next/link';
+import type React from 'react';
 import { skuTitle } from '@/lib/label';
 import { mediaUrl } from '@/lib/media';
+import { plateFor } from '@/lib/plate-colors';
 import AddToEstimate from './AddToEstimate';
 import Highlight from './Highlight';
 import Img from './Img';
@@ -62,7 +64,11 @@ export default function ProductCard({
 
   return (
     <article className={`prod-card prod-card--${variant} ${className}`.trim()} data-sku={sku.sku_code}>
-      <div className="prod-media">
+      {/* The mount behind the photograph is the colour the photograph is ON — sampled from its own
+          border by scripts/blend-skus.mts. Seventeen suppliers shot on the shared silver, seven
+          shipped artwork already on dark teal, and three on something else entirely; painting each
+          one its own colour is what leaves no rectangle anywhere in the catalogue. */}
+      <div className="prod-media" style={plateFor(sku.sku_code) ? ({ '--plate': plateFor(sku.sku_code) } as React.CSSProperties) : undefined}>
         {img ? (
           <Img src={img} alt="" width={480} height={480} sizes={sizes} priority={priority} blurhash={sku.blurhash} />
         ) : (

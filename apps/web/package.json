@@ -11,6 +11,7 @@
     "fonts:fetch": "tsx scripts/fetch-fonts.mts",
     "fonts:subset": "tsx scripts/subset-fonts.mts",
     "lighthouse": "tsx scripts/lighthouse.ts",
+    "blend": "tsx scripts/blend-skus.mts",
     "scale:audit": "tsx scripts/scale-audit.mts",
     "shots": "tsx scripts/shots.ts",
     "shots:strict": "tsx scripts/shots.ts --strict",

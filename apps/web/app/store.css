@@ -1902,31 +1902,47 @@
 
   /* Every product photograph in the store sits on the silver plate — a card, a search
      row, the PDP gallery and the cart line all mount them the same way. */
+  /* THE TILE DISSOLVES INTO THE CARD.
+     The mount and the photograph are the same colour now, so the only edge left in the frame was
+     the tile's own — a light rectangle stopping dead against the dark card. One mask over both
+     layers fades that edge out, and because it is over BOTH they fall away together: there is no
+     value of the mask that can reopen the seam between them. */
   .prod-media {
     position: relative;
     aspect-ratio: 4 / 3.4;
-    background: linear-gradient(158deg, var(--plate-2), var(--plate-1));
+    background: transparent;
     overflow: hidden;
+  }
+  .prod-media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--plate, var(--plate-1));
+    -webkit-mask-image: var(--plate-mask);
+    mask-image: var(--plate-mask);
   }
   /* The floor. Without it the object is a cut-out pasted on a rectangle. */
   .prod-media::after {
     content: "";
     position: absolute;
-    left: 12%;
-    right: 12%;
-    bottom: 9%;
-    height: 14px;
+    z-index: 1;
+    left: 14%;
+    right: 14%;
+    bottom: 10%;
+    height: 16px;
     border-radius: 50%;
-    background: radial-gradient(closest-side, rgb(12 17 19 / 34%), transparent);
+    background: radial-gradient(closest-side, rgb(12 17 19 / 26%), transparent);
   }
   .prod-media img {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     height: 100%;
     object-fit: contain;
     padding: 9%;
     display: block;
+    -webkit-mask-image: var(--plate-mask);
+    mask-image: var(--plate-mask);
   }
   .prod-media .badge-estimated,
   .prod-media .badge-cert {

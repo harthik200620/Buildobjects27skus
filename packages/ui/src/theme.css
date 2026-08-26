@@ -183,14 +183,26 @@
   --surf-3: #133741; /* raised: popovers, sticky panels, selected rows */
   --surf-4: #1a4552; /* pressed, disabled fill, progress track */
 
-  /* The silver plate. Product photography is shot on white; a white rectangle on
-     deep teal is a hole in the page, so every photograph sits on a mount. */
-  --plate-1: #e9eeef;
-  --plate-2: #f6f9f9;
-  /* The shadowed end of the mount. A flat plate is a rectangle behind a photograph; a
-     plate that is brighter where the key light falls and darker at its edges is a
-     surface the object is standing on. --plate-0 is what the gallery stage falls to. */
-  --plate-0: #c4d0d1;
+  /* THE MOUNT, AND IT IS EXACTLY THE COLOUR THE PHOTOGRAPHS ARE ON.
+     Product photography is shot on a sweep, and 27 suppliers shot 27 different ones —
+     #efefef, #ffffff, #d3d4d5, #b2b5ae. The mount used to be a silver GRADIENT behind all
+     of them, which meant every photograph ended in a visible rectangle: its own grey against
+     the mount's, two greys apart, with a hard edge between. That edge is the single thing
+     that made this catalogue read as assembled rather than made.
+
+     scripts/blend-skus.mts recolours every sweep in storage/media to the value below, and the
+     mount is flat at that same value, so photograph and mount are now one surface with no seam
+     anywhere in the store. THE TWO NUMBERS MUST MOVE TOGETHER — change one and the seam is back.
+
+     It is a silver with a teal cast rather than a neutral, so the mount belongs to the palette
+     instead of being the one cold thing on a warm teal page. */
+  --plate-1: #e6edee;
+  --plate-2: #e6edee;
+  /* Where the mount falls away at its edges — see --plate-mask. Flat cannot make an object look
+     photographed, so the modelling moved OUT of the plate's fill and onto a mask over both plate
+     and photograph at once: they darken together, so softening the tile can never reopen a seam. */
+  --plate-0: #cfdadb;
+  --plate-mask: radial-gradient(122% 112% at 50% 40%, #000 54%, rgb(0 0 0 / 62%) 82%, rgb(0 0 0 / 0%) 100%);
   --on-plate-1: #0c1113; /* 16.9 on plate */
   --on-plate-2: #52605f; /*  5.4 on plate */
 
@@ -198,13 +210,7 @@
      has to make a single object look photographed rather than pasted. The bright centre
      sits at 50% 34% because that is where the key light is in every photograph the
      pipeline commissions, so the mount and the product agree about the light. */
-  --plate-stage: radial-gradient(
-    62% 52% at 50% 34%,
-    var(--plate-2) 0%,
-    var(--plate-1) 44%,
-    color-mix(in oklab, var(--plate-1) 52%, var(--plate-0)) 78%,
-    var(--plate-0) 100%
-  );
+  --plate-stage: var(--plate-1);
 
   /* ── 5. HAIRLINES AND EDGES ───────────────────────────────────────────────
      Alpha, not hex. A hex line is only correct on the one surface it was picked
