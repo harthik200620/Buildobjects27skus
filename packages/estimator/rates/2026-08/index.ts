@@ -4,3 +4,4 @@ export * from './cities';
 export * from './phases';
 export * from './quantities';
 export * from './rates';
+export * from './schedule';

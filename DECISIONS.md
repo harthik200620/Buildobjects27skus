@@ -238,3 +238,55 @@ the reasoning is here so the door is not reopened by accident.
   It is NOT pixel-centred and cannot be at this size: the left group is a 367px lockup plus a 230px
   nav against 332px on the right, and centring a field between groups that differ by 265px caps it
   at about 170px, smaller than the 250 it started at.
+- **The estimator gets three lenses on one `EstimateResult`, and they are computed, not fetched.**
+  MATTER (what the money physically is), TIME (when it leaves, and what changing your mind costs)
+  and TRUTH (whether a quote is fair) are all derived from the same result and all three stay
+  MOUNTED, hidden with `visibility`. That is what makes a lens change a paint rather than a build,
+  and why there is no loading state between two views of the same house. The cost is a few hundred
+  DOM nodes; the cost of not doing it would be a spinner in the middle of the reveal.
+- **The regret curve is the estimator's real product.** `changeCost = baseDelta + rework +
+  demolition + scheduleSlip`. `baseDelta` is the engine re-run with the decision applied, so it
+  carries the same provenance as any other figure; the other three are thumb values in
+  `rates/2026-08/schedule.ts`, each with a basis and `needs_verification: true`. Because three
+  uncertain terms compound, `regretCurve()` returns a BAND and never a point, the band is wider
+  than the estimate's own ±12 %, and every term is itemised so a buyer can argue with any one of
+  them. Measured on the reference house, adding a floor costs ₹16.73L on paper and ₹28.34L in
+  finishing. Mid-build changes are the number one way an Indian home budget explodes and no
+  platform has priced the decision to change your mind in advance.
+- **The disturbance a change causes is proportional to the SIZE of the change, not to the whole
+  line.** `disturbed = |Δamount| × billedFraction(phase) × disturbed_share`. Applying a flat 22 %
+  to everything already built would have said that adding one bedroom breaks a fifth of the house.
+  The interface scales with the change, and `billedFraction` comes from `STRUCTURAL_SPLIT`, which
+  is real — so the curve's SHAPE is engine truth even though its height carries thumb values.
+- **MATTER is true scale in both directions, and it is an SVG at every tier.** Real densities and
+  Indian trade sizes: 6,300 kg of TMT is a cube 0.93 m on a side, 2,160 cft of sand is 7.2 lorry
+  loads at the AP/TS 300 cft tipper. Some piles are startlingly large and some startlingly small,
+  and neither is adjusted — a buyer who later stands beside the real delivery has to find it
+  matches. SVG rather than canvas because this is the representation at every tier, not the
+  fallback: one `viewBox` in metres, crisp at any zoom, no WebGL context, and it prints.
+- **The question order is computed, never written down.** `sensitivity()` runs the engine at each
+  input's extremes and sorts by spread. A hard-coded "soil matters most" is true until the steel
+  rate moves and then it is a lie nobody notices. Twenty-eight engine runs, each a few hundred
+  microseconds of pure arithmetic, which is why it recomputes on every edit instead of caching.
+- **TRUTH never accuses anyone, and flags an under-quote harder than an over-quote.** A contractor
+  can be dearer for a dozen good reasons and the buyer is the one who knows which; the output is
+  the question to ask, with the rate cited, not the answer. A line below the range is coloured as a
+  warning because underquoting is how a build stalls at month nine with the slab cast and the money
+  gone. Unmatchable lines are listed and excluded from the compared totals — dropping them would
+  make the comparison a lie by omission.
+- **The AI boundary is a TYPE, not a review.** Everything crossing it is an input patch (through
+  `normalizeInputs`, so every field is clamped to its declared range), an `Adjustment[]` (through
+  the engine's existing ±35 % clamp, and a citation is mandatory), or prose. There is no member of
+  `AiPatch` that can carry a total, and `parseAiPatch` drops every key it does not recognise — a
+  model replying `{ grandTotal: 9900000 }` produces a house that costs what the engine says. There
+  is a test asserting exactly that. "Be careful not to let the model set a total" is a rule somebody
+  breaks in six months in a hurry; a type is not.
+- **Depth is detected, switchable, persisted, and the numbers are identical at all three.** Only
+  disclosure changes. A different figure on a cheaper phone would destroy the entire proposition,
+  and the segments are never named in the interface — the control says Simple / Guided / Everything,
+  which describes the page rather than the person reading it.
+- **`overflow-x: clip` on the estimator, never `hidden`.** The drafting field bleeds past its box so
+  the parallax has somewhere to travel, and that bleed was scrolling the page sideways by exactly
+  60px less the gutter — 12px at 1440, 40px at 390. `hidden` would have fixed it and broken
+  something worse: it makes the element a scroll container, and every sticky panel inside the
+  estimator would then stick to that box instead of to the viewport, which is to say stop sticking.

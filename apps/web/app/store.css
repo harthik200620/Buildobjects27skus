@@ -3797,7 +3797,10 @@
   }
   .tier-strip {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* minmax(0, 1fr) and not 1fr. A grid track's automatic minimum is its content's minimum, so
+       three tier cards carrying "Premium" and a rupee figure pushed this fourteen pixels past a
+       390px phone and put the whole estimator into a sideways scroll. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
   }
   .tier {

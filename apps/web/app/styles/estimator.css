@@ -548,4 +548,928 @@
       vertical-align: top;
     }
   }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     THE INSTRUMENT
+     ═══════════════════════════════════════════════════════════════════════════
+     The estimator is not a page with components on it. It is one object, lit from one
+     direction, on a drafting table at night.
+
+     ONE LIGHT SOURCE, AND IT IS THE SUN IN THE SCENE. --sun-x and --sun-y are written by
+     the 3D scene from the plot's real latitude and orientation. Every panel edge on this
+     page catches its specular on the same side, and when the buyer turns the plot and the
+     sun moves, the whole page's lighting moves with it. Nobody will name this. Everybody
+     will feel that the page is one thing rather than a stack of cards.
+
+     TWO ACCENTS, AND THEY MEAN THINGS. Blueprint cyan is measurement, dimension, geometry
+     and certainty. Amber is money. A dimension line is never amber; a rupee figure is
+     never cyan. Held absolutely, the page becomes readable at a glance from across a
+     room — which is the actual test. */
+  .est-instrument {
+    --sun-x: 0.72;
+    --sun-y: -0.62;
+    --measure: var(--color-brand);
+    --money: var(--color-coin-ink);
+    position: relative;
+    isolation: isolate;
+    /*
+     * `clip`, not `hidden`. The drafting field and the vignette below deliberately bleed past
+     * this box so the parallax has somewhere to travel, and that bleed was scrolling the whole
+     * page sideways — 60px of overhang less the page gutter, which measured as exactly 12px at
+     * 1440 and exactly 40px at 390.
+     *
+     * `overflow: hidden` would fix it and break something worse: it makes this element a scroll
+     * container, and every `position: sticky` panel inside the estimator would then stick to
+     * THIS box instead of to the viewport, which is to say it would stop sticking at all.
+     * `clip` clips without creating a scroll container, and it is the only value that can be
+     * applied to one axis without forcing the other into one.
+     */
+    overflow-x: clip;
+  }
+
+  /* The drafting field. One tiling gradient, transformed — never re-rasterised, so the
+     parallax costs a composite and nothing else. */
+  .est-instrument::before {
+    content: "";
+    position: absolute;
+    /* Just enough overhang to cover the parallax's own travel, and no more. */
+    inset: -12px;
+    z-index: -2;
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 3.5%) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / 3.5%) 1px, transparent 1px),
+      linear-gradient(to right, rgb(255 255 255 / 6%) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / 6%) 1px, transparent 1px);
+    background-size:
+      24px 24px,
+      24px 24px,
+      120px 120px,
+      120px 120px;
+    transform: translate3d(calc(var(--par-x, 0) * 6px), calc(var(--par-y, 0) * 6px), 0);
+    transition: transform var(--dur-4) var(--ease-glide);
+    pointer-events: none;
+  }
+  /* The vignette. Subtle enough that nobody names it, present enough that the eye stays
+     on the model and the number. */
+  .est-instrument::after {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    z-index: -1;
+    background: radial-gradient(120% 90% at 50% 40%, transparent 40%, var(--color-canvas) 100%);
+    pointer-events: none;
+  }
+
+  /* A panel does not sit ON the ground. It emerges FROM it: a specular hairline where the
+     light lands and a shadow on the far side, and no lighter fill at all. This is the rule
+     that removes "cards on a background" from the page. */
+  .est-panel {
+    position: relative;
+    padding: var(--s-5);
+    border-radius: var(--r-3);
+    background: transparent;
+    box-shadow:
+      inset calc(var(--sun-x) * 1px) calc(var(--sun-y) * 1px) 0 rgb(255 255 255 / 11%),
+      calc(var(--sun-x) * -10px) calc(var(--sun-y) * -10px) 28px rgb(0 0 0 / 34%);
+  }
+  .est-panel--sunk {
+    box-shadow:
+      inset calc(var(--sun-x) * 2px) calc(var(--sun-y) * 2px) 5px rgb(0 0 0 / 40%),
+      inset calc(var(--sun-x) * -1px) calc(var(--sun-y) * -1px) 0 rgb(255 255 255 / 7%);
+  }
+
+  /* ── the acts ────────────────────────────────────────────────────────────────
+     Each act enters on a 60px rise with a stagger between its elements, driven by
+     IntersectionObserver and never by a scroll listener. */
+  .act {
+    position: relative;
+    padding: var(--s-7) 0;
+  }
+  .act > * {
+    opacity: 0;
+    transform: translate3d(0, 60px, 0);
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      transform var(--dur-3) var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 40ms);
+  }
+  .act[data-in] > * {
+    opacity: 1;
+    transform: none;
+  }
+  .act-num {
+    font-family: var(--font-figure);
+    font-variant-numeric: tabular-nums;
+    font-size: var(--t-micro);
+    letter-spacing: var(--track-micro);
+    color: var(--measure);
+    text-transform: uppercase;
+  }
+
+  /* ── the lens switch ─────────────────────────────────────────────────────── */
+  .lenses-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-3) var(--s-5);
+    margin-bottom: var(--s-5);
+  }
+  .lenses-switch {
+    position: relative;
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--r-2);
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 40%);
+  }
+  .lens-tab {
+    position: relative;
+    z-index: 1;
+    padding: 8px 18px;
+    border: 0;
+    border-radius: calc(var(--r-2) - 3px);
+    background: none;
+    color: var(--ink-3);
+    font-size: var(--t-cap);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: color var(--dur-2) var(--ease-out);
+  }
+  .lens-tab.is-on {
+    color: var(--ink-1);
+  }
+  /* One rule that slides, so a lens change reads as a movement and not as two separate
+     things switching. */
+  .lenses-rule {
+    position: absolute;
+    z-index: 0;
+    top: 3px;
+    bottom: 3px;
+    width: calc((100% - 6px) / 3);
+    border-radius: calc(var(--r-2) - 3px);
+    background: rgb(255 255 255 / 8%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 12%);
+    transition: transform var(--dur-3) var(--ease-glide);
+  }
+  .lenses[data-lens="matter"] .lenses-rule {
+    transform: translateX(0);
+  }
+  .lenses[data-lens="time"] .lenses-rule {
+    transform: translateX(100%);
+  }
+  .lenses[data-lens="truth"] .lenses-rule {
+    transform: translateX(200%);
+  }
+  .lenses-question {
+    flex: 1 1 100%;
+    color: var(--ink-3);
+    font-size: var(--t-cap);
+    animation: lens-q var(--dur-3) var(--ease-out) both;
+  }
+  @keyframes lens-q {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+
+  /* All three panels stay mounted; only one is visible. That is what makes a lens change a
+     paint rather than a build, and why there is never a loading state between them. */
+  .lenses-stage {
+    display: grid;
+  }
+  .lens-panel {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.985);
+    transition:
+      opacity var(--dur-3) var(--ease-glide),
+      transform var(--dur-3) var(--ease-glide),
+      visibility 0s linear var(--dur-3);
+  }
+  .lens-panel.is-on {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  /* ── MATTER ──────────────────────────────────────────────────────────────── */
+  .matter-lede,
+  .regret-lede,
+  .truth-hint {
+    max-width: 62ch;
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 20px;
+  }
+  /* The scene is drawn at TRUE SCALE, so its intrinsic width is whatever the materials for this
+     house actually measure — routinely 1,500px and sometimes more. It scrolls inside its own box
+     rather than being squeezed, because squeezing it would be the one thing this lens may not do.
+     min-width: 0 is what stops that intrinsic width propagating out and scrolling the page. */
+  .matter-stage {
+    min-width: 0;
+    margin: var(--s-5) 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+  /* Five columns is more than a phone has room for; the table scrolls rather than the page. */
+  .matter-table-wrap {
+    min-width: 0;
+    overflow-x: auto;
+  }
+  .matter-stage svg {
+    display: block;
+    max-width: none;
+  }
+  .matter-ground {
+    stroke: var(--measure);
+    stroke-width: 1;
+    opacity: 0.5;
+  }
+  .matter-human {
+    fill: none;
+    stroke: var(--measure);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  .matter-human circle {
+    fill: none;
+  }
+  /* Material is matter, so it is neither cyan nor amber — it is the colour of the thing. */
+  .matter-pile {
+    cursor: pointer;
+    transition: opacity var(--dur-1) var(--ease-out);
+  }
+  .matter-pile path,
+  .matter-pile rect {
+    fill: rgb(255 255 255 / 13%);
+    stroke: rgb(255 255 255 / 26%);
+    stroke-width: 1;
+  }
+  .matter-pile.is-on path,
+  .matter-pile.is-on rect {
+    fill: rgb(255 255 255 / 22%);
+    stroke: var(--measure);
+  }
+  .matter-pile.is-off {
+    opacity: 0.35;
+  }
+  .matter-course {
+    stroke: rgb(255 255 255 / 10%);
+    stroke-width: 0.5;
+  }
+  .matter-name,
+  .matter-qty,
+  .matter-sub {
+    text-anchor: middle;
+    font-size: var(--t-micro);
+  }
+  .matter-name {
+    fill: var(--ink-2);
+  }
+  .matter-qty {
+    fill: var(--ink-1);
+    font-weight: 600;
+  }
+  .matter-sub {
+    fill: var(--ink-3);
+  }
+  .matter-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--t-cap);
+  }
+  .matter-table th,
+  .matter-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--hair);
+  }
+  .matter-table thead th {
+    color: var(--ink-3);
+    font-size: var(--t-micro);
+    letter-spacing: var(--track-micro);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .matter-table tbody tr {
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+  .matter-table tbody tr.is-on {
+    background: rgb(255 255 255 / 6%);
+  }
+  .matter-table tbody tr.is-off {
+    opacity: 0.45;
+  }
+  .matter-table .fig {
+    font-variant-numeric: tabular-nums;
+  }
+  .matter-size {
+    color: var(--ink-3);
+  }
+  .matter-basis {
+    margin-top: var(--s-3);
+    color: var(--ink-3);
+  }
+
+  /* ── TIME ────────────────────────────────────────────────────────────────── */
+  .time-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-6);
+    margin-bottom: var(--s-5);
+  }
+  .time-months,
+  .time-peak {
+    font-size: var(--t-fig-lg);
+    line-height: 34px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Months are a measurement. Money is money. The two accents never trade places. */
+  .time-months {
+    color: var(--measure);
+  }
+  .time-peak {
+    color: var(--money);
+  }
+  .time-sub {
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+  }
+  .time-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 130px;
+    margin-bottom: var(--s-3);
+  }
+  .time-bar {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .time-bar-fill {
+    width: 100%;
+    height: var(--h);
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(180deg, var(--money), rgb(255 255 255 / 8%));
+    transform-origin: 50% 100%;
+    animation: bar-rise var(--dur-3) var(--ease-out) both;
+    transition: filter var(--dur-1) var(--ease-out);
+  }
+  @keyframes bar-rise {
+    from {
+      transform: scaleY(0);
+    }
+  }
+  .time-bar:hover .time-bar-fill,
+  .time-bar.is-at .time-bar-fill {
+    filter: brightness(1.35);
+  }
+  .time-bar-n {
+    margin-top: 5px;
+    color: var(--ink-4);
+  }
+  .time-scrub {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-bottom: var(--s-6);
+  }
+  .time-scrub input {
+    flex: 1 1 auto;
+  }
+  .time-scrub-at {
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    min-width: 20ch;
+  }
+
+  /* ── the regret curve ────────────────────────────────────────────────────── */
+  .regret {
+    margin-top: var(--s-6);
+  }
+  .regret-picks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: var(--s-3) 0 var(--s-4);
+  }
+  .regret-pick {
+    padding: 6px 12px;
+    border: 1px solid var(--hair-2);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--ink-2);
+    font-size: var(--t-fine);
+    cursor: pointer;
+    transition:
+      border-color var(--dur-2) var(--ease-out),
+      color var(--dur-2) var(--ease-out);
+  }
+  .regret-pick.is-on {
+    border-color: var(--measure);
+    color: var(--ink-1);
+  }
+  .regret-chart {
+    width: 100%;
+    height: auto;
+  }
+  .regret-axis {
+    stroke: var(--hair-2);
+    stroke-width: 1;
+  }
+  /* The band is money, and it widens as the build goes on — which is the honest message. */
+  .regret-band-fill {
+    fill: var(--money);
+    opacity: 0.16;
+  }
+  .regret-line {
+    fill: none;
+    stroke: var(--money);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: draw-line var(--dur-4) var(--ease-out) forwards;
+  }
+  @keyframes draw-line {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .regret-dot {
+    fill: var(--money);
+  }
+  .regret-now-line {
+    stroke: var(--measure);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+  .regret-tick {
+    fill: var(--ink-3);
+    font-size: var(--t-micro);
+  }
+  .regret-now {
+    margin-top: var(--s-4);
+  }
+  .regret-figure {
+    font-size: var(--t-fig-lg);
+    line-height: 34px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--money);
+  }
+  .regret-band {
+    color: var(--ink-3);
+    font-size: var(--t-cap);
+    font-variant-numeric: tabular-nums;
+  }
+  .regret-terms {
+    margin-top: var(--s-3);
+  }
+  .regret-term {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: var(--t-cap);
+  }
+  .regret-term dt {
+    color: var(--ink-2);
+  }
+  .regret-term dd {
+    color: var(--ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .regret-term-sub {
+    color: var(--ink-3);
+  }
+  .regret-basis {
+    margin-top: var(--s-3);
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+  }
+  .regret-basis ul {
+    margin: 6px 0 6px 18px;
+  }
+
+  /* ── TRUTH ───────────────────────────────────────────────────────────────── */
+  .truth-label {
+    display: block;
+    margin-bottom: var(--s-2);
+  }
+  .truth-hint {
+    display: block;
+    margin-top: 4px;
+  }
+  .truth-paste {
+    width: 100%;
+    padding: var(--s-3);
+    border: 1px solid var(--hair-2);
+    border-radius: var(--r-2);
+    background: rgb(0 0 0 / 22%);
+    color: var(--ink-1);
+    font-family: var(--font-figure);
+    font-size: var(--t-cap);
+    line-height: 22px;
+    resize: vertical;
+    box-shadow: inset calc(var(--sun-x) * 2px) calc(var(--sun-y) * 2px) 5px rgb(0 0 0 / 35%);
+  }
+  .truth-actions {
+    display: flex;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+  .truth-privacy {
+    margin-top: var(--s-2);
+    color: var(--ink-3);
+  }
+  .truth-empty {
+    margin-top: var(--s-4);
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+  }
+  .truth-out {
+    margin-top: var(--s-6);
+  }
+  .truth-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+    margin-bottom: var(--s-4);
+  }
+  .truth-count {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .truth-count-n {
+    font-size: var(--t-h2);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .truth-count-l {
+    color: var(--ink-3);
+    font-size: var(--t-cap);
+  }
+  .truth-count--ok .truth-count-n {
+    color: var(--color-success);
+  }
+  .truth-count--over .truth-count-n {
+    color: var(--money);
+  }
+  /* Below the range is a WARNING, not good news. An under-quote costs the house. */
+  .truth-count--under .truth-count-n {
+    color: var(--color-danger);
+  }
+  .truth-count--none .truth-count-n {
+    color: var(--ink-3);
+  }
+  .truth-totals {
+    margin-bottom: var(--s-4);
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 20px;
+  }
+  .truth-lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  .truth-line {
+    padding: var(--s-3);
+    border-left: 2px solid var(--hair-2);
+    border-radius: 0 var(--r-1) var(--r-1) 0;
+  }
+  .truth-line--above {
+    border-left-color: var(--money);
+  }
+  .truth-line--below {
+    border-left-color: var(--color-danger);
+  }
+  .truth-line--within {
+    border-left-color: var(--color-success);
+  }
+  .truth-line-head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+  .truth-line-label {
+    color: var(--ink-1);
+    font-weight: 600;
+    font-size: var(--t-cap);
+  }
+  .truth-line-amt {
+    color: var(--ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+  .truth-bar {
+    position: relative;
+    height: 8px;
+    margin: 10px 0 6px;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 6%);
+  }
+  .truth-bar-range {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 16%);
+  }
+  .truth-bar-likely {
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    width: 1px;
+    background: var(--ink-3);
+  }
+  .truth-bar-quoted {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--money);
+  }
+  .truth-line--below .truth-bar-quoted {
+    background: var(--color-danger);
+  }
+  .truth-line-range {
+    color: var(--ink-3);
+  }
+  .truth-matched {
+    color: var(--ink-4);
+  }
+  .truth-line-note {
+    margin-top: 4px;
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 19px;
+  }
+  .truth-cite {
+    margin-top: var(--s-4);
+    color: var(--ink-3);
+    line-height: 18px;
+  }
+
+  /* ── the depth control ───────────────────────────────────────────────────── */
+  .depth {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--radius-pill);
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 40%);
+  }
+  .depth-btn {
+    padding: 5px 13px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    cursor: pointer;
+    transition:
+      color var(--dur-2) var(--ease-out),
+      background-color var(--dur-2) var(--ease-out);
+  }
+  .depth-btn.is-on {
+    background: rgb(255 255 255 / 9%);
+    color: var(--ink-1);
+  }
+  .depth-hint {
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+  }
+
+  /* ── reduced motion ──────────────────────────────────────────────────────────
+     Every duration above collapses and every element shows its final state. Not "the same
+     animation, faster" — the preference is for the motion not to happen, so it does not
+     happen, and the page is designed to be looked at that way. */
+  @media (prefers-reduced-motion: reduce) {
+    .est-instrument::before,
+    .lens-panel,
+    .lens-tab,
+    .lenses-rule,
+    .regret-pick,
+    .time-bar-fill,
+    .act > * {
+      transition: none;
+      animation: none;
+    }
+    .act > * {
+      opacity: 1;
+      transform: none;
+    }
+    .regret-line {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+    .lenses-question {
+      animation: none;
+    }
+  }
+
+  /* Act 4 spans both columns of the estimator grid. A lens rendered inside the output column
+     spends its life sliding under the pinned total; the reveal needs the whole page. */
+  .est-full {
+    grid-column: 1 / -1;
+    /*
+     * min-width: 0, and it is load-bearing. A grid item's automatic minimum size is its
+     * CONTENT's minimum, so the MATTER lens — whose SVG is drawn at true scale and is
+     * routinely 1,500px wide — was forcing this column wider than the page and pushing the
+     * whole estimator into a horizontal scroll. The `overflow-x: auto` on the stage cannot
+     * help until the item is allowed to be narrower than what is inside it.
+     */
+    min-width: 0;
+  }
+  .lenses,
+  .lenses-stage,
+  .lens-panel {
+    min-width: 0;
+  }
+  .depth-row {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .matter-table caption {
+    caption-side: top;
+    text-align: left;
+    padding-bottom: var(--s-2);
+    color: var(--ink-3);
+  }
+
+  /* ── the sensitivity panel ───────────────────────────────────────────────── */
+  .sens {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+  .sens-meter {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+  }
+  .sens-arc {
+    width: 76px;
+    height: 44px;
+    flex: none;
+  }
+  .sens-arc-track,
+  .sens-arc-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+  .sens-arc-track {
+    stroke: rgb(255 255 255 / 8%);
+  }
+  /* Certainty is a measurement, so the arc is cyan and never amber. */
+  .sens-arc-fill {
+    stroke: var(--measure);
+    transition: stroke-dashoffset var(--dur-3) var(--ease-glide);
+  }
+  /* The same size as the figures in TIME and the regret total. Three components, one figure
+     size — which is what stops a page painting seventeen type sizes and reading as cheap. */
+  .sens-pct {
+    font-size: var(--t-fig-lg);
+    line-height: 32px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-1);
+  }
+  .sens-note {
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    max-width: 52ch;
+  }
+  .sens-next {
+    display: grid;
+    gap: 3px;
+    width: 100%;
+    padding: var(--s-3) var(--s-4);
+    text-align: left;
+    border: 1px solid var(--hair-2);
+    border-left: 2px solid var(--measure);
+    border-radius: var(--r-2);
+    background: none;
+    cursor: pointer;
+    transition: border-color var(--dur-2) var(--ease-out);
+  }
+  .sens-next:hover {
+    border-color: var(--measure);
+  }
+  .sens-next-label {
+    color: var(--ink-1);
+    font-weight: 600;
+    font-size: var(--t-cap);
+  }
+  .sens-next-why {
+    color: var(--ink-2);
+    font-size: var(--t-fine);
+  }
+  .sens-next-worth {
+    color: var(--money);
+    font-size: var(--t-fine);
+    font-variant-numeric: tabular-nums;
+  }
+  .sens-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sens-row-btn {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 var(--s-3);
+    width: 100%;
+    padding: 8px 10px;
+    border: 0;
+    border-radius: var(--r-1);
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-out);
+  }
+  .sens-row-btn:hover {
+    background: rgb(255 255 255 / 5%);
+  }
+  .sens-row-label {
+    color: var(--ink-1);
+    font-size: var(--t-cap);
+  }
+  .sens-row.is-open .sens-row-label::after {
+    content: " · not answered yet";
+    color: var(--measure);
+    font-size: var(--t-fine);
+  }
+  .sens-row-why {
+    grid-column: 1;
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    line-height: 16px;
+  }
+  .sens-row-spread {
+    grid-row: 1 / 3;
+    grid-column: 2;
+    align-self: center;
+    color: var(--money);
+    font-size: var(--t-cap);
+    font-variant-numeric: tabular-nums;
+  }
+  /* The bar is a measurement of how much this question matters, so it is cyan — the figure
+     beside it is money and is amber. The two never trade places anywhere on this page. */
+  .sens-row-bar {
+    grid-column: 1 / -1;
+    height: 2px;
+    margin-top: 5px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, var(--measure) var(--w), transparent var(--w));
+    opacity: 0.55;
+  }
+  .sens-done {
+    color: var(--ink-3);
+    font-size: var(--t-cap);
+  }
+
+  @media (max-width: 1023.98px) {
+    .matter-table th,
+    .matter-table td {
+      padding: 6px 6px;
+      font-size: var(--t-fine);
+    }
+    .matter-size {
+      display: none;
+    }
+    .time-bars {
+      height: 96px;
+    }
+    .time-scrub {
+      flex-wrap: wrap;
+    }
+    .time-scrub-at {
+      min-width: 0;
+    }
+  }
 }
