@@ -604,11 +604,21 @@
   .wallet-close:hover {
     color: var(--color-ink);
   }
+  /* The balance panel. The coin sits to the left of the figure it counts, at 64px —
+     large enough to read as an object, small enough that the number stays the subject. */
   .wallet-balance {
-    padding: var(--s-3);
-    border: 1px solid var(--color-coin-line);
-    border-radius: var(--radius-md);
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    column-gap: var(--s-4);
+    padding: var(--s-4);
+    border: 1px solid var(--hair-amber);
+    border-radius: var(--r-3);
     background: var(--color-coin-wash);
+  }
+  .wallet-coin {
+    grid-row: 1 / 4;
   }
   .wallet-balance-label {
     font-size: 11px;
@@ -2771,36 +2781,68 @@
     color: var(--color-teal-700);
   }
   .page-head {
-    padding: 16px 0 12px;
+    padding: var(--s-4) 0 var(--s-3);
+  }
+  /* A page title is a display heading now, not a 24px bold. --t-d3 runs 26 → 44, which
+     against the 13.5px meta under it is the same 3× the home page's hero gets. */
+  .page-title {
+    font-family: var(--font-display);
+    font-size: var(--t-d3);
+    line-height: var(--t-d3-lh);
+    letter-spacing: var(--track-d3);
+    font-weight: 400;
+    color: var(--ink-1);
+    text-wrap: balance;
+  }
+
+  /* ── a page head on a backplate ───────────────────────────────────────────
+     The category, search and cart pages open on a photograph the same way the home
+     page does — see components/Plate.tsx and design-system/art/MANIFEST.md for which
+     plate belongs to which surface.
+
+     It spans the shell and rounds its corners rather than bleeding to the viewport
+     edge. That is deliberate: these are working pages, and a full-bleed photograph at
+     the top of a listing competes with the results for the first thing the eye lands
+     on. A banner says "you are here"; a bleed says "look at me". */
+  .page-head--plate {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    min-height: 208px;
+    margin-bottom: var(--s-6);
+    padding: var(--s-8) var(--s-7) var(--s-6);
+    border-radius: var(--r-5);
+    border: 1px solid var(--hair);
+    overflow: hidden;
+  }
+  .page-head-in {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    width: 100%;
+  }
+  @media (max-width: 767.98px) {
+    .page-head--plate {
+      min-height: 150px;
+      padding: var(--s-6) var(--s-5) var(--s-5);
+      border-radius: var(--r-4);
+    }
   }
   /*
-   * The page heading.
-   *
-   * It carried font-weight: 700, and every page heading in the store is written as
-   * `class="display page-title"` — .display being the Audiowide rule. Audiowide ships ONE cut, at
-   * 400. Asking a single-weight face for 700 does not get a bolder face: the browser smears the
-   * 400 outward, and faux-bold on a wide geometric display face is unmistakable once seen. The
-   * brand's own voice was being rendered wrong on the title of every page except the home page,
-   * which sets its own rule.
-   *
-   * 700 stays for headings that are NOT in the display face — .page-title on its own is still a
-   * bold UI heading. Only the pairing is corrected.
+   * The page heading was defined twice — here, and again near the top of this file — and this
+   * copy won by source order. It carried `font-size: 24px; font-weight: 700` and a long comment
+   * about faux-bold Audiowide, which was the right fix for a problem that no longer exists:
+   * .page-title is Instrument Serif at 400 by construction now, and the single definition lives
+   * with the rest of the type contract rather than a thousand lines further down.
    */
-  .page-title {
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--color-ink);
-  }
-  .display.page-title {
-    font-weight: 400;
-  }
   .page-sub {
-    margin-top: 4px;
-    font-size: 14px;
-    line-height: 20px;
-    color: var(--color-ink-2);
+    margin-top: var(--s-2);
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    color: var(--ink-3);
   }
   .home-title {
     font-size: 28px;
@@ -4022,5 +4064,126 @@
     border-radius: 50%;
     background: var(--color-brand);
     transform: translate(-50%, -50%);
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   THE BO COIN
+   ─────────────────────────────────────────────────────────────────────────────
+   See components/BoCoin.tsx for what it is and why it spins the way it does. The
+   short version: a linear 360° loop spends half its time showing a gold sliver, so
+   this one dwells face-on at 0° and 180° and transits the edge quickly.
+
+   Every colour here is from the amber ramp, which belongs to BO Coins and to warnings
+   and to nothing else. A currency in the brand teal reads as a feature rather than as
+   money — that is the whole reason the store carries a second accent at all.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  .bocoin {
+    position: relative;
+    display: inline-block;
+    flex: none;
+    perspective: 900px;
+  }
+  .bocoin-spin {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    animation: bocoin-spin 11s var(--ease-inout) infinite;
+  }
+  @keyframes bocoin-spin {
+    0%,
+    16% {
+      transform: rotateX(-14deg) rotateY(0);
+    }
+    46%,
+    62% {
+      transform: rotateX(-14deg) rotateY(180deg);
+    }
+    92%,
+    100% {
+      transform: rotateX(-14deg) rotateY(360deg);
+    }
+  }
+  .bocoin-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    backface-visibility: hidden;
+    display: grid;
+    place-items: center;
+    color: var(--amber-300);
+    background: radial-gradient(
+      60% 55% at 32% 26%,
+      var(--amber-900) 0%,
+      var(--amber-800) 24%,
+      var(--amber-700) 52%,
+      var(--amber-500) 78%,
+      var(--amber-300) 100%
+    );
+    box-shadow:
+      inset 0 0 0 9px rgb(122 85 4 / 42%),
+      inset 0 0 46px rgb(122 85 4 / 50%),
+      var(--glow-amber);
+  }
+  .bocoin-face--b {
+    transform: rotateY(180deg);
+  }
+  /* The milling. Alternating light and dark all the way round is the ridging a real
+     coin carries so it cannot be shaved — it is the detail that makes the edge read as
+     metal rather than as a stroke. */
+  .bocoin-rim {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    transform: translateZ(-7px);
+    background: repeating-conic-gradient(
+      from 0deg,
+      var(--amber-300) 0deg 1.8deg,
+      var(--amber-700) 1.8deg 3.6deg,
+      var(--amber-300) 3.6deg 5.4deg,
+      var(--amber-600) 5.4deg 7.2deg
+    );
+  }
+  /* The glint arrives as the coin comes back face-on, which is the moment a real one
+     catches the light — on the turn, not at rest. */
+  .bocoin-glint {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background: linear-gradient(122deg, transparent 34%, rgb(255 255 255 / 50%) 47%, transparent 58%);
+    animation: bocoin-glint 11s var(--ease-inout) infinite;
+  }
+  @keyframes bocoin-glint {
+    0%,
+    58% {
+      opacity: 0;
+    }
+    66% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .bocoin-mark {
+    position: relative;
+    width: 46%;
+    height: 46%;
+    filter: drop-shadow(0 2px 0 rgb(122 85 4 / 60%)) drop-shadow(0 -1px 0 rgb(255 227 155 / 50%));
+  }
+  /* Stopped face-on: the frame that carries the meaning. */
+  @media (prefers-reduced-motion: reduce) {
+    .bocoin-spin,
+    .bocoin-glint {
+      animation: none;
+    }
+    .bocoin-spin {
+      transform: rotateX(-14deg);
+    }
+    .bocoin-glint {
+      opacity: 0;
+    }
   }
 }

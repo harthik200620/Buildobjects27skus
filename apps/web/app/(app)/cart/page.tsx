@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import BoCart from '@/components/cart/BoCart';
+import Plate from '@/components/Plate';
 import { loadCalculatorCatalog } from '@/lib/estimator';
 
 export const dynamic = 'force-dynamic';
@@ -15,15 +16,20 @@ export default async function CartPage() {
 
   return (
     <div className="page shell">
-      <header className="page-head">
-        {/* "verified dealer prices" was the claim here. They are not verified — several carry
-            `price_provenance: 'estimated'`, and the product page each line came from says so on
-            the price itself. */}
-        <p className="kicker">Your order</p>
-        <h1 className="display page-title">Your cart</h1>
-        <p className="page-sub estimate-lede">
-          Each line is priced per unit with GST included, at the figure on its own product page. BO Coins come off the total at one rupee each.
-        </p>
+      <header className="page-head page-head--plate">
+        <Plate name="cart-yard" position="50% 58%" />
+        <div className="page-head-in">
+          <div>
+            {/* "verified dealer prices" was the claim here. They are not verified — several carry
+                `price_provenance: 'estimated'`, and the product page each line came from says so
+                on the price itself. */}
+            <p className="micro sec-eyebrow">Your order</p>
+            <h1 className="page-title">Your cart</h1>
+            <p className="page-sub estimate-lede">
+              Each line is priced per unit with GST included, at the figure on its own product page. BO Coins come off the total at one rupee each.
+            </p>
+          </div>
+        </div>
       </header>
       <BoCart initialCatalog={catalog} />
     </div>

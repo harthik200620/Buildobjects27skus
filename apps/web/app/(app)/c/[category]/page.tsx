@@ -10,6 +10,7 @@ import CategoryTile from '@/components/CategoryTile';
 import FilterRail from '@/components/FilterRail';
 import { CategoryIcon, IconArrow } from '@/components/icons';
 import Pagination from '@/components/Pagination';
+import Plate from '@/components/Plate';
 import ProductCard from '@/components/ProductCard';
 import { allCategories, loadFacetConfig, loadFlagshipSkus, searchSkus } from '@/lib/catalog';
 import { type CategoryGroup, loadCatalogueCategories, loadCategory, loadSession, serviceability } from '@/lib/data';
@@ -89,27 +90,30 @@ export default async function CategoryPage({ params, searchParams }: { params: P
           { label: displayName(cat.slug, cat.name) },
         ]}
       />
-      <header className="page-head flex items-center gap-4" style={{ paddingBottom: 'var(--s-3)' }}>
-        <span className="cat-head-icon">
-          <CategoryIcon icon={cat.icon ?? 'cement'} size={26} />
-        </span>
-        <div>
-          <h1 className="display page-title">{displayName(cat.slug, cat.name)}</h1>
-          <p className="page-sub">
-            {upcoming ? (
-              'Arriving soon'
-            ) : (
-              <>
-                <span className="fig">{stats?.sku_count ?? result.total}</span> {(stats?.sku_count ?? result.total) === 1 ? 'product' : 'products'}
-                {stats?.min_price ? (
-                  <>
-                    {' '}
-                    · from <span className="fig">{inr(stats.min_price)}</span>/{cat.unit}
-                  </>
-                ) : null}
-              </>
-            )}
-          </p>
+      <header className="page-head page-head--plate">
+        <Plate name="catalogue-aisle" position="50% 46%" />
+        <div className="page-head-in">
+          <span className="cat-head-icon">
+            <CategoryIcon icon={cat.icon ?? 'cement'} size={26} />
+          </span>
+          <div>
+            <h1 className="page-title">{displayName(cat.slug, cat.name)}</h1>
+            <p className="page-sub">
+              {upcoming ? (
+                'Arriving soon'
+              ) : (
+                <>
+                  <span className="fig">{stats?.sku_count ?? result.total}</span> {(stats?.sku_count ?? result.total) === 1 ? 'product' : 'products'}
+                  {stats?.min_price ? (
+                    <>
+                      {' '}
+                      · from <span className="fig">{inr(stats.min_price)}</span>/{cat.unit}
+                    </>
+                  ) : null}
+                </>
+              )}
+            </p>
+          </div>
         </div>
       </header>
       <CategoryStrip categories={cats} current={category} />
@@ -230,34 +234,39 @@ function CategoryLanding({ group, skus, eta }: { group: CategoryGroup; skus: Sku
       {/* The header states what is on the shelf, not how the catalogue files it. It used to
           open with "1 product ·" on every one of these pages — a fact about the tree, not about
           anything you can buy. */}
-      <header className="page-head cat-land-head" data-reveal="left">
-        <h1 className="display page-title">{group.name}</h1>
-        {onShelf > 0 ? (
-          <dl className="cat-land-facts">
-            <div>
-              <dt>On the shelf</dt>
-              <dd className="fig">{onShelf}</dd>
-            </div>
-            <div>
-              <dt>Brands</dt>
-              <dd className="fig">{brandCount}</dd>
-            </div>
-            {prices.length > 0 && (
-              <div>
-                <dt>From</dt>
-                <dd className="fig">{inr(Math.min(...prices))}</dd>
-              </div>
+      <header className="page-head page-head--plate cat-land-head" data-reveal="left">
+        <Plate name="catalogue-aisle" position="50% 46%" />
+        <div className="page-head-in">
+          <div>
+            <h1 className="page-title">{group.name}</h1>
+            {onShelf > 0 ? (
+              <dl className="cat-land-facts">
+                <div>
+                  <dt>On the shelf</dt>
+                  <dd className="fig">{onShelf}</dd>
+                </div>
+                <div>
+                  <dt>Brands</dt>
+                  <dd className="fig">{brandCount}</dd>
+                </div>
+                {prices.length > 0 && (
+                  <div>
+                    <dt>From</dt>
+                    <dd className="fig">{inr(Math.min(...prices))}</dd>
+                  </div>
+                )}
+                {eta && (
+                  <div>
+                    <dt>Delivered by</dt>
+                    <dd className="cat-land-eta">{eta}</dd>
+                  </div>
+                )}
+              </dl>
+            ) : (
+              <p className="page-sub">Nothing on this shelf yet — the catalogue reaches it before the stock does.</p>
             )}
-            {eta && (
-              <div>
-                <dt>Delivered by</dt>
-                <dd className="cat-land-eta">{eta}</dd>
-              </div>
-            )}
-          </dl>
-        ) : (
-          <p className="page-sub">Nothing on this shelf yet — the catalogue reaches it before the stock does.</p>
-        )}
+          </div>
+        </div>
       </header>
 
       {group.products.length > 1 && (

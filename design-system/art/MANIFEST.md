@@ -3,9 +3,10 @@
 Seven photographic plates, generated 26 Aug 2026, identified, renamed, graded to
 the canvas and optimised. They are ready to use as they are.
 
-The ungraded originals stay where you put them, in `generated images/` at the
-repo root (2752 × 1536 JPEG, ~3.4 MB each) — they are not duplicated here. If a
-plate needs re-grading, work from those; the mapping is in the table below.
+The ungraded originals stay where you put them, in `scratch/design-refs/` (2752 ×
+1536 JPEG, ~3.4 MB each) — they are not duplicated here. If a plate needs
+re-grading, work from those; the mapping is in the table below. `_source/` holds
+the one intermediate a tool in this repo has replaced: see "Settled" below.
 **Never ship a file from `generated images/`** — they are 3 MB and much brighter
 than the page. Ship the `.webp` files in this folder.
 
@@ -23,7 +24,7 @@ than the page. Ship the `.webp` files in this folder.
 
 | File | 2560px unless noted | Page / slot | Notes |
 |---|---|---|---|
-| `home-hero.webp` | 3200px | Home — behind the headline | The best of the set. Dusk G+1 house: parapet, mumty with the black Sintex tank, chajjas over every window, MS grills, portico, raised plinth, compound wall and gate, coconut palm, bougainvillea, wet street. Correct AP vernacular throughout. |
+| `home-hero.webp` | 2752px | Home — behind the headline | The best of the set. Dusk G+1 house: parapet, mumty with the black Sintex tank, chajjas over every window, MS grills, portico, raised plinth, compound wall and gate, coconut palm, bougainvillea, wet street. Correct AP vernacular throughout. |
 | `catalogue-aisle.webp` | | Category and search pages | One-point perspective down a materials aisle, amber lamp run vanishing into black. |
 | `site-materials.webp` | | Home — the materials band | Cement, rebar and sand in a raking sunbeam. Top third is empty for copy. |
 | `construct-frame.webp` | | Construct pages | RCC frame with shuttering props and starter bars. The only daylight frame in the set — its sky is pulled down to the canvas so it matches the other six. |
@@ -93,6 +94,35 @@ a fix.** Before these go anywhere customer-facing, do one of:
   branding.
 
 Everything else in the set is clean.
+
+### Settled, 26 Aug 2026 — both, differently
+
+**`site-materials` was already clean and stays as it is.** Checked at native
+resolution: its sacks are defocused past any letterform, and nothing else in the
+frame — rebar, sand, bamboo, the raking beam — carries branding at all.
+
+**`catalogue-aisle` was not, and is now cropped.** The mitigation had softened the
+near foreground and left the MID-GROUND shelving sharp; at 2560px the stacked sacks
+on both sides read "… Cement" repeatedly down the pile. "You cannot read it at the
+size we display it" is not the test — the plate ships on a public CDN and this one is
+the backplate on all 35 category pages and on search, which would have made it the
+most-served image in the store.
+
+Blurring the shelves was tried and fails on this composition. The two stacks sit at
+32–43% and 56–67% of the frame, so the corridor between them is a seventh of the
+width; a mask narrow enough to catch the lettering blurs almost the whole photograph.
+The frame's subject IS the branded packaging, and there is no version of it that
+keeps the subject and loses the brands.
+
+So it is cropped to the upper 46% — the ceiling, the beams, and the lamp run
+receding into black. No packaging sits above 42% of the frame, and what clips the
+bottom edge was verified illegible at native resolution rather than at display size.
+It is now **2560 × 657, 3.90:1** and 85 KB, which is also the better plate: every
+slot it fills is a wide banner, so `object-fit: cover` discards a sliver where it
+used to discard half the composition.
+
+`services/pipeline/tools/regrade-plate.mts` does it and is rerun-safe; the pre-crop
+frame is stashed in `_source/`. Re-run it after any regeneration.
 
 **2. All seven are 16:9, not 21:9.** The hero slot in the north star is wider.
 `object-fit: cover` with the `object-position` above handles it, but check the

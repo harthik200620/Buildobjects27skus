@@ -4,6 +4,7 @@ import CategoryStrip from '@/components/CategoryStrip';
 import FilterRail from '@/components/FilterRail';
 import { IconSearch } from '@/components/icons';
 import Pagination from '@/components/Pagination';
+import Plate from '@/components/Plate';
 import ProductCard from '@/components/ProductCard';
 import { allCategories, loadFacetConfig, searchSkus } from '@/lib/catalog';
 import { loadSession, serviceability } from '@/lib/data';
@@ -53,28 +54,33 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
        * than measured facts, and a landing line that overrides that in the shopper's mind is worse
        * than saying nothing.
        */}
-      <header className="page-head">
-        <h1 className="display page-title">
-          {state.q ? (
-            <>
-              Results for <span className="search-q">{state.q}</span>
-            </>
-          ) : (
-            'Everything we stock'
-          )}
-        </h1>
-        <p className="page-sub">
-          {state.q ? (
-            <>
-              <span className="fig">{result.total}</span> {result.total === 1 ? 'match' : 'matches'} in the catalogue.
-            </>
-          ) : (
-            <>
-              <span className="fig">{result.total}</span> items, priced per unit with GST included. Every one carries its full specification, the source of each
-              figure, and a view of it standing in your own room.
-            </>
-          )}
-        </p>
+      <header className="page-head page-head--plate">
+        <Plate name="catalogue-aisle" position="50% 46%" />
+        <div className="page-head-in">
+          <div>
+            <h1 className="page-title">
+              {state.q ? (
+                <>
+                  Results for <span className="search-q">{state.q}</span>
+                </>
+              ) : (
+                'Everything we stock'
+              )}
+            </h1>
+            <p className="page-sub">
+              {state.q ? (
+                <>
+                  <span className="fig">{result.total}</span> {result.total === 1 ? 'match' : 'matches'} in the catalogue.
+                </>
+              ) : (
+                <>
+                  <span className="fig">{result.total}</span> items, priced per unit with GST included. Every one carries its full specification, the source of
+                  each figure, and a view of it standing in your own room.
+                </>
+              )}
+            </p>
+          </div>
+        </div>
       </header>
       {!state.q && <CategoryStrip categories={cats} current={state.category} />}
       <div className="plp">

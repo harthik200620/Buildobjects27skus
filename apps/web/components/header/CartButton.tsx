@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
+import BoCoin from '@/components/BoCoin';
 import BoCoinWheel from '@/components/BoCoinWheel';
 import BoCartMark from '@/components/cart/BoCartMark';
 import { IconClose, IconCoin, IconEngine } from '@/components/icons';
@@ -72,6 +73,10 @@ export default function CartButton() {
             </div>
 
             <div className="wallet-balance">
+              {/* The coin as a real object, next to the figure it counts. See
+                  components/BoCoin.tsx — it is CSS 3D, not an image, and it dwells
+                  face-on rather than spinning at a constant rate. */}
+              <BoCoin size={64} className="wallet-coin" />
               <p className="wallet-balance-label">Balance</p>
               <p className="wallet-balance-figure fig">
                 {coins} <span>{coins === 1 ? 'coin' : 'coins'}</span>
