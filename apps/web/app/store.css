@@ -50,17 +50,44 @@
     pointer-events: none;
     overflow: hidden;
   }
+  /* A VERY SLOW DRIFT. Four and a half per cent over half a minute is under a tenth of a pixel a
+     frame — far too slow to watch and just enough that the page is never quite still, which is
+     the difference between a photograph and a screenshot of one. It is a transform on one
+     composited layer, so it costs no layout and no paint. */
   .plate img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    animation: plate-drift 32s var(--ease-out) infinite alternate both;
   }
+  @keyframes plate-drift {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.045);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plate img {
+      animation: none;
+    }
+  }
+  /* THE SCRIM WAS ERASING THE PHOTOGRAPH IT PROTECTS.
+     Opaque canvas across the whole top edge and 88 % down the left, over a night exterior that is
+     dark to begin with: what reached the screen was a grey rectangle with a headline on it, and
+     an empty grey rectangle is the single loudest "unfinished" signal a page can send.
+
+     Its job is to keep the copy legible, and the copy sits on the LEFT — so the left is still
+     protected, at 74 % rather than 88 %, and it clears sooner. The top no longer starts opaque;
+     it starts at 62 %, which holds the header's own glass without deleting the sky under it. The
+     bottom fade stays as it was, because that one is a seam, not a scrim. */
   .plate-scrim {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, var(--color-canvas) 0%, rgb(6 24 29 / 30%) 34%, rgb(6 24 29 / 82%) 100%),
-      linear-gradient(90deg, rgb(6 24 29 / 88%) 0%, rgb(6 24 29 / 10%) 62%);
+      linear-gradient(180deg, rgb(6 24 29 / 62%) 0%, rgb(6 24 29 / 18%) 38%, rgb(6 24 29 / 80%) 100%),
+      linear-gradient(90deg, rgb(6 24 29 / 74%) 0%, rgb(6 24 29 / 8%) 54%);
   }
   /* Longhands on purpose: a `padding` shorthand here would wipe .shell's horizontal padding. */
   .page {
@@ -1720,6 +1747,8 @@
     background: var(--plate, var(--plate-1));
     -webkit-mask-image: var(--plate-mask);
     mask-image: var(--plate-mask);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
   /* The floor. Without it the object is a cut-out pasted on a rectangle. */
   .prod-media::after {
@@ -1743,6 +1772,8 @@
     display: block;
     -webkit-mask-image: var(--plate-mask);
     mask-image: var(--plate-mask);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
   .prod-media .badge-estimated,
   .prod-media .badge-cert {
@@ -3061,16 +3092,31 @@
     background: linear-gradient(168deg, var(--surf-2), var(--color-canvas) 88%);
     box-shadow: var(--specular);
   }
-  /* The lit stage. The gradient's bright centre sits at 50% 34%, which is where the key
-     light is in every product photograph the pipeline commissions — so the mount and the
-     photograph agree about where the light is coming from. */
+  /* THE STAGE DISSOLVES INTO THE PAGE, exactly as the card's mount does.
+     It was a radial gradient, which is a fine way to model a lit surface and a guaranteed seam
+     against a flat photograph. Now it is the same colour as the photograph and the modelling
+     lives in a mask over BOTH — so the two fall away together at the edges and there is no value
+     of the mask that can reopen the seam between them.
+
+     This is 900 x 720 of near-white on a deep-teal page, which is the largest single surface in
+     the store: getting it wrong is a hole in the page, and the theme's own note says so. */
   .gallery-main {
     position: relative;
     aspect-ratio: 4 / 3.2;
     overflow: hidden;
-    background: var(--plate-stage);
+    background: transparent;
     touch-action: pan-y;
     cursor: zoom-in;
+  }
+  .gallery-main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--plate-stage);
+    -webkit-mask-image: var(--plate-mask);
+    mask-image: var(--plate-mask);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
   /* The floor. Without it the object is pasted on; with it, it stands. */
   .gallery-main::after {
@@ -3083,6 +3129,13 @@
     border-radius: 50%;
     background: radial-gradient(closest-side, rgb(12 17 19 / 32%), transparent);
     pointer-events: none;
+  }
+  /* Masked with the plate, so the photograph's own rectangle cannot outlive the mount's. */
+  .gallery-main img {
+    -webkit-mask-image: var(--plate-mask);
+    mask-image: var(--plate-mask);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
   .gallery-track {
     position: relative;

@@ -202,7 +202,19 @@
      photographed, so the modelling moved OUT of the plate's fill and onto a mask over both plate
      and photograph at once: they darken together, so softening the tile can never reopen a seam. */
   --plate-0: #cfdadb;
-  --plate-mask: radial-gradient(122% 112% at 50% 40%, #000 54%, rgb(0 0 0 / 62%) 82%, rgb(0 0 0 / 0%) 100%);
+  /* TWO LINEAR FADES, INTERSECTED — not a radial vignette.
+     A radial one was the first attempt and it did nothing, which the arithmetic says plainly: at
+     `122% 112%` the ellipse's horizontal radius is 1.22 of the box, so the box's own CORNER sits
+     at t = sqrt((0.5/1.22)² + (0.4/1.12)²) = 0.54 — exactly the first stop, where the mask is
+     still fully opaque. Every pixel of the plate was inside the solid part of its own mask.
+
+     A radial mask cannot dissolve a rectangle evenly anyway: whatever you size it to, the four
+     mid-edges are always the last thing to fade and they are most of the edge. Two linear ramps
+     composited with `intersect` fade all four sides by the same 6 %, which is what "dissolves
+     into the card" actually means. */
+  --plate-mask:
+    linear-gradient(90deg, rgb(0 0 0 / 0%) 0%, #000 6%, #000 94%, rgb(0 0 0 / 0%) 100%),
+    linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, #000 6%, #000 94%, rgb(0 0 0 / 0%) 100%);
   --on-plate-1: #0c1113; /* 16.9 on plate */
   --on-plate-2: #52605f; /*  5.4 on plate */
 
