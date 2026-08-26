@@ -519,6 +519,17 @@ export default function Estimator({
               Fire safety &amp; extinguishers
             </label>
           </div>
+        </div>
+
+        {/* ── the drawing ──────────────────────────────────────────────────
+            It was the last thing inside the tier card: a dashed box under a list of
+            checkboxes under a price comparison, which is three unrelated jobs in one panel.
+            It is a card of its own now, the same shell as every other card on the page. */}
+        <div className="wz-step">
+          <div className="wz-head">
+            <span className="wz-title">Your drawing</span>
+            <span className="wz-note">optional</span>
+          </div>
           <DrawingUpload onReading={onReading} />
         </div>
 
@@ -745,7 +756,7 @@ export default function Estimator({
             </h2>
             <span className="legend-sub">against this rate card</span>
           </div>
-          <Truth result={result} />
+          <Truth result={result} catalog={catalog} />
         </section>
 
         {result.storeLinks.length > 0 && (

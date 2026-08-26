@@ -3,6 +3,7 @@ import {
   type AiPatch,
   applyAiPatch,
   buildSchedule,
+  type CatalogPrices,
   compareQuote,
   type EstimateInputs,
   estimate,
@@ -36,6 +37,8 @@ const base: EstimateInputs = {
   picks: [],
 };
 const result = estimate(base);
+/* esbuild's transform of this file is happier with the newline named than inlined in an array join. */
+const NL = String.fromCharCode(10);
 
 describe('TIME — the calendar and the cash flow', () => {
   const sch = buildSchedule(result);
@@ -174,6 +177,138 @@ describe('TRUTH — comparing a real quotation', () => {
     expect(c.citation.version).toBe(result.version);
     expect(c.citation.city).toBe('Hyderabad');
     expect(c.citation.cityIndex).toBe(1);
+  });
+});
+
+/**
+ * The store re-price. Every figure below is hand-checkable against the reference house:
+ * 1,800 sqft BUA, Medium, Hyderabad.
+ */
+const shop: CatalogPrices = {
+  'CEM-AMB-PLUS50': {
+    sku_code: 'CEM-AMB-PLUS50',
+    category: 'cement',
+    name: 'Plus 50kg',
+    brand: 'Ambuja',
+    unit: 'bag',
+    selling_price: 500,
+    price_provenance: 'fetched',
+  },
+  'SOL-VIK-PARADEA-550': {
+    sku_code: 'SOL-VIK-PARADEA-550',
+    category: 'solar-panels',
+    name: 'Paradea 550W',
+    brand: 'Vikram',
+    unit: 'panel',
+    selling_price: 10000,
+    price_provenance: 'fetched',
+    wp: 550,
+  },
+};
+const solarHouse: EstimateInputs = { ...base, addons: { solar: true, cctv: false, fireSafety: false } };
+/* The reference `result` is built with no catalogue, so every one of its lines is a thumb rule
+   and there is nothing on it the store could re-price. These blocks need the same house priced
+   from the shelf. */
+const shopped = estimate(base, shop);
+
+describe('TRUTH — the same line, bought from the store', () => {
+  it('takes the difference off a line the store sells, at the quote own quantity', () => {
+    /* 720 bags at ₹600 is what the contractor is charging; the store sells the bag at ₹500. */
+    const c = compareQuote(shopped, parseQuoteText('Cement 720 bags 600 4,32,000'), shop);
+    const m = c.matches[0];
+    expect(m.store).not.toBeNull();
+    expect(m.store?.qty).toBe(720);
+    expect(m.store?.qtySource).toBe('quote');
+    expect(m.store?.quotedRate).toBe(600);
+    expect(m.store?.storeRate).toBe(500);
+    expect(m.store?.storeAmount).toBe(360000);
+    expect(m.store?.saving).toBe(72000);
+    expect(c.store.saved).toBe(72000);
+    expect(c.store.lines).toBe(1);
+  });
+
+  it('does the same for a solar panel priced by the number', () => {
+    const r = estimate(solarHouse, shop);
+    /* Ten panels at ₹12,000 against a store price of ₹10,000. */
+    const c = compareQuote(r, parseQuoteText('Solar panels 10 nos 12000 1,20,000'), shop);
+    const m = c.matches[0];
+    expect(m.store?.storeRate).toBe(10000);
+    expect(m.store?.quotedRate).toBe(12000);
+    expect(m.store?.saving).toBe(20000);
+  });
+
+  it('leaves alone every line the store has no price for', () => {
+    /* Mason labour is a thumb rule, not a thing on a shelf. Nothing is claimed about it. */
+    const c = compareQuote(shopped, parseQuoteText('Mestri labour 6,80,000\nCentering & shuttering 1,08,000'), shop);
+    expect(c.matches.every((m) => m.store === null)).toBe(true);
+    expect(c.store.saved).toBe(0);
+    expect(c.store.lines).toBe(0);
+  });
+
+  it('falls back to this house own quantity, and says so, when the document states none', () => {
+    const c = compareQuote(shopped, parseQuoteText('Cement 4,32,000'), shop);
+    expect(c.matches[0].store?.qtySource).toBe('estimate');
+    expect(c.matches[0].store?.quotedRate).toBeNull();
+  });
+
+  it('never claims a saving when the store is dearer — the sign is carried', () => {
+    const c = compareQuote(shopped, parseQuoteText('Cement 720 bags 400 2,88,000'), shop);
+    /* 720 × 500 = 3,60,000 against 2,88,000 quoted: the contractor is cheaper by 72,000. */
+    expect(c.store.saved).toBe(-72000);
+  });
+});
+
+describe('TRUTH — quantities that do not add up', () => {
+  it('catches a material priced in a unit nobody sells it by', () => {
+    const c = compareQuote(shopped, parseQuoteText('TMT steel 80 bags 92 7,360'), shop);
+    const f = c.matches[0].flags.find((x) => x.kind === 'unit');
+    expect(f).toBeTruthy();
+    expect(f?.message).toContain('kilograms');
+  });
+
+  it('catches a quantity that is describing a different building', () => {
+    /* 100 bags against the ~720 this house needs. */
+    const c = compareQuote(shopped, parseQuoteText('Cement 100 bags 500 50,000'), shop);
+    expect(c.matches[0].flags.some((x) => x.kind === 'quantity')).toBe(true);
+  });
+
+  it('catches steel and cement that disagree with each other', () => {
+    const c = compareQuote(shopped, parseQuoteText('Cement 720 bags 500 3,60,000\nTMT steel 900 kg 92 82,800'), shop);
+    expect(c.flags.some((x) => x.kind === 'ratio')).toBe(true);
+  });
+
+  it('says nothing when the two are in proportion', () => {
+    const r = estimate(base);
+    const cement = r.lines.find((l) => l.key === 'cement');
+    const steel = r.lines.find((l) => l.key === 'steel');
+    const c = compareQuote(shopped, parseQuoteText(`Cement ${Math.round(cement!.qty)} bags 500 1,000\nTMT steel ${Math.round(steel!.qty)} kg 92 1,000`), shop);
+    expect(c.flags.some((x) => x.kind === 'ratio')).toBe(false);
+  });
+});
+
+describe('TRUTH — reading a pasted row', () => {
+  it('finds the quantity and its unit wherever they sit on the row', () => {
+    const [a, b, c] = parseQuoteText('Cement 720 bags 2,88,000\n600x600 GVT tiles 1200 sqft 1,08,000\n20mm jelly 300 cft 45 13,500');
+    expect([a.qty, a.unit]).toEqual([720, 'bag']);
+    expect([b.qty, b.unit]).toEqual([1200, 'sqft']);
+    expect([c.qty, c.unit, c.rate]).toEqual([300, 'cft', 45]);
+  });
+
+  it('takes the row own figures off the description, and leaves descriptive ones alone', () => {
+    const rows = parseQuoteText(
+      [
+        'Cement 720 bags 600 4,32,000',
+        'Solar panels 10 nos 12000 1,20,000',
+        '600x600 GVT tiles 1200 sqft 1,08,000',
+        'M20 concrete 45 cum 6,300',
+        '720 bags 600 4,32,000',
+      ].join(NL),
+    );
+    expect(rows.map((r) => r.label)).toEqual(['Cement', 'Solar panels', '600x600 GVT tiles', 'M20 concrete', '720 bags']);
+  });
+
+  it('refuses a rate off three numbers that do not multiply out', () => {
+    expect(parseQuoteText('Extra work 3 items 500 90,000')[0].rate).toBeNull();
   });
 });
 

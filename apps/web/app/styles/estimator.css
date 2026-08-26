@@ -966,7 +966,9 @@
   .truth-in {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
+    /* The box takes its height from the buttons beside it rather than from a row count, so the
+       two sides of this control always end on the same line however many buttons it carries. */
+    align-items: stretch;
     gap: var(--s-3);
   }
   @media (max-width: 767.98px) {
@@ -1002,9 +1004,108 @@
       flex-wrap: wrap;
     }
   }
-  .truth-privacy {
-    margin-top: var(--s-2);
+  .truth-ghost {
+    height: 32px;
+    padding: 0 var(--s-3);
+    font-size: var(--t-fine);
+  }
+  /* Which house the quote is being measured against, and where that house came from. A
+     comparison against the wrong building is confident nonsense, so it is never left implied. */
+  .truth-against {
+    margin-top: var(--s-3);
     color: var(--ink-3);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* ── WHAT THE MATERIAL COMES TO HERE ──────────────────────────────────────
+     The headline of the whole card, because it is the only figure on it the reader can act on
+     today: every other number here is a rate card's opinion, and this one is a shelf price.
+
+     It prints how many lines it speaks for in the same breath as the figure. The store has no
+     price for labour, centering or plastering and does not pretend to, so this is always a floor
+     rather than a verdict on the quotation — and a headline that did not say so would read as
+     the latter. */
+  .truth-save {
+    margin-top: var(--s-4);
+    padding: var(--s-4);
+    border: 1px solid var(--hair-2);
+    border-radius: var(--r-2);
+    background: rgb(0 0 0 / 16%);
+  }
+  .truth-save.is-cheaper {
+    border-color: color-mix(in oklab, var(--color-brand) 40%, transparent);
+    background: color-mix(in oklab, var(--color-brand) 8%, transparent);
+  }
+  .truth-save-fig {
+    margin-top: 2px;
+    font-size: var(--t-fig-lg);
+    line-height: 32px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-1);
+  }
+  .truth-save.is-cheaper .truth-save-fig {
+    color: var(--color-brand);
+  }
+  .truth-save-sub {
+    margin-top: 4px;
+    max-width: 72ch;
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    line-height: 17px;
+  }
+
+  /* The shelf price, under the line it re-prices. */
+  .truth-store {
+    margin-top: 6px;
+    max-width: 108ch;
+    padding: 6px var(--s-3);
+    border-left: 2px solid color-mix(in oklab, var(--color-brand) 55%, transparent);
+    border-radius: 0 var(--r-1) var(--r-1) 0;
+    background: rgb(0 0 0 / 14%);
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+    line-height: 18px;
+  }
+  .truth-store .fig {
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+  .truth-store-sku {
+    color: var(--ink-1);
+    font-weight: 600;
+  }
+  .truth-store-sku:hover {
+    color: var(--color-brand);
+  }
+  .truth-store-qty {
+    color: var(--ink-4);
+  }
+  .truth-store-save {
+    margin-left: 6px;
+    font-family: var(--font-figure);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-2);
+  }
+  .truth-store-save.is-less {
+    color: var(--color-brand);
+  }
+
+  /* A quantity that does not hold up. Not an accusation — the wording never is — but it is the
+     one thing on this card a reader would never have found by reading the lines one at a time,
+     so it is given the weight of a warning rather than of a footnote. */
+  .truth-flag {
+    margin-top: 6px;
+    max-width: 100ch;
+    padding: 7px var(--s-3);
+    border-left: 2px solid var(--color-warn);
+    border-radius: 0 var(--r-1) var(--r-1) 0;
+    background: var(--color-warn-bg);
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 19px;
   }
   .truth-empty,
   .truth-reading {
@@ -1021,7 +1122,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--s-5);
-    margin-bottom: var(--s-3);
+    margin: var(--s-4) 0 var(--s-3);
   }
   .truth-count {
     display: flex;
@@ -1089,9 +1190,13 @@
     color: var(--ink-1);
     font-variant-numeric: tabular-nums;
   }
+  /* This section spans both columns, so at 1440 the bar was drawn 1,800px wide: a hairline the
+     length of the screen, on which a 6 % difference is four pixels nobody can see. A bar is a
+     thing you read at a glance or it is not worth drawing, and it reads at about a third of that. */
   .truth-bar {
     position: relative;
     height: 8px;
+    max-width: 560px;
     margin: 10px 0 6px;
     border-radius: 4px;
     background: rgb(255 255 255 / 6%);
@@ -1129,6 +1234,7 @@
   }
   .truth-line-note {
     margin-top: 4px;
+    max-width: 92ch;
     color: var(--ink-2);
     font-size: var(--t-cap);
     line-height: 19px;
