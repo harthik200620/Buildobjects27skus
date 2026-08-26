@@ -7,6 +7,7 @@ import listingsJson from '../data/catalogue/listings.json';
 import searchAllJson from '../data/catalogue/search-all.json';
 import skusJson from '../data/catalogue/skus.json';
 import type { CategoryCard } from './data';
+import { correctHeroKey } from './hero-image';
 
 /**
  * The catalogue, frozen.
@@ -47,7 +48,7 @@ const skus = skusJson as unknown as Record<string, unknown>;
  * the row comes back on its own, with a page behind it.
  */
 const allFlagship = flagshipJson as unknown as SkuSearchDoc[];
-export const staticFlagship = allFlagship.filter((s) => s.sku_code.toLowerCase() in skus);
+export const staticFlagship = allFlagship.filter((s) => s.sku_code.toLowerCase() in skus).map(withRealHero);
 if (allFlagship.length !== staticFlagship.length) {
   const orphans = allFlagship.filter((s) => !(s.sku_code.toLowerCase() in skus)).map((s) => s.sku_code);
   console.warn(`[catalogue] ${orphans.length} indexed SKU(s) have no page in the snapshot and are hidden: ${orphans.join(', ')}`);
@@ -63,9 +64,21 @@ const facetConfigs = facetsJson as unknown as Record<string, FacetConfig | null>
  * corrected with the hits, so the result count over the grid still matches the grid.
  */
 function openable(result: StaticSearchResult): StaticSearchResult {
-  const hits = result.hits.filter((h) => h.sku_code.toLowerCase() in skus);
-  if (hits.length === result.hits.length) return result;
+  const hits = result.hits.filter((h) => h.sku_code.toLowerCase() in skus).map(withRealHero);
+  if (hits.length === result.hits.length) return { ...result, hits };
   return { ...result, hits, total: Math.max(0, result.total - (result.hits.length - hits.length)) };
+}
+
+/**
+ * A hit whose face is a real photograph.
+ *
+ * The snapshot was exported with whatever the index held, and for one product that is a drawn
+ * "Official image pending" card. See lib/hero-image.ts — the correction lives there so a card and
+ * the gallery behind it cannot disagree.
+ */
+function withRealHero(hit: SkuSearchDoc): SkuSearchDoc {
+  const corrected = correctHeroKey(hit.sku_code, hit.hero_image_key);
+  return corrected === hit.hero_image_key ? hit : { ...hit, hero_image_key: corrected };
 }
 
 const listingsRaw = listingsJson as unknown as Record<string, StaticSearchResult>;

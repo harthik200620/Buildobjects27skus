@@ -14,6 +14,7 @@ import { and, asc, eq, gt } from 'drizzle-orm';
 import { MeiliSearch } from 'meilisearch';
 import { memo, memoOnce } from './cache';
 import { esc, sortParam, toMeiliFilter } from './filters';
+import { correctHeroKey, leadWithRealPhoto } from './hero-image';
 
 let client: MeiliSearch | null = null;
 export function meili(): MeiliSearch {
@@ -79,7 +80,9 @@ export async function searchSkus(opts: {
         highlightPostTag: '</mark>',
       });
     return {
-      hits: res.hits,
+      /* Corrected on the way out, so a live index and the frozen snapshot show the same face for
+         the same product — see lib/hero-image.ts. */
+      hits: res.hits.map(withRealHero),
       total: res.totalHits ?? res.hits.length,
       page: res.page ?? 1,
       totalPages: res.totalPages ?? 1,
@@ -253,19 +256,24 @@ async function loadSkuPageUncached(code: string): Promise<SkuPageData | null> {
       icon: row.category.icon,
       unit: row.category.unit,
     },
-    images: imgs.map((i) => ({
-      position: i.position,
-      role: i.role,
-      alt: i.alt,
-      placeholder: i.placeholder,
-      width: i.width,
-      height: i.height,
-      blurhash: i.blurhash,
-      thumb: imageKey(row.sku.skuCode, i.position, 'thumb'),
-      card: imageKey(row.sku.skuCode, i.position, 'card'),
-      gallery: imageKey(row.sku.skuCode, i.position, 'gallery'),
-      zoom: imageKey(row.sku.skuCode, i.position, 'zoom'),
-    })),
+    /* Led by a real photograph — see lib/hero-image.ts. One product ships a drawn
+       "Official image pending" card at position 1 with four real frames behind it. */
+    images: leadWithRealPhoto(
+      row.sku.skuCode,
+      imgs.map((i) => ({
+        position: i.position,
+        role: i.role,
+        alt: i.alt,
+        placeholder: i.placeholder,
+        width: i.width,
+        height: i.height,
+        blurhash: i.blurhash,
+        thumb: imageKey(row.sku.skuCode, i.position, 'thumb'),
+        card: imageKey(row.sku.skuCode, i.position, 'card'),
+        gallery: imageKey(row.sku.skuCode, i.position, 'gallery'),
+        zoom: imageKey(row.sku.skuCode, i.position, 'zoom'),
+      })),
+    ),
     documents: docs.map((d) => ({ id: d.id, type: d.type, title: d.title, key: d.storageKey, pages: d.pages, sizeKb: d.sizeKb, sourceUrl: d.sourceUrl })),
     dims: w && h && d ? { w, h, d } : null,
   };
@@ -440,11 +448,17 @@ export async function listSkusKeyset(opts: { category?: string; after?: number; 
   return { items, next: hasMore ? items[items.length - 1].id : null };
 }
 
+/** A hit whose face is a real photograph rather than an "image pending" card. */
+function withRealHero(hit: SkuSearchDoc): SkuSearchDoc {
+  const corrected = correctHeroKey(hit.sku_code, hit.hero_image_key);
+  return corrected === hit.hero_image_key ? hit : { ...hit, hero_image_key: corrected };
+}
+
 /** The home page showcase grid: an unfiltered slice of the index, in index (relevance) order. */
 export async function loadFlagshipSkus(limit = 36): Promise<SkuSearchDoc[]> {
   try {
     const res = await meili().index<SkuSearchDoc>(SEARCH_INDEX).search('', { limit });
-    return res.hits;
+    return res.hits.map(withRealHero);
   } catch {
     /* No search server: the frozen catalogue has the same documents. */
     const { staticFlagship } = await import('./static-catalogue');

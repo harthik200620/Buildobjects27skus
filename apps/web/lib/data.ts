@@ -187,11 +187,28 @@ export async function loadCatalogueCategories(): Promise<CategoryGroup[]> {
     const own = bySlug.get(slug);
     const products = rows.filter((r) => PRODUCT_CATEGORY[r.slug] === slug);
     const live = products.some((c) => c.status === 'live') || (products.length === 0 && own?.status === 'live');
-    /* A stocked product's photograph first; it is a real one, where a category's own art is generated. */
+    /*
+     * The CATEGORY's own art first, then a product's.
+     *
+     * This used to be the other way round, on the reasoning that a product's photograph is a real
+     * one where a category's is generated. Both are generated — `category-art-gen.mts` shoots all
+     * thirty-seven to one art direction — and the rule cost the grid its worst tile: Drafting &
+     * Measurement borrowed Total Stations, whose frame is a product cut-out on PURE WHITE, so one
+     * tile in thirty-five was a white rectangle among thirty-four dark photographs.
+     *
+     * Own-art-first is also simply the more correct answer. A category tile answers "what is sold
+     * here", and the category art was drawn to answer exactly that; a product's frame answers
+     * "what is this one item". Water Proofing gains from it too — its own picture is a roller
+     * laying membrane on a slab, against the epoxy tins it had been borrowing.
+     *
+     * The seven categories with no row of their own — Concreting, Doors & Windows, Flooring,
+     * Electricals, Fire System, Security Systems, Solar — still fall through to their product's
+     * frame, and every one of those is a category-art generation in the house style.
+     */
     const hero =
+      own?.heroImageKey ??
       products.find((c) => c.status === 'live' && c.heroImageKey)?.heroImageKey ??
       products.find((c) => c.heroImageKey)?.heroImageKey ??
-      own?.heroImageKey ??
       null;
     return {
       slug,
