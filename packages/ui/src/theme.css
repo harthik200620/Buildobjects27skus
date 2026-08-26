@@ -102,14 +102,18 @@
   --t-d3-lh: 1.2;
 
   /* UI — Schibsted Grotesk. */
-  --t-h1: 2rem;
-  --t-h1-lh: 2.5rem; /* 32/38 */
-  --t-h2: 1.5rem;
-  --t-h2-lh: 2rem; /* 24/30 */
-  --t-h3: 1.1875rem;
-  --t-h3-lh: 1.75rem; /* 19/26 */
-  --t-h4: 1rem;
-  --t-h4-lh: 1.5rem; /* 16/22 */
+  /* Sized for AUDIOWIDE, which is the heading face. It is 29 % wider per character than the UI
+     face and no taller — same cap height — so matching the old numeric sizes made every heading
+     read smaller and weaker than the one it replaced. A 16px section heading on a card carrying
+     an 80px figure looked like a caption. Each step goes up one notch. */
+  --t-h1: 2.25rem;
+  --t-h1-lh: 2.75rem; /* 36/44 */
+  --t-h2: 1.625rem;
+  --t-h2-lh: 2.125rem; /* 26/34 */
+  --t-h3: 1.3125rem;
+  --t-h3-lh: 1.875rem; /* 21/30 */
+  --t-h4: 1.125rem;
+  --t-h4-lh: 1.625rem; /* 18/26 — section headings, and the card headings on the estimator */
   --t-lede: 1.0625rem;
   --t-lede-lh: 1.75rem; /* 17/28 — the paragraph under a headline */
   --t-body: 0.9375rem;

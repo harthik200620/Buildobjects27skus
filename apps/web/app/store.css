@@ -3722,7 +3722,7 @@
     font-family: var(--font-brand);
     font-weight: 400;
     letter-spacing: 0;
-    font-size: 15px;
+    font-size: var(--t-h4);
     line-height: 22px;
     color: var(--color-ink);
   }

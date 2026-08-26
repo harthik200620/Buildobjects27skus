@@ -490,6 +490,42 @@
      report bolted beside it, so the wizard is a plain column now and each step carries
      the card. Four cards a side: Where / The building / Finish / Your picks against the
      total / where the money goes / when it leaves / check a quote. */
+  /* The exterior/structure split: labels left, figures right, tabular so the two amounts sit
+     under each other and under the subtotal above them. */
+  .ledger-split {
+    margin-top: var(--s-2);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .ledger-split > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: 4px 0;
+    border-top: 1px solid var(--hair);
+  }
+  .ledger-split dt {
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+  }
+  /* Scoped past `.ledger-fig .fig`, which sets 22px on every figure in this block. The parts of
+     a subtotal must not be the same size as the subtotal — flat sizing here read as three equal
+     figures rather than one total and its two components. */
+  .ledger-fig .ledger-split dd {
+    margin: 0;
+    color: var(--ink-1);
+    font-size: var(--t-fig);
+    line-height: 24px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .ledger-share {
+    color: var(--ink-4);
+    font-size: var(--t-fine);
+  }
+
   /* Everything below the two columns: the timeline, the quote check, the store links and the
      actions. It spans both tracks, which is what lets the columns above it match. */
   .est-wide {
@@ -681,6 +717,15 @@
   .regret-pick.is-on {
     border-color: var(--color-brand);
     color: var(--ink-1);
+  }
+  .regret-pick[aria-pressed="true"] {
+    border-color: var(--color-brand);
+    color: var(--ink-1);
+  }
+  .regret-none {
+    padding: var(--s-5) 0;
+    color: var(--ink-3);
+    font-size: var(--t-cap);
   }
   .regret-chart {
     width: 100%;

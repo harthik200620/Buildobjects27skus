@@ -119,22 +119,31 @@ export default function Time({ result, decisions }: TimeProps) {
             Changing your mind
           </h3>
           <p className="regret-lede">The same change, priced at each point in the build.</p>
-          <div className="regret-picks" role="tablist" aria-label="Decision">
+          {/*
+           * Pressing the chosen one clears it. These are toggles, not tabs: a tab set must always
+           * have exactly one selected member, and there is no reason a reader who opened a curve
+           * cannot put it away again. `aria-pressed` rather than `role="tab"` for the same reason
+           * — a tablist that can end up with nothing selected lies to a screen reader.
+           */}
+          <div className="regret-picks" role="group" aria-label="Price a decision">
             {decisions.map((d) => (
               <button
                 key={d.id}
                 type="button"
-                role="tab"
-                aria-selected={decisionId === d.id}
+                aria-pressed={decisionId === d.id}
                 className={`regret-pick${decisionId === d.id ? ' is-on' : ''}`}
-                onClick={() => setDecisionId(d.id)}
+                onClick={() => setDecisionId((cur) => (cur === d.id ? null : d.id))}
               >
                 {d.label}
               </button>
             ))}
           </div>
 
-          {curve.length > 0 && <RegretChart curve={curve} atMonth={month} months={maxMonth} />}
+          {curve.length > 0 ? (
+            <RegretChart curve={curve} atMonth={month} months={maxMonth} />
+          ) : (
+            <p className="regret-none">Pick one to see what it costs at each point in the build.</p>
+          )}
 
           {pointAt && (
             <div className="regret-now">

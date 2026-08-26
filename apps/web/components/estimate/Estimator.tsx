@@ -596,10 +596,25 @@ export default function Estimator({
           <div className="ledger-fig">
             <p className="grand-label">{LEDGER_LABEL.structure}</p>
             <p className="fig">{inr(result.ledgers.structure.subtotal)}</p>
-            <p className="grand-sub">
-              material <span className="fig">{inr(result.ledgers.structure.material)}</span> · labour{' '}
-              <span className="fig">{inr(result.ledgers.structure.labour)}</span> ({Math.round(result.ledgers.structure.labourShare * 100)}% of civil)
-            </p>
+            {/*
+             * The split was one sentence with two 16px figures embedded in 13px prose —
+             * "material ₹18,49,080 · labour ₹7,62,039 (41% of civil)" — which reads as neither
+             * a sentence nor a table, and puts two large numbers where the eye cannot compare
+             * them. It is a two-row breakdown now: labels left, figures right, tabular, so the
+             * two amounts line up under each other and under the subtotal above them.
+             */}
+            <dl className="ledger-split">
+              <div>
+                <dt>Material</dt>
+                <dd className="fig">{inr(result.ledgers.structure.material)}</dd>
+              </div>
+              <div>
+                <dt>
+                  Labour <span className="ledger-share">{Math.round(result.ledgers.structure.labourShare * 100)}% of civil</span>
+                </dt>
+                <dd className="fig">{inr(result.ledgers.structure.labour)}</dd>
+              </div>
+            </dl>
           </div>
           <div className="ledger-fig">
             <p className="grand-label">{LEDGER_LABEL.interior}</p>
