@@ -2,7 +2,7 @@
 
 Short on purpose. If it grows past two screens it has stopped being read.
 
-Last updated **26 Aug 2026**, after the estimator's first rebuild round.
+Last updated **26 Aug 2026**, after the chrome round and the delivery-led front door.
 
 ## What this is
 
@@ -35,21 +35,14 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
 - **The chrome** — a flush, full-bleed bar that leaves on the way down and returns on the way up,
   one `--sticky-top` for every pinned panel in the store, and both viewport overlays portalled out
   of the header. Round 9.
-- **The estimator's truth layer** — five new pure modules (`materials`, `schedule`, `sensitivity`,
-  `quote`, `ai-boundary`) with 29 new tests, and two of the three lenses complete: TIME with a
-  working regret curve and TRUTH with a line-by-line quote comparison. `scratch/ESTIMATOR_SCORE.md`
-  scores it at 53/100 and lists what the missing 47 needs.
 
 ## Next, in order
 
 1. **A portrait category rendition.** The home page's 35 tiles crop 16:9 art into a 1:1.06 box, so
    on a Retina desktop they cost 1.5 MB. A rendition cut to the tile's own aspect fixes both the
    weight and the softness. Pipeline work, not stylesheet work.
-2. **The estimator's 3D scene** — a real sun by latitude and orientation, the plot at true
-   dimensions with setback bands, a section cut, the human figure, three quality tiers. It is 12
-   points of the estimator rubric on its own, it unlocks MATTER's 3D (7 more), and it is what makes
-   the page theme's central claim true: the sun is a constant in CSS today rather than a value the
-   scene writes. See `scratch/ESTIMATOR_SCORE.md`.
+2. **The estimator's machine** — the stage scrubber, the two gauged ledgers, and `iso-house.svg`
+   animating group by group. §10 of `design-system/UI_UPGRADE_PROMPT.md`.
 3. **`/coins`** — the Vault page. The 3D coin exists; the page does not. §11 of the same brief.
 4. **Two category tiles are drawn, not photographed** — `excavation` and `storage-packaging`.
    Blocked on Gemini credit; the two commands that fix it are in `scratch/UI_SCORE.md` Round 5.

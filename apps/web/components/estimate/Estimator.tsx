@@ -4,7 +4,6 @@ import { formatNumber } from '@buildobjects/catalog';
 import {
   type CatalogPrices,
   CITIES,
-  type Decision,
   type DrawingExtraction,
   type EstimateInputs,
   type EstimateResult,
@@ -40,9 +39,6 @@ import CostRange from './CostRange';
 import Donut, { seriesColor } from './Donut';
 import DrawingUpload from './DrawingUpload';
 import HouseRender from './HouseRender';
-import Lenses from './Lenses';
-import SensitivityPanel from './SensitivityPanel';
-import { DEPTH_HINT, DEPTH_LABEL, type Depth, useDepth } from './useDepth';
 
 type Field = 'plot' | 'floors' | 'bua' | 'type';
 const STATES: { code: StateCode; name: string }[] = [
@@ -78,19 +74,6 @@ export default function Estimator({
   const [saving, setSaving] = React.useState(false);
   const [toast, setToast] = React.useState<string | null>(null);
   const [showFlags, setShowFlags] = React.useState(false);
-  const depth = useDepth();
-  /* Someone who arrived from "check my quote" opens on TRUTH rather than on MATTER. */
-  const [arrivedForQuote, setArrivedForQuote] = React.useState(false);
-  React.useEffect(() => {
-    setArrivedForQuote(new URLSearchParams(window.location.search).get('check') === 'quote');
-  }, []);
-  /* How many times the buyer has changed something. Decides which lens opens: exploring in
-     MATTER, planning in TIME. */
-  const [edits, setEdits] = React.useState(0);
-  const firstInputs = React.useRef(initialInputs);
-  React.useEffect(() => {
-    if (inputs !== firstInputs.current) setEdits((n) => n + 1);
-  }, [inputs]);
 
   const set = React.useCallback((patch: Partial<EstimateInputs>) => {
     setInputs((i) => ({ ...i, ...patch }));
@@ -204,73 +187,9 @@ export default function Estimator({
   }, [result]);
   const picks = inputs.picks ?? [];
 
-  /*
-   * The decisions worth asking "what would this cost later" about.
-   *
-   * Each one is a real `EstimateInputs`, so the engine re-runs on it and the base delta carries
-   * the same provenance as every other figure on the page. Nothing here is a rule of thumb about
-   * what a bedroom costs — it is the same house, priced twice.
-   */
-  const decisions: Decision[] = React.useMemo(
-    () =>
-      [
-        inputs.floors < 4 ? { id: 'floors', label: `Add a floor (G+${inputs.floors + 1})`, to: { ...inputs, floors: inputs.floors + 1 } } : null,
-        {
-          id: 'bedroom',
-          label: 'Add a bedroom',
-          to: {
-            ...inputs,
-            rooms: {
-              bedrooms: (inputs.rooms?.bedrooms ?? Math.max(1, Math.round(result.derived.builtUpSqft / 450))) + 1,
-              bathrooms: (inputs.rooms?.bathrooms ?? 2) + 1,
-              kitchens: inputs.rooms?.kitchens ?? 1,
-            },
-          },
-        },
-        inputs.tier !== 'premium' ? { id: 'tier', label: 'Upgrade the finish', to: { ...inputs, tier: inputs.tier === 'basic' ? 'medium' : 'premium' } } : null,
-        {
-          id: 'interior',
-          label: 'Add modular interiors',
-          to: { ...inputs, interior: { modularKitchen: true, wardrobes: true, falseCeilingShare: 0.6 } },
-        },
-        { id: 'height', label: 'Raise the ceiling to 12 ft', to: { ...inputs, floorHeightFt: 12 } },
-      ].filter(Boolean) as Decision[],
-    [inputs, result.derived.builtUpSqft],
-  );
-
-  /** Opens the group holding a control and puts it on screen. */
-  const goToInput = React.useCallback((id: string) => {
-    setOpen((o) => ({ ...o, [id]: true }));
-    requestAnimationFrame(() => {
-      document.getElementById(`ctl-${id}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    });
-  }, []);
-
   return (
-    <div className="est est-instrument">
-      {/* Depth: one estimator at three levels of disclosure. The numbers are identical at all
-          three — only how much is shown changes. The segments are never named. */}
-      <div className="depth-row no-print">
-        <div className="depth" role="group" aria-label="How much detail to show">
-          {([3, 2, 1] as Depth[]).map((d) => (
-            <button
-              key={d}
-              type="button"
-              className={`depth-btn${depth.depth === d ? ' is-on' : ''}`}
-              onClick={() => depth.setDepth(d)}
-              aria-pressed={depth.depth === d}
-            >
-              {DEPTH_LABEL[d]}
-            </button>
-          ))}
-        </div>
-        <span className="depth-hint">{DEPTH_HINT[depth.depth]}</span>
-      </div>
+    <div className="est">
       {/* ── the wizard ───────────────────────────────────────────────────── */}
-      {/* What to ask next, ordered by what it is worth on THIS house. Hidden at the simplest
-          depth, where three questions is the whole form and there is nothing to rank. */}
-      {depth.depth !== 3 && <SensitivityPanel inputs={inputs} result={result} catalog={catalog} onGo={goToInput} />}
-
       <section className="glass-card wizard no-print" style={{ borderRadius: 'var(--r-2)' }} aria-label="Estimate inputs">
         {drawing && (
           <div className="derived" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8, borderLeft: '2px solid var(--color-brand)' }}>
@@ -813,16 +732,6 @@ export default function Estimator({
           thumb rules (cement ≈ {QUANTITIES.cement_bags_per_sqft[inputs.constructionType]} bags, steel ≈ {QUANTITIES.steel_kg_per_sqft[inputs.constructionType]}{' '}
           kg, bricks ≈ {QUANTITIES.bricks_per_sqft} per sqft of built-up area); store-priced lines carry the store's own provenance.
         </p>
-        {/*
-         * ── ACT 4: THE THREE LENSES ──────────────────────────────────────────
-         * MATTER, TIME, TRUTH — three questions the industry has never answered on screen,
-         * all three computed off the SAME EstimateResult so switching is a paint and not a
-         * fetch. It sits after the breakdown on purpose: the reveal is earned by having a
-         * number to look through, not offered before there is one.
-         *
-         * At the simplest depth it is a single number and a share card, so the lenses are
-         * not built at all — that is what keeps that tier under its weight budget.
-         */}
         <details className="note no-print" open={showFlags} onToggle={(e) => setShowFlags((e.target as HTMLDetailsElement).open)}>
           <summary style={{ cursor: 'pointer' }}>{result.needsVerification.length} rates flagged for verification</summary>
           <ul style={{ paddingLeft: '1.2em', marginTop: 6 }}>
@@ -832,27 +741,6 @@ export default function Estimator({
           </ul>
         </details>
       </section>
-
-      {/*
-       * ── ACT 4: THE THREE LENSES ────────────────────────────────────────────
-       * MATTER, TIME, TRUTH — three questions the industry has never answered on screen, all
-       * three computed off the SAME EstimateResult so switching is a paint and not a fetch.
-       *
-       * It spans BOTH columns rather than living inside the output column, and that is a
-       * layout decision with a reason: the grand total is pinned at the top of that column,
-       * so a lens rendered inside it spends its life sliding underneath the answer. The
-       * reveal needs the whole page, and it needs to come after the breakdown — earned by
-       * having a number to look through, not offered before there is one.
-       *
-       * At the simplest depth it is not built at all, which is what keeps that tier inside
-       * its weight budget.
-       */}
-      {depth.depth !== 3 && (
-        <div className="est-full">
-          <Lenses result={result} decisions={decisions} edits={edits} arrivedForQuote={arrivedForQuote} />
-        </div>
-      )}
-
       {toast && (
         <div className="toast glass-strong fade-up" role="status">
           {toast}
