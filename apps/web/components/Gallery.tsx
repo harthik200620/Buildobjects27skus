@@ -5,6 +5,8 @@ import React from 'react';
 import type * as THREE from 'three';
 import type { SkuImageView } from '@/lib/catalog';
 import { mediaUrl } from '@/lib/media';
+import { groundFor } from '@/lib/plate';
+import { plateFor } from '@/lib/plate-colors';
 import { IconBack, IconCamera, IconChevron, IconClose, IconRefresh, IconRoom, IconZoom } from './icons';
 import { useScrollLock } from './useDismiss';
 
@@ -47,6 +49,22 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
 
   const n = images.length;
   const cur = images[i] ?? images[0];
+
+  /*
+   * THE MOUNT FOLLOWS THE PHOTOGRAPH.
+   *
+   * `--plate-stage` was pinned to the silver sweep for every frame of every product, and most of
+   * this catalogue is not shot on a sweep: three of the twenty-eight galleries are consistently
+   * light, nine are entirely dark, and sixteen carry both. So the product page put a dark studio
+   * render inside a white rectangle inside a dark page — and paging through a mixed gallery left
+   * the mount sitting still while the ground behind the object changed underneath it.
+   *
+   * Frame one takes the generated table, which is sampled from that image's real border pixels
+   * and is the same value the product card paints — so arriving here from a card is seamless.
+   * Every other frame comes from its own blurhash, which is the only per-frame signal that exists
+   * without regenerating the media. See lib/plate.ts.
+   */
+  const stage = (i === 0 && skuCode ? plateFor(skuCode) : null) ?? groundFor(cur?.blurhash)?.plate ?? null;
   const go = React.useCallback((d: number) => setI((x) => (x + d + n) % n), [n]);
 
   React.useEffect(() => {
@@ -311,6 +329,7 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
           <div
             ref={mainRef}
             className="gallery-main"
+            style={stage ? ({ '--plate-stage': stage } as React.CSSProperties) : undefined}
             role="group"
             aria-roledescription="carousel"
             aria-label={`${name} images`}

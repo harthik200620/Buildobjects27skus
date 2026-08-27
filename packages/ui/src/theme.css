@@ -197,6 +197,12 @@
 
      It is a silver with a teal cast rather than a neutral, so the mount belongs to the palette
      instead of being the one cold thing on a warm teal page. */
+  /* The mount for a frame that was NOT shot on a sweep — which is most of this catalogue. See
+     lib/plate.ts: three of twenty-eight SKUs have galleries consistently on the light sweep, so
+     the silver plate below was putting a white rectangle behind two thirds of the store's
+     photography. One step above the card it sits on, so the object still has a ground to stand
+     on rather than dissolving into the page. */
+  --plate-dark: #16323b;
   --plate-1: #e6edee;
   --plate-2: #e6edee;
   /* Where the mount falls away at its edges — see --plate-mask. Flat cannot make an object look

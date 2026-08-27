@@ -3137,11 +3137,15 @@
     touch-action: pan-y;
     cursor: zoom-in;
   }
+  /* The mount cross-fades rather than cutting, because paging a gallery whose frames sit on
+     different grounds is the one place a reader sees it change. Gallery.tsx sets --plate-stage
+     from the frame that is on screen. */
   .gallery-main::before {
     content: "";
     position: absolute;
     inset: 0;
     background: var(--plate-stage);
+    transition: background-color var(--dur-3) var(--ease-out);
     -webkit-mask-image: var(--plate-mask);
     mask-image: var(--plate-mask);
     -webkit-mask-composite: source-in;
