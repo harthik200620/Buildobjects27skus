@@ -23,6 +23,7 @@ import { type EstimateInputs, estimate, type Tier } from '@buildobjects/estimato
 import { allBrands, allCategories, skuDocsByCodes, suggest } from '@/lib/catalog';
 import { loadCalculatorCatalog } from '@/lib/estimator';
 import { FactLedger } from './ledger';
+import { categoriesNamed } from './routing';
 
 export interface ToolContext {
   /** Where the reader is, so prices and delivery are theirs. */
@@ -70,7 +71,21 @@ async function searchProducts(args: { query?: string }): Promise<ToolResult> {
   const ledger = new FactLedger();
   if (!q) return { data: { error: 'A query is required.' }, ledger };
 
-  const found = await suggest(q);
+  const [found, cats] = await Promise.all([suggest(q), allCategories()]);
+  /*
+   * THE ROUTING FACT, IN THE TOOL RESULT.
+   *
+   * The system prompt says not to search a coming-soon category, and sometimes it is searched
+   * anyway. Asked "any steel reinforcement?" the assistant searched it, got cement back — cement
+   * documents talk about reinforcement, so they matched — and answered a question about steel
+   * with three bags of cement.
+   *
+   * Repeating the fact HERE fixes that far more reliably than repeating it in the instructions,
+   * because a tool result is evidence about this specific question rather than a standing rule to
+   * remember. Cheap, too: one memoised read that the ledger seeding already paid for.
+   */
+  const soon = categoriesNamed(q, cats, 'upcoming');
+  if (soon.length) ledger.entity(...soon);
   const rows = found.skus.map((s) => ({
     sku: s.sku_code,
     name: s.name,
@@ -95,6 +110,10 @@ async function searchProducts(args: { query?: string }): Promise<ToolResult> {
   return {
     data: {
       products: rows,
+      coming_soon: soon.length ? soon : undefined,
+      coming_soon_means: soon.length
+        ? `${soon.join(' and ')} is announced and not stocked yet. Say it is coming soon. Any products listed above are OTHER things that happened to match the words — do not offer them as if they were what was asked for.`
+        : undefined,
       categories: found.categories.map((c) => c.name),
       brands: found.brands.map((b) => b.name),
       note: rows.some((r) => r.price_is_estimated)

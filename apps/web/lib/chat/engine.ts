@@ -32,6 +32,7 @@ import { generate as anthropicGenerate, hasAnthropicKey } from './anthropic';
 import { type GeminiContent, GeminiKeyMissing, type GenerateArgs, type GenerateResult, generate as geminiGenerate, hasKey as hasGeminiKey } from './gemini';
 import { FactLedger } from './ledger';
 import { SYSTEM_PROMPT, scopeBlock, TOOL_SCHEMAS, WELCOME } from './prompt';
+import { shelfCategoryNamed } from './routing';
 import { callTool, type ToolContext } from './tools';
 import { checkScope, trimProse, type Violation, validateAll } from './validator';
 
@@ -162,6 +163,10 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
   /* Whether the TOOLS found anything, which is a different question from whether the ledger has
      anything in it now that the scope above is seeded into it. */
   let toolFacts = false;
+  /* Which stocked category the customer just named, if any — see the nudge in the loop. */
+  const onShelf = shelfCategoryNamed(input.message, cats);
+  let searched = false;
+  let nudged = false;
   const ui: unknown[] = [];
   const toolTrace: EngineTrace['tool_calls'] = [];
   let modelMs = 0;
@@ -192,6 +197,38 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
     }
 
     if (!r.calls.length) {
+      /*
+       * THE ONE ANSWER THAT MAY NOT COME FROM MEMORY.
+       *
+       * The prompt tells the model to search anything not on the coming-soon list, and the prompt
+       * is a request. Asked "what steel and solar panels do you have", it answered "Steel &
+       * Reinforcement and Solar Panels are both coming soon" — with three solar panels in stock —
+       * because the two lists sat next to each other and the second name pattern-matched to the
+       * first name's answer. The same build gave the right answer locally and the wrong one in
+       * production, which is what model variance looks like and why this cannot be left to
+       * wording alone.
+       *
+       * So when the customer has plainly named a stocked category and the model tried to answer
+       * without looking, it is sent back once. Once, not until it complies: a loop that insists
+       * would spend the whole round budget arguing on the turns where the match was spurious.
+       */
+      if (onShelf && !searched && !nudged) {
+        nudged = true;
+        contents.push({ role: 'model', parts: [{ text: r.text }] });
+        contents.push({
+          role: 'user',
+          parts: [
+            {
+              /* "the whole question" is load-bearing. Naming one category and asking for a search
+                 pulled the model's attention onto that category alone: "what steel and solar
+                 panels do you have" came back listing three panels and never mentioning steel,
+                 which is half the answer and the half the customer had to ask twice for. */
+              text: `${onShelf} is one of our stocked categories, not a coming-soon one. Call search_products for it, then answer the customer's WHOLE question from what comes back — including any other material they asked about, which may be coming soon. Do not say ${onShelf} is coming soon.`,
+            },
+          ],
+        });
+        continue;
+      }
       draft = r.text;
       break;
     }
@@ -208,6 +245,7 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
         return out;
       }),
     );
+    if (r.calls.some((c) => c.name === 'search_products')) searched = true;
     for (const out of outs) {
       if (!out.ledger.isEmpty) toolFacts = true;
       ledger.merge(out.ledger);

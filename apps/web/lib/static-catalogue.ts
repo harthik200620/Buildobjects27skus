@@ -194,10 +194,22 @@ export function staticSearch(state: FilterState & { q: string; page: number; cat
         for (const t of tokens) if (matches(hay, t)) score += 1;
         if (score) scored.push({ h, score });
       }
-      /* Ranked by how much of the question a document answers, so "steel and solar panels" puts
-         the three panels above a fire extinguisher that merely has steel in its specification. */
-      scored.sort((a, b) => b.score - a.score);
-      hits = scored.map((x) => x.h);
+      /*
+       * ONLY THE BEST TIER SURVIVES.
+       *
+       * Scoring by how much of the question a document answers, and then keeping only the
+       * documents that answer the most of it. "steel and solar panels" scores the three panels at
+       * two and a fire extinguisher — which happens to have steel in its specification — at one,
+       * so the extinguisher goes. Ranking alone was not enough: the assistant reads the first few
+       * rows it is handed and will cheerfully offer a fire extinguisher to somebody asking about
+       * solar panels.
+       *
+       * It cannot over-filter a single-word query, where everything that matches scores one, and
+       * it keeps every category of a genuine multi-part question ("cement tiles glass") because
+       * each document there scores one too.
+       */
+      const best = scored.reduce((m, x) => Math.max(m, x.score), 0);
+      hits = scored.filter((x) => x.score === best).map((x) => x.h);
     }
   }
   if (state.brand?.length) {
