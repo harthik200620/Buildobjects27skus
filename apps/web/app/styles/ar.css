@@ -200,3 +200,78 @@
     transform: scale(0.985);
   }
 }
+
+/*
+ * "IT IS OVER HERE."
+ *
+ * Shown when the product is outside the frame at the angle the phone is held — a wall item with
+ * the camera pointed at the floor, a ceiling bulb with it pointed at a wall, or anything the user
+ * dragged and then looked away from. Before this the view rendered nothing and said nothing, which
+ * is what "I cannot see the product" looked like from the outside.
+ *
+ * It is a button, not a chip: reading which way to tilt is useful, and being able to just tap and
+ * have it brought to you is more useful. Sized and coloured as an action, so it does not read as
+ * one more piece of passive status text among the pills above it.
+ */
+.ar-nudge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(94vw, 420px);
+  padding: 9px 12px;
+  border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--accent) 22%, rgb(0 0 0 / 0.62));
+  color: #fff;
+  font-size: 12.5px;
+  line-height: 1.25;
+  text-align: left;
+  pointer-events: auto;
+  cursor: pointer;
+  backdrop-filter: blur(10px) saturate(1.3);
+  box-shadow: 0 6px 22px rgb(0 0 0 / 0.35);
+  animation: ar-nudge-in 220ms ease-out both;
+}
+@keyframes ar-nudge-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+/* A solid triangle rather than a glyph: an arrow has to read at a glance in a bright room, and a
+   font arrow is at the mercy of whatever the device substitutes for it. */
+.ar-nudge-arrow {
+  flex: none;
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+}
+.ar-nudge-arrow--up {
+  border-bottom-color: #fff;
+  margin-top: -7px;
+}
+.ar-nudge-arrow--down {
+  border-top-color: #fff;
+  margin-bottom: -7px;
+}
+.ar-nudge-arrow--left {
+  border-right-color: #fff;
+  margin-left: -7px;
+}
+.ar-nudge-arrow--right {
+  border-left-color: #fff;
+  margin-right: -7px;
+}
+.ar-nudge-cta {
+  flex: none;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.2);
+  font-weight: 600;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ar-nudge {
+    animation: none;
+  }
+}

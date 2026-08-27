@@ -1,6 +1,6 @@
 'use client';
 
-import type { PlacementRule, ProductDims, Surface } from '@buildobjects/ar-engine';
+import { fitModelToDims, type PlacementRule, type ProductDims, type Surface } from '@buildobjects/ar-engine';
 import type { Object3D, Quaternion, Vector3 } from 'three';
 
 /**
@@ -24,9 +24,17 @@ export interface NormalizedModel {
   note: string | null;
 }
 
-const SCALE_TOLERANCE = 0.2;
-
-/** Centre and rest the model on the holder origin according to the rule's anchor face; rescale to the stated dims when the GLB is clearly off. */
+/**
+ * Centre and rest the model on the holder origin according to the rule's anchor face, after
+ * squaring the mesh up with the product's stated dimensions.
+ *
+ * The squaring-up is `fitModelToDims` in the engine, and it replaces a single line that rescaled
+ * by HEIGHT alone: `scale = dims.h_mm / meshY`. The meshes are at true scale, so that line was
+ * usually a no-op — but where the generator had left the long axis somewhere other than Y it drew a
+ * CCTV camera lying on its side, an extinguisher with its width and depth swapped so it faced
+ * sideways off the wall, and an epoxy tin four times too wide. See fit-model.ts for the measured
+ * before-and-after, and for why the fit is a rank-ordered axis rotation plus a uniform scale.
+ */
 export function normalizeModel(THREE: ThreeNS, model: Object3D, rule: PlacementRule, dims?: ProductDims | null): NormalizedModel {
   model.position.set(0, 0, 0);
   model.rotation.set(0, 0, 0);
@@ -36,28 +44,31 @@ export function normalizeModel(THREE: ThreeNS, model: Object3D, rule: PlacementR
   const size = new THREE.Vector3();
   box.getSize(size);
 
-  // Uniform rescale to the stated height when the GLB is clearly not at true scale.
   let scale = 1,
     note: string | null = null;
-  if (dims && dims.h_mm > 0 && size.y > 1e-6) {
-    const want = dims.h_mm / 1000;
-    const ratio = want / size.y;
-    if (Math.abs(ratio - 1) > SCALE_TOLERANCE) {
-      scale = ratio;
-      model.scale.setScalar(scale);
-      model.updateMatrixWorld(true);
-      box = new THREE.Box3().setFromObject(model);
-      box.getSize(size);
-      note = `GLB height ${(size.y / scale).toFixed(3)} m did not match the stated ${want.toFixed(3)} m — rescaled ×${scale.toFixed(2)}`;
-    }
+  if (dims && (dims.w_mm > 0 || dims.h_mm > 0 || dims.d_mm > 0) && size.x > 1e-6 && size.y > 1e-6 && size.z > 1e-6) {
+    const fit = fitModelToDims({ x: size.x, y: size.y, z: size.z }, dims);
+    scale = fit.scale;
+    note = fit.note;
+    const r = fit.rotation;
+    /* Row-major Mat3 into a THREE basis. `setFromRotationMatrix` needs a pure rotation, which
+       `fitModelToDims` guarantees: its result is always one of the six axis-aligned rotations. */
+    const basis = new THREE.Matrix4().set(r[0], r[1], r[2], 0, r[3], r[4], r[5], 0, r[6], r[7], r[8], 0, 0, 0, 0, 1);
+    model.quaternion.setFromRotationMatrix(basis);
+    model.scale.setScalar(scale);
+    model.updateMatrixWorld(true);
+    box = new THREE.Box3().setFromObject(model);
+    box.getSize(size);
   }
 
   const cx = (box.min.x + box.max.x) / 2,
     cy = (box.min.y + box.max.y) / 2,
     cz = (box.min.z + box.max.z) / 2;
   if (rule.orientation === 'hanging') {
-    // cap up, dome down: flip about Z (about the model's own origin), then hang the rotated top from the holder origin
-    model.rotation.z = Math.PI;
+    /* Cap up, dome down: flip about Z, then hang the rotated top from the holder origin. Composed
+       onto the fitted rotation rather than assigned over it — assigning `rotation.z` discarded the
+       axis alignment above and put the mesh back on whatever axis the generator had left it on. */
+    model.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI));
     model.position.set(0, 0, 0);
     model.updateMatrixWorld(true);
     const b2 = new THREE.Box3().setFromObject(model);

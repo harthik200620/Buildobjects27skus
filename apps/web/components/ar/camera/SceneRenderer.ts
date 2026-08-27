@@ -1,6 +1,6 @@
 'use client';
 
-import type { Anchor, PlacementRule, ProductDims, Quat, SceneAnalysis, Vec3 } from '@buildobjects/ar-engine';
+import { type Anchor, laysFlat, type PlacementRule, type ProductDims, type Quat, type SceneAnalysis, type Vec3 } from '@buildobjects/ar-engine';
 import type { DirectionalLight, Group, HemisphereLight, Mesh, Object3D, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
 import { applyViewOffset, type CoverMap } from './coverMap';
 import { normalizeModel, orientForSurface, type ThreeNS } from './orient';
@@ -40,6 +40,15 @@ export class SceneRenderer {
   private visible = false;
   private disposed = false;
   private dprMax: number;
+  /* The drawing-buffer size actually in force, so `setSize` can do nothing when nothing changed. */
+  private sizeW = 0;
+  private sizeH = 0;
+  private sizeDpr = 0;
+  /* Scratch geometry for `screenBounds`, kept off the per-frame allocation path. */
+  private boundsBox: import('three').Box3 | null = null;
+  private boundsPoint: import('three').Vector3 | null = null;
+  private boundsView: import('three').Vector3 | null = null;
+  private boundsStamp = '';
 
   private constructor(
     readonly THREE: ThreeNS,
@@ -47,9 +56,13 @@ export class SceneRenderer {
     private readonly scene: Scene,
     private readonly camera: PerspectiveCamera,
     private readonly holder: Group,
+    /** Holds the product alone, so a flat-laid product turns without taking the shadow with it. */
+    private readonly tilt: Group,
     private readonly model: Object3D | null,
     private readonly lights: { hemi: HemisphereLight; key: DirectionalLight; bulb: PointLight | null },
     private readonly rule: PlacementRule,
+    /** The SKU's stated dimensions — `laysFlat` reads them to decide whether it turns down. */
+    private readonly dims: ProductDims,
     size: { x: number; y: number; z: number },
     note: string | null,
     dprMax: number,
@@ -102,6 +115,16 @@ export class SceneRenderer {
     const holder = new THREE.Group();
     holder.visible = false;
     scene.add(holder);
+    /*
+     * The product, and only the product.
+     *
+     * A product that lies down (`laysFlat`) is turned a quarter turn about X, and turning the
+     * HOLDER would take the contact shadow with it — a shadow standing vertically in the air,
+     * which is worse than the upright tile it was meant to fix. The shadow stays on the holder and
+     * is always flat on the surface; this group is what turns.
+     */
+    const tilt = new THREE.Group();
+    holder.add(tilt);
 
     let model: Object3D | null = null;
     let size = { x: opts.dims.w_mm / 1000, y: opts.dims.h_mm / 1000, z: opts.dims.d_mm / 1000 };
@@ -149,7 +172,7 @@ export class SceneRenderer {
         }
       });
 
-      holder.add(model);
+      tilt.add(model);
 
       if (opts.category === 'bulbs') {
         // ── 1. Authentic White Wall Batten Holder Socket (matching photo) ─────────
@@ -185,7 +208,7 @@ export class SceneRenderer {
         collarMesh.position.set(0, 0.017, 0);
         socketGroup.add(collarMesh);
 
-        holder.add(socketGroup);
+        tilt.add(socketGroup);
 
         // ── 2. Radiant Glowing Dome with Light Bloom ─────────────────────────────
         model.traverse((o) => {
@@ -275,14 +298,30 @@ export class SceneRenderer {
       shadow.renderOrder = -1;
       holder.add(shadow);
     }
-    return new SceneRenderer(THREE, renderer, scene, camera, holder, model, { hemi, key, bulb }, opts.rule, size, note, dprMax);
+    return new SceneRenderer(THREE, renderer, scene, camera, holder, tilt, model, { hemi, key, bulb }, opts.rule, opts.dims, size, note, dprMax);
   }
 
-  /** Stage size in CSS px; the drawing buffer follows the device pixel ratio (≤ dprMax). */
+  /**
+   * Stage size in CSS px; the drawing buffer follows the device pixel ratio (<= dprMax).
+   *
+   * THE EARLY RETURN IS THE WHOLE POINT. The render loop calls this every frame, and it used to do
+   * the work every frame: `setPixelRatio` re-runs `setSize` internally, so each frame performed TWO
+   * full resizes, and a resize assigns `canvas.width` / `canvas.height`, which reallocates and
+   * clears the WebGL drawing buffer. Reallocating a full-screen backbuffer 120 times a second is
+   * the single most expensive thing this view did, and the size it was setting had not changed
+   * since the frame before.
+   */
   setSize(w: number, h: number): void {
     if (this.disposed) return;
-    this.renderer.setPixelRatio(Math.min(this.dprMax, window.devicePixelRatio || 1));
-    this.renderer.setSize(Math.max(1, Math.round(w)), Math.max(1, Math.round(h)), false);
+    const dpr = Math.min(this.dprMax, window.devicePixelRatio || 1);
+    const cw = Math.max(1, Math.round(w));
+    const ch = Math.max(1, Math.round(h));
+    if (cw === this.sizeW && ch === this.sizeH && dpr === this.sizeDpr) return;
+    this.sizeW = cw;
+    this.sizeH = ch;
+    this.sizeDpr = dpr;
+    this.renderer.setPixelRatio(dpr);
+    this.renderer.setSize(cw, ch, false);
   }
 
   /** Pixel-exact camera: the cover crop of the W × H frame with the intrinsics' vertical FOV, the pose quaternion and the camera height. */
@@ -308,8 +347,33 @@ export class SceneRenderer {
       const normal = anchor.surface === 'ceiling' ? new THREE.Vector3(0, -1, 0) : new THREE.Vector3(0, 1, 0);
       holder.quaternion.copy(orientForSurface(THREE, anchor.surface, normal, rule));
       holder.rotateY((yawDeg * Math.PI) / 180);
+      /*
+       * LAY IT DOWN, IF IT IS SUPPOSED TO LIE DOWN.
+       *
+       * `orientation: 'flat'` was declared on tiles, solar panels and cement from the day the rules
+       * table was written, and nothing ever acted on it — so a 1.2 m floor tile stood on its long
+       * edge and a 2.28 m solar module stood upright on a roof. Both were unmistakable from
+       * directly above, which is the angle you hold a phone at to look at a floor.
+       *
+       * A quarter turn about X puts the stated height along the surface; the model then straddles
+       * the plane, so it is lifted by half its new standing height to rest on it. Applied here
+       * rather than in `normalizeModel` because it depends on the SURFACE, and the surface changes
+       * while the view is open — a tile is flat on the floor and upright on a wall.
+       */
+      if (laysFlat(rule, anchor.surface, this.dims)) {
+        this.tilt.rotation.set(-Math.PI / 2, 0, 0);
+        /* Turned down, the model straddles the plane; half its new standing height rests it on. */
+        this.tilt.position.set(0, this.modelSize.z / 2, 0);
+      } else {
+        this.tilt.rotation.set(0, 0, 0);
+        this.tilt.position.set(0, 0, 0);
+      }
       if (rule.mountOffsetMm) holder.position.addScaledVector(normal, rule.mountOffsetMm / 1000);
     } else {
+      /* Upright on a wall, whatever it does on a floor: a tile is flat underfoot and vertical on
+         a splashback, and the same renderer draws both while the surface changes underneath it. */
+      this.tilt.rotation.set(0, 0, 0);
+      this.tilt.position.set(0, 0, 0);
       const normal = new THREE.Vector3(anchor.n.x, anchor.n.y, anchor.n.z);
       holder.quaternion.copy(orientForSurface(THREE, anchor.surface, normal, rule));
       holder.rotateY((yawDeg * Math.PI) / 180);
@@ -365,19 +429,34 @@ export class SceneRenderer {
   screenBounds(): { x: number; y: number; w: number; h: number } | null {
     if (this.disposed || !this.holder.visible || !this.model || !this.map) return null;
     const { THREE } = this;
-    const box = new THREE.Box3().setFromObject(this.model);
+    /*
+     * Scratch objects, reused. This used to allocate a Box3, walk the model to rebuild it, and
+     * clone a Vector3 inside a triple-nested loop — ten allocations and a full traverse per call,
+     * on the render loop's hot path. The box is rebuilt only when the model's world matrix has
+     * actually changed, which is when something moved it.
+     */
+    this.boundsBox ??= new THREE.Box3();
+    this.boundsPoint ??= new THREE.Vector3();
+    this.boundsView ??= new THREE.Vector3();
+    const stamp = this.model.matrixWorld.elements.join(',');
+    if (stamp !== this.boundsStamp) {
+      this.boundsStamp = stamp;
+      this.boundsBox.setFromObject(this.model);
+    }
+    const box = this.boundsBox;
     if (box.isEmpty()) return null;
     let minX = Infinity,
       minY = Infinity,
       maxX = -Infinity,
       maxY = -Infinity,
       behind = 0;
-    const p = new THREE.Vector3();
+    const p = this.boundsPoint;
+    const view = this.boundsView;
     for (const cx of [box.min.x, box.max.x])
       for (const cy of [box.min.y, box.max.y])
         for (const cz of [box.min.z, box.max.z]) {
           p.set(cx, cy, cz);
-          const view = p.clone().applyMatrix4(this.camera.matrixWorldInverse);
+          view.copy(p).applyMatrix4(this.camera.matrixWorldInverse);
           if (view.z > -1e-4) {
             behind++;
             continue;

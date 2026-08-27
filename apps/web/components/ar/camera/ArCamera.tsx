@@ -2,22 +2,21 @@
 
 import {
   type Anchor,
-  anchorFromPixel,
   areaPrompt,
   autoFitScale,
   type CompositeResult,
   cameraPosition,
   cameraRotationFromQuat,
   DEFAULT_CAMERA_HEIGHT_M,
-  defaultDropPoint,
-  dropPointFor,
+  framePlacement,
   hasOpenArea,
   intrinsicsFor,
   type Mat3,
   matchSurface,
+  type Nudge,
   type PlacementRule,
   type ProductDims,
-  pitchFromQuat,
+  placementFromPixel,
   productNoun,
   type Quat,
   type SceneAnalysis,
@@ -26,6 +25,7 @@ import {
   type Surface,
   type SurfaceMatch,
   surfaceDistanceM,
+  surfacePlane,
   surfacePrompt,
   type Vec3,
 } from '@buildobjects/ar-engine';
@@ -83,6 +83,26 @@ function sameSurfaces(a: SceneAnalysis | null, b: SceneAnalysis): boolean {
   return true;
 }
 
+/**
+ * Which way to point the "it is over here" arrow when a hand-placed product has left the frame.
+ *
+ * Only used for products the USER placed. Anything the view framed itself is simply re-framed, but
+ * a product somebody dragged to a particular spot is not ours to move, so the honest response to
+ * losing sight of it is to say where it went.
+ */
+function nudgeToward(bounds: { x: number; y: number; w: number; h: number } | null, map: { w: number; h: number }): Nudge {
+  if (!bounds) return 'up';
+  const cx = bounds.x + bounds.w / 2;
+  const cy = bounds.y + bounds.h / 2;
+  const du = cx < 0 ? -cx : cx > map.w ? cx - map.w : 0;
+  const dv = cy < 0 ? -cy : cy > map.h ? cy - map.h : 0;
+  if (du > dv && du > 0) return cx < 0 ? 'left' : 'right';
+  if (dv > 0) return cy < 0 ? 'up' : 'down';
+  return null;
+}
+
+const cap = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1);
+
 /** Assumed camera pitch when the device reports no orientation. See the pose block for why. */
 const NO_SENSOR_PITCH_DEG = -10;
 
@@ -98,6 +118,26 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   const autoPlacedRef = React.useRef<boolean>(false);
   const draggingRef = React.useRef<boolean>(false);
   const lastPoseRef = React.useRef<{ q: Quat; R: Mat3; C: Vec3 } | null>(null);
+  /*
+   * HOW MANY FRAMES THE POSE HAS BEEN WORTH TRUSTING.
+   *
+   * The framing solver always returns an anchor, so unlike the old code it will happily place on
+   * frame one — including the frame before the gyro has reported anything, when R is still the
+   * no-sensor fallback. Placing there and then leaving it puts the product wherever the phone was
+   * assumed to be pointing rather than where it is. A handful of frames is a few tens of
+   * milliseconds and is invisible; being wrong is not.
+   */
+  const poseFramesRef = React.useRef<number>(0);
+  /* Frame counter for the on-screen check, which runs at ~6 Hz rather than 60. */
+  /* Timestamp of the last on-screen check; see the render loop. */
+  const visCheckRef = React.useRef<number>(0);
+  /* What the renderer's holder transform was last set from, so the loop can skip re-setting it. */
+  const appliedRef = React.useRef<{ anchor: Anchor | null; yaw: number }>({ anchor: null, yaw: 0 });
+  /* Kept current by the ResizeObserver below; read by the render loop instead of measuring. */
+  const stageSizeRef = React.useRef<{ w: number; h: number }>({ w: 0, h: 0 });
+  /* Set once the user has tapped or dragged. After that the placement is theirs and nothing
+     re-frames it out from under them. */
+  const userPlacedRef = React.useRef<boolean>(false);
   /*
    * On-device scene understanding, running in the render loop.
    *
@@ -144,11 +184,27 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
    * A failed load was worse: silent forever, with the same empty feed.
    */
   const [modelState, setModelState] = React.useState<'loading' | 'ready' | 'failed'>('loading');
+  /*
+   * Where the product is, when it is not where you are looking.
+   *
+   * The old view had no answer for this at all: a product outside the frame was simply absent, and
+   * absent is indistinguishable from broken. `framePlacement` reports which way it went, and an
+   * arrow beats an empty feed — most of all for the wall and ceiling items, whose mounting height
+   * is not ours to move just because the phone happens to be pointed at the floor.
+   */
+  const [nudge, setNudge] = React.useState<Nudge>(null);
+  /* True when the product is bigger than the frame at the only distance its surface allows — a
+     1.2 m tile on a floor 1.4 m below a phone pointed straight down. Real, and worth saying. */
+  const [oversized, setOversized] = React.useState(false);
   const [result, setResult] = React.useState<(CompositeResult & { dataUrl: string; ms: number; fallback?: boolean }) | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
   // Device orientation gyro feed
   const orientationFeed = useOrientation(true);
+  /* Read through a ref inside the render loop. As a dependency it re-created the loop the instant
+     the sensor came alive, which cancels and restarts the rAF chain at the worst possible moment. */
+  const gyroActiveRef = React.useRef(orientationFeed.active);
+  gyroActiveRef.current = orientationFeed.active;
 
   /*
    * The sentence over the feed. Everything it says comes from the placement rule, so it is
@@ -166,15 +222,23 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
    * is illegible, only as far as legibility needs, and records that it did so.
    */
   const fitKeyRef = React.useRef('');
-  const applyAutoFit = React.useCallback((targetSurface: Surface) => {
+  /*
+   * Auto-fit, from the distance the product WAS ACTUALLY PLACED AT.
+   *
+   * It used to be computed from `surfaceDistanceM`, which returns a flat 2.2 m for every
+   * horizontal surface no matter where the thing ended up. So a cement bag placed six metres down
+   * the floor was judged for legibility as though it were at 2.2 m — 21 px on screen, reported as
+   * needing no help at all. The framing solver knows the real distance because it chose it, so
+   * that is the number that comes in here.
+   */
+  const applyAutoFit = React.useCallback((targetSurface: Surface, distanceM: number) => {
     const video = videoRef.current;
     if (!video?.videoHeight) return;
     const K = intrinsicsFor(video.videoWidth, video.videoHeight, 'phone');
-    const d = surfaceDistanceM(targetSurface, matchRef.current);
-    const key = `${targetSurface}|${d.toFixed(1)}|${dimsRef.current.w_mm}`;
+    const key = `${targetSurface}|${distanceM.toFixed(1)}|${dimsRef.current.w_mm}`;
     if (fitKeyRef.current === key) return;
     fitKeyRef.current = key;
-    const fit = autoFitScale(dimsRef.current, d, K.fy);
+    const fit = autoFitScale(dimsRef.current, distanceM, K.fy);
     setScaleMult(fit.scale);
     setEnlarged(fit.enlarged);
   }, []);
@@ -217,6 +281,19 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     };
   }, []);
 
+  /* The stage's size, measured when it changes rather than sixty times a second. See renderFrame. */
+  React.useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const read = () => {
+      stageSizeRef.current = { w: el.clientWidth, h: el.clientHeight };
+    };
+    read();
+    const ro = new ResizeObserver(read);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   /* The last on-device answer, for the loop to compare against without re-rendering. */
   const localSceneRef = React.useRef<SceneAnalysis | null>(null);
   const ruleRef = React.useRef(rule);
@@ -226,28 +303,6 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   const matchRef = React.useRef(match);
   matchRef.current = match;
 
-  /*
-   * Where the product belongs in the frame, solved from the geometry when it is available.
-   *
-   * `defaultDropPoint` is a fixed fraction per mount type. That reads correctly at the downward
-   * tilt people use for a floor and visibly wrong with the phone held level at a wall, which is
-   * exactly how someone points it at a fire extinguisher or a CCTV camera. With the pitch, the
-   * camera height and the distance all known, the row a real mounting height projects to is
-   * arithmetic — so it is computed, and the fraction is only the fallback.
-   */
-  const dropPoint = React.useCallback((targetSurface: Surface) => {
-    const video = videoRef.current;
-    const pose = lastPoseRef.current;
-    if (!video?.videoHeight || !pose) return defaultDropPoint(ruleRef.current, targetSurface);
-    const K = intrinsicsFor(video.videoWidth, video.videoHeight, 'phone');
-    return dropPointFor(ruleRef.current, targetSurface, {
-      pitchDeg: pitchFromQuat(pose.q),
-      fy: K.fy,
-      height: video.videoHeight,
-      cameraHeightM: DEFAULT_CAMERA_HEIGHT_M.phone,
-      distanceM: surfaceDistanceM(targetSurface, matchRef.current),
-    });
-  }, []);
   const dimsRef = React.useRef(dims);
   dimsRef.current = dims;
   /* Read by the renderer's creation effect. As a DEPENDENCY it rebuilt the whole scene every time
@@ -283,8 +338,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         r.setVisible(true);
         r.setScale(scaleMultRef.current);
         /* A rebuilt renderer has no anchor. Let the loop place it again rather than leaving an
-           empty scene that only a tap can recover. */
+           empty scene that only a tap can recover — and forget what the OLD renderer had applied,
+           so the skip-if-unchanged check below cannot skip the first placement on the new one. */
         autoPlacedRef.current = false;
+        appliedRef.current = { anchor: null, yaw: 0 };
         setModelState('ready');
       } catch (e) {
         if (alive) {
@@ -393,7 +450,14 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       const W = video.videoWidth || 1280,
         H = video.videoHeight || 720;
       const K = intrinsicsFor(W, H, 'phone');
-      const newAnchor = anchorFromPixel({
+      /*
+       * `placementFromPixel`, not `anchorFromPixel`: the ray is the user's, but how far along it
+       * the product may sit is bounded. Near the horizon a single pixel of drag is metres of
+       * floor, so an unbounded cast threw the product to the far end of the room the moment a
+       * drag crossed the horizon line — and then it was gone, because nothing brings back
+       * something 25 m away.
+       */
+      const newAnchor = placementFromPixel({
         K,
         R: pose.R,
         C: pose.C,
@@ -401,31 +465,50 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         v,
         surface: targetSurface,
         yawDeg: yaw,
-        wallDistanceM: surfaceDistanceM(targetSurface, matchRef.current),
+        plane: surfacePlane(targetSurface, pose.R, { wallDistanceM: surfaceDistanceM(targetSurface, matchRef.current) }),
       });
 
-      if (newAnchor) {
-        anchorRef.current = newAnchor;
-        renderer.setAnchor(newAnchor, yaw);
-        renderer.setVisible(true);
-        offScreenFramesRef.current = 0;
-      }
+      anchorRef.current = newAnchor;
+      renderer.setAnchor(newAnchor, yaw);
+      renderer.setVisible(true);
+      offScreenFramesRef.current = 0;
+      setNudge(null);
     },
     [surface, yaw],
   );
 
-  /* ── 5. Helper: Auto-Place in Middle of Visible Camera on Wall ────────── */
-  const autoPlaceInMiddle = React.useCallback(
+  /* ── 5. Helper: frame the product for the camera as it is pointed right now ── */
+  const frameNow = React.useCallback(
     (targetSurface: Surface = surface) => {
+      const video = videoRef.current;
+      const renderer = rendererRef.current;
+      const pose = lastPoseRef.current;
       const map = coverMapRef.current;
-      if (!map) return;
-      /* Where the product belongs in frame depends on what it stands on. A fixed y = 0.35 put
-         wall items right and dropped every cement bag, tile and total station into mid-air. */
-      applyAutoFit(targetSurface);
-      const drop = dropPoint(targetSurface);
-      placeAtPixel(map.x0 + map.cw * drop.u, map.y0 + map.ch * drop.v, targetSurface);
+      if (!video?.videoHeight || !renderer || !pose || !map) return false;
+      const K = intrinsicsFor(video.videoWidth, video.videoHeight, 'phone');
+      const measured = matchRef.current.detection?.distanceM;
+      const f = framePlacement({
+        K,
+        R: pose.R,
+        C: pose.C,
+        rule: ruleRef.current,
+        dims: dimsRef.current,
+        surface: targetSurface,
+        view: { x0: map.x0, y0: map.y0, cw: map.cw, ch: map.ch },
+        measuredDistanceM: typeof measured === 'number' ? measured : null,
+        yawDeg: yaw,
+        scaleMult: scaleMultRef.current,
+      });
+      anchorRef.current = f.anchor;
+      renderer.setAnchor(f.anchor, yaw);
+      renderer.setVisible(true);
+      offScreenFramesRef.current = 0;
+      applyAutoFit(targetSurface, f.distanceM);
+      setNudge((cur) => (cur === f.nudge ? cur : f.nudge));
+      setOversized((cur) => (cur === f.oversized ? cur : f.oversized));
+      return true;
     },
-    [placeAtPixel, surface, dropPoint, applyAutoFit],
+    [surface, yaw, applyAutoFit],
   );
 
   /* ── 6. Continuous Render & Tracking Loop ───────────────────────────── */
@@ -435,9 +518,16 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     const renderer = rendererRef.current;
     if (!stage || !renderer) return;
 
-    const stageRect = stage.getBoundingClientRect();
-    const stageW = Math.max(1, stageRect.width);
-    const stageH = Math.max(1, stageRect.height);
+    /*
+     * The stage's size, from a ResizeObserver rather than from a measurement.
+     *
+     * `getBoundingClientRect` is a forced synchronous layout. Calling it inside requestAnimationFrame
+     * makes the browser flush layout on every single frame, for a number that changes when the
+     * device is rotated and at no other time. A ResizeObserver reports the same number when it
+     * genuinely changes and costs nothing in between.
+     */
+    const stageW = Math.max(1, stageSizeRef.current.w || stage.clientWidth);
+    const stageH = Math.max(1, stageSizeRef.current.h || stage.clientHeight);
 
     const hasVideo = !!video && video.readyState >= 2 && video.videoWidth > 0;
     const W = hasVideo ? video.videoWidth : 1280;
@@ -499,90 +589,83 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     }
 
     /*
-     * AUTO-PLACE ON THE FIRST FRAME THAT CAN ACTUALLY CARRY A PLACEMENT.
+     * AUTO-PLACE ONCE THE POSE IS WORTH TRUSTING.
      *
-     * This is the "I opened the camera and there is no product" bug, and it was one line: the
-     * guard was set BEFORE the placement was attempted.
+     * Two bugs lived here. The first was that the guard was set BEFORE the placement was attempted,
+     * so a single null anchor on the first frame — which is the normal case, while the pose is
+     * still settling — spent it for the whole session and nothing was ever placed. The second was
+     * the placement itself: a ray through a fixed fraction of the frame, unbounded, which missed
+     * the floor plane entirely whenever the phone was level or tilted up.
      *
-     *     autoPlacedRef.current = true;        // burned here
-     *     const initAnchor = anchorFromPixel(…);
-     *     if (initAnchor) { … }                // …but this may be null
-     *
-     * `anchorFromPixel` returns null whenever the ray through the drop point misses the surface
-     * plane, and on the very first frame it usually does: the pose has not been established yet,
-     * so R is still settling and the plane it derives is not the wall in front of the camera.
-     * One null, and the flag was spent for the lifetime of the session. Nothing was ever placed,
-     * the product only appeared if the user happened to tap, and the camera looked broken.
-     *
-     * The guard now records that a placement SUCCEEDED, so the attempt simply repeats on the next
-     * frame until the geometry can carry it — which is a few frames, not a few seconds. autoFit
-     * moved inside the success branch too: it sets React state, and running it once per frame
-     * while waiting would re-render the whole view for as long as the pose took to settle.
+     * `framePlacement` cannot fail, so the guard is now about the POSE rather than about the
+     * geometry: wait a few frames for the orientation feed to report, then frame once. Without a
+     * sensor the fallback pitch is constant and there is nothing to wait for.
      */
     if (!autoPlacedRef.current) {
-      const drop = dropPoint(surface);
-      const initAnchor = anchorFromPixel({
-        K,
-        R,
-        C,
-        u: map.x0 + map.cw * drop.u,
-        v: map.y0 + map.ch * drop.v,
-        surface,
-        yawDeg: yaw,
-        wallDistanceM: surfaceDistanceM(surface, matchRef.current),
-      });
-      if (initAnchor) {
-        autoPlacedRef.current = true;
-        applyAutoFit(surface);
-        anchorRef.current = initAnchor;
-        renderer.setAnchor(initAnchor, yaw);
-        renderer.setVisible(true);
-      }
-    } else if (anchorRef.current) {
-      // Keep model anchored in world coordinates
+      poseFramesRef.current += 1;
+      const settled = gyroActiveRef.current ? poseFramesRef.current >= 4 : poseFramesRef.current >= 2;
+      if (settled && frameNow(surface)) autoPlacedRef.current = true;
+    } else if (anchorRef.current && (appliedRef.current.anchor !== anchorRef.current || appliedRef.current.yaw !== yaw)) {
+      /*
+       * The anchor is a WORLD position, so it does not change when the camera moves — only when
+       * something moves the product. This used to run every frame regardless: `setAnchor` allocates
+       * a Quaternion and a Vector3 in `orientForSurface`, then forces `updateMatrixWorld` down the
+       * whole holder. Sixty times a second, to set a transform to the value it already had.
+       */
+      appliedRef.current = { anchor: anchorRef.current, yaw };
       renderer.setAnchor(anchorRef.current, yaw);
     }
 
-    // Check whether the product is currently visible inside the camera view
-    if (anchorRef.current && !draggingRef.current && hasVideo) {
+    /*
+     * IS IT STILL ON SCREEN?
+     *
+     * Checked at ~6 Hz rather than every frame. `screenBounds` builds a Box3 over the model and
+     * projects eight corners, and doing that sixty times a second on a mid-range phone is real
+     * work for a question whose answer cannot change meaningfully between frames.
+     *
+     * Timed rather than counted, and the difference matters on exactly the devices this is for. A
+     * one-in-ten-FRAMES check is 6 Hz at sixty frames a second and 0.7 Hz at seven — so on the slow
+     * phone where a product is most likely to be lost, recovering it took the best part of five
+     * seconds. On a clock it is half a second everywhere.
+     */
+    const nowMs = performance.now();
+    if (anchorRef.current && !draggingRef.current && hasVideo && nowMs - visCheckRef.current > 160) {
+      visCheckRef.current = nowMs;
       const bounds = renderer.screenBounds();
       const isVisible = bounds !== null && bounds.x + bounds.w > -20 && bounds.x < map.w + 20 && bounds.y + bounds.h > -20 && bounds.y < map.h + 20;
 
       if (!isVisible) {
         offScreenFramesRef.current += 1;
-        // Out of view for > 35 frames (~0.6 s): bring it back to this category's drop point.
-        if (offScreenFramesRef.current > 35) {
-          offScreenFramesRef.current = 0;
-          const drop = dropPoint(surface);
-          const reAnchor = anchorFromPixel({
-            K,
-            R,
-            C,
-            u: map.x0 + map.cw * drop.u,
-            v: map.y0 + map.ch * drop.v,
-            surface,
-            yawDeg: yaw,
-            wallDistanceM: surfaceDistanceM(surface, matchRef.current),
-          });
-          if (reAnchor) {
-            anchorRef.current = reAnchor;
-            renderer.setAnchor(reAnchor, yaw);
-          }
+        /*
+         * Gone for about half a second. POINT AT IT; DO NOT FETCH IT.
+         *
+         * Re-framing here was the first attempt and it is wrong, which the audit harness showed
+         * plainly: an extinguisher measured at five camera pitches came back pixel-identical at
+         * every one of them, because half a second after each tilt the view quietly moved it back
+         * to the middle of the screen. A product that follows the camera is not in the room — it is
+         * a sticker on the lens, and it undoes the one thing this view is for.
+         *
+         * So the anchor stays where it is and the nudge says which way it went, with a button to
+         * bring it back for anyone who would rather not go looking. Explicit beats magic, and the
+         * arrow is a better answer to "where did it go" than teleportation is.
+         */
+        if (offScreenFramesRef.current > 3) {
+          offScreenFramesRef.current = 3;
+          setNudge(nudgeToward(renderer.screenBounds(), map));
         }
       } else {
         offScreenFramesRef.current = 0;
+        setNudge((cur) => (cur === null ? cur : null));
       }
     }
 
     // Always render 3D WebGL frame
     renderer.render();
-    // `dropPoint` is stable (its own deps are all refs), so listing it costs nothing and
-    // keeps the loop honest about what it calls.
-    /* `sceneAnalysis` is gone from this list: the loop no longer reads it. It used to derive the
+    /* `sceneAnalysis` is deliberately absent: the loop no longer reads it. It used to derive the
        camera pitch from the analysis's horizon — the feedback loop described in the pose block —
        and keeping it as a dependency re-created the whole render callback every time a frame was
        analysed, roughly eight times a second. */
-  }, [surface, yaw, dropPoint, applyAutoFit]);
+  }, [surface, yaw, frameNow]);
 
   // Continuous animation loop
   React.useEffect(() => {
@@ -607,6 +690,8 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
 
     const vid = stageToVideo(map, stageX, stageY);
     draggingRef.current = true;
+    /* From here the placement belongs to the user; nothing re-frames it out from under them. */
+    userPlacedRef.current = true;
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
 
     placeAtPixel(vid.u, vid.v);
@@ -899,7 +984,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
               <button
                 type="button"
                 className="ar-hud-glass ar-hud-pill cursor-pointer"
-                onClick={() => autoPlaceInMiddle(surface)}
+                onClick={() => frameNow(surface)}
                 aria-label="Re-centre the product in view"
               >
                 <IconRefresh size={13} /> Re-center
@@ -933,6 +1018,29 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
                 <span>{!areaOk && prompt.tone === 'ok' ? areaPrompt(rule) : prompt.text}</span>
                 {prompt.tone === 'ok' && match.confidence > 0 && <span style={{ opacity: 0.75 }}>{match.confidence}%</span>}
               </div>
+              {/*
+               * WHERE IT IS, WHEN IT IS NOT HERE.
+               *
+               * A wall product has a mounting height and a ceiling product has a ceiling; neither
+               * is ours to move because the phone happens to be pointed at the floor. Before this
+               * the view rendered nothing and said nothing in that case, which is exactly what
+               * "I cannot see the product" looks like from the outside. Now it points.
+               *
+               * `oversized` is the other half: at true scale a 1.2 m tile on the floor 1.4 m below
+               * a phone held straight down is larger than the frame, and no placement fixes that.
+               * Tilting up is the honest instruction, so that is what it says.
+               */}
+              {nudge && (
+                <button type="button" className="ar-nudge" onClick={() => frameNow(surface)}>
+                  <span className={`ar-nudge-arrow ar-nudge-arrow--${nudge}`} aria-hidden="true" />
+                  <span>
+                    {oversized
+                      ? `Too close to fit — tilt ${nudge} for the whole ${noun.replace('this ', '')}`
+                      : `${cap(noun.replace('this ', ''))} is ${nudge === 'up' ? 'above' : nudge === 'down' ? 'below' : `to the ${nudge}`} — tilt to see it`}
+                  </span>
+                  <span className="ar-nudge-cta">Bring it here</span>
+                </button>
+              )}
               <div className="ar-hud-glass ar-hud-pill text-[12px] opacity-90">
                 <IconMove size={13} />
                 <span>Drag to move · rotate below</span>
@@ -1006,7 +1114,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
                 }}
                 onClick={() => {
                   setSurface(sf);
-                  autoPlaceInMiddle(sf);
+                  frameNow(sf);
                 }}
               >
                 {SURFACE_LABEL[sf] ?? sf}
