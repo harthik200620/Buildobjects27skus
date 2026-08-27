@@ -22,7 +22,6 @@ import {
   productNoun,
   type Quat,
   type SceneAnalysis,
-  SURFACE_LABEL,
   SURFACE_SWITCH_CONFIDENCE,
   type Surface,
   type SurfaceMatch,
@@ -32,24 +31,9 @@ import {
   type Vec3,
 } from '@buildobjects/ar-engine';
 import React from 'react';
-import {
-  IconCamera,
-  IconClose,
-  IconDownload,
-  IconFlipCamera,
-  IconMove,
-  IconRefresh,
-  IconReticle,
-  IconRotateLeft,
-  IconRotateRight,
-  IconRuler,
-  IconSeeking,
-  IconShare,
-  IconSpark,
-  IconTarget,
-  IconVideo,
-} from '@/components/icons';
+import { IconCamera, IconDownload, IconRefresh, IconShare, IconVideo } from '@/components/icons';
 import { bestRegionScore, dataUrlToCanvas, download, productPixels } from '../photo';
+import ArHud from './ArHud';
 import { AnalysisScheduler, captureAnalysisFrame } from './analysisScheduler';
 import { buildCameraComposite } from './compositeFromCamera';
 import { type CoverMap, coverMap, stageToVideo } from './coverMap';
@@ -64,7 +48,15 @@ export interface ArCameraProps {
   rule: PlacementRule;
   dims: ProductDims;
   category: string;
+  /** "UltraTech Cement UltraTech Portland Pozzolana Cement (PPC)" — brand and name together. */
   name: string;
+  brand: string;
+  /** What it costs, so the sheet can say so. A room view of a product that never mentions its
+      price is a demo, not a storefront. */
+  price: number | null;
+  unit: string;
+  thumbnail: string | null;
+  pdpHref: string | null;
   onExit: () => void;
 }
 
@@ -104,12 +96,56 @@ function nudgeToward(bounds: { x: number; y: number; w: number; h: number } | nu
   return null;
 }
 
-const cap = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1);
+/** Distance and angle between two active pointers — the span a pinch and a twist are measured from. */
+function spanOf(pts: { x: number; y: number }[]): { dist: number; angle: number } {
+  const [p0, p1] = pts;
+  return { dist: Math.hypot(p1.x - p0.x, p1.y - p0.y), angle: (Math.atan2(p1.y - p0.y, p1.x - p0.x) * 180) / Math.PI };
+}
+
+/**
+ * How much of the stage the chrome covers, in CSS pixels.
+ *
+ * The sheet and the top bar are not empty space: a product framed into the full stage lands under
+ * them. These are the heights those bands actually occupy at their most compact, measured rather
+ * than guessed, and they are what the framing solver is given instead of the whole frame.
+ */
+const CHROME_BOTTOM_PX = 210;
+const CHROME_TOP_PX = 60;
+
+/**
+ * The part of the picture a person can actually see, in both units at once.
+ *
+ * Read by the framing solver (video pixels) AND by the on-screen check in the render loop (stage
+ * pixels), because the two have to agree about what "visible" means.
+ *
+ * The chrome heights are MEASURED, not assumed. They were constants first, and a constant is wrong
+ * the moment the sheet is collapsed, or the product name wraps, or the device has a home indicator
+ * — and being wrong here means a product composed neatly into a band the sheet is sitting on top
+ * of. The constants remain as the fallback for the frames before the observer has reported.
+ *
+ * `k` is CSS pixels per video pixel, so dividing by it converts a chrome height into the frame's
+ * own units. Insetting the TOP as well as the height is the half that matters: shrinking the height
+ * alone leaves the rect pinned to the top of the frame, which is above the horizon for anything
+ * standing on a floor, and frames it nowhere at all.
+ */
+function visibleBand(
+  map: CoverMap,
+  chrome: { top: number; bottom: number },
+): { view: { x0: number; y0: number; cw: number; ch: number }; stageTop: number; stageBottom: number } {
+  const k = Math.max(0.01, map.k);
+  const top = Math.min(chrome.top / k, map.ch * 0.25);
+  const bottom = Math.min(chrome.bottom / k, map.ch * 0.45);
+  return {
+    view: { x0: map.x0, y0: map.y0 + top, cw: map.cw, ch: Math.max(map.ch * 0.3, map.ch - top - bottom) },
+    stageTop: top * k,
+    stageBottom: map.h - bottom * k,
+  };
+}
 
 /** Assumed camera pitch when the device reports no orientation. See the pose block for why. */
 const NO_SENSOR_PITCH_DEG = -10;
 
-export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }: ArCameraProps) {
+export default function ArCamera({ glbUrl, rule, dims, category, name, brand, price, unit, thumbnail, pdpHref, onExit }: ArCameraProps) {
   const { videoRef, start, stop, status: camStatus, error: camError } = useCameraStream();
   const stageRef = React.useRef<HTMLDivElement | null>(null);
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -140,6 +176,8 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   const debugRef = React.useRef(false);
   /* Kept current by the ResizeObserver below; read by the render loop instead of measuring. */
   const stageSizeRef = React.useRef<{ w: number; h: number }>({ w: 0, h: 0 });
+  /* How much of the stage the top bar and the sheet actually cover, measured — see `visibleBand`. */
+  const chromeRef = React.useRef<{ top: number; bottom: number }>({ top: CHROME_TOP_PX, bottom: CHROME_BOTTOM_PX });
   /* Set once the user has tapped or dragged. After that the placement is theirs and nothing
      re-frames it out from under them. */
   const userPlacedRef = React.useRef<boolean>(false);
@@ -198,6 +236,18 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
    * is not ours to move just because the phone happens to be pointed at the floor.
    */
   const [nudge, setNudge] = React.useState<Nudge>(null);
+  /* True once a placement has landed. The coaching layer stands down at that point: an
+     instruction that stays on screen after it has been followed is just something to read past. */
+  const [placed, setPlaced] = React.useState(false);
+  /*
+   * The live readout while two fingers are on the glass.
+   *
+   * Sizing used to be a pair of +/- buttons stepping 0.2 and turning was two buttons stepping 15
+   * degrees, which is a spreadsheet, not a camera. Pinching and twisting is what hands do here —
+   * and a gesture with no number attached is a guess, so the number appears under the fingers and
+   * leaves with them.
+   */
+  const [gesture, setGesture] = React.useState<{ kind: 'scale' | 'rotate'; value: string } | null>(null);
   /* True when the product is bigger than the frame at the only distance its surface allows — a
      1.2 m tile on a floor 1.4 m below a phone pointed straight down. Real, and worth saying. */
   const [oversized, setOversized] = React.useState(false);
@@ -296,11 +346,32 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     if (!el) return;
     const read = () => {
       stageSizeRef.current = { w: el.clientWidth, h: el.clientHeight };
+      /* The chrome, from the chrome. A sheet that is collapsed, or taller because a product name
+         wrapped, changes where the product can be seen — so the number comes from the element. */
+      const stage = el.parentElement;
+      const sheet = stage?.querySelector('.arv-sheet') as HTMLElement | null;
+      const bar = stage?.querySelector('.arv-top') as HTMLElement | null;
+      const h = el.clientHeight || 1;
+      chromeRef.current = {
+        top: bar ? Math.min(bar.offsetHeight, h * 0.3) : CHROME_TOP_PX,
+        /* `getBoundingClientRect` rather than offsetHeight: the sheet is translated when collapsed,
+           and its visible height is what matters, not how tall it would be if it were open. */
+        bottom: sheet ? Math.min(Math.max(0, h - (sheet.getBoundingClientRect().top - el.getBoundingClientRect().top)), h * 0.55) : CHROME_BOTTOM_PX,
+      };
     };
     read();
     const ro = new ResizeObserver(read);
     ro.observe(el);
-    return () => ro.disconnect();
+    const stage = el.parentElement;
+    const sheet = stage?.querySelector('.arv-sheet');
+    if (sheet) ro.observe(sheet);
+    /* The sheet slides rather than resizes when it is collapsed, so its transition is the signal. */
+    const onEnd = () => read();
+    sheet?.addEventListener('transitionend', onEnd);
+    return () => {
+      ro.disconnect();
+      sheet?.removeEventListener('transitionend', onEnd);
+    };
   }, []);
 
   /* The last on-device answer, for the loop to compare against without re-rendering. */
@@ -318,6 +389,9 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
      the scale changed — see the effect below. */
   const scaleMultRef = React.useRef(scaleMult);
   scaleMultRef.current = scaleMult;
+  /* Read when a pinch begins, so a two-finger twist is relative to where the product already was. */
+  const yawRef = React.useRef(yaw);
+  yawRef.current = yaw;
 
   /* ── 2. Initialize Three.js SceneRenderer (Once on mount / GLB change) ─── */
   React.useEffect(() => {
@@ -351,6 +425,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
            so the skip-if-unchanged check below cannot skip the first placement on the new one. */
         autoPlacedRef.current = false;
         appliedRef.current = { anchor: null, yaw: 0 };
+        setPlaced(false);
         setModelState('ready');
       } catch (e) {
         if (alive) {
@@ -520,7 +595,8 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         rule: ruleRef.current,
         dims: dimsRef.current,
         surface: targetSurface,
-        view: { x0: map.x0, y0: map.y0, cw: map.cw, ch: map.ch },
+        /* The band between the chrome — see `visibleBand`. */
+        view: visibleBand(map, chromeRef.current).view,
         measuredDistanceM: typeof measured === 'number' ? measured : null,
         yawDeg: yaw,
       };
@@ -544,6 +620,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       renderer.setVisible(true);
       offScreenFramesRef.current = 0;
       applyAutoFit(targetSurface, f.distanceM);
+      setPlaced(true);
       setNudge((cur) => (cur === f.nudge ? cur : f.nudge));
       setOversized((cur) => (cur === f.oversized ? cur : f.oversized));
       if (debugRef.current) {
@@ -707,9 +784,13 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
        * is technically on screen, effectively invisible, and gets no arrow because the view thinks
        * you can see it. Both of the audit's last two failures were in exactly that band.
        */
+      /* The same band the framing solver composes into — see `visibleBand`. They have to agree, or
+         a product tucked neatly behind the sheet is "on screen" to one and "framed" by the other,
+         and the view shows a coaching line and an arrow about the same product in the same breath. */
+      const band = visibleBand(map, chromeRef.current);
       const inside = bounds
         ? (Math.max(0, Math.min(bounds.x + bounds.w, map.w) - Math.max(bounds.x, 0)) *
-            Math.max(0, Math.min(bounds.y + bounds.h, map.h) - Math.max(bounds.y, 0))) /
+            Math.max(0, Math.min(bounds.y + bounds.h, band.stageBottom) - Math.max(bounds.y, band.stageTop))) /
           Math.max(1, bounds.w * bounds.h)
         : 0;
       const isVisible = bounds !== null && inside >= 0.15;
@@ -792,42 +873,141 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     return () => cancelAnimationFrame(raf);
   }, [renderFrame]);
 
-  /* ── 7. Touch / Pointer: Tap-to-Place & Drag ─────────────────────────── */
+  /*
+   * ── 7. HANDS ──────────────────────────────────────────────────────────────
+   *
+   * One finger moves it; two fingers size and turn it. Before this there was only the first, and
+   * size and rotation were four buttons stepping 0.2 and 15 degrees a tap — a spreadsheet's
+   * interaction model applied to a camera.
+   *
+   * Every pointer is tracked, because the number of them is the mode. Dropping from two fingers
+   * back to one has to re-baseline rather than continue, or the product leaps to wherever the
+   * remaining finger happens to be; picking up a second finger mid-drag has to stop the drag, or
+   * the product chases the midpoint. Both fall out of rebuilding the baseline whenever the count
+   * changes.
+   */
+  const pointersRef = React.useRef<Map<number, { x: number; y: number }>>(new Map());
+  const pinchRef = React.useRef<{ dist: number; angle: number; scale: number; yaw: number } | null>(null);
+  const gestureTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  React.useEffect(
+    () => () => {
+      if (gestureTimerRef.current) clearTimeout(gestureTimerRef.current);
+    },
+    [],
+  );
+
+  const showGesture = React.useCallback((kind: 'scale' | 'rotate', value: string) => {
+    setGesture({ kind, value });
+    if (gestureTimerRef.current) clearTimeout(gestureTimerRef.current);
+    gestureTimerRef.current = setTimeout(() => setGesture(null), 900);
+  }, []);
+
+  const stagePoint = (e: React.PointerEvent) => {
+    const rect = stageRef.current?.getBoundingClientRect();
+    return { x: e.clientX - (rect?.left ?? 0), y: e.clientY - (rect?.top ?? 0) };
+  };
+
+  const beginPinch = React.useCallback(() => {
+    const pts = [...pointersRef.current.values()];
+    if (pts.length < 2) return;
+    const { dist, angle } = spanOf(pts.slice(0, 2));
+    pinchRef.current = { dist, angle, scale: scaleMultRef.current, yaw: yawRef.current };
+    draggingRef.current = false;
+  }, []);
+
   const onPointerDown = (e: React.PointerEvent) => {
-    const stage = stageRef.current;
     const map = coverMapRef.current;
-    if (!stage || !map) return;
+    if (!stageRef.current || !map) return;
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    pointersRef.current.set(e.pointerId, stagePoint(e));
 
-    const rect = stage.getBoundingClientRect();
-    const stageX = e.clientX - rect.left;
-    const stageY = e.clientY - rect.top;
-
-    const vid = stageToVideo(map, stageX, stageY);
+    if (pointersRef.current.size >= 2) {
+      beginPinch();
+      return;
+    }
+    const p = stagePoint(e);
+    const vid = stageToVideo(map, p.x, p.y);
     draggingRef.current = true;
     /* From here the placement belongs to the user; nothing re-frames it out from under them. */
     userPlacedRef.current = true;
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
-
     placeAtPixel(vid.u, vid.v);
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!draggingRef.current) return;
-    const stage = stageRef.current;
+    if (!pointersRef.current.has(e.pointerId)) return;
+    pointersRef.current.set(e.pointerId, stagePoint(e));
     const map = coverMapRef.current;
-    if (!stage || !map) return;
+    if (!map) return;
 
-    const rect = stage.getBoundingClientRect();
-    const stageX = e.clientX - rect.left;
-    const stageY = e.clientY - rect.top;
+    if (pointersRef.current.size >= 2) {
+      const base = pinchRef.current;
+      if (!base) {
+        beginPinch();
+        return;
+      }
+      const { dist, angle } = spanOf([...pointersRef.current.values()].slice(0, 2));
+      if (base.dist > 8) {
+        const next = Math.max(0.4, Math.min(6, base.scale * (dist / base.dist)));
+        setEnlarged(false);
+        setScaleMult(next);
+        showGesture('scale', `${Math.round(next * 100)}%`);
+      }
+      /* Shortest way round, or crossing 180 degrees spins the product a full turn in the wrong
+         direction under a thumb that barely moved. */
+      let d = angle - base.angle;
+      while (d > 180) d -= 360;
+      while (d < -180) d += 360;
+      if (Math.abs(d) > 3) {
+        const y = base.yaw + d;
+        setYaw(y);
+        showGesture('rotate', `${Math.round(((y % 360) + 360) % 360)}°`);
+      }
+      return;
+    }
 
-    const vid = stageToVideo(map, stageX, stageY);
+    if (!draggingRef.current) return;
+    const p = stagePoint(e);
+    const vid = stageToVideo(map, p.x, p.y);
     placeAtPixel(vid.u, vid.v);
   };
 
-  const onPointerUp = () => {
+  const onPointerUp = (e: React.PointerEvent) => {
+    pointersRef.current.delete(e.pointerId);
+    if (pointersRef.current.size < 2) pinchRef.current = null;
+    /* Re-baseline rather than continue: whichever finger is left is somewhere else entirely. */
     draggingRef.current = false;
   };
+
+  /*
+   * ── 7b. TAKE THE PICTURE ──────────────────────────────────────────────────
+   *
+   * A camera with no shutter is a strange thing, and this one had none: the only way to keep what
+   * you were looking at was "Make it real", which sends the frame to an image model, takes seconds
+   * and costs money. Most of the time somebody just wants the photo — the bag on their floor, to
+   * send to whoever is paying for it.
+   *
+   * The feed and the WebGL layer are composited at the video's own resolution rather than the
+   * stage's, so the saved image is the full-quality frame and not a screenshot of a phone screen.
+   */
+  const capture = React.useCallback(() => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const map = coverMapRef.current;
+    if (!video || !canvas || !map || !video.videoWidth) return;
+    try {
+      const out = document.createElement('canvas');
+      out.width = Math.round(map.cw);
+      out.height = Math.round(map.ch);
+      const ctx = out.getContext('2d');
+      if (!ctx) return;
+      /* The visible crop of the frame, not the whole frame: what was on screen is what gets saved. */
+      ctx.drawImage(video, map.x0, map.y0, map.cw, map.ch, 0, 0, out.width, out.height);
+      ctx.drawImage(canvas, 0, 0, out.width, out.height);
+      download(out.toDataURL('image/jpeg', 0.92), `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-in-my-room.jpg`);
+    } catch {
+      /* A tainted canvas — nothing to save, and nothing worth interrupting the view for. */
+    }
+  }, [name]);
 
   /* ── 8. Make it real — hand the frame and the overlay to the image model ─ */
   const makeItReal = async () => {
@@ -945,7 +1125,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   };
 
   return (
-    <div className="ar-stage ar-camera" style={{ position: 'relative', width: '100%', height: '100%', minHeight: '540px', background: 'var(--color-canvas)' }}>
+    <div className="ar-stage ar-camera">
       {/* 1. Live Camera Video Feed */}
       <video
         ref={videoRef}
@@ -1040,128 +1220,59 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       )}
 
       {/*
-       * 5 + 6. THE GUIDANCE STACK — one column, not three things pinned near the top.
+       * 5 + 6 + 10. THE HUD.
        *
-       * The surface prompt sat at `top: 68px` and the interaction tip at `top: 72px`, four pixels
-       * apart, both of them under a title bar whose height depends on how far the product name
-       * wraps. On a 430px phone with a name like "Philips Ace Saver 9 W B22 Cool Day Light LED
-       * Bulb" all three landed on top of each other, and the sentence telling somebody what to do
-       * was the one underneath. Flow beats offsets: a column cannot overlap itself whatever the
-       * title does.
+       * One component, three bands, replacing eleven separately-positioned floating elements that
+       * each carried their own inline styles and all competed at the same visual weight. See
+       * ArHud.tsx for why the shape is what it is.
        */}
       {!result && (
-        <div className="ar-top">
-          <div className="ar-topbar">
-            <div className="ar-hud-glass ar-hud-pill ar-hud-id">
-              {/* Truncated, not wrapped: this pill is positioned, so every extra line it takes
-                  pushes into whatever is below it. */}
-              <span className="ar-hud-name">{name}</span>
-              <span style={{ color: 'var(--color-brand)', flex: 'none' }}>
-                · {dims.w_mm}×{dims.h_mm} mm
-              </span>
-              {/* "auto" is the honest word: at 100 % this is the real thing at its real size, and at
-                anything else the reader deserves to know whether they asked for that or the engine
-                enlarged a small product to make it legible. */}
-              <span style={{ opacity: 0.8, flex: 'none' }}>
-                · {Math.round(scaleMult * 100)}%{enlarged ? ' auto' : ''}
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-end gap-2">
-              <button
-                type="button"
-                className="ar-hud-glass ar-hud-pill cursor-pointer"
-                onClick={() => {
-                  const next = facingMode === 'environment' ? 'user' : 'environment';
-                  setFacingMode(next);
-                  startCameraStream(next);
-                }}
-                aria-label="Switch camera"
-              >
-                <IconFlipCamera size={13} /> Flip camera
-              </button>
-              {scaleMult > 1.01 && (
-                <button
-                  type="button"
-                  className="ar-hud-glass ar-hud-pill cursor-pointer"
-                  onClick={() => {
-                    setEnlarged(false);
-                    setScaleMult(1);
-                  }}
-                  aria-label="Show at true 1:1 size"
-                >
-                  {/* The long form ("Enlarged 253% — show true size") is four words too many for a
-                      pill on a 390px phone; the percentage is already in the identity row above. */}
-                  <IconRuler size={13} /> True size
-                </button>
-              )}
-              <button
-                type="button"
-                className="ar-hud-glass ar-hud-pill cursor-pointer"
-                onClick={() => frameNow(surface)}
-                aria-label="Re-centre the product in view"
-              >
-                <IconRefresh size={13} /> Re-center
-              </button>
-              <button type="button" className="ar-hud-glass ar-hud-pill cursor-pointer" onClick={onExit} aria-label="Exit AR mode">
-                <IconClose size={13} /> Exit
-              </button>
-            </div>
-          </div>
-          {/*
-           * The model's own state, above the surface prompt, because "we are still fetching the
-           * thing you came to look at" outranks "point at a wall" — and because an empty camera
-           * with no message is the failure this whole view is judged on.
-           */}
-          {modelState !== 'ready' && (
-            <div className={`ar-surface-prompt${modelState === 'loading' ? ' ar-surface-prompt--seeking' : ''}`}>
-              {modelState === 'loading' ? <IconSeeking size={14} /> : <IconTarget size={14} />}
-              <span>
-                {modelState === 'loading'
-                  ? `Loading ${noun} in 3D — this one is a large model.`
-                  : `That 3D model could not be loaded — reopen this view to try again, or use photo mode.`}
-              </span>
-            </div>
-          )}
-          {camStatus === 'streaming' && modelState === 'ready' && (
-            <>
-              <div
-                className={`ar-surface-prompt${prompt.tone === 'ok' ? ' ar-surface-prompt--ok' : prompt.tone === 'seeking' ? ' ar-surface-prompt--seeking' : ''}`}
-              >
-                {prompt.tone === 'ok' ? <IconReticle size={14} /> : prompt.tone === 'seeking' ? <IconSeeking size={14} /> : <IconTarget size={14} />}
-                <span>{!areaOk && prompt.tone === 'ok' ? areaPrompt(rule) : prompt.text}</span>
-                {prompt.tone === 'ok' && match.confidence > 0 && <span style={{ opacity: 0.75 }}>{match.confidence}%</span>}
-              </div>
-              {/*
-               * WHERE IT IS, WHEN IT IS NOT HERE.
-               *
-               * A wall product has a mounting height and a ceiling product has a ceiling; neither
-               * is ours to move because the phone happens to be pointed at the floor. Before this
-               * the view rendered nothing and said nothing in that case, which is exactly what
-               * "I cannot see the product" looks like from the outside. Now it points.
-               *
-               * `oversized` is the other half: at true scale a 1.2 m tile on the floor 1.4 m below
-               * a phone held straight down is larger than the frame, and no placement fixes that.
-               * Tilting up is the honest instruction, so that is what it says.
-               */}
-              {nudge && (
-                <button type="button" className="ar-nudge" onClick={() => frameNow(surface)}>
-                  <span className={`ar-nudge-arrow ar-nudge-arrow--${nudge}`} aria-hidden="true" />
-                  <span>
-                    {oversized
-                      ? `Too close to fit — tilt ${nudge} for the whole ${noun.replace('this ', '')}`
-                      : `${cap(noun.replace('this ', ''))} is ${nudge === 'up' ? 'above' : nudge === 'down' ? 'below' : `to the ${nudge}`} — tilt to see it`}
-                  </span>
-                  <span className="ar-nudge-cta">Bring it here</span>
-                </button>
-              )}
-              <div className="ar-hud-glass ar-hud-pill text-[12px] opacity-90">
-                <IconMove size={13} />
-                <span>Drag to move · rotate below</span>
-              </div>
-            </>
-          )}
-        </div>
+        <ArHud
+          name={name}
+          brand={brand}
+          category={category}
+          dims={dims}
+          rule={rule}
+          price={price}
+          unit={unit}
+          thumbnail={thumbnail}
+          pdpHref={pdpHref}
+          camStatus={camStatus}
+          modelState={modelState}
+          prompt={!areaOk && prompt.tone === 'ok' ? { tone: 'seek', text: areaPrompt(rule) } : prompt}
+          surface={surface}
+          scaleMult={scaleMult}
+          enlarged={enlarged}
+          yaw={yaw}
+          nudge={nudge}
+          oversized={oversized}
+          noun={noun}
+          gesture={gesture}
+          /* Coaching stands down once something has been placed and is on screen. */
+          settled={placed && nudge === null}
+          onExit={onExit}
+          onFlip={() => {
+            const next = facingMode === 'environment' ? 'user' : 'environment';
+            setFacingMode(next);
+            startCameraStream(next);
+          }}
+          onSurface={(sf) => {
+            setSurface(sf);
+            frameNow(sf);
+          }}
+          onScale={(m) => {
+            setEnlarged(false);
+            setScaleMult(m);
+          }}
+          onTrueSize={() => {
+            setEnlarged(false);
+            setScaleMult(1);
+          }}
+          onYaw={setYaw}
+          onRecentre={() => frameNow(surface)}
+          onCapture={capture}
+          onMakeReal={makeItReal}
+        />
       )}
 
       {/* 7. Busy Spinner */}
@@ -1202,78 +1313,6 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
               <IconRefresh size={14} /> Back to Live AR
             </button>
           </div>
-        </div>
-      )}
-
-      {/* 10. Bottom HUD: place, rotate, scale, capture */}
-      {!result && (
-        <div className="ar-hud" style={{ bottom: '16px', zIndex: 5, flexWrap: 'wrap', gap: 8 }}>
-          <div className="ar-hud-glass ar-hud-pill">
-            <span>Mount:</span>
-            {/* One button per surface this category may sit on, from PLACEMENT_RULES. It was a
-                fixed Wall / Ceiling pair, which meant twenty-four of the twenty-seven SKUs could
-                only be mounted somewhere they do not belong. */}
-            {rule.surfaces.map((sf) => (
-              <button
-                key={sf}
-                type="button"
-                className="chip"
-                aria-pressed={surface === sf}
-                style={{
-                  padding: '2px 8px',
-                  fontSize: 12,
-                  textTransform: 'capitalize',
-                  background: surface === sf ? 'var(--color-brand)' : 'transparent',
-                  color: surface === sf ? 'var(--color-on-brand)' : 'var(--color-header-ink)',
-                }}
-                onClick={() => {
-                  setSurface(sf);
-                  frameNow(sf);
-                }}
-              >
-                {SURFACE_LABEL[sf] ?? sf}
-              </button>
-            ))}
-          </div>
-
-          <div className="ar-hud-glass ar-hud-pill">
-            <button
-              type="button"
-              onClick={() => {
-                setEnlarged(false);
-                setScaleMult((m) => Math.max(0.4, +(m - 0.2).toFixed(2)));
-              }}
-              style={{ padding: '0 6px', fontWeight: 'bold' }}
-              title="Scale down"
-            >
-              −
-            </button>
-            <span>Size</span>
-            <button
-              type="button"
-              onClick={() => {
-                setEnlarged(false);
-                setScaleMult((m) => Math.min(6, +(m + 0.2).toFixed(2)));
-              }}
-              style={{ padding: '0 6px', fontWeight: 'bold' }}
-              title="Scale up"
-            >
-              +
-            </button>
-          </div>
-
-          <div className="ar-hud-glass ar-hud-pill">
-            <button type="button" onClick={() => setYaw((y) => y - 15)} title="Rotate left">
-              <IconRotateLeft size={13} /> 15°
-            </button>
-            <button type="button" onClick={() => setYaw((y) => y + 15)} title="Rotate right">
-              <IconRotateRight size={13} /> 15°
-            </button>
-          </div>
-
-          <button type="button" className="btn-primary h-10 px-5 text-[13px] shadow-lg flex items-center gap-2" onClick={makeItReal}>
-            <IconSpark size={15} /> Make it real
-          </button>
         </div>
       )}
 

@@ -503,7 +503,15 @@ export default function ArStage({ product }: { product: ArProduct }) {
           rule={rule}
           dims={dims}
           category={product.category}
-          name={`${product.brand} ${product.name}`}
+          /* The product's own name, and the brand beside it — not glued together. Concatenating
+             gave "UltraTech Cement UltraTech Portland Pozzolana Cement (PPC)", because the brand
+             is already the first two words of half the names in this catalogue. */
+          name={product.name}
+          brand={product.brand}
+          price={product.price}
+          unit={product.unit}
+          thumbnail={product.referenceImage}
+          pdpHref={product.pdpHref}
           /* Leaving the live camera must land somewhere else. This read `tier === 'C' ?
              'livecamera' : 'menu'`, so on every camera-capable device without WebXR — most
              laptops and phones — both "Use photo mode" and "Exit AR mode" set the mode that was

@@ -296,7 +296,7 @@ async function main() {
         /* textContent, collapsed HERE rather than inside the page: every attempt to put a
            whitespace regex into the evaluated string was mangled by one escaping layer or another,
            first silently (it stripped the letter s from every message) and then loudly. */
-        const rawNudge = (await page.evaluate(`(() => { const n = document.querySelector('.ar-nudge'); return n ? n.textContent : null; })()`)) as
+        const rawNudge = (await page.evaluate(`(() => { const n = document.querySelector('.arv-nudge'); return n ? n.textContent : null; })()`)) as
           | string
           | null;
         const nudge = rawNudge ? rawNudge.split(/\s+/).join(' ').trim() : null;

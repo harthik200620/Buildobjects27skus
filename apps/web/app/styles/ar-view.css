@@ -1,0 +1,625 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * VIEW IN ROOM — the camera surface, rebuilt.
+ *
+ * `arv-` rather than `ar-` because this replaces the old HUD wholesale rather than amending
+ * it. What it replaces was eleven separately-positioned floating elements, each with its own
+ * inline styles and every one of them the same visual weight: nothing was primary, the
+ * product's own name was truncated to "UltraTech C..." to make room for a tip about dragging,
+ * and the price of the thing on screen appeared nowhere at all.
+ *
+ * Three bands, and the middle one is usually empty. The picture is the content.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.ar-camera {
+  /*
+   * The live camera fills the page, rather than sitting in a 540 px letterbox inside it. The
+   * picture IS the product here: a room view you have to scroll to see the bottom of is a
+   * thumbnail with extra steps.
+   */
+  min-height: min(78dvh, 780px);
+  background: var(--color-canvas);
+
+  /* One place to change the feel of the whole surface. */
+  /* Both derived from the theme's own AR panel colour, so the camera chrome cannot drift away
+     from the rest of the store's dark surfaces — and so `pnpm contrast` stays happy, which is the
+     gate that exists precisely to stop a new stylesheet inventing colours. */
+  --arv-glass: color-mix(in oklab, var(--color-ar-panel) 74%, transparent);
+  --arv-glass-strong: color-mix(in oklab, var(--color-ar-panel) 96%, var(--color-ar-void));
+  --arv-hair: rgb(255 255 255 / 0.16);
+  --arv-ink: rgb(255 255 255 / 0.96);
+  --arv-ink-2: rgb(255 255 255 / 0.66);
+  --arv-accent: var(--color-brand);
+  --arv-blur: blur(18px) saturate(1.35);
+  --arv-radius: 18px;
+  /* Springy, but not so bouncy it looks like a toy on a product somebody is pricing. */
+  --arv-spring: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── The three bands ──────────────────────────────────────────────────────── */
+
+.arv-top {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: calc(env(safe-area-inset-top) + 10px) 12px 10px;
+  /* A wash, not a bar: the feed stays visible behind the controls, which is the entire point of
+     a camera view, and the gradient still guarantees contrast for the text on top of it. */
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.55), rgb(0 0 0 / 0));
+  pointer-events: none;
+}
+.arv-top > * {
+  pointer-events: auto;
+}
+
+.arv-middle {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  bottom: 0;
+  left: 12px;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  pointer-events: none;
+}
+.arv-middle > * {
+  pointer-events: auto;
+}
+
+/* ── Top row ──────────────────────────────────────────────────────────────── */
+
+.arv-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--arv-hair);
+  border-radius: 50%;
+  background: var(--arv-glass);
+  color: var(--arv-ink);
+  cursor: pointer;
+  backdrop-filter: var(--arv-blur);
+  transition:
+    transform 140ms var(--arv-spring),
+    background 140ms ease;
+}
+.arv-icon:active {
+  background: var(--arv-glass-strong);
+  transform: scale(0.92);
+}
+
+.arv-ident {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+.arv-ident-name {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--arv-ink);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.6);
+  white-space: nowrap;
+}
+.arv-ident-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--arv-ink-2);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.6);
+}
+
+/*
+ * "true size" is the claim the whole feature rests on, so it is the one badge that changes
+ * colour. Anything else in that slot is a percentage the reader deserves to see, because it
+ * means what they are looking at is NOT the real size.
+ */
+.arv-truth {
+  padding: 2px 8px;
+  cursor: pointer;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.12);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.arv-truth:disabled {
+  cursor: default;
+}
+.arv-truth--exact {
+  border-color: color-mix(in oklab, var(--arv-accent) 60%, transparent);
+  background: color-mix(in oklab, var(--arv-accent) 26%, transparent);
+  color: #fff;
+}
+
+/* ── Coaching, reticle, nudge, readout ────────────────────────────────────── */
+
+.arv-coach {
+  display: flex;
+  max-width: min(90vw, 400px);
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--arv-hair);
+  border-radius: 999px;
+  background: var(--arv-glass-strong);
+  color: var(--arv-ink);
+  font-size: 13px;
+  line-height: 1.3;
+  animation: arv-rise 240ms var(--arv-spring) both;
+  backdrop-filter: var(--arv-blur);
+}
+.arv-coach svg {
+  flex: none;
+  opacity: 0.85;
+}
+.arv-coach--ok {
+  border-color: color-mix(in oklab, var(--color-ar-ok) 50%, transparent);
+}
+.arv-coach--seeking svg {
+  animation: arv-spin 1.4s linear infinite;
+}
+
+/*
+ * The reticle sits behind the coaching pill and pulses while the view is hunting for a
+ * surface, then goes away — which is what makes it read as progress rather than as a
+ * permanent crosshair painted on the lens.
+ */
+.arv-reticle {
+  position: absolute;
+  display: grid;
+  width: 92px;
+  height: 92px;
+  place-items: center;
+  pointer-events: none;
+}
+.arv-reticle-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid rgb(255 255 255 / 0.55);
+  border-radius: 50%;
+  animation: arv-pulse 2s ease-out infinite;
+}
+.arv-reticle-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px rgb(255 255 255 / 0.8);
+}
+
+.arv-nudge {
+  display: flex;
+  max-width: min(92vw, 420px);
+  align-items: center;
+  gap: 9px;
+  padding: 9px 9px 9px 13px;
+  border: 1px solid color-mix(in oklab, var(--arv-accent) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--arv-accent) 24%, var(--arv-glass-strong));
+  box-shadow: 0 8px 26px rgb(0 0 0 / 0.4);
+  color: #fff;
+  cursor: pointer;
+  font-size: 12.5px;
+  line-height: 1.25;
+  text-align: left;
+  animation: arv-rise 220ms var(--arv-spring) both;
+  backdrop-filter: var(--arv-blur);
+}
+/* A solid triangle, not a glyph: an arrow has to read at a glance in a bright room, and a font
+   arrow is at the mercy of whatever the device substitutes for it. */
+.arv-nudge-arrow {
+  flex: none;
+  width: 0;
+  height: 0;
+  border: 7px solid transparent;
+  animation: arv-beckon 1.6s ease-in-out infinite;
+}
+.arv-nudge-arrow--up {
+  --arv-beckon-y: -3px;
+
+  margin-top: -7px;
+  border-bottom-color: #fff;
+}
+.arv-nudge-arrow--down {
+  --arv-beckon-y: 3px;
+
+  margin-bottom: -7px;
+  border-top-color: #fff;
+}
+.arv-nudge-arrow--left {
+  --arv-beckon-x: -3px;
+
+  margin-left: -7px;
+  border-right-color: #fff;
+}
+.arv-nudge-arrow--right {
+  --arv-beckon-x: 3px;
+
+  margin-right: -7px;
+  border-left-color: #fff;
+}
+.arv-nudge-cta {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.22);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* The number under your fingers while a gesture is in flight, and nowhere else. */
+.arv-readout {
+  position: absolute;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--arv-glass-strong);
+  color: var(--arv-ink);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  backdrop-filter: var(--arv-blur);
+}
+
+/* ── The sheet ────────────────────────────────────────────────────────────── */
+
+.arv-sheet {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 2px 12px calc(env(safe-area-inset-bottom) + 10px);
+  border-top: 1px solid var(--arv-hair);
+  border-radius: var(--arv-radius) var(--arv-radius) 0 0;
+  background: var(--arv-glass-strong);
+  box-shadow: 0 -10px 40px rgb(0 0 0 / 0.45);
+  backdrop-filter: var(--arv-blur);
+  transition: transform 320ms var(--arv-spring);
+}
+/*
+ * Collapsed, the sheet leaves the grip and the product line visible and takes the controls
+ * away. Somebody lining a bathtub up against a wall wants the picture, not the slider — and
+ * should not have to leave the view to get it.
+ */
+.arv-sheet--closed {
+  transform: translateY(calc(100% - 64px));
+}
+
+.arv-grip {
+  display: grid;
+  width: 100%;
+  height: 16px;
+  background: none;
+  cursor: pointer;
+  place-items: center;
+}
+.arv-grip span {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.3);
+}
+
+.arv-product {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 11px;
+}
+.arv-thumb {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--arv-hair);
+  border-radius: 11px;
+  background: rgb(255 255 255 / 0.06);
+  object-fit: contain;
+}
+.arv-product-text {
+  min-width: 0;
+  flex: 1;
+}
+.arv-product-name {
+  overflow: hidden;
+  color: var(--arv-ink);
+  font-size: 13px;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.arv-brand {
+  font-weight: 700;
+}
+.arv-product-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 2px;
+}
+.arv-price {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.arv-unit {
+  color: var(--arv-ink-2);
+  font-size: 11.5px;
+}
+
+/* ── Controls ─────────────────────────────────────────────────────────────── */
+
+/*
+ * Surface, size and turn on ONE row. They wrapped to three at 350 px, which turned a compact
+ * control strip into most of the screen and pushed the product out of the frame it was meant to be
+ * standing in. The sliders shrink; the segmented control keeps its width because its labels are
+ * words.
+ */
+.arv-rail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 8px 12px;
+}
+/*
+ * A grid, not a wrapping row. Flex-wrap put surface, size and turn on three separate lines at
+ * 350 px, which turned a control strip into half the screen; letting them shrink instead squeezed
+ * both slider tracks down to about forty pixels each. Two explicit columns with the surface control
+ * spanning the first line gives every control a width it can be used at.
+ */
+.arv-seg {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.arv-seg {
+  display: flex;
+  padding: 3px;
+  border: 1px solid var(--arv-hair);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.07);
+}
+.arv-seg-opt {
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--arv-ink-2);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.arv-seg-opt[aria-pressed="true"] {
+  background: var(--arv-accent);
+  color: var(--color-on-brand);
+}
+
+.arv-slider {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+}
+.arv-slider-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  color: var(--arv-ink-2);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.arv-slider-value {
+  color: var(--arv-ink);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.arv-slider input[type="range"] {
+  width: 100%;
+  height: 18px;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+}
+.arv-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.18);
+}
+.arv-slider input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.18);
+}
+.arv-slider input[type="range"]::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  appearance: none;
+  border: 2px solid var(--arv-accent);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.4);
+}
+.arv-slider input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--arv-accent);
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* ── Actions ──────────────────────────────────────────────────────────────── */
+
+.arv-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+/* The shutter is the largest, roundest thing on the surface, because on a camera it always is. */
+.arv-shutter {
+  display: grid;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border: 3px solid rgb(255 255 255 / 0.9);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.16);
+  color: #fff;
+  cursor: pointer;
+  place-items: center;
+  transition:
+    transform 140ms var(--arv-spring),
+    background 140ms ease;
+}
+.arv-shutter:active {
+  background: rgb(255 255 255 / 0.32);
+  transform: scale(0.9);
+}
+.arv-action {
+  display: flex;
+  min-width: 0;
+  height: 38px;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid var(--arv-hair);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.09);
+  color: var(--arv-ink);
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    transform 140ms var(--arv-spring),
+    background 140ms ease;
+}
+.arv-action:active {
+  transform: scale(0.97);
+}
+.arv-action--buy {
+  border-color: transparent;
+  background: var(--arv-accent);
+  color: var(--color-on-brand);
+  text-decoration: none;
+}
+
+/* One line, and it disappears on a short stage where every pixel is the picture. */
+.arv-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--arv-ink-2);
+  font-size: 10.5px;
+}
+@media (height <= 620px) {
+  .arv-hint {
+    display: none;
+  }
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────────── */
+
+@keyframes arv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+@keyframes arv-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes arv-pulse {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.72);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+@keyframes arv-beckon {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(var(--arv-beckon-x, 0), var(--arv-beckon-y, 0));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arv-coach,
+  .arv-nudge,
+  .arv-reticle-ring,
+  .arv-nudge-arrow,
+  .arv-sheet,
+  .arv-icon,
+  .arv-shutter,
+  .arv-action {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Roomier on a tablet or a desktop webcam: the sheet stops being a sheet and becomes a bar. */
+@media (width >= 720px) {
+  .arv-sheet {
+    right: auto;
+    bottom: 16px;
+    left: 50%;
+    width: min(660px, calc(100% - 32px));
+    border: 1px solid var(--arv-hair);
+    border-radius: var(--arv-radius);
+    transform: translateX(-50%);
+  }
+  .arv-sheet--closed {
+    transform: translateX(-50%) translateY(calc(100% - 74px));
+  }
+}
