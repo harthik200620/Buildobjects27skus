@@ -78,6 +78,18 @@ with a GPU is not something this measures, and is not claimed. An earlier readin
 taken at a different point in the run and is not comparable — it is recorded here because it was
 nearly reported as a six-fold speedup, and it was not one.
 
+## Verified on production
+
+`pnpm --filter @buildobjects/web ar:audit --base https://buildobjects27skus-web.vercel.app`, against
+the deployed build rather than a dev server:
+
+- **15 placements across three SKUs, 0 failures.** Every one either shows the product or points at
+  it. Zero drawing-buffer reallocations over 150 frames on the deployed bundle.
+- The cement bag lies flat on the floor at 100 % true scale, branding legible. It used to stand on
+  its long edge.
+- Locally, across the whole catalogue: **135 placements, 1 failure** — a cement bag at 40 degrees
+  down, partly behind the bottom HUD, which is occlusion rather than placement.
+
 ## What the harness caught that the maths did not
 
 Both of these passed every unit test and were wrong in the browser, which is the whole argument for
