@@ -486,7 +486,14 @@ export default function ArStage({ product }: { product: ArProduct }) {
           </div>
         }
       >
-        <ArQuickLook glbUrl={product.glbUrl} name={`${product.brand} ${product.name}`} onFallback={() => setMode('photo')} />
+        <ArQuickLook
+          glbUrl={product.glbUrl}
+          usdzUrl={product.usdzUrl}
+          name={`${product.brand} ${product.name}`}
+          rule={rule}
+          dims={dims}
+          onFallback={() => setMode('photo')}
+        />
       </React.Suspense>
     );
   if (mode === 'livecamera')

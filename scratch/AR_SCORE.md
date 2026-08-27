@@ -1,6 +1,6 @@
 # AR engine — score
 
-**71 / 100**, up from 57. The reported faults are fixed and, for the first time, they are fixed in
+**76 / 100**, up from 57. The reported faults are fixed and, for the first time, they are fixed in
 a way a machine can re-check: every claim below is a number a script prints, not a thing somebody
 looked at.
 
@@ -9,7 +9,7 @@ looked at.
 | Placement correctness | 26 | 18 | 23 | Every SKU, every camera pitch, every yaw: an anchor always exists and always sits inside the placement band. The band, the framing and the nudge are asserted in `packages/ar-engine/test/framing.test.ts`. Not solved: multi-plane rooms — the wall is still assumed to face the camera squarely. |
 | Visibility | 10 | 6 | 9 | The contract is now testable and tested: either the product is framed, or the view says which way it went. Off-screen is an arrow and a button, not an empty feed. |
 | Scale truth | 14 | 9 | 11 | `fitModelToDims` squares each mesh up with its stated dimensions instead of resizing by height alone. Auto-fit is computed from the distance the product was actually placed at, and framing runs twice so the two agree. Still no calibration flow; camera height is still assumed. |
-| Platform AR | 14 | 8 | 8 | Untouched. Quick Look is still unreachable: zero USDZ tracked. |
+| Platform AR | 14 | 8 | 12 | **The earlier note here was wrong**: Quick Look was never unreachable — `ArQuickLook` exports a USDZ client-side from the GLB. What it did NOT do was normalise first, so iOS got the raw mesh: the CCTV camera on its side, the extinguisher facing sideways off the wall, the epoxy tin four times too wide. It normalises now, caches the export per GLB, and takes `ar-placement` from the rule instead of hardcoding the floor. Still missing: pre-built USDZs (the 24 on disk are 6–24 MB each, 358 MB in total — unshippable without a compression pass). |
 | Asset quality | 11 | 7 | 8 | `pnpm --filter @buildobjects/assets3d measure` reports what every mesh renders at, offline. Seven of twenty-one still disagree with their own stated proportions by more than a fifth — reported honestly rather than hidden. 7 SKUs are still placeholders. |
 | Visual QA harness | 12 | 2 | 9 | Built. A fake camera plus synthetic `deviceorientation` drives a real phone pose in a real browser; product pixels are counted by hiding the 3D canvas and diffing. No goldens, no normals assertions, not in `pnpm check` (it needs a running server, like the other audits). |
 | Haiku integration | 7 | 2 | 2 | Untouched. |
@@ -105,8 +105,9 @@ the harness existing:
 
 ## What would move the score most now
 
-**Publish the USDZs** (up to 14 points, and it is the whole iOS experience). 24 exist under
-`assets/3d/photoreal/raw/`, which `.gitignore` excludes; `/3d/*.usdz` is 404.
+**Pre-build the USDZs** (2 points). The client-side export is correct now but costs a
+one-to-two-megabyte parse on the phone; the 24 raw ones on disk are 6–24 MB each and need the same
+compression pass the GLBs got before they could ship.
 
 **The seven meshes that disagree with their own dimensions** (up to 3 points, and it is the last
 honest gap in scale truth). `measure` names them. They are a content problem, not a maths one, and

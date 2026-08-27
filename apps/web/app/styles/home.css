@@ -29,9 +29,19 @@
     padding-bottom: var(--s-10);
   }
 
-  /* ── section rhythm ───────────────────────────────────────────────────────── */
+  /*
+   * ── section rhythm ─────────────────────────────────────────────────────────
+   *
+   * 96px between sections, not 128. On a 940px desktop viewport the catalogue — the thing anyone
+   * came here for — began 1783px down: a hero of 746px with 224px of its own padding, then two
+   * 128px gaps and a section head. Nearly two full screens of scrolling before a single category.
+   *
+   * The rhythm is still generous; it is one step down the same scale, and it is applied with the
+   * hero's padding below rather than instead of it. The order does not change: the categories are
+   * the last thing on this page and nothing follows them.
+   */
   .home .sec {
-    margin-top: var(--s-10);
+    margin-top: var(--s-9);
   }
   .home .sec:first-child {
     margin-top: 0;
@@ -96,7 +106,9 @@
   .hero {
     position: relative;
     isolation: isolate;
-    padding: var(--s-10) 0 var(--s-9);
+    /* 96/64 rather than 128/96 — see the section-rhythm note above. The hero was 79 % of the fold
+       for a title, a line of copy, two buttons and three numbers. */
+    padding: var(--s-9) 0 var(--s-8);
     margin-bottom: 0;
     overflow: hidden;
   }
@@ -183,7 +195,7 @@
   }
   @media (max-width: 519.98px) {
     .hero {
-      padding: var(--s-8) 0 var(--s-7);
+      padding: var(--s-7) 0 var(--s-6);
     }
     .hero-facts dd {
       font-size: 28px;
@@ -374,9 +386,15 @@
     z-index: 1;
     padding: 4px 9px;
     border-radius: var(--r-pill);
-    background: rgb(6 24 29 / 78%);
+    /*
+     * Opaque, not blurred. Twenty-six of the thirty-five tiles carry this pill, so a six-pixel
+     * backdrop blur meant twenty-six separate compositing passes on the home page — every one of
+     * them over a lazily-loaded photograph, on the first screen a phone ever sees. The pill sits on
+     * product art that is dark and busy either way; at 92 % the label reads at least as well, and
+     * the page stops paying for an effect nobody can point at.
+     */
+    background: rgb(6 24 29 / 92%);
     border: 1px solid var(--hair-2);
-    backdrop-filter: blur(6px);
     font-size: var(--t-micro);
     letter-spacing: 0.08em;
     text-transform: uppercase;
