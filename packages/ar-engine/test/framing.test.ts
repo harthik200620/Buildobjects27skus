@@ -233,7 +233,8 @@ describe('the two cases the browser audit caught that the maths alone did not', 
         if (second.coverage < 0.85 && second.nudge === null) bad.push(`${code} @${pitchDeg}: ${(second.coverage * 100).toFixed(0)} % at x${mult} and no nudge`);
         /* And it must settle: a third pass may not disagree with the second. */
         const third = framePlacement({ K, R, C, rule, dims, surface, view: VIEW, scaleMult: autoFitScale(dims, second.distanceM, K.fy).scale });
-        if (Math.abs(third.distanceM - second.distanceM) > 0.5) bad.push(`${code} @${pitchDeg}: does not settle, ${second.distanceM.toFixed(2)} then ${third.distanceM.toFixed(2)} m`);
+        if (Math.abs(third.distanceM - second.distanceM) > 0.5)
+          bad.push(`${code} @${pitchDeg}: does not settle, ${second.distanceM.toFixed(2)} then ${third.distanceM.toFixed(2)} m`);
       }
     }
     expect(bad).toEqual([]);
