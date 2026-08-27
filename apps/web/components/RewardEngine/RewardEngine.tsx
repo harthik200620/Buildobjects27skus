@@ -3,7 +3,7 @@
 import React from 'react';
 import { IconClose, IconCoin, IconVolumeOff, IconVolumeOn } from '@/components/icons';
 import { addBoCoins, getBoCoins, markWheelSpun } from '@/lib/coins';
-import { ElevatorScene, FLOORS } from './ElevatorScene';
+import { ElevatorScene, FLOORS, SURPRISE_FLOOR } from './ElevatorScene';
 import { triggerHaptic } from './hapticEngine';
 import Odometer from './Odometer';
 import { getSoundMuted, playActivationSound, playLockSound, playRewardSound, playTickSound, setSoundMuted } from './soundEngine';
@@ -37,32 +37,46 @@ import type { RewardTier } from './types';
  * asked for less motion is given a two-and-a-half-second ride.
  */
 
-/** What the lift can bring back, and how often. Weighted so 0 is possible and 100 is rare. */
-const ODDS: Array<{ tier: RewardTier; weight: number }> = [
-  { tier: 0, weight: 6 },
-  { tier: 20, weight: 30 },
-  { tier: 40, weight: 26 },
-  { tier: 60, weight: 20 },
-  { tier: 80, weight: 12 },
-  { tier: 100, weight: 6 },
+/**
+ * WHAT THE LIFT CAN BRING BACK.
+ *
+ * Six floors pay coins and the seventh pays something a balance cannot hold — Customer of the
+ * Week. It is the rarest stop and it credits NOTHING, which is the whole reason it works: a prize
+ * that is also the biggest number is just the top of the same ladder, and the moment the lift can
+ * stop somewhere that is not on the ladder at all, every ride has a second thing to hope for.
+ *
+ * The floor above the hundred, so it is visible on the strip as somewhere you have not reached.
+ */
+type Prize = { kind: 'coins'; tier: RewardTier } | { kind: 'surprise' };
+
+const ODDS: Array<{ prize: Prize; weight: number }> = [
+  { prize: { kind: 'coins', tier: 0 }, weight: 8 },
+  { prize: { kind: 'coins', tier: 20 }, weight: 29 },
+  { prize: { kind: 'coins', tier: 40 }, weight: 25 },
+  { prize: { kind: 'coins', tier: 60 }, weight: 19 },
+  { prize: { kind: 'coins', tier: 80 }, weight: 11 },
+  { prize: { kind: 'coins', tier: 100 }, weight: 5 },
+  { prize: { kind: 'surprise' }, weight: 3 },
 ];
 
-function drawTier(): RewardTier {
+function drawPrize(): Prize {
   const total = ODDS.reduce((n, o) => n + o.weight, 0);
   let r = Math.random() * total;
   for (const o of ODDS) {
     r -= o.weight;
-    if (r <= 0) return o.tier;
+    if (r <= 0) return o.prize;
   }
-  return 20;
+  return { kind: 'coins', tier: 20 };
 }
+
+const floorOf = (p: Prize) => (p.kind === 'surprise' ? SURPRISE_FLOOR : FLOORS.indexOf(p.tier));
 
 type Phase = 'ready' | 'riding' | 'revealed';
 
 export default function RewardEngine({ onClose, initialBalance }: { onClose?: () => void; initialBalance?: number }) {
   const [balance, setBalance] = React.useState(initialBalance ?? 0);
   const [phase, setPhase] = React.useState<Phase>('ready');
-  const [won, setWon] = React.useState<RewardTier | null>(null);
+  const [won, setWon] = React.useState<Prize | null>(null);
   const [floor, setFloor] = React.useState(0);
   const [muted, setMuted] = React.useState(false);
   const [webgl, setWebgl] = React.useState(true);
@@ -107,22 +121,28 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
 
   const call = React.useCallback(() => {
     if (phase !== 'ready') return;
-    const tier = drawTier();
-    const index = FLOORS.indexOf(tier);
+    const prize = drawPrize();
+    const index = floorOf(prize);
     setWon(null);
     setPhase('riding');
     playActivationSound();
     triggerHaptic('activation');
 
     const finish = () => {
-      setWon(tier);
+      setWon(prize);
       setPhase('revealed');
-      playRewardSound(tier);
-      triggerHaptic(tier === 100 ? 'jackpot' : tier === 0 ? 'zero' : 'reward');
-      /* Record and credit are two calls on purpose — see lib/coins.ts. A zero floor still
-         counts as the ride having happened; it just pays nothing. */
+      /* Record and credit are two calls on purpose — see lib/coins.ts. A zero floor and the
+         surprise floor both count as the ride having happened; neither pays coins. */
       markWheelSpun();
-      if (tier > 0) setBalance(addBoCoins(tier, `BO Lift — ${tier} coins`));
+      if (prize.kind === 'surprise') {
+        playRewardSound(100);
+        triggerHaptic('jackpot');
+        scene.current?.celebrate();
+        return;
+      }
+      playRewardSound(prize.tier);
+      triggerHaptic(prize.tier === 100 ? 'jackpot' : prize.tier === 0 ? 'zero' : 'reward');
+      if (prize.tier > 0) setBalance(addBoCoins(prize.tier, `BO Lift — ${prize.tier} coins`));
     };
 
     if (!scene.current) {
@@ -182,9 +202,9 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
         </span>
         {/* The credit flies off the odometer as it rolls. Keyed on the win so it re-mounts and
             replays even when the same tier comes up twice running. */}
-        {phase === 'revealed' && won !== null && won > 0 && (
-          <span key={`${won}-${balance}`} className="bolift-credit fig">
-            +{won}
+        {phase === 'revealed' && won?.kind === 'coins' && won.tier > 0 && (
+          <span key={`${won.tier}-${balance}`} className="bolift-credit fig">
+            +{won.tier}
           </span>
         )}
       </div>
@@ -197,10 +217,14 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
       <div className="bolift-result" aria-live="polite">
         {phase === 'ready' && <p className="bolift-say">Call the lift. Whatever is in it is yours.</p>}
         {phase === 'riding' && <p className="bolift-say bolift-say--live">Rising · floor {String(floor).padStart(2, '0')}</p>}
-        {phase === 'revealed' && won !== null && (
-          <p className="bolift-say bolift-say--win">
-            {won === 0 ? 'Empty this time. The lift runs again tomorrow.' : `${won} BO Coins — added to your balance.`}
-          </p>
+        {phase === 'revealed' && won?.kind === 'surprise' && (
+          <div className="bolift-say bolift-say--surprise">
+            <p className="bolift-surprise-t">Customer of the week</p>
+            <p className="bolift-surprise-s">The lift went past the hundred. No coins for this one — we will be in touch about what it is instead.</p>
+          </div>
+        )}
+        {phase === 'revealed' && won?.kind === 'coins' && (
+          <p className="bolift-say bolift-say--win">{won.tier === 0 ? 'Better luck next time.' : `${won.tier} BO Coins — added to your balance.`}</p>
         )}
       </div>
 

@@ -226,3 +226,43 @@
     }
   }
 }
+
+@layer components {
+  /* ── the surprise floor ──────────────────────────────────────────────────
+     A prize that is not a number needs to not look like one. A coin result is a single line of
+     body copy; this is a title and a sentence, in amber — and amber in this store belongs to the
+     currency and to nothing else, which makes the one reward that pays no currency exactly the
+     right place to spend that association. */
+  .bolift-say--surprise {
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid color-mix(in oklab, var(--amber-700) 42%, transparent);
+    border-radius: var(--r-2);
+    background: linear-gradient(180deg, color-mix(in oklab, var(--amber-700) 14%, transparent), transparent);
+    animation: bolift-surprise 0.6s var(--ease-out) both;
+  }
+  .bolift-surprise-t {
+    font-family: var(--font-brand);
+    font-weight: 400;
+    font-size: var(--t-h4);
+    line-height: 24px;
+    color: var(--amber-700);
+  }
+  .bolift-surprise-s {
+    margin-top: 4px;
+    color: var(--ink-2);
+    font-size: var(--t-cap);
+    line-height: 19px;
+    text-wrap: pretty;
+  }
+  @keyframes bolift-surprise {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bolift-say--surprise {
+      animation: none;
+    }
+  }
+}

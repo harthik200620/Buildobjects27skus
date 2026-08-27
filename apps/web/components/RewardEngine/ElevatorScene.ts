@@ -43,10 +43,23 @@
  * Nothing here imports three at module scope — the whole scene arrives with the panel.
  */
 
+import { accelAt, buildProfile, type DriveProfile } from './liftMotion';
+
 type ThreeNS = typeof import('three');
 
-/** Six landings, one per reward tier, in the order the lift passes them. */
+/**
+ * Seven landings. Six pay coins; the top one pays something else.
+ *
+ * SURPRISE is the penthouse and it is deliberately the last stop on the strip — a floor above
+ * the hundred is a floor you can see you have not reached yet, which is most of what makes it
+ * worth reaching. It credits nothing, and that is the point: it is Customer of the Week.
+ */
 export const FLOORS = [0, 20, 40, 60, 80, 100] as const;
+export const SURPRISE_FLOOR = FLOORS.length;
+export const FLOOR_COUNT = FLOORS.length + 1;
+
+/** What the indicator shows for each landing. */
+export const FLOOR_LABEL = (i: number) => (i === SURPRISE_FLOOR ? 'SURPRISE' : String(FLOORS[i % FLOORS.length]).padStart(3, '0'));
 
 export type RidePhase = 'idle' | 'closing' | 'rising' | 'settling' | 'opening' | 'open';
 
@@ -65,10 +78,10 @@ export interface RideCallbacks {
 const T = {
   close: 1.0,
   /** How long the car is actually travelling. The distance is derived from this, not the reverse. */
-  rise: 2.9,
-  settle: 0.75,
-  hold: 0.28,
-  open: 1.1,
+  rise: 3.4,
+  settle: 0.85,
+  hold: 0.3,
+  open: 1.15,
 } as const;
 
 const FLOOR_GAP = 3.4;
@@ -76,10 +89,9 @@ const CAR_W = 2.35;
 const CAR_H = 2.75;
 const CAR_D = 2.2;
 
-/* Cubic in-out for the doors, and a spring for the settle. Written out rather than pulled in:
-   two easings do not justify a dependency, and these two are the whole motion vocabulary. */
+/* Cubic in-out for the doors and a spring for the settle. The DRIVE does not use an easing at
+   all — it integrates a velocity curve, in liftMotion.ts, which is where a lift's motion belongs. */
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
-const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
 /** A lift does not stop dead: it overshoots by a few millimetres and comes back on its springs. */
 const settleSpring = (t: number) => 1 - Math.cos(t * Math.PI * 3.2) * Math.exp(-t * 5.2) * (1 - t);
 
@@ -95,8 +107,41 @@ export class ElevatorScene {
   private doorGap = 1;
   private coinSpin = 0;
   private last = 0;
-  private indicatorFloor = -1;
+  private indicatorFloor = -2;
   private coinsPresent = -1;
+  private profile: DriveProfile = buildProfile();
+  /** Line speed and signed acceleration this frame — the sway, the blur and the light all read them. */
+  private speed = 0;
+  private accel = 0;
+  private confettiT = -1;
+  /** Customer of the Week opens on an empty car — see celebrate(). */
+  private hideCoins = false;
+  /** The burst is over and the paper it left is frozen on the floor — see stepConfetti(). */
+  private confettiSettled = false;
+  private phaseStart = 0;
+  private hiddenAt = 0;
+  private ribStretch = -1;
+  private ribScratch: { m: import('three').Matrix4; q: import('three').Quaternion; pos: import('three').Vector3; scl: import('three').Vector3 } | null = null;
+  private confettiScratch: {
+    m: import('three').Matrix4;
+    q: import('three').Quaternion;
+    e: import('three').Euler;
+    pos: import('three').Vector3;
+    scl: import('three').Vector3;
+  } | null = null;
+  private confettiState: {
+    px: Float32Array;
+    py: Float32Array;
+    pz: Float32Array;
+    vx: Float32Array;
+    vy: Float32Array;
+    vz: Float32Array;
+    sp: Float32Array;
+    /** Launch delay. A popper fires a ragged volley, not one frame. */
+    dl: Float32Array;
+    /** 1 once the piece has come to rest on the car floor. */
+    rest: Float32Array;
+  } | null = null;
   private scratch: {
     m: import('three').Matrix4;
     q: import('three').Quaternion;
@@ -116,6 +161,10 @@ export class ElevatorScene {
       doorL: import('three').Mesh;
       doorR: import('three').Mesh;
       coins: import('three').InstancedMesh;
+      confetti: import('three').InstancedMesh;
+      pool: import('three').Mesh;
+      ribs: import('three').InstancedMesh;
+      car: import('three').Group;
       carLight: import('three').PointLight;
       indicator: import('three').Mesh;
       indicatorCanvas: HTMLCanvasElement;
@@ -270,6 +319,7 @@ export class ElevatorScene {
     const poolTex = keep(new THREE.CanvasTexture(poolCanvas));
     const poolMat = keep(new THREE.MeshBasicMaterial({ map: poolTex, transparent: true, depthWrite: false }));
     const poolGeo = keep(new THREE.PlaneGeometry(1.9, 1.5));
+    /* Kept, because it has to be hidden along with the coins — a shadow under nothing. */
     const pool = new THREE.Mesh(poolGeo, poolMat);
     pool.rotation.x = -Math.PI / 2;
     pool.position.set(0, -CAR_H / 2 + 0.004, -1.0);
@@ -286,13 +336,57 @@ export class ElevatorScene {
     ceil.position.set(0, CAR_H / 2 - 0.02, -1.0);
     car.add(ceil);
 
-    /* ── the coins ───────────────────────────────────────────────────────── */
-    const COINS = 64;
-    const coinGeo = keep(new THREE.CylinderGeometry(0.17, 0.17, 0.028, 26));
+    /* ── the coins ─────────────────────────────────────────────────────────
+       Struck metal, not counters. Three things do the work and none of them costs a draw call:
+
+       A MILLED RIM. 40 radial segments and a rim slightly proud of the faces, so the edge catches
+       the downlight as a bright ring instead of going dark like a flat disc does.
+
+       PER-COIN COLOUR. `setColorAt` tints each instance a little differently — brass, rose gold,
+       worn — which is the difference between a pile of coins and sixty copies of one coin. Free:
+       instance colour rides in the same buffer the matrices do.
+
+       A PILE THAT SITS. Three layers, each smaller and more tilted than the one beneath it,
+       because coins tipped off a stack come to rest leaning on each other. */
+    const COINS = 72;
+    const coinGeo = keep(new THREE.CylinderGeometry(0.168, 0.168, 0.03, 40, 1));
     const coins = new THREE.InstancedMesh(coinGeo, gold, COINS);
     coins.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     coins.position.set(0, -CAR_H / 2 + 0.02, -1.0);
+    {
+      const c = new THREE.Color();
+      for (let i = 0; i < COINS; i += 1) {
+        /* Hue barely moves; saturation and lightness carry the variation, which is how real
+           worn brass differs from real new brass. */
+        c.setHSL(0.1 + ((i * 13) % 7) * 0.004, 0.62 + ((i * 7) % 5) * 0.05, 0.46 + ((i * 11) % 6) * 0.035);
+        coins.setColorAt(i, c);
+      }
+      if (coins.instanceColor) coins.instanceColor.needsUpdate = true;
+    }
     car.add(coins);
+
+    /* ── the crackers ────────────────────────────────────────────────────────
+       For the surprise floor. One InstancedMesh of small quads with per-instance colour and a
+       hand-rolled integrator — position, velocity, gravity, drag, spin. Particles are the one
+       place a physics library earns nothing: six lines of Euler is the whole simulation, and
+       running it on 140 instances is cheaper than the library's import. */
+    const CONFETTI = 260;
+    const confettiGeo = keep(new THREE.PlaneGeometry(0.075, 0.115));
+    const confettiMat = keep(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, transparent: true, toneMapped: false }));
+    const confetti = new THREE.InstancedMesh(confettiGeo, confettiMat, CONFETTI);
+    confetti.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    confetti.position.set(0, 0, -0.6);
+    confetti.visible = false;
+    {
+      const c = new THREE.Color();
+      const palette = [0x23d1d9, 0xf0b23c, 0xffffff, 0x56d3d8, 0xf7c85a];
+      for (let i = 0; i < CONFETTI; i += 1) {
+        c.setHex(palette[i % palette.length]);
+        confetti.setColorAt(i, c);
+      }
+      if (confetti.instanceColor) confetti.instanceColor.needsUpdate = true;
+    }
+    car.add(confetti);
 
     /* ── the doorway ─────────────────────────────────────────────────────────
        The doors sit BEHIND the jamb plane (z −0.03 against the jamb's front at +0.01) and the
@@ -374,7 +468,7 @@ export class ElevatorScene {
       scene,
       camera,
       host,
-      { shaft, doorL, doorR, coins, carLight, indicator, indicatorCanvas, indicatorTex, disposables },
+      { shaft, doorL, doorR, coins, confetti, pool, ribs, car, carLight, indicator, indicatorCanvas, indicatorTex, disposables },
       reduced,
     );
     inst.layoutCoins(0);
@@ -394,13 +488,17 @@ export class ElevatorScene {
     this.targetFloor = floorIndex;
     this.passed = 0;
     this.indicatorFloor = -1;
+    this.hideCoins = false;
+    this.confettiT = -1;
+    this.confettiSettled = false;
     if (this.reduced) {
       /* No ride. The doors are simply open on the result, which is the frame that carries the
          meaning — the same contract the coin's spin keeps under the same query. */
       this.phase = 'open';
       this.doorGap = 1;
       this.applyDoors();
-      this.drawIndicator(FLOORS[floorIndex], 'ARRIVED');
+      /* An INDEX, not a value — FLOORS[6] is undefined and the surprise floor is 6. */
+      this.drawIndicator(floorIndex, 'ARRIVED');
       cb.onClosed?.();
       cb.onArrived?.();
       cb.onOpen?.();
@@ -408,66 +506,80 @@ export class ElevatorScene {
     }
     this.phase = 'closing';
     this.phaseT = 0;
+    /* performance.now(), the same clock requestAnimationFrame hands the loop. */
+    this.phaseStart = performance.now();
   }
 
-  private step(dt: number) {
+  /** Move to a phase and stamp when it began. */
+  private enter(phase: RidePhase, at: number) {
+    this.phase = phase;
+    this.phaseT = 0;
+    this.phaseStart = at;
+  }
+
+  private step(dt: number, now: number) {
     const p = this.parts;
     this.coinSpin += dt * 0.35;
+    /* Every phase below reads this instead of summing dt — see start(). */
+    const since = (d: number) => (now - this.phaseStart) / 1000 / d;
 
     switch (this.phase) {
       case 'closing': {
-        this.phaseT += dt / T.close;
+        this.phaseT = since(T.close);
         this.doorGap = 1 - easeInOut(Math.min(1, this.phaseT));
         if (this.phaseT >= 1) {
           this.doorGap = 0;
-          this.phase = 'rising';
-          this.phaseT = 0;
+          this.enter('rising', now);
           this.cb.onClosed?.();
           this.drawIndicator(0, 'RISING');
         }
         break;
       }
       case 'rising': {
-        this.phaseT += dt / T.rise;
+        this.phaseT = since(T.rise);
         const t = Math.min(1, this.phaseT);
-        /* Accelerate, cruise, begin to slow — the shape of a real drive, not a linear slide. */
-        const eased = t < 0.42 ? (t / 0.42) ** 2 * 0.34 : 0.34 + easeOutCubic((t - 0.42) / 0.58) * 0.66;
-        const floors = this.targetFloor + 6;
-        this.shaftY = -eased * floors * FLOOR_GAP;
-        const reached = Math.floor(eased * floors);
+        /* Position is the INTEGRAL of a jerk-limited velocity curve — see liftMotion.ts. Quick
+           away, a long glide in, and no step in acceleration at either end. */
+        const travelled = this.profile.at(t);
+        this.speed = this.profile.speed(t);
+        this.accel = accelAt(t);
+
+        const floors = this.targetFloor + FLOOR_COUNT + 5;
+        this.shaftY = -travelled * floors * FLOOR_GAP;
+
+        /* Which landing is level with the car right now. Counted off the DISTANCE, so a floor
+           ticks when it actually passes rather than on a timer that drifts from the geometry. */
+        const reached = Math.floor(travelled * floors);
         if (reached > this.passed) {
           this.passed = reached;
           this.cb.onFloor?.(reached);
-          this.drawIndicator(FLOORS[Math.min(reached, FLOORS.length - 1) % FLOORS.length], 'RISING');
+          this.drawIndicator(reached % FLOOR_COUNT, 'RISING');
         }
         if (this.phaseT >= 1) {
-          this.phase = 'settling';
-          this.phaseT = 0;
+          this.enter('settling', now);
+          this.speed = 0;
+          this.accel = 0;
         }
         break;
       }
       case 'settling': {
-        this.phaseT += dt / T.settle;
+        this.phaseT = since(T.settle);
         const t = Math.min(1, this.phaseT);
         /* The car rocks on its springs; the shaft is already home. */
         const bob = (1 - settleSpring(t)) * 0.055;
         p.shaft.position.y = this.shaftY - bob;
         if (this.phaseT >= 1) {
           p.shaft.position.y = this.shaftY;
-          this.phase = 'opening';
-          this.phaseT = -T.hold / T.open;
+          /* The hold before the doors part is bought by starting the opening phase in the past. */
+          this.enter('opening', now + T.hold * 1000);
           this.cb.onArrived?.();
-          this.drawIndicator(FLOORS[this.targetFloor], 'ARRIVED');
+          this.drawIndicator(this.targetFloor, 'ARRIVED');
         }
         break;
       }
       case 'opening': {
-        this.phaseT += dt / T.open;
-        if (this.phaseT > 0) {
-          this.doorGap = easeInOut(Math.min(1, this.phaseT));
-          /* The car's light spills out as they part. */
-          p.carLight.intensity = 26 + this.doorGap * 18;
-        }
+        this.phaseT = since(T.open);
+        if (this.phaseT > 0) this.doorGap = easeInOut(Math.min(1, this.phaseT));
         if (this.phaseT >= 1) {
           this.doorGap = 1;
           this.phase = 'open';
@@ -481,7 +593,196 @@ export class ElevatorScene {
 
     if (this.phase !== 'settling') p.shaft.position.y = this.shaftY;
     this.applyDoors();
-    this.layoutCoins(this.phase === 'open' || this.phase === 'idle' ? 1 : 0);
+    this.layoutCoins(!this.hideCoins && (this.phase === 'open' || this.phase === 'idle') ? 1 : 0);
+    this.applyRide(dt);
+    this.stepConfetti(dt);
+  }
+
+  /**
+   * What the drive does to everything that is not the position.
+   *
+   * THE CAR SETTLES BACK as it takes up speed and leans into the stop — the whole group shifts a
+   * couple of centimetres against the acceleration, exactly the way a passenger's weight does.
+   * This is why the profile exposes acceleration at all: without it, a car travelling at line
+   * speed and a car standing still look identical, and the drive has no weight.
+   *
+   * THE RIBS STRETCH with speed. Scaling an instanced rib along Y is the cheapest honest motion
+   * blur there is — a real camera would smear them exactly this way, it costs one matrix write
+   * per rib, and it is the difference between "the wall is moving" and "the wall is fast".
+   *
+   * THE LIGHT DIPS on the hard acceleration, the way a cabin light does when the motor pulls.
+   */
+  private applyRide(_dt: number) {
+    const p = this.parts;
+    const a = this.accel;
+    p.car.position.y = -a * 0.055;
+    p.car.rotation.x = a * 0.006;
+
+    const stretch = 1 + this.speed * 5.5;
+    if (this.ribStretch !== stretch) {
+      this.ribStretch = stretch;
+      if (!this.ribScratch) {
+        const T3 = this.THREE;
+        this.ribScratch = { m: new T3.Matrix4(), q: new T3.Quaternion(), pos: new T3.Vector3(), scl: new T3.Vector3() };
+      }
+      const { m, q, pos, scl } = this.ribScratch;
+      const ribs = p.ribs;
+      for (let i = 0; i < ribs.count; i += 1) {
+        ribs.getMatrixAt(i, m);
+        pos.setFromMatrixPosition(m);
+        scl.set(1, stretch, 1);
+        m.compose(pos, q, scl);
+        ribs.setMatrixAt(i, m);
+      }
+      ribs.instanceMatrix.needsUpdate = true;
+    }
+
+    p.carLight.intensity = (this.phase === 'opening' || this.phase === 'open' ? 44 : 26) - Math.abs(a) * 7;
+  }
+
+  /**
+   * The crackers, integrated by hand.
+   *
+   * Euler with drag, which is the right amount of physics for paper: it is light enough that drag
+   * dominates gravity almost immediately, so an accurate integrator would look WRONG — confetti
+   * does not arc like a thrown ball, it bursts, stalls and flutters down. The flutter is the spin
+   * running faster than the fall.
+   */
+  private stepConfetti(dt: number) {
+    const c = this.parts.confetti;
+    /* Frozen: the paper on the floor is still drawn, and not one matrix is written for it again.
+       It stays until the next ride, because a car that has just been showered in confetti has
+       confetti in it — clearing the floor on a timer undoes the thing that just happened. */
+    if (this.confettiSettled) return;
+    if (this.confettiT < 0) {
+      if (c.visible) c.visible = false;
+      return;
+    }
+    const first = this.confettiT === 0;
+    this.confettiT += dt;
+    if (this.confettiT > 5.6) {
+      /* Every airborne piece has faded to nothing by now — the fade below reaches zero at exactly
+         5.6 — so what is left on screen is the settled layer. Stop simulating, keep drawing. */
+      this.confettiSettled = true;
+      return;
+    }
+    c.visible = true;
+
+    if (!this.confettiState) {
+      this.confettiState = {
+        px: new Float32Array(c.count),
+        py: new Float32Array(c.count),
+        pz: new Float32Array(c.count),
+        vx: new Float32Array(c.count),
+        vy: new Float32Array(c.count),
+        vz: new Float32Array(c.count),
+        sp: new Float32Array(c.count),
+        dl: new Float32Array(c.count),
+        rest: new Float32Array(c.count),
+      };
+    }
+    const st = this.confettiState;
+    if (first) {
+      /* THREE EMITTERS, because one is a screensaver and two is a pair of fountains.
+
+         POPPERS, two of them, at the doorway edges pointing up and inward — where a person would
+         actually hold them. They are fired hard enough to REACH THE CEILING; a burst that stalls
+         at head height is a burst you can see the maths in.
+         A SHOWER from the ceiling, already falling, so the car keeps filling after the poppers
+         have spent themselves. Without it the whole thing is over in a second and a half, and
+         what makes a celebration read as a celebration is that it does not stop when you expect.
+
+         The angle is stepped by the golden angle, which distributes directions without ever
+         repeating a fan — the giveaway pattern when a burst is laid out on a plain modulus. */
+      const TOP = CAR_H / 2 - 0.12;
+      const FLOORY = -CAR_H / 2 + 0.1;
+      for (let i = 0; i < c.count; i += 1) {
+        const a = (i * 2.3999632) % (Math.PI * 2);
+        st.sp[i] = 5 + ((i * 5) % 9);
+        st.rest[i] = 0;
+        /* Staggered over a third of a second. Fired on one frame, every piece reaches its apex
+           on the same frame too, and 170 of them draw a horizontal STRIPE across the car — which
+           is the exact tell that this is a particle system and not a room full of paper. */
+        st.dl[i] = ((i * 29) % 23) * 0.015;
+        if (i % 3 === 2) {
+          /* the shower */
+          st.px[i] = (((i * 37) % 100) / 100 - 0.5) * (CAR_W - 0.3);
+          st.py[i] = TOP + ((i * 17) % 13) * 0.09;
+          /* Kept in front of the back wall — the group already sits at z −0.6. */
+          st.pz[i] = -0.45 + (((i * 23) % 100) / 100) * 0.6;
+          st.vx[i] = Math.cos(a) * 0.5;
+          st.vy[i] = -0.5 - ((i * 11) % 7) * 0.1;
+          st.vz[i] = Math.sin(a) * 0.35;
+          /* The shower starts after the poppers have gone up, so it falls into their fall. */
+          st.dl[i] = 0.25 + ((i * 19) % 31) * 0.03;
+          continue;
+        }
+        /* the poppers */
+        const side = i % 3 === 0 ? -1 : 1;
+        st.px[i] = side * (CAR_W / 2 - 0.08);
+        st.py[i] = FLOORY;
+        st.pz[i] = -0.25;
+        const spd = 3.4 + ((i * 7) % 11) * 0.3;
+        st.vx[i] = -side * (0.45 + Math.abs(Math.cos(a)) * 0.85) * spd * 0.5;
+        st.vy[i] = 5.3 + ((i * 13) % 9) * 0.3;
+        st.vz[i] = Math.sin(a * 1.7) * 0.9 - 0.25;
+      }
+    }
+
+    if (!this.confettiScratch) {
+      const T3 = this.THREE;
+      this.confettiScratch = { m: new T3.Matrix4(), q: new T3.Quaternion(), e: new T3.Euler(), pos: new T3.Vector3(), scl: new T3.Vector3(1, 1, 1) };
+    }
+    const { m, q, e, pos, scl } = this.confettiScratch;
+    /* Paper has almost no mass and a great deal of surface, so DRAG DOMINATES GRAVITY within a
+       few frames of the apex. Model it honestly and confetti does what confetti does: it bursts,
+       stalls, and then comes down slowly, which is the whole reason the moment lasts. Model it as
+       a projectile and it drops like gravel — that was the first cut, and it emptied the car in
+       under two seconds. */
+    const drag = 0.955 ** (dt * 60);
+    const fade = Math.max(0, 1 - Math.max(0, this.confettiT - 4.0) / 1.6);
+    const REST_Y = -CAR_H / 2 + 0.02;
+    for (let i = 0; i < c.count; i += 1) {
+      const age = this.confettiT - st.dl[i];
+      if (age <= 0) {
+        /* Not fired yet. Scale zero rather than a second draw call to hide it. */
+        m.compose(pos.set(st.px[i], st.py[i], st.pz[i]), q.identity(), scl.setScalar(0));
+        c.setMatrixAt(i, m);
+        continue;
+      }
+      if (st.rest[i] === 0) {
+        st.vy[i] -= 4.2 * dt;
+        st.vx[i] *= drag;
+        st.vy[i] *= drag;
+        st.vz[i] *= drag;
+        /* The flutter. A falling rectangle does not go straight down — it slips sideways off each
+           face in turn, and that sway is most of what the eye reads as "paper". Free: a sine of a
+           per-piece phase, no extra state. */
+        const sway = Math.sin(age * 3.4 + st.sp[i]) * 0.42;
+        st.px[i] += (st.vx[i] + sway) * dt;
+        st.py[i] += st.vy[i] * dt;
+        st.pz[i] += (st.vz[i] + Math.cos(age * 2.7 + st.sp[i]) * 0.2) * dt;
+        /* THE CAR HAS A FLOOR. Without this the burst falls through the sill and out of the
+           bottom of the frame, which is the one thing that would say "particles" out loud. */
+        if (st.py[i] <= REST_Y) {
+          st.py[i] = REST_Y;
+          st.rest[i] = 1;
+        }
+      }
+      pos.set(st.px[i], st.py[i], st.pz[i]);
+      if (st.rest[i] === 1) {
+        /* Settled: lying flat, at whatever angle it happened to land. */
+        e.set(-Math.PI / 2, 0, st.sp[i] * 1.7);
+      } else {
+        e.set(age * st.sp[i] * 0.7, age * st.sp[i], age * st.sp[i] * 0.4);
+      }
+      q.setFromEuler(e);
+      /* Only what is still in the air fades. What has landed has landed. */
+      scl.setScalar(st.rest[i] === 1 ? 1 : fade);
+      m.compose(pos, q, scl);
+      c.setMatrixAt(i, m);
+    }
+    c.instanceMatrix.needsUpdate = true;
   }
 
   private applyDoors() {
@@ -503,6 +804,7 @@ export class ElevatorScene {
        cost this scene is not allowed to have. */
     if (present === 0 && this.coinsPresent === 0) return;
     this.coinsPresent = present;
+    this.parts.pool.visible = present > 0;
 
     /* The scratch objects are built ONCE. This runs every frame it runs at all, and five
        allocations a frame is 300 objects a second of garbage for a five-second animation —
@@ -531,42 +833,105 @@ export class ElevatorScene {
     coins.instanceMatrix.needsUpdate = true;
   }
 
-  /** The floor indicator, drawn to a canvas — the only text in the scene. */
-  private drawIndicator(floor: number, state: 'READY' | 'RISING' | 'ARRIVED') {
-    if (this.indicatorFloor === floor && state === 'RISING') return;
-    this.indicatorFloor = floor;
+  /**
+   * The floor indicator. The only text in the scene, and it has to hold a three-digit number and
+   * the word SURPRISE in the same bar — so the type is fitted to the plate rather than the plate
+   * to the type. A word that overflows its own housing is the detail that says "mock-up".
+   */
+  private drawIndicator(floorIndex: number, state: 'READY' | 'RISING' | 'ARRIVED') {
+    if (this.indicatorFloor === floorIndex && state === 'RISING') return;
+    this.indicatorFloor = floorIndex;
     const c = this.parts.indicatorCanvas;
     const x = c.getContext('2d');
     if (!x) return;
+    const surprise = floorIndex === SURPRISE_FLOOR;
+    const text = state === 'READY' ? 'BO' : FLOOR_LABEL(floorIndex);
+
     x.clearRect(0, 0, c.width, c.height);
-    x.fillStyle = 'rgba(4,16,20,0.92)';
+    x.fillStyle = 'rgba(4,16,20,0.94)';
     x.fillRect(0, 0, c.width, c.height);
-    x.strokeStyle = 'rgba(35,209,217,0.35)';
+    x.strokeStyle = surprise ? 'rgba(240,178,60,0.55)' : 'rgba(35,209,217,0.35)';
     x.lineWidth = 3;
     x.strokeRect(1.5, 1.5, c.width - 3, c.height - 3);
-    x.fillStyle = state === 'ARRIVED' ? '#f0b23c' : '#23d1d9';
-    x.font = '700 74px ui-monospace, "SFMono-Regular", Menlo, monospace';
+
+    const ink = surprise ? '#f7c85a' : state === 'ARRIVED' ? '#f0b23c' : '#23d1d9';
+    x.fillStyle = ink;
     x.textAlign = 'center';
     x.textBaseline = 'middle';
-    x.fillText(state === 'READY' ? 'BO' : String(floor).padStart(3, '0'), c.width / 2, c.height / 2 + 4);
+    /* Shrink to fit. SURPRISE is eight characters where 000 is three, and a fixed size would
+       either clip the word or waste two thirds of the plate on the number. */
+    let size = 74;
+    do {
+      x.font = `700 ${size}px ui-monospace, "SFMono-Regular", Menlo, monospace`;
+      if (x.measureText(text).width <= c.width - 56) break;
+      size -= 3;
+    } while (size > 22);
+    /* A landing plate is lit from behind, so the glyphs bloom slightly into the housing. */
+    x.shadowColor = ink;
+    x.shadowBlur = surprise ? 26 : 14;
+    x.fillText(text, c.width / 2, c.height / 2 + 3);
+    x.shadowBlur = 0;
     this.parts.indicatorTex.needsUpdate = true;
+  }
+
+  /** Set off the crackers. Called by the panel when the car lands on SURPRISE. */
+  /**
+   * Set off the crackers. Called by the panel when the car lands on SURPRISE.
+   *
+   * It also EMPTIES THE CAR. Customer of the Week pays no coins, and a doorway full of gold on
+   * the one reveal that credits nothing is the picture contradicting the words underneath it.
+   * The prize here is that there is no pile — just the burst.
+   *
+   * `reduced` is a real exit, not a corner cut: someone who has asked their system for less motion
+   * has asked for exactly this, and the reveal still reads because the plate and the card carry it.
+   * (Headless Chromium reports `reduce` by default, so this branch is the one every screenshot
+   * test takes unless the harness says otherwise.)
+   */
+  celebrate() {
+    if (this.disposed || this.reduced) return;
+    this.confettiT = 0;
+    this.confettiSettled = false;
+    this.hideCoins = true;
   }
 
   /* ── loop and lifecycle ────────────────────────────────────────────────── */
 
+  /**
+   * THE PHASES RUN ON THE WALL CLOCK, NOT ON ACCUMULATED FRAME TIME.
+   *
+   * The first cut summed a clamped `dt` — `min(0.05, elapsed)` — to guard against a backgrounded
+   * tab delivering a minute in one frame and teleporting the car through the shaft. The clamp
+   * works and it has a consequence that is worse than the thing it prevents: on a device that
+   * only manages 15fps, every real frame is 66ms and every clamped frame advances 50, so the
+   * animation runs at three quarters speed. Measured on software GL, a ride specified at 6.7s
+   * took over 9. A slow device is supposed to drop frames, not stretch time.
+   *
+   * So each phase records the moment it began and its progress is `(now − start) / duration`. The
+   * ride is 6.7 seconds on every device that exists; a slow one simply draws fewer of them.
+   *
+   * `dt` still exists, for the things that genuinely integrate — the confetti, the coin spin —
+   * and it is still clamped, because those integrate FORWARD and a huge step would fling them.
+   * The difference is that no PHASE depends on it any more.
+   *
+   * A hidden tab pushes the phase's start forward by exactly the time it was hidden, so it
+   * resumes where it stopped rather than finding the ride already over.
+   */
   private start() {
     const tick = (now: number) => {
       if (this.disposed) return;
       this.raf = requestAnimationFrame(tick);
       if (document.hidden) {
+        this.hiddenAt = this.hiddenAt || now;
         this.last = now;
         return;
       }
-      /* Clamped: a tab that was backgrounded for a minute must not deliver a minute of dt and
-         teleport the car through the whole shaft in one frame. */
+      if (this.hiddenAt) {
+        this.phaseStart += now - this.hiddenAt;
+        this.hiddenAt = 0;
+      }
       const dt = Math.min(0.05, this.last ? (now - this.last) / 1000 : 0.016);
       this.last = now;
-      this.step(dt);
+      this.step(dt, now);
       this.renderer.render(this.scene, this.camera);
     };
     this.raf = requestAnimationFrame(tick);
