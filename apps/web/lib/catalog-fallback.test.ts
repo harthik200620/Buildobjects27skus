@@ -69,6 +69,31 @@ describe('the catalogue with no search server and no database', () => {
     expect(doc?.sku_code).toBe(first.sku_code);
   });
 
+  it('answers a question asked as a whole sentence, not just a keyword', async () => {
+    const { suggest } = await import('./catalog');
+
+    /* The reported failure, verbatim. The matcher tested the whole query as ONE substring, so a
+       sentence matched nothing, the assistant's tool came back empty, and it told a customer we
+       do not stock solar panels while three of them sat in the catalogue. */
+    const asked = await suggest('What steel and solar panels do you have');
+    expect(asked.skus.length).toBeGreaterThan(0);
+    expect(asked.skus.some((s) => s.category === 'solar-panels')).toBe(true);
+
+    for (const q of ['what cement do you sell', 'show me floor tiles', 'cheapest bulb']) {
+      expect((await suggest(q)).skus.length, q).toBeGreaterThan(0);
+    }
+  });
+
+  it('ranks the products that answer more of the question first', async () => {
+    const { suggest } = await import('./catalog');
+
+    /* "steel" also appears in a fire extinguisher's specification. Scoring by how many of the
+       query's words a document matches puts the panels — which match two — above it. Without the
+       ranking the first thing the customer sees for this question is an extinguisher. */
+    const found = await suggest('steel and solar panels');
+    expect(found.skus[0]?.category).toBe('solar-panels');
+  });
+
   it('still lists its categories', async () => {
     const { allCategories } = await import('./catalog');
     const cats = await allCategories();

@@ -50,7 +50,12 @@ async function catalogueScope(): Promise<ToolResult> {
   ledger.number(cats.length, brands.length);
   return {
     data: {
-      categories: cats.map((c) => c.name),
+      /* Split, not one flat list. A category with no products yet is not a category we do not
+         cover, and the assistant cannot tell the two apart from names alone — which is exactly
+         how "steel" got answered as "we do not stock that" rather than "it is coming". */
+      on_the_shelf: cats.filter((c) => c.status === 'live').map((c) => c.name),
+      coming_soon: cats.filter((c) => c.status !== 'live').map((c) => c.name),
+      coming_soon_means: 'Announced, ours, and not stocked yet. Say it is coming soon. Never say we do not stock it, and never quote a price for it.',
       brands: brands.map((b) => b.name),
       counts: { categories: cats.length, brands: brands.length },
       also: ['the BO Estimator — what a house costs to build in Telangana and Andhra Pradesh', 'the BO Passport', 'BO Coins', 'the cart and delivery dates'],

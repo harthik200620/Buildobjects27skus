@@ -27,10 +27,11 @@
  *   session already carries a served pincode — the store would not have let them in otherwise.
  */
 
+import { allCategories } from '@/lib/catalog';
 import { generate as anthropicGenerate, hasAnthropicKey } from './anthropic';
 import { type GeminiContent, GeminiKeyMissing, type GenerateArgs, type GenerateResult, generate as geminiGenerate, hasKey as hasGeminiKey } from './gemini';
 import { FactLedger } from './ledger';
-import { SYSTEM_PROMPT, TOOL_SCHEMAS, WELCOME } from './prompt';
+import { SYSTEM_PROMPT, scopeBlock, TOOL_SCHEMAS, WELCOME } from './prompt';
 import { callTool, type ToolContext } from './tools';
 import { checkScope, trimProse, type Violation, validateAll } from './validator';
 
@@ -138,7 +139,29 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
   }
   contents.push({ role: 'user', parts: [{ text: input.message }] });
 
+  /*
+   * THE CATALOGUE'S SHAPE, BEFORE THE FIRST TOKEN.
+   *
+   * One memoised read — the live table when there is a database, the frozen snapshot when there
+   * is not — and it does two jobs at once:
+   *
+   *   IT GOES IN THE PROMPT, so the model knows what the store sells and what it is about to sell
+   *   without spending a get_catalogue_scope round trip to find out. That call costs a whole
+   *   extra generation; this costs about a hundred and forty tokens, once.
+   *
+   *   IT GOES IN THE LEDGER, because the validator rejects any named entity the tools did not
+   *   return, and a category the model only ever saw in its instructions would be rejected as an
+   *   invention. Telling the model something and then refusing to let it repeat that thing is the
+   *   subtle way this feature would have failed.
+   */
+  const cats = await allCategories();
+  const system = SYSTEM_PROMPT + scopeBlock(cats);
+
   const ledger = new FactLedger();
+  ledger.entity(...cats.map((c) => c.name));
+  /* Whether the TOOLS found anything, which is a different question from whether the ledger has
+     anything in it now that the scope above is seeded into it. */
+  let toolFacts = false;
   const ui: unknown[] = [];
   const toolTrace: EngineTrace['tool_calls'] = [];
   let modelMs = 0;
@@ -148,7 +171,7 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
 
   for (; rounds < MAX_TOOL_ROUNDS; rounds++) {
     const r = await generate({
-      system: SYSTEM_PROMPT,
+      system,
       contents,
       tools: TOOL_SCHEMAS,
       toolMode: 'AUTO',
@@ -186,6 +209,7 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
       }),
     );
     for (const out of outs) {
+      if (!out.ledger.isEmpty) toolFacts = true;
       ledger.merge(out.ledger);
       if (out.ui?.length) ui.push(...out.ui);
     }
@@ -222,8 +246,15 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
   }
 
   /** The tools found facts; the prose did not survive. Hand over the cards. */
-  const giveUp = (violations: Violation[]): EngineResult => ({
-    reply: honestFallback(ledger, toolTrace),
+  const giveUp = (violations: Violation[]): EngineResult => {
+    /* Logged for the same reason the chat route logs its 502: the reply the reader gets says
+       nothing about WHY the draft was dropped, and without this the only evidence that the
+       validator rejected something is a fallback sentence that looks like a deliberate answer. */
+    console.warn('[chat] draft rejected:', violations.map((v) => `${v.kind}:${v.token}`).join(' '));
+    return giveUpBody(violations);
+  };
+  const giveUpBody = (violations: Violation[]): EngineResult => ({
+    reply: honestFallback(toolFacts, toolTrace, cats),
     ui,
     suggestions: suggestionsFrom(ui),
     refused: true,
@@ -248,7 +279,7 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
     contents.push({ role: 'model', parts: [{ text: draft }] });
     contents.push({ role: 'user', parts: [{ text: verdict.repairInstruction as string }] });
 
-    const r2 = await generate({ system: SYSTEM_PROMPT, contents, toolMode: 'NONE', thinkingBudget: 0, maxOutputTokens: 900, temperature: 0.1 });
+    const r2 = await generate({ system, contents, toolMode: 'NONE', thinkingBudget: 0, maxOutputTokens: 900, temperature: 0.1 });
     modelMs += r2.latency_ms;
     if (r2.usage) tokens = r2.usage;
 
@@ -290,9 +321,15 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
  * directly and drops the prose that failed. The reader gets the cards; only the sentence around
  * them is lost, which is the right thing to lose.
  */
-function honestFallback(ledger: FactLedger, calls: EngineTrace['tool_calls']): string {
+function honestFallback(toolFacts: boolean, calls: EngineTrace['tool_calls'], cats: { name: string; status: 'live' | 'upcoming' }[]): string {
   if (!calls.length) return 'You can ask me any question you have regarding Build Objects.';
-  if (ledger.isEmpty) return 'Nothing in the catalogue matched that. Try naming the material — cement, tiles, bulbs, solar, CCTV, glass.';
+  if (!toolFacts) {
+    /* Named from the live table rather than a hand-written list, which had drifted: it offered
+       "solar" and "CCTV" but not the fire extinguishers or the total stations, so the sentence
+       meant to rescue a failed search was itself under-selling the shelf. */
+    const live = cats.filter((c) => c.status === 'live').map((c) => c.name);
+    return `Nothing in the catalogue matched that. What is on the shelf today: ${live.join(', ')}.`;
+  }
   return 'Straight from the catalogue below — I could not write a summary I trusted.';
 }
 

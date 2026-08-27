@@ -113,6 +113,55 @@ function allHits(): SkuSearchDoc[] {
 const HITS_PER_PAGE = 24;
 
 /**
+ * THE QUERY, AS TOKENS.
+ *
+ * This used to lowercase the whole query and test it as ONE substring against each field. That
+ * works for "solar panels", because a category is literally called Solar Panels, and it returns
+ * nothing at all for "steel and solar panels" — no field contains that phrase. Meilisearch
+ * tokenises, so on a machine with a search server the difference never showed; on the deployment,
+ * which has no search server, every multi-word question returned zero hits.
+ *
+ * The assistant is the caller that made this matter. It passes the customer's question through
+ * more or less as typed, got nothing back, and told a customer we do not stock solar panels —
+ * while three of them sat in the catalogue. A grounded assistant is only as truthful as its
+ * search: an empty result set is indistinguishable from an empty shelf.
+ *
+ * Stopwords go because they are what a question is MADE of ("what do you have", "how much is")
+ * and every one of them would score against something. What is left is the nouns.
+ */
+const STOPWORDS = new Set(
+  (
+    'a an and or the of in on at for to with is are was were do does did you your yours we our i me my mine it its ' +
+    'what which who whom how why when where have has had can could would should will shall may might must ' +
+    'show tell give get buy need want looking look find search please any some all there this that these those ' +
+    'best good better cheap cheapest available stock stocked sell sells selling price prices cost costs much many ' +
+    'about like just also more most than then them they he she his her be been being am no not yes'
+  ).split(' '),
+);
+
+function queryTokens(q: string): string[] {
+  const out: string[] = [];
+  for (const raw of q.toLowerCase().split(/[^\p{L}\p{N}]+/u)) {
+    if (raw.length < 2 || STOPWORDS.has(raw)) continue;
+    out.push(raw);
+  }
+  return out;
+}
+
+/**
+ * One token against one haystack.
+ *
+ * The plural fold is deliberately the crudest possible: an English trailing s, and only on a word
+ * long enough that dropping it cannot turn it into something else. "panels" has to find "Panel"
+ * and "tiles" has to find "Tile", and a stemmer would be a dependency and a whole class of
+ * surprise for two characters of benefit.
+ */
+function matches(hay: string, token: string): boolean {
+  if (hay.includes(token)) return true;
+  return token.length > 3 && token.endsWith('s') && hay.includes(token.slice(0, -1));
+}
+
+/**
  * Search, filter, sort and facet the frozen catalogue in memory.
  *
  * Twenty-eight documents. A linear scan over them is faster than the network hop it replaces, so
@@ -132,12 +181,24 @@ export function staticSearch(state: FilterState & { q: string; page: number; cat
   if (category) hits = hits.filter((h) => h.category === category);
 
   if (state.q) {
-    const q = state.q.toLowerCase();
-    hits = hits.filter((h) =>
-      [h.name, h.brand, h.category_name, h.model_no, h.short_description, ...(h.synonyms ?? []), ...(h.spec_text ?? [])]
-        .filter(Boolean)
-        .some((v) => String(v).toLowerCase().includes(q)),
-    );
+    /* TOKENS, NOT ONE SUBSTRING — see queryTokens above for why. */
+    const tokens = queryTokens(state.q);
+    if (tokens.length) {
+      const scored: Array<{ h: SkuSearchDoc; score: number }> = [];
+      for (const h of hits) {
+        const hay = [h.name, h.brand, h.category_name, h.model_no, h.short_description, ...(h.synonyms ?? []), ...(h.spec_text ?? [])]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        let score = 0;
+        for (const t of tokens) if (matches(hay, t)) score += 1;
+        if (score) scored.push({ h, score });
+      }
+      /* Ranked by how much of the question a document answers, so "steel and solar panels" puts
+         the three panels above a fire extinguisher that merely has steel in its specification. */
+      scored.sort((a, b) => b.score - a.score);
+      hits = scored.map((x) => x.h);
+    }
   }
   if (state.brand?.length) {
     const want = new Set(state.brand);

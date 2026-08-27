@@ -411,6 +411,46 @@ function toNumber(s: string): number {
 }
 
 /**
+ * GRAMMAR IS NEVER A NAME, WHEREVER IT STANDS.
+ *
+ * SENTENCE_STARTERS is only consulted at the start of a sentence, which is right for a word like
+ * "Cheapest" — ambiguous there, plausibly part of a name anywhere else. It is wrong for a pronoun.
+ * A draft reading "Let me check the panels and I'll give you the price" had "Let" and "I'll" taken
+ * for brand names, neither was in the ledger, and the whole reply was thrown away and replaced by
+ * a canned line — for two words of ordinary English. Any answer containing "I'll" was going in
+ * the bin, and the only symptom was a reply that looked deliberate.
+ *
+ * These are function words: pronouns, auxiliaries, determiners, conjunctions, prepositions. None
+ * can be a brand, a seller or a product on its own, so position does not come into it. Words that
+ * could go either way stay in SENTENCE_STARTERS, where the position test still guards them.
+ */
+const FUNCTION_WORDS = new Set(
+  (
+    'i we you he she it they me us him her them my our your their its his hers ours yours theirs ' +
+    'the a an this that these those there here let lets ' +
+    'and or but nor so yet if then than as because since while although though whether ' +
+    'of in on at by for to from with without into onto over under about across against ' +
+    'is am are was were be been being do does did done have has had ' +
+    'will would shall should can could may might must ' +
+    'no not yes ok okay just also too very only even still'
+  ).split(' '),
+);
+
+/**
+ * "I'll" → "i", "store's" → "store".
+ *
+ * A contraction is the same word wearing a suffix, and matching the suffixed form against a word
+ * list is how the list develops holes: I'll, I'm, I've, I'd, we'll, we're, that's and here's
+ * would each need their own entry, and the next one nobody thought of fails silently.
+ */
+function bareWord(w: string): string {
+  return w
+    .toLowerCase()
+    .replace(/['\u2019](?:ll|re|ve|d|m|s)$/u, '')
+    .replace(/[^a-z0-9]/g, '');
+}
+
+/**
  * Candidate named entities: capitalised runs, and anything in quotes.
  *
  * Deliberately over-collects and then filters, because a missed brand is a
@@ -422,12 +462,31 @@ export function extractEntities(text: string): string[] {
 
   // Capitalised runs: "UltraTech", "Birla Shakti", "JSW Concreel"
   for (const m of body.matchAll(capitalisedRuns())) {
-    const raw = m[1].trim();
-    const first = raw.split(/\s+/)[0].toLowerCase();
-    // A capitalised word at the start of a sentence is usually just grammar.
+    const parts = m[1].trim().split(/\s+/);
     const idx = m.index ?? 0;
     const atSentenceStart = idx === 0 || /[.!?:\n]\s*$/.test(body.slice(Math.max(0, idx - 3), idx));
-    if (atSentenceStart && SENTENCE_STARTERS.has(first)) continue;
+
+    /*
+     * TRIM THE LEADING GRAMMAR, DO NOT DISCARD THE RUN.
+     *
+     * This used to test the run's FIRST word and skip the whole run if it was a sentence starter,
+     * which quietly opened the guard's biggest hole: "The" is a sentence starter, "The UltraTech"
+     * is one capitalised run, and so every brand a sentence happened to begin with went
+     * uncollected. An invented seller only had to be preceded by the word "The" to walk straight
+     * past the check this file exists to perform.
+     *
+     * Trimming instead keeps the name and drops only the grammar in front of it. A run that is
+     * nothing BUT grammar trims to empty and is skipped, which is the old behaviour for the case
+     * the old code actually got right.
+     */
+    let from = 0;
+    while (from < parts.length) {
+      const w = bareWord(parts[from]);
+      const grammar = FUNCTION_WORDS.has(w) || ((atSentenceStart || from > 0) && SENTENCE_STARTERS.has(w));
+      if (!grammar) break;
+      from += 1;
+    }
+    const raw = parts.slice(from).join(' ');
     if (raw.length < 3) continue;
     out.add(raw);
   }
