@@ -5,6 +5,7 @@ import {
   buildSchedule,
   type CatalogPrices,
   compareQuote,
+  type Decision,
   type EstimateInputs,
   estimate,
   matchLabel,
@@ -68,10 +69,11 @@ describe('TIME — the calendar and the cash flow', () => {
 });
 
 describe('TIME — the regret curve', () => {
-  const addBedroom = {
+  const addBedroom: Decision = {
     id: 'floors',
     label: 'Add a floor',
-    to: { ...base, floors: 2 },
+    detail: 'one more slab',
+    apply: (a) => ({ ...a, floors: 2 }),
   };
   const curve = regretCurve(result, addBedroom);
 
@@ -113,7 +115,7 @@ describe('TIME — the regret curve', () => {
   });
 
   it('prices a decision that costs nothing as costing nothing, at every phase', () => {
-    const noop = { id: 'noop', label: 'No change', to: { ...base } };
+    const noop: Decision = { id: 'noop', label: 'No change', detail: 'nothing', apply: (a) => a };
     for (const p of regretCurve(result, noop)) {
       expect(p.terms.baseDelta).toBe(0);
       expect(p.terms.rework).toBe(0);

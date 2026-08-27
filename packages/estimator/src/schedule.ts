@@ -32,7 +32,7 @@
  * so a buyer can argue with any one of them. A single confident number here would be a lie with a
  * decimal point in it.
  */
-import { buildMonths, SCHEDULE, STRUCTURAL_SPLIT } from '../rates/2026-08';
+import { buildMonths, QUANTITIES, SCHEDULE, STRUCTURAL_SPLIT } from '../rates/2026-08';
 import { estimate } from './estimate';
 import { materialise } from './materials';
 import type { CatalogPrices, EstimateInputs, EstimateResult, LineItem, PhaseKey, Tier } from './types';
@@ -168,13 +168,101 @@ export function billedFraction(line: LineItem, throughPhaseIdx: number, order: P
   return own >= 0 && throughPhaseIdx >= own ? 1 : 0;
 }
 
-/** A decision a buyer might revisit: one field of the inputs, and what it would become. */
+/**
+ * A decision a buyer might revisit.
+ *
+ * A PATCH, NOT A FINISHED SET OF INPUTS - and that shape exists because of a wrong number that
+ * shipped. "Add a bedroom" reported MINUS 780 rupees on a 30x40 G+1, and minus 2.4 lakh on a
+ * 40x60: adding a bedroom appeared to make the house cheaper.
+ *
+ * Nothing in the arithmetic was broken. The engine prices a house two ways depending on what it
+ * was told. With no room counts it DERIVES them from area - a door every 150 sqft, a bedroom every
+ * 450 - and bills plumbing as one spread line. Given explicit counts it bills doors and points per
+ * room and itemises every fixture set. Both are reasonable; they are not the same model. The old
+ * decision handed the engine explicit room counts for the first time, so the comparison was never
+ * "one more bedroom" - it was "derived house versus itemised house", and one bedroom was lost in
+ * the noise of the switch.
+ *
+ * Two things stop it happening again. The decision is a patch applied to the SAME inputs the
+ * baseline was priced from, so a caller cannot build one side out of different state - which is
+ * exactly what a React component did with the old `to: EstimateInputs`. And `standardDecisions`
+ * below expresses every change in terms the engine already models, without ever switching the
+ * house into a different mode.
+ */
 export interface Decision {
   /** Stable id so the UI can key a curve to a control. */
   id: string;
   label: string;
-  /** The inputs with this decision applied. The engine re-runs on it; nothing is estimated by hand. */
-  to: EstimateInputs;
+  /** One line saying what the buyer is actually being quoted, for the UI to print under the figure. */
+  detail: string;
+  /** Applied to the anchor. The engine re-runs on the result; nothing is estimated by hand. */
+  apply: (anchor: EstimateInputs, derived: EstimateResult['derived']) => EstimateInputs;
+}
+
+/**
+ * The decisions worth pricing, defined where the model lives.
+ *
+ * These were four object literals inside a React component. Moving them here is not tidying: the
+ * hard part of each one is deciding what the change PHYSICALLY IS, which is a modelling question,
+ * and a modelling question written in a component is a modelling question nobody tests.
+ *
+ * A BEDROOM IS FLOOR AREA. The old version incremented a room counter and left the house exactly the
+ * same size, which prices the paint on a wall that was never built. A bedroom is its own floor plus
+ * its share of the corridor, the landing and the services that reach it - which is precisely what
+ * the rate card's `sqft_per_bedroom` already means, so the change is that much more house.
+ *
+ * A FLOOR needs no such help: the engine already derives area as footprint times floors, so adding
+ * one grows the house on its own.
+ */
+export function standardDecisions(base: EstimateResult): Decision[] {
+  const inputs = base.inputs;
+  const bua = base.derived.builtUpSqft;
+  /* The same arithmetic deriveGeometry does. `floorsCount` is not on the exposed derived object,
+     and reaching for a field that is not there is how a silent NaN gets into an area. */
+  const floorsCount = Math.max(1, Math.floor(inputs.floors) + 1);
+  const perFloor = bua / floorsCount;
+  const bedroomSqft = QUANTITIES.sqft_per_bedroom;
+
+  const out: Decision[] = [];
+
+  if (inputs.floors < 4) {
+    out.push({
+      id: 'floors',
+      label: `Add a floor (G+${inputs.floors + 1})`,
+      detail: `${Math.round(perFloor).toLocaleString('en-IN')} sqft more house, and one more slab to cast`,
+      apply: (a) => ({ ...a, floors: a.floors + 1 }),
+    });
+  }
+
+  out.push({
+    id: 'bedroom',
+    label: 'Add a bedroom',
+    detail: `${bedroomSqft} sqft more house - the room and its share of what serves it`,
+    apply: (a) => ({ ...a, builtUpOverrideSqft: bua + bedroomSqft }),
+  });
+
+  if (inputs.tier !== 'premium') {
+    const to: Tier = inputs.tier === 'basic' ? 'medium' : 'premium';
+    out.push({
+      id: 'tier',
+      label: 'Upgrade the finish',
+      detail: `Every finish line re-priced at the ${to} rate`,
+      apply: (a) => ({ ...a, tier: to }),
+    });
+  }
+
+  /* Optional on the type and defaulted to 10 everywhere it is read, so an undefined height must
+     not silently drop the decision — `undefined < 12` is false. */
+  if ((inputs.floorHeightFt ?? 10) < 12) {
+    out.push({
+      id: 'height',
+      label: 'Raise the ceiling to 12 ft',
+      detail: 'Taller walls, more plaster and paint, same floor area',
+      apply: (a) => ({ ...a, floorHeightFt: 12 }),
+    });
+  }
+
+  return out;
 }
 
 export interface ChangeCostTerms {
@@ -211,7 +299,9 @@ const CAST_LINES = new Set(['cement', 'steel', 'bricks', 'sand', 'aggregate', 'f
  * against.
  */
 export function regretCurve(base: EstimateResult, decision: Decision, catalog: CatalogPrices = {}): ChangeCostPoint[] {
-  const after = estimate(decision.to, catalog);
+  /* Patched onto the very inputs `base` was priced from, so the two sides cannot diverge in
+     anything except the decision itself. */
+  const after = estimate(decision.apply(base.inputs, base.derived), catalog);
   const order = phaseOrder(base);
   const schedule = buildSchedule(base);
   const tier: Tier = base.inputs.tier;

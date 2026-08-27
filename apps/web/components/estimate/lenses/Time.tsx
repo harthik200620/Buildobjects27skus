@@ -43,11 +43,18 @@ const PAD = { l: 72, r: 24, t: 18, b: 34 };
 
 export default function Time({ result, decisions }: TimeProps) {
   const schedule = React.useMemo(() => buildSchedule(result), [result]);
-  const [decisionId, setDecisionId] = React.useState<string | null>(decisions[0]?.id ?? null);
+  const [decisionId, setDecisionId] = React.useState<string>(decisions[0]?.id ?? '');
   const [month, setMonth] = React.useState(0);
 
-  const decision = decisions.find((d) => d.id === decisionId) ?? null;
-  const curve = React.useMemo(() => (decision ? regretCurve(result, decision) : []), [result, decision]);
+  /*
+   * EVERY decision is priced, not just the open one.
+   *
+   * The old version costed one curve at a time and the picks were bare labels, so the question a
+   * reader actually arrives with — WHICH of these is the expensive one to get wrong — could only be
+   * answered by clicking all four and remembering. Four curves is four engine runs, memoised on the
+   * result, and it turns the picker into the answer.
+   */
+  const curves = React.useMemo(() => decisions.map((d) => ({ d, curve: regretCurve(result, d) })), [result, decisions]);
 
   const peak = schedule.peakMonth;
   const maxMonth = schedule.months;
@@ -58,12 +65,23 @@ export default function Time({ result, decisions }: TimeProps) {
     const p = schedule.phases.find((x) => month >= x.startMonth && month < x.endMonth);
     return p ?? schedule.phases[schedule.phases.length - 1];
   }, [schedule, month]);
-  const pointAt: ChangeCostPoint | null = React.useMemo(() => {
-    if (!curve.length) return null;
-    if (month <= 0) return curve[0];
-    const idx = schedule.phases.findIndex((x) => x.key === phaseAt?.key);
-    return curve[idx + 1] ?? curve[curve.length - 1];
-  }, [curve, month, schedule, phaseAt]);
+  /* Where on any curve the scrubber is standing. Shared by the picker and the detail below it, so
+     the figure on a button and the figure under the chart can never disagree. */
+  const pointOn = React.useCallback(
+    (curve: ChangeCostPoint[]): ChangeCostPoint | null => {
+      if (!curve.length) return null;
+      if (month <= 0) return curve[0];
+      const idx = schedule.phases.findIndex((x) => x.key === phaseAt?.key);
+      return curve[idx + 1] ?? curve[curve.length - 1];
+    },
+    [month, schedule, phaseAt],
+  );
+
+  /* Falls back to the first rather than to nothing: this section has no meaning with no decision
+     open, and the old toggle-off left the reader looking at a heading and a blank. */
+  const selected = curves.find((c) => c.d.id === decisionId) ?? curves[0] ?? null;
+  const curve = selected?.curve ?? [];
+  const pointAt = pointOn(curve);
 
   return (
     <div className="lens-time">
@@ -120,35 +138,51 @@ export default function Time({ result, decisions }: TimeProps) {
           </h3>
           <p className="regret-lede">The same change, priced at each point in the build.</p>
           {/*
-           * Pressing the chosen one clears it. These are toggles, not tabs: a tab set must always
-           * have exactly one selected member, and there is no reason a reader who opened a curve
-           * cannot put it away again. `aria-pressed` rather than `role="tab"` for the same reason
-           * — a tablist that can end up with nothing selected lies to a screen reader.
+           * A RADIO GROUP, and one of them is always on.
+           *
+           * These used to be toggles that could all be off, which left the heading standing over an
+           * empty box — a section called "changing your mind" showing nothing at all. There is no
+           * reading of this feature in which no decision selected is a useful state.
+           *
+           * Each one carries its own price at the month the scrubber is standing on, and the
+           * multiple against deciding it on paper. That multiple is the whole point of the feature:
+           * the same bedroom is one number today and another number in month nine, and until you
+           * put the two side by side nobody believes it.
            */}
-          <div className="regret-picks" role="group" aria-label="Price a decision">
-            {decisions.map((d) => (
-              <button
-                key={d.id}
-                type="button"
-                aria-pressed={decisionId === d.id}
-                className={`regret-pick${decisionId === d.id ? ' is-on' : ''}`}
-                onClick={() => setDecisionId((cur) => (cur === d.id ? null : d.id))}
-              >
-                {d.label}
-              </button>
-            ))}
+          <div className="regret-picks" role="radiogroup" aria-label="Price a decision">
+            {curves.map(({ d, curve: c }) => {
+              const here = pointOn(c);
+              const paper = c[0]?.likely ?? 0;
+              const mult = paper > 0 && here ? here.likely / paper : 1;
+              const on = selected?.d.id === d.id;
+              return (
+                <button
+                  key={d.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={on}
+                  className={`regret-pick${on ? ' is-on' : ''}`}
+                  onClick={() => setDecisionId(d.id)}
+                >
+                  <span className="regret-pick-label">{d.label}</span>
+                  <span className="regret-pick-fig fig">{here ? formatRupees(here.likely) : '—'}</span>
+                  {/* Only once it is meaningfully worse than the paper price — "×1.0 vs on paper"
+                      is noise on every button before the ground is broken. */}
+                  {mult >= 1.05 && <span className="regret-pick-mult">{mult.toFixed(1)}× vs on paper</span>}
+                </button>
+              );
+            })}
           </div>
 
-          {curve.length > 0 ? (
-            <RegretChart curve={curve} atMonth={month} months={maxMonth} />
-          ) : (
-            <p className="regret-none">Pick one to see what it costs at each point in the build.</p>
-          )}
+          {curve.length > 0 && <RegretChart curve={curve} atMonth={month} months={maxMonth} />}
 
           {pointAt && (
             <div className="regret-now">
               <p className="micro">{pointAt.phaseLabel}</p>
               <p className="regret-figure fig">{formatRupees(pointAt.likely)}</p>
+              {/* What the buyer is actually being quoted. "Add a bedroom" is not self-explanatory —
+                  it is 450 sqft of house, and a figure that size needs to say so. */}
+              {selected && <p className="regret-detail">{selected.d.detail}</p>}
               {pointAt.low !== pointAt.high && (
                 <p className="regret-band fig">
                   {formatRupees(pointAt.low)} – {formatRupees(pointAt.high)}

@@ -14,6 +14,7 @@ import {
   LEDGER_LABEL,
   type LineItem,
   type StateCode,
+  standardDecisions,
   TIER_LABEL,
   TIERS,
   type Tier,
@@ -191,31 +192,19 @@ export default function Estimator({
   const picks = inputs.picks ?? [];
 
   /*
-   * What the timeline offers to price. Each is a real `EstimateInputs`, so the engine is re-run
-   * on it and the base delta carries the same provenance as every other figure on the page —
-   * nothing here is a rule of thumb about what a floor costs.
+   * What the timeline offers to price.
+   *
+   * These four were object literals right here, and one of them was wrong in a way a component is
+   * the wrong place to catch: "Add a bedroom" incremented a room counter without making the house
+   * any bigger, and — because handing the engine explicit room counts switches it out of its
+   * derived-from-area mode — priced out at MINUS 780 rupees. Adding a bedroom appeared to save
+   * money.
+   *
+   * Deciding what a change physically IS is a modelling question. It lives in the engine now,
+   * beside the rate card it has to agree with, where a test can hold it to costing more than
+   * nothing. See standardDecisions in packages/estimator/src/schedule.ts.
    */
-  const decisions: Decision[] = React.useMemo(
-    () =>
-      [
-        inputs.floors < 4 ? { id: 'floors', label: `Add a floor (G+${inputs.floors + 1})`, to: { ...inputs, floors: inputs.floors + 1 } } : null,
-        {
-          id: 'bedroom',
-          label: 'Add a bedroom',
-          to: {
-            ...inputs,
-            rooms: {
-              bedrooms: (inputs.rooms?.bedrooms ?? Math.max(1, Math.round(result.derived.builtUpSqft / 450))) + 1,
-              bathrooms: (inputs.rooms?.bathrooms ?? 2) + 1,
-              kitchens: inputs.rooms?.kitchens ?? 1,
-            },
-          },
-        },
-        inputs.tier !== 'premium' ? { id: 'tier', label: 'Upgrade the finish', to: { ...inputs, tier: inputs.tier === 'basic' ? 'medium' : 'premium' } } : null,
-        { id: 'height', label: 'Raise the ceiling to 12 ft', to: { ...inputs, floorHeightFt: 12 } },
-      ].filter(Boolean) as Decision[],
-    [inputs, result.derived.builtUpSqft],
-  );
+  const decisions: Decision[] = React.useMemo(() => standardDecisions(result), [result]);
 
   return (
     <div className="est">

@@ -970,36 +970,67 @@
     font-size: var(--t-cap);
     line-height: 20px;
   }
+  /*
+   * The picker IS the comparison.
+   *
+   * These were pills carrying a label and nothing else, so choosing between them meant clicking
+   * all four and holding the figures in your head. Each one now shows what that change costs at
+   * the month the scrubber is standing on, which makes the row answer the question the reader came
+   * with — which of these is the expensive one to get wrong — without any clicking at all.
+   *
+   * A grid rather than wrapped pills because the figures have to line up to be compared; ragged
+   * right edges turn a comparison back into a list.
+   */
   .regret-picks {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 8px;
     margin: var(--s-3) 0 var(--s-4);
   }
   .regret-pick {
-    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px 12px;
     border: 1px solid var(--hair-2);
-    border-radius: var(--radius-pill);
+    border-radius: var(--r-2);
     background: none;
     color: var(--ink-2);
-    font-size: var(--t-fine);
+    text-align: left;
     cursor: pointer;
     transition:
       border-color var(--dur-2) var(--ease-out),
       color var(--dur-2) var(--ease-out);
   }
+  .regret-pick:hover {
+    border-color: var(--hair);
+  }
   .regret-pick.is-on {
     border-color: var(--color-brand);
     color: var(--ink-1);
   }
-  .regret-pick[aria-pressed="true"] {
-    border-color: var(--color-brand);
-    color: var(--ink-1);
+  .regret-pick-label {
+    font-size: var(--t-fine);
+    line-height: 16px;
   }
-  .regret-none {
-    padding: var(--s-5) 0;
+  .regret-pick-fig {
+    color: var(--ink-1);
+    font-size: var(--t-body);
+    line-height: 22px;
+  }
+  .regret-pick-mult {
     color: var(--ink-3);
-    font-size: var(--t-cap);
+    font-size: var(--t-fine);
+    line-height: 15px;
+  }
+  /* What the buyer is actually buying, under the figure. "Add a bedroom" is 450 sqft of house, and
+     a figure that size has to say what it bought. */
+  .regret-detail {
+    max-width: 46ch;
+    margin-top: 2px;
+    color: var(--ink-2);
+    font-size: var(--t-fine);
+    line-height: 17px;
   }
   .regret-chart {
     width: 100%;
