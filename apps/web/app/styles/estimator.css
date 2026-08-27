@@ -1269,6 +1269,25 @@
     line-height: 19px;
   }
   .truth-empty,
+  /* The questions sit above the comparison because they are the only part of this card a reader
+     can act on today: a table tells you a number is high, a question tells you what to say. */
+  .truth-ask {
+    margin-top: var(--s-4);
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid color-mix(in oklab, var(--color-brand) 34%, transparent);
+    border-radius: var(--r-2);
+    background: linear-gradient(180deg, color-mix(in oklab, var(--color-brand) 8%, transparent), transparent);
+  }
+  .truth-ask-list {
+    margin: 6px 0 0;
+    padding-left: 1.15rem;
+    color: var(--ink-1);
+    font-size: var(--t-cap);
+    line-height: 21px;
+  }
+  .truth-ask-list li + li {
+    margin-top: 5px;
+  }
   .truth-reading {
     margin-top: var(--s-3);
     color: var(--ink-2);

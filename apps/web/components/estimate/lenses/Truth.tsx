@@ -216,6 +216,31 @@ export default function Truth({ result, catalog }: TruthProps) {
         </p>
       )}
 
+      {/*
+       * WHAT THE READER STILL NEEDS.
+       *
+       * A quotation is half a conversation, and the absent half is where the money goes: four
+       * lines on the test document are lump sums with no quantity behind them, and no comparison
+       * against any rate card can tell you whether 4.2 lakh of brickwork is fair without knowing
+       * the wall area it covers.
+       *
+       * Above the comparison on purpose. These are the questions to put to the contractor before
+       * signing, so they are worth more than the arithmetic underneath them — and burying the one
+       * genuinely actionable thing on the card under a table would be the wrong way round.
+       */}
+      {reading && reading.questions.length > 0 && (
+        <section className="truth-ask" aria-labelledby="truth-ask-h">
+          <h4 id="truth-ask-h" className="micro">
+            Ask before you sign
+          </h4>
+          <ol className="truth-ask-list">
+            {reading.questions.map((q) => (
+              <li key={q}>{q}</li>
+            ))}
+          </ol>
+        </section>
+      )}
+
       {comparison && (
         <div className="truth-out">
           {/* ── what the material comes to here ─────────────────────────────
