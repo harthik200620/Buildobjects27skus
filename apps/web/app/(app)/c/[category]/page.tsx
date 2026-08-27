@@ -81,6 +81,25 @@ export default async function CategoryPage({ params, searchParams }: { params: P
   // The delivery promise is the session's, so it is the same on every card on the page.
   const eta = session ? deliverBy((await serviceability(session.pincode)).deliveryDays) : null;
 
+  /*
+   * The rest of the department, for a shelf too short to fill the page. See the section below for
+   * why. `loadFlagshipSkus` is the whole stocked catalogue and is already cached, so this is a
+   * filter over something the process is holding rather than another round trip — and it is only
+   * asked for when the grid has room under it.
+   */
+  const department = cats.find((c) => c.slug === category)?.department ?? null;
+  const inDepartment = new Set(cats.filter((c) => c.department === department && c.slug !== category && c.status === 'live').map((c) => c.slug));
+  /*
+   * The department first, the rest of the catalogue after it. Nine categories are live in total
+   * and several of them — bulbs among them — are the only live shelf in their department, so
+   * department-only would show nothing on exactly the pages that are emptiest.
+   */
+  const elsewhere = new Set(cats.filter((c) => c.slug !== category && c.status === 'live').map((c) => c.slug));
+  const pool = inDepartment.size > 0 ? inDepartment : elsewhere;
+  const departmentName = inDepartment.size > 0 && department ? department.replace(/-/g, ' ') : 'the catalogue';
+  const nearby =
+    result.hits.length > 0 && result.hits.length < 4 && pool.size > 0 ? (await loadFlagshipSkus()).filter((d) => pool.has(d.category)).slice(0, 4) : [];
+
   return (
     <div className="page shell">
       <Breadcrumbs
@@ -179,6 +198,35 @@ export default async function CategoryPage({ params, searchParams }: { params: P
                   ))}
                 </div>
                 <Pagination pathname={`/c/${category}`} state={state} page={result.page} totalPages={result.totalPages} />
+                {/*
+                 * KEEP LOOKING — but only when there is room to.
+                 *
+                 * Most shelves in this catalogue hold three products. On a desktop that is one row
+                 * in a three-column grid and then six hundred pixels of nothing before the footer:
+                 * the page reads as the end of the store rather than the end of one shelf. This
+                 * puts the rest of the department under it, which is the question somebody with
+                 * three bulbs in front of them is actually about to ask.
+                 *
+                 * Gated on a short result set, so a full page is never padded, and on the
+                 * department having something else live to show.
+                 */}
+                {nearby.length > 0 && (
+                  <section className="sec mt-8" aria-labelledby="nearby-h">
+                    <div className="sec-head">
+                      <h2 id="nearby-h" className="sec-title">
+                        More in {departmentName}
+                      </h2>
+                      <Link href="/c" className="sec-more">
+                        Everything in the catalogue
+                      </Link>
+                    </div>
+                    <div className="prod-grid prod-grid--rail stagger mt-3">
+                      {nearby.map((s) => (
+                        <ProductCard key={s.id} sku={s} deliverBy={eta} />
+                      ))}
+                    </div>
+                  </section>
+                )}
               </>
             )}
           </section>
