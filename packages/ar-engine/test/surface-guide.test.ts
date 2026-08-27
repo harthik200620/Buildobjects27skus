@@ -83,7 +83,7 @@ describe('surfacePrompt', () => {
   it('names the surface the product needs, in the rule’s own words', () => {
     const p = surfacePrompt(ruleFor('cctv'), { surface: null, detection: null, confidence: 0 }, true, productNoun('cctv'));
     expect(p.tone).toBe('seek');
-    expect(p.text).toBe('Point your camera at a wall or ceiling, high up to place this camera.');
+    expect(p.text).toBe('Point your camera at a wall or ceiling, high up to place this CCTV camera.');
   });
 
   it('asks for the floor for a cement bag and the ground for a total station', () => {
@@ -112,7 +112,7 @@ describe('surfacePrompt', () => {
 
   it('never says "this dahua"', () => {
     // Trimming the product name produced exactly that; the noun comes from the category.
-    expect(productNoun('cctv')).toBe('this camera');
+    expect(productNoun('cctv')).toBe('this CCTV camera');
     expect(productNoun('cement')).toBe('this cement bag');
     expect(productNoun('nothing-yet')).toBe('this product');
   });

@@ -314,6 +314,8 @@ export function framePlacement(input: FramingInput): Framing {
 
   const candidates: { anchor: Anchor; d: number }[] = [];
   let method: Framing['method'];
+  /* The distance to score against: the ideal viewing distance, unless a wall has been measured. */
+  let preferred = dIdeal;
 
   if (isVerticalSurface(surface)) {
     /* The wall faces the camera. Taken from `horizontalHeading` rather than from
@@ -326,14 +328,24 @@ export function framePlacement(input: FramingInput): Framing {
       anchor: { kind: 'vertical', surface, P: add(v3(C.x, y, C.z), scale(normal, -D)), n: normal },
       d: Math.hypot(D, y - C.y),
     });
+    /*
+     * A MEASURED WALL IS A STRONG PREFERENCE, NOT A PIN.
+     *
+     * Pinning to it was the first version, and the audit caught what that costs: all three CCTV
+     * SKUs were invisible at every camera angle, because a marginal reading put the wall under a
+     * metre away and a camera mounted at 2.6 m on a wall that close is above the top of the frame
+     * at any pitch you would hold a phone at.
+     *
+     * Truth still wins where truth works — the sweep below scores distance against the measurement
+     * rather than against the ideal, so the measured wall is chosen whenever it can carry the
+     * product. It loses only to coverage, which is worth an order of magnitude more: a measurement
+     * that makes the product invisible is far likelier to be wrong than the geometry is.
+     */
+    for (let i = 0; i < SAMPLES; i++) candidates.push(at(WALL_DISTANCE_M[0] + ((WALL_DISTANCE_M[1] - WALL_DISTANCE_M[0]) * i) / (SAMPLES - 1)));
     const measured = input.measuredDistanceM;
-    if (typeof measured === 'number' && Number.isFinite(measured) && measured > 0) {
-      candidates.push(at(Math.max(WALL_DISTANCE_M[0], Math.min(PLACEMENT_DISTANCE_M[1], measured))));
-      method = 'measured_wall';
-    } else {
-      for (let i = 0; i < SAMPLES; i++) candidates.push(at(WALL_DISTANCE_M[0] + ((WALL_DISTANCE_M[1] - WALL_DISTANCE_M[0]) * i) / (SAMPLES - 1)));
-      method = 'wall_distance';
-    }
+    const usableMeasurement = typeof measured === 'number' && Number.isFinite(measured) && measured > 0;
+    if (usableMeasurement) preferred = Math.max(WALL_DISTANCE_M[0], Math.min(PLACEMENT_DISTANCE_M[1], measured as number));
+    method = usableMeasurement ? 'measured_wall' : 'wall_distance';
   } else {
     const planeY = planeHeightM(surface, input);
     const dy = planeY - C.y; // negative for a floor, positive for a ceiling
@@ -380,7 +392,7 @@ export function framePlacement(input: FramingInput): Framing {
        chose, for a floor product with the phone tilted up, the one directly underfoot rather than
        the one just past the bottom edge. Nearly-in-view has to beat nowhere-near. */
     const near = usable ? 1 - Math.min(1, missDistance(box as ScreenBox, view) / Math.hypot(view.cw, view.ch)) : 0;
-    const ranged = 1 - Math.min(1, Math.abs(Math.log(c.d / dIdeal)));
+    const ranged = 1 - Math.min(1, Math.abs(Math.log(c.d / preferred)));
     const cp = c.anchor.kind === 'screen' ? C : c.anchor.P;
     const dir = normalize(v3(cp.x - C.x, cp.y - C.y, cp.z - C.z));
     /* Only consulted when there is no usable projection at all: among placements that cannot be

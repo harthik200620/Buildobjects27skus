@@ -6,8 +6,10 @@ import {
   autoFitScale,
   type CompositeResult,
   cameraPosition,
+  anchorScreenPoint,
   cameraRotationFromQuat,
   DEFAULT_CAMERA_HEIGHT_M,
+  eulerFromCameraRotation,
   framePlacement,
   hasOpenArea,
   intrinsicsFor,
@@ -49,6 +51,7 @@ import {
 } from '@/components/icons';
 import { bestRegionScore, dataUrlToCanvas, download, productPixels } from '../photo';
 import { AnalysisScheduler, captureAnalysisFrame } from './analysisScheduler';
+import { isArDebug, publishDebug } from './debug';
 import { buildCameraComposite } from './compositeFromCamera';
 import { type CoverMap, coverMap, stageToVideo } from './coverMap';
 import { createLocalVision } from './localVision';
@@ -133,6 +136,8 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   const visCheckRef = React.useRef<number>(0);
   /* What the renderer's holder transform was last set from, so the loop can skip re-setting it. */
   const appliedRef = React.useRef<{ anchor: Anchor | null; yaw: number }>({ anchor: null, yaw: 0 });
+  /* Read once: the debug panel is opt-in and its cost per frame should be one boolean. */
+  const debugRef = React.useRef(false);
   /* Kept current by the ResizeObserver below; read by the render loop instead of measuring. */
   const stageSizeRef = React.useRef<{ w: number; h: number }>({ w: 0, h: 0 });
   /* Set once the user has tapped or dragged. After that the placement is theirs and nothing
@@ -274,6 +279,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
 
   /* The camera owns the screen while it is open — see .chat-fab in account.css. Cleared on
      unmount so the assistant comes back the moment this view goes away, including on a crash. */
+  React.useEffect(() => {
+    debugRef.current = isArDebug();
+  }, []);
+
   React.useEffect(() => {
     document.body.dataset.arActive = '1';
     return () => {
@@ -430,6 +439,23 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
            the geometry takes over and the prompt stops claiming to know. */
         if (err.status === 503) setAnalysed(true);
       },
+      /*
+       * THE ANALYSER IS GONE. STOP CALLING IT.
+       *
+       * The scheduler has always raised this and nothing has ever listened, which on a deployment
+       * with no vision key — this one — meant it kept firing every 2.5 s until its budget of forty
+       * calls ran out. Each of those captures a 768 px frame and JPEG-encodes it ON THE MAIN
+       * THREAD, so the first hundred seconds of every AR session carried a periodic hitch straight
+       * through the render loop, for forty round trips that could only ever return 503.
+       *
+       * Nothing is lost by stopping. The on-device analyser in the render loop is the primary
+       * source of surfaces and needs no key, no network and no budget; the remote model only ever
+       * refined what it had already found.
+       */
+      onLiveLost: () => {
+        schedulerRef.current?.setPaused(true);
+        setAnalysed(true);
+      },
     });
 
     schedulerRef.current = scheduler;
@@ -487,7 +513,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       if (!video?.videoHeight || !renderer || !pose || !map) return false;
       const K = intrinsicsFor(video.videoWidth, video.videoHeight, 'phone');
       const measured = matchRef.current.detection?.distanceM;
-      const f = framePlacement({
+      const args = {
         K,
         R: pose.R,
         C: pose.C,
@@ -497,8 +523,22 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         view: { x0: map.x0, y0: map.y0, cw: map.cw, ch: map.ch },
         measuredDistanceM: typeof measured === 'number' ? measured : null,
         yawDeg: yaw,
-        scaleMult: scaleMultRef.current,
-      });
+      };
+      /*
+       * TWICE, BECAUSE THE TWO DECISIONS DEPEND ON EACH OTHER.
+       *
+       * Framing needs to know how big the product will be drawn; auto-fit needs to know how far
+       * away it ended up. Running them in one direction only meant the framing judged an 85 mm
+       * CCTV camera at true size and the renderer then drew it at 536 %, so a placement measured
+       * as comfortably framed rendered off the top of the screen.
+       *
+       * The second pass is another forty-eight box projections — tens of microseconds, once per
+       * placement — and it converges immediately because the scale it feeds back is derived from a
+       * distance that barely moves.
+       */
+      const first = framePlacement({ ...args, scaleMult: scaleMultRef.current });
+      const fit = autoFitScale(dimsRef.current, first.distanceM, K.fy);
+      const f = framePlacement({ ...args, scaleMult: fit.scale });
       anchorRef.current = f.anchor;
       renderer.setAnchor(f.anchor, yaw);
       renderer.setVisible(true);
@@ -506,6 +546,11 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       applyAutoFit(targetSurface, f.distanceM);
       setNudge((cur) => (cur === f.nudge ? cur : f.nudge));
       setOversized((cur) => (cur === f.oversized ? cur : f.oversized));
+      if (debugRef.current) {
+        publishDebug({
+          fit: { ok: f.coverage >= 0.72, reason: `${targetSurface} · ${f.method} · ${f.distanceM.toFixed(2)} m · ${(f.coverage * 100).toFixed(0)} % on screen · x${fit.scale}${f.nudge ? ` · nudge ${f.nudge}` : ''}${f.oversized ? ' · oversized' : ''}` },
+        });
+      }
       return true;
     },
     [surface, yaw, applyAutoFit],
@@ -540,7 +585,25 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     // Compute Camera Pose
     let q: Quat;
     const gyro = orientationFeed.ref.current;
-    if (gyro && orientationFeed.active) {
+    /*
+     * `gyroActiveRef`, NOT `orientationFeed.active` — AND THIS WAS THE BIGGEST BUG IN THE VIEW.
+     *
+     * `useOrientation` returns a fresh object every render, and this callback is a useCallback that
+     * does not depend on it. So the boolean captured here was whatever `active` was on the very
+     * first render — false, because no sample had arrived yet — and it stayed false for the life of
+     * the session. `ref` is a useRef and therefore stable, so `gyro` filled with real samples the
+     * whole time; the condition simply threw them away.
+     *
+     * The live camera has been running on a CONSTANT ASSUMED PITCH OF -10 DEGREES on every device,
+     * with a working gyro sitting right there. Nothing responded to how the phone was held: not the
+     * placement, not the horizon, not the surface classification — which reads the pitch to decide
+     * what is floor and what is ceiling. "It is not detecting the placement" and "camera angle from
+     * the top is not showing properly" are both this.
+     *
+     * Found by wiring `window.__arDebug`, which reported pitch -10 at every one of five angles the
+     * audit harness tilted the phone to.
+     */
+    if (gyro && gyroActiveRef.current) {
       q = gyro.q;
     } else {
       /*
@@ -657,6 +720,40 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         offScreenFramesRef.current = 0;
         setNudge((cur) => (cur === null ? cur : null));
       }
+    }
+
+    /*
+     * THE INSTRUMENT PANEL.
+     *
+     * `debug.ts` describes itself as "the live-camera tier's instrument panel for device testing
+     * and the e2e suite" and nothing has ever written to it, so the panel has always been empty and
+     * every question about what the view was actually doing had to be answered by squinting at a
+     * screenshot. Three SKUs were invisible at every camera angle in the audit and there was no way
+     * to ask why.
+     *
+     * Off unless asked for — `?debug=1`, `localStorage['ar.debug']`, or the build flag — so it
+     * costs a single boolean check per frame in normal use.
+     */
+    if (debugRef.current) {
+      const e = eulerFromCameraRotation(R);
+      const a = anchorRef.current;
+      const px = a ? anchorScreenPoint(a, K, R, C) : null;
+      publishDebug({
+        modelVisible: !!a && renderer.screenBounds() !== null,
+        pose: { yawDeg: e.yawDeg, pitchDeg: e.pitchDeg, rollDeg: e.rollDeg, heightM, source: gyroActiveRef.current ? 'sensors' : 'static' },
+        video: { W, H },
+        anchor: a ? { kind: a.kind, surface: a.surface, u: px?.u ?? Number.NaN, v: px?.v ?? Number.NaN } : null,
+        scale: `${Math.round(scaleMultRef.current * 100)}%`,
+        webgl: true,
+        scene: localSceneRef.current
+          ? {
+              type: localSceneRef.current.sceneType,
+              confidence: localSceneRef.current.sceneConfidence,
+              provider: localSceneRef.current.provider,
+              surfaces: localSceneRef.current.surfaces.map((x) => `${x.type}:${Math.round(x.confidence * 100)}`),
+            }
+          : null,
+      });
     }
 
     // Always render 3D WebGL frame

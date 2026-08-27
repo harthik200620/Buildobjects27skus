@@ -75,7 +75,11 @@ export function matchSurface(rule: PlacementRule, analysis: SceneAnalysis | null
  */
 const CATEGORY_NOUN: Record<string, string> = {
   bulbs: 'bulb',
-  cctv: 'camera',
+  /* "CCTV camera", not "camera": every sentence this appears in is displayed over a camera feed,
+     inside a view whose own controls say "Flip camera" and "Turn the camera on". "Point your camera
+     at a wall to place this camera" is a sentence about two different cameras, and the off-screen
+     arrow — "Camera is above — tilt to see it" — reads as being about the phone. */
+  cctv: 'CCTV camera',
   cement: 'cement bag',
   epoxy: 'epoxy kit',
   'fire-extinguishers': 'extinguisher',

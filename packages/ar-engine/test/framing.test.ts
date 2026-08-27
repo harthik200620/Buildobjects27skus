@@ -190,6 +190,56 @@ describe('framePlacement, across every SKU and every camera pitch', () => {
   });
 });
 
+describe('the two cases the browser audit caught that the maths alone did not', () => {
+  it('does not let a bad wall measurement hide the product', () => {
+    /*
+     * All three CCTV SKUs were invisible at every camera angle. The on-device analyser had put the
+     * wall under a metre away, the placement pinned itself to that reading, and a camera mounted at
+     * 2.6 m on a wall that close is above the top of the frame at any pitch a person holds a phone
+     * at. A measurement that makes the product invisible is likelier to be wrong than the geometry.
+     */
+    const dims: ProductDims = { w_mm: 85, h_mm: 79, d_mm: 85 };
+    const rule = ruleFor('cctv');
+    for (const pitchDeg of [25, 15, 5]) {
+      const f = framePlacement({ K, R: cameraRotation({ pitchDeg }), C, rule, dims, surface: 'wall', view: VIEW, measuredDistanceM: 0.6 });
+      expect(f.coverage, `pitch ${pitchDeg}`).toBeGreaterThan(0.9);
+    }
+  });
+
+  it('still puts the product on the wall it measured, when that wall can carry it', () => {
+    const dims: ProductDims = { w_mm: 85, h_mm: 79, d_mm: 85 };
+    const f = framePlacement({ K, R: cameraRotation({ pitchDeg: 15 }), C, rule: ruleFor('cctv'), dims, surface: 'wall', view: VIEW, measuredDistanceM: 3.2 });
+    expect(f.method).toBe('measured_wall');
+    /* Within a sample of the measurement, not pinned to it exactly — the sweep is 48 steps wide. */
+    expect(Math.abs(Math.hypot(f.distanceM, 0) - 3.2)).toBeLessThan(0.6);
+  });
+
+  it('frames what will actually be drawn, at the auto-fit scale', () => {
+    /*
+     * Framing needs to know how big the product will be drawn and auto-fit needs to know how far
+     * away it ended up, so the view runs them twice. Running them once, in one direction, judged an
+     * 85 mm CCTV camera at true size and then drew it at 536 % — comfortably framed on paper, off
+     * the top of the screen in the room.
+     */
+    const bad: string[] = [];
+    for (const { code, category, dims } of CATALOGUE) {
+      const rule = ruleFor(category);
+      const surface = rule.surfaces[0];
+      for (const pitchDeg of [10, 0, -10, -20]) {
+        const R = cameraRotation({ pitchDeg });
+        const first = framePlacement({ K, R, C, rule, dims, surface, view: VIEW });
+        const mult = autoFitScale(dims, first.distanceM, K.fy).scale;
+        const second = framePlacement({ K, R, C, rule, dims, surface, view: VIEW, scaleMult: mult });
+        if (second.coverage < 0.85 && second.nudge === null) bad.push(`${code} @${pitchDeg}: ${(second.coverage * 100).toFixed(0)} % at x${mult} and no nudge`);
+        /* And it must settle: a third pass may not disagree with the second. */
+        const third = framePlacement({ K, R, C, rule, dims, surface, view: VIEW, scaleMult: autoFitScale(dims, second.distanceM, K.fy).scale });
+        if (Math.abs(third.distanceM - second.distanceM) > 0.5) bad.push(`${code} @${pitchDeg}: does not settle, ${second.distanceM.toFixed(2)} then ${third.distanceM.toFixed(2)} m`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+});
+
 describe('horizontalHeading', () => {
   it('is defined when the phone points straight down, where the naive projection vanishes', () => {
     for (const pitchDeg of [-88, -89, -89.9, -90, 90, 89.9]) {
