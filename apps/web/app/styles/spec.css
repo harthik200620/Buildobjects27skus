@@ -252,10 +252,15 @@
   .spec-table tr:hover {
     background: var(--color-surface-2);
   }
+  /* A CELL, NOT A FLEX BOX.
+     This was `display: flex`, which takes a `th` OUT of the table formatting context entirely:
+     the row stops being two cells sharing a width and becomes a flex box beside an orphaned
+     `td`, so `width: 52%` is ignored and the value column takes whatever it wants. On a 390px
+     phone that overflowed the card and clipped every spec value at the right edge — "PPC" cut in
+     half, "58 MPa" hanging off the side.
+
+     The flex that was wanted is between the marker and the label, which is one level in. */
   .spec-table th {
-    display: flex;
-    align-items: baseline;
-    gap: var(--s-2);
     width: 52%;
     padding: 9px var(--s-3) 9px var(--s-4);
     font-size: var(--t-cap);
@@ -263,6 +268,12 @@
     font-weight: 400;
     color: var(--color-ink-2);
     text-align: left;
+    vertical-align: top;
+  }
+  .spec-table th .spec-label {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
   }
   /* The marker sits on the text's own baseline rather than the row's, so it does not drift
      up a line when a long label wraps. */

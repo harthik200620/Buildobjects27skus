@@ -247,6 +247,8 @@
      scrolling behind it. No scrim, no scroll lock, nothing that can lose the reader's place —
      a lesson this store has already paid for twice.
      ═════════════════════════════════════════════════════════════════════════ */
+  /* The page gets room for it. A floating button that covers the last two rows of a
+     specification table is a button that hides the thing it was opened to ask about. */
   .chat-fab {
     position: fixed;
     z-index: 60;

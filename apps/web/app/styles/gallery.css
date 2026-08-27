@@ -203,8 +203,15 @@
     box-shadow: var(--shadow-2);
   }
 
+  /* It sat inside a track that scrolls sideways and inherited `white-space: nowrap` from it, so
+     on a phone the line ran off both edges of the card and lost its first word. It is a caption:
+     it wraps. */
   .gal-note {
     margin-top: var(--s-2);
+    padding: 0 var(--s-3);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
   }
   .gal-lightbox-note {
     position: absolute;

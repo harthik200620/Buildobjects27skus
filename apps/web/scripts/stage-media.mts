@@ -138,6 +138,21 @@ for (const job of JOBS) {
     if (job.derive) {
       for (const width of job.derive) {
         const to = path.join(job.to, rel.replace(/\.webp$/, `-${width}.webp`));
+        /*
+         * CLAIMED BEFORE IT IS WRITTEN, and that ordering is the whole fix.
+         *
+         * `derived` is what the sweep at the foot of this loop checks a staged file against, and
+         * `want` holds SOURCE names — `catalogue-aisle.webp` — not derived ones. This add used to
+         * sit after the write, so a run in which every rendition was already current left
+         * `derived` empty and the sweep deleted all 21 backplates as orphans.
+         *
+         * Which made it alternate. Run one wrote them; run two found them current, claimed
+         * nothing, and swept them away; run three wrote them again. `build` is
+         * `stage-media && next build`, so every SECOND build shipped a store whose every page
+         * head was a grey rectangle — and it hid behind Next's image cache locally, which kept
+         * serving the optimised copies of files that were no longer on disk.
+         */
+        derived.add(path.relative(job.to, to).split(path.sep).join('/'));
         const dst = fs.existsSync(to) ? fs.statSync(to) : null;
         /* No size check here — the output is not a copy of the input, so only age can tell. */
         if (dst && dst.mtimeMs >= src.mtimeMs) {
@@ -146,7 +161,6 @@ for (const job of JOBS) {
         }
         fs.mkdirSync(path.dirname(to), { recursive: true });
         await sharp(from).resize({ width, withoutEnlargement: true }).webp({ quality: 72 }).toFile(to);
-        derived.add(path.relative(job.to, to).split(path.sep).join('/'));
         staged++;
         bytes += fs.statSync(to).size;
       }

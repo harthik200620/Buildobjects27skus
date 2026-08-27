@@ -93,7 +93,10 @@
   .page {
     min-height: calc(100dvh - var(--header-h) - var(--nav-h));
     padding-top: 16px;
-    padding-bottom: 48px;
+    /* 48, plus the assistant's own 52px button and the gutter under it. It floats over the
+       bottom-right corner of every page, and without this it sat on the last two rows of a
+       specification table — a button covering the thing it was opened to ask about. */
+    padding-bottom: calc(48px + 52px + var(--gutter));
   }
   .page--flush {
     padding-top: 0;
@@ -2885,22 +2888,36 @@
     background: var(--color-teal-50);
     color: var(--color-teal-800);
   }
+  /* FOUR EQUAL COLUMNS, NOT A WRAPPING ROW.
+     As a centred flex row the four claims wrapped wherever they ran out of room: "Tax-paid
+     prices" took one line and "Every price dated and sourced" took three, so the icons sat at
+     four different heights and the row read as a paragraph that had come apart. A grid gives
+     each claim the same width and the same top edge, and the icon goes ABOVE the words rather
+     than beside them — which is what lets a two-word and a four-word claim look like siblings. */
   .trust-mini {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px 32px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--s-4) var(--s-3);
     padding: 20px 0;
     border-top: 1px solid var(--color-line-2);
     border-bottom: 1px solid var(--color-line-2);
-    font-size: 14px;
-    line-height: 20px;
+    font-size: var(--t-fine);
+    line-height: 17px;
     color: var(--color-ink-2);
+    text-align: center;
+  }
+  @media (max-width: 419.98px) {
+    .trust-mini {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   .trust-mini span {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    text-wrap: balance;
   }
   .trust-mini svg {
     color: var(--color-teal-700);

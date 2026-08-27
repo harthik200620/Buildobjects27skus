@@ -181,8 +181,12 @@ export default function SpecSheet({ spec }: { spec: SpecJson }) {
                         return (
                           <tr key={r.key}>
                             <th scope="row">
-                              <span className={`spec-dot spec-dot--${r.provenance}`} aria-hidden />
-                              {r.label}
+                              {/* The flex lives here, one level in — a `th` that is itself a flex box
+                                  leaves the table's formatting context and takes the row with it. */}
+                              <span className="spec-label">
+                                <span className={`spec-dot spec-dot--${r.provenance}`} aria-hidden />
+                                {r.label}
+                              </span>
                             </th>
                             <td>
                               {r.source_url ? (
