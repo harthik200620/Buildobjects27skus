@@ -52,3 +52,10 @@ apps/web/public/3d/
 # 640/1280/2560 ladder from the single 2752px frame in design-system/art/ on every build. Twenty-one
 # files and 1.7 MB that regenerate from one tracked source, so they do not belong in git.
 apps/web/public/art/
+
+# Vercel writes the project link here, and `vercel link` writes .env.local beside it. Both are
+# local machine state, not the project. (`vercel link` also appends a blanket `.env*`, left out
+# on purpose: .env.example and .env.vercel.example are tracked, and that pattern would hide the
+# next one somebody adds. The .env and .env.local rules at the top cover the files with values.)
+.vercel
+.env.local

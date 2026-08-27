@@ -57,7 +57,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ reply: result.reply, ui: result.ui, suggestions: result.suggestions, refused: result.refused });
   } catch (e) {
     if (e instanceof GeminiKeyMissing)
-      return NextResponse.json({ error: 'The assistant is not configured on this deployment — GEMINI_API_KEY is not set.' }, { status: 503 });
+      return NextResponse.json({ error: 'The assistant is not configured on this deployment — BO_CHAT_API_KEY is not set.' }, { status: 503 });
+    /* Logged, because the reply below deliberately says nothing about what went wrong and a 502
+       with no trace behind it is a bug you cannot start on. `cause` carries the real network
+       error when the failure is the upstream fetch. */
+    console.error('[chat] turn failed:', e, (e as { cause?: unknown })?.cause ?? '');
     return NextResponse.json({ error: 'The assistant could not answer that. Try again in a moment.' }, { status: 502 });
   }
 }

@@ -321,7 +321,13 @@ export async function skuDocsByCodes(codes: string[]): Promise<SkuSearchDoc[]> {
       .search('', { filter: [`sku_code IN [${codes.map(esc).join(', ')}]`], limit: codes.length });
     return res.hits;
   } catch {
-    return [];
+    /* No search server: the snapshot has every one of these documents. See allCategories below —
+       this returned an empty array, and the assistant's product_detail tool is the only caller,
+       so on a deployment without Meilisearch the assistant could not describe a single product
+       it had just listed. */
+    const { staticFlagship } = await import('./static-catalogue');
+    const want = new Set(codes.map((c) => c.toUpperCase()));
+    return staticFlagship.filter((d) => want.has(d.sku_code.toUpperCase()));
   }
 }
 
@@ -335,22 +341,43 @@ export async function suggest(q: string): Promise<{
   const nq = normalizeQuery(q);
   const t0 = Date.now();
   const [res, cats, brs] = await Promise.all([
-    meili()
-      .index<SkuSearchDoc>(SEARCH_INDEX)
-      .search(nq, { limit: 6, attributesToHighlight: ['name', 'brand'], highlightPreTag: '<mark class="hl">', highlightPostTag: '</mark>' })
-      .catch(() => ({ hits: [] as SkuSearchDoc[] })),
+    /* A TRY, NOT A .catch().
+       `meili()` validates the host in its CONSTRUCTOR and throws synchronously when there isn't
+       a usable one — so on a deployment with no search server the throw happens while this array
+       is being built, before any promise exists for a .catch() to attach to, and it takes the
+       whole Promise.all with it. That surfaced as a 502 from the assistant rather than the
+       fallback below. An async IIFE catches both kinds of failure, which is the point.
+
+       null, not an empty hit list: an empty list means "nothing matched", null means "nobody
+       answered", and only the second one should reach for the snapshot. */
+    (async () => {
+      try {
+        return await meili()
+          .index<SkuSearchDoc>(SEARCH_INDEX)
+          .search(nq, { limit: 6, attributesToHighlight: ['name', 'brand'], highlightPreTag: '<mark class="hl">', highlightPostTag: '</mark>' });
+      } catch {
+        return null;
+      }
+    })(),
     allCategories(),
     allBrands(),
   ]);
+  /* No search server: run the query over the snapshot instead, through the SAME matcher the
+     search page falls back to, so a suggestion and a result cannot disagree about what matches. */
+  let hits = res?.hits ?? [];
+  if (!res) {
+    const { staticSearch } = await import('./static-catalogue');
+    hits = staticSearch({ attrs: {}, q: nq, page: 1 }).hits.slice(0, 6);
+  }
   const tokens = nq.split(' ').filter(Boolean);
   const matchName = (s: string) => tokens.some((t) => t.length >= 2 && s.toLowerCase().includes(t));
-  const hitCats = new Set(res.hits.map((h) => h.category));
+  const hitCats = new Set(hits.map((h) => h.category));
   const categoriesOut = cats
     .filter((c) => hitCats.has(c.slug) || matchName(c.name) || (c.nameTe && nq.includes(c.nameTe)) || (c.nameHi && nq.includes(c.nameHi)))
     .slice(0, 3);
-  const hitBrands = new Set(res.hits.map((h) => h.brand_slug));
+  const hitBrands = new Set(hits.map((h) => h.brand_slug));
   const brandsOut = brs.filter((b) => hitBrands.has(b.slug) || matchName(b.name)).slice(0, 3);
-  return { skus: res.hits, categories: categoriesOut.map((c) => ({ slug: c.slug, name: c.name, nameTe: c.nameTe })), brands: brandsOut, ms: Date.now() - t0 };
+  return { skus: hits, categories: categoriesOut.map((c) => ({ slug: c.slug, name: c.name, nameTe: c.nameTe })), brands: brandsOut, ms: Date.now() - t0 };
 }
 
 const categoryIdOf = memo(
@@ -416,7 +443,13 @@ export const allBrands = memoOnce(async (): Promise<{ slug: string; name: string
   try {
     return await getDb().select({ slug: brands.slug, name: brands.name }).from(brands).orderBy(asc(brands.name));
   } catch {
-    return [];
+    /* No database: derive the list from the snapshot, for the reason given in allCategories. The
+       assistant's catalogue_scope tool reads this to say what the store sells at all, so an empty
+       array here is the store answering "no brands" about itself. */
+    const { staticFlagship } = await import('./static-catalogue');
+    const byslug = new Map<string, string>();
+    for (const d of staticFlagship) if (d.brand_slug && d.brand) byslug.set(d.brand_slug, d.brand);
+    return [...byslug].map(([slug, name]) => ({ slug, name })).sort((a, b) => a.name.localeCompare(b.name));
   }
 });
 
