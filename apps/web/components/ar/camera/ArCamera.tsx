@@ -197,6 +197,15 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   const vision = visionRef.current;
   React.useEffect(() => () => vision.dispose(), [vision]);
 
+  /* The camera owns the screen while it is open — see .chat-fab in account.css. Cleared on
+     unmount so the assistant comes back the moment this view goes away, including on a crash. */
+  React.useEffect(() => {
+    document.body.dataset.arActive = '1';
+    return () => {
+      delete document.body.dataset.arActive;
+    };
+  }, []);
+
   /* The last on-device answer, for the loop to compare against without re-rendering. */
   const localSceneRef = React.useRef<SceneAnalysis | null>(null);
   const ruleRef = React.useRef(rule);

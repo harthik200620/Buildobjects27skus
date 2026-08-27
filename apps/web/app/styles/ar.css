@@ -179,14 +179,24 @@
   background: var(--color-ar-warn);
 }
 
+/*
+ * No translateX here any more.
+ *
+ * The prompt used to be centred with `left: 50%; transform: translateX(-50%)`, and these keyframes
+ * carried that -50% so the animation would not undo it. When the prompt became a flow child of
+ * .ar-top the rule lost its transform — and the KEYFRAMES kept theirs, which shifted the chip half
+ * its own width off the left of the screen for as long as it was seeking. Measured at x = -149 in
+ * a 430px viewport: the sentence telling somebody where to point their camera, off the side of the
+ * camera. An animation that positions is an animation that has to be changed twice.
+ */
 @keyframes ar-seek {
   0%,
   100% {
     opacity: 0.96;
-    transform: translateX(-50%) scale(1);
+    transform: scale(1);
   }
   50% {
     opacity: 0.82;
-    transform: translateX(-50%) scale(0.985);
+    transform: scale(0.985);
   }
 }

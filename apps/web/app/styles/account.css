@@ -249,6 +249,16 @@
      ═════════════════════════════════════════════════════════════════════════ */
   /* The page gets room for it. A floating button that covers the last two rows of a
      specification table is a button that hides the thing it was opened to ask about. */
+  /*
+   * The assistant steps aside while the camera is open.
+   *
+   * It is fixed to the bottom-right, which is exactly where the AR view puts Size and the shutter,
+   * so it sat on top of them on every phone — a floating button over the one control somebody is
+   * reaching for. ArCamera sets the flag on <body> while it is streaming and clears it on unmount.
+   */
+  body[data-ar-active="1"] .chat-fab {
+    display: none;
+  }
   .chat-fab {
     position: fixed;
     z-index: 60;
