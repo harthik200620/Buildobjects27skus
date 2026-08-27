@@ -133,6 +133,17 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   const [analysed, setAnalysed] = React.useState(false);
   const [sceneAnalysis, setSceneAnalysis] = React.useState<SceneAnalysis | null>(null);
   const [busy, setBusy] = React.useState<string | null>(null);
+  /*
+   * WHETHER THERE IS A MODEL TO SHOW YET.
+   *
+   * The meshes on this catalogue run six to eleven megabytes. On a phone on mobile data that is
+   * ten seconds or more of `GLTFLoader.loadAsync` — ten seconds in which the camera was open, the
+   * feed was live, and there was no product and nothing at all saying why. Indistinguishable, from
+   * the outside, from the feature being broken.
+   *
+   * A failed load was worse: silent forever, with the same empty feed.
+   */
+  const [modelState, setModelState] = React.useState<'loading' | 'ready' | 'failed'>('loading');
   const [result, setResult] = React.useState<(CompositeResult & { dataUrl: string; ms: number; fallback?: boolean }) | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -250,6 +261,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     const canvas = canvasRef.current;
     if (!canvas || !glbUrl) return;
 
+    setModelState('loading');
     (async () => {
       try {
         if (rendererRef.current) {
@@ -273,8 +285,12 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         /* A rebuilt renderer has no anchor. Let the loop place it again rather than leaving an
            empty scene that only a tap can recover. */
         autoPlacedRef.current = false;
+        setModelState('ready');
       } catch (e) {
-        if (alive) setError(`3D WebGL renderer failed: ${(e as Error).message}`);
+        if (alive) {
+          setModelState('failed');
+          setError(`3D WebGL renderer failed: ${(e as Error).message}`);
+        }
       }
     })();
 
@@ -893,7 +909,22 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
               </button>
             </div>
           </div>
-          {camStatus === 'streaming' && (
+          {/*
+           * The model's own state, above the surface prompt, because "we are still fetching the
+           * thing you came to look at" outranks "point at a wall" — and because an empty camera
+           * with no message is the failure this whole view is judged on.
+           */}
+          {modelState !== 'ready' && (
+            <div className={`ar-surface-prompt${modelState === 'loading' ? ' ar-surface-prompt--seeking' : ''}`}>
+              {modelState === 'loading' ? <IconSeeking size={14} /> : <IconTarget size={14} />}
+              <span>
+                {modelState === 'loading'
+                  ? `Loading ${noun} in 3D — this one is a large model.`
+                  : `That 3D model could not be loaded — reopen this view to try again, or use photo mode.`}
+              </span>
+            </div>
+          )}
+          {camStatus === 'streaming' && modelState === 'ready' && (
             <>
               <div
                 className={`ar-surface-prompt${prompt.tone === 'ok' ? ' ar-surface-prompt--ok' : prompt.tone === 'seeking' ? ' ar-surface-prompt--seeking' : ''}`}
