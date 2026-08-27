@@ -31,7 +31,7 @@ import { allCategories } from '@/lib/catalog';
 import { generate as anthropicGenerate, hasAnthropicKey } from './anthropic';
 import { type GeminiContent, GeminiKeyMissing, type GenerateArgs, type GenerateResult, generate as geminiGenerate, hasKey as hasGeminiKey } from './gemini';
 import { FactLedger } from './ledger';
-import { SYSTEM_PROMPT, scopeBlock, TOOL_SCHEMAS, WELCOME } from './prompt';
+import { OWN_NOUNS, SYSTEM_PROMPT, scopeBlock, TOOL_SCHEMAS, WELCOME } from './prompt';
 import { shelfCategoryNamed } from './routing';
 import { callTool, type ToolContext } from './tools';
 import { checkScope, trimProse, type Violation, validateAll } from './validator';
@@ -128,7 +128,17 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
   const ctx: ToolContext = { pincode: input.pincode, regionId: input.regionId };
 
   /* ── 1. the scope gate, before a single token is spent ── */
-  const scope = checkScope(input.message);
+  /* The last few user turns come with it, so a short follow-up is judged in the conversation it
+     belongs to rather than on its own — see checkScope. */
+  const scope = checkScope(
+    input.message,
+    input.history
+      .filter((m) => m.role === 'user')
+      .slice(-3)
+      .map((m) => m.content)
+      /* A space, not a newline — the gate only scans this for keywords. */
+      .join(' '),
+  );
   if (!scope.allow) return refusal(scope.reply, { scope: 'blocked' }, t0);
 
   if (!keyPresent()) throw new GeminiKeyMissing();
@@ -159,7 +169,7 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
   const system = SYSTEM_PROMPT + scopeBlock(cats);
 
   const ledger = new FactLedger();
-  ledger.entity(...cats.map((c) => c.name));
+  ledger.entity(...cats.map((c) => c.name), ...OWN_NOUNS);
   /* Whether the TOOLS found anything, which is a different question from whether the ledger has
      anything in it now that the scope above is seeded into it. */
   let toolFacts = false;

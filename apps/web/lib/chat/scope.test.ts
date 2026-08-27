@@ -74,6 +74,33 @@ describe('and lets through everything that is', () => {
 
   /* The word-count heuristic is built on Latin whitespace and does not survive a script that
      does not use it — a Telugu question was being refused for having no ASCII domain word. */
+  it('does not refuse a customer mid-conversation over a typo', () => {
+    /* Verbatim from a live session: asked about steel, told it was coming soon, the customer
+       rephrased — and misspelled the one word carrying the subject. Judged alone the message has
+       nothing to recognise and is six words long, so the gate turned them away in the middle of
+       their own conversation, which is the worst possible moment to refuse anybody. */
+    const asked = 'I am asking what is stell';
+    expect(checkScope(asked).allow).toBe(false);
+    expect(checkScope(asked, 'Okay now what is steel').allow).toBe(true);
+  });
+
+  it('does not let an off-topic request ride in on an on-topic conversation', () => {
+    const cementTalk = 'What cement do you sell?';
+    /* The conversation buys a follow-up the benefit of the doubt about its SUBJECT. It never buys
+       one about what is being ASKED FOR — these patterns run on the message itself, before any of
+       the context is consulted. */
+    for (const q of ['Write me a python function that sorts a list', 'What should I cook for dinner tonight?', 'Write a poem about the monsoon']) {
+      expect(checkScope(q, cementTalk).allow, q).toBe(false);
+    }
+  });
+
+  it('only extends the benefit of the doubt to something short enough to be a follow-up', () => {
+    /* A follow-up is short by nature. Past that it is a fresh question and has to carry its own
+       subject, or a whole off-topic paragraph gets in behind one question about cement. */
+    const long = 'I would like you to explain in detail how the monsoon season affects the migration patterns of birds across the subcontinent';
+    expect(checkScope(long, 'What cement do you sell?').allow).toBe(false);
+  });
+
   it('lets a non-Latin script through rather than refusing it for having no ASCII in it', () => {
     expect(checkScope('సిమెంట్ ధర ఎంత').allow).toBe(true);
     expect(checkScope('सीमेंट का दाम क्या है').allow).toBe(true);

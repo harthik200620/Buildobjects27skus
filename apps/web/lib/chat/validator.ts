@@ -698,7 +698,16 @@ const REFUSAL_OFF_TOPIC = REFUSAL;
 const REFUSAL_INJECTION = REFUSAL;
 const REFUSAL_UNSAFE = REFUSAL;
 
-export function checkScope(message: string): ScopeVerdict {
+/**
+ * How many words a message may have and still count as a follow-up.
+ *
+ * A follow-up is short by nature — "and the cheapest?", "I am asking what is steel". Past this it
+ * is a fresh question and has to carry its own subject, so a long off-topic paragraph cannot ride
+ * in on the back of a conversation about cement.
+ */
+const FOLLOW_UP_WORDS = 12;
+
+export function checkScope(message: string, priorUserText = ''): ScopeVerdict {
   const text = (message ?? '').trim();
   if (!text) return { allow: false, reason: 'EMPTY', reply: 'Ask me what a material costs, or what your house will come to.' };
 
@@ -725,7 +734,28 @@ export function checkScope(message: string): ScopeVerdict {
   const words = text.split(/\s+/).length;
   const hasSignal = DOMAIN_SIGNALS.some((p) => p.test(text));
   // Short messages are follow-ups; the model has the thread and decides.
-  if (!hasSignal && words >= 4) return { allow: false, reason: 'OFF_TOPIC', reply: REFUSAL_OFF_TOPIC };
+  if (!hasSignal && words >= 4) {
+    /*
+     * A SHORT FOLLOW-UP INSIDE AN ON-TOPIC CONVERSATION IS ON TOPIC.
+     *
+     * The gate used to judge each message alone. A customer asked about steel, was told it was
+     * coming soon, and wrote "I am asking what is stell" — six words, no signal, because the one
+     * word carrying the subject was mistyped. The gate declined to talk to them at all, mid
+     * conversation, over a typo. That is the worst moment to refuse somebody: they have just told
+     * you the last answer missed, and the shop replies that they can only ask about the shop.
+     *
+     * Any subject word can be mistyped, so the fix cannot be a longer list of spellings. What is
+     * reliable is the CONTEXT: the previous turns were plainly about materials, so this one is
+     * too, and the model — which can read "stell" for what it is — should get the chance to say so.
+     *
+     * The out-of-domain patterns above still run on THIS message and still refuse, so a request
+     * for code or a poem cannot slip in behind a question about cement. That is deliberate: the
+     * conversation earns a follow-up the benefit of the doubt about its SUBJECT, never about what
+     * is being asked for.
+     */
+    const followsOnTopic = words <= FOLLOW_UP_WORDS && DOMAIN_SIGNALS.some((p) => p.test(priorUserText));
+    if (!followsOnTopic) return { allow: false, reason: 'OFF_TOPIC', reply: REFUSAL_OFF_TOPIC };
+  }
 
   return { allow: true };
 }
