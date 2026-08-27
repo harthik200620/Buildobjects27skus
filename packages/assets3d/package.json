@@ -8,7 +8,8 @@
     "generate": "tsx src/build.ts",
     "photoreal": "tsx src/photoreal/run.ts",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "optimise": "tsx src/photoreal/optimise-skus.ts"
   },
   "dependencies": {
     "@buildobjects/catalog": "workspace:*",
