@@ -196,7 +196,18 @@ async function houseEstimate(args: {
   const catalog = await loadCalculatorCatalog([]);
   const r = estimate(inputs, catalog);
 
-  ledger.number(r.grandTotal, r.perSqft, r.derived.builtUpSqft, floors, r.accuracy.pct);
+  /*
+   * EVERY NUMBER THIS TOOL ASKS THE MODEL TO REPEAT HAS TO BE IN THE LEDGER.
+   *
+   * `assumptions_taken` below reads "G+1, 75 % ground coverage, RCC framed, medium finish", and
+   * the prompt requires the model to say that clause back so nobody quotes the total at a
+   * contractor without knowing what it assumed. The 75 was not in the ledger, so a model doing
+   * exactly what it was told produced an ungrounded number and the validator refused the whole
+   * answer — the flagship question came back as "I could not write a summary I trusted" with the
+   * card underneath it. A tool that instructs and does not permit is a tool that fails closed on
+   * its own advice.
+   */
+  ledger.number(r.grandTotal, r.perSqft, r.derived.builtUpSqft, floors, r.accuracy.pct, Math.round(inputs.coverage * 100));
   ledger.number(...TIERS.map((t) => r.tiers[t]));
   ledger.entity(r.derived.cityName, r.derived.floorsLabel, tier, r.version);
   for (const g of r.groups) {

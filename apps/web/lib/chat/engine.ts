@@ -27,7 +27,8 @@
  *   session already carries a served pincode — the store would not have let them in otherwise.
  */
 
-import { generate as defaultGenerate, type GeminiContent, GeminiKeyMissing, type GenerateArgs, type GenerateResult, hasKey } from './gemini';
+import { generate as anthropicGenerate, hasAnthropicKey } from './anthropic';
+import { type GeminiContent, GeminiKeyMissing, type GenerateArgs, type GenerateResult, generate as geminiGenerate, hasKey as hasGeminiKey } from './gemini';
 import { FactLedger } from './ledger';
 import { SYSTEM_PROMPT, TOOL_SCHEMAS, WELCOME } from './prompt';
 import { callTool, type ToolContext } from './tools';
@@ -103,9 +104,24 @@ export interface EngineDeps {
   hasKey?: () => boolean;
 }
 
+/**
+ * WHICH MODEL ANSWERS, decided by which key is set.
+ *
+ * Anthropic first when it is configured, because that is the deliberate choice; Gemini is the
+ * fallback the store already had. Nothing above this line knows the difference — the engine, the
+ * tools, the ledger and the validator are written against one contract and both clients speak it,
+ * so the grounding guarantee is identical whichever answers.
+ */
+export function chatProvider(): 'anthropic' | 'gemini' | 'none' {
+  if (hasAnthropicKey()) return 'anthropic';
+  if (hasGeminiKey()) return 'gemini';
+  return 'none';
+}
+
 export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promise<EngineResult> {
-  const generate = deps.generate ?? defaultGenerate;
-  const keyPresent = deps.hasKey ?? hasKey;
+  const provider = chatProvider();
+  const generate = deps.generate ?? (provider === 'anthropic' ? anthropicGenerate : geminiGenerate);
+  const keyPresent = deps.hasKey ?? (() => provider !== 'none');
   const t0 = Date.now();
   const ctx: ToolContext = { pincode: input.pincode, regionId: input.regionId };
 
