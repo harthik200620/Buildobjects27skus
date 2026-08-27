@@ -87,8 +87,41 @@ the deployed build rather than a dev server:
   it. Zero drawing-buffer reallocations over 150 frames on the deployed bundle.
 - The cement bag lies flat on the floor at 100 % true scale, branding legible. It used to stand on
   its long edge.
-- Locally, across the whole catalogue: **135 placements, 1 failure** — a cement bag at 40 degrees
-  down, partly behind the bottom HUD, which is occlusion rather than placement.
+- Locally, across the whole catalogue: **135 placements, 7 failures.**
+
+### The seven, and what they actually are — measured 2026-08-28
+
+Two are the harness, five are one bug.
+
+**One is a harness flake.** `gls-gua-climaguard-blue5` at +25 reports "pose did not follow: asked
+for 25 deg, camera is at -10.0" with a stage of zero pixels — the page had not finished coming up.
+It passes on a re-run.
+
+**One is correct behaviour counted as a failure.** `sol-ada-asb-m10-144-575` at +25 draws nothing
+AND says "Too close to fit — tilt down for the whole solar panel". A panel that will not fit in
+the frame, reported as not fitting, is the engine working.
+
+**Five are the same defect: a floor product with the camera pitched ABOVE horizontal.**
+
+    floor · along_surface · 5.52 m · 100 % on screen · x1     anchor floor @640,713
+    floor · along_surface · 6.00 m · 100 % on screen · x3.34  anchor floor @640,690
+
+Cement, both epoxies and the tile, all at +5, all anchored within thirty pixels of the bottom of a
+720-line frame — underneath the sheet — and every one of them reporting **100 % on screen with no
+nudge**. At a positive pitch a ray through the middle of the band never meets the floor, so the
+solver clamps to the far end of the placement band and takes what it can get; what it then claims
+about that placement does not survive contact with the renderer.
+
+`framePlacement` computes coverage against `input.view`, and ArCamera passes the chrome-inset band
+on both passes, so on the face of it the maths should already report near-zero coverage and raise
+a nudge. It does not. **The engine's projection and the renderer's draw disagree**, and which of
+the two is wrong is the thing to find out first — this is not a matter of retuning a threshold.
+
+NOT a regression from the View in Room rebuild: the same SKU and pitch was re-run against
+`ba82e0f`, the commit before it, and fails there too — twice, where the current build fails once.
+
+The earlier "1 failure" figure in this document came from a run under different conditions and
+should not have been left standing as the catalogue-wide number.
 
 ## What the harness caught that the maths did not
 

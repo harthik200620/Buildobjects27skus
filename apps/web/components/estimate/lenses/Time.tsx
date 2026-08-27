@@ -113,7 +113,9 @@ export default function Time({ result, decisions }: TimeProps) {
           <button
             key={m.month}
             type="button"
-            className={`time-bar${month >= m.month - 1 && month < m.month ? ' is-at' : ''}`}
+            /* The heaviest month is named in the stat above this row; marking its bar is what
+               connects the number to the picture. */
+            className={`time-bar${month >= m.month - 1 && month < m.month ? ' is-at' : ''}${m.month === peak.month ? ' time-bar--peak' : ''}`}
             style={{ '--h': `${(m.amount / maxAmount) * 100}%` } as React.CSSProperties}
             onClick={() => setMonth(m.month - 0.5)}
             aria-label={`Month ${m.month}, ${formatRupees(m.amount)}`}

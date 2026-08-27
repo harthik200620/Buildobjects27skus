@@ -923,14 +923,30 @@
     background: none;
     cursor: pointer;
   }
+  /* FLAT, and that is the fix rather than the simplification.
+
+     The fill was `linear-gradient(180deg, coin-ink, white 8%)` over `height: var(--h)`, and a
+     gradient sized to its own element means a SHORT bar shows the top of the ramp while a TALL
+     one shows all of it. So a bar's colour was a second, accidental encoding of its height:
+     thirteen months of spend came out thirteen different colours, month one reading green-gold
+     against month ten's amber, for no reason a reader could act on. A bar chart already has a
+     channel for magnitude — the bar. */
   .time-bar-fill {
     width: 100%;
     height: var(--h);
     border-radius: 3px 3px 0 0;
-    background: linear-gradient(180deg, var(--color-coin-ink), rgb(255 255 255 / 8%));
+    background: var(--color-coin-ink);
     transform-origin: 50% 100%;
     animation: bar-rise var(--dur-3) var(--ease-out) both;
-    transition: filter var(--dur-1) var(--ease-out);
+    transition:
+      filter var(--dur-1) var(--ease-out),
+      background-color var(--dur-2) var(--ease-out);
+  }
+  /* The heaviest month is the one fact the row is for — "₹3,68,248, month 10" is printed above
+     it — so it is the one bar that differs, and it differs by being brighter rather than by
+     being another colour. */
+  .time-bar--peak .time-bar-fill {
+    background: var(--amber-900);
   }
   @keyframes bar-rise {
     from {

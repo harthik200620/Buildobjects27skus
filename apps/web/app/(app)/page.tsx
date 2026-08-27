@@ -207,7 +207,11 @@ export default async function Home() {
               <div className="sec-head sec-head--tight" data-reveal>
                 <div>
                   <p className="micro sec-eyebrow">Filling next</p>
-                  <h2 id="soon-h" className="d3">
+                  {/* .h3, not .d3. This section is a footnote to the one above it and was being
+                      set at 36 px — two thirds the size of "On the shelf today", for a block
+                      that exists to say "not yet". It also put a seventeenth type size on the
+                      front door, which scale:audit is there to catch. */}
+                  <h2 id="soon-h" className="h3">
                     <span className="fig">{coming.length}</span> more shelves, on the way
                   </h2>
                   <p className="lede sec-sub">Open any of them and it will tell you plainly where it stands — nothing here pretends to be in stock.</p>
