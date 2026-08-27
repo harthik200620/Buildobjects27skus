@@ -230,6 +230,36 @@
      against; an alpha line is correct on all five by construction. This single
      change removes the whole class of "the border is darker than the card" bugs
      that v1's chrome hairlines existed to work around.                           */
+  /* ── SERIES — the twelve colours of a multi-part figure ────────────────────
+     The estimator's cost donut, its legend swatches, and anything else that has to
+     say "this slice is that row". Categorical, so hue does the work; ordered, so
+     the brand teal leads and the tail is still legible when a slice is 2 %.
+
+     THEY LIVE HERE, NOT IN A TYPESCRIPT MIRROR OF THIS FILE. packages/ui/src/tokens.ts
+     held a copy of the whole palette, its docstring promised the two would move
+     together, and they had not: the store went dark and that file stayed light. Its
+     series ramp had been chosen to clear 3:1 ON WHITE and was being painted on
+     #0e2a33, where nine of the twelve fell below 3:1 and one — the header navy —
+     came out at 1.01:1, which is a slice you cannot see at all. That is the whole
+     reason the chart read as clip-art.
+
+     Chosen in OKLCH at a lightness that holds on a dark ground, then ordered by
+     search so no two touching slices are close: worst 3.83:1 against the card and
+     no adjacent pair nearer than 114 in RGB distance, against 1.01 and 89 before.
+     A copy of a palette is a palette that will drift; this is the only one. */
+  --series-1: #5ee2e2;
+  --series-2: #b5e191;
+  --series-3: #95beff;
+  --series-4: #e7885d;
+  --series-5: #d490cd;
+  --series-6: #c0992a;
+  --series-7: #37a6d0;
+  --series-8: #e3868c;
+  --series-9: #63cfa9;
+  --series-10: #d6b9ff;
+  --series-11: #ffae6b;
+  --series-12: #4285c1;
+
   --hair: rgb(255 255 255 / 7%); /* the default rule */
   --hair-2: rgb(255 255 255 / 12%); /* hover, active, emphasis */
   --hair-3: rgb(255 255 255 / 20%); /* input borders, focus-adjacent */
@@ -1996,6 +2026,31 @@
   }
   .stagger > *:nth-child(n + 11) {
     --i: 10;
+  }
+
+  /* ── 2b. arrival: a photograph fading up instead of snapping in ────────────
+     THIS APPLIES TO LAZY IMAGES ONLY, and that is a performance rule rather than
+     a taste one. An element at opacity 0 has not been painted as far as the
+     largest-contentful-paint heuristic is concerned, so fading the hero would
+     move the store's own LCP later by the length of the fade. Everything with
+     `priority` — the hero plate, a product's first frame — is eager and lands at
+     full strength with no transition. Everything you have to scroll to arrives.
+
+     components/Reveal.tsx sets [data-ready] from the load event, and also on any
+     image that is already complete, because a cached image never fires one. The
+     same `.js-reveal` gate that guards the scroll choreography guards this, so
+     the 2.5 s failsafe un-hides these too and reduced motion never sees them. */
+  .js-reveal img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity var(--dur-4) var(--ease-out);
+  }
+  .js-reveal img[loading="lazy"][data-ready] {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js-reveal img[loading="lazy"] {
+      opacity: 1;
+    }
   }
 
   /* ── 3. lift: the one hover elevation, for every card in the store ─────────

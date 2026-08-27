@@ -231,6 +231,15 @@
     cursor: pointer;
   }
 
+  /* A band with nothing behind it. Still legible — the count is a real fact about the shelf —
+     but visibly not a control, so nobody presses it and watches the grid empty. */
+  .facet-band--empty {
+    opacity: 0.45;
+    cursor: default;
+  }
+  .facet-band--empty:hover .facet-band-label {
+    color: inherit;
+  }
   .facet-band:hover .facet-band-label {
     color: var(--color-teal-700);
     text-decoration: underline;

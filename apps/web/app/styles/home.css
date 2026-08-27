@@ -48,9 +48,15 @@
   }
   /* The page ends on the category grid. Without this the last row sits against the footer
      rule with nothing under it, which reads as the page having been cut off rather than
-     having finished. */
+     having finished.
+
+     It was --s-9, the same step as the gap BETWEEN sections, and that is the mistake: a gap
+     between two things has to separate them, whereas the space after the last thing only has to
+     stop it touching the rule. Measured on the rendered page, the last tile row sat 270 px clear
+     of the footer — a screenful of nothing, which reads as a page that ran out rather than one
+     that ended. One step down, and the footer's own padding does the rest. */
   .home .sec--last {
-    padding-bottom: var(--s-9);
+    padding-bottom: var(--s-7);
   }
   .sec-head {
     display: flex;
@@ -293,9 +299,13 @@
      bottom-weighted shade, and the only things that move on hover are the card (up
      4px), its edge (to brand teal) and the photograph itself (1.06). One gesture per
      property; nothing flashes. */
+  /* THREE ACROSS, NOT FOUR. There are nine stocked categories, so four columns left a row of
+     four, a row of four, and one tile alone against three empty columns — the shape a page makes
+     when it has run out rather than finished. Three gives exactly three full rows, and it gives
+     each photograph half as much again to work with, which this photography earns. */
   .cat-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--s-4);
   }
   .cat-card {
@@ -403,13 +413,70 @@
   }
   @media (max-width: 1099.98px) {
     .cat-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   @media (max-width: 767.98px) {
     .cat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--s-3);
+    }
+  }
+
+  /* ── the shelves that are not stocked yet ──────────────────────────────────
+     Same tile, a third of the area. Twenty-six of the thirty-five categories in this catalogue
+     are still being filled, and at full size they buried the nine that sell: the front door
+     opened onto four dimmed photographs wearing "Arriving soon" pills. Every one of them is still
+     on the page — hiding them would be the dishonest fix — but at the weight of a list, six
+     across instead of four, so the eye reads the block rather than each tile in it. */
+  .cat-grid--compact {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+  .cat-card--compact {
+    aspect-ratio: 1 / 0.82;
+    border-radius: var(--r-2);
+  }
+  .cat-card--compact .cat-band {
+    padding: var(--s-3);
+  }
+  .cat-card--compact .cat-name {
+    font-size: var(--t-fine);
+    line-height: 1.35;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+  /* Dimmer than a stocked tile, and dimmer than the old --soon rule: at 0.55 with a full-strength
+     name over it the picture was still competing. These are a roadmap, not a shelf. */
+  .cat-card--compact .cat-photo img {
+    opacity: 0.4;
+  }
+  .cat-card--compact:hover .cat-photo img {
+    opacity: 0.62;
+  }
+  .cat-card--compact:hover .cat-name {
+    color: var(--ink-1);
+  }
+  /* The shade can be shorter when the name is one small line. */
+  .cat-card--compact .cat-photo::after {
+    background: linear-gradient(180deg, transparent 40%, rgb(6 24 29 / 92%) 100%);
+  }
+  /* A heading whose section is a footnote to the one above it does not need the full drop. */
+  .sec-head--tight {
+    margin-bottom: var(--s-5);
+  }
+  @media (max-width: 1099.98px) {
+    .cat-grid--compact {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 767.98px) {
+    .cat-grid--compact {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--s-2);
+    }
+    .cat-card--compact .cat-band {
+      padding: var(--s-2);
     }
   }
 

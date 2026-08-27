@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./theme.css": "./src/theme.css",
-    "./tokens": "./src/tokens.ts"
+    "./theme.css": "./src/theme.css"
   }
 }

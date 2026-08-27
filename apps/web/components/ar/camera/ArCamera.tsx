@@ -1163,57 +1163,35 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
         />
       )}
 
-      {/* 4. Camera Start / Permission Action Card (when not yet streaming) */}
+      {/*
+       * 4. THE DOOR. Shown until there is a feed, and it is the whole view while it is up.
+       *
+       * It used to be fifty lines of inline style — its own panel colour, its own radius, its own
+       * type sizes, a hand-rolled 68 px circle — sitting at z-index 8 while the HUD sheet below
+       * drew at a higher one. So a page that had never been given camera permission showed this
+       * card with the room-view's product sheet, surface segment, size and turn sliders and
+       * shutter button laid over the top of it: half a dozen controls for a scene that does not
+       * exist yet, one of them covering the button that would create it.
+       */}
       {camStatus !== 'streaming' && !result && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'var(--color-ar-panel)',
-            backdropFilter: 'blur(8px)',
-            padding: '24px',
-            textAlign: 'center',
-            color: '#fff',
-          }}
-        >
-          <div
-            style={{
-              width: 68,
-              height: 68,
-              borderRadius: '50%',
-              background: 'var(--color-ar-wash)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 16,
-              border: '1px solid var(--color-ar-line)',
-            }}
-          >
-            <IconVideo size={30} style={{ color: 'var(--color-brand)' }} />
-          </div>
-          <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: '#fff' }}>Start Live Camera AR</h3>
-          <p style={{ fontSize: 14, color: 'var(--color-ink-2)', maxWidth: 380, marginBottom: 24, lineHeight: '20px' }}>
+        <div className="arv-door">
+          <span className="arv-door-mark" aria-hidden="true">
+            <IconVideo size={30} />
+          </span>
+          <h3 className="arv-door-title">See it in your room</h3>
+          <p className="arv-door-copy">
             {camStatus === 'requesting'
-              ? 'Opening camera feed and starting 3D tracking…'
+              ? 'Opening the camera and starting to track the room…'
               : camStatus === 'denied'
-                ? `Camera access is needed to place ${noun} on your ${rule.surfaceLabel} at its real size. Allow it below.`
-                : `Turn on your camera and see ${noun} on your ${rule.surfaceLabel}, at its true size, right where it will go.`}
+                ? `Camera access is needed to put ${noun} on your ${rule.surfaceLabel} at its real size. Allow it below.`
+                : `Turn the camera on and see ${noun} on your ${rule.surfaceLabel}, at its true size, right where it will go.`}
           </p>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button
-              type="button"
-              className="btn-primary h-12 px-7 text-sm font-semibold flex items-center gap-2 cursor-pointer shadow-xl rounded-full"
-              onClick={() => startCameraStream(facingMode)}
-            >
+          <div className="arv-door-actions">
+            <button type="button" className="arv-action arv-action--buy" onClick={() => startCameraStream(facingMode)}>
               <IconCamera size={17} /> {camStatus === 'requesting' ? 'Starting…' : 'Turn the camera on'}
             </button>
-            <button type="button" className="ar-chip" onClick={onExit}>
-              Use photo mode
+            <button type="button" className="arv-action" onClick={onExit}>
+              Use a photo instead
             </button>
           </div>
         </div>
@@ -1226,7 +1204,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
        * each carried their own inline styles and all competed at the same visual weight. See
        * ArHud.tsx for why the shape is what it is.
        */}
-      {!result && (
+      {/* Gated on a live feed, not merely on "no photo yet". Every control in the sheet acts on
+          something in the camera's view; before there is a view they are decoration over the door
+          above. */}
+      {!result && camStatus === 'streaming' && (
         <ArHud
           name={name}
           brand={brand}

@@ -1829,13 +1829,21 @@
     letter-spacing: 0;
     position: relative;
     margin: 0;
-    /* Two lines' worth, reserved whether or not the name needs it. */
+    /* Two lines' worth RESERVED so short names do not leave the row ragged, and three ALLOWED
+       before it clamps.
+
+       At two, every bulb on the shelf was cut mid-word — "Garnet 9 W B22 Cool Day White LE…",
+       "Ace Saver 9 W B22 Cool Day Light LE…", "LED Plus 9 W B22 Cool Day Light…" — three cards
+       in a row, none of them able to finish the name of the thing it is selling. This catalogue's
+       names are long and technical because the products are, and the title face is Audiowide,
+       which sets about 29 % wider per character than the UI face. Reserving two and permitting
+       three keeps the grid aligned and lets the long ones land. */
     min-height: 44px;
     font-size: var(--t-h4);
     line-height: 22px;
     color: var(--ink-1);
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }

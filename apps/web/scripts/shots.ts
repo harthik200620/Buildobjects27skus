@@ -338,6 +338,64 @@ async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile
   }
 }
 
+/**
+ * THE ONE PASS WITH THE MOTION TURNED ON.
+ *
+ * Every screenshot above is taken with `reducedMotion: 'reduce'`, for good reasons stated in
+ * `shoot` — but it means this harness is structurally blind to the entire motion layer. The
+ * store hides content before first paint and reveals it with script: `[data-reveal]` starts at
+ * opacity 0, and lazily-loaded photographs start there too. Under `reduce` none of that runs, so
+ * a bug that leaves the page permanently blank passes thirty-three checks and ships.
+ *
+ * This walks one page the way a reader does, waits for the last transition to finish, and then
+ * asserts the only thing that actually matters: nothing the motion layer hid is still hidden.
+ * The 0.4 floor is the deliberate dimming on an "arriving soon" tile — the one thing in the
+ * store that is meant to sit under full strength.
+ *
+ * And with JavaScript off entirely, `.js-reveal` must never be on the document: the class is
+ * what hides things, a script is what adds it, and content must never be behind a script that
+ * did not arrive.
+ */
+async function motionPass(browser: Browser) {
+  const ctx = await browser.newContext({ viewport: { width: 1350, height: 940 }, reducedMotion: 'no-preference' });
+  await ctx.addCookies([sessionCookieFor(BASE)]);
+  const page = await ctx.newPage();
+  try {
+    await page.goto(`${BASE}/`, { waitUntil: 'load', timeout: 120_000 });
+    await page.evaluate(
+      `(async () => { const s = Math.round(innerHeight * 0.8); for (let y = 0; y < document.body.scrollHeight; y += s) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 90)); } })()`,
+    );
+    /* Longer than --dur-4 plus the longest stagger step, so a slow finisher is not a failure. */
+    await page.waitForTimeout(1500);
+    const m = (await page.evaluate(`(() => {
+      const dim = (el) => +getComputedStyle(el).opacity;
+      const imgs = [...document.images].filter((i) => dim(i) < 0.4);
+      const reveals = [...document.querySelectorAll('[data-reveal]')].filter((e) => dim(e) < 0.99);
+      return { armed: document.documentElement.classList.contains('js-reveal'),
+               images: document.images.length, hiddenImages: imgs.length, hiddenReveals: reveals.length,
+               sample: imgs.slice(0, 2).map((i) => (i.currentSrc || '').split('/').pop()) };
+    })()`)) as { armed: boolean; images: number; hiddenImages: number; hiddenReveals: number; sample: string[] };
+
+    check('motion', 'desktop', 'the motion layer is actually armed', m.armed, 'js-reveal absent — nothing below is being tested');
+    check('motion', 'desktop', 'every photograph ends up visible', m.hiddenImages === 0, `${m.hiddenImages}/${m.images} still faded — ${m.sample.join(', ')}`);
+    check('motion', 'desktop', 'every revealed element ends up shown', m.hiddenReveals === 0, `${m.hiddenReveals} still at opacity 0`);
+  } finally {
+    await ctx.close();
+  }
+
+  /* The failsafe, from the outside: no script, nothing hidden. */
+  const bare = await browser.newContext({ viewport: { width: 1350, height: 940 }, javaScriptEnabled: false });
+  await bare.addCookies([sessionCookieFor(BASE)]);
+  const plain = await bare.newPage();
+  try {
+    await plain.goto(`${BASE}/`, { waitUntil: 'load', timeout: 120_000 });
+    const html = await plain.content();
+    check('motion', 'desktop', 'nothing is hidden when the script never runs', !/<html[^>]*class="[^"]*js-reveal/.test(html));
+  } finally {
+    await bare.close();
+  }
+}
+
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const sku = await firstSku();
@@ -357,6 +415,7 @@ async function main() {
       await shoot(browser, s, 'desktop');
       await shoot(browser, s, 'mobile');
     }
+    if (!ONLY.length) await motionPass(browser);
   } finally {
     await browser.close();
   }

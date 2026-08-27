@@ -36,6 +36,7 @@ import {
 } from '@/components/icons';
 import { inr } from '@/lib/media';
 import { readPicks, removePick, setPickQty } from '@/lib/picks';
+import { productTitle } from '@/lib/product-name';
 import CostRange from './CostRange';
 import Donut, { seriesColor } from './Donut';
 import DrawingUpload from './DrawingUpload';
@@ -529,7 +530,7 @@ export default function Estimator({
                 return (
                   <div key={p.sku_code} className="pick-row">
                     <Link href={`/p/${p.sku_code.toLowerCase()}`} className="pick-name">
-                      {s ? `${s.brand} ${s.name}` : p.sku_code}
+                      {s ? productTitle(s.brand, s.name) : p.sku_code}
                     </Link>
                     <div className="qty" role="group" aria-label={`Quantity of ${p.sku_code}`}>
                       <button type="button" onClick={() => setPickQty(p.sku_code, p.qty - 1)} aria-label="Decrease">

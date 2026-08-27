@@ -420,11 +420,37 @@ interface FacetValueItem {
   swatch?: string;
 }
 
+/**
+ * WHAT YOU CAN ACTUALLY NARROW TO COMES FIRST.
+ *
+ * A shelf of three bulbs offered four brightness bands, and three of them read "(0)". The rail
+ * was showing the shape of the schema rather than the shape of the shelf: three of its first
+ * four rows could not be clicked to any effect, and the one that could was buried among them.
+ *
+ * Nothing is removed — an empty band is a true fact about the catalogue, and a rail whose rows
+ * appear and vanish as you filter is worse than one with a dim row in it. They are ordered, so
+ * the five that fit above the fold are the five worth having, and the empties fall under
+ * "See more" on their own.
+ *
+ * A SELECTED value always stays at the top, whatever its live count: the option you have already
+ * ticked is the one you most need to be able to reach, and filtering to it is often exactly what
+ * takes its own count to zero.
+ */
+function rankByUsefulness(values: FacetValueItem[], selected: string[]): FacetValueItem[] {
+  const rank = (v: FacetValueItem) => (selected.includes(v.value) ? 0 : v.liveCount > 0 ? 1 : 2);
+  /* index breaks ties, so the builder's own order survives inside each group. */
+  return values
+    .map((v, i) => ({ v, i }))
+    .sort((a, b) => rank(a.v) - rank(b.v) || a.i - b.i)
+    .map(({ v }) => v);
+}
+
 function FacetValueList({ values, selected, onToggle }: { values: FacetValueItem[]; selected: string[]; onToggle: (val: string) => void }) {
   const [expanded, setExpanded] = React.useState(false);
   const limit = 5;
-  const showMore = values.length > limit;
-  const displayed = showMore && !expanded ? values.slice(0, limit) : values;
+  const ordered = React.useMemo(() => rankByUsefulness(values, selected), [values, selected]);
+  const showMore = ordered.length > limit;
+  const displayed = showMore && !expanded ? ordered.slice(0, limit) : ordered;
 
   return (
     <div className="facet-list">
@@ -446,7 +472,7 @@ function FacetValueList({ values, selected, onToggle }: { values: FacetValueItem
 
       {showMore && (
         <button type="button" className="facet-more" onClick={() => setExpanded(!expanded)}>
-          {expanded ? '− See less' : `+ See more (${values.length - limit})`}
+          {expanded ? '− See less' : `+ See more (${ordered.length - limit})`}
         </button>
       )}
     </div>
@@ -467,8 +493,18 @@ function BandList({
     <div className="facet-bands">
       {bands.map((b) => {
         const active = currentRange[0] === b.lo && currentRange[1] === b.hi;
+        /* A band with nothing in it is still shown — it says something true about the shelf — but
+           it is not offered as a thing to press. Clicking "Under 500 lm (0)" on a page of three
+           bulbs emptied the grid and taught the reader the filters were broken. */
+        const empty = b.count === 0 && !active;
         return (
-          <button key={`${b.lo}-${b.hi}`} type="button" className={`facet-band ${active ? 'facet-band--active' : ''}`} onClick={() => onSelectBand(b.lo, b.hi)}>
+          <button
+            key={`${b.lo}-${b.hi}`}
+            type="button"
+            className={`facet-band ${active ? 'facet-band--active' : ''}${empty ? ' facet-band--empty' : ''}`}
+            disabled={empty}
+            onClick={() => onSelectBand(b.lo, b.hi)}
+          >
             {b.swatch && <span className="facet-swatch" style={{ background: b.swatch }} aria-hidden="true" />}
             <span className="facet-band-label">{b.label}</span>
             {b.count !== undefined && <span className="facet-count fig">({b.count})</span>}

@@ -12,6 +12,7 @@
     "dev": "next dev -p 3000",
     "fonts:fetch": "tsx scripts/fetch-fonts.mts",
     "fonts:subset": "tsx scripts/subset-fonts.mts",
+    "icons": "tsx scripts/icon-sheet.mts",
     "lighthouse": "tsx scripts/lighthouse.ts",
     "scale:audit": "tsx scripts/scale-audit.mts",
     "shots": "tsx scripts/shots.ts",

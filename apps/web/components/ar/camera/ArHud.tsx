@@ -3,6 +3,7 @@
 import { type Nudge, type PlacementRule, type ProductDims, SURFACE_LABEL, type Surface } from '@buildobjects/ar-engine';
 import React from 'react';
 import { IconCamera, IconCart, IconClose, IconFlipCamera, IconMove, IconRuler, IconSeeking, IconSpark, IconTarget } from '@/components/icons';
+import { withoutBrand } from '@/lib/product-name';
 
 /**
  * THE VIEW IN ROOM, AS A THING SOMEBODY LOOKS AT.
@@ -72,25 +73,6 @@ const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 /** "this cement bag" -> "cement bag". */
 const bare = (noun: string) => noun.replace(/^this /, '');
-
-/**
- * The name, with the brand taken off the front when it is already there.
- *
- * Half this catalogue names its products with the brand included — brand "Hikvision", name
- * "Hikvision DS-2CE76D0T-ITPFS"; brand "UltraTech Cement", name "UltraTech Portland Pozzolana
- * Cement". Printing the two fields next to each other, which is the obvious thing to do, gives
- * "Hikvision Hikvision DS-…" on the one surface where the product is supposed to be identified.
- */
-function withoutBrand(name: string, brand: string): string {
-  const b = brand.trim();
-  if (!b) return name;
-  const n = name.trim();
-  if (n.toLowerCase().startsWith(`${b.toLowerCase()} `)) return n.slice(b.length).trim();
-  /* Brands like "UltraTech Cement" against a name starting "UltraTech": drop the shared head. */
-  const first = b.split(/\s+/)[0];
-  if (first.length > 3 && n.toLowerCase().startsWith(`${first.toLowerCase()} `)) return n.slice(first.length).trim();
-  return n;
-}
 
 export default function ArHud(props: ArHudProps) {
   const { rule, dims, scaleMult, enlarged, surface, nudge, oversized, noun, prompt, modelState, camStatus, gesture, settled } = props;

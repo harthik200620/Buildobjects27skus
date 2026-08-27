@@ -216,8 +216,8 @@ export default async function CategoryPage({ params, searchParams }: { params: P
                       <h2 id="nearby-h" className="sec-title">
                         More in {departmentName}
                       </h2>
-                      <Link href="/c" className="sec-more">
-                        Everything in the catalogue
+                      <Link href="/search" className="sec-more">
+                        Everything in the catalogue <IconArrow size={15} />
                       </Link>
                     </div>
                     <div className="prod-grid prod-grid--rail stagger mt-3">

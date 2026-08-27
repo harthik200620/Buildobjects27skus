@@ -1,14 +1,20 @@
 'use client';
 
 import type { GroupAmount } from '@buildobjects/estimator';
-import { PATINA } from '@buildobjects/ui/tokens';
 import { inr } from '@/lib/media';
 
 /**
- * The circle. Drawn, not charted: one SVG ring per material group, accent + derived hues from
- * the token palette only, animated sweep on every change (stroke-dasharray transitions).
+ * The circle. Drawn, not charted: one SVG ring per material group, animated sweep on every
+ * change (stroke-dasharray transitions).
+ *
+ * The colour comes from `--series-N` in theme.css — the same custom properties the legend
+ * swatches read, so a slice and its row cannot disagree. They used to come from a TypeScript
+ * copy of the palette that had gone stale against the stylesheet: its ramp was picked to clear
+ * 3:1 on WHITE, and this chart is painted on #0e2a33, where nine of its twelve colours fell
+ * under 3:1 and the second one landed at 1.01:1 — a slice drawn in the card's own colour.
  */
-export const seriesColor = (i: number) => PATINA.series[i % PATINA.series.length];
+export const SERIES_COUNT = 12;
+export const seriesColor = (i: number) => `var(--series-${(i % SERIES_COUNT) + 1})`;
 
 export default function Donut({
   groups,
@@ -37,13 +43,16 @@ export default function Donut({
             cy="110"
             r={r}
             fill="none"
-            stroke={seriesColor(i)}
             strokeWidth={active === g.key ? 30 : 24}
             strokeLinecap="butt"
             strokeDasharray={`${Math.max(0, len - 1.5)} ${c - Math.max(0, len - 1.5)}`}
             strokeDashoffset={-offset}
             transform="rotate(-90 110 110)"
+            /* `stroke` goes through `style`, not the presentation attribute: a `var()` in an SVG
+               attribute is not resolved, it is treated as the literal string and the slice
+               renders black. */
             style={{
+              stroke: seriesColor(i),
               transition: 'stroke-dasharray .55s cubic-bezier(.2,.7,.2,1), stroke-dashoffset .55s cubic-bezier(.2,.7,.2,1), stroke-width .15s',
               cursor: 'pointer',
               opacity: active && active !== g.key ? 0.45 : 1,

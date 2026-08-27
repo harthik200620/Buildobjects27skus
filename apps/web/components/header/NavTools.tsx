@@ -23,11 +23,9 @@ import { IconEstimate } from '@/components/icons';
 export default function NavTools() {
   const pathname = usePathname();
   return (
-    <>
-      <Link href="/estimate" className="navlink" aria-current={pathname.startsWith('/estimate') ? 'page' : undefined}>
-        <IconEstimate size={17} />
-        Estimator
-      </Link>
-    </>
+    <Link href="/estimate" className="navlink" aria-current={pathname.startsWith('/estimate') ? 'page' : undefined}>
+      <IconEstimate size={17} />
+      Estimator
+    </Link>
   );
 }

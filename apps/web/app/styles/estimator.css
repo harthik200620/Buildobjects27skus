@@ -571,8 +571,12 @@
     font-variant-numeric: normal;
     color: var(--ink-3);
   }
+  /* --ink-3, not --ink-4. The token says "DECORATIVE ONLY. Never body text." and this is the
+     line that qualifies a labour figure — "41 % of civil" is the reason the number beside it is
+     the number it is, which makes it the opposite of decoration. Measured 3.25:1 on the card it
+     sits on, against the 4.5 it needs. */
   .gl-note {
-    color: var(--ink-4);
+    color: var(--ink-3);
     font-size: var(--t-fine);
     font-variant-numeric: normal;
   }
@@ -937,9 +941,11 @@
   .time-bar.is-at .time-bar-fill {
     filter: brightness(1.35);
   }
+  /* The month numbers under the schedule bars. A reader counting "when does the money go out"
+     reads these; they are an axis, not a texture. Same 3.25:1 failure as .gl-note above. */
   .time-bar-n {
     margin-top: 5px;
-    color: var(--ink-4);
+    color: var(--ink-3);
   }
   .time-scrub {
     display: flex;

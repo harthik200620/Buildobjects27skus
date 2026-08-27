@@ -37,6 +37,7 @@ import {
 } from '@/components/icons';
 import type { ArProduct } from '@/lib/ar-data';
 import { inr } from '@/lib/media';
+import { productTitle } from '@/lib/product-name';
 import {
   bestRegionScore,
   canvasToB64,
@@ -474,7 +475,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
           </div>
         }
       >
-        <ArLive glbUrl={product.glbUrl} rule={rule} dims={dims} name={`${product.brand} ${product.name}`} onExit={() => setMode('menu')} />
+        <ArLive glbUrl={product.glbUrl} rule={rule} dims={dims} name={productTitle(product.brand, product.name)} onExit={() => setMode('menu')} />
       </React.Suspense>
     );
   if (mode === 'quicklook' && product.glbUrl)
@@ -489,7 +490,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
         <ArQuickLook
           glbUrl={product.glbUrl}
           usdzUrl={product.usdzUrl}
-          name={`${product.brand} ${product.name}`}
+          name={productTitle(product.brand, product.name)}
           rule={rule}
           dims={dims}
           onFallback={() => setMode('photo')}
@@ -911,7 +912,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
       {product.pdpHref && (
         <p className="mt-4 text-[13px]">
           <Link href={product.pdpHref} className="underline decoration-dotted underline-offset-2" style={{ color: 'var(--ink-2)' }}>
-            Back to {product.brand} {product.name}
+            Back to {productTitle(product.brand, product.name)}
             {product.price ? ` · ${inr(product.price)} per ${product.unit}` : ''} <IconArrow size={13} style={{ display: 'inline', verticalAlign: -2 }} />
           </Link>
         </p>

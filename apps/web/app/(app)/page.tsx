@@ -8,8 +8,21 @@ import { loadCatalogueCategories } from '@/lib/data';
 
 export const revalidate = 60;
 
-/** Tiles above the fold on a desktop grid; these load eagerly, the rest do not. */
-const EAGER = 4;
+/**
+ * Tiles that load eagerly, and the answer is none of them.
+ *
+ * This was 4, on the reasonable-sounding theory that the first row is above the fold. Measured,
+ * it is not: the hero ends at 807 px and the grid starts at 1655 px on a 940 px desktop viewport,
+ * and at 2307 px on a phone. Zero tiles are visible on first paint at either size.
+ *
+ * What `priority` actually did was emit four `<link rel=preload as=image>` for pictures nobody
+ * can see, on the same connection that is trying to fetch the hero photograph — which IS the
+ * largest contentful paint. On the connections this store is for, that is the LCP losing a race
+ * to four thumbnails sitting two screenfuls down the page.
+ *
+ * The mechanism stays wired up. If the hero is ever shortened, this becomes a number again.
+ */
+const EAGER = 0;
 
 /**
  * The front door. Three moves and the footer, and the third one is the page.
@@ -33,7 +46,8 @@ const EAGER = 4;
  */
 export default async function Home() {
   const [cats, skus] = await Promise.all([loadCatalogueCategories(), loadFlagshipSkus()]);
-  const liveCategories = cats.filter((c) => c.status === 'live').length;
+  const stocked = cats.filter((c) => c.status === 'live');
+  const coming = cats.filter((c) => c.status !== 'live');
   const brands = new Set(skus.map((s) => s.brand)).size;
 
   return (
@@ -142,45 +156,74 @@ export default async function Home() {
         </ol>
       </section>
 
-      {/* ── the catalogue's top level, and the end of the page ─────────────── */}
-      <section className="shell sec sec--last" aria-labelledby="cats-h">
-        <div className="sec-head" data-reveal>
-          <div>
-            <p className="micro sec-eyebrow">The catalogue</p>
-            <h2 id="cats-h" className="d2">
-              Every category we carry
-            </h2>
-            <p className="lede sec-sub">
-              <span className="fig">{liveCategories}</span> of <span className="fig">{cats.length}</span> are stocked today. The rest are shelves we are filling
-              — open one and it will tell you plainly where it stands.
-            </p>
-          </div>
-          <Link href="/search" className="sec-more">
-            Browse everything <IconArrow size={16} />
-          </Link>
-        </div>
-
-        {cats.length === 0 ? (
+      {/* ── the catalogue's top level, and the end of the page ───────────────
+          Two grids, not one, and the split is the whole point. Nine of the thirty-five categories
+          have something on the shelf; twenty-six do not yet. Drawn at the same size and shuffled
+          together — which is what this was — the front door opened onto four dimmed "Arriving
+          soon" tiles and read as a store with the lights off. What sells leads, at full size. What
+          is coming still appears, all of it, under its own heading and at the weight of a list. */}
+      {cats.length === 0 ? (
+        <section className="shell sec sec--last">
           <EmptyShelves />
-        ) : (
-          <ul className="cat-grid stagger">
-            {cats.map((c, i) => (
-              /* --i drives the stagger: four columns, so the modulo makes each row cascade
-                 left-to-right rather than the whole row arriving at once. */
-              <li key={c.slug} data-reveal="scale" style={{ '--i': i % 4 } as React.CSSProperties}>
-                <CategoryTile
-                  href={`/c/${c.slug}`}
-                  name={c.name}
-                  heroImageKey={c.heroImageKey}
-                  soon={c.status !== 'live'}
-                  priority={i < EAGER}
-                  meta={c.skuCount > 0 ? `${c.skuCount} ${c.skuCount === 1 ? 'item' : 'items'}` : undefined}
-                />
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+        </section>
+      ) : (
+        <>
+          <section className="shell sec" aria-labelledby="cats-h">
+            <div className="sec-head" data-reveal>
+              <div>
+                <p className="micro sec-eyebrow">The catalogue</p>
+                <h2 id="cats-h" className="d2">
+                  On the shelf today
+                </h2>
+                <p className="lede sec-sub">
+                  <span className="fig">{stocked.length}</span> categories, <span className="fig">{skus.length}</span> items, delivered across Andhra Pradesh
+                  and Telangana.
+                </p>
+              </div>
+              <Link href="/search" className="sec-more">
+                Browse everything <IconArrow size={16} />
+              </Link>
+            </div>
+
+            <ul className="cat-grid stagger">
+              {stocked.map((c, i) => (
+                /* --i drives the stagger: three columns, so the modulo makes each row cascade
+                   left-to-right rather than the whole row arriving at once. */
+                <li key={c.slug} style={{ '--i': i % 3 } as React.CSSProperties}>
+                  <CategoryTile
+                    href={`/c/${c.slug}`}
+                    name={c.name}
+                    heroImageKey={c.heroImageKey}
+                    priority={i < EAGER}
+                    meta={c.skuCount > 0 ? `${c.skuCount} ${c.skuCount === 1 ? 'item' : 'items'}` : undefined}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {coming.length > 0 && (
+            <section className="shell sec sec--last" aria-labelledby="soon-h">
+              <div className="sec-head sec-head--tight" data-reveal>
+                <div>
+                  <p className="micro sec-eyebrow">Filling next</p>
+                  <h2 id="soon-h" className="d3">
+                    <span className="fig">{coming.length}</span> more shelves, on the way
+                  </h2>
+                  <p className="lede sec-sub">Open any of them and it will tell you plainly where it stands — nothing here pretends to be in stock.</p>
+                </div>
+              </div>
+              <ul className="cat-grid cat-grid--compact stagger">
+                {coming.map((c, i) => (
+                  <li key={c.slug} style={{ '--i': i % 6 } as React.CSSProperties}>
+                    <CategoryTile href={`/c/${c.slug}`} name={c.name} heroImageKey={c.heroImageKey} soon compact />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </>
+      )}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import ArStage from '@/components/ar/ArStage';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { loadArProduct } from '@/lib/ar-data';
+import { productTitle, withoutBrand } from '@/lib/product-name';
 
 type Params = { sku: string };
 type Search = { as?: string };
@@ -31,18 +32,28 @@ export default async function ArPage({ params, searchParams }: { params: Promise
       <Breadcrumbs
         trail={[
           { label: 'Home', href: '/' },
-          ...(product.pdpHref ? [{ label: `${product.brand} ${product.name}`, href: product.pdpHref }] : [{ label: product.name }]),
+          ...(product.pdpHref ? [{ label: productTitle(product.brand, product.name), href: product.pdpHref }] : [{ label: product.name }]),
           { label: 'In your room' },
         ]}
       />
+      {/* The heading is the PRODUCT. It used to be `product.categoryName`, so the largest words on
+          a page about one bag of ACC Suraksha read "Cement" — the least specific thing available,
+          with the actual product demoted to the sentence underneath and its brand printed twice
+          in the process ("ACC ACC Suraksha Power Cement"). The category is one crumb up the trail
+          and one click away; it does not need the h1 as well. */}
       <header className="page-head" style={{ paddingBottom: 'var(--s-4)' }}>
         <p className="kicker">View in your room</p>
-        <h1 className="display page-title">{product.demo ? 'Gate demo — a bathtub' : product.categoryName}</h1>
+        <h1 className="display page-title">
+          {product.demo ? (
+            'Gate demo — a bathtub'
+          ) : (
+            <>
+              <span className="page-title-brand">{product.brand}</span> {withoutBrand(product.name, product.brand)}
+            </>
+          )}
+        </h1>
         <p className="page-sub max-w-[64ch]">
-          <span className="fig" style={{ color: 'var(--ink-2)' }}>
-            {product.brand} {product.name}
-          </span>{' '}
-          at its true size, placed where it belongs — {product.rule.surfaceLabel}.
+          At its true size, placed where it belongs — {product.rule.surfaceLabel}.
           {product.demo
             ? ' Point this at a living room and the engine refuses; point it at a bathroom floor and it places.'
             : ' The engine refuses surfaces the product does not belong on, then integrates light and shadow on request.'}

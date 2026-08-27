@@ -4,8 +4,24 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import Welcome, { type Region, type WelcomeStep } from './Welcome';
 
+/**
+ * Where to go once the visitor is through the door.
+ *
+ * The proxy puts `?next=` on the redirect when somebody asked for a page before signing in. It
+ * is read here rather than on the server because the page it lives on is prerendered — a static
+ * document has no query string — and reading it here costs one property access at submit time.
+ *
+ * Only same-origin paths are honoured. `//evil.example` is a protocol-relative URL that a bare
+ * `startsWith('/')` would wave through, so it is rejected explicitly.
+ */
+function destination(): string {
+  if (typeof window === 'undefined') return '/';
+  const next = new URLSearchParams(window.location.search).get('next');
+  return next?.startsWith('/') && !next.startsWith('//') ? next : '/';
+}
+
 /** State + network for the front door. Welcome itself stays presentational. */
-export default function WelcomeGate({ regions, next }: { regions: Region[]; next: string }) {
+export default function WelcomeGate({ regions }: { regions: Region[] }) {
   const router = useRouter();
   const [regionId, setRegionId] = React.useState(regions[0]?.region_id ?? 'hyd');
   const [pincode, setPincode] = React.useState(regions[0]?.default_pincode ?? '500001');
@@ -58,7 +74,7 @@ export default function WelcomeGate({ regions, next }: { regions: Region[]; next
       });
       const j = await res.json();
       if (!res.ok) throw new Error(j.error || 'That code did not match');
-      router.replace(next.startsWith('/') ? next : '/');
+      router.replace(destination());
       router.refresh();
     } catch (e) {
       setError((e as Error).message);
