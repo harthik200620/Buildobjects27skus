@@ -103,7 +103,11 @@ describe('surfacePrompt', () => {
   it('switches to an instruction once the surface is found', () => {
     const p = surfacePrompt(ruleFor('tiles'), { surface: 'floor', detection: at('floor', 0.9), confidence: 90 }, true, productNoun('tiles'));
     expect(p.tone).toBe('ok');
-    expect(p.text).toBe('Floor found — tap to place this tile, drag to move it.');
+    /* The copy changed with the behaviour: the live view now places the product on the first frame
+       that can carry a placement, so "tap to place" described a step that no longer exists. The
+       assertion this test is really making — tone 'ok', and an instruction rather than a hunt —
+       is unchanged. */
+    expect(p.text).toBe('Floor found — drag this tile to move it, or tap where you want it.');
   });
 
   it('never says "this dahua"', () => {

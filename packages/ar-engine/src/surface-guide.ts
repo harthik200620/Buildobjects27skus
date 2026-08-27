@@ -113,7 +113,10 @@ export interface SurfacePrompt {
 export function surfacePrompt(rule: PlacementRule, match: SurfaceMatch, analysed: boolean, noun = 'this product'): SurfacePrompt {
   if (match.surface) {
     const label = SURFACE_LABEL[match.surface] ?? match.surface;
-    return { tone: 'ok', text: `${cap(label)} found — tap to place ${noun}, drag to move it.` };
+    /* The product is already there. The live view places it on the first frame that can carry a
+       placement, so telling somebody to tap to place it describes a version of this feature that
+       no longer exists — and, while it was broken, described one that never worked. */
+    return { tone: 'ok', text: `${cap(label)} found — drag ${noun} to move it, or tap where you want it.` };
   }
   if (!analysed) return { tone: 'seeking', text: 'Looking for a surface — move your phone slowly across the room.' };
   return { tone: 'seek', text: `Point your camera at ${article(rule.surfaceLabel)} to place ${noun}.` };

@@ -230,6 +230,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
   }, []);
   const dimsRef = React.useRef(dims);
   dimsRef.current = dims;
+  /* Read by the renderer's creation effect. As a DEPENDENCY it rebuilt the whole scene every time
+     the scale changed — see the effect below. */
+  const scaleMultRef = React.useRef(scaleMult);
+  scaleMultRef.current = scaleMult;
 
   /* ── 2. Initialize Three.js SceneRenderer (Once on mount / GLB change) ─── */
   React.useEffect(() => {
@@ -256,7 +260,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         }
         rendererRef.current = r;
         r.setVisible(true);
-        r.setScale(scaleMult);
+        r.setScale(scaleMultRef.current);
+        /* A rebuilt renderer has no anchor. Let the loop place it again rather than leaving an
+           empty scene that only a tap can recover. */
+        autoPlacedRef.current = false;
       } catch (e) {
         if (alive) setError(`3D WebGL renderer failed: ${(e as Error).message}`);
       }
@@ -269,7 +276,23 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         rendererRef.current = null;
       }
     };
-  }, [glbUrl, category, scaleMult]);
+    /*
+     * `scaleMult` IS DELIBERATELY NOT A DEPENDENCY, and this was the bug behind "I open the
+     * camera and there is no product".
+     *
+     * It used to be listed. Auto-fit enlarges a small product to a legible size the moment a
+     * surface is found, which calls setScaleMult — which re-ran THIS effect, which disposed the
+     * SceneRenderer, reloaded the GLB from the network and built a fresh scene with no anchor in
+     * it. Meanwhile `autoPlacedRef` had already been set by the frame that placed the product, so
+     * nothing ever placed it again. The result was an empty camera feed that came back to life
+     * only if the user happened to tap, because tapping is the one path that re-anchors.
+     *
+     * A rebuild belongs to the MODEL, not to how big it is drawn: only `glbUrl` and `category`
+     * change what is in the scene. Scale is applied by the small effect below, on the renderer
+     * that already exists, and the initial value is read through a ref so it cannot creep back
+     * into this list.
+     */
+  }, [glbUrl, category]);
 
   /* ── Update scale multiplier in renderer ────────────────────────────── */
   React.useEffect(() => {
@@ -450,10 +473,28 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       schedulerRef.current?.tick();
     }
 
-    // Auto-place on first valid frame, at the point this category's surface actually is
+    /*
+     * AUTO-PLACE ON THE FIRST FRAME THAT CAN ACTUALLY CARRY A PLACEMENT.
+     *
+     * This is the "I opened the camera and there is no product" bug, and it was one line: the
+     * guard was set BEFORE the placement was attempted.
+     *
+     *     autoPlacedRef.current = true;        // burned here
+     *     const initAnchor = anchorFromPixel(…);
+     *     if (initAnchor) { … }                // …but this may be null
+     *
+     * `anchorFromPixel` returns null whenever the ray through the drop point misses the surface
+     * plane, and on the very first frame it usually does: the pose has not been established yet,
+     * so R is still settling and the plane it derives is not the wall in front of the camera.
+     * One null, and the flag was spent for the lifetime of the session. Nothing was ever placed,
+     * the product only appeared if the user happened to tap, and the camera looked broken.
+     *
+     * The guard now records that a placement SUCCEEDED, so the attempt simply repeats on the next
+     * frame until the geometry can carry it — which is a few frames, not a few seconds. autoFit
+     * moved inside the success branch too: it sets React state, and running it once per frame
+     * while waiting would re-render the whole view for as long as the pose took to settle.
+     */
     if (!autoPlacedRef.current) {
-      autoPlacedRef.current = true;
-      applyAutoFit(surface);
       const drop = dropPoint(surface);
       const initAnchor = anchorFromPixel({
         K,
@@ -466,6 +507,8 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         wallDistanceM: surfaceDistanceM(surface, matchRef.current),
       });
       if (initAnchor) {
+        autoPlacedRef.current = true;
+        applyAutoFit(surface);
         anchorRef.current = initAnchor;
         renderer.setAnchor(initAnchor, yaw);
         renderer.setVisible(true);
@@ -772,22 +815,90 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
         </div>
       )}
 
-      {/* 5. Surface prompt — the one instruction, in the rule's own words */}
-      {!result && camStatus === 'streaming' && (
-        <div className={`ar-surface-prompt${prompt.tone === 'ok' ? ' ar-surface-prompt--ok' : prompt.tone === 'seeking' ? ' ar-surface-prompt--seeking' : ''}`}>
-          {prompt.tone === 'ok' ? <IconReticle size={14} /> : prompt.tone === 'seeking' ? <IconSeeking size={14} /> : <IconTarget size={14} />}
-          <span>{!areaOk && prompt.tone === 'ok' ? areaPrompt(rule) : prompt.text}</span>
-          {prompt.tone === 'ok' && match.confidence > 0 && <span style={{ opacity: 0.75 }}>{match.confidence}%</span>}
-        </div>
-      )}
+      {/*
+       * 5 + 6. THE GUIDANCE STACK — one column, not three things pinned near the top.
+       *
+       * The surface prompt sat at `top: 68px` and the interaction tip at `top: 72px`, four pixels
+       * apart, both of them under a title bar whose height depends on how far the product name
+       * wraps. On a 430px phone with a name like "Philips Ace Saver 9 W B22 Cool Day Light LED
+       * Bulb" all three landed on top of each other, and the sentence telling somebody what to do
+       * was the one underneath. Flow beats offsets: a column cannot overlap itself whatever the
+       * title does.
+       */}
+      {!result && (
+        <div className="ar-top">
+          <div className="ar-topbar">
+            <div className="ar-hud-glass ar-hud-pill ar-hud-id">
+              {/* Truncated, not wrapped: this pill is positioned, so every extra line it takes
+                  pushes into whatever is below it. */}
+              <span className="ar-hud-name">{name}</span>
+              <span style={{ color: 'var(--color-brand)', flex: 'none' }}>
+                · {dims.w_mm}×{dims.h_mm} mm
+              </span>
+              {/* "auto" is the honest word: at 100 % this is the real thing at its real size, and at
+                anything else the reader deserves to know whether they asked for that or the engine
+                enlarged a small product to make it legible. */}
+              <span style={{ opacity: 0.8, flex: 'none' }}>
+                · {Math.round(scaleMult * 100)}%{enlarged ? ' auto' : ''}
+              </span>
+            </div>
 
-      {/* 6. Interaction Guidance Tip */}
-      {!result && camStatus === 'streaming' && (
-        <div style={{ position: 'absolute', top: '72px', left: '50%', transform: 'translateX(-50%)', zIndex: 4, pointerEvents: 'none' }}>
-          <div className="ar-hud-glass ar-hud-pill text-[12px] opacity-90">
-            <IconMove size={13} />
-            <span>Tap to place · drag to move · rotate below</span>
+            <div className="flex flex-wrap items-center justify-end gap-2">
+              <button
+                type="button"
+                className="ar-hud-glass ar-hud-pill cursor-pointer"
+                onClick={() => {
+                  const next = facingMode === 'environment' ? 'user' : 'environment';
+                  setFacingMode(next);
+                  startCameraStream(next);
+                }}
+                aria-label="Switch camera"
+              >
+                <IconFlipCamera size={13} /> Flip camera
+              </button>
+              {scaleMult > 1.01 && (
+                <button
+                  type="button"
+                  className="ar-hud-glass ar-hud-pill cursor-pointer"
+                  onClick={() => {
+                    setEnlarged(false);
+                    setScaleMult(1);
+                  }}
+                  aria-label="Show at true 1:1 size"
+                >
+                  {/* The long form ("Enlarged 253% — show true size") is four words too many for a
+                      pill on a 390px phone; the percentage is already in the identity row above. */}
+                  <IconRuler size={13} /> True size
+                </button>
+              )}
+              <button
+                type="button"
+                className="ar-hud-glass ar-hud-pill cursor-pointer"
+                onClick={() => autoPlaceInMiddle(surface)}
+                aria-label="Re-centre the product in view"
+              >
+                <IconRefresh size={13} /> Re-center
+              </button>
+              <button type="button" className="ar-hud-glass ar-hud-pill cursor-pointer" onClick={onExit} aria-label="Exit AR mode">
+                <IconClose size={13} /> Exit
+              </button>
+            </div>
           </div>
+          {camStatus === 'streaming' && (
+            <>
+              <div
+                className={`ar-surface-prompt${prompt.tone === 'ok' ? ' ar-surface-prompt--ok' : prompt.tone === 'seeking' ? ' ar-surface-prompt--seeking' : ''}`}
+              >
+                {prompt.tone === 'ok' ? <IconReticle size={14} /> : prompt.tone === 'seeking' ? <IconSeeking size={14} /> : <IconTarget size={14} />}
+                <span>{!areaOk && prompt.tone === 'ok' ? areaPrompt(rule) : prompt.text}</span>
+                {prompt.tone === 'ok' && match.confidence > 0 && <span style={{ opacity: 0.75 }}>{match.confidence}%</span>}
+              </div>
+              <div className="ar-hud-glass ar-hud-pill text-[12px] opacity-90">
+                <IconMove size={13} />
+                <span>Drag to move · rotate below</span>
+              </div>
+            </>
+          )}
         </div>
       )}
 
@@ -827,58 +938,6 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
             </button>
             <button type="button" className="ar-chip" onClick={() => setResult(null)}>
               <IconRefresh size={14} /> Back to Live AR
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 9. Top HUD: tier, surface and tracking state */}
-      {!result && (
-        <div className="ar-hud" style={{ top: 'calc(var(--s-3) + env(safe-area-inset-top))', bottom: 'auto', zIndex: 5, justifyContent: 'space-between' }}>
-          <div className="ar-hud-glass ar-hud-pill">
-            <span style={{ fontWeight: 600 }}>{name}</span>
-            <span style={{ color: 'var(--color-brand)' }}>
-              · {dims.w_mm}×{dims.h_mm} mm
-            </span>
-            <span style={{ opacity: 0.8 }}>· {Math.round(scaleMult * 100)}% scale</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className="ar-hud-glass ar-hud-pill cursor-pointer"
-              onClick={() => {
-                const next = facingMode === 'environment' ? 'user' : 'environment';
-                setFacingMode(next);
-                startCameraStream(next);
-              }}
-              aria-label="Switch camera"
-            >
-              <IconFlipCamera size={13} /> Flip camera
-            </button>
-            {scaleMult > 1.01 && (
-              <button
-                type="button"
-                className="ar-hud-glass ar-hud-pill cursor-pointer"
-                onClick={() => {
-                  setEnlarged(false);
-                  setScaleMult(1);
-                }}
-                aria-label="Show at true 1:1 size"
-              >
-                <IconRuler size={13} /> {enlarged ? `Enlarged ${Math.round(scaleMult * 100)}% — show true size` : '1:1 True size'}
-              </button>
-            )}
-            <button
-              type="button"
-              className="ar-hud-glass ar-hud-pill cursor-pointer"
-              onClick={() => autoPlaceInMiddle(surface)}
-              aria-label="Re-centre the product in view"
-            >
-              <IconRefresh size={13} /> Re-center
-            </button>
-            <button type="button" className="ar-hud-glass ar-hud-pill cursor-pointer" onClick={onExit} aria-label="Exit AR mode">
-              <IconClose size={13} /> Exit
             </button>
           </div>
         </div>

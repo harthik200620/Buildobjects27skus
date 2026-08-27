@@ -91,6 +91,9 @@
   font-size: var(--t-cap);
   font-weight: 500;
   letter-spacing: -0.01em;
+  /* A pill is a label, not a paragraph. Without this the row squeezed "Flip camera" into two
+     stacked words and "Re-center" into "Re-" over "center" — the row wraps as whole pills now. */
+  white-space: nowrap;
 }
 
 /*
@@ -98,16 +101,62 @@
  * wrong thing — "Point your camera at a wall to place this" — so it is the most-read text in
  * the AR view and it must survive being laid over an arbitrary photograph of a room.
  */
-.ar-surface-prompt {
+/*
+ * The stack the prompt and the interaction tip live in. One absolutely-positioned column, cleared
+ * of the title bar once, so the two chips inside it flow and can never collide — with each other
+ * or with a product name that wraps.
+ */
+.ar-top {
   position: absolute;
-  top: 68px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: calc(var(--s-3) + env(safe-area-inset-top));
+  right: var(--s-3);
+  left: var(--s-3);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+/* Only the controls take pointer events; the chips must not eat a tap meant for the wall. */
+.ar-top button {
+  pointer-events: auto;
+}
+/*
+ * The identity row and the controls. Wraps on a narrow phone — and BECAUSE it can wrap, nothing
+ * below it may be positioned at a fixed offset: it is a flow child of .ar-top, so the guidance
+ * chips move down with it instead of underneath it.
+ */
+.ar-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+}
+
+/* The title pill is positioned, so it must not grow: one line, ellipsis, never a second row. */
+.ar-hud-id {
+  max-width: min(64vw, 300px);
+  flex: none;
+}
+.ar-hud-name {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ar-surface-prompt {
+  position: relative;
   z-index: 10;
   display: flex;
   align-items: center;
   gap: 8px;
-  max-width: min(92vw, 420px);
+  /* 100 %, not 92vw: this is a flow child of .ar-top now, and a viewport-relative width is wider
+     than the column it sits in on a narrow phone — which centred it and clipped both ends. */
+  max-width: 100%;
   padding: 9px 18px;
   border-radius: var(--radius-lg);
   background: var(--color-ar-danger);
