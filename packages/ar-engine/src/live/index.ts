@@ -7,6 +7,8 @@ export * from './anchor';
 export * from './budget';
 export * from './camera-math';
 export * from './fit';
+export * from './fit-model';
+export * from './framing';
 export * from './hysteresis';
 export * from './lk';
 export * from './plane';
