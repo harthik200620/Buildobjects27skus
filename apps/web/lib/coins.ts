@@ -74,11 +74,17 @@ export function hasSpunWheel(): boolean {
   return localStorage.getItem(SPUN_KEY) === 'true';
 }
 
-/** Mark the spin wheel as completed with the amount won */
-export function markWheelSpun(won: number): void {
+/**
+ * Record that this visitor has had their ride. It does NOT credit anything.
+ *
+ * It used to take the amount won and call `addBoCoins` itself, which is two jobs behind a name
+ * that promises one — and a caller that does the obvious thing, marking the spin AND crediting
+ * the win, pays out twice. That is exactly what happened: a 60-coin ride moved a 40 balance to
+ * 160. Recording and paying are separate now, and the name is only about the first.
+ */
+export function markWheelSpun(): void {
   if (typeof window === 'undefined') return;
   localStorage.setItem(SPUN_KEY, 'true');
-  addBoCoins(won, `Kinetic Turbine Sector Win (+${won} Coins)`);
 }
 
 /** Reset spin wheel status (for testing or re-spins) */

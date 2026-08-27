@@ -1,479 +1,221 @@
 'use client';
 
-import { formatNumber } from '@buildobjects/catalog';
 import React from 'react';
-import { IconClose, IconCoin, IconEngine, IconSettings, IconVolumeOff, IconVolumeOn } from '@/components/icons';
-import { addBoCoins, getBoCoins, resetWheelStatus } from '@/lib/coins';
-import HouseScene from './HouseScene';
+import { IconClose, IconCoin, IconVolumeOff, IconVolumeOn } from '@/components/icons';
+import { addBoCoins, getBoCoins, markWheelSpun } from '@/lib/coins';
+import { ElevatorScene, FLOORS } from './ElevatorScene';
 import { triggerHaptic } from './hapticEngine';
+import Odometer from './Odometer';
 import { getSoundMuted, playActivationSound, playLockSound, playRewardSound, playTickSound, setSoundMuted } from './soundEngine';
-import { calculateTokenTarget, getClosestRoomIndex, tokenKineticEase } from './spinMath';
-import { type EngineState, type RewardTier, ROOM_WAYPOINTS, type RoomWaypoint } from './types';
+import type { RewardTier } from './types';
 
-/** How long the balance counter takes to roll to a new value. */
-const BALANCE_ROLL_MS = 1_200;
-/** Fraction of the journey after which the engine switches to its locking state. */
-const LOCK_AT_PROGRESS = 0.75;
-/** Pause between pressing the button and the token leaving, so the power-up sound lands first. */
-const ACTIVATION_DELAY_MS = 340;
+/**
+ * THE BO LIFT.
+ *
+ * ── THE SEQUENCE, WHICH IS THE WHOLE DESIGN ─────────────────────────────────────────────────
+ * The coins are in the car with the doors open, turning under the light. You press the call
+ * button. The doors close OVER them — they are occluded, not faded, which is the only version of
+ * "and now you cannot see them" a viewer believes. The car rides: the shaft streams past, floor
+ * plates flick by, the indicator counts. It decelerates, settles on its springs, and the doors
+ * part on what it brought back.
+ *
+ * ── WHAT THIS REPLACES ──────────────────────────────────────────────────────────────────────
+ * A token orbiting six rooms of a cutaway house on a 2D SVG, with the reward decided by which
+ * room it stopped in. It worked and it was a wheel wearing a floor plan: the motion was a loop,
+ * so the ending was always "it went round again and this time it stopped". A lift has somewhere
+ * to be. It goes there, and arriving is the event.
+ *
+ * ── THE STATE MACHINE IS THE SCENE'S ────────────────────────────────────────────────────────
+ * This component owns no animation clock. ElevatorScene runs one rAF and calls back at the four
+ * moments that matter — closed, each floor passed, arrived, open — and every sound, every haptic
+ * and every UI change hangs off those. Two timelines that have to agree about when a door shut
+ * is a bug waiting for a slow frame; there is one, and it is the one drawing the door.
+ *
+ * ── AND IT DEGRADES ─────────────────────────────────────────────────────────────────────────
+ * No WebGL, or `prefers-reduced-motion`: the scene resolves straight to open on the result and
+ * the panel is a card with a figure on it. Nobody is shown a black rectangle and nobody who has
+ * asked for less motion is given a two-and-a-half-second ride.
+ */
+
+/** What the lift can bring back, and how often. Weighted so 0 is possible and 100 is rare. */
+const ODDS: Array<{ tier: RewardTier; weight: number }> = [
+  { tier: 0, weight: 6 },
+  { tier: 20, weight: 30 },
+  { tier: 40, weight: 26 },
+  { tier: 60, weight: 20 },
+  { tier: 80, weight: 12 },
+  { tier: 100, weight: 6 },
+];
+
+function drawTier(): RewardTier {
+  const total = ODDS.reduce((n, o) => n + o.weight, 0);
+  let r = Math.random() * total;
+  for (const o of ODDS) {
+    r -= o.weight;
+    if (r <= 0) return o.tier;
+  }
+  return 20;
+}
+
+type Phase = 'ready' | 'riding' | 'revealed';
 
 export default function RewardEngine({ onClose, initialBalance }: { onClose?: () => void; initialBalance?: number }) {
   const [balance, setBalance] = React.useState(initialBalance ?? 0);
-  const [displayBalance, setDisplayBalance] = React.useState(initialBalance ?? 0);
-  const [engineState, setEngineState] = React.useState<EngineState>('READY');
-  const [currentStep, setCurrentStep] = React.useState(0);
-  const [activeRoomIndex, setActiveRoomIndex] = React.useState(0);
-  const [winningRoom, setWinningRoom] = React.useState<RoomWaypoint | null>(null);
-  const [isBalancePulsing, setIsBalancePulsing] = React.useState(false);
-  const [isMuted, setIsMutedState] = React.useState(false);
-  const [showDebug, setShowDebug] = React.useState(false);
+  const [phase, setPhase] = React.useState<Phase>('ready');
+  const [won, setWon] = React.useState<RewardTier | null>(null);
+  const [floor, setFloor] = React.useState(0);
+  const [muted, setMuted] = React.useState(false);
+  const [webgl, setWebgl] = React.useState(true);
+
+  const host = React.useRef<HTMLDivElement>(null);
+  const scene = React.useRef<ElevatorScene | null>(null);
 
   React.useEffect(() => {
-    const b = getBoCoins();
-    setBalance(b);
-    setDisplayBalance(b);
-    setIsMutedState(getSoundMuted());
+    setBalance(getBoCoins());
+    setMuted(getSoundMuted());
   }, []);
 
-  /**
-   * Odometer roll from the displayed balance to the real one.
-   *
-   * The starting value is read from a ref, not from `displayBalance` state: the effect writes
-   * that state on every frame, so depending on it would tear the animation down and restart it
-   * sixty times a second, each restart resetting the clock and never reaching the target.
-   */
-  const displayBalanceRef = React.useRef(displayBalance);
-  displayBalanceRef.current = displayBalance;
+  /* The scene is mounted once and lives for the panel's lifetime. Its own loop pauses when the
+     tab is hidden and stops entirely on dispose, so an open panel behind another tab costs
+     nothing at all. */
   React.useEffect(() => {
-    const from = displayBalanceRef.current;
-    if (from === balance) return;
-
-    const startTime = performance.now();
-    let frame = 0;
-    const step = (now: number) => {
-      const progress = Math.min(1, (now - startTime) / BALANCE_ROLL_MS);
-      const eased = 1 - (1 - progress) ** 4;
-      setDisplayBalance(Math.round(from + (balance - from) * eased));
-      if (progress < 1) frame = requestAnimationFrame(step);
+    const el = host.current;
+    if (!el) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let live = true;
+    ElevatorScene.mount(el, reduced).then((s) => {
+      if (!live) {
+        s?.dispose();
+        return;
+      }
+      if (!s) setWebgl(false);
+      scene.current = s;
+    });
+    /* A ResizeObserver, not a window listener: the stage is a flex child whose height comes from
+       whatever the chrome above it leaves, so it changes size when the RESULT LINE grows by a
+       line — an event `resize` never fires for, and one that would otherwise leave the canvas
+       stretched at the old aspect for the rest of the session. */
+    const ro = new ResizeObserver(() => scene.current?.resize());
+    ro.observe(el);
+    return () => {
+      live = false;
+      ro.disconnect();
+      scene.current?.dispose();
+      scene.current = null;
     };
+  }, []);
 
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
-  }, [balance]);
-
-  const orbitAnimationRef = React.useRef<number | null>(null);
-
-  const startTokenJourney = (forceTier?: RewardTier) => {
-    if (engineState !== 'READY' && engineState !== 'COMPLETE') return;
-
-    setEngineState('POWERING');
-    setWinningRoom(null);
+  const call = React.useCallback(() => {
+    if (phase !== 'ready') return;
+    const tier = drawTier();
+    const index = FLOORS.indexOf(tier);
+    setWon(null);
+    setPhase('riding');
     playActivationSound();
     triggerHaptic('activation');
 
-    setTimeout(() => {
-      const target = calculateTokenTarget(forceTier, currentStep);
-      setEngineState('TRAVELING');
+    const finish = () => {
+      setWon(tier);
+      setPhase('revealed');
+      playRewardSound(tier);
+      triggerHaptic(tier === 100 ? 'jackpot' : tier === 0 ? 'zero' : 'reward');
+      /* Record and credit are two calls on purpose — see lib/coins.ts. A zero floor still
+         counts as the ride having happened; it just pays nothing. */
+      markWheelSpun();
+      if (tier > 0) setBalance(addBoCoins(tier, `BO Lift — ${tier} coins`));
+    };
 
-      const startStep = currentStep;
-      const totalDelta = target.overshootStep - startStep;
-      const startTime = performance.now();
-      const duration = target.durationMs;
+    if (!scene.current) {
+      /* No scene to ride. Still a reward, just without the journey. */
+      finish();
+      return;
+    }
 
-      let lastRoomIdx = -1;
-      let locked = false;
+    scene.current.ride(index, {
+      onFloor: (n) => {
+        setFloor(n);
+        playTickSound(0.55);
+        triggerHaptic('tick');
+      },
+      onArrived: () => {
+        playLockSound();
+        triggerHaptic('lock');
+      },
+      onOpen: finish,
+    });
+  }, [phase]);
 
-      const animate = (now: number) => {
-        const elapsed = now - startTime;
-        const progress = Math.min(1, elapsed / duration);
-
-        const eased = tokenKineticEase(progress);
-        const newStep = startStep + totalDelta * eased;
-        const velocity = (1 - progress) * 20;
-
-        // Check active passing room for audio ratchet tick & visual illumination
-        const currentRoomIdx = getClosestRoomIndex(newStep);
-        setActiveRoomIndex(currentRoomIdx);
-
-        if (currentRoomIdx !== lastRoomIdx) {
-          lastRoomIdx = currentRoomIdx;
-          playTickSound(Math.min(1, velocity / 10));
-          triggerHaptic('tick');
-        }
-
-        setCurrentStep(newStep);
-
-        if (progress < 1) {
-          // `engineState` here is the value captured when the journey started, so it can never
-          // read 'LOCKING'. The local flag is what actually makes this fire once.
-          if (progress > LOCK_AT_PROGRESS && !locked) {
-            locked = true;
-            setEngineState('LOCKING');
-          }
-          orbitAnimationRef.current = requestAnimationFrame(animate);
-        } else {
-          // Final landing: Overshoot settle to exact target step
-          settleToTarget(target.targetStep, target.room);
-        }
-      };
-
-      orbitAnimationRef.current = requestAnimationFrame(animate);
-    }, ACTIVATION_DELAY_MS);
-  };
-
-  const settleToTarget = (finalStep: number, room: RoomWaypoint) => {
-    setEngineState('STILLNESS');
-    setCurrentStep(finalStep);
-    setWinningRoom(room);
-    playLockSound();
-    triggerHaptic('lock');
-
-    // 220ms moment of stillness before reward emergence
-    setTimeout(() => {
-      setEngineState('REVEALED');
-      playRewardSound(room.value);
-      if (room.isMaxOutput) triggerHaptic('jackpot');
-      else if (room.isZero) triggerHaptic('zero');
-      else triggerHaptic('reward');
-
-      // Credit balance and animate coin particles
-      setTimeout(() => {
-        if (!room.isZero) {
-          const newBal = addBoCoins(room.value, `BO House Engine Reward (+${room.value} Coins)`);
-          setBalance(newBal);
-          setIsBalancePulsing(true);
-          setTimeout(() => setIsBalancePulsing(false), 900);
-        }
-        setEngineState('COMPLETE');
-      }, 1100);
-    }, 220);
-  };
-
-  const toggleMute = () => {
-    const next = !isMuted;
-    setIsMutedState(next);
+  const toggleSound = () => {
+    const next = !muted;
+    setMuted(next);
     setSoundMuted(next);
   };
 
-  const handleReset = () => {
-    resetWheelStatus();
-    setEngineState('READY');
-    setWinningRoom(null);
-    setCurrentStep(0);
-    setActiveRoomIndex(0);
-  };
-
-  const isBusy = engineState !== 'READY' && engineState !== 'COMPLETE';
-
-  const buttonText =
-    engineState === 'READY'
-      ? 'ACTIVATE ENGINE'
-      : engineState === 'POWERING'
-        ? 'POWERING UP…'
-        : engineState === 'TRAVELING'
-          ? 'TRAVELING ROOM TO ROOM…'
-          : engineState === 'LOCKING'
-            ? 'LOCKING ROOM…'
-            : engineState === 'STILLNESS' || engineState === 'REVEALED'
-              ? winningRoom?.isZero
-                ? '0 BO COINS · CYCLE COMPLETE'
-                : `+${winningRoom?.value} BO COINS CREDITED`
-              : 'ACTIVATE ENGINE AGAIN';
-
-  const formattedBalance = formatNumber(displayBalance);
-
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100%',
-        minHeight: '88vh',
-        background: 'var(--color-ink)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '24px 16px',
-        userSelect: 'none',
-      }}
-    >
-      {/* ── Top Bar: Brand, Balance Odometer, Mute & Close ───────── */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '1080px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '16px',
-          zIndex: 20,
-        }}
-      >
-        {/* Brand & Concept Tag */}
+    <div className="bolift" data-phase={phase}>
+      <header className="bolift-head">
         <div>
-          <div
-            style={{
-              fontSize: '18px',
-              fontWeight: 700,
-              color: 'var(--color-canvas)',
-              letterSpacing: '-0.02em',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-          >
-            <span>BO ENGINE</span>
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 700,
-                color: 'var(--color-teal-600)',
-                background: 'rgb(30 74 85 / 10%)',
-                border: '1px solid rgb(30 74 85 / 25%)',
-                padding: '2px 8px',
-                borderRadius: '999px',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-              }}
-            >
-              The House Is The Wheel
-            </span>
-          </div>
-          <div style={{ fontSize: '12px', color: 'var(--color-ink-3)', marginTop: '2px' }}>Watch the BO Engine travel room to room around the house.</div>
+          <p className="micro bolift-eyebrow">BO Coins</p>
+          <h2 className="bolift-title">The lift</h2>
         </div>
-
-        {/* Live Balance Pill & Audio Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {/* Floating Balance Odometer */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'var(--color-ink)',
-              border: '1px solid var(--color-ink-2)',
-              borderRadius: '999px',
-              padding: '6px 16px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-              transform: isBalancePulsing ? 'scale(1.08)' : 'scale(1)',
-              transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
-            <IconCoin size={15} style={{ color: 'var(--color-canvas)' }} />
-            <span
-              style={{
-                fontSize: '16px',
-                fontWeight: 700,
-                color: 'var(--color-canvas)',
-                fontVariantNumeric: 'tabular-nums',
-              }}
-            >
-              {formattedBalance}
-            </span>
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 700,
-                color: 'var(--color-teal-600)',
-                letterSpacing: '0.08em',
-              }}
-            >
-              BO COINS
-            </span>
-          </div>
-
-          {/* Audio Toggle */}
-          <button
-            type="button"
-            onClick={toggleMute}
-            style={{
-              background: 'var(--color-ink)',
-              border: '1px solid var(--color-ink-2)',
-              borderRadius: '50%',
-              width: '36px',
-              height: '36px',
-              fontSize: '13px',
-              color: 'var(--color-line-strong)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-            }}
-            title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
-          >
-            {isMuted ? <IconVolumeOff size={16} /> : <IconVolumeOn size={16} />}
+        <div className="bolift-tools">
+          <button type="button" className="bolift-tool" onClick={toggleSound} aria-label={muted ? 'Turn sound on' : 'Turn sound off'}>
+            {muted ? <IconVolumeOff size={17} /> : <IconVolumeOn size={17} />}
           </button>
-
-          {/* Close for Modal Mode */}
           {onClose && (
-            <button
-              type="button"
-              onClick={onClose}
-              style={{
-                background: 'var(--color-ink)',
-                border: '1px solid var(--color-ink-2)',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                fontSize: '14px',
-                color: 'var(--color-line-strong)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-              }}
-              title="Close"
-            >
-              <IconClose size={16} />
+            <button type="button" className="bolift-tool" onClick={onClose} aria-label="Close">
+              <IconClose size={17} />
             </button>
           )}
         </div>
+      </header>
+
+      {/* ── the balance ─────────────────────────────────────────────────────
+          It sits ABOVE the lift and stays there the whole time, because the number going up is
+          the point of the machine and hiding it until the end would make the ride the point. */}
+      <div className="bolift-balance">
+        <span className="bolift-balance-label micro">
+          <IconCoin size={14} accent="var(--amber-700)" /> Your balance
+        </span>
+        <span className="bolift-balance-fig">
+          <Odometer value={balance} min={2} aria-label={`${balance} BO Coins`} />
+        </span>
+        {/* The credit flies off the odometer as it rolls. Keyed on the win so it re-mounts and
+            replays even when the same tier comes up twice running. */}
+        {phase === 'revealed' && won !== null && won > 0 && (
+          <span key={`${won}-${balance}`} className="bolift-credit fig">
+            +{won}
+          </span>
+        )}
       </div>
 
-      {/* ── Center Hero: Clean Daylight Cutaway House & Physical Token ── */}
-      <HouseScene
-        currentStep={currentStep}
-        engineState={engineState}
-        onActivate={() => startTokenJourney()}
-        activeRoomIndex={activeRoomIndex}
-        winningRoom={winningRoom}
-        balance={balance}
-        isBalancePulsing={isBalancePulsing}
-      />
-
-      {/* ── Bottom Controls: Sleek ACTIVATE ENGINE Action Pill ───── */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '520px',
-          marginTop: '20px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '8px',
-          zIndex: 20,
-        }}
-      >
-        <button
-          type="button"
-          onClick={() => startTokenJourney()}
-          disabled={isBusy}
-          style={{
-            width: '100%',
-            height: '52px',
-            borderRadius: '16px',
-            background: isBusy
-              ? 'linear-gradient(135deg, var(--color-line), var(--color-canvas-2))'
-              : 'linear-gradient(135deg, var(--color-teal-600), var(--color-canvas-2))',
-            border: 'none',
-            color: 'var(--color-ink)',
-            fontSize: '15px',
-            fontWeight: 700,
-            letterSpacing: '0.04em',
-            cursor: isBusy ? 'default' : 'pointer',
-            boxShadow: isBusy ? 'none' : '0 10px 25px rgb(30 74 85 / 40%), 0 2px 6px rgba(0,0,0,0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            transition: 'all 0.2s ease',
-          }}
-        >
-          <IconEngine size={16} />
-          <span>{buttonText}</span>
-        </button>
-
-        <div style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 600 }}>1 BO Coin = ₹1 cash discount in your BO Cart at checkout</div>
+      <div className="bolift-stage" ref={host} aria-hidden="true">
+        {!webgl && <div className="bolift-nogl" />}
       </div>
 
-      {/*
-        The QA panel — development only.
-        
-        It was shipping. A 23 px button at 25% black, captioned "Toggle QA Test Panel", sat in the
-        corner of a modal that opens itself for every first-time visitor, and behind it was a
-        FORCE ROOM row that hands out coins on demand. Internal tooling in front of customers is
-        bad on its own; internal tooling that mints the store's currency is worse. The condition
-        is checked at render rather than at import so the whole panel is dead code in a
-        production bundle.
-      */}
-      {process.env.NODE_ENV !== 'production' && (
-        <div style={{ position: 'absolute', bottom: '12px', right: '16px', zIndex: 100 }}>
-          <button
-            type="button"
-            onClick={() => setShowDebug((d) => !d)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'rgba(0,0,0,0.25)',
-              fontSize: '14px',
-              cursor: 'pointer',
-              padding: '4px',
-            }}
-            title="Toggle QA Test Panel"
-          >
-            <IconSettings size={15} />
+      {/* ── what it brought back ────────────────────────────────────────── */}
+      <div className="bolift-result" aria-live="polite">
+        {phase === 'ready' && <p className="bolift-say">Call the lift. Whatever is in it is yours.</p>}
+        {phase === 'riding' && <p className="bolift-say bolift-say--live">Rising · floor {String(floor).padStart(2, '0')}</p>}
+        {phase === 'revealed' && won !== null && (
+          <p className="bolift-say bolift-say--win">
+            {won === 0 ? 'Empty this time. The lift runs again tomorrow.' : `${won} BO Coins — added to your balance.`}
+          </p>
+        )}
+      </div>
+
+      <div className="bolift-actions">
+        {phase === 'revealed' ? (
+          <button type="button" className="btn btn-primary bolift-go" onClick={onClose}>
+            Done
           </button>
-
-          {showDebug && (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '30px',
-                right: '0',
-                background: 'var(--color-ink)',
-                border: '1px solid var(--color-ink-2)',
-                borderRadius: '12px',
-                padding: '8px 12px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 700 }}>FORCE ROOM:</span>
-              {ROOM_WAYPOINTS.map((r) => (
-                <button
-                  key={r.value}
-                  type="button"
-                  onClick={() => startTokenJourney(r.value)}
-                  disabled={isBusy}
-                  style={{
-                    background: 'var(--color-teal-600)',
-                    border: 'none',
-                    borderRadius: '6px',
-                    color: 'var(--color-ink)',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    padding: '4px 8px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {r.value}
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={handleReset}
-                style={{
-                  background: 'var(--color-ink-3)',
-                  border: 'none',
-                  borderRadius: '6px',
-                  color: 'var(--color-ink)',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  padding: '4px 8px',
-                  cursor: 'pointer',
-                }}
-              >
-                RESET
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+        ) : (
+          <button type="button" className="btn btn-primary bolift-go" onClick={call} disabled={phase === 'riding'}>
+            {phase === 'riding' ? 'Rising…' : 'Call the lift'}
+          </button>
+        )}
+        <p className="bolift-fine micro">One coin is worth one rupee off any order.</p>
+      </div>
     </div>
   );
 }
