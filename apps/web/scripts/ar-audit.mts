@@ -64,6 +64,13 @@ const PITCHES = [25, 5, -15, -40, -75];
  */
 const MIN_PRODUCT_PX = 1500;
 
+interface Debug {
+  pitch: number | null;
+  fit: string | null;
+  video: string | null;
+  anchor: string | null;
+}
+
 interface Result {
   sku: string;
   category: string;
@@ -72,6 +79,7 @@ interface Result {
   stagePx: number;
   nudge: string | null;
   ok: boolean;
+  debug?: Debug | null;
 }
 
 /** Every SKU with a mesh, straight from the catalogue the site serves. */
@@ -85,29 +93,60 @@ async function skus(): Promise<{ code: string; category: string }[]> {
 }
 
 /**
- * Tilt the phone.
+ * Hold the phone at a pitch, continuously, the way a phone does.
  *
- * `beta` is the front-to-back tilt in the DeviceOrientation spec: 0 is a phone lying face up on a
- * table, 90 is upright. So a camera pitch of p degrees is beta = 90 + p. Twenty events rather than
- * one because the feed slerps toward each sample at 0.35, and one event would leave the pose a
- * third of the way there.
+ * A burst of events and then silence is not what a device orientation feed looks like, and the view
+ * knows it: `useOrientation` marks the sensor dead after 1500 ms without a sample and falls back to
+ * an assumed pitch. Dispatching twenty events and then waiting 1600 ms therefore measured the
+ * fallback about half the time — which showed up as a flaky harness rather than as a wrong answer,
+ * and a flaky harness is how a real bug gets dismissed as noise.
+ *
+ * So this installs a 100 ms ticker on the page once, and tilting is just changing the number it
+ * sends. `beta` is the front-to-back tilt in the DeviceOrientation spec: 0 is a phone lying face up,
+ * 90 is upright, so a camera pitch of p is beta = 90 + p.
  */
-async function tilt(page: Page, pitchDeg: number): Promise<void> {
+async function startTiltFeed(page: Page): Promise<void> {
   /*
    * Passed as source text, not as a function. tsx compiles this file with esbuild's `keepNames`,
-   * which rewrites every function it sees into a `__name(...)` call — and `__name` does not exist
-   * inside the page, so a perfectly ordinary arrow function throws ReferenceError the moment
-   * Playwright serialises it across. A string is handed over untouched.
+   * which rewrites every function into a `__name(...)` call — and `__name` does not exist inside the
+   * page, so an ordinary arrow function throws ReferenceError the moment Playwright serialises it.
    */
   await page.evaluate(`(() => {
-    const beta = 90 + (${pitchDeg});
-    for (let i = 0; i < 20; i++) {
-      window.dispatchEvent(new DeviceOrientationEvent('deviceorientation', { alpha: 0, beta, gamma: 0 }));
-    }
+    window.__tiltBeta = 80;
+    if (window.__tiltTimer) clearInterval(window.__tiltTimer);
+    window.__tiltTimer = setInterval(() => {
+      window.dispatchEvent(new DeviceOrientationEvent('deviceorientation', { alpha: 0, beta: window.__tiltBeta, gamma: 0 }));
+    }, 100);
   })()`);
-  /* Long enough for the off-screen recovery to run even on software GL, where this harness gets
-     single-digit frame rates and half a second is three frames. */
+}
+
+async function tilt(page: Page, pitchDeg: number): Promise<{ ok: boolean; why: string }> {
+  await page.evaluate(`(() => { window.__tiltBeta = 90 + (${pitchDeg}); })()`);
+  /* Long enough for the feed's slerp to converge and for the off-screen check to run even on
+     software GL, where this harness gets single-digit frame rates. */
   await page.waitForTimeout(1600);
+
+  /*
+   * DID THE PHONE ACTUALLY TILT?
+   *
+   * It is the whole premise of this harness, and for one round it silently was not true: the view
+   * had a stale closure over the "sensors are alive" flag, threw every sample away, and ran on a
+   * constant assumed pitch of -10 degrees. Five angles were measured, five identical answers came
+   * back, and nothing said anything was wrong. A harness that quietly stops exercising the thing it
+   * claims to exercise is worse than none, so this reads the pose back and complains.
+   */
+  const read = async () => (await page.evaluate('(() => { const d = window.__arDebug; return d && d.pose ? d.pose.pitchDeg : null; })()')) as number | null;
+  let actual = await read();
+  if (actual !== null && Math.abs(actual - pitchDeg) > 8) {
+    /* Screenshots pause the page, and a paused page throttles the ticker below the view's 1500 ms
+       silence timeout, which drops it back to the assumed pitch. Give the feed another second to
+       be believed before calling it a failure. */
+    await page.waitForTimeout(1200);
+    actual = await read();
+  }
+  if (actual === null) return { ok: false, why: 'no pose reported — is ?debug=1 on the URL?' };
+  if (Math.abs(actual - pitchDeg) > 8) return { ok: false, why: `asked for ${pitchDeg} deg, camera is at ${actual.toFixed(1)}` };
+  return { ok: true, why: '' };
 }
 
 /**
@@ -126,12 +165,25 @@ async function tilt(page: Page, pitchDeg: number): Promise<void> {
 async function productPixels(page: Page): Promise<{ productPx: number; stagePx: number }> {
   const stage = page.locator('.ar-camera').first();
   const setVis = (sel: string, v: string) => page.evaluate(`(() => { const e = document.querySelector('${sel}'); if (e) e.style.visibility = '${v}'; })()`);
+  /*
+   * Playwright's screenshot pauses the page, and a paused page throttles the ticker in
+   * `startTiltFeed` past the view's 1500 ms silence timeout — at which point it decides the sensor
+   * is dead and drops back to the assumed pitch, so the frame being photographed is at the wrong
+   * angle. A burst either side of each capture keeps the feed believed across the pause.
+   */
+  const keepAlive = () =>
+    page.evaluate(
+      `(() => { for (let i = 0; i < 8; i++) window.dispatchEvent(new DeviceOrientationEvent('deviceorientation', { alpha: 0, beta: window.__tiltBeta, gamma: 0 })); })()`,
+    );
   await setVis('video.ar-camera-video', 'hidden');
+  await keepAlive();
   await page.waitForTimeout(150);
   const withIt = await stage.screenshot();
+  await keepAlive();
   await setVis('canvas.ar-camera-webgl', 'hidden');
   await page.waitForTimeout(150);
   const withoutIt = await stage.screenshot();
+  await keepAlive();
   await setVis('canvas.ar-camera-webgl', '');
   await setVis('video.ar-camera-video', '');
 
@@ -210,30 +262,51 @@ async function main() {
   for (const { code, category } of list) {
     const page = await ctx.newPage();
     try {
-      await page.goto(`${BASE}/ar/${code}`, { waitUntil: 'domcontentloaded' });
-      const startBtn = page.getByRole('button', { name: /turn the camera on|start live camera/i }).first();
-      if (await startBtn.count()) await startBtn.click({ timeout: 5000 }).catch(() => {});
-      /* The GLB has to arrive before there is anything to count; the view says so while it loads. */
-      await page
-        .waitForFunction(`!document.body.innerText.includes('Loading') || !!document.querySelector('canvas.ar-camera-webgl')`, null, { timeout: 25000 })
-        .catch(() => {});
-      await page.waitForTimeout(2500);
+      /* ?debug=1 turns on window.__arDebug, which is how this reads the pose, the anchor and the
+         framing decision instead of inferring them from pixels. */
+      await page.goto(`${BASE}/ar/${code}?debug=1`, { waitUntil: 'domcontentloaded' });
+      /*
+       * Getting into the live view is two clicks on some products and one on others, so try both
+       * labels and then WAIT for the canvas rather than assuming a click landed. A fixed sleep
+       * reported four SKUs as "no stage" that were only slower to mount.
+       */
+      for (const name of [/start live camera/i, /turn the camera on/i]) {
+        const b = page.getByRole('button', { name }).first();
+        if (await b.count()) await b.click({ timeout: 4000 }).catch(() => {});
+      }
+      await page.waitForSelector('canvas.ar-camera-webgl', { timeout: 30000 }).catch(() => {});
+      /* And for the mesh: SceneRenderer.create awaits the whole file before there is anything to
+         place, and the view says so while it does. */
+      await page.waitForFunction(`!document.body.innerText.includes('Loading ')`, null, { timeout: 30000 }).catch(() => {});
+      await page.waitForTimeout(2000);
+      await startTiltFeed(page);
 
-      if (!(await page.locator('.ar-camera').count())) {
+      if (!(await page.locator('canvas.ar-camera-webgl').count())) {
         results.push({ sku: code, category, pitch: 0, productPx: 0, stagePx: 0, nudge: 'no-stage', ok: false });
         continue;
       }
 
       for (const pitch of PITCHES) {
-        await tilt(page, pitch);
+        const tilted = await tilt(page, pitch);
+        if (!tilted.ok) {
+          results.push({ sku: code, category, pitch, productPx: 0, stagePx: 0, nudge: `pose did not follow: ${tilted.why}`, ok: false });
+          continue;
+        }
         const { productPx, stagePx } = await productPixels(page);
-        const nudge = (await page.evaluate(
-          `(() => { const n = document.querySelector('.ar-nudge'); return n ? n.innerText.replace(/s+/g, ' ').trim() : null; })()`,
-        )) as string | null;
+        /* textContent, collapsed HERE rather than inside the page: every attempt to put a
+           whitespace regex into the evaluated string was mangled by one escaping layer or another,
+           first silently (it stripped the letter s from every message) and then loudly. */
+        const rawNudge = (await page.evaluate(`(() => { const n = document.querySelector('.ar-nudge'); return n ? n.textContent : null; })()`)) as
+          | string
+          | null;
+        const nudge = rawNudge ? rawNudge.split(/\s+/).join(' ').trim() : null;
         /* The contract, and it is the same one the engine test asserts: you can see it, or the view
            is telling you where it went. Never neither. */
+        const dbg = (await page.evaluate(
+          '(() => { const d = window.__arDebug; return d ? { pitch: d.pose && Math.round(d.pose.pitchDeg), fit: d.fit && d.fit.reason, video: d.video && (d.video.W + "x" + d.video.H), anchor: d.anchor && (d.anchor.surface + " @" + Math.round(d.anchor.u) + "," + Math.round(d.anchor.v)) } : null; })()',
+        )) as Debug | null;
         const ok = productPx >= MIN_PRODUCT_PX || !!nudge;
-        results.push({ sku: code, category, pitch, productPx, stagePx, nudge, ok });
+        results.push({ sku: code, category, pitch, productPx, stagePx, nudge, ok, debug: dbg });
         if (SHOTS)
           await page
             .locator('.ar-camera')

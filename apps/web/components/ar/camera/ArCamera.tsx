@@ -2,11 +2,11 @@
 
 import {
   type Anchor,
+  anchorScreenPoint,
   areaPrompt,
   autoFitScale,
   type CompositeResult,
   cameraPosition,
-  anchorScreenPoint,
   cameraRotationFromQuat,
   DEFAULT_CAMERA_HEIGHT_M,
   eulerFromCameraRotation,
@@ -51,9 +51,9 @@ import {
 } from '@/components/icons';
 import { bestRegionScore, dataUrlToCanvas, download, productPixels } from '../photo';
 import { AnalysisScheduler, captureAnalysisFrame } from './analysisScheduler';
-import { isArDebug, publishDebug } from './debug';
 import { buildCameraComposite } from './compositeFromCamera';
 import { type CoverMap, coverMap, stageToVideo } from './coverMap';
+import { isArDebug, publishDebug } from './debug';
 import { createLocalVision } from './localVision';
 import { SceneRenderer } from './SceneRenderer';
 import { useCameraStream } from './useCameraStream';
@@ -548,7 +548,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
       setOversized((cur) => (cur === f.oversized ? cur : f.oversized));
       if (debugRef.current) {
         publishDebug({
-          fit: { ok: f.coverage >= 0.72, reason: `${targetSurface} · ${f.method} · ${f.distanceM.toFixed(2)} m · ${(f.coverage * 100).toFixed(0)} % on screen · x${fit.scale}${f.nudge ? ` · nudge ${f.nudge}` : ''}${f.oversized ? ' · oversized' : ''}` },
+          fit: {
+            ok: f.coverage >= 0.72,
+            reason: `${targetSurface} · ${f.method} · ${f.distanceM.toFixed(2)} m · ${(f.coverage * 100).toFixed(0)} % on screen · x${fit.scale}${f.nudge ? ` · nudge ${f.nudge}` : ''}${f.oversized ? ' · oversized' : ''}`,
+          },
         });
       }
       return true;
@@ -695,7 +698,21 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, onExit }:
     if (anchorRef.current && !draggingRef.current && hasVideo && nowMs - visCheckRef.current > 160) {
       visCheckRef.current = nowMs;
       const bounds = renderer.screenBounds();
-      const isVisible = bounds !== null && bounds.x + bounds.w > -20 && bounds.x < map.w + 20 && bounds.y + bounds.h > -20 && bounds.y < map.h + 20;
+      /*
+       * ENOUGH OF IT TO SEE, not merely a pixel of overlap.
+       *
+       * The old test was "does the bounding box touch the viewport, with 20 px of slack", which is
+       * true of a product hanging off the top edge by all but its last few pixels. That leaves a
+       * band of camera angles — around 40 degrees down, for anything on a wall — where the product
+       * is technically on screen, effectively invisible, and gets no arrow because the view thinks
+       * you can see it. Both of the audit's last two failures were in exactly that band.
+       */
+      const inside = bounds
+        ? (Math.max(0, Math.min(bounds.x + bounds.w, map.w) - Math.max(bounds.x, 0)) *
+            Math.max(0, Math.min(bounds.y + bounds.h, map.h) - Math.max(bounds.y, 0))) /
+          Math.max(1, bounds.w * bounds.h)
+        : 0;
+      const isVisible = bounds !== null && inside >= 0.15;
 
       if (!isVisible) {
         offScreenFramesRef.current += 1;
