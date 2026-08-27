@@ -9,9 +9,11 @@
     "photoreal": "tsx src/photoreal/run.ts",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --passWithNoTests",
-    "optimise": "tsx src/photoreal/optimise-skus.ts"
+    "optimise": "tsx src/photoreal/optimise-skus.ts",
+    "measure": "tsx src/photoreal/measure-skus.ts"
   },
   "dependencies": {
+    "@buildobjects/ar-engine": "workspace:*",
     "@buildobjects/catalog": "workspace:*",
     "@buildobjects/db": "workspace:*",
     "@buildobjects/llm": "workspace:*",

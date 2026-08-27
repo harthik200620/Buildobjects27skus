@@ -151,6 +151,9 @@ importers:
 
   packages/assets3d:
     dependencies:
+      '@buildobjects/ar-engine':
+        specifier: workspace:*
+        version: link:../ar-engine
       '@buildobjects/catalog':
         specifier: workspace:*
         version: link:../catalog

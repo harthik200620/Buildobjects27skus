@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "ar:audit": "tsx scripts/ar-audit.mts",
+    "blend": "tsx scripts/blend-skus.mts",
     "build": "tsx scripts/stage-media.mts && next build",
     "chrome:audit": "tsx scripts/chrome-audit.mts",
     "contrast": "tsx scripts/contrast.ts",
@@ -11,7 +13,6 @@
     "fonts:fetch": "tsx scripts/fetch-fonts.mts",
     "fonts:subset": "tsx scripts/subset-fonts.mts",
     "lighthouse": "tsx scripts/lighthouse.ts",
-    "blend": "tsx scripts/blend-skus.mts",
     "scale:audit": "tsx scripts/scale-audit.mts",
     "shots": "tsx scripts/shots.ts",
     "shots:strict": "tsx scripts/shots.ts --strict",
