@@ -87,8 +87,13 @@
     overflow: hidden;
     border: 1px solid var(--hair-2);
     border-radius: var(--r-2);
-    background: var(--plate-1);
-    color: var(--on-plate-2);
+    /* NOT --plate-1. That is the silver a product photograph is mounted on, and here it was
+       painting a 132x176 near-white rectangle into the middle of a dark passport card whenever
+       there was no photo — which is the state every account starts in. A photo covers this
+       entirely (`object-fit: cover`), so the empty case is the only case it is ever seen in, and
+       an empty frame should read as a frame rather than as a hole. */
+    background: var(--surf-3);
+    color: var(--ink-3);
   }
   .pass-photo img {
     width: 100%;
@@ -145,8 +150,11 @@
     line-height: 22px;
     overflow-wrap: anywhere;
   }
+  /* The em dash standing in for a field nobody has filled in. --ink-4 is documented as decorative
+     only and measured 3.93:1 here; a reader scanning the card has to be able to tell an empty
+     field from one they simply have not reached. */
   .pass-blank {
-    color: var(--ink-4);
+    color: var(--ink-3);
   }
 
   .pass-input {
@@ -219,10 +227,13 @@
     gap: var(--s-4);
     padding: var(--s-4) var(--s-5) var(--s-5);
   }
+  /* A sentence explaining what the membership is. --ink-4 is the store's decorative-only ink and
+     measured 3.93:1 here; prose is the one thing it may never be used for. Third of three on this
+     page — see .pass-blank and the photo frame above. */
   .pass-note {
     flex: 1 1 34ch;
     max-width: 62ch;
-    color: var(--ink-4);
+    color: var(--ink-3);
     text-transform: none;
     letter-spacing: 0;
     line-height: 16px;
@@ -473,8 +484,10 @@
     flex: none;
     font-weight: 700;
   }
+  /* "per bag" beside a price. --ink-4 is the decorative step and measures 3.9:1; a unit is half
+     of what a price means. */
   .chat-card-unit {
-    color: var(--ink-4);
+    color: var(--ink-3);
     font-weight: 400;
   }
 
@@ -544,8 +557,10 @@
     font-family: var(--font-ui);
     font-size: var(--t-cap);
   }
+  /* A placeholder is the only instruction in an empty field, so it is read more often than the
+     value that replaces it. */
   .chat-input::placeholder {
-    color: var(--ink-4);
+    color: var(--ink-3);
   }
   .chat-input:focus-visible {
     outline: none;

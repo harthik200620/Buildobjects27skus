@@ -406,6 +406,12 @@ async function main() {
     { key: 'pdp', url: `/p/${sku}`, auth: true },
     { key: 'estimate', url: '/estimate?city=vijayawada&l=30&w=40&floors=1&tier=medium', auth: true },
     { key: 'ar', url: `/ar/${sku}`, auth: true },
+    /* Two surfaces this harness has never photographed, and both are ones a customer reaches with
+       something at stake: the cart is where the money is committed, the account is where the
+       orders and the coins live. Empty states count — an empty cart is the state most visitors
+       see, and it is the one nobody designs. */
+    { key: 'cart', url: '/cart', auth: true },
+    { key: 'account', url: '/account', auth: true },
     { key: 'welcome', url: '/welcome', auth: false },
   ];
   const shots = ONLY.length ? all.filter((s) => ONLY.includes(s.key)) : all;

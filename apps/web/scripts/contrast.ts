@@ -182,9 +182,24 @@ for (const file of APP_CSS) {
     /* A font-size in rem: 0.75rem is the 12px ceiling. */
     const rem = body.match(/font-size\s*:\s*([\d.]+)rem/);
     const px = size ? parseFloat(size[1]) : rem ? parseFloat(rem[1]) * 16 : null;
-    if (px !== null && px > 12) {
+    /*
+     * SAYING NOTHING ABOUT THE SIZE IS NOT THE SAME AS BEING SMALL.
+     *
+     * This used to fail only when the same block ALSO declared a font-size above 12px — so a rule
+     * that set the colour and left the size to a parent was waved through, which is most of them.
+     * Eight rules across the account, estimator and lift stylesheets were painting words in the
+     * store's decorative ink, and this gate printed "ink-4 is decorative everywhere" on every run
+     * while they did. The rendered-page check in scripts/shots.ts is what caught two of them, at a
+     * measured 3.93:1, and only because those two happened to sit on a page it photographs.
+     *
+     * A token documented "DECORATIVE ONLY. Never body text." can only be used where the size is
+     * known to be tiny, and the only place that can be known is the rule itself. So an unstated
+     * size fails too: declare the 11px and the gate lets it through.
+     */
+    if (px === null || px > 12) {
       const line = src.slice(0, block.index).split('\n').length;
-      console.log(`✗ ${path.relative(ROOT, file)}:${line}  --ink-4 on ${px}px text — it measures 3.6:1 and cannot carry a word`);
+      const at = px === null ? 'text of an unstated size' : `${px}px text`;
+      console.log(`✗ ${path.relative(ROOT, file)}:${line}  --ink-4 on ${at} — it measures 3.6:1 and cannot carry a word`);
       inkFour += 1;
       failed += 1;
     }

@@ -1211,8 +1211,9 @@
   .truth-store-sku:hover {
     color: var(--color-brand);
   }
+  /* A quantity off a quotation — the number the whole panel exists to check. */
   .truth-store-qty {
-    color: var(--ink-4);
+    color: var(--ink-3);
   }
   .truth-store-save {
     margin-left: 6px;
@@ -1371,8 +1372,9 @@
   .truth-line-range {
     color: var(--ink-3);
   }
+  /* Whether a quoted line was matched to the rate card, which is the panel's verdict. */
   .truth-matched {
-    color: var(--ink-4);
+    color: var(--ink-3);
   }
   .truth-line-note {
     margin-top: 4px;
