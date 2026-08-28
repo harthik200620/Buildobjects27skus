@@ -902,9 +902,22 @@
       transform: scaleY(0);
     }
   }
-  .time-bar:hover .time-bar-fill,
+  /* Hover is a light touch. It used to share `brightness(1.35)` with the scrubber below, and on an
+     amber fill that lands closer to yellow-green than to amber. */
+  .time-bar:hover .time-bar-fill {
+    filter: brightness(1.15);
+  }
+  /*
+   * WHERE YOU ARE LOOKING IS NOT A PROPERTY OF THE DATA.
+   *
+   * The scrubber's month and the heaviest month were both saying "this one" by getting brighter,
+   * and the scrubber won: with the handle at the start, month 1 came out brighter than month 10,
+   * which is the month the stat above the chart names. A cursor is a different kind of thing from
+   * a fact about the money, so it says so differently — a brand-teal cap, the same colour the
+   * scrubber handle itself is.
+   */
   .time-bar.is-at .time-bar-fill {
-    filter: brightness(1.35);
+    box-shadow: inset 0 3px 0 var(--color-brand);
   }
   /* The month numbers under the schedule bars. A reader counting "when does the money go out"
      reads these; they are an axis, not a texture. Same 3.25:1 failure as .gl-note above. */
@@ -1042,6 +1055,14 @@
   .regret-tick {
     fill: var(--ink-3);
     font-size: var(--t-micro);
+  }
+  /* The value at each end of the curve, sitting on the line rather than on an axis. Brighter than
+     a tick because these two numbers ARE the section's argument. */
+  .regret-end {
+    fill: var(--ink-1);
+    font-size: var(--t-fine);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
   .regret-now {
     margin-top: var(--s-4);

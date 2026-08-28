@@ -259,6 +259,12 @@ function RegretChart({ curve, atMonth, months }: { curve: ChangeCostPoint[]; atM
     .join(' ')}`;
   const line = pts.map((q, i) => `${i === 0 ? 'M' : 'L'} ${q.x} ${q.mid}`).join(' ');
 
+  /* Worth labelling both ends only when they are meaningfully different — a tenth apart is the
+     same threshold the picks above use before they print a multiple. */
+  const first = curve[0];
+  const last = curve[curve.length - 1];
+  const ends = first && last && last.likely >= first.likely * 1.1 ? { first, last } : null;
+
   return (
     <svg className="regret-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={curve.map((p) => `${p.phaseLabel}: ${formatRupees(p.likely)}`).join('. ')}>
       <title>What this decision costs at each point in the build</title>
@@ -281,6 +287,28 @@ function RegretChart({ curve, atMonth, months }: { curve: ChangeCostPoint[]; atM
       <text x={PAD.l - 8} y={y(maxY) + 4} textAnchor="end" className="regret-tick fig">
         {short(maxY)}
       </text>
+      {/*
+       * THE TWO ENDS OF THE SENTENCE, ON THE LINE ITSELF.
+       *
+       * The chart had one number on it — the top of the y axis — so a reader could see that the
+       * cost of a decision rises without being able to read what it rises FROM or TO. That is the
+       * whole claim of the section: the same change, on paper against at the end. The panel below
+       * gives the figure wherever the scrubber is standing, which is a different question.
+       *
+       * Only when the two differ enough to be worth two labels; a change that costs the same in
+       * month thirteen as it does on paper is a one-number story, and printing it twice would say
+       * nothing twice.
+       */}
+      {ends && (
+        <>
+          <text x={PAD.l} y={y(ends.first.likely) - 9} className="regret-end fig">
+            {short(ends.first.likely)}
+          </text>
+          <text x={W - PAD.r} y={y(ends.last.likely) - 9} textAnchor="end" className="regret-end fig">
+            {short(ends.last.likely)}
+          </text>
+        </>
+      )}
     </svg>
   );
 }
