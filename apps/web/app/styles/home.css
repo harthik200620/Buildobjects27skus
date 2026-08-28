@@ -221,17 +221,8 @@
     }
   }
 
-  /* ── what the home page no longer has ─────────────────────────────────────
-     The live stock panel, the rate ticker, the shelf rail, the four promises and the
-     closing band are gone, and about 320 lines of CSS went with them.
-
-     Two rules, and both are the page's: it shows CATEGORIES and shows nothing after
-     them, and it carries NO PRICES. The panel and the ticker were prices; the shelf,
-     the promises and the band were all after the grid. The promises moved to nowhere
-     because they were already on the product pages, which is where somebody is asking
-     the question they answer.
-
-     Deleted: .board*, .tick*, .shelf-rail, .promise-grid, .band*. */
+  /* Two rules, and both are the page's: it shows CATEGORIES and nothing after them, and it
+     carries NO PRICES anywhere. */
 
   /* ── the spine ────────────────────────────────────────────────────────────
      Three panels in one bordered block with a light sweeping across its top edge. The

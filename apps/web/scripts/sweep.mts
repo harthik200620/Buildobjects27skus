@@ -24,17 +24,9 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { sessionCookie, sessionCookieFor } from './session-cookie';
-
-const args = process.argv.slice(2);
-const flag = (k: string, d: string) => {
-  const i = args.indexOf(`--${k}`);
-  return i >= 0 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : d;
-};
-const BASE = flag('base', 'http://localhost:3001').replace(/\/$/, '');
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+import { BASE, openPage, REPO } from './harness';
+import { sessionCookie } from './session-cookie';
 
 async function firstSku(): Promise<string> {
   try {
@@ -188,17 +180,8 @@ async function main() {
   let total = 0;
 
   for (const [label, url] of routes) {
-    for (const [w, h, vp] of [
-      [1350, 940, 'desktop'],
-      [390, 844, 'mobile'],
-    ] as const) {
-      const ctx = await browser.newContext(
-        vp === 'mobile'
-          ? { viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, reducedMotion: 'reduce' }
-          : { viewport: { width: w, height: h }, reducedMotion: 'reduce' },
-      );
-      await ctx.addCookies([sessionCookieFor(BASE)]);
-      const page = await ctx.newPage();
+    for (const vp of ['desktop', 'mobile'] as const) {
+      const { page, ctx } = await openPage(browser, { viewport: vp });
       try {
         await page.goto(`${BASE}${url}`, { waitUntil: 'load', timeout: 90_000 });
         /*
@@ -262,7 +245,7 @@ async function main() {
       for (const i of items) console.log(`     ${i}`);
     }
   }
-  const dir = path.join(ROOT, 'storage', 'reports');
+  const dir = path.join(REPO, 'storage', 'reports');
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'sweep.json'), JSON.stringify(findings, null, 2));
   console.log(

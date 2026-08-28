@@ -1,67 +1,18 @@
-/* ─────────────────────────────────────────────────────────────────────────────
-   BUILD OBJECTS — "THE DRAFTING TABLE"
-   The v2 token layer.
-   ─────────────────────────────────────────────────────────────────────────────
-
-   WHAT CHANGED AND WHY — read this before editing anything below.
-
-   The v1 theme was engineered well and looked cheap, and those two facts are not
-   in tension. Every colour cleared AA, every duration came from one list, no
-   emoji survived anywhere. What it never had was AMBITION IN SCALE. The type
-   ramp ran 12 → 24px, a 2× range, which is the ramp of a commodity marketplace.
-   Premium editorial work runs 6–8×. When headline and caption are almost the
-   same size, no amount of correctness reads as expensive — there is simply no
-   drama on the page.
-
-   Five changes carry the entire upgrade:
-
-   1. A DISPLAY TIER THAT DID NOT EXIST. Three display sizes in a serif, topping
-      out at 92px. This alone is most of the difference.
-   2. THE INK LADDER WAS MUSH. ink-2 (#b0c5c9) and ink-3 (#9bb1b5) sat 8% apart
-      in lightness — the eye cannot separate them, so the page had one grey, not
-      three. The new ladder steps 17.4 / 12.0 / 6.9 / 3.6 against the canvas.
-   3. HAIRLINES BECAME ALPHA. --color-line was an opaque teal (#1e4a55) that only
-      looked right on one surface, so raised cards drew borders darker than their
-      own ground. Alpha hairlines are correct on every surface by construction.
-   4. THE CANVAS GOT A FIELD. A flat #06181D div is a flat #06181D div. Three
-      stacked ambient layers — a teal bloom, an amber wash and 3.5% film grain —
-      turn it into a lit room. The background COLOUR is unchanged, as instructed;
-      what sits on it is new.
-   5. SPECULAR EDGES. One inset top highlight on every raised surface. It is the
-      cheapest expensive-looking trick in interface design and the store had none.
-
-   WHAT DID NOT CHANGE, DELIBERATELY:
-   · --color-canvas is still #06181D. The dark teal ground was right.
-   · Audiowide is still the wordmark face, and still touches nothing else.
-   · Encode Sans is still the figure face. It has a true ₹, it is already subset,
-     and its tabular figures are correct. Churning it would cost the font budget
-     and buy nothing.
-   · The four-duration / three-curve discipline. It is extended, not replaced.
-
-   ─────────────────────────────────────────────────────────────────────────────
-   ON THE TWO NAMES FOR EVERY COLOUR
-
-   The canonical names are the short ones — --ink-2, --surf-2, --hair, --r-3.
-   The v1 names (--color-ink-2, --color-surface, --color-line, --radius-lg) are
-   kept as ALIASES in section 16, and they are not deprecated decoration: about
-   nine hundred declarations across forty stylesheets speak them, and rewriting
-   all nine hundred by hand to land the same pixels would be a nine-hundred-line
-   diff in which a single typo is a silently wrong colour.
-
-   Aliasing instead means the whole store adopts the new ladder in one edit, and
-   each surface is then moved to the canonical vocabulary as it is restyled. Two
-   consequences worth knowing:
-
-   · The aliases are SEMANTIC, not mechanical. --color-line and --color-line-2
-     both resolve to --hair, because point 3 above removes the reason there were
-     two: an alpha hairline is correct on every surface, so the store no longer
-     needs a second, darker line for the surfaces the first one was wrong on.
-   · Tailwind generates utilities from --color-* names, so bg-teal-700 and
-     text-ink-2 keep working and keep meaning what they meant.
-
-   @theme static (never inline): the tokens must exist as real custom
-   properties — components read var(--…) from inline styles and from SVG.
-   ───────────────────────────────────────────────────────────────────────────── */
+/* Build Objects — the token layer.
+ *
+ * Two names for every colour. The canonical ones are short (--ink-2, --surf-2, --hair, --r-3);
+ * the v1 names (--color-ink-2, --color-surface, --color-line, --radius-lg) are aliases in
+ * section 16. About nine hundred declarations across forty stylesheets still speak the old
+ * vocabulary, and surfaces move over as they are restyled.
+ *
+ * The aliases are semantic, not mechanical: --color-line and --color-line-2 both resolve to
+ * --hair, because an alpha hairline is correct on every surface and there is no longer a reason
+ * for a second, darker one.
+ *
+ * Tailwind generates utilities from the --color-* names, so bg-teal-700 and text-ink-2 keep
+ * working. `@theme static`, never inline — components read var(--…) from inline styles and from
+ * SVG, so the tokens have to exist as real custom properties.
+ */
 
 @theme static {
   /* ── 1. TYPEFACES ─────────────────────────────────────────────────────────
@@ -119,15 +70,9 @@
   --t-lede-lh: 1.75rem; /* 17/28 — the paragraph under a headline */
   --t-body: 0.9375rem;
   --t-body-lh: 1.5rem; /* 15/24 — was 14/20, which is a table, not prose */
-  /* The two steps the store was already using and had never named. Fifty-odd declarations
-     across nine stylesheets set 12px or 13px by hand, and another nine set 12.5px — three
-     sizes doing one job, which is the kind of thing a reader registers as "cheap" without
-     being able to point at it.
-
-     ONE SIZE, TWO RHYTHMS. --t-meta was 13.5px, half a pixel from the 13 that fifty
-     declarations were already using, which is the same mush the ink ladder was retuned to
-     remove. It is the same size now and keeps its looser line height, because a paragraph of
-     meta and a cell in a specification table want different leading and not different type. */
+  /* One size, two rhythms: --t-meta and --t-fine are both 13px and differ only in leading,
+     because a paragraph of meta and a cell in a spec table want different line height, not
+     different type. */
   --t-cap: 0.8125rem;
   --t-cap-lh: 1.125rem; /* 13/18 — a caption, a spec cell, a chip */
   --t-meta: var(--t-cap);
@@ -184,19 +129,9 @@
   --surf-3: #133741; /* raised: popovers, sticky panels, selected rows */
   --surf-4: #1a4552; /* pressed, disabled fill, progress track */
 
-  /* THE MOUNT, AND IT IS EXACTLY THE COLOUR THE PHOTOGRAPHS ARE ON.
-     Product photography is shot on a sweep, and 27 suppliers shot 27 different ones —
-     #efefef, #ffffff, #d3d4d5, #b2b5ae. The mount used to be a silver GRADIENT behind all
-     of them, which meant every photograph ended in a visible rectangle: its own grey against
-     the mount's, two greys apart, with a hard edge between. That edge is the single thing
-     that made this catalogue read as assembled rather than made.
-
-     scripts/blend-skus.mts recolours every sweep in storage/media to the value below, and the
-     mount is flat at that same value, so photograph and mount are now one surface with no seam
-     anywhere in the store. THE TWO NUMBERS MUST MOVE TOGETHER — change one and the seam is back.
-
-     It is a silver with a teal cast rather than a neutral, so the mount belongs to the palette
-     instead of being the one cold thing on a warm teal page. */
+  /* The mount, and exactly the colour the photographs sit on. scripts/blend-skus.mts recolours
+     every sweep in storage/media to this value, so photograph and mount are one surface with no
+     seam. THE TWO NUMBERS MUST MOVE TOGETHER — change one and the seam is back. */
   /* The mount for a frame that was NOT shot on a sweep — which is most of this catalogue. See
      lib/plate.ts: three of twenty-eight SKUs have galleries consistently on the light sweep, so
      the silver plate below was putting a white rectangle behind two thirds of the store's
@@ -209,16 +144,9 @@
      photographed, so the modelling moved OUT of the plate's fill and onto a mask over both plate
      and photograph at once: they darken together, so softening the tile can never reopen a seam. */
   --plate-0: #cfdadb;
-  /* TWO LINEAR FADES, INTERSECTED — not a radial vignette.
-     A radial one was the first attempt and it did nothing, which the arithmetic says plainly: at
-     `122% 112%` the ellipse's horizontal radius is 1.22 of the box, so the box's own CORNER sits
-     at t = sqrt((0.5/1.22)² + (0.4/1.12)²) = 0.54 — exactly the first stop, where the mask is
-     still fully opaque. Every pixel of the plate was inside the solid part of its own mask.
-
-     A radial mask cannot dissolve a rectangle evenly anyway: whatever you size it to, the four
-     mid-edges are always the last thing to fade and they are most of the edge. Two linear ramps
-     composited with `intersect` fade all four sides by the same 6 %, which is what "dissolves
-     into the card" actually means. */
+  /* Two linear fades intersected, not a radial vignette. A radial mask cannot dissolve a
+     rectangle evenly — whatever you size it to, the four mid-edges fade last and they are most
+     of the edge. Two ramps composited with `intersect` fade all four sides by the same 6%. */
   --plate-mask:
     linear-gradient(90deg, rgb(0 0 0 / 0%) 0%, #000 6%, #000 94%, rgb(0 0 0 / 0%) 100%),
     linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, #000 6%, #000 94%, rgb(0 0 0 / 0%) 100%);
@@ -237,22 +165,12 @@
      change removes the whole class of "the border is darker than the card" bugs
      that v1's chrome hairlines existed to work around.                           */
   /* ── SERIES — the twelve colours of a multi-part figure ────────────────────
-     The estimator's cost donut, its legend swatches, and anything else that has to
-     say "this slice is that row". Categorical, so hue does the work; ordered, so
-     the brand teal leads and the tail is still legible when a slice is 2 %.
+     The cost donut and its legend. Categorical, so hue does the work; ordered, so brand teal
+     leads. Chosen in OKLCH for a dark ground and ordered by search so no two touching slices are
+     close: worst 3.83:1 against the card, no adjacent pair nearer than 114 in RGB distance.
 
-     THEY LIVE HERE, NOT IN A TYPESCRIPT MIRROR OF THIS FILE. packages/ui/src/tokens.ts
-     held a copy of the whole palette, its docstring promised the two would move
-     together, and they had not: the store went dark and that file stayed light. Its
-     series ramp had been chosen to clear 3:1 ON WHITE and was being painted on
-     #0e2a33, where nine of the twelve fell below 3:1 and one — the header navy —
-     came out at 1.01:1, which is a slice you cannot see at all. That is the whole
-     reason the chart read as clip-art.
-
-     Chosen in OKLCH at a lightness that holds on a dark ground, then ordered by
-     search so no two touching slices are close: worst 3.83:1 against the card and
-     no adjacent pair nearer than 114 in RGB distance, against 1.01 and 89 before.
-     A copy of a palette is a palette that will drift; this is the only one. */
+     They live HERE and nowhere else. A TypeScript mirror of this palette drifted light while the
+     store went dark, leaving nine of twelve slices under 3:1 and one at 1.01:1. */
   --series-1: #5ee2e2;
   --series-2: #b5e191;
   --series-3: #95beff;
@@ -319,19 +237,11 @@
   --bad-bg: rgb(255 143 143 / 12%);
 
   /* ── 9. THE AMBIENT FIELD ─────────────────────────────────────────────────
-     Three layers painted once on a fixed pseudo-element behind everything. This
-     is what separates a premium dark interface from a dark <div>, and the store
-     had none of it.
+       bloom   a cool teal light off the top-left, so the canvas has a direction
+       wash    a warm amber counterweight bottom-right at 3%
+       grain   3.5% fractal noise, overlay-blended — kills gradient banding on 8-bit displays
 
-       bloom   a cool teal light source off the top-left, as if the room has a
-               window. Gives the canvas a direction.
-       wash    a warm amber counterweight bottom-right at 3%, so the page is not
-               monochrome and the coin colour is foreshadowed before you see one.
-       grain   3.5% fractal noise, overlay-blended. Kills gradient banding on
-               8-bit displays and adds the texture that makes a screen feel like
-               a material. Non-negotiable — remove it and everything flattens.
-
-     Implementation is in the BASE section below.                                  */
+     Three layers on one fixed pseudo-element. Implementation is in BASE below. */
   --field-bloom: radial-gradient(120% 90% at 12% -10%, rgb(86 211 216 / 11%) 0%, transparent 62%);
   --field-wash: radial-gradient(90% 80% at 96% 108%, rgb(245 180 10 / 5%) 0%, transparent 58%);
   --field-vignette: radial-gradient(140% 120% at 50% 40%, transparent 42%, rgb(2 9 12 / 62%) 100%);
@@ -440,20 +350,9 @@
      it down four times, and a `width` and a `flex-basis` that disagree is how a field ends up
      one size and reserves another. */
   --search-w: 560px;
-  /*
-   * THE ONE OFFSET EVERY PINNED PANEL USES.
-   *
-   * There were four of them: the filter rail sat at header + 16, the buy column and the grand
-   * total at header + inset + 16, and the estimator's running total at header + 12 — so four
-   * panels that are all "just under the bar" stopped at four different heights, and moving
-   * between two pages moved the line they hang from. One token, and they agree.
-   *
-   * The bar is ONE height now — it used to condense on scroll, and because a sticky element
-   * keeps its space in the flow, that shifted every page in the store by fourteen pixels the
-   * moment anybody scrolled. So this hangs off the only height there is, and it never changes
-   * with scroll state: a sticky `top` that animates makes the panel itself move, which is the
-   * complaint this token was created to fix.
-   */
+  /* The one offset every pinned panel hangs from, so panels on different pages stop at the same
+   * line. It must never change with scroll state: a sticky `top` that animates moves the panel
+   * itself, which is what this token exists to prevent. */
   --sticky-top: calc(var(--header-h) + var(--s-3));
 
   /* ── 16. THE v1 ALIASES ───────────────────────────────────────────────────
@@ -571,19 +470,10 @@
 /* ═════════════════════════════════════════════════════════════════════════════
    BASE — the ambient field, and the rules the whole system rests on
    ═══════════════════════════════════════════════════════════════════════════ */
-/*
- * LAYER ORDER, DECLARED RATHER THAN INHERITED FROM IMPORT ORDER.
- *
- * Everything in this design system and every page stylesheet lives in `components`, so which rule
- * wins between two of equal specificity is decided by which file globals.css happens to import
- * last. That is fine for looks and wrong for policy: the coarse-pointer touch floor lost to
- * `.sec-more { min-height: 32px }` in store.css purely because store.css is imported after this
- * file, and a 32px target on a phone is not a style choice anybody made.
- *
- * `touch` is declared last, so the minimum size of a thing a thumb has to hit cannot be undercut
- * by a page stylesheet, a component file, or a utility class. It is the only layer in the store
- * that exists to win.
- */
+/* Layer order declared, not inherited from import order. Everything else lives in `components`,
+ * where equal-specificity rules are settled by import order — fine for looks, wrong for policy.
+ * `touch` is last so a thumb's minimum target size cannot be undercut by a page stylesheet or a
+ * utility class. */
 @layer base, components, touch;
 
 @layer base {

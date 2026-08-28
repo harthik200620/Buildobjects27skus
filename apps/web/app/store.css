@@ -33,16 +33,9 @@
   }
 
   /* ── the photographic backplate ───────────────────────────────────────────
-     Used by components/Plate.tsx on the opening section of a page. The scrim is TWO
-     gradients and both are load-bearing:
-
-       vertical    fades the plate down into the canvas at the section's bottom edge,
-                   so the photograph ends without a seam;
-       horizontal  darkens the LEFT, which is where every headline on this site sits.
-                   Without it the copy fights the photograph at exactly the width most
-                   people browse at — legible in a screenshot, unreadable at 1440.
-
-     The plate is never shown at full brightness and is never a foreground image. */
+     Two gradients, both load-bearing: the vertical one fades the plate into the canvas so the
+     photograph ends without a seam, the horizontal one darkens the LEFT, where every headline
+     on this site sits. Never shown at full brightness, never a foreground image. */
   .plate {
     position: absolute;
     inset: 0;
@@ -132,21 +125,11 @@
   :root[data-nav="away"] .scroll-progress {
     opacity: 0;
   }
-  /*
-   * A PAGE IS ON ITS WAY.
-   *
-   * The same rule, doing the other job it is shaped for. Every page behind the front door is
-   * server-rendered on demand — about 240 ms to the first byte on production and a second to a
-   * usable page — and for that second a click on a category produced no evidence it had landed.
-   *
-   * It runs to 70 % and waits there, which is the only honest shape for a bar that cannot know
-   * how far along it is: the ease-out spends most of the animation in the first third, so it moves
-   * decisively at the moment of the click and then slows to almost nothing rather than sitting at
-   * a number it made up. The page replacing itself is what finishes it.
-   *
-   * It overrides `data-nav="away"` and the `data-scrolled` gate below it, because a navigation
-   * begun while the header is hidden still needs to be visible — that is when it is needed most.
-   */
+  /* A page is on its way. The same rule doing the other job it is shaped for: every page behind
+   * the front door is server-rendered on demand, and for that second a click produced no evidence
+   * it had landed. It runs to 70% and waits — the only honest shape for a bar that cannot know
+   * how far along it is — and the page replacing itself is what finishes it. Overrides the
+   * hidden-header state, because a navigation begun then is when it is needed most. */
   :root[data-nav-pending] .scroll-progress {
     opacity: 1;
     animation: nav-pending 6s var(--ease-out) forwards;
@@ -169,34 +152,14 @@
   }
 
   /* ── the bar ──────────────────────────────────────────────────────────────
-     Full width, flush to the top edge, and it gets out of the way when you read
-     downward. See components/header/Header.tsx for why the two-row header existed and
-     what removing search from it bought.
+     Full width, flush to the top edge, and it leaves on the way down.
 
-     IT USED TO FLOAT: a 1560px capped bar with an 18px radius, inset 20px from the top
-     and from each side. That reads as a control panel laid ON the page, which is a fine
-     idea and the wrong one for a storefront: the bar is the top of the SHOP, not an
-     instrument hovering over it. Flush, it is architecture — and it buys real room. The
-     floating bar paid its gutter twice, once outside the bar and once inside it, so at
-     1512px the row had 20px of slack for six controls. Flush it has 76px, because the
-     bar's padding IS the page's gutter now and the lockup lines up with the first word of
-     every page underneath it.
-
-     THE BAR IS ONE HEIGHT, AND THAT IS A CORRECTION.
-     It used to condense 76 → 62 on scroll. A sticky element still occupies its space in the
-     flow, so that fourteen pixels came off the top of the document and EVERY ELEMENT ON EVERY
-     PAGE IN THE STORE MOVED UP BY FOURTEEN PIXELS the moment the reader scrolled past eight —
-     and back down again on the way home. Measured on the estimator: the cost card sat at
-     document y 836 at rest and y 822 once scrolled, which is what "the card comes down with
-     the scroll" was. It was never the card. It was the whole page, on every route.
-
-     Condensing existed to give a reader some screen back. The bar LEAVES ENTIRELY on the way
-     down now, which gives back all seventy-six pixels rather than fourteen, so the two are the
-     same feature and one of them is strictly better. Keeping both bought fourteen pixels and
-     cost a layout jump on every page in the store.
-
-     What still moves on scroll — and none of it is layout — is the fill going 82 % to 94 %
-     opaque, the hairline firming, and the shadow arriving. */
+     ONE HEIGHT, AND THAT IS A CORRECTION. It used to condense 76 -> 62 on scroll, and a sticky
+     element still occupies its space in the flow, so every element on every page moved up by
+     fourteen pixels the moment anybody scrolled past eight. Leaving entirely gives back all
+     seventy-six rather than fourteen, so the two are the same feature and one is strictly
+     better. What still moves on scroll is fill opacity, the hairline and the shadow — never
+     layout. */
   .header {
     position: sticky;
     top: 0;
@@ -220,25 +183,13 @@
     border-bottom-color: var(--hair-2);
     box-shadow: var(--specular), var(--sh-2);
   }
-  /*
-   * AWAY, and back on the way up.
+  /* Away on the way down, back the instant you move up — which is when a person wants it, since
+   * they are going back for something. components/ScrollProgress.tsx decides, with a 6px deadband
+   * so trackpad jitter cannot flutter it.
    *
-   * A reader going down a category listing or a spec sheet is reading; the bar is 76px of
-   * the screen they are not reading with. It leaves on the way down and it is back the
-   * instant they move up, which is when a person wants it — they are going back for
-   * something. components/ScrollProgress.tsx decides, with a 6px deadband so a trackpad's
-   * jitter cannot flutter it, and a floor so it never leaves near the top of a page.
-   *
-   * `translate3d`, not `top`. On a sticky element `top` IS the sticky offset, so animating
-   * it fights the scroll rather than riding it; a transform is one composited layer and
-   * nothing below the bar reflows.
-   *
-   * The at-rest state is `transform: none` on purpose. ANY transform makes the header a
-   * containing block for `position: fixed` descendants, and both the old ⌘K palette (fixed,
-   * inset: 0) and the catalogue menu (fixed, at coordinates measured off the trigger) used
-   * to live in here. They are portalled to <body> now — see components/SearchBar.tsx — and
-   * this keeps the trap shut even so.
-   */
+   * `translate3d`, not `top`: on a sticky element `top` IS the sticky offset, so animating it
+   * fights the scroll rather than riding it. The at-rest state is `transform: none` on purpose —
+   * ANY transform makes the header a containing block for `position: fixed` descendants. */
   :root[data-nav="away"] .header {
     transform: translate3d(0, -100%, 0);
     transition:
@@ -406,16 +357,9 @@
   }
 
   /* ── search ───────────────────────────────────────────────────────────────
-     THE ONE CONTROL IN THE BAR THAT IS ALLOWED TO GROW, and the only one that can be
-     asked to. Everything else in the row overflows onto its neighbour when it is
-     squeezed narrower than its content; this is a single line of placeholder that
-     ellipses, so giving it the slack costs nothing and buys the field its size back.
-
-     It takes the middle rather than a fixed slot on the right. `.header-spacer` sits on
-     BOTH sides of it with equal flex, so the field is centred in the row instead of
-     landing wherever the lockup and the nav happen to end — and it is 560px at rest
-     rather than 250, which is the difference between a button that opens search and a
-     field you can see yourself typing into. */
+     The one control in the bar allowed to grow: everything else overflows onto its neighbour
+     when squeezed, this ellipses. `.header-spacer` sits on both sides with equal flex, so the
+     field is centred in the row rather than landing wherever the nav happens to end. */
   /* ONE FIELD, AND IT IS THE ONE YOU TYPE INTO.
      This was a BUTTON dressed as a search field — icon, placeholder, keycap, border — which
      opened an overlay containing a second, real field. A control that looks like a field and
@@ -598,22 +542,14 @@
   }
 
   /* ── the degradation ladder ───────────────────────────────────────────────
-     The bar at full dress needs about 1400px of viewport. That is wider than the
-     laptop most people browse on, so it has to give something up on the way down, and
-     the order it gives things up in is the design:
+     Full dress needs about 1400px, which is wider than the laptop most people browse on, so the
+     order it gives things up in is the design. Measured at each step by scripts/scale-audit.mts,
+     not guessed.
 
-       < 1500   the lockup steps to 34px, and the coin pill drops the word "Coins".
-                The mark is the most expensive thing in the row at 367px, and 34px
-                still reads; a coin glyph beside a figure needs no noun.
-       < 1400   the cart and account drop their labels. A trolley with a count badge and
-                a person glyph are both unambiguous, and this is where 1366 lives.
-       < 1200   the nav keeps its glyphs and drops its words, and the cue narrows.
-       <  720   the search field collapses to its glyph and expands on focus, and the account
-                keeps its icon only.
-
-     Measured at each step rather than guessed — scripts/scale-audit.mts renders the
-     bar and the header check below reports the first width at which two children
-     overlap. */
+       < 1500   lockup to 34px; the coin pill drops the word "Coins"
+       < 1400   cart and account drop their labels — this is where 1366 lives
+       < 1200   the nav keeps its glyphs and drops its words
+       <  720   search collapses to its glyph and expands on focus */
   @media (max-width: 1499.98px) {
     .header-logo {
       --wm-size: 34px;
@@ -1160,28 +1096,6 @@
   .deliver-strip-text b {
     font-weight: 700;
   }
-
-  /* ── the two-row header's search is gone ───────────────────────────────────
-     About 175 lines styling a search that lived on its own row under the header:
-     .search as a flex-basis:100% row-breaker, .search-form, .search-scope and the
-     suggestion list that hung below them. The row itself went when the header became
-     one bar, and this outlived it by months.
-
-     It was not merely dead, it was ACTIVE: half its class names — .search, .search-input,
-     .search-clear, .search-thumb, .search-main, .search-sub — are the names the header's
-     own search uses, and being later in this file it won every one of them. `flex: 0 0 100%`
-     off this block is what made the new field 996px wide inside a 1024px bar, overflowed the
-     header by 590px and pushed the Catalogue link to x = -200. Dead CSS is not free. */
-
-  /* ── the nav strip is gone ─────────────────────────────────────────────────
-     Forty pixels of --color-header-2 under the header, carrying "All", the eight
-     departments with their dropdowns, and the two tools. Its whole job — the catalogue
-     tree — is the header bar's own mega menu now, and two rows of navigation for one
-     taxonomy was the chrome equivalent of saying everything twice.
-
-     Deleted with it: .nav, .nav-in, .nav-all, .nav-link, .nav-spacer, .nav-depts,
-     .nav-dept*, .nav-tool. About 180 lines styling components/header/NavStrip.tsx and
-     NavLinks.tsx, both of which no longer exist. */
 
   /* ── category menu: popover ≥ 768, left drawer below ────────────────────── */
   .cat-menu-wrap {
@@ -2543,29 +2457,9 @@
   }
 }
 
-/* ═════════════════════════════════════════════════════════════════════════════
-   ABSORBED FROM legacy.css — 26 Aug 2026
-   ─────────────────────────────────────────────────────────────────────────────
-   These rules were a shim. They carried the v1 "Patina" class vocabulary
-   (glass-card, display, kicker, hero-figure, prov, facet, wizard…) through the
-   repaint on a private set of token aliases — --ink, --accent, --rule-soft,
-   --radius-glass and twenty-six more, each one a second name for something the
-   theme already named.
-
-   The v2 token layer made that arrangement impossible rather than merely untidy.
-   --ink-2 is now a REAL token (body copy, 12.0:1 on the canvas), and the shim
-   defined --ink-2 as var(--color-ink-2), which v2 defines as var(--ink-2). A
-   custom property defined in terms of itself is invalid at computed-value time,
-   so every element the shim coloured would have lost its colour — silently, with
-   no error anywhere.
-
-   So the aliases are gone. Every call site was rewritten to the canonical token
-   it actually meant, and what is left is ordinary CSS that speaks the same
-   vocabulary as the rest of the store. It lives here because store.css is where
-   shared widgets live, and a file named "legacy" is an invitation to add to it.
-
-   Page-specific rules still belong in app/styles/*.css, not here.
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* Shared widgets that still speak the v1 vocabulary, rewritten to canonical tokens. It lives in
+   store.css rather than a file named "legacy", which is an invitation to add to it. Page-specific
+   rules belong in app/styles/*.css. */
 @layer components {
   /* ── panes → white cards ────────────────────────────────────────────────── */
   .glass,

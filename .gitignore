@@ -59,3 +59,11 @@ apps/web/public/art/
 # next one somebody adds. The .env and .env.local rules at the top cover the files with values.)
 .vercel
 .env.local
+
+# Agent tooling. `next dev` rewrites apps/web/AGENTS.md on every run (see
+# node_modules/next/dist/server/lib/generate-agent-files.js), and .claude/ is local editor
+# configuration. Neither is project source; keeping them out of the tree stops a generated file
+# turning up in every diff.
+AGENTS.md
+CLAUDE.md
+.claude/

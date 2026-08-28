@@ -26,8 +26,7 @@
  * Exits non-zero over budget, so it can join the gate.
  */
 import { chromium } from 'playwright';
-
-const BASE = process.env.BASE_URL ?? 'http://localhost:3001';
+import { BASE } from './harness';
 
 /**
  * Per-route budgets: what each page measures today, plus one.

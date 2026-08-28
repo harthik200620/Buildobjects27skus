@@ -36,17 +36,9 @@ import { type Browser, chromium, type Page } from 'playwright';
 import sharp from 'sharp';
 import { sessionCookieFor } from './session-cookie';
 
-const args = process.argv.slice(2);
-const flag = (k: string, d: string) => {
-  const i = args.indexOf(`--${k}`);
-  return i >= 0 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : d;
-};
-const BASE = flag('base', 'http://localhost:3000').replace(/\/$/, '');
-const STRICT = args.includes('--strict');
-const SHOTS = args.includes('--shots');
-const ONLY = flag('only', '')
-  .split(',')
-  .map((s) => s.trim().toLowerCase())
+const STRICT = !!flags.strict;
+const SHOTS = !!flags.shots;
+const ONLY = only;
   .filter(Boolean);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const OUT = path.resolve(flag('out', path.join(ROOT, 'storage', 'reports', 'ar')));

@@ -10,24 +10,14 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { type Browser, type BrowserContext, chromium, type Page } from 'playwright';
 import sharp from 'sharp';
+import { BASE, flags, only, openPage, REPO, VIEWPORTS } from './harness';
 import { sessionCookie, sessionCookieFor } from './session-cookie';
 
-const args = process.argv.slice(2);
-const flag = (k: string, d: string) => {
-  const i = args.indexOf(`--${k}`);
-  return i >= 0 && args[i + 1] && !args[i + 1].startsWith('--') ? args[i + 1] : d;
-};
-const BASE = flag('base', 'http://localhost:3000').replace(/\/$/, '');
-const STRICT = args.includes('--strict');
-const ONLY = flag('only', '')
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean);
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const OUT = path.resolve(flag('out', path.join(ROOT, 'storage', 'reports', 'shots')));
+const STRICT = !!flags.strict;
+const ONLY = only;
+const OUT = path.resolve(flags.out ?? path.join(REPO, 'storage', 'reports', 'shots'));
 
 type Check = { page: string; viewport: 'desktop' | 'mobile'; name: string; ok: boolean; detail?: string };
 const checks: Check[] = [];
@@ -511,9 +501,7 @@ async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile
  * did not arrive.
  */
 async function motionPass(browser: Browser) {
-  const ctx = await browser.newContext({ viewport: { width: 1350, height: 940 }, reducedMotion: 'no-preference' });
-  await ctx.addCookies([sessionCookieFor(BASE)]);
-  const page = await ctx.newPage();
+  const { page, ctx } = await openPage(browser, { motion: 'no-preference' });
   try {
     await page.goto(`${BASE}/`, { waitUntil: 'load', timeout: 120_000 });
     await page.evaluate(
@@ -573,9 +561,7 @@ async function motionPass(browser: Browser) {
    * filling after the page has landed is worse than no bar, and it is invisible to every other
    * check here — a screenshot of a settled page cannot show it.
    */
-  const nav = await browser.newContext({ viewport: { width: 1350, height: 940 } });
-  await nav.addCookies([sessionCookieFor(BASE)]);
-  const navPage = await nav.newPage();
+  const { page: navPage, ctx: nav } = await openPage(browser);
   try {
     const pending = () => navPage.evaluate(`document.documentElement.hasAttribute('data-nav-pending')`) as Promise<boolean>;
     await navPage.goto(`${BASE}/`, { waitUntil: 'load', timeout: 120_000 });
@@ -593,7 +579,7 @@ async function motionPass(browser: Browser) {
   }
 
   /* The failsafe, from the outside: no script, nothing hidden. */
-  const bare = await browser.newContext({ viewport: { width: 1350, height: 940 }, javaScriptEnabled: false });
+  const bare = await browser.newContext({ ...VIEWPORTS.desktop, javaScriptEnabled: false });
   await bare.addCookies([sessionCookieFor(BASE)]);
   const plain = await bare.newPage();
   try {
@@ -636,7 +622,7 @@ async function main() {
   }
   const failed = checks.filter((c) => !c.ok);
   for (const c of failed) console.log(`  ✗ ${c.page}/${c.viewport}: ${c.name}${c.detail ? ` — ${c.detail}` : ''}`);
-  console.log(`\n${checks.length - failed.length}/${checks.length} checks passed · screenshots → ${path.relative(ROOT, OUT)}`);
+  console.log(`\n${checks.length - failed.length}/${checks.length} checks passed · screenshots → ${path.relative(REPO, OUT)}`);
   fs.writeFileSync(path.join(OUT, 'report.json'), JSON.stringify({ generated_at: new Date().toISOString(), base: BASE, strict: STRICT, checks }, null, 2));
   if (STRICT && failed.length) process.exit(1);
 }

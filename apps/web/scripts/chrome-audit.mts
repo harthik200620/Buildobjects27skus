@@ -29,8 +29,7 @@
  * JavaScript. Inline the helper, or write it out twice.
  */
 import { chromium, type Page } from 'playwright';
-
-const BASE = process.env.BASE_URL ?? 'http://localhost:3001';
+import { BASE } from './harness';
 
 /** Matches FLOOR in components/ScrollProgress.tsx. The bar never leaves inside the first screenful. */
 const FLOOR = 240;

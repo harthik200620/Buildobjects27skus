@@ -28,8 +28,8 @@
  * Exits non-zero on a finding, so it can join the gate.
  */
 import { chromium } from 'playwright';
+import { BASE } from './harness';
 
-const BASE = process.env.BASE_URL ?? 'http://localhost:3001';
 const ROUTES = ['/', '/search', '/c/concreting', '/c/steel', '/c/cement', '/p/cem-ult-ppc50', '/cart', '/estimate', '/ar/cem-ult-ppc50'];
 
 const browser = await chromium.launch();
