@@ -27,7 +27,7 @@ pnpm dev                 # http://localhost:3000  (phone: any 10 digits · OTP 0
 | `S3_BUCKET` / `S3_REGION` | — | `buildobjects-media` / `ap-south-1` (+ standard AWS credentials on the task role) |
 | `MEDIA_BASE_URL` · `NEXT_PUBLIC_MEDIA_BASE_URL` | `/media` | `https://<cloudfront-domain>` (origin = the S3 bucket; keys are content-addressed → `immutable` caching) |
 | `ASSETS_3D_ROOT` | `../../assets/3d` | mount or sync `assets/3d` to the web task, or serve it from the same bucket under `3d/` |
-| `SESSION_SECRET` | dev value | a 32+ byte random secret |
+| `SESSION_SECRET` | dev value | **required.** `node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"` — `lib/session.ts` refuses to sign without it in production rather than falling back to the development key, which is a literal in this public repository |
 | `ANTHROPIC_API_KEY` | empty → curated fixtures | set → live extraction / verification / fill / descriptions / drawing reader |
 | `GEMINI_API_KEY` | empty → on-device scene read + overlay composite | set → Gemini scene understanding + generative composite |
 | `QUEUE_DRIVER` | `auto` | `bullmq` |
