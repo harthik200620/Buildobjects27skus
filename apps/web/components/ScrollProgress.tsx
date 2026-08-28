@@ -1,9 +1,10 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 /**
- * Three things that all need the scroll position, so they share one listener.
+ * Three things that all need the scroll position, plus one that does not, so they share one bar.
  *
  *   1. `data-scrolled` on <html> once the page has moved off the top. The header reads it and
  *      condenses — the shadow appears and the hairline firms up — which is how a sticky bar
@@ -18,6 +19,23 @@ import React from 'react';
  * One passive listener, coalesced into a single rAF, writing two attributes and one custom
  * property. No state, so no React render happens on scroll at all — at 120 Hz that is the
  * difference between a smooth bar and a stuttering page.
+ *
+ * ── 4. And it says a page is on its way ──────────────────────────────────────
+ *
+ * Every page in this store behind the front door is server-rendered on demand — measured on
+ * production, about 240 ms to the first byte and a second to a usable page. For that second,
+ * clicking a category did NOTHING: the tile you pressed stayed pressed, the page stayed where it
+ * was, and the only honest reading of that is that the click missed. It is the single largest
+ * source of "this site feels slow" that is not actually slowness.
+ *
+ * So the same 2 px rule fills while a navigation is in flight. It is the bar the reader already
+ * knows rather than a second piece of furniture, and it costs one click listener: the App Router
+ * has no navigation events to subscribe to, so the click is the start and the pathname changing is
+ * the end.
+ *
+ * It never gets stuck. A navigation that has not landed in eight seconds gives the bar back to the
+ * scroll position, because a progress bar that is still there when the page is not is worse than
+ * no progress bar.
  */
 
 /**
@@ -45,6 +63,51 @@ const BACK_AFTER = 4;
 
 export default function ScrollProgress() {
   const bar = React.useRef<HTMLDivElement | null>(null);
+  const pathname = usePathname();
+
+  /*
+   * The pending navigation, watched from the one place that already owns this element.
+   *
+   * `pathname` is the finish line — when it changes, whatever was in flight has landed. It is a
+   * separate effect from the scroll listener below so that a navigation does not tear down and
+   * rebuild the scroll machinery.
+   */
+  React.useEffect(() => {
+    const root = document.documentElement;
+    let timer = 0;
+    const done = () => {
+      window.clearTimeout(timer);
+      timer = 0;
+      delete root.dataset.navPending;
+    };
+    /* A click that will actually navigate: same origin, a real path, not a new tab, not a hash on
+       the page you are already on, and not something the page has already handled itself. */
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as HTMLElement | null)?.closest?.('a');
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      const url = new URL(a.href, location.href);
+      if (url.origin !== location.origin) return;
+      if (url.pathname + url.search === location.pathname + location.search) return;
+      root.dataset.navPending = '1';
+      window.clearTimeout(timer);
+      /* The failsafe. A bar still filling after the page has given up says the wrong thing. */
+      timer = window.setTimeout(done, 8000);
+    };
+    document.addEventListener('click', onClick, { capture: true });
+    return () => {
+      document.removeEventListener('click', onClick, { capture: true });
+      done();
+    };
+  }, []);
+
+  /* The finish line: this runs on every completed navigation. */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: `pathname` is the event, not a value read in the body — the effect exists to fire when it changes.
+  React.useEffect(() => {
+    delete document.documentElement.dataset.navPending;
+  }, [pathname]);
 
   React.useEffect(() => {
     const root = document.documentElement;

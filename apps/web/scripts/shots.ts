@@ -383,6 +383,32 @@ async function motionPass(browser: Browser) {
     await ctx.close();
   }
 
+  /*
+   * The navigation bar, which has exactly one way to fail badly: staying up.
+   *
+   * It fills while a page is on its way and the arriving page is what finishes it. A bar still
+   * filling after the page has landed is worse than no bar, and it is invisible to every other
+   * check here — a screenshot of a settled page cannot show it.
+   */
+  const nav = await browser.newContext({ viewport: { width: 1350, height: 940 } });
+  await nav.addCookies([sessionCookieFor(BASE)]);
+  const navPage = await nav.newPage();
+  try {
+    const pending = () => navPage.evaluate(`document.documentElement.hasAttribute('data-nav-pending')`) as Promise<boolean>;
+    await navPage.goto(`${BASE}/`, { waitUntil: 'load', timeout: 120_000 });
+    check('motion', 'desktop', 'the navigation bar is down when nothing is in flight', !(await pending()));
+    await navPage.locator('.cat-grid a').first().click({ noWaitAfter: true });
+    await navPage.waitForTimeout(60);
+    check('motion', 'desktop', 'a click raises the navigation bar', await pending());
+    await navPage.waitForURL(/\/c\//, { timeout: 60_000 });
+    await navPage.waitForTimeout(500);
+    check('motion', 'desktop', 'the arriving page puts it back down', !(await pending()), 'a bar still filling after the page has landed');
+  } catch (e) {
+    check('motion', 'desktop', 'the navigation bar behaves', false, (e as Error).message.slice(0, 90));
+  } finally {
+    await nav.close();
+  }
+
   /* The failsafe, from the outside: no script, nothing hidden. */
   const bare = await browser.newContext({ viewport: { width: 1350, height: 940 }, javaScriptEnabled: false });
   await bare.addCookies([sessionCookieFor(BASE)]);

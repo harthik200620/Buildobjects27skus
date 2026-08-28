@@ -132,6 +132,41 @@
   :root[data-nav="away"] .scroll-progress {
     opacity: 0;
   }
+  /*
+   * A PAGE IS ON ITS WAY.
+   *
+   * The same rule, doing the other job it is shaped for. Every page behind the front door is
+   * server-rendered on demand — about 240 ms to the first byte on production and a second to a
+   * usable page — and for that second a click on a category produced no evidence it had landed.
+   *
+   * It runs to 70 % and waits there, which is the only honest shape for a bar that cannot know
+   * how far along it is: the ease-out spends most of the animation in the first third, so it moves
+   * decisively at the moment of the click and then slows to almost nothing rather than sitting at
+   * a number it made up. The page replacing itself is what finishes it.
+   *
+   * It overrides `data-nav="away"` and the `data-scrolled` gate below it, because a navigation
+   * begun while the header is hidden still needs to be visible — that is when it is needed most.
+   */
+  :root[data-nav-pending] .scroll-progress {
+    opacity: 1;
+    animation: nav-pending 6s var(--ease-out) forwards;
+  }
+  @keyframes nav-pending {
+    from {
+      transform: scaleX(0.06);
+    }
+    to {
+      transform: scaleX(0.7);
+    }
+  }
+  /* Reduced motion still gets the feedback — it is information, not decoration — as a bar that
+     appears at a fixed width rather than one that travels. */
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-nav-pending] .scroll-progress {
+      animation: none;
+      transform: scaleX(0.4);
+    }
+  }
 
   /* ── the bar ──────────────────────────────────────────────────────────────
      Full width, flush to the top edge, and it gets out of the way when you read
