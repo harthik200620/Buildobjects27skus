@@ -36,8 +36,8 @@ import {
   IconUpload,
 } from '@/components/icons';
 import type { ArProduct } from '@/lib/ar-data';
+import { productTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
-import { productTitle } from '@/lib/product-name';
 import {
   bestRegionScore,
   canvasToB64,

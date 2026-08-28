@@ -161,6 +161,35 @@ async function tilt(page: Page, pitchDeg: number): Promise<{ ok: boolean; why: s
 
   if (actual === null) return { ok: false, why: 'no pose reported — is ?debug=1 on the URL?' };
   if (Math.abs(actual - pitchDeg) > 8) return { ok: false, why: `asked for ${pitchDeg} deg, camera is at ${actual.toFixed(1)}` };
+
+  /*
+   * AND THEN WAIT FOR THE PLACEMENT, WHICH IS THE THING BEING MEASURED.
+   *
+   * Everything above proves the POSE arrived. The placement is a separate, later event: the view
+   * re-frames on its own schedule after the pose moves, and the off-screen check runs at about
+   * 6 Hz rather than every frame. Measuring pixels in that window reads a product mid-flight.
+   *
+   * That is the whole of this harness's flakiness, and it was expensive: a run reported "7 of 135
+   * failed" and the same SKU and pitch came back clean on the next run with a correct nudge. It
+   * went into scratch/AR_SCORE.md as five real engine defects. It was not — two exhaustive sweeps
+   * of framePlacement over every SKU, every pitch, both the full frame and the chrome-inset band,
+   * in portrait and landscape, find zero placements that are under-framed without saying so, and
+   * zero that are framed but under 24px on their short side.
+   *
+   * So: poll the anchor and the fit line until they stop changing, then measure. Twelve tries at
+   * 200 ms is 2.4 s of headroom, and it settles in two or three when nothing is wrong.
+   */
+  const snapshot = async () =>
+    (await page.evaluate(
+      '(() => { const d = window.__arDebug; return d ? [d.anchor && Math.round(d.anchor.u), d.anchor && Math.round(d.anchor.v), d.fit && d.fit.reason].join("|") : ""; })()',
+    )) as string;
+  let last = await snapshot();
+  for (let i = 0; i < 12; i++) {
+    await page.waitForTimeout(200);
+    const now = await snapshot();
+    if (now === last && now !== '') return { ok: true, why: '' };
+    last = now;
+  }
   return { ok: true, why: '' };
 }
 

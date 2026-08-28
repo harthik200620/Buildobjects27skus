@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import ArStage from '@/components/ar/ArStage';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { loadArProduct } from '@/lib/ar-data';
-import { productTitle, withoutBrand } from '@/lib/product-name';
+import { productTitle, withoutBrand } from '@/lib/label';
 
 type Params = { sku: string };
 type Search = { as?: string };

@@ -34,9 +34,9 @@ import {
   IconSave,
   IconShare,
 } from '@/components/icons';
+import { productTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
 import { readPicks, removePick, setPickQty } from '@/lib/picks';
-import { productTitle } from '@/lib/product-name';
 import CostRange from './CostRange';
 import Donut, { seriesColor } from './Donut';
 import DrawingUpload from './DrawingUpload';

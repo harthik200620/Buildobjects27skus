@@ -3,7 +3,7 @@
 import { type Nudge, type PlacementRule, type ProductDims, SURFACE_LABEL, type Surface } from '@buildobjects/ar-engine';
 import React from 'react';
 import { IconCamera, IconCart, IconClose, IconFlipCamera, IconMove, IconRuler, IconSeeking, IconSpark, IconTarget } from '@/components/icons';
-import { withoutBrand } from '@/lib/product-name';
+import { withoutBrand } from '@/lib/label';
 
 /**
  * THE VIEW IN ROOM, AS A THING SOMEBODY LOOKS AT.
