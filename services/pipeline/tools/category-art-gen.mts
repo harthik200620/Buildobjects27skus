@@ -19,25 +19,19 @@
  * category, a few cents for all thirty-seven; re-runs skip anything already on disk unless
  * --force, so an interrupted run resumes for free.
  */
-import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { categoryHeroKey, type ImageSize } from '@buildobjects/catalog';
-import { categories, closeDb, getDb } from '@buildobjects/db';
+import { closeDb } from '@buildobjects/db';
 import { generateImage, resolveModel } from '@buildobjects/llm';
-import { eq } from 'drizzle-orm';
 import sharp from 'sharp';
+import { CATEGORY_ART_RATIO, writeCategoryRenditions } from '../src/media/category-art';
 import { mediaStore } from '../src/media/store';
 
 const ROOT = path.resolve(import.meta.dirname, '..', '..', '..');
 const REGISTRY = path.join(ROOT, 'services', 'pipeline', 'registry');
 const OVERRIDES = path.join(REGISTRY, 'category-art-overrides.json');
 
-const SIZES: { size: ImageSize; width: number }[] = [
-  { size: 'card', width: 800 },
-  { size: 'gallery', width: 1600 },
-];
-const RATIO = 9 / 16;
+const RATIO = CATEGORY_ART_RATIO;
 
 /**
  * The art direction every tile shares. Written once, so thirty-seven images read as one set
@@ -121,28 +115,6 @@ function loadOverrides(): Record<string, Override> {
   return doc.categories ?? {};
 }
 
-/**
- * Both renditions from one generated frame, cover-cropped to 16:9, written to the store under a
- * content-versioned key — and then pointed at from the database.
- *
- * Writing the files was never the whole job. The first version of this tool wrote them and
- * stopped, leaving `categories.hero_image_key` pointing wherever the previous run had left it, so
- * the store kept rendering older artwork from a URL that had quietly changed underneath it. The
- * key, the bytes and the row now move together or not at all.
- */
-async function writeRenditions(slug: string, source: Buffer): Promise<string> {
-  const store = mediaStore();
-  const version = createHash('sha1').update(source).digest('hex').slice(0, 10);
-  for (const { size, width } of SIZES) {
-    const height = Math.round(width * RATIO);
-    const buf = await sharp(source).resize(width, height, { fit: 'cover', position: 'centre' }).webp({ quality: 86 }).toBuffer();
-    await store.put(categoryHeroKey(slug, size, version), buf, 'image/webp');
-  }
-  const cardKey = categoryHeroKey(slug, 'card', version);
-  await getDb().update(categories).set({ heroImageKey: cardKey }).where(eq(categories.slug, slug));
-  return cardKey;
-}
-
 async function main() {
   const argv = process.argv.slice(2);
   /* `argv.indexOf('--only') + 1` is 0 when the flag is absent, so a bare `--force` was read as
@@ -192,7 +164,7 @@ async function main() {
     try {
       const res = await generateImage({ caller: 'category-art', model, parts: [`${subject} ${DIRECTION}`] });
       const raw = Buffer.from(res.image.base64, 'base64');
-      await writeRenditions(slug, raw);
+      await writeCategoryRenditions(slug, raw);
       done.push({ slug, buf: raw });
       made += 1;
       const meta = await sharp(raw).metadata();

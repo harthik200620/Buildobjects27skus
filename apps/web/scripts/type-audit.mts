@@ -18,23 +18,12 @@
  *   pnpm --filter @buildobjects/web type:audit   (non-zero on a finding, so it can join the gate)
  */
 import { chromium } from 'playwright';
-import { BASE } from './harness';
+import { BASE, openPage } from './harness';
 
 const ROUTES = ['/', '/search', '/c/concreting', '/c/steel', '/c/cement', '/p/cem-ult-ppc50', '/cart', '/estimate', '/ar/cem-ult-ppc50'];
 
 const browser = await chromium.launch();
-const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-const page = await context.newPage();
-
-/* Sign in once; every route below the front door needs the session cookie. */
-await page.goto(`${BASE}/welcome`, { waitUntil: 'domcontentloaded' });
-await page.evaluate(async (base) => {
-  await fetch(`${base}/api/auth/login`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ phone: '9876543210', otp: '000000', pincode: '500001', regionId: 'hyd' }),
-  });
-}, BASE);
+const { page } = await openPage(browser, { viewport: 'audit', motion: 'no-preference' });
 
 let bad = 0;
 for (const route of ROUTES) {

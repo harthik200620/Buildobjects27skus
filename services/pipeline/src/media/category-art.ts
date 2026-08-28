@@ -11,6 +11,7 @@
  * palette — a department tint, a construction grid and the category's name. It reads as a place
  * being prepared rather than a broken image, and it never pretends to be a photograph.
  */
+import { createHash } from 'node:crypto';
 import { categoryHeroKey, type ImageSize } from '@buildobjects/catalog';
 import { categories, getDb, skuImages, skus } from '@buildobjects/db';
 import { and, asc, desc, eq } from 'drizzle-orm';
@@ -22,7 +23,31 @@ const SIZES: { size: ImageSize; width: number }[] = [
   { size: 'card', width: 800 },
   { size: 'gallery', width: 1600 },
 ];
-const RATIO = 9 / 16;
+export const CATEGORY_ART_SIZES = SIZES;
+export const CATEGORY_ART_RATIO = 9 / 16;
+const RATIO = CATEGORY_ART_RATIO;
+
+/**
+ * Both renditions from one frame, cover-cropped to 16:9, written to the store under a
+ * content-versioned key — and then pointed at from the database.
+ *
+ * Writing the files was never the whole job. The first version of the generator wrote them and
+ * stopped, leaving `categories.hero_image_key` pointing wherever the previous run had left it, so
+ * the store kept rendering older artwork from a URL that had quietly changed underneath it. The
+ * key, the bytes and the row now move together or not at all.
+ */
+export async function writeCategoryRenditions(slug: string, source: Buffer): Promise<string> {
+  const store = mediaStore();
+  const version = createHash('sha1').update(source).digest('hex').slice(0, 10);
+  for (const { size, width } of SIZES) {
+    const height = Math.round(width * RATIO);
+    const buf = await sharp(source).resize(width, height, { fit: 'cover', position: 'centre' }).webp({ quality: 86 }).toBuffer();
+    await store.put(categoryHeroKey(slug, size, version), buf, 'image/webp');
+  }
+  const cardKey = categoryHeroKey(slug, 'card', version);
+  await getDb().update(categories).set({ heroImageKey: cardKey }).where(eq(categories.slug, slug));
+  return cardKey;
+}
 
 /** Light palette, straight off packages/ui/src/theme.css — a tile must match the page it sits on. */
 const INK = '#0f1111';

@@ -43,6 +43,8 @@ export const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 export const VIEWPORTS = {
   desktop: { viewport: { width: 1350, height: 940 }, deviceScaleFactor: 1 },
   mobile: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
+  /** The three counting audits calibrated their per-route budgets at this width; moving it moves them. */
+  audit: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
 } as const;
 
 export type ViewportName = keyof typeof VIEWPORTS;
@@ -55,6 +57,23 @@ export async function openPage(
   const ctx = await browser.newContext({ ...VIEWPORTS[opts.viewport ?? 'desktop'], reducedMotion: opts.motion ?? 'reduce' });
   if (opts.auth !== false) await ctx.addCookies([sessionCookieFor(BASE)]);
   return { page: await ctx.newPage(), ctx };
+}
+
+/**
+ * Two lines in the cart, written where the app keeps them. An empty cart paints no sticky total
+ * and no order summary, so a check that measures either would pass by having nothing to measure.
+ */
+export async function seedCart(page: Page): Promise<void> {
+  if (!page.url().startsWith(BASE)) await page.goto(`${BASE}/welcome`, { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() =>
+    localStorage.setItem(
+      'bo_estimate_picks',
+      JSON.stringify([
+        { sku_code: 'CEM-ULT-PPC50', qty: 12 },
+        { sku_code: 'TIL-KAJ-GP00215', qty: 4 },
+      ]),
+    ),
+  );
 }
 
 /** sRGB channel to linear light, per WCAG 2.1. */

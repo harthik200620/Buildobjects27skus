@@ -14,7 +14,7 @@
  *   pnpm --filter @buildobjects/web scale:audit    (non-zero over budget, so it can join the gate)
  */
 import { chromium } from 'playwright';
-import { BASE } from './harness';
+import { BASE, openPage, seedCart } from './harness';
 
 /**
  * Per-route budgets: what each page measures today, plus one.
@@ -37,28 +37,8 @@ const ROUTES: { path: string; radii: number; sizes: number }[] = [
 ];
 
 const browser = await chromium.launch();
-const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-const page = await context.newPage();
-
-/* Sign in once; every route below the front door needs the session cookie. */
-await page.goto(`${BASE}/welcome`, { waitUntil: 'domcontentloaded' });
-await page.evaluate(async (base) => {
-  await fetch(`${base}/api/auth/login`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ phone: '9876543210', otp: '000000', pincode: '500001', regionId: 'hyd' }),
-  });
-}, BASE);
-/* The cart is empty otherwise, and an empty cart paints none of the chrome this is counting. */
-await page.evaluate(() =>
-  localStorage.setItem(
-    'bo_estimate_picks',
-    JSON.stringify([
-      { sku_code: 'CEM-ULT-PPC50', qty: 12 },
-      { sku_code: 'TIL-KAJ-GP00215', qty: 4 },
-    ]),
-  ),
-);
+const { page } = await openPage(browser, { viewport: 'audit', motion: 'no-preference' });
+await seedCart(page);
 
 let over = 0;
 for (const route of ROUTES) {

@@ -16,35 +16,14 @@
  * dies with `ReferenceError: __name is not defined` from a line that reads as valid JavaScript.
  */
 import { chromium, type Page } from 'playwright';
-import { BASE } from './harness';
+import { BASE, openPage, seedCart } from './harness';
 
 /** Matches FLOOR in components/ScrollProgress.tsx. The bar never leaves inside the first screenful. */
 const FLOOR = 240;
 
 const browser = await chromium.launch();
-const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-const page = await context.newPage();
-
-await page.goto(`${BASE}/welcome`, { waitUntil: 'domcontentloaded' });
-await page.evaluate(async (base) => {
-  await fetch(`${base}/api/auth/login`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ phone: '9876543210', otp: '000000', pincode: '500001', regionId: 'hyd' }),
-  });
-}, BASE);
-
-/* The cart's lines live in localStorage, so an unseeded cart is empty — and an empty cart paints
-   no sticky total, which would make the check below pass by having nothing to check. */
-await page.evaluate(() =>
-  localStorage.setItem(
-    'bo_estimate_picks',
-    JSON.stringify([
-      { sku_code: 'CEM-ULT-PPC50', qty: 12 },
-      { sku_code: 'TIL-KAJ-GP00215', qty: 4 },
-    ]),
-  ),
-);
+const { page } = await openPage(browser, { viewport: 'audit', motion: 'no-preference' });
+await seedCart(page);
 
 let failures = 0;
 const check = (ok: boolean, line: string) => {

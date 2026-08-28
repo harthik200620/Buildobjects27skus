@@ -27,23 +27,16 @@
  * generator and updates the same row, so a later `category-art-gen.mts --force` overwrites it
  * with a real photograph and nothing else has to change.
  */
-import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { categoryHeroKey, type ImageSize } from '@buildobjects/catalog';
-import { categories, closeDb, getDb } from '@buildobjects/db';
-import { eq } from 'drizzle-orm';
+import { closeDb } from '@buildobjects/db';
 import sharp from 'sharp';
-import { mediaStore } from '../src/media/store';
+import { CATEGORY_ART_RATIO, writeCategoryRenditions } from '../src/media/category-art';
 
 const ROOT = path.resolve(import.meta.dirname, '..', '..', '..');
 const LUCIDE = path.join(ROOT, 'node_modules', '.pnpm');
 
-const SIZES: { size: ImageSize; width: number }[] = [
-  { size: 'card', width: 800 },
-  { size: 'gallery', width: 1600 },
-];
-const RATIO = 9 / 16;
+const RATIO = CATEGORY_ART_RATIO;
 const W = 1600;
 const H = Math.round(W * RATIO);
 
@@ -161,19 +154,6 @@ function tileSvg(mark: string): string {
 </svg>`;
 }
 
-async function writeRenditions(slug: string, source: Buffer): Promise<string> {
-  const store = mediaStore();
-  const version = createHash('sha1').update(source).digest('hex').slice(0, 10);
-  for (const { size, width } of SIZES) {
-    const height = Math.round(width * RATIO);
-    const buf = await sharp(source).resize(width, height, { fit: 'cover', position: 'centre' }).webp({ quality: 86 }).toBuffer();
-    await store.put(categoryHeroKey(slug, size, version), buf, 'image/webp');
-  }
-  const cardKey = categoryHeroKey(slug, 'card', version);
-  await getDb().update(categories).set({ heroImageKey: cardKey }).where(eq(categories.slug, slug));
-  return cardKey;
-}
-
 async function main() {
   const argv = process.argv.slice(2);
   const onlyIdx = argv.indexOf('--only');
@@ -206,7 +186,7 @@ async function main() {
       .png()
       .toBuffer();
 
-    const key = await writeRenditions(slug, composed);
+    const key = await writeCategoryRenditions(slug, composed);
     console.log(`  ${slug.padEnd(24)} drawn  ${mark.padEnd(14)} → ${key}`);
   }
   await closeDb();
