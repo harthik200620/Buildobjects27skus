@@ -248,6 +248,19 @@ async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile
      * how the twenty-six survived. Three is the whole of the store's intentional glass.
      */
     check(shot.key, viewport, 'backdrop-filter only on persistent chrome', m.backdrop <= 3, `${m.backdrop} elements`);
+    /*
+     * THERE IS NO "nothing loops under reduced motion" CHECK HERE, AND THAT IS DELIBERATE.
+     *
+     * One was written and removed the same hour. Measured across all nine surfaces it reported
+     * zero infinite animations — correctly, and for a reason that makes the check worthless:
+     * theme.css already sets `animation-iteration-count: 1 !important` on every element and both
+     * pseudo-elements under prefers-reduced-motion. Nothing CAN loop, so the check cannot fail.
+     * Adding a rogue infinite animation to the hero and re-running proved it: 12/12 still passed.
+     *
+     * A gate that cannot fail is a green light that means nothing, which is the failure mode two
+     * other checks in this codebase had already shipped with. The guarantee lives at the root,
+     * where it belongs; this is a note so nobody writes the check again.
+     */
     check(shot.key, viewport, 'every text passes WCAG AA against what is behind it', m.lowContrast.length === 0, m.lowContrast.slice(0, 4).join(' · ') || 'ok');
     if (m.facetCount > 0) check(shot.key, viewport, 'facet labels fit', m.facetOverflow === 0, `${m.facetOverflow}/${m.facetCount} overflow`);
     if (shot.key === 'home' && viewport === 'desktop') {
