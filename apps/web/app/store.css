@@ -1461,26 +1461,16 @@
      The arrival does not fade in, it lands. The sequence and its timings are
      documented on .bocart-rig below. */
   /* ── the cart rig ─────────────────────────────────────────────────────────
-     The Build Objects mark on a trolley, and nothing else on it.
+     A trolley is a thing you PUSH, so it arrives from the side, once, decelerating.
 
-     IT ROLLS IN. It used to drop from above, squash on landing, then get shoved left
-     and right before settling — four movements in 1260ms, in a 28px box, in the corner
-     of the chrome. Each one was defensible and together they were fidgeting. A trolley
-     is a thing you PUSH, so it arrives the way a pushed thing arrives: from the side,
-     once, decelerating into place.
+     THE WHEELS TURN AS FAR AS THE DISTANCE IMPLIES — the difference between rolling and sliding.
+     The rig travels 130% of its own width and a wheel's circumference is about 63 units of that
+     130, so 742 degrees. Not a round number, because the arithmetic does not produce one, and the
+     eye reads the mismatch long before it can name it.
 
-     THE WHEELS TURN AS FAR AS THE DISTANCE IMPLIES, and that is the whole difference
-     between rolling and sliding. The rig travels 130% of its own width; a wheel is 10
-     units across a 100-unit deck, so its circumference is π × 20 ≈ 63 units against
-     that 130-unit travel — about 2.06 turns, or 742°. Not a round number, because the
-     arithmetic does not produce one, and the eye reads the mismatch long before it can
-     say what is wrong.
-
-     The load lags. A mass on a trolley leans back as it accelerates and rocks forward
-     as it stops, so it starts at −7° and settles through +3° to 0 on its own delay.
-
-     Under prefers-reduced-motion the rig renders at its settled frame and never moves.
-     Not "faster" — a person who asked for stillness did not ask for a quicker trolley. */
+     The load lags: -7 degrees under acceleration, settling through +3 to 0. Under reduced motion
+     the rig renders at its settled frame and never moves — not "faster", since somebody who asked
+     for stillness did not ask for a quicker trolley. */
   .bocart {
     position: relative;
     display: inline-flex;
