@@ -1,13 +1,15 @@
-# Research brief — one category, three brands, three flagship SKUs
+# Research brief - one category, three brands, three flagship SKUs
 
-You are one of nine parallel research agents filling the catalogue of **Build Objects**, a
-construction-products store for Andhra Pradesh / Telangana (India). You own ONE category.
-Work from these contracts (read them first, fully):
+How a category gets filled: one category at a time, three brands in it, three flagship SKUs each.
+Build Objects sells construction products in Andhra Pradesh / Telangana, so "official" means the
+manufacturer's own Indian domain and never a marketplace listing.
 
-- `C:\Users\HP\Desktop\buildobjects-store\services\pipeline\registry\SCHEMA.md` — attribute registry contract
-- `C:\Users\HP\Desktop\buildobjects-store\services\pipeline\registry\groups.json` — the 20 fixed group keys
-- `C:\Users\HP\Desktop\buildobjects-store\services\pipeline\registry\categories.json` — slugs, codes, brands, domains
-- `C:\Users\HP\Desktop\buildobjects-store\services\pipeline\data\curated\SCHEMA.md` — curated SKU contract + provenance law
+Read these contracts first, in full:
+
+- `services/pipeline/registry/SCHEMA.md` - attribute registry contract
+- `services/pipeline/registry/groups.json` - the 20 fixed group keys
+- `services/pipeline/registry/categories.json` - slugs, codes, brands, domains
+- `services/pipeline/data/curated/SCHEMA.md` - curated SKU contract + provenance law
 
 ## Deliverables (write ONLY these paths; touch nothing else)
 1. `services/pipeline/registry/{category-slug}.json` — the attribute registry (35–60 attributes). **Skip this file for `bulbs`** — its registry comes from the calendar sheet; use the key list in the Bulbs section below instead.

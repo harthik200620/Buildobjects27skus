@@ -238,3 +238,30 @@ the reasoning is here so the door is not reopened by accident.
   It is NOT pixel-centred and cannot be at this size: the left group is a 367px lockup plus a 230px
   nav against 332px on the right, and centring a field between groups that differ by 265px caps it
   at about 170px, smaller than the 250 it started at.
+
+- **The AR harness measures the strip, not the frame, and the last placement failure is a
+  threshold disagreement rather than a blank.** Every assertion in
+  `packages/ar-engine/test/framing.test.ts` runs against `fullFrame(K)`, and the live view has
+  never had the full frame — it has the band between the top bar and the sheet, which on a phone
+  is well under half the picture. `scripts/ar-audit.mts` measures that band, and it counts drawn
+  pixels by photographing the stage twice with the WebGL canvas hidden for one of them, so what it
+  reports is the product, not a proxy for it. Across the catalogue: **135 placements, one failure,
+  zero silent blanks.** Thirty-seven draw nothing and all thirty-seven carry an arrow saying which
+  way the product went, which is the contract this feature is judged on. That blank count went up
+  from seven, and the cause is the harness rather than the view: `tilt` used to retry a failed pose
+  by sleeping again, which cannot revive a stopped ticker — and a stopped ticker is exactly what
+  "camera is at -10.0" means, that being `NO_SENSOR_PITCH_DEG`. It re-arms the feed and retries
+  twice now, so 134 of 135 placements reach the pitch they ask for. A camera that actually gets to
+  +25 has genuinely lost sight of more products than one that stopped at +5.
+  The one failure is `epx-fos-conbextraep10 @ -15`: 903 px drawn — a small tin placed 6 m away,
+  which is as close as a floor is visible in the band at that pitch, enlarged 3.34× by auto-fit to
+  `MIN_LEGIBLE_PX`. Something IS drawn and the view is not lying about it. Raising that constant
+  would enlarge every product in the catalogue past true size more often, which is a trade against
+  the thing the feature is for, and it should not be tuned on one sample.
+
+- **Two category tiles are drawn rather than photographed** — `excavation` and
+  `storage-packaging`. `services/pipeline/tools/category-art-gen.mts --only <slug> --force`
+  photographs them and `category-art-fallback.mts` draws the stand-in; the generator is blocked on
+  the Gemini account, which answers every image request with
+  `429 RESOURCE_EXHAUSTED — "Your prepayment credits are depleted"` on both image models the
+  project can address. That is a billing state, so no retry schedule reaches through it.

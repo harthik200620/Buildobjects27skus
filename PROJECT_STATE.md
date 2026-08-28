@@ -28,13 +28,12 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
 - **AR** — one engine, three tiers by capability: WebXR hit-test → iOS Quick Look → Photo Mode.
 - **3D** — a GLB per SKU; real models drop in by filename.
 - **The v2 visual layer** — four type faces, a new token layer, 93 custom icons, a one-row header
-  with a ⌘K palette, photographic backplates on four surfaces. See `DECISIONS.md` for the
-  irreversible choices and `scratch/UI_SCORE.md` Round 6 for what is and is not finished.
+  with a ⌘K palette, photographic backplates on four surfaces. See `DECISIONS.md` for the irreversible choices.
 - **The front door is categories and nothing else** — no shelf, no promises, no closing band, and
-  no prices anywhere on it. Round 7.
+  no prices anywhere on it.
 - **The chrome** — a flush, full-bleed bar that leaves on the way down and returns on the way up,
   one `--sticky-top` for every pinned panel in the store, and both viewport overlays portalled out
-  of the header. Round 9.
+  of the header.
 
 ## Next, in order
 
@@ -42,10 +41,10 @@ working; this phase is the storefront's surface, and it is now on the `design-sy
    on a Retina desktop they cost 1.5 MB. A rendition cut to the tile's own aspect fixes both the
    weight and the softness. Pipeline work, not stylesheet work.
 2. **The estimator's machine** — the stage scrubber, the two gauged ledgers, and `iso-house.svg`
-   animating group by group. §10 of `design-system/UI_UPGRADE_PROMPT.md`.
-3. **`/coins`** — the Vault page. The 3D coin exists; the page does not. §11 of the same brief.
-4. **Two category tiles are drawn, not photographed** — `excavation` and `storage-packaging`.
-   Blocked on Gemini credit; the two commands that fix it are in `scratch/UI_SCORE.md` Round 5.
+   animating group by group.
+3. **`/coins`** — the Vault page. The 3D coin exists; the page does not.
+4. **Two category tiles are drawn, not photographed** — `excavation` and `storage-packaging`,
+   blocked on Gemini credit. The commands and the billing state are in `DECISIONS.md`.
 
 ## Things that will bite you
 

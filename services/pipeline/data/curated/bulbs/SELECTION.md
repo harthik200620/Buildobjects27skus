@@ -1,7 +1,7 @@
 # Bulbs (BUL) — brand, domain and SKU selection
 
 Category `bulbs`, code `BUL`, GST 12 %, HSN 8539. Registry is **not** written for this category —
-the attribute keys come from the calendar sheet key list in `AGENT_BRIEF.md` plus the mandatory keys.
+the attribute keys come from the calendar sheet key list in `RESEARCH_BRIEF.md` plus the mandatory keys.
 Research date: **2026-08-22**. Target for all three: the brand's hero **9 W B22 LED bulb**.
 
 ---
