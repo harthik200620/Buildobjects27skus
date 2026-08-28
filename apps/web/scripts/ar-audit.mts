@@ -31,17 +31,15 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { type Browser, chromium, type Page } from 'playwright';
 import sharp from 'sharp';
+import { BASE, flags, only, REPO } from './harness';
 import { sessionCookieFor } from './session-cookie';
 
 const STRICT = !!flags.strict;
 const SHOTS = !!flags.shots;
 const ONLY = only;
-  .filter(Boolean);
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
-const OUT = path.resolve(flag('out', path.join(ROOT, 'storage', 'reports', 'ar')));
+const OUT = path.resolve(flags.out ?? path.join(REPO, 'storage', 'reports', 'ar'));
 
 /**
  * The angles. -75 is a phone held nearly flat over a floor, which is the reported case; +25 is one
@@ -78,7 +76,7 @@ interface Result {
 
 /** Every SKU with a mesh, straight from the catalogue the site serves. */
 async function skus(): Promise<{ code: string; category: string }[]> {
-  const file = path.join(ROOT, 'apps', 'web', 'data', 'catalogue', 'skus.json');
+  const file = path.join(REPO, 'apps', 'web', 'data', 'catalogue', 'skus.json');
   const rows: Record<string, { sku: { code: string }; category?: { slug?: string } | null }> = JSON.parse(fs.readFileSync(file, 'utf8'));
   return Object.values(rows)
     .filter((r) => !!r.category?.slug)

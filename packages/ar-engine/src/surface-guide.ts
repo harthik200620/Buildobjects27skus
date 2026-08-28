@@ -3,18 +3,12 @@ import type { PlacementRule, ProductDims, SceneAnalysis, Surface, SurfaceDetecti
 import { rowForWallHeight } from './vision/depth';
 
 /**
- * What surface a product needs, whether the camera is looking at one, and what to say when it
- * is not.
+ * What surface a product needs, whether the camera is looking at one, and what to say when it is
+ * not.
  *
- * The live-camera view used to answer all three questions with the word "wall". It filtered the
- * scene analysis for `type === 'wall'`, offered a Wall/Ceiling toggle, assumed every surface was
- * 2.2 m away, and told the user to "point camera at your wall or ceiling" — which is correct for
- * a bulb and wrong for the twenty-four SKUs that belong on the floor or the ground. A cement bag
- * could not be put on the floor at all: the only two mounts on offer were both vertical.
- *
- * Every fact needed to fix that already exists in PLACEMENT_RULES — `surfaces`, `surfaceLabel`,
- * `heightBandMm`, `minClearanceMm`. This module reads them instead of hard-coding one category's
- * answer, so adding a category stays what it has always been: one entry in the rules table.
+ * Every fact is already in PLACEMENT_RULES — `surfaces`, `surfaceLabel`, `heightBandMm`,
+ * `minClearanceMm` — so this reads them rather than hard-coding one category's answer, and adding
+ * a category stays one entry in the rules table.
  */
 
 /** A detection is only worth acting on above this; below it the analysis is guessing. */
@@ -103,16 +97,13 @@ export interface SurfacePrompt {
 }
 
 /**
- * The sentence over the camera feed.
+ * The sentence over the camera feed — the most-read text in the view, because it is what appears
+ * when nothing is working yet. It says the one thing to do, in the rule's own words: "Point your
+ * camera at a wall to place this", not "no valid placement surface detected".
  *
- * This is the most-read text in the AR view, because it is what appears when nothing is working
- * yet. It is written for someone holding a phone in a half-built house, so it says the one thing
- * to do and names the surface in the words the rule uses: "Point your camera at a wall to place
- * this." — not "no valid placement surface detected".
- *
- * `seeking` is the state between "the camera just opened" and "the model has answered". Telling
- * someone their wall is missing before anything has looked at it is how a working feature gets
- * reported as broken.
+ * `seeking` is the state between the camera opening and the model answering. Telling someone
+ * their wall is missing before anything has looked for it is how a working feature gets reported
+ * as broken.
  */
 export function surfacePrompt(rule: PlacementRule, match: SurfaceMatch, analysed: boolean, noun = 'this product'): SurfacePrompt {
   if (match.surface) {
@@ -139,15 +130,10 @@ function article(label: string): string {
 /**
  * How far in front of the camera a vertical surface is assumed to be, in metres.
  *
- * The live view used a single constant of 2.2 m for everything. That is a reasonable guess for
- * the wall a bulb goes on and badly wrong for a window across a room or a CCTV camera under a
- * soffit — the product landed at the wrong depth and therefore at the wrong apparent size, which
- * is the whole point of a true-scale view.
- *
- * When the analysis gives a bounding box we can do better than a constant: a surface that fills
- * the frame is close, one that occupies a corner is far. The box area is a crude proxy for
- * distance, but it is a proxy that moves in the right direction, and it is clamped to a band
- * that no room violates.
+ * A single constant put the product at the wrong depth and so at the wrong apparent size, which
+ * is the whole point of a true-scale view. Where the analysis gives a bounding box, its area is a
+ * crude proxy for distance — one that at least moves in the right direction — clamped to a band
+ * no room violates.
  */
 export const DEFAULT_SURFACE_DISTANCE_M = 2.2;
 export const MIN_SURFACE_DISTANCE_M = 0.6;
@@ -211,16 +197,12 @@ export interface DropGeometry {
 }
 
 /**
- * Where to put the product, solved rather than guessed.
+ * Where to put the product, solved rather than guessed. Given the camera's pitch, its height and
+ * the distance to the surface, the row a real mounting height projects to is arithmetic; the
+ * fixed screen fraction is the fallback for when the geometry is unknown.
  *
- * `defaultDropPoint` returns a fixed fraction of the frame per mount type, which is a reasonable
- * approximation at a typical downward tilt and visibly wrong when the phone is held level — the
- * case a person is most likely to be in when they point it at a wall. Given the camera's pitch,
- * its height and the distance to the surface, the row a real mounting height projects to is
- * arithmetic, so this uses it and falls back to the fraction only when the geometry is unknown.
- *
- * The horizontal position stays centred: nothing in the frame tells us where along the wall a
- * person wants the product, and they can drag it.
+ * The horizontal position stays centred — nothing in the frame says where along the wall somebody
+ * wants it, and they can drag it.
  */
 export function dropPointFor(rule: PlacementRule, surface: Surface, geo: DropGeometry | null): { u: number; v: number } {
   const fallback = defaultDropPoint(rule, surface);
@@ -273,15 +255,11 @@ export function areaPrompt(rule: PlacementRule): string {
 export const SURFACE_SWITCH_CONFIDENCE = 0.6;
 
 /**
- * How much to enlarge a product so it can actually be evaluated, and whether it was enlarged.
+ * How much to enlarge a product so it can be evaluated, and whether it was enlarged.
  *
- * True 1:1 is the promise and it is also, for a small object across a room, a few dozen pixels:
- * a 60 mm bulb on a wall 2.2 m away projects to about 25 px, which is honest and useless. The
- * old code answered this by multiplying EVERY product by 1.8 — including a 1.8 m solar module,
- * which is how a catalogue ends up 80 % oversized.
- *
- * This enlarges only what is too small to read, only as far as legibility needs, and returns the
- * fact so the UI can say so. The user can always drop back to true size.
+ * True 1:1 is the promise and, for a 60 mm bulb on a wall 2.2 m away, about 25 px — honest and
+ * useless. This enlarges only what is too small to read, only as far as legibility needs, and
+ * returns the fact so the UI can say so.
  */
 export interface AutoFit {
   scale: number;

@@ -5,54 +5,23 @@ import { intersectPlane, type Pixel, type PixelIntrinsics, projectToPixel, rayFr
 import { add, cameraAxes, type Mat3, normalize, scale, UP, type Vec3, v3 } from './pose';
 
 /**
- * PUT THE PRODUCT WHERE IT CAN ACTUALLY BE SEEN.
+ * Where to put the product so the person holding the phone can see it.
  *
- * Everything else in this folder answers "given a pixel, where is that in the world". This
- * answers the question the live view actually has, which is the other way round: given a room, a
- * camera pointed somewhere in it, and a product that belongs on a named surface, WHERE DO WE PUT
- * IT so that the person holding the phone sees it.
+ * A fixed screen fraction is not a placement: the old `defaultDropPoint` cast a ray through
+ * v = 0.68 for anything on the floor, and the distance to the surface through a fixed pixel varies
+ * by four orders of magnitude across the pitches a phone is actually held at. Above about +20 no
+ * floor product was placed at all — the ray never met the floor.
  *
- * The view used to answer that with a constant. `defaultDropPoint` returned a fixed fraction of
- * the frame per mount type — v = 0.68 for anything on the floor, 0.20 for a ceiling — and the
- * anchor was wherever the ray through that fraction happened to land. A sweep of the placement
- * across camera pitch (test/framing.test.ts) shows what that produces on a 720 x 1280 phone frame:
+ * Every placement has ONE free parameter. On a horizontal surface it is how far along the surface
+ * the product sits; on a vertical one it is how far away the wall is, since the HEIGHT is not free
+ * (an extinguisher lives at a metre whether or not that frames well).
  *
- *   - pitch +20 and above, ANY floor product   no anchor at all. The ray through v = 0.68 is still
- *                                              above the horizon, misses the floor plane entirely,
- *                                              and nothing is ever placed. The camera opens, the
- *                                              feed runs, there is no product, and there never
- *                                              will be one.
- *   - pitch +10, cement bag                    lands 25.4 m away and projects to 21 x 31 px.
- *   - pitch -20, bulb                          lands 66.7 m away: 2 x 4 px.
- *   - pitch -45, solar panel                   the ray is nearly parallel to the roof plane, so it
- *                                              "hits" at 176 000 px across. 0 % on screen.
- *   - pitch -75, tile                          25 % on screen. Bathtub 26 %, glass 1 %.
- *
- * The last band is the reported one — "camera angle from top it is not showing properly" — and it
- * is the same defect as the first: a fixed screen fraction is not a placement. The distance to the
- * surface through a fixed pixel varies by four orders of magnitude across the pitches at which a
- * person actually holds a phone, and nothing clamped it.
- *
- * -- WHAT THIS DOES INSTEAD ------------------------------------------------------------------
- * Every placement has ONE free parameter, and it is not a screen fraction:
- *
- *   - on a horizontal surface (floor, ground, roof, table, ceiling) how far along the surface,
- *     away from the camera, the product sits. Sliding a cement bag further down the floor is a
- *     completely honest placement; nothing about the product changes.
- *   - on a vertical surface (wall, window) how far away the wall is. The HEIGHT is not free: an
- *     extinguisher lives at a metre whether or not that is convenient to look at.
- *
- * So: sweep the free parameter, project the product's own box at each candidate, and take the one
- * that puts the most of the product on screen nearest the row its mount belongs at. When no
- * candidate in the physical band can frame it — a wall product with the phone pointed at the floor
- * — the product still goes at its honest position and `nudge` says which way to tilt, so the view
- * can point at it instead of silently rendering nothing.
- *
- * A sweep rather than a closed form, because the closed forms differ per surface, all of them go
- * singular somewhere in the range a phone is actually held at (which is precisely the top-down
- * case), and each would need its own roll handling. Forty-eight projections of an eight-corner box
- * is about thirty microseconds, ONCE per placement rather than per frame — robustness at a price
- * too small to measure.
+ * So: sweep that parameter, project the product's own box at each candidate, take the one that
+ * puts the most of it on screen nearest the row its mount belongs at. When nothing in the physical
+ * band can frame it, the product still goes at its honest position and `nudge` says which way to
+ * tilt. A sweep rather than a closed form because the closed forms differ per surface and every
+ * one of them goes singular somewhere a phone is actually held — forty-eight box projections is
+ * thirty microseconds, once per placement rather than per frame.
  */
 
 /** How near and how far a product is ever placed, metres. Nothing outside this is a placement. */
@@ -96,29 +65,18 @@ export function idealViewingDistanceM(dims: ProductDims, K: Pick<Intrinsics, 'fx
 /**
  * A conservative world box for the product resting at an anchor.
  *
- * Deliberately yaw-free: the horizontal half-extent is the LARGER of half-width and half-depth,
- * which contains the product at every yaw. Framing does not need corner-exact geometry — it needs
- * a bound it cannot be wrong about, and a bound that changed when the user rotated the product
- * would make the choice of placement depend on the rotation, which nobody wants.
- *
- * The vertical extent follows the rule's anchor face, matching what `normalizeModel` does to the
- * mesh: `bottom` stands on the anchor, `top` (a hanging bulb) hangs below it, `back` and `center`
- * straddle it. On a wall the product also extends out of the surface along the normal.
+ * Yaw-free on purpose: the horizontal half-extent is the LARGER of half-width and half-depth, so
+ * it contains the product at every yaw and the placement cannot depend on how the user has turned
+ * it. The vertical extent follows the rule's anchor face, matching `normalizeModel`: `bottom`
+ * stands on the anchor, `top` hangs below it, `back` and `center` straddle it.
  */
 /**
- * Does this product LIE DOWN on a horizontal surface?
+ * Does this product lie down on a horizontal surface?
  *
- * `orientation: 'flat'` has been in the rules table since it was written — on tiles, solar panels,
- * cement and the bathtub — and no renderer ever read it. So a 1200 mm floor tile stood on its long
- * edge like a headstone and a 2278 mm solar module stood upright on a roof: both correct to the
- * millimetre, both absurd, and both worst from directly above, which is exactly where a phone gets
- * pointed to look at a floor.
- *
- * The condition tests height against depth rather than trusting the flag alone, because the flag
- * does not separate the two cases the catalogue actually contains. A tile (600 x 1200 x 9), a panel
- * (1134 x 2278 x 30) and a cement bag (450 x 700 x 140) all record their LONG axis as height and
- * genuinely need turning down. A bathtub (1700 x 600 x 750) records its true standing height and
- * must not be touched. `h > d` separates them exactly.
+ * `h > d` rather than the `orientation: 'flat'` flag alone, because the flag does not separate the
+ * two cases the catalogue contains. A tile (600x1200x9), a panel (1134x2278x30) and a cement bag
+ * (450x700x140) all record their LONG axis as height and need turning down; a bathtub
+ * (1700x600x750) records its true standing height and must not be touched.
  */
 export function laysFlat(rule: PlacementRule, surface: Surface, dims: ProductDims): boolean {
   if (rule.orientation !== 'flat') return false;
@@ -246,22 +204,16 @@ export function horizontalHeading(R: Mat3): Vec3 {
 export type Nudge = 'up' | 'down' | 'left' | 'right' | null;
 
 /**
- * WHICH WAY TO TILT TO BRING A PRODUCT BACK, given where it landed on the screen.
+ * Which way to tilt to bring a product back, given where it landed on screen.
  *
- * `area` is the band a person can actually SEE — the strip between the top bar and the bottom
- * sheet — not the whole stage. That distinction is the whole function: the caller decides "not
- * visible" against the band, and this used to decide "not off any edge" against the stage, so a
- * product sitting under the sheet was outside one and inside the other. The answer came back
- * "nothing to point at", the arrow was cleared, and the view said nothing at all about a product
- * nobody could see. Five floor SKUs in the catalogue-wide audit failed exactly that way.
+ * `area` MUST be the band a person can see — the strip between the top bar and the sheet — not the
+ * whole stage. That distinction is the whole function: the caller decides "not visible" against
+ * the band, and measuring "not off any edge" against the stage made a product under the sheet
+ * outside one and inside the other, so the arrow was cleared and the view said nothing about a
+ * product nobody could see.
  *
- * It lived in the camera component, where it could not be tested and where its `area` argument
- * was whatever was nearest to hand. It is geometry; it belongs here, next to the solver that
- * decides the placement it is describing.
- *
- * It always names a direction, because it is only called once the caller has concluded the
- * product is effectively invisible. If the centre is inside the band and it still cannot be seen,
- * it is clipped by an edge — and the nearer of the two is the one to point at.
+ * It always names a direction, since it is only called once the caller has concluded the product
+ * is invisible. If the centre is inside the band, it is clipped by an edge — the nearer one.
  */
 export function nudgeFromBounds(bounds: { x: number; y: number; w: number; h: number } | null, area: { w: number; top: number; bottom: number }): Nudge {
   /* Nothing drawn at all: the product is most often above, because the surfaces it is lost on —
@@ -360,17 +312,12 @@ export function framePlacement(input: FramingInput): Framing {
       d: Math.hypot(D, y - C.y),
     });
     /*
-     * A MEASURED WALL IS A STRONG PREFERENCE, NOT A PIN.
-     *
-     * Pinning to it was the first version, and the audit caught what that costs: all three CCTV
-     * SKUs were invisible at every camera angle, because a marginal reading put the wall under a
-     * metre away and a camera mounted at 2.6 m on a wall that close is above the top of the frame
-     * at any pitch you would hold a phone at.
-     *
-     * Truth still wins where truth works — the sweep below scores distance against the measurement
-     * rather than against the ideal, so the measured wall is chosen whenever it can carry the
-     * product. It loses only to coverage, which is worth an order of magnitude more: a measurement
-     * that makes the product invisible is far likelier to be wrong than the geometry is.
+     * A measured wall is a strong preference, not a pin. Pinning to it made all three CCTV SKUs
+     * invisible at every angle: a marginal reading put the wall under a metre away, and a camera
+     * at 2.6 m on a wall that close is above the frame at any pitch. The sweep scores distance
+     * against the measurement, so truth wins wherever it can carry the product — it loses only to
+     * coverage, because a measurement that makes the product invisible is likelier to be wrong
+     * than the geometry is.
      */
     for (let i = 0; i < SAMPLES; i++) candidates.push(at(WALL_DISTANCE_M[0] + ((WALL_DISTANCE_M[1] - WALL_DISTANCE_M[0]) * i) / (SAMPLES - 1)));
     const measured = input.measuredDistanceM;

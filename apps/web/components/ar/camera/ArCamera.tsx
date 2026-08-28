@@ -103,20 +103,13 @@ const CHROME_BOTTOM_PX = 210;
 const CHROME_TOP_PX = 60;
 
 /**
- * The part of the picture a person can actually see, in both units at once.
+ * The part of the picture a person can actually see, in both units at once — read by the framing
+ * solver in video pixels and by the render loop's on-screen check in stage pixels, because the two
+ * must agree about what "visible" means.
  *
- * Read by the framing solver (video pixels) AND by the on-screen check in the render loop (stage
- * pixels), because the two have to agree about what "visible" means.
- *
- * The chrome heights are MEASURED, not assumed. They were constants first, and a constant is wrong
- * the moment the sheet is collapsed, or the product name wraps, or the device has a home indicator
- * — and being wrong here means a product composed neatly into a band the sheet is sitting on top
- * of. The constants remain as the fallback for the frames before the observer has reported.
- *
- * `k` is CSS pixels per video pixel, so dividing by it converts a chrome height into the frame's
- * own units. Insetting the TOP as well as the height is the half that matters: shrinking the height
- * alone leaves the rect pinned to the top of the frame, which is above the horizon for anything
- * standing on a floor, and frames it nowhere at all.
+ * Chrome heights are MEASURED; the constants are only the fallback for the frames before the
+ * observer reports. Inset the TOP as well as the height: shrinking the height alone leaves the
+ * rect pinned to the top of the frame, which is above the horizon for anything on a floor.
  */
 function visibleBand(
   map: CoverMap,
@@ -433,20 +426,13 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
       }
     };
     /*
-     * `scaleMult` IS DELIBERATELY NOT A DEPENDENCY, and this was the bug behind "I open the
-     * camera and there is no product".
+     * `scaleMult` is deliberately NOT a dependency. Listing it was the bug behind "I open the
+     * camera and there is no product": auto-fit calls setScaleMult the moment a surface is found,
+     * which re-ran this effect, disposed the renderer and rebuilt an empty scene — while
+     * `autoPlacedRef` was already set, so nothing placed the product again.
      *
-     * It used to be listed. Auto-fit enlarges a small product to a legible size the moment a
-     * surface is found, which calls setScaleMult — which re-ran THIS effect, which disposed the
-     * SceneRenderer, reloaded the GLB from the network and built a fresh scene with no anchor in
-     * it. Meanwhile `autoPlacedRef` had already been set by the frame that placed the product, so
-     * nothing ever placed it again. The result was an empty camera feed that came back to life
-     * only if the user happened to tap, because tapping is the one path that re-anchors.
-     *
-     * A rebuild belongs to the MODEL, not to how big it is drawn: only `glbUrl` and `category`
-     * change what is in the scene. Scale is applied by the small effect below, on the renderer
-     * that already exists, and the initial value is read through a ref so it cannot creep back
-     * into this list.
+     * A rebuild belongs to the MODEL, not to how big it is drawn. Scale is applied by the small
+     * effect below, and the initial value is read through a ref so it cannot creep back in here.
      */
   }, [glbUrl, category]);
 
@@ -665,22 +651,13 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
     let q: Quat;
     const gyro = orientationFeed.ref.current;
     /*
-     * `gyroActiveRef`, NOT `orientationFeed.active` — AND THIS WAS THE BIGGEST BUG IN THE VIEW.
+     * `gyroActiveRef`, NOT `orientationFeed.active`.
      *
-     * `useOrientation` returns a fresh object every render, and this callback is a useCallback that
-     * does not depend on it. So the boolean captured here was whatever `active` was on the very
-     * first render — false, because no sample had arrived yet — and it stayed false for the life of
-     * the session. `ref` is a useRef and therefore stable, so `gyro` filled with real samples the
-     * whole time; the condition simply threw them away.
-     *
-     * The live camera has been running on a CONSTANT ASSUMED PITCH OF -10 DEGREES on every device,
-     * with a working gyro sitting right there. Nothing responded to how the phone was held: not the
-     * placement, not the horizon, not the surface classification — which reads the pitch to decide
-     * what is floor and what is ceiling. "It is not detecting the placement" and "camera angle from
-     * the top is not showing properly" are both this.
-     *
-     * Found by wiring `window.__arDebug`, which reported pitch -10 at every one of five angles the
-     * audit harness tilted the phone to.
+     * `useOrientation` returns a fresh object every render and this useCallback does not depend on
+     * it, so the boolean captured here froze at its first-render value — false, before any sample
+     * had arrived — for the life of the session. The ref is stable and filled with real samples the
+     * whole time; the condition threw them away, and the view ran on a constant assumed pitch of
+     * -10 degrees on every device with a working gyro sitting right there.
      */
     if (gyro && gyroActiveRef.current) {
       q = gyro.q;
