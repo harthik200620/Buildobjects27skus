@@ -156,6 +156,28 @@ against the old code.
 the next time "100 % on screen" disagrees with what is on screen it can be attributed in one run
 instead of five.
 
+### And the harness was still measuring too early — 2026-08-28, later
+
+The number above moved between runs: one full sweep reported 7 failures where the previous had
+reported 1, and the same SKU at the same pitch failed once and passed the next time with a correct
+nudge. I nearly wrote that down as five fresh engine defects.
+
+`tilt()` waited for the POSE and then measured the PLACEMENT. Those are separate events — the view
+re-frames on its own schedule once the pose moves, and the off-screen check runs at about 6 Hz
+rather than every frame — so a screenshot could catch a product mid-flight. It now polls the anchor
+and the fit line until they stop changing before anything is measured, and the cement bag that
+alternated between fail and pass at +5 reports 0 failed on three consecutive runs.
+
+The engine was checked again independently rather than taken on trust, and in more configurations
+than the band sweep covers: `framePlacement` over every SKU, surface and pitch, against the full
+frame AND the band, in portrait AND landscape, finds zero placements under-framed without a nudge
+and zero framed-but-under-24px after auto-fit. The contract holds everywhere the product runs.
+
+Also worth stating plainly, because reading it wrong is what produced the alarming counts:
+**"rendered nothing at all" is not a failure.** A floor product with the camera pitched up
+genuinely has nothing on screen. The engine says so, the view draws an arrow, and the audit prints
+the nudge beside the zero. That is the contract being met, not broken.
+
 ## What the harness caught that the maths did not
 
 Both of these passed every unit test and were wrong in the browser, which is the whole argument for
