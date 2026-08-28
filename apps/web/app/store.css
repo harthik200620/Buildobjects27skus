@@ -350,12 +350,6 @@
   .header-action-label {
     white-space: nowrap;
   }
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: var(--s-2);
-  }
-
   /* ── search ───────────────────────────────────────────────────────────────
      The one control in the bar allowed to grow: everything else overflows onto its neighbour
      when squeezed, this ellipses. `.header-spacer` sits on both sides with equal flex, so the
@@ -2538,13 +2532,9 @@
   .sec {
     margin-top: 32px;
   }
-  .sec-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 12px;
-  }
+  /* `.sec-head` is styled in styles/home.css, and NOT under `.home` — an unscoped rule in a
+     page's own stylesheet, so the front door's spacing governs the section heads on every
+     surface. This file's version set the same five properties and lost all five to it. */
   /* Section headings are Audiowide too, and therefore 400 rather than 700 — the subset has one
      cut. It is a wide face, so 18px in it measures like 23px of the UI face; 17 holds the same
      optical size and stops two-word headings wrapping in a card. */

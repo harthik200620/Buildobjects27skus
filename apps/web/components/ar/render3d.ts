@@ -1,6 +1,7 @@
 'use client';
 
 import type { Orientation } from '@buildobjects/ar-engine';
+import { addRoomEnvironment } from './three-env';
 
 /**
  * Renders a GLB to a transparent PNG canvas, cropped to the product's projected bounding box,
@@ -44,14 +45,7 @@ async function doRender(url: string, opts: { yawDeg: number; orientation: Orient
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.15;
   const scene = new THREE.Scene();
-  try {
-    const { RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js');
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    pmrem.dispose();
-  } catch {
-    /* fall back to lights only */
-  }
+  await addRoomEnvironment(THREE, scene, renderer);
   const hemi = new THREE.HemisphereLight(0xffffff, 0x8a8a8a, 1.1);
   scene.add(hemi);
   const key = new THREE.DirectionalLight(0xfff2e0, 2.6);

@@ -1193,23 +1193,8 @@
     color: var(--color-warn);
   }
 
-  /* Stock lines are text, not pills — the status belongs in the reading order, not beside it. */
-  .stock {
-    font-size: var(--t-cap);
-    line-height: 18px;
-  }
-  .stock--in {
-    color: var(--color-success);
-  }
-  .stock--low {
-    color: var(--color-warn);
-  }
-  .stock--out {
-    color: var(--color-danger);
-  }
-  .stock--preorder {
-    color: var(--color-ink-2);
-  }
+  /* Stock lines are text, not pills — the status belongs in the reading order, not beside it.
+     Sized in store.css beside the delivery promise, which is the line it sits under. */
 
   /* ── price ──────────────────────────────────────────────────────────────── */
   .price {
@@ -1295,12 +1280,7 @@
     color: var(--color-ink-3);
   }
 
-  /* "Get it by Tue, 26 Aug" */
-  .deliver {
-    font-size: var(--t-cap);
-    line-height: 18px;
-    color: var(--color-ink);
-  }
+  /* "Get it by Tue, 26 Aug" — sized in store.css, beside the stock line it sits with. */
   .deliver b,
   .deliver strong {
     font-weight: 700;
@@ -1781,14 +1761,15 @@
 
   /* ── 3. lift: the one hover elevation, for every card in the store ─────────
      Border, shadow and a 3 px rise. Any card that wants hover uses this class
-     instead of re-deciding what hover means. */
-  .lift {
-    transition:
-      transform var(--dur-2) var(--ease-out),
-      border-color var(--dur-2) var(--ease-out),
-      box-shadow var(--dur-2) var(--ease-out),
-      background-color var(--dur-2) var(--ease-out);
-  }
+     instead of re-deciding what hover means.
+
+     EXCEPT THAT store.css RE-DECIDES THE TRANSITION, which is what actually
+     ships: `box-shadow` and `border-color` only, so the `transform` below is
+     not among the properties being eased and the 3 px rise SNAPS. Every card
+     in the store hovers that way today. It is left alone here because this
+     pass is not allowed to change what the site looks like — but it is a
+     defect, and this is the note that says so rather than the four-property
+     list that never applied. */
   @media (hover: hover) {
     .lift:hover {
       transform: translateY(var(--lift));

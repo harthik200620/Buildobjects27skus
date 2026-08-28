@@ -33,7 +33,8 @@ import {
 } from '@buildobjects/ar-engine';
 import React from 'react';
 import { IconCamera, IconDownload, IconRefresh, IconShare, IconVideo } from '@/components/icons';
-import { bestRegionScore, dataUrlToCanvas, download, productPixels } from '../photo';
+import { requestComposite, shareImage } from '../composite';
+import { canvasToB64, download, productPixels } from '../photo';
 import ArHud from './ArHud';
 import { AnalysisScheduler, captureAnalysisFrame } from './analysisScheduler';
 import { buildCameraComposite } from './compositeFromCamera';
@@ -1012,20 +1013,13 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
 
       if (!comp) throw new Error('Could not capture the current 3D frame');
 
-      const photoB64 = { mimeType: 'image/jpeg', base64: comp.photo.toDataURL('image/jpeg', 0.9).split(',')[1] };
-      const overlayB64 = {
-        mimeType: 'image/jpeg',
-        base64: comp.overlay.toDataURL('image/jpeg', 0.92).split(',')[1],
-        dataUrl: comp.overlay.toDataURL('image/jpeg', 0.92),
-      };
-      const maskB64 = { mimeType: 'image/png', base64: comp.mask.toDataURL('image/png').split(',')[1] };
-      const modelB64 = { mimeType: 'image/png', base64: comp.modelPass.toDataURL('image/png').split(',')[1] };
+      const overlayB64 = canvasToB64(comp.overlay, 'image/jpeg', 0.92);
 
       const body = {
-        photo: photoB64,
+        photo: canvasToB64(comp.photo, 'image/jpeg', 0.9),
         overlay: overlayB64,
-        mask: maskB64,
-        productReference: modelB64,
+        mask: canvasToB64(comp.mask, 'image/png'),
+        productReference: canvasToB64(comp.modelPass, 'image/png'),
         product: { name, brand: 'Philips', category, dims },
         placement: comp.placement,
         rule,
@@ -1041,43 +1035,15 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
         },
       };
 
-      let best: (CompositeResult & { dataUrl: string; fallback?: boolean }) | null = null;
-      try {
-        const res = await fetch('/api/ar/composite', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify(body),
-        });
-        const j = (await res.json()) as CompositeResult & { error?: string };
-        if (res.ok && j.image?.base64) {
-          const dataUrl = `data:${j.image.mimeType};base64,${j.image.base64}`;
-          const out = await dataUrlToCanvas(dataUrl);
-          const refPixels = productPixels(comp.modelPass);
-          const rectOut = {
-            ...comp.rect,
-            x: (comp.rect.x / comp.photo.width) * out.width,
-            y: (comp.rect.y / comp.photo.height) * out.height,
-            w: (comp.rect.w / comp.photo.width) * out.width,
-            h: (comp.rect.h / comp.photo.height) * out.height,
-          };
-          const fidelity = j.provider === 'mock' ? 1 : bestRegionScore(refPixels, out, rectOut, out.width, out.height).score;
-          best = { ...j, fidelity, attempts: 1, dataUrl };
-        }
-      } catch {
-        /* fallback to WebGL overlay */
-      }
-
-      if (!best) {
-        best = {
-          image: { mimeType: 'image/jpeg', base64: overlayB64.base64 },
-          provider: 'mock',
-          fidelity: 1,
-          attempts: 1,
-          dataUrl: overlayB64.dataUrl,
-          fallback: true,
-          note: 'Placed at true 1:1 scale using the 3D model with wall perspective and contact shadow.',
-        };
-      }
+      const best = await requestComposite({
+        body,
+        reference: productPixels(comp.modelPass),
+        rect: comp.rect,
+        photoW: comp.photo.width,
+        photoH: comp.photo.height,
+        overlay: overlayB64,
+        fallbackNote: 'Placed at true 1:1 scale using the 3D model with wall perspective and contact shadow.',
+      });
 
       setResult({ ...best, ms: Math.round(performance.now() - t0) });
     } catch (e) {
@@ -1087,40 +1053,12 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
     }
   };
 
-  const shareResult = async () => {
-    if (!result) return;
-    try {
-      const blob = await (await fetch(result.dataUrl)).blob();
-      const file = new File([blob], `${name.toLowerCase().replace(/\s+/g, '-')}-in-my-room.jpg`, { type: blob.type });
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: `${name} in my room` });
-      } else {
-        download(result.dataUrl, file.name);
-      }
-    } catch {
-      /* dismissed */
-    }
-  };
+  const shareResult = () => result && shareImage(result.dataUrl, `${name.toLowerCase().replace(/\s+/g, '-')}-in-my-room.jpg`, `${name} in my room`);
 
   return (
     <div className="ar-stage ar-camera">
       {/* 1. Live Camera Video Feed */}
-      <video
-        ref={videoRef}
-        playsInline
-        muted
-        autoPlay
-        className="ar-camera-video"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          opacity: camStatus === 'streaming' ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-        }}
-      />
+      <video ref={videoRef} playsInline muted autoPlay className="ar-camera-video ar-fill" data-live={camStatus === 'streaming'} />
 
       {/* 2. Transparent 3D WebGL Canvas Layer */}
       <canvas
@@ -1246,19 +1184,8 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
 
       {/* 8. Result Modal View */}
       {result && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 10,
-            background: '#000',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <img src={result.dataUrl} alt={name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+        <div className="ar-fill ar-center ar-result">
+          <img src={result.dataUrl} alt={name} />
           <div className="ar-hud ar-hud-glass" style={{ bottom: '16px' }}>
             <button
               type="button"
@@ -1278,25 +1205,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
       )}
 
       {/* 11. Error Banner */}
-      {error && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '72px',
-            left: '16px',
-            right: '16px',
-            zIndex: 6,
-            background: 'var(--color-ar-danger)',
-            color: '#fff',
-            padding: '8px 16px',
-            borderRadius: 8,
-            textAlign: 'center',
-            fontSize: 13,
-          }}
-        >
-          {error}
-        </div>
-      )}
+      {error && <div className="ar-error">{error}</div>}
     </div>
   );
 }

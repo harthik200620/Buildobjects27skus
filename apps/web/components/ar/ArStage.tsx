@@ -2,12 +2,9 @@
 
 import {
   analyzeFromGrid,
-  type CompositeResult,
   defaultAnchor,
   detectTier,
   estimateScale,
-  FIDELITY_MIN,
-  fidelityScore,
   gate,
   type Placement,
   placementFor,
@@ -38,20 +35,8 @@ import {
 import type { ArProduct } from '@/lib/ar-data';
 import { productTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
-import {
-  bestRegionScore,
-  canvasToB64,
-  composeScene,
-  dataUrlToCanvas,
-  download,
-  fileToImage,
-  lumaGridOf,
-  type PixelRect,
-  productCutout,
-  productPixels,
-  regionPixels,
-  toCanvas,
-} from './photo';
+import { requestComposite, shareImage } from './composite';
+import { canvasToB64, composeScene, download, fileToImage, lumaGridOf, type PixelRect, productCutout, productPixels, toCanvas } from './photo';
 import { initialSession, photoSessionReducer } from './photoSession';
 import { renderGlb } from './render3d';
 
@@ -369,69 +354,18 @@ export default function ArStage({ product }: { product: ArProduct }) {
       rule,
       scene,
     };
-    const ref = productPixels(productCanvas);
-    let best: (CompositeResult & { dataUrl: string; fallback?: boolean }) | null = null;
-    try {
-      const r = await fetch('/api/ar/composite', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
-      const j = (await r.json()) as CompositeResult & { error?: string };
-      if (r.ok && j.image?.base64) {
-        const dataUrl = `data:${j.image.mimeType};base64,${j.image.base64}`;
-        const out = await dataUrlToCanvas(dataUrl);
-        // The composite should read as the SKU. Score the placement region first; if that
-        // misses (the generative model re-framed or light-shifted), search neighbouring
-        // scaled regions for where the product actually landed before ever discarding it.
-        const rectOut = {
-          ...rect,
-          x: (rect.x / photo.width) * out.width,
-          y: (rect.y / photo.height) * out.height,
-          w: (rect.w / photo.width) * out.width,
-          h: (rect.h / photo.height) * out.height,
-        };
-        let fidelity = j.provider === 'mock' ? 1 : fidelityScore(ref, regionPixels(out, rectOut));
-        if (j.provider !== 'mock' && fidelity < FIDELITY_MIN) {
-          const found = bestRegionScore(ref, out, rectOut, out.width, out.height);
-          if (found.score > fidelity) {
-            fidelity = found.score;
-            rectOut.x = found.rect.x;
-            rectOut.y = found.rect.y;
-            rectOut.w = found.rect.w;
-            rectOut.h = found.rect.h;
-          }
-        }
-        if (fidelity >= FIDELITY_MIN || j.provider === 'mock') {
-          best = { ...j, fidelity, attempts: 1, dataUrl };
-        } else {
-          // eslint-disable-next-line no-console
-          console.warn('[ar] composite rejected for fidelity', { provider: j.provider, fidelity, rectOut });
-        }
-      }
-    } catch {
-      /* graceful fallback */
-    }
-    if (!best) {
-      best = {
-        image: { mimeType: 'image/jpeg', base64: overlayB64.base64 },
-        provider: 'mock',
-        fidelity: 1,
-        attempts: 1,
-        dataUrl: overlayB64.dataUrl,
-        fallback: true,
-        note: 'Placed at true 1:1 scale using the photoreal 3D model with realistic contact shadow.',
-      };
-    }
+    const best = await requestComposite({
+      body,
+      reference: productPixels(productCanvas),
+      rect,
+      photoW: photo.width,
+      photoH: photo.height,
+      overlay: overlayB64,
+      fallbackNote: 'Placed at true 1:1 scale using the photoreal 3D model with realistic contact shadow.',
+    });
     dispatch({ type: 'composited', result: { ...best, ms: Math.round(performance.now() - t0) } });
   }
-  async function share() {
-    if (!result) return;
-    try {
-      const blob = await (await fetch(result.dataUrl)).blob();
-      const file = new File([blob], `${product.code}-in-my-room.jpg`, { type: blob.type });
-      if (navigator.canShare?.({ files: [file] })) await navigator.share({ files: [file], title: `${product.brand} ${product.name} in my room` });
-      else download(result.dataUrl, file.name);
-    } catch {
-      /* dismissed */
-    }
-  }
+  const share = () => result && shareImage(result.dataUrl, `${product.code}-in-my-room.jpg`, `${product.brand} ${product.name} in my room`);
 
   const tierLabel = tier
     ? tier.tier === 'L'
@@ -601,29 +535,8 @@ export default function ArStage({ product }: { product: ArProduct }) {
               )}
               {streaming && (
                 <>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      pointerEvents: 'none',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 150,
-                        height: 150,
-                        border: '2px dashed var(--color-ar-line)',
-                        borderRadius: 12,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        position: 'relative',
-                      }}
-                    >
+                  <div className="ar-fill ar-center" style={{ pointerEvents: 'none' }}>
+                    <div className="ar-frame">
                       {productCanvas && (
                         <img
                           src={productCanvas.toDataURL()}
@@ -631,20 +544,7 @@ export default function ArStage({ product }: { product: ArProduct }) {
                           style={{ width: '80%', height: '80%', objectFit: 'contain', opacity: 0.85, filter: 'drop-shadow(0 4px 12px rgba(0,0,0,.6))' }}
                         />
                       )}
-                      <span
-                        style={{
-                          position: 'absolute',
-                          bottom: -28,
-                          fontSize: 11,
-                          color: '#56d3d8',
-                          fontWeight: 600,
-                          background: 'var(--color-ar-panel)',
-                          padding: '3px 10px',
-                          borderRadius: 6,
-                          whiteSpace: 'nowrap',
-                          border: '1px solid var(--color-ar-wash)',
-                        }}
-                      >
+                      <span className="ar-frame-label">
                         {dims.w_mm} × {dims.h_mm} mm · Aim at {SURFACE_LABEL[surface] ?? surface}
                       </span>
                     </div>

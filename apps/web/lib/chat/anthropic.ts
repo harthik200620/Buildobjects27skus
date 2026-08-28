@@ -127,6 +127,71 @@ function toMessages(args: GenerateArgs): Array<{ role: 'user' | 'assistant'; con
   return out;
 }
 
+/**
+ * One POST to /messages, retried, and nothing at all about what the answer means.
+ *
+ * `generate` and `readDocumentAsJson` each carried their own copy of the transport — abort on a
+ * timeout, retry a 429 or a 5xx, back off on a network throw, give up after MAX_ATTEMPTS. Two
+ * copies of a retry policy is two policies, and these had already parted company: one honoured
+ * `retry-after` and the other ignored it, one treated a non-JSON body as a retryable attempt and
+ * the other let `res.json()` throw out of the loop entirely.
+ *
+ * The MEANING stays with the caller. A chat turn and a filled-in schema are not the same answer,
+ * and a transport that started interpreting bodies would have to know about both.
+ */
+type Wire = { ok: true; json: unknown } | { ok: false; error: NonNullable<GenerateResult['error']> };
+
+async function postMessages(key: string, body: unknown, timeoutMs: number, tag: string): Promise<Wire> {
+  let last: NonNullable<GenerateResult['error']> | null = null;
+
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), timeoutMs);
+    let res: Response;
+    try {
+      res = await fetch(`${anthropicBase()}/messages`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': ANTHROPIC_VERSION },
+        body: JSON.stringify(body),
+        signal: ac.signal,
+      });
+    } catch (e: unknown) {
+      clearTimeout(timer);
+      const err = e as { name?: string; message?: string; cause?: unknown } | null;
+      if (err?.name === 'AbortError') return { ok: false, error: { code: 'TIMEOUT', message: 'The model did not answer in time.', retryable: true } };
+      /* Operational, and it earns its place: a fetch that throws inside a server runtime says
+         nothing useful to the caller by design, so without this the only symptom is "cannot reach
+         its model" and the cause — DNS, proxy, TLS, a bad base URL — is invisible. */
+      console.error(`[${tag}] ${anthropicBase()}/messages failed:`, err?.message ?? e, err?.cause ?? '');
+      last = { code: 'NETWORK', message: String(err?.message ?? e), retryable: true };
+      if (attempt < MAX_ATTEMPTS - 1) await sleep(backoff(attempt));
+      continue;
+    }
+    clearTimeout(timer);
+
+    if (!res.ok) {
+      const detail = await res
+        .text()
+        .then((t) => t.slice(0, 300))
+        .catch(() => '');
+      const retryable = res.status === 429 || res.status >= 500;
+      last = { code: `HTTP_${res.status}`, message: detail, retryable };
+      if (!retryable || attempt === MAX_ATTEMPTS - 1) return { ok: false, error: last };
+      /* `retry-after` is the server saying when it will be ready; the backoff is only a guess. */
+      const after = Number(res.headers.get('retry-after')) * 1000;
+      await sleep(Number.isFinite(after) && after > 0 ? after : backoff(attempt));
+      continue;
+    }
+
+    const json = await res.json().catch(() => null);
+    if (json !== null) return { ok: true, json };
+    last = { code: 'BAD_JSON', message: 'The model returned a body that is not JSON.', retryable: true };
+    if (attempt < MAX_ATTEMPTS - 1) await sleep(backoff(attempt));
+  }
+
+  return { ok: false, error: last ?? { code: 'UNKNOWN', message: 'The model could not be reached.', retryable: false } };
+}
+
 export async function generate(args: GenerateArgs): Promise<GenerateResult> {
   const t0 = Date.now();
   const key = chatKey();
@@ -159,110 +224,40 @@ export async function generate(args: GenerateArgs): Promise<GenerateResult> {
     if (args.toolMode === 'ANY') body.tool_choice = { type: 'any' };
   }
 
-  let lastErr: GenerateResult['error'] = null;
-
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
-    const ac = new AbortController();
-    const timer = setTimeout(() => ac.abort(), TIMEOUT_MS);
-    let res: Response;
-    try {
-      res = await fetch(`${anthropicBase()}/messages`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': ANTHROPIC_VERSION },
-        body: JSON.stringify(body),
-        signal: ac.signal,
-      });
-    } catch (e: unknown) {
-      clearTimeout(timer);
-      const err = e as { name?: string; message?: string } | null;
-      if (err?.name === 'AbortError')
-        return {
-          ok: false,
-          text: '',
-          calls: [],
-          finishReason: null,
-          error: { code: 'TIMEOUT', message: 'The model did not answer in time.', retryable: true },
-          usage: null,
-          latency_ms: Date.now() - t0,
-        };
-      lastErr = { code: 'NETWORK', message: String(err?.message ?? e), retryable: true };
-      /* Operational, and it earns its place: a fetch that throws inside a server runtime says
-         nothing useful to the caller by design, so without this the only symptom is "cannot
-         reach its model" and the cause — DNS, proxy, TLS, a bad base URL — is invisible. */
-      console.error(`[chat] ${anthropicBase()}/messages failed:`, err?.message ?? e, (e as { cause?: unknown })?.cause ?? '');
-      if (attempt < MAX_ATTEMPTS - 1) {
-        await sleep(backoff(attempt));
-        continue;
-      }
-      break;
-    }
-    clearTimeout(timer);
-
-    if (res.status === 429 || res.status >= 500) {
-      lastErr = {
-        code: `HTTP_${res.status}`,
-        message: await res
-          .text()
-          .then((t) => t.slice(0, 200))
-          .catch(() => ''),
-        retryable: true,
-      };
-      if (attempt < MAX_ATTEMPTS - 1) {
-        const retryAfter = Number(res.headers.get('retry-after')) * 1000;
-        await sleep(Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : backoff(attempt));
-        continue;
-      }
-      break;
-    }
-
-    const json = (await res.json().catch(() => null)) as MessagesResponse | null;
-    if (!json) {
-      lastErr = { code: 'BAD_JSON', message: 'The model returned a body that is not JSON.', retryable: true };
-      continue;
-    }
-    if (!res.ok || json.error) {
-      return {
-        ok: false,
-        text: '',
-        calls: [],
-        finishReason: null,
-        error: { code: `HTTP_${res.status}`, message: (json.error?.message ?? '').slice(0, 200), retryable: false },
-        usage: null,
-        latency_ms: Date.now() - t0,
-      };
-    }
-
-    const blocks = json.content ?? [];
-    const text = blocks
-      .filter((b): b is TextBlock => b.type === 'text')
-      .map((b) => b.text)
-      .join('')
-      .trim();
-    const calls = blocks.filter((b): b is ToolUseBlock => b.type === 'tool_use').map((b) => ({ name: b.name, args: b.input ?? {} }));
-
-    return {
-      ok: true,
-      text,
-      calls,
-      finishReason: json.stop_reason ?? null,
-      error: null,
-      usage: {
-        prompt: json.usage?.input_tokens ?? 0,
-        output: json.usage?.output_tokens ?? 0,
-        thoughts: 0,
-        cached: json.usage?.cache_read_input_tokens ?? 0,
-      },
-      latency_ms: Date.now() - t0,
-    };
-  }
-
-  return {
+  const fail = (error: NonNullable<GenerateResult['error']>): GenerateResult => ({
     ok: false,
     text: '',
     calls: [],
     finishReason: null,
-    error: lastErr ?? { code: 'UNKNOWN', message: 'The model could not be reached.', retryable: false },
+    error,
     usage: null,
+    latency_ms: Date.now() - t0,
+  });
+
+  const wire = await postMessages(key, body, TIMEOUT_MS, 'chat');
+  if (!wire.ok) return fail(wire.error);
+  const json = wire.json as MessagesResponse;
+  if (json.error) return fail({ code: 'MODEL_ERROR', message: (json.error.message ?? '').slice(0, 200), retryable: false });
+
+  const blocks = json.content ?? [];
+  const text = blocks
+    .filter((b): b is TextBlock => b.type === 'text')
+    .map((b) => b.text)
+    .join('')
+    .trim();
+
+  return {
+    ok: true,
+    text,
+    calls: blocks.filter((b): b is ToolUseBlock => b.type === 'tool_use').map((b) => ({ name: b.name, args: b.input ?? {} })),
+    finishReason: json.stop_reason ?? null,
+    error: null,
+    usage: {
+      prompt: json.usage?.input_tokens ?? 0,
+      output: json.usage?.output_tokens ?? 0,
+      thoughts: 0,
+      cached: json.usage?.cache_read_input_tokens ?? 0,
+    },
     latency_ms: Date.now() - t0,
   };
 }
@@ -322,80 +317,36 @@ export async function readDocumentAsJson(args: DocumentReadArgs): Promise<Docume
     ],
   };
 
-  const timeoutMs = args.timeoutMs ?? 90_000;
-  let lastErr: GenerateResult['error'] = null;
+  const wire = await postMessages(key, body, args.timeoutMs ?? 90_000, 'quote');
+  if (!wire.ok) return { ok: false, data: null, error: wire.error, usage: null, latency_ms: Date.now() - t0 };
 
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
-    const ac = new AbortController();
-    const timer = setTimeout(() => ac.abort(), timeoutMs);
-    let res: Response;
-    try {
-      res = await fetch(`${anthropicBase()}/messages`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': ANTHROPIC_VERSION },
-        body: JSON.stringify(body),
-        signal: ac.signal,
-      });
-    } catch (e: unknown) {
-      clearTimeout(timer);
-      const err = e as { name?: string; message?: string; cause?: unknown } | null;
-      if (err?.name === 'AbortError')
-        return {
-          ok: false,
-          data: null,
-          error: { code: 'TIMEOUT', message: 'The reader timed out.', retryable: true },
-          usage: null,
-          latency_ms: Date.now() - t0,
-        };
-      console.error('[quote] reader fetch failed:', err?.message, err?.cause ?? '');
-      lastErr = { code: 'NETWORK', message: err?.message ?? 'network error', retryable: true };
-      if (attempt < MAX_ATTEMPTS - 1) await sleep(backoff(attempt));
-      continue;
-    }
-    clearTimeout(timer);
-
-    if (!res.ok) {
-      const detail = await res.text().catch(() => '');
-      const retryable = res.status === 429 || res.status >= 500;
-      lastErr = { code: `HTTP_${res.status}`, message: detail.slice(0, 300), retryable };
-      if (retryable && attempt < MAX_ATTEMPTS - 1) {
-        await sleep(backoff(attempt));
-        continue;
-      }
-      return { ok: false, data: null, error: lastErr, usage: null, latency_ms: Date.now() - t0 };
-    }
-
-    const json = (await res.json()) as {
-      content?: Array<{ type: string; name?: string; input?: unknown }>;
-      usage?: { input_tokens?: number; output_tokens?: number; cache_read_input_tokens?: number };
-    };
-    const use = (json.content ?? []).find((b) => b.type === 'tool_use' && b.name === TOOL_NAME);
-    if (!use?.input || typeof use.input !== 'object') {
-      /* Forced tool use means this should be unreachable; if it ever is, it is a contract change
-         and not something to paper over with a half-parsed answer. */
-      lastErr = { code: 'NO_TOOL_USE', message: 'The reader answered without filling in the schema.', retryable: false };
-      return { ok: false, data: null, error: lastErr, usage: null, latency_ms: Date.now() - t0 };
-    }
-
+  const json = wire.json as {
+    content?: Array<{ type: string; name?: string; input?: unknown }>;
+    usage?: { input_tokens?: number; output_tokens?: number; cache_read_input_tokens?: number };
+  };
+  const use = (json.content ?? []).find((b) => b.type === 'tool_use' && b.name === TOOL_NAME);
+  if (!use?.input || typeof use.input !== 'object') {
+    /* Forced tool use means this should be unreachable; if it ever is, it is a contract change
+       and not something to paper over with a half-parsed answer. */
     return {
-      ok: true,
-      data: use.input as Record<string, unknown>,
-      error: null,
-      usage: {
-        prompt: json.usage?.input_tokens ?? 0,
-        output: json.usage?.output_tokens ?? 0,
-        thoughts: 0,
-        cached: json.usage?.cache_read_input_tokens ?? 0,
-      },
+      ok: false,
+      data: null,
+      error: { code: 'NO_TOOL_USE', message: 'The reader answered without filling in the schema.', retryable: false },
+      usage: null,
       latency_ms: Date.now() - t0,
     };
   }
 
   return {
-    ok: false,
-    data: null,
-    error: lastErr ?? { code: 'UNKNOWN', message: 'The reader could not be reached.', retryable: false },
-    usage: null,
+    ok: true,
+    data: use.input as Record<string, unknown>,
+    error: null,
+    usage: {
+      prompt: json.usage?.input_tokens ?? 0,
+      output: json.usage?.output_tokens ?? 0,
+      thoughts: 0,
+      cached: json.usage?.cache_read_input_tokens ?? 0,
+    },
     latency_ms: Date.now() - t0,
   };
 }

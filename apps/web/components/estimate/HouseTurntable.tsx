@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { addRoomEnvironment } from '@/components/ar/three-env';
 import { IconClose, IconRefresh } from '@/components/icons';
 
 /**
@@ -85,16 +86,7 @@ export default function HouseTurntable({ src, label, onClose }: HouseTurntablePr
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(38, 16 / 10, 0.1, 500);
 
-        /* The same room environment the product gallery uses, so a house and a bulb are lit by
-           the same studio rather than by two different guesses. */
-        try {
-          const { RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js');
-          const pmrem = new THREE.PMREMGenerator(renderer);
-          scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-          pmrem.dispose();
-        } catch {
-          /* lights alone still read */
-        }
+        await addRoomEnvironment(THREE, scene, renderer);
         scene.add(new THREE.HemisphereLight(0xffffff, 0x2a4c55, 1.15));
         const key = new THREE.DirectionalLight(0xfff0dd, 2.2);
         key.position.set(-3, 4, 3);

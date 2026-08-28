@@ -30,6 +30,81 @@
   color: var(--color-header-ink);
   border-radius: var(--radius-pill);
 }
+/* ── the two shapes every overlay in here is made of ─────────────────────────
+   Written as inline style objects in ArCamera and ArStage until now, which is
+   how `#000` and `#56d3d8` came to be painted by a component while the contrast
+   gate — which reads theme.css — reported no untokenised colour in the app. */
+.ar-fill {
+  position: absolute;
+  inset: 0;
+}
+.ar-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The camera feed itself: fades in when the stream arrives rather than snapping. */
+.ar-camera-video {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+}
+.ar-camera-video[data-live="false"] {
+  opacity: 0;
+}
+
+/* The finished composite, over everything, on the letterbox black. */
+.ar-result {
+  z-index: 10;
+  background: var(--color-ar-void);
+}
+.ar-result img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* One line of red above the sheet. Not a chip: a failure is not status. */
+.ar-error {
+  position: absolute;
+  right: 16px;
+  bottom: 72px;
+  left: 16px;
+  z-index: 6;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--color-ar-danger);
+  color: var(--color-on-brand);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* The placement reticle on a photograph, and the word under it. */
+.ar-frame {
+  position: relative;
+  display: flex;
+  width: 150px;
+  height: 150px;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--color-ar-line);
+  border-radius: 12px;
+}
+.ar-frame-label {
+  position: absolute;
+  bottom: -28px;
+  padding: 3px 10px;
+  border: 1px solid var(--color-ar-wash);
+  border-radius: 6px;
+  background: var(--color-ar-panel);
+  color: var(--color-brand);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .ar-hud-pill {
   display: inline-flex;
   align-items: center;

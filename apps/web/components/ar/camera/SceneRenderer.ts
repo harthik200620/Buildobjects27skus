@@ -2,6 +2,7 @@
 
 import { type Anchor, laysFlat, type PlacementRule, type ProductDims, type Quat, type SceneAnalysis, type Vec3 } from '@buildobjects/ar-engine';
 import type { DirectionalLight, Group, HemisphereLight, Mesh, Object3D, PerspectiveCamera, PointLight, Scene, WebGLRenderer } from 'three';
+import { addRoomEnvironment } from '../three-env';
 import { applyViewOffset, type CoverMap } from './coverMap';
 import { normalizeModel, orientForSurface, type ThreeNS } from './orient';
 
@@ -93,15 +94,7 @@ export class SceneRenderer {
     const camera = new THREE.PerspectiveCamera(50, 16 / 9, 0.02, 60);
     scene.add(camera);
 
-    // Image-based lighting from the built-in room — enough for plastics, metals and glass to read as lit by a room.
-    try {
-      const { RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js');
-      const pmrem = new THREE.PMREMGenerator(renderer);
-      scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-      pmrem.dispose();
-    } catch {
-      /* IBL is a nicety; the analytic lights still work */
-    }
+    await addRoomEnvironment(THREE, scene, renderer);
 
     const hemi = new THREE.HemisphereLight(0xfff8f0, 0x334155, 1.1);
     scene.add(hemi);

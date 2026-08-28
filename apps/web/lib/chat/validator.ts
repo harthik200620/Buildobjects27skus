@@ -673,10 +673,6 @@ const UNSAFE_PATTERNS: RegExp[] = [
  */
 const REFUSAL = 'You can ask me any question you have regarding Build Objects — our products, their prices, or what your house will cost to build.';
 
-const REFUSAL_OFF_TOPIC = REFUSAL;
-const REFUSAL_INJECTION = REFUSAL;
-const REFUSAL_UNSAFE = REFUSAL;
-
 /**
  * How many words a message may have and still count as a follow-up.
  *
@@ -690,8 +686,8 @@ export function checkScope(message: string, priorUserText = ''): ScopeVerdict {
   const text = (message ?? '').trim();
   if (!text) return { allow: false, reason: 'EMPTY', reply: 'Ask me what a material costs, or what your house will come to.' };
 
-  for (const p of UNSAFE_PATTERNS) if (p.test(text)) return { allow: false, reason: 'UNSAFE', reply: REFUSAL_UNSAFE };
-  for (const p of INJECTION_PATTERNS) if (p.test(text)) return { allow: false, reason: 'INJECTION', reply: REFUSAL_INJECTION };
+  for (const p of UNSAFE_PATTERNS) if (p.test(text)) return { allow: false, reason: 'UNSAFE', reply: REFUSAL };
+  for (const p of INJECTION_PATTERNS) if (p.test(text)) return { allow: false, reason: 'INJECTION', reply: REFUSAL };
 
   /*
    * THE ASK ITSELF, BEFORE THE SUBJECT.
@@ -705,7 +701,7 @@ export function checkScope(message: string, priorUserText = ''): ScopeVerdict {
    * They run on the input as well now. A request for code, a recipe, a diagnosis, a stock tip or
    * a sonnet is out of scope whichever of our nouns it happens to mention.
    */
-  for (const { p } of OUT_OF_DOMAIN_OUTPUT) if (p.test(text)) return { allow: false, reason: 'OFF_TOPIC', reply: REFUSAL_OFF_TOPIC };
+  for (const { p } of OUT_OF_DOMAIN_OUTPUT) if (p.test(text)) return { allow: false, reason: 'OFF_TOPIC', reply: REFUSAL };
 
   // A script without Latin word breaks cannot be judged by word count.
   if (NON_LATIN.test(text)) return { allow: true };
@@ -727,7 +723,7 @@ export function checkScope(message: string, priorUserText = ''): ScopeVerdict {
      * about its SUBJECT, never about what is being asked for.
      */
     const followsOnTopic = words <= FOLLOW_UP_WORDS && DOMAIN_SIGNALS.some((p) => p.test(priorUserText));
-    if (!followsOnTopic) return { allow: false, reason: 'OFF_TOPIC', reply: REFUSAL_OFF_TOPIC };
+    if (!followsOnTopic) return { allow: false, reason: 'OFF_TOPIC', reply: REFUSAL };
   }
 
   return { allow: true };

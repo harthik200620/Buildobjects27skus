@@ -76,6 +76,23 @@ export function deriveGeometry(inputs: EstimateInputs) {
 type Phase = LineItem['phase'];
 type Ledger = LineItem['ledger'];
 
+/**
+ * The five fields that say "this rate came off our own shelf", in one place.
+ *
+ * Three lines in this file price against the catalogue — a mapped material, the solar panel and a
+ * buyer's own pick — and each wrote these out itself. The `note` differs between an estimate and a
+ * confirmed price, and the difference is the reason `needsVerification` exists, so the two must be
+ * decided together or a line can claim a price is confirmed while flagging it as an estimate.
+ */
+const storePriced = (sku: CatalogPrice, note?: string) => ({
+  rateSource: 'store' as const,
+  sku_code: sku.sku_code,
+  skuName: `${sku.brand} ${sku.name}`,
+  priceProvenance: sku.price_provenance,
+  needsVerification: sku.price_provenance === 'estimated',
+  note: note ?? `${sku.brand} ${sku.name} · store ${sku.price_provenance === 'estimated' ? 'estimate' : 'price'}`,
+});
+
 export function estimate(inputs: EstimateInputs, catalog: CatalogPrices = {}, opts: { tiers?: boolean } = {}): EstimateResult {
   const g = deriveGeometry(inputs);
   const tier = inputs.tier;
@@ -186,12 +203,7 @@ export function estimate(inputs: EstimateInputs, catalog: CatalogPrices = {}, op
         qty,
         unit,
         rate: price,
-        rateSource: 'store',
-        sku_code: sku.sku_code,
-        skuName: `${sku.brand} ${sku.name}`,
-        priceProvenance: sku.price_provenance,
-        needsVerification: sku.price_provenance === 'estimated',
-        note: `${sku.brand} ${sku.name} · store ${sku.price_provenance === 'estimated' ? 'estimate' : 'price'}`,
+        ...storePriced(sku),
       });
       if (sku.price_provenance === 'estimated') flags.add(`${label}: store price for ${sku.sku_code} is an estimate`);
     } else seedLine(key, label, ledger, group, phase, qty, unit, seedKey);
@@ -564,12 +576,7 @@ export function estimate(inputs: EstimateInputs, catalog: CatalogPrices = {}, op
         qty: panels,
         unit: 'panel',
         rate: sku.selling_price,
-        rateSource: 'store',
-        sku_code: sku.sku_code,
-        skuName: `${sku.brand} ${sku.name}`,
-        priceProvenance: sku.price_provenance,
-        needsVerification: sku.price_provenance === 'estimated',
-        note: `${sku.brand} ${sku.name} · store ${sku.price_provenance === 'estimated' ? 'estimate' : 'price'}`,
+        ...storePriced(sku),
       });
     else {
       const s = seed('seed_solar_per_wp');
@@ -612,12 +619,7 @@ export function estimate(inputs: EstimateInputs, catalog: CatalogPrices = {}, op
       qty: p.qty,
       unit: s.unit,
       rate: s.selling_price,
-      rateSource: 'store',
-      sku_code: s.sku_code,
-      skuName: `${s.brand} ${s.name}`,
-      priceProvenance: s.price_provenance,
-      needsVerification: s.price_provenance === 'estimated',
-      note: 'added from the store',
+      ...storePriced(s, 'added from the store'),
     });
   }
   // Adjustments that named a line this estimate does not have.
