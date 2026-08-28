@@ -1,32 +1,21 @@
 /**
  * The line a language model may not cross.
  *
- * ── THE RULE ────────────────────────────────────────────────────────────────────────────────
  * NO NUMBER IN THIS INTERFACE ORIGINATES FROM A LANGUAGE MODEL. Not a total, not a rate, not a
- * quantity, not a dimension, not a load.
+ * quantity, not a dimension, not a load. A model may read a drawing and say "I think this is G+1",
+ * read a quotation and say "this line says brickwork", or find a published rate and propose the
+ * engine's is low, with a link. It may never hand back a figure that reaches the buyer's screen
+ * without the engine computing it.
  *
- * A model may read a drawing and say "I think this is G+1". It may read a quotation and say "this
- * line says brickwork". It may find a published rate and propose that the engine's own rate is
- * low, with a link. What it may never do is hand back a figure that reaches the buyer's screen
- * without the engine having computed it.
+ * That is a TYPE, not a review, because "be careful not to let the model set a total" is a rule
+ * somebody breaks in six months in a hurry. Everything crossing is an INPUT PATCH (clamped by
+ * `normalizeInputs`), an ADJUSTMENT[] (clamped to +/-35% and refused entirely on store-priced
+ * lines), or TEXT, which can hold no authority. No member of `AiPatch` carries a total, and
+ * `parseAiPatch` drops any key it does not recognise: `{ grandTotal: 9900000 }` produces `null`,
+ * and there is a test that asserts it.
  *
- * ── WHY A TYPE AND NOT A REVIEW ─────────────────────────────────────────────────────────────
- * "Be careful not to let the model set a total" is a rule somebody breaks in six months, in a
- * hurry, in a file nobody re-reads. So the boundary is a TYPE. Everything crossing it is either
- *
- *   · an INPUT PATCH — fields of `EstimateInputs`, run through `normalizeInputs`, which clamps
- *     every one of them to its declared range; or
- *   · an ADJUSTMENT[] — the engine's existing reviewed-override path, which clamps to ±35 % of
- *     the engine's own value and refuses to touch a store-priced line at all; or
- *   · TEXT, which is prose and can hold no authority.
- *
- * There is no member of `AiPatch` that carries a total, and `parseAiPatch` drops any key it does
- * not recognise. A model that replies `{ grandTotal: 9900000 }` produces `null`, not a house that
- * costs ninety-nine lakh. There is a test that asserts exactly that.
- *
- * ── THE OTHER HALF OF THE RULE ──────────────────────────────────────────────────────────────
- * Explanations stream; numbers never do. A figure that arrives a digit at a time reads as a
- * machine computing it, which is precisely the impression this file exists to prevent.
+ * Explanations stream; numbers never do. A figure arriving a digit at a time reads as a machine
+ * computing it, which is the impression this file exists to prevent.
  */
 import { ADJUSTMENT_CLAMP, ADJUSTMENT_LINE_KEY_RE, INPUT_RANGES, normalizeInputs } from './inputs';
 import type { Adjustment, EstimateInputs } from './types';

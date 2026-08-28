@@ -1,36 +1,19 @@
 import type React from 'react';
 
 /**
- * The Build Objects lockup — the mark, and the brand name beside it in Audiowide.
+ * The Build Objects lockup — the mark, and the brand name beside it in Audiowide. This is the one
+ * component that sets the brand name, so:
  *
- * Three attempts got here, and the last one was a mistake worth recording.
- *
- * The original set the name in Audiowide but wrote it out by hand in four different places at
- * four different sizes, none of which lined up with the 32 px mark it sat next to, and with the
- * O of OBJECTS the same silver as every other letter.
- *
- * The second replaced Audiowide with hand-drawn monoline capitals, on the argument that a
- * webfont loaded to set two words is a webfont loaded for a picture. The argument was tidy and
- * the result was wrong: hand-cut letterforms carry none of the optical correction a real face
- * does, so it read as a wireframe of the name rather than as the name.
- *
- * The third set it in Encode Sans. Legible, and anonymous — the brand's voice replaced by the
- * price font.
- *
- * Audiowide is the brand's face. This is the one component that sets it, so:
- *
- *   · AUDIOWIDE, always, wherever the brand name appears — header, footer, front door, cart.
+ *   · AUDIOWIDE, always, wherever the name appears — header, footer, front door, cart.
  *   · CAP HEIGHT = MARK HEIGHT. The capitals are exactly as tall as the logo at every size.
- *   · THE O IS TEAL. OBJECTS carries the only O in the name and it is --color-brand: the mark's
- *     own colour, at the mark's own size.
+ *   · THE O IS TEAL. OBJECTS carries the only O in the name, at the mark's own colour and size.
  *
- * Audiowide has no ₹ glyph. It must never be used for a price — see the type program in
- * app/layout.tsx.
+ * Audiowide has no rupee glyph and must never set a price — see the type program in layout.tsx.
  *
- * `size` is published as the `--wm-size` custom property rather than baked into inline width and
- * font-size. Everything derived from it — the mark's box, the cap height, the gap — is computed in
- * theme.css from that one number, so a media query moves all three by redefining it, and a caller
- * that omits the prop hands that decision to CSS entirely.
+ * `size` publishes `--wm-size` rather than baking width and font-size into inline styles.
+ * Everything derived from it — the mark's box, the cap height, the gap — is computed in theme.css
+ * from that one number, so a media query moves all three, and omitting the prop hands the decision
+ * to CSS entirely.
  */
 export type WordmarkVariant = 'full' | 'word' | 'mark';
 

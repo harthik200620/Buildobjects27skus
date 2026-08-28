@@ -1,34 +1,21 @@
 /**
- * THE DRIVE PROFILE — what makes it feel like a lift rather than a slider.
+ * The drive profile — what makes it feel like a lift rather than a slider.
  *
- * ── WHY NOT AN EASING FUNCTION ──────────────────────────────────────────────────────────────
- * The first cut used a two-part ease: square up to a third of the way, cubic-out for the rest. It
- * moved, and it moved like a UI transition, because that is what an easing curve is. A lift is a
- * MACHINE under a motor with a torque limit and a passenger inside it, and passengers are the
- * reason lift control is a solved and rather strict problem:
+ * An easing curve moves like a UI transition, because that is what it is. A lift is a machine
+ * under a torque limit with a passenger inside, and passengers are why lift control is a strict
+ * problem: VELOCITY is what you see, ACCELERATION is what you feel, and JERK — the rate
+ * acceleration changes — is what makes a lift feel cheap. Step the acceleration on and a passenger
+ * lurches; every real controller ramps it.
  *
- *   VELOCITY is what you see. Position alone tells you nothing about whether it looks right.
- *   ACCELERATION is what you feel — it is what presses you into the floor.
- *   JERK, the rate acceleration changes, is what makes a lift feel cheap. Step the acceleration
- *   on and a passenger lurches. Every real controller ramps it, and that ramp is the single
- *   difference between "expensive lift" and "fairground ride".
+ * So this is specified where a lift is specified, as a VELOCITY curve jerk-limited at both ends,
+ * with position as its integral rather than the other way round.
  *
- * So this is specified where a lift is specified: as a VELOCITY curve, jerk-limited at both ends,
- * and position is its integral rather than the other way round.
- *
- *   ramp up      smoothstep 0 → 1 over `UP` of the ride. Smoothstep's derivative is zero at both
- *                ends, so acceleration starts and stops at zero — that IS the jerk limit, and it
- *                is why this shape and not a linear ramp.
- *   cruise       flat, at line speed.
- *   ramp down    smoothstep 1 → 0 over `DOWN`, and DOWN is two and a half times UP. Quick away,
- *                long glide in. Landing is the part a passenger watches, and it is the part a
- *                cheap lift gets wrong by braking as hard as it accelerated.
- *
- * ── AND IT IS A TABLE ───────────────────────────────────────────────────────────────────────
- * The integral is evaluated once per ride into 512 samples and read back by lerp. Integrating on
- * the fly would accumulate error at exactly the moment it shows — a car that arrives a few
- * centimetres past its floor and has to be nudged back is the one artefact this cannot have.
- * A table is exact, allocation-free after setup, and costs two array reads a frame.
+ *   ramp up    smoothstep 0 -> 1 over `UP`. Smoothstep's derivative is zero at both ends, so
+ *              acceleration starts and stops at zero — that IS the jerk limit.
+ *   cruise     flat, at line speed.
+ *   ramp down  smoothstep 1 -> 0 over `DOWN`, two and a half times `UP`. Quick away, long glide
+ *              in: landing is the part a passenger watches, and the part a cheap lift gets wrong
+ *              by braking as hard as it accelerated.
  */
 
 /** Fraction of the ride spent getting up to speed. */

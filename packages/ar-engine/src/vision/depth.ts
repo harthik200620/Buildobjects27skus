@@ -1,20 +1,17 @@
 /**
- * How far away a surface is, from geometry rather than from a guess.
+ * How far away a surface is, from geometry rather than a guess.
  *
- * The live camera used a single constant — 2.2 m — for every vertical surface, and the first pass
- * at improving it read distance off the size of the detected region's bounding box. Both are
- * wrong in the way that matters: distance sets the projected size of the product, so a wall
- * assumed at 2.2 m when it is 4 m away renders a fire extinguisher at nearly twice its real size,
- * and the whole promise of the feature is that what you see is the true size.
+ * Distance sets the projected size of the product, so a wall assumed at 2.2 m when it is 4 m away
+ * renders a fire extinguisher at nearly twice its real size — and true size is the whole promise
+ * of the feature.
  *
- * The geometry is simple and exact once the camera's pitch is known, which it is — the device
- * reports it. A pixel below the horizon is looking at the floor. The angle below horizontal for
- * that pixel, the camera's height above the floor, and one tangent give the horizontal distance
- * to the point it lands on. Where the floor meets a wall, that distance IS the distance to the
- * wall.
+ * The geometry is exact once the camera's pitch is known, which the device reports. A pixel below
+ * the horizon is looking at the floor; the angle below horizontal, the camera's height and one
+ * tangent give the horizontal distance to the point it lands on. Where floor meets wall, that IS
+ * the distance to the wall.
  *
- * The one assumption is the camera height, and it is an assumption the engine already makes and
- * can refine from a door or a switch plate (see live/plane.ts `solveCameraHeight`).
+ * The one assumption is camera height, which the engine already makes and can refine from a door
+ * or a switch plate (live/plane.ts `solveCameraHeight`).
  */
 
 const DEG = Math.PI / 180;

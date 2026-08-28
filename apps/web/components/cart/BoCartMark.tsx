@@ -5,32 +5,19 @@ import React from 'react';
 /**
  * The BO cart: the Build Objects mark, on wheels.
  *
- * The header used to carry a 🛒 emoji — the same glyph as every other shop on the internet, drawn
- * by whatever font the operating system picked, in whatever colour that font decided. It was the
- * one piece of chrome that belonged to nobody.
+ * The load is the real logo asset. Drawing the whole scene in SVG was legible at 140 units and a
+ * grey-and-teal smear at the 26px the header renders — the mark's thin strokes colliding with the
+ * trolley's, welded together and readable as neither. `/logo-mark-128.png` is already built to
+ * survive being small, so the recognisable part is the part nobody redrew. The chassis is one flat
+ * deck bar and two solid wheels, with real clearance so they read as separate objects.
  *
- * The first replacement drew the whole scene in SVG: the mark's three diagonal strokes and bowl
- * redrawn as a basket, a deck, two spoked wheels and a figure pushing it. At 140 units it was
- * legible. At the 26 px the header actually renders it, the thin strokes of the mark collided
- * with the thin strokes of the trolley and the whole thing became one grey-and-teal smear —
- * metal and logo welded together, readable as neither.
+ * IT CARRIES THE MARK AND NOTHING ELSE. A pushing figure was four strokes of grey at 30px,
+ * decorating the second-most-used control in the store.
  *
- * So the load is the real logo asset. `/logo-mark-128.png` is the mark as the brand actually draws
- * it, already built to survive being small, and using it means the recognisable part of the icon
- * is the part nobody redrew. The chassis is what got cut back: one flat deck bar and two solid
- * wheels, with real clearance between the mark and the metal so they read as separate objects.
- *
- * THE TROLLEY CARRIES THE MARK AND NOTHING ELSE. A pushing figure was drawn beside it for a
- * while, and at 30 px it was four strokes of grey that read as a smudge attached to the logo —
- * the busiest element in the chrome, decorating the second-most-used control in the store. What
- * is left is the load, a deck and two wheels, which is the whole idea.
- *
- * The entrance does not fade in, it ARRIVES — the rig rolls in from the left and comes to rest,
- * and the wheels turn exactly as far as that distance implies. The sequence and the arithmetic
- * behind the rotation are documented on `.bocart-rig` in store.css, next to the keyframes that
- * implement them. `arriveKey` replays it: the header passes the cart's item count, so adding
- * something has a physical consequence in the chrome. Off under prefers-reduced-motion, at the
- * settled frame.
+ * The entrance ARRIVES rather than fades: the rig rolls in and the wheels turn exactly as far as
+ * that distance implies — the arithmetic is on `.bocart-rig` in store.css, beside the keyframes.
+ * `arriveKey` replays it, so adding something to the cart has a physical consequence in the
+ * chrome. Off under prefers-reduced-motion, at the settled frame.
  */
 
 export interface BoCartMarkProps {

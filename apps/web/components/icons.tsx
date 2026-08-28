@@ -276,27 +276,19 @@ export const IconFinance = (p: IconProps) => (
 );
 
 /*
-   The coin is a struck disc seen slightly off-axis, with a milled edge. It is the
-   only glyph in the set that owns amber.
+   The coin is a struck disc seen slightly off-axis, with a milled edge — the only glyph in the set
+   that owns amber.
 
-   THE DEVICE STRUCK INTO IT IS THE WORDMARK'S OWN O, not a drawn circle. It was a
-   second concentric ring, which is a perfectly good icon of a coin and says nothing
-   at all about whose coin it is — and the brand already has an O with a shape: the
-   one in OBJECTS, in Audiowide, which is the letter the wordmark paints teal. A
-   drawn circle is a circle; the real glyph has Audiowide's flat sides and its
-   squared-off counter, and at 15px that is the difference between a token and a mark.
+   THE DEVICE STRUCK INTO IT IS THE WORDMARK'S OWN O, not a drawn circle. A concentric ring is a
+   perfectly good icon of a coin and says nothing about whose coin it is; the real glyph has
+   Audiowide's flat sides and squared-off counter, which at 15px is the difference between a token
+   and a mark. Set rather than traced, and filled rather than stroked, because a letterform is a
+   shape and stroking it would draw the outline of the outline.
 
-   Set, not traced. The face is loaded on every page for the headings, the outline
-   comes from the same file the wordmark uses, and one weight (400) is the only cut
-   there is — which is also what keeps scripts/type-audit.mts quiet. It is filled
-   rather than stroked because a letterform is a shape, not a path: stroking it would
-   draw the outline of the outline.
-
-   13, not 12.4. Audiowide's cap is about 0.72em, so 12.8 would have given exactly the 9.2
-   units the old circle measured — and 12.8 is a type size that exists nowhere else in the
-   store. scripts/scale-audit.mts counts distinct sizes per route and this glyph is in the
-   header of every one of them, so an off-scale value here put four pages over budget at
-   once. 13 is already on the scale and lands the letter within a fifth of a unit.
+   13, not 12.8. Audiowide's cap is about 0.72em, so 12.8 would match the old circle exactly — and
+   12.8 is a type size that exists nowhere else in the store. scale-audit counts distinct sizes per
+   route and this glyph is in every header, so an off-scale value here put four pages over budget
+   at once. 13 is already on the scale and lands the letter within a fifth of a unit.
 */
 export const IconCoin = (p: IconProps) => (
   <Ico {...p}>

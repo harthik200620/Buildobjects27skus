@@ -1,31 +1,21 @@
 /**
- * Catch text that asks for a font cut the type program does not ship.
+ * Catch text asking for a font cut the type program does not ship.
  *
- * A browser given `font-weight: 700` for a face that only has 400 does not fall back politely —
- * it SYNTHESISES the weight, smearing the outlines outward. On body copy that is merely poor; on
- * a wide geometric display face like Audiowide it is unmistakable, and it is exactly the greasy,
- * over-inked look that reads as amateur next to properly drawn type.
+ * A browser given `font-weight: 700` for a face that has only 400 SYNTHESISES the weight, smearing
+ * the outlines outward — unmistakable on a wide geometric face like Audiowide, and exactly the
+ * over-inked look that reads as amateur beside properly drawn type.
  *
- * Two of these were shipping and neither was visible in the source:
+ * Two were shipping and neither was visible in the source, because the pairing only exists once
+ * two classes meet on one element in a rendered page: every page heading was `.display`
+ * (Audiowide, one cut at 400) plus `.page-title` (700), and twelve inline `fontWeight: 800/900`
+ * in the reward engine. So this walks the real DOM of every route.
  *
- *   · Every page heading in the store is written `class="display page-title"`. `.display` selects
- *     Audiowide, which has ONE cut at 400; `.page-title` set 700. The brand's own voice was
- *     rendered wrong on the title of every page except the home page.
- *   · Twelve inline `fontWeight: 800` / `900` in the reward engine, against a program whose
- *     heaviest cut is 700.
+ * A declared face carries a weight RANGE — the UI face is one variable file covering 400-800 — so
+ * a weight matches if it falls inside any range declared for its family. Matching on equality
+ * reported all twenty-seven weights of a correct program as synthesised, which is the failure mode
+ * that gets a gate switched off.
  *
- * Neither is findable by reading CSS, because the pairing only exists once two classes meet on
- * one element in a rendered page. So this walks the real DOM of every route and reports any
- * element whose computed (family, weight) is not a face the document actually declares.
- *
- * A declared face carries a weight RANGE — the UI face is one variable file covering 400–800 —
- * so a weight matches if it falls inside any range declared for its family. Matching on equality
- * against a parsed single number reported all twenty-seven of a correct program's weights as
- * synthesised, which is the failure mode that gets a gate switched off.
- *
- *   pnpm --filter @buildobjects/web type:audit
- *
- * Exits non-zero on a finding, so it can join the gate.
+ *   pnpm --filter @buildobjects/web type:audit   (non-zero on a finding, so it can join the gate)
  */
 import { chromium } from 'playwright';
 import { BASE } from './harness';
