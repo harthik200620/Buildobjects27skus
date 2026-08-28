@@ -22,6 +22,14 @@ export interface ArDebug {
   anchor: { kind: string; surface: string; u: number; v: number } | null;
   flow: { dx: number; dy: number; confidence: number } | null;
   fit: { ok: boolean; reason: string } | null;
+  /*
+   * The band the framing solver is actually composing into, in video pixels, and the chrome it
+   * was derived from. It is here because "100 % on screen" was being reported for a product
+   * sitting under the sheet, and there was no way from the outside to tell whether the solver was
+   * wrong or whether it had simply been handed the whole frame. It had been handed the whole
+   * frame; see the note on `visibleBand` in ArCamera.
+   */
+  band: { y0: number; y1: number; top: number; bottom: number } | null;
   budget: { calls: number; cap: number; remaining: number; exhausted: boolean } | null;
   live: boolean | null;
   webgl: boolean;
@@ -60,6 +68,7 @@ export function emptyDebug(): ArDebug {
     anchor: null,
     flow: null,
     fit: null,
+    band: null,
     budget: null,
     live: null,
     webgl: false,

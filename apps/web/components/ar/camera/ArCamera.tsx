@@ -16,6 +16,7 @@ import {
   type Mat3,
   matchSurface,
   type Nudge,
+  nudgeFromBounds,
   type PlacementRule,
   type ProductDims,
   placementFromPixel,
@@ -85,17 +86,6 @@ function sameSurfaces(a: SceneAnalysis | null, b: SceneAnalysis): boolean {
  * a product somebody dragged to a particular spot is not ours to move, so the honest response to
  * losing sight of it is to say where it went.
  */
-function nudgeToward(bounds: { x: number; y: number; w: number; h: number } | null, map: { w: number; h: number }): Nudge {
-  if (!bounds) return 'up';
-  const cx = bounds.x + bounds.w / 2;
-  const cy = bounds.y + bounds.h / 2;
-  const du = cx < 0 ? -cx : cx > map.w ? cx - map.w : 0;
-  const dv = cy < 0 ? -cy : cy > map.h ? cy - map.h : 0;
-  if (du > dv && du > 0) return cx < 0 ? 'left' : 'right';
-  if (dv > 0) return cy < 0 ? 'up' : 'down';
-  return null;
-}
-
 /** Distance and angle between two active pointers — the span a pinch and a twist are measured from. */
 function spanOf(pts: { x: number; y: number }[]): { dist: number; angle: number } {
   const [p0, p1] = pts;
@@ -588,6 +578,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
       if (!video?.videoHeight || !renderer || !pose || !map) return false;
       const K = intrinsicsFor(video.videoWidth, video.videoHeight, 'phone');
       const measured = matchRef.current.detection?.distanceM;
+      const band = visibleBand(map, chromeRef.current);
       const args = {
         K,
         R: pose.R,
@@ -596,7 +587,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
         dims: dimsRef.current,
         surface: targetSurface,
         /* The band between the chrome — see `visibleBand`. */
-        view: visibleBand(map, chromeRef.current).view,
+        view: band.view,
         measuredDistanceM: typeof measured === 'number' ? measured : null,
         yawDeg: yaw,
       };
@@ -628,6 +619,14 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
           fit: {
             ok: f.coverage >= 0.72,
             reason: `${targetSurface} · ${f.method} · ${f.distanceM.toFixed(2)} m · ${(f.coverage * 100).toFixed(0)} % on screen · x${fit.scale}${f.nudge ? ` · nudge ${f.nudge}` : ''}${f.oversized ? ' · oversized' : ''}`,
+          },
+          /* What the solver was composing into, so a disagreement between "on screen" and what is
+             actually visible can be attributed rather than guessed at. */
+          band: {
+            y0: Math.round(band.view.y0),
+            y1: Math.round(band.view.y0 + band.view.ch),
+            top: Math.round(chromeRef.current.top),
+            bottom: Math.round(chromeRef.current.bottom),
           },
         });
       }
@@ -812,7 +811,9 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
          */
         if (offScreenFramesRef.current > 3) {
           offScreenFramesRef.current = 3;
-          setNudge(nudgeToward(renderer.screenBounds(), map));
+          /* `bounds`, not a second `screenBounds()` call: the same measurement the decision was
+             made from, and one fewer traversal of the scene graph per check. */
+          setNudge(nudgeFromBounds(bounds, { w: map.w, top: band.stageTop, bottom: band.stageBottom }));
         }
       } else {
         offScreenFramesRef.current = 0;

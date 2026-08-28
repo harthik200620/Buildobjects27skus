@@ -245,6 +245,37 @@ export function horizontalHeading(R: Mat3): Vec3 {
 
 export type Nudge = 'up' | 'down' | 'left' | 'right' | null;
 
+/**
+ * WHICH WAY TO TILT TO BRING A PRODUCT BACK, given where it landed on the screen.
+ *
+ * `area` is the band a person can actually SEE — the strip between the top bar and the bottom
+ * sheet — not the whole stage. That distinction is the whole function: the caller decides "not
+ * visible" against the band, and this used to decide "not off any edge" against the stage, so a
+ * product sitting under the sheet was outside one and inside the other. The answer came back
+ * "nothing to point at", the arrow was cleared, and the view said nothing at all about a product
+ * nobody could see. Five floor SKUs in the catalogue-wide audit failed exactly that way.
+ *
+ * It lived in the camera component, where it could not be tested and where its `area` argument
+ * was whatever was nearest to hand. It is geometry; it belongs here, next to the solver that
+ * decides the placement it is describing.
+ *
+ * It always names a direction, because it is only called once the caller has concluded the
+ * product is effectively invisible. If the centre is inside the band and it still cannot be seen,
+ * it is clipped by an edge — and the nearer of the two is the one to point at.
+ */
+export function nudgeFromBounds(bounds: { x: number; y: number; w: number; h: number } | null, area: { w: number; top: number; bottom: number }): Nudge {
+  /* Nothing drawn at all: the product is most often above, because the surfaces it is lost on —
+     walls and ceilings — are above eye level. */
+  if (!bounds) return 'up';
+  const cx = bounds.x + bounds.w / 2;
+  const cy = bounds.y + bounds.h / 2;
+  const du = cx < 0 ? -cx : cx > area.w ? cx - area.w : 0;
+  const dv = cy < area.top ? area.top - cy : cy > area.bottom ? cy - area.bottom : 0;
+  if (du > dv && du > 0) return cx < 0 ? 'left' : 'right';
+  if (dv > 0) return cy < area.top ? 'up' : 'down';
+  return cy > (area.top + area.bottom) / 2 ? 'down' : 'up';
+}
+
 export interface FramingInput {
   K: Intrinsics;
   R: Mat3;

@@ -12,6 +12,7 @@ import {
   horizontalHeading,
   idealViewingDistanceM,
   intrinsicsFor,
+  nudgeFromBounds,
   PLACEMENT_DISTANCE_M,
   type ProductDims,
   placementFromPixel,
@@ -346,5 +347,89 @@ describe('fitModelToDims', () => {
     const fit = fitModelToDims({ x: 0, y: 0, z: 0 }, { w_mm: 60, h_mm: 110, d_mm: 60 });
     expect(fit.scale).toBe(1);
     expect(fit.note).toContain('no measurable extent');
+  });
+});
+
+/**
+ * THE BAND, NOT THE FRAME.
+ *
+ * Everything above runs against `fullFrame(K)`, and the live view has never passed that: it passes
+ * the strip between the top bar and the bottom sheet, which on a phone is well under half the
+ * picture. So "every SKU at every pitch is either framed or nudged" was only ever proven for a
+ * view the app does not use, and a placement that lands neatly underneath the product sheet passed
+ * every assertion in this file.
+ *
+ * These sixty pixels of top chrome and two hundred and ten of bottom are the fallbacks in
+ * ArCamera; the running app measures the real elements and gets numbers close to them.
+ */
+const BAND: { x0: number; y0: number; cw: number; ch: number } = (() => {
+  /* A portrait phone stage over a portrait frame: the crop is the whole frame, so the band is the
+     frame minus the chrome, converted from CSS pixels at the cover scale. */
+  const stageH = 733;
+  const k = Math.max(390 / W, stageH / H);
+  const top = Math.min(60 / k, H * 0.25);
+  const bottom = Math.min(210 / k, H * 0.45);
+  return { x0: 0, y0: top, cw: W, ch: Math.max(H * 0.3, H - top - bottom) };
+})();
+
+describe('framing into the band a person can actually see', () => {
+  it('either frames the product or says which way it went — for every SKU, at every pitch', () => {
+    const silent: string[] = [];
+    for (const { code, category, dims } of CATALOGUE) {
+      const rule = ruleFor(category);
+      for (const surface of rule.surfaces) {
+        for (const pitchDeg of PITCHES) {
+          const R = cameraRotation({ pitchDeg, yawDeg: 0 });
+          const first = framePlacement({ K, R, C, rule, dims, surface, view: BAND });
+          const fit = autoFitScale(dims, first.distanceM, K.fy);
+          const f = framePlacement({ K, R, C, rule, dims, surface, view: BAND, scaleMult: fit.scale });
+          /* The failure this exists for: nothing visible AND nothing said about it. */
+          if (f.coverage < 0.15 && f.nudge === null) {
+            silent.push(`${code} ${surface} @${pitchDeg}: ${(f.coverage * 100).toFixed(0)} % in the band, no nudge`);
+          }
+        }
+      }
+    }
+    expect(silent).toEqual([]);
+  });
+
+  it('reports a floor product as out of the band when the camera is tilted up', () => {
+    /* The exact case five SKUs failed on in the browser audit: a bag on the floor, camera above
+       horizontal. Against the full frame this reads 100 % framed, because the product is inside
+       the picture — it is merely underneath the sheet. */
+    const dims: ProductDims = { w_mm: 450, h_mm: 700, d_mm: 150 };
+    const rule = ruleFor('cement');
+    const R = cameraRotation({ pitchDeg: 5, yawDeg: 0 });
+    const inBand = framePlacement({ K, R, C, rule, dims, surface: 'floor', view: BAND });
+    const inFrame = framePlacement({ K, R, C, rule, dims, surface: 'floor', view: fullFrame(K) });
+    expect(inFrame.coverage).toBeGreaterThan(0.9);
+    expect(inFrame.nudge).toBeNull();
+    expect(inBand.coverage).toBeLessThan(0.15);
+    expect(inBand.nudge).toBe('down');
+  });
+});
+
+describe('nudgeFromBounds — which way to tilt', () => {
+  /* A 400 px stage with 60 px of bar and 210 px of sheet: the band is 60..190. */
+  const AREA = { w: 390, top: 60, bottom: 190 };
+
+  it('points at the band, not at the stage', () => {
+    /* THE BUG THIS FIXES. A product at y 300 is inside a 400 px stage and underneath the sheet.
+       Measured against the stage it is off no edge at all, and the answer used to be `null` — so
+       the arrow was cleared and the view said nothing about a product nobody could see. */
+    expect(nudgeFromBounds({ x: 150, y: 280, w: 90, h: 60 }, AREA)).toBe('down');
+  });
+
+  it('names the edge a product has actually left', () => {
+    expect(nudgeFromBounds({ x: 150, y: -80, w: 90, h: 60 }, AREA)).toBe('up');
+    expect(nudgeFromBounds({ x: -140, y: 100, w: 90, h: 60 }, AREA)).toBe('left');
+    expect(nudgeFromBounds({ x: 460, y: 100, w: 90, h: 60 }, AREA)).toBe('right');
+  });
+
+  it('always answers, because it is only asked once the product cannot be seen', () => {
+    /* Centred in the band and still invisible means clipped, not absent. Silence is what lost the
+       product in the first place. */
+    expect(nudgeFromBounds({ x: 150, y: 100, w: 90, h: 60 }, AREA)).not.toBeNull();
+    expect(nudgeFromBounds(null, AREA)).toBe('up');
   });
 });

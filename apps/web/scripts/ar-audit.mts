@@ -67,6 +67,8 @@ const MIN_PRODUCT_PX = 1500;
 interface Debug {
   pitch: number | null;
   fit: string | null;
+  /** The band the solver composed into, so a blank placement can be attributed. */
+  band?: string | null;
   video: string | null;
   anchor: string | null;
 }
@@ -303,7 +305,7 @@ async function main() {
         /* The contract, and it is the same one the engine test asserts: you can see it, or the view
            is telling you where it went. Never neither. */
         const dbg = (await page.evaluate(
-          '(() => { const d = window.__arDebug; return d ? { pitch: d.pose && Math.round(d.pose.pitchDeg), fit: d.fit && d.fit.reason, video: d.video && (d.video.W + "x" + d.video.H), anchor: d.anchor && (d.anchor.surface + " @" + Math.round(d.anchor.u) + "," + Math.round(d.anchor.v)) } : null; })()',
+          '(() => { const d = window.__arDebug; return d ? { pitch: d.pose && Math.round(d.pose.pitchDeg), fit: d.fit && d.fit.reason, video: d.video && (d.video.W + "x" + d.video.H), anchor: d.anchor && (d.anchor.surface + " @" + Math.round(d.anchor.u) + "," + Math.round(d.anchor.v)), band: d.band && ("y " + d.band.y0 + ".." + d.band.y1 + "  chrome " + d.band.top + "/" + d.band.bottom) } : null; })()',
         )) as Debug | null;
         const ok = productPx >= MIN_PRODUCT_PX || !!nudge;
         results.push({ sku: code, category, pitch, productPx, stagePx, nudge, ok, debug: dbg });
