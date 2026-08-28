@@ -78,7 +78,14 @@ export async function POST(req: Request) {
     regionId = knownRegion(regionId, pincode);
   }
 
-  const token = await signSession({ sid, uid, phone, regionId, pincode });
+  /* An unconfigured deployment has no key to sign with, and lib/session.ts refuses to fall back
+     to the one in the repository. Say so with a status a caller can act on rather than a 500. */
+  let token: string;
+  try {
+    token = await signSession({ sid, uid, phone, regionId, pincode });
+  } catch {
+    return NextResponse.json({ error: 'Sign-in is unavailable: this deployment has no SESSION_SECRET.' }, { status: 503 });
+  }
   const res = NextResponse.json({ ok: true, regionId, pincode });
   res.cookies.set(SESSION_COOKIE, token, cookieOptions());
   return res;

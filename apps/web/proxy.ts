@@ -12,6 +12,10 @@ const PUBLIC = [
   WELCOME,
   /^\/api\/auth\//,
   /^\/api\/health$/,
+  /* A machine endpoint, authenticated by its own `x-revalidate-secret` rather than by a browser
+     session — see app/api/revalidate/route.ts. Gating it here instead meant the ingest webhook
+     DEPLOY.md documents could never have worked: the pipeline has a secret, not a cookie. */
+  /^\/api\/revalidate$/,
   /^\/api\/serviceability/,
   /^\/media\//,
   /^\/fonts\//,
