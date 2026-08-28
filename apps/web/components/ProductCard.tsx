@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type React from 'react';
 import { skuTitle } from '@/lib/label';
 import { mediaUrl } from '@/lib/media';
-import { plateFor } from '@/lib/plate-colors';
+import { plateFor } from '@/lib/plate';
 import AddToEstimate from './AddToEstimate';
 import Highlight from './Highlight';
 import Img from './Img';

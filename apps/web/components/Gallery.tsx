@@ -5,8 +5,7 @@ import React from 'react';
 import type * as THREE from 'three';
 import type { SkuImageView } from '@/lib/catalog';
 import { mediaUrl } from '@/lib/media';
-import { groundFor } from '@/lib/plate';
-import { plateFor } from '@/lib/plate-colors';
+import { groundFor, plateFor } from '@/lib/plate';
 import { IconBack, IconCamera, IconChevron, IconClose, IconRefresh, IconRoom, IconZoom } from './icons';
 import { useScrollLock } from './useDismiss';
 

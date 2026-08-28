@@ -73,3 +73,17 @@ export function groundFor(blurhash: string | null | undefined): Ground | null {
   const light = (rgb[0] + rgb[1] + rgb[2]) / 3 >= LIGHT_GROUND;
   return { plate: `color-mix(in oklab, ${hex} ${TINT}, var(${light ? '--plate-1' : '--plate-dark'}))`, light };
 }
+
+/*
+ * The generated table, re-exported so callers import the CONCEPT from one place.
+ *
+ * scripts/blend-skus.mts samples each SKU's first frame from its real border pixels and writes
+ * lib/plate-colors.ts; that file stays exactly what it is, a generated artefact nobody edits. What
+ * changes is that nothing outside this module has to know it exists — Gallery and ProductCard were
+ * importing `plateFor` from one file and `groundFor` from another to answer the same question, and
+ * a reader arriving at either had no way to learn there was a second.
+ *
+ * Which to use is a real decision and it is documented above: the table is exact and per-SKU, this
+ * module's `groundFor` is approximate and per-frame.
+ */
+export { PLATE_COLORS, plateFor } from './plate-colors';

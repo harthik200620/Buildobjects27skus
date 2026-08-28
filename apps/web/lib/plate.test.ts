@@ -1,8 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { groundFor } from './plate';
-import { PLATE_COLORS } from './plate-colors';
+import { groundFor, PLATE_COLORS } from './plate';
 
 /** Mean channel value of a #rrggbb, the same measure groundFor uses to call light or dark. */
 const mean = (hex: string) => {
