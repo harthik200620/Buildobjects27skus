@@ -173,22 +173,13 @@ const METRICS_JS = `(() => {
 })()`;
 
 /**
- * TEXT OVER A PHOTOGRAPH, MEASURED AGAINST THE PHOTOGRAPH.
+ * Text over a photograph, measured against the photograph.
  *
- * The WCAG pass in METRICS_JS walks up to the first ancestor that paints an OPAQUE background,
- * which is the correct answer everywhere in this store except over a `.plate` — the photographic
- * backplate under the home hero, every category head, the search, cart and account heads. There
- * the nearest opaque thing is the page canvas, so the check scores white-on-canvas, sails through,
- * and never once looks at the picture the words are actually sitting on.
- *
- * This hides the copy, photographs what is left, and scores each run of text against the region it
- * occupied — taking mean + 2 standard deviations, so a headline crossing a bright window is judged
- * on the window rather than on the average of the sky.
- *
- * It was written to check a change to the hero scrim and immediately earned its place: opening
- * that scrim lifted the backdrop from 28 to 31 out of 255 — nothing anybody would notice — while
- * dropping the three stat labels from 5.03:1 to 4.33:1, under the 4.5 they need. The change was
- * reverted. Neither number was visible to anything else in this harness.
+ * The WCAG pass in METRICS_JS walks up to the first ancestor painting an OPAQUE background, which
+ * over a `.plate` is the page canvas — so it scores white-on-canvas and never looks at the picture
+ * the words sit on. This hides the copy, photographs what is left, and scores each run against the
+ * region it occupied, at mean + 2 standard deviations so a headline crossing a bright window is
+ * judged on the window rather than the average of the sky.
  */
 async function plateContrast(page: Page, key: string, viewport: 'desktop' | 'mobile') {
   const plate = await page
@@ -279,18 +270,12 @@ async function plateContrast(page: Page, key: string, viewport: 'desktop' | 'mob
 
 async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile') {
   /*
-   * `reducedMotion: 'reduce'`, and it is the difference between a screenshot of the store and a
-   * screenshot of a hero above four thousand pixels of nothing.
+   * `reducedMotion: 'reduce'`, or every shot is a hero above four thousand pixels of nothing.
    *
-   * The scroll choreography hides `[data-reveal]` content before first paint and reveals it as it
-   * intersects. A full-page screenshot never scrolls, so nothing below the fold ever intersects,
-   * and every shot this harness has produced showed a blank column under the hero: 81 of 81
-   * reveal elements on the home page at opacity 0. The layout assertions were being measured on
-   * that page too.
-   *
-   * `reduce` makes the bootstrap in lib/reveal-bootstrap.ts return before it hides anything, which
-   * is exactly the state a settled page is in — and the state a person who has scrolled sees. It
-   * is also the honest setting for a screenshot: motion is not what is being captured.
+   * A full-page screenshot never scrolls, so `[data-reveal]` content below the fold never
+   * intersects and stays at opacity 0 — 81 of 81 elements on the home page, with the layout
+   * assertions measured on that. `reduce` makes the bootstrap return before it hides anything,
+   * which is the state a settled page is in.
    */
   const ctx: BrowserContext = await browser.newContext(
     viewport === 'desktop'
@@ -483,22 +468,15 @@ async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile
 }
 
 /**
- * THE ONE PASS WITH THE MOTION TURNED ON.
+ * The one pass with the motion turned on.
  *
- * Every screenshot above is taken with `reducedMotion: 'reduce'`, for good reasons stated in
- * `shoot` — but it means this harness is structurally blind to the entire motion layer. The
- * store hides content before first paint and reveals it with script: `[data-reveal]` starts at
- * opacity 0, and lazily-loaded photographs start there too. Under `reduce` none of that runs, so
- * a bug that leaves the page permanently blank passes thirty-three checks and ships.
+ * Every screenshot above uses `reducedMotion: 'reduce'`, which leaves this harness blind to the
+ * whole motion layer — a bug that leaves the page permanently blank would pass every other check.
+ * This walks one page the way a reader does and asserts that nothing the motion layer hid is still
+ * hidden. The 0.4 floor is the deliberate dimming on an "arriving soon" tile.
  *
- * This walks one page the way a reader does, waits for the last transition to finish, and then
- * asserts the only thing that actually matters: nothing the motion layer hid is still hidden.
- * The 0.4 floor is the deliberate dimming on an "arriving soon" tile — the one thing in the
- * store that is meant to sit under full strength.
- *
- * And with JavaScript off entirely, `.js-reveal` must never be on the document: the class is
- * what hides things, a script is what adds it, and content must never be behind a script that
- * did not arrive.
+ * And with JavaScript off, `.js-reveal` must never be on the document: the class is what hides
+ * things and a script is what adds it, so content is never behind a script that did not arrive.
  */
 async function motionPass(browser: Browser) {
   const { page, ctx } = await openPage(browser, { motion: 'no-preference' });

@@ -383,47 +383,17 @@
     text-align: right;
   }
 
-  /* THE TOTAL DOES NOT FOLLOW THE READER, AND THAT IS THE SECOND ANSWER TO THIS QUESTION.
-     It was pinned under the bar so the answer stayed in view while the breakdown that
-     explains it scrolled underneath. That is a good idea at 200px and a bad one at 460:
-     measured, this card covered 52 % of a 900px viewport, 66 % of a 700px one and 71 % at
-     1024 × 640. A panel that size does not "stay in view", it follows you down the page and
-     stands in front of the thing you scrolled to read.
+  /* THE TOTAL DOES NOT FOLLOW THE READER. Pinned, it covered 52% of a 900px viewport and 71% at
+     1024x640 — a panel that size does not stay in view, it stands in front of what you scrolled
+     to read. It sits in the document now and the page scrolls past it; the figure is repeated in
+     the phase table for anyone who wants it back. */
+  /* ── the cost card: one figure, its span, and one column of money ─────────
+     The total is sized from the CARD, not the viewport — 34px on a phone to 56px at the widest —
+     so about a quarter of the line stays empty. Filling it edge to edge reads as cropped, not as
+     important.
 
-     Reported twice. The first fix kept it pinned and made it behave better — right offset,
-     real elevation, a clean release — which addressed every mechanical fault and none of the
-     actual complaint. The complaint was that it moves at all.
-
-     So it does not. It sits where it is in the document and the page scrolls past it, like
-     everything else on the page. The answer is not lost: it is the largest thing on the
-     screen when you arrive, the figure is repeated in the phase table, and a reader who
-     wants it back scrolls up — which costs them one gesture and costs everybody else
-     nothing.
-
-     Deleted with it: the z-index it needed to sit over the breakdown, and the shadow that
-     existed only to make "pinned" read as pinned. */
-  /* ════════════════════════════════════════════════════════════════════════════
-     THE COST CARD — ONE FIGURE, ITS SPAN, AND ONE COLUMN OF MONEY
-     ════════════════════════════════════════════════════════════════════════════
-     Three faults, every one of them structural rather than decorative.
-
-     THE TOTAL FILLED ITS CARD EDGE TO EDGE. Measured: 73px across a 540px column put ten
-     glyphs at 540px — exactly 100 % of the room they had. A figure with no air around it
-     does not read as important, it reads as cropped, and cropped is the whole of why that
-     number looked cheap. It is sized from the card now rather than from the viewport, 34px
-     on a phone to 56px at the widest, which leaves about a quarter of the line empty at
-     every width.
-
-     THE FIGURES DID NOT LINE UP. A subtotal sat left-aligned on a line of its own while its
-     two parts were right-aligned in rows underneath, so ₹26,00,577 and ₹18,34,125 shared no
-     edge and could not be read against each other. And the two halves had different anatomy
-     entirely — structure got a table, interior got a sentence — which is why they did not
-     look like two parts of one card. Every amount is one right-aligned tabular column now,
-     subtotal and part alike, on a two-track grid so the column is as wide as its widest
-     figure and not a pixel wider.
-
-     Deleted with all that: the `inline-block; min-width: 46%` that stood the two ledgers
-     beside each other, which is a float in everything but name. */
+     Every amount is one right-aligned tabular column, subtotal and part alike, on a two-track
+     grid so the column is as wide as its widest figure and not a pixel wider. */
   .grand {
     display: block;
     padding: var(--s-5);
