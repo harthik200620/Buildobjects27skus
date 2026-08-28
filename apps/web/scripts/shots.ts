@@ -519,8 +519,21 @@ async function motionPass(browser: Browser) {
     await page.evaluate(
       `(async () => { const s = Math.round(innerHeight * 0.8); for (let y = 0; y < document.body.scrollHeight; y += s) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 90)); } })()`,
     );
-    /* Longer than --dur-4 plus the longest stagger step, so a slow finisher is not a failure. */
-    await page.waitForTimeout(1500);
+    /*
+     * WAIT FOR THE CONDITION, NOT FOR A CLOCK.
+     *
+     * This was a flat 1500 ms, chosen as "longer than --dur-4 plus the longest stagger step", and
+     * on a loaded machine it was not: the run that added the tap-target work reported "3 still at
+     * opacity 0" and two clean runs immediately after found 0 of 47. A gate that fails at random
+     * is a gate people learn to re-run, which is how the thirteen-of-thirty-two era started.
+     *
+     * Poll instead, up to six seconds. It settles in well under one when nothing is wrong, and
+     * when something IS wrong it still reports it — just without the coin toss.
+     */
+    await page
+      .waitForFunction(`[...document.querySelectorAll('[data-reveal]')].every((e) => +getComputedStyle(e).opacity > 0.99)`, null, { timeout: 6000 })
+      .catch(() => {});
+    await page.waitForTimeout(200);
     const m = (await page.evaluate(`(() => {
       const dim = (el) => +getComputedStyle(el).opacity;
       const imgs = [...document.images].filter((i) => dim(i) < 0.4);

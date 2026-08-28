@@ -678,3 +678,11 @@
     opacity: 0.35;
   }
 }
+
+/* A thumb needs 44. See the coarse-pointer block in theme.css for why the store's floor moved
+   from 36; this class has its own height and so needs saying separately. */
+@media (pointer: coarse) {
+  .arv-action {
+    min-height: 44px;
+  }
+}

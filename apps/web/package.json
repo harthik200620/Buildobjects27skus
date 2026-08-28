@@ -19,6 +19,7 @@
     "shots:strict": "tsx scripts/shots.ts --strict",
     "stage": "tsx scripts/stage-media.mts",
     "start": "next start",
+    "sweep": "tsx scripts/sweep.mts",
     "test": "vitest run --passWithNoTests",
     "type:audit": "tsx scripts/type-audit.mts",
     "typecheck": "tsc -p tsconfig.json"

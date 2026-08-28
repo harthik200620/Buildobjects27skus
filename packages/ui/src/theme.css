@@ -571,6 +571,21 @@
 /* ═════════════════════════════════════════════════════════════════════════════
    BASE — the ambient field, and the rules the whole system rests on
    ═══════════════════════════════════════════════════════════════════════════ */
+/*
+ * LAYER ORDER, DECLARED RATHER THAN INHERITED FROM IMPORT ORDER.
+ *
+ * Everything in this design system and every page stylesheet lives in `components`, so which rule
+ * wins between two of equal specificity is decided by which file globals.css happens to import
+ * last. That is fine for looks and wrong for policy: the coarse-pointer touch floor lost to
+ * `.sec-more { min-height: 32px }` in store.css purely because store.css is imported after this
+ * file, and a 32px target on a phone is not a style choice anybody made.
+ *
+ * `touch` is declared last, so the minimum size of a thing a thumb has to hit cannot be undercut
+ * by a page stylesheet, a component file, or a utility class. It is the only layer in the store
+ * that exists to win.
+ */
+@layer base, components, touch;
+
 @layer base {
   :root {
     color-scheme: dark;
@@ -2014,7 +2029,9 @@
       display: none;
     }
   }
+}
 
+@layer touch {
   /*
    * Touch targets on a coarse pointer.
    *
@@ -2024,36 +2041,125 @@
    * instead of a fixed box clipping it.
    */
   @media (pointer: coarse) {
-    /* 36 px is what fits a dense list; it is not what a thumb needs. The controls below are the
-       ones a sweep of the 375 px viewport measured under 40 px — the deliver-to strip, the "All"
-       button that opens the whole catalogue, and the segments of a segmented control. Each is a
-       primary action on a phone, so each gets a real target rather than the list minimum. */
+    /*
+     * EVERY CONTROL A THUMB CAN REACH IS 44 TALL. Not 36, which is what this said.
+     *
+     * A survey of all nine surfaces at 390px (scripts/sweep.mts) found the under-44 controls
+     * grouped by PRIMITIVE rather than by page, which is the tell that the rule is wrong rather
+     * than that nine pages are: every `.btn` in the store at 36, every chip at 36, the gallery's
+     * mode tabs at 32, "browse everything" at 32, the estimator's segmented buttons at 38, its
+     * fields at 40, the room view's actions at 38, the search field's clear button at 26.
+     *
+     * 36 was a considered number — "what fits a dense list" — and the reasoning does not survive
+     * the thing it was reasoning about: these are not list rows, they are the buttons somebody
+     * presses to buy, to filter, to price a house and to open a camera, on the viewport this
+     * store's customers actually use. 44 is what every platform asks for and it is what a thumb
+     * is.
+     *
+     * Height only, and `min-height` rather than `height`, so nothing that has grown to fit its
+     * own content shrinks back.
+     */
+    .btn,
     .btn--sm,
     .chip,
     .chip--sm,
     .check-row,
+    .input,
     .input--sm,
-    .menu-row {
-      min-height: 36px;
+    .field,
+    .menu-row,
+    .icon-btn,
+    select {
+      min-height: 44px;
     }
     .navlink,
     .deliver-strip-btn,
     .segmented > * {
       min-height: 44px;
     }
+    /*
+     * 44 IN BOTH DIRECTIONS, NOT JUST DOWNWARDS.
+     *
+     * The rule above set a height and stopped there, and a survey of all nine surfaces at 390px
+     * found the same five controls failing on every one of them: the logo link at 26x26, both
+     * navlinks 35 WIDE with a 44 height, and the cart and account actions 52 wide by 40 TALL. The
+     * primary navigation of a store whose customers are on phones, under the touch minimum on
+     * every page it has.
+     *
+     * There is room. Measured at 360px — the narrowest width a phone reports — the bar carries
+     * 122px of slack between the second navlink and the first action, which is the search area
+     * absorbing whatever the fixed items do not take. Widening the logo and the two navlinks to 44
+     * costs 36 of it.
+     *
+     * `justify-content: center` keeps the mark and the icons exactly where they were: the target
+     * grows around them rather than the artwork growing with it.
+     */
+    .header-logo,
+    .navlink,
+    .header-action {
+      min-width: 44px;
+      min-height: 44px;
+      justify-content: center;
+    }
+    /* 40 was chosen for these on the argument that a dense list cannot afford 44. It can: these
+       are the footer's shop links and the category rail, and they are stacked, so the height they
+       take is the height of the list rather than of a row that has to fit across a phone.
+
+       THE STACKED ONES FILL THEIR COLUMN. `inline-flex` sizes a link to its own words, so "Solar"
+       was a 34px-wide target and "Water Proofing" a 96px one, in the same list, both 44 tall.
+       Nobody aims at the text — they aim at the row — so the row is what they get. `.crumbs a`
+       stays inline, because a breadcrumb IS a line of prose and a block-level crumb would stack
+       the trail vertically. */
     .foot a,
     .footer-col a,
-    .cat-rail-link,
+    .cat-rail-link {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+    }
     .crumbs a,
     .sec-more {
       display: inline-flex;
       align-items: center;
-      min-height: 40px;
+      min-height: 44px;
     }
     .check,
     .radio {
       width: 20px;
       height: 20px;
+    }
+
+    /*
+     * AND THE POLICY, STATED ONCE, BY ROLE.
+     *
+     * The list above names classes, and naming classes means the floor holds for the controls
+     * somebody remembered and not for the rest: the survey still found the estimator's state
+     * buttons at 38, the gallery's thumbnails at 38, the search field's clear button at 26. None
+     * of them carries a class this file knows about, and none of them ever will.
+     *
+     * A button is a thing you press whatever it is called. Elements that are NEVER inline prose
+     * are safe to floor by tag — a <button>, a <select>, a <summary>, a text input — which is why
+     * `a[href]` is not in this list: an anchor inside a sentence is prose, CSS cannot tell one
+     * from the other, and 44px of line box in the middle of a paragraph is a worse bug than the
+     * one it fixes. Links keep the class list above.
+     *
+     * Checkboxes and radios are excluded too: they are 20px squares by design and their LABEL is
+     * the target, which is what a person actually presses.
+     */
+    button,
+    summary,
+    select,
+    textarea,
+    [role="button"],
+    input:not([type="hidden"], [type="checkbox"], [type="radio"], [type="range"]) {
+      min-height: 44px;
+    }
+    /* A square control needs the other axis too — the gallery's arrows, the search field's clear.
+       Only for buttons with no text in them, so a label is never stretched into a lozenge. */
+    .icon-btn,
+    .search-clear,
+    .gal-thumb {
+      min-width: 44px;
     }
   }
 }
