@@ -189,8 +189,21 @@
     padding-left: var(--s-5);
     border-left: 1px solid var(--hair);
   }
+  /*
+   * ONE STEP BRIGHTER THAN .micro'S DEFAULT, BECAUSE THESE THREE SIT ON A PHOTOGRAPH.
+   *
+   * --ink-3 is 7.9:1 on the canvas and these labels are not on the canvas: they are over a dusk
+   * exterior. Measured against the pixels actually behind them they came to 5.03:1 on a desktop
+   * and 4.41:1 on a phone — under the 4.5 they need, on the viewport most of this store's
+   * customers use, and invisible to a contrast check that walks up to the nearest OPAQUE ancestor
+   * and finds the page canvas.
+   *
+   * --ink-2 is the body step and clears it on both. It also reads better: "Categories" naming the
+   * 38px figure under it was the dimmest thing in the hero.
+   */
   .hero-facts dt {
     margin-bottom: var(--s-2);
+    color: var(--ink-2);
   }
   .hero-facts dd {
     font-size: 38px;

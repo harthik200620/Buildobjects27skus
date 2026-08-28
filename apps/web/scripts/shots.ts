@@ -12,6 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { type Browser, type BrowserContext, chromium, type Page } from 'playwright';
+import sharp from 'sharp';
 import { sessionCookie, sessionCookieFor } from './session-cookie';
 
 const args = process.argv.slice(2);
@@ -148,6 +149,111 @@ const METRICS_JS = `(() => {
   return { overflow, firstCard, firstTile, catTiles, catTilesWithArt, results, cardWidths, hasFilterControl, facetOverflow, facetCount, h1InBuyPanel, buybox, buyCta, backdrop, lowContrast, innerHeight: window.innerHeight };
 })()`;
 
+/**
+ * TEXT OVER A PHOTOGRAPH, MEASURED AGAINST THE PHOTOGRAPH.
+ *
+ * The WCAG pass in METRICS_JS walks up to the first ancestor that paints an OPAQUE background,
+ * which is the correct answer everywhere in this store except over a `.plate` — the photographic
+ * backplate under the home hero, every category head, the search, cart and account heads. There
+ * the nearest opaque thing is the page canvas, so the check scores white-on-canvas, sails through,
+ * and never once looks at the picture the words are actually sitting on.
+ *
+ * This hides the copy, photographs what is left, and scores each run of text against the region it
+ * occupied — taking mean + 2 standard deviations, so a headline crossing a bright window is judged
+ * on the window rather than on the average of the sky.
+ *
+ * It was written to check a change to the hero scrim and immediately earned its place: opening
+ * that scrim lifted the backdrop from 28 to 31 out of 255 — nothing anybody would notice — while
+ * dropping the three stat labels from 5.03:1 to 4.33:1, under the 4.5 they need. The change was
+ * reverted. Neither number was visible to anything else in this harness.
+ */
+async function plateContrast(page: Page, key: string, viewport: 'desktop' | 'mobile') {
+  const plate = await page
+    .locator('.plate')
+    .first()
+    .boundingBox()
+    .catch(() => null);
+  if (!plate || plate.width < 40 || plate.height < 40) return;
+
+  const targets = (await page.evaluate(`(() => {
+    const plate = document.querySelector('.plate');
+    if (!plate) return [];
+    const host = plate.parentElement;
+    if (!host) return [];
+    const out = [];
+    for (const el of host.querySelectorAll('*')) {
+      const own = [...el.childNodes].some((n) => n.nodeType === 3 && (n.textContent || '').trim().length > 1);
+      if (!own) continue;
+      const st = getComputedStyle(el);
+      if (st.visibility === 'hidden' || st.display === 'none' || +st.opacity < 0.5) continue;
+      /*
+       * ANYTHING THAT PAINTS ITS OWN GROUND IS NOT OVER THE PHOTOGRAPH.
+       *
+       * The hero's primary button sits on the plate and on its own teal fill, and this scored it
+       * against the picture at 1.58:1 — a failure that is not one. A button, a chip or a pill
+       * carries its backdrop with it; only text with nothing of its own between it and the
+       * photograph belongs here. Walk up to the plate looking for an opaque ancestor, exactly the
+       * way the WCAG pass above does.
+       */
+      let cur = el, own_bg = false;
+      while (cur && cur !== plate.parentElement) {
+        const c = (getComputedStyle(cur).backgroundColor.match(/[0-9.]+/g) || []).map(Number);
+        if (c.length >= 3 && (c.length < 4 || c[3] > 0.6)) { own_bg = true; break; }
+        cur = cur.parentElement;
+      }
+      if (own_bg) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width < 8 || r.height < 6) continue;
+      out.push({ sel: el.tagName.toLowerCase() + '.' + (el.className || '').toString().split(' ')[0],
+                 text: (el.textContent || '').trim().slice(0, 20), x: r.x, y: r.y, w: r.width, h: r.height,
+                 color: st.color, size: parseFloat(st.fontSize), weight: +st.fontWeight });
+    }
+    return out;
+  })()`)) as { sel: string; text: string; x: number; y: number; w: number; h: number; color: string; size: number; weight: number }[];
+  if (!targets.length) return;
+
+  /* Hide the copy; what is left in that rectangle is exactly the backdrop it sat on. */
+  const hide = await page.addStyleTag({
+    content: '.hero-in, .page-head, .cat-head, .plate ~ *, .plate + * { visibility: hidden !important; }',
+  });
+  await page.waitForTimeout(150);
+  const shot = await page.screenshot({ clip: plate });
+  /* `n` is typed as Node here; only Element carries remove(). */
+  await hide.evaluate((n) => (n as unknown as Element).remove()).catch(() => {});
+
+  const meta = await sharp(shot).metadata();
+  const lin = (v: number) => {
+    const x = v / 255;
+    return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+  };
+  const lum = (c: number[]) => 0.2126 * lin(c[0]) + 0.7152 * lin(c[1]) + 0.0722 * lin(c[2]);
+  const bad: string[] = [];
+
+  for (const t of targets) {
+    const left = Math.max(0, Math.round(t.x - plate.x));
+    const top = Math.max(0, Math.round(t.y - plate.y));
+    const w = Math.min(Math.round(t.w), (meta.width ?? 0) - left);
+    const h = Math.min(Math.round(t.h), (meta.height ?? 0) - top);
+    if (w < 6 || h < 5) continue;
+    const st = await sharp(shot)
+      .extract({ left, top, width: w, height: h })
+      .stats()
+      .catch(() => null);
+    if (!st) continue;
+    /* The brightest realistic part of the backdrop is the hard case for the light ink this store
+       sets over photographs. */
+    const back = st.channels.slice(0, 3).map((c) => Math.min(255, c.mean + 2 * c.stdev));
+    const fg = (t.color.match(/[\d.]+/g) ?? ['255', '255', '255']).slice(0, 3).map(Number);
+    const l1 = lum(fg);
+    const l2 = lum(back);
+    const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    const large = t.size >= 24 || (t.size >= 18.66 && t.weight >= 700);
+    const need = large ? 3 : 4.5;
+    if (ratio + 0.02 < need) bad.push(`${t.sel} ${ratio.toFixed(2)}:1 (needs ${need}) "${t.text}"`);
+  }
+  check(key, viewport, 'text over a photograph clears its bar against the photograph', bad.length === 0, bad.join(' · '));
+}
+
 async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile') {
   /*
    * `reducedMotion: 'reduce'`, and it is the difference between a screenshot of the store and a
@@ -232,6 +338,7 @@ async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile
     await page.waitForTimeout(300);
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: path.join(OUT, `${label}.png`), fullPage: true });
+    await plateContrast(page, shot.key, viewport);
 
     // Passed as a string: tsx/esbuild's keepNames injects a `__name` helper into function
     // expressions, which does not exist inside the page when Playwright serialises a callback.
