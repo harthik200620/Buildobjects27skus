@@ -782,20 +782,11 @@ export const IconVolumeOff = (p: IconProps) => (
   </Ico>
 );
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   THE TAXONOMY MAPS
-   ═══════════════════════════════════════════════════════════════════════════════
-   Two lookup tables and their components. They were in the previous file and are
-   NOT optional: eight call sites across the header menu, the category rail, the
-   category strip, the search results and the specification sheet render a mark
-   chosen by a string that comes out of the database, not out of the source.
-
-   The set above is a drop-in replacement for the previous file's ICONS. It is not
-   a drop-in replacement for these, because the previous SPEC_GROUP_ICONS reached
-   past the store's own icons into Lucide directly — twenty-eight raw imports for
-   marks that had no BuildObjects glyph. Those twenty-eight are re-pointed here at
-   the closest member of this family, which is the whole point of having a family.
-   ═════════════════════════════════════════════════════════════════════════════ */
+/* ── THE TAXONOMY MAPS ─────────────────────────────────────────────────────────
+   Two lookup tables and their components, and they are NOT optional: eight call
+   sites — the header menu, the category rail and strip, the search results, the
+   specification sheet — render a mark chosen by a string that comes out of the
+   database rather than out of the source. */
 
 /**
  * Category → mark. The keys are the `icon` column in the taxonomy, and they
@@ -849,20 +840,13 @@ export function CategoryIcon({ icon: key, ...p }: IconProps & { icon: string }) 
   return <C {...p} />;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
-   Specification-sheet group marks
-   ═══════════════════════════════════════════════════════════════════════════════
-   One mark per heading on a product's specification sheet. The headings come from
-   the database — registry/spec-groups.json decides them per category, so a bulb
-   reads "Light output" and cement reads "Strength & structure" — and only the mark
-   is chosen here.
-
-   These were twenty-eight emoji before they were twenty-eight Lucide glyphs. A
-   specification sheet is the most technical surface in the store — it is where a
-   site engineer checks a compressive strength against a drawing — so the marks are
-   deliberately quiet and drawn from the same twenty-four-unit grid as everything
-   else, rather than being twenty-eight pictures at twenty-eight optical weights.
-   ═════════════════════════════════════════════════════════════════════════════ */
+/* ── Specification-sheet group marks ───────────────────────────────────────────
+   One mark per heading. The headings come from the database — registry/spec-groups.json
+   decides them per category, so a bulb reads "Light output" and cement "Strength &
+   structure" — and only the mark is chosen here. They were twenty-eight emoji, then
+   twenty-eight raw Lucide imports at twenty-eight optical weights; they are drawn from
+   this family's own twenty-four-unit grid now, because a specification sheet is where a
+   site engineer checks a compressive strength against a drawing. */
 export const SPEC_GROUP_ICONS: Record<string, (p: IconProps) => React.JSX.Element> = {
   product_identity: IconDoc,
   light_output: IconBulb,

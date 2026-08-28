@@ -1966,62 +1966,6 @@
     line-height: 18px;
   }
 
-  /* ── product row: heading + scroll-snap rail ────────────────────────────── */
-  .scroller {
-    position: relative;
-  }
-  .scroller-track {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    padding: 2px;
-    margin: -2px;
-  }
-  .scroller-track::-webkit-scrollbar {
-    display: none;
-  }
-  .scroller-track > * {
-    flex: none;
-    scroll-snap-align: start;
-  }
-  .scroller-arrow {
-    position: absolute;
-    top: 50%;
-    z-index: 2;
-    transform: translateY(-50%);
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 64px;
-    background: var(--color-surface);
-    color: var(--color-ink);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-2);
-    cursor: pointer;
-  }
-  .scroller-arrow:hover {
-    background: var(--color-surface-2);
-  }
-  .scroller-arrow--l {
-    left: -12px;
-  }
-  .scroller-arrow--r {
-    right: -12px;
-  }
-  .scroller-arrow[hidden] {
-    display: none;
-  }
-  @media (hover: none) {
-    .scroller-arrow {
-      display: none;
-    }
-  }
-
   /* ── pager ──────────────────────────────────────────────────────────────── */
   .pager {
     display: flex;

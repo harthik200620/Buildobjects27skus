@@ -1,19 +1,19 @@
 /**
  * Fetch the upstream type releases this store subsets from.
  *
- * `subset-fonts.mts` cuts the faces down to the glyphs the app actually sets, and it reads its
- * inputs from `assets/fonts-full/`. Those inputs had to arrive somehow, and until now they arrived
- * by hand — which meant the four faces in the repository had no recorded provenance, no version,
- * and no way to be widened or replaced without somebody remembering where they came from.
+ * `subset-fonts.mts` cuts the faces down to the glyphs the app actually sets and reads its inputs
+ * from `assets/fonts-full/`. Those inputs used to arrive by hand, which meant the four faces in the
+ * repository had no recorded provenance, no version, and no way to be widened or replaced without
+ * somebody remembering where they came from.
  *
- * This is that record, executable. It pulls each face from the Google Fonts repository at a
- * pinned path, converts the release TTF to woff2 with fontTools, and writes it into
- * `assets/fonts-full/` under the store's own generic name. The generic names matter: the app
- * links `BuildObjectsSans3`, not `Schibsted Grotesk`, so replacing the UI face is a change to
- * this file and the licence note — not a rename across forty stylesheets.
+ * This is that record, executable: each face is pulled from the Google Fonts repository at a pinned
+ * path, converted from the release TTF to woff2 with fontTools, and written into `assets/fonts-full/`
+ * under the store's own generic name. The generic names matter — the app links `BuildObjectsSans3`,
+ * not `Schibsted Grotesk`, so replacing the UI face is a change to this file and the licence note
+ * rather than a rename across forty stylesheets.
  *
- * Run it when a face changes, then re-run `pnpm fonts:subset`, which is what writes `public/fonts`.
- * Neither is part of `next build`; both are deliberate, occasional acts.
+ * Run it when a face changes, then `fonts:subset`, which is what writes `public/fonts`. Neither is
+ * part of `next build`; both are deliberate, occasional acts.
  *
  *   pnpm --filter @buildobjects/web fonts:fetch
  *   pnpm --filter @buildobjects/web fonts:subset

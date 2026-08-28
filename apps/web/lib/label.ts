@@ -1,23 +1,21 @@
 /**
  * Display labels for a SKU.
  *
- * The search document's `name` is not a name. It is the product title with `variant_label`
- * already concatenated onto the end of it:
+ * The search document's `name` is not a name. It is the product title with `variant_label` already
+ * concatenated onto the end of it:
  *
  *   name          "Wipro Garnet 9 W B22 Cool Day White LED Bulb 9 W · B22 · 6500 K cool day white · single lamp"
  *   variant_label "9 W · B22 · 6500 K cool day white · single lamp"
  *   brand         "Wipro Lighting"
  *
  * Printed whole, next to a brand chip that has already said "Wipro Lighting", that is a
- * ninety-character string which says the wattage three times. It is what made the home page's
- * stock strip read as a database dump: every row was the same four facts in a different order.
+ * ninety-character string which says the wattage three times — what made the home page's stock
+ * strip read as a database dump, every row the same four facts in a different order.
  *
- * These functions take the string apart again for display only. Neither touches the data — the
- * full `name` stays the search key, the page title and the accessible name.
- *
- * `withoutBrand` and `productTitle` live here too, having briefly lived in their own module. Both
- * modules existed to answer "how do we print a brand and a name without saying the brand twice",
- * by two slightly different rules, which is one module too many for one question.
+ * These functions take the string apart for display only; neither touches the data, so the full
+ * `name` stays the search key, the page title and the accessible name. `withoutBrand` and
+ * `productTitle` live here too, having briefly had their own module: two modules answering "how do
+ * we print a brand and a name without saying the brand twice" is one module too many.
  */
 
 /** The name with the brand taken off the front, when it is already there. */

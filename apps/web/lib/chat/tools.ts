@@ -1,22 +1,20 @@
 /**
  * WHAT THE ASSISTANT IS ALLOWED TO KNOW.
  *
- * ── THE ONE IDEA ────────────────────────────────────────────────────────────────────────────
- * The model knows nothing. Every price, every brand, every quantity and every specification it
- * says comes back from a call in this file, in this turn, and everything it returns is deposited
- * into a FactLedger that lib/chat/validator.ts holds the draft against afterwards. A sentence
- * containing a figure no tool produced does not reach the reader.
+ * The model knows nothing. Every price, brand, quantity and specification it says comes back from a
+ * call in this file, in this turn, and everything returned is deposited into a FactLedger that
+ * lib/chat/validator.ts holds the draft against afterwards. A sentence containing a figure no tool
+ * produced does not reach the reader.
  *
- * That is why these functions return the ledger as well as the payload. A tool that returned only
- * data would leave the validator with nothing to check against, and the whole guarantee rests on
- * the two being produced together, by the same call, from the same numbers.
+ * That is why these functions return the ledger as well as the payload. A tool returning only data
+ * would leave the validator with nothing to check against, and the whole guarantee rests on the two
+ * being produced together, by the same call, from the same numbers.
  *
- * ── WHY IT IS THIS STORE'S OWN CODE UNDERNEATH ──────────────────────────────────────────────
- * Search is the same Meilisearch index the header's search field queries. The estimate is the
- * same `estimate(inputs, catalog)` the /estimate page runs, priced off the same live catalogue.
- * Nothing here is a second implementation of anything: if the assistant and the page ever
- * disagreed about what a house costs, the assistant would be worthless, and the only way to
- * guarantee they cannot is to make them the same function.
+ * Underneath it is this store's own code. Search is the same Meilisearch index the header's search
+ * field queries; the estimate is the same `estimate(inputs, catalog)` the /estimate page runs, off
+ * the same live catalogue. If the assistant and the page ever disagreed about what a house costs
+ * the assistant would be worthless, and the only way to guarantee they cannot is to make them the
+ * same function.
  */
 
 import { type EstimateInputs, estimate, type Tier } from '@buildobjects/estimator';

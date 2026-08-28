@@ -17,25 +17,21 @@ declare global {
  * anything it wants to arrive with `data-reveal` — a plain attribute, no import, no boundary, no
  * bundle — and this observer flips it to `data-shown`. The transition is CSS.
  *
- * THE FAILSAFE IS CANCELLED FROM INSIDE THE OBSERVER'S FIRST CALLBACK, not at mount, and that is
- * the whole of it: mounting proves React is alive, not that IntersectionObserver will deliver. A
- * page that is never composited — a discarded background tab, an undisplayed embed, a headless
- * renderer — mounts effects and constructs observers happily and never fires a callback, because
- * intersection is a property of a RENDERED page. Cancelling at mount meant the one situation the
- * timer existed for was the situation that disarmed it. Observed, not theorised: a whole page
- * below the hero at opacity 0 indefinitely.
- *
- * If the timer fires first it latches `__boRevealOff` and this component stops hiding anything
- * for the session. Content is never behind an observer that is not running.
+ * THE FAILSAFE IS CANCELLED FROM INSIDE THE OBSERVER'S FIRST CALLBACK, not at mount. Mounting
+ * proves React is alive, not that IntersectionObserver will deliver: a page that is never
+ * composited — a discarded background tab, an undisplayed embed, a headless renderer — mounts
+ * effects and constructs observers happily and never fires a callback, because intersection is a
+ * property of a RENDERED page. Cancelling at mount meant the one situation the timer existed for
+ * was the situation that disarmed it. Observed, not theorised: a whole page below the hero at
+ * opacity 0 indefinitely. If the timer fires first it latches `__boRevealOff` and this component
+ * stops hiding anything for the session — content is never behind an observer that is not running.
  *
  * A MutationObserver picks up nodes React adds later; the pathname dependency re-scans on client
- * navigation, where the DOM is replaced wholesale.
- *
- * The same scan marks lazily-loaded images `data-ready` once decoded, which is what the fade in
- * theme.css transitions on — here rather than in its own component, since this is already the one
- * place watching the DOM for new nodes. Only `loading="lazy"` images: an eager one is usually the
- * page's largest contentful paint, and starting it at opacity 0 would push the LCP out by the
- * length of the fade.
+ * navigation, where the DOM is replaced wholesale. The same scan marks lazily-loaded images
+ * `data-ready` once decoded, which is what the fade in theme.css transitions on — here rather than
+ * in its own component, since this is already the one place watching for new nodes. Only
+ * `loading="lazy"` images: an eager one is usually the page's largest contentful paint, and
+ * starting it at opacity 0 would push the LCP out by the length of the fade.
  */
 export default function Reveal() {
   const pathname = usePathname();

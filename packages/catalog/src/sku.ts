@@ -9,7 +9,6 @@ import { z } from 'zod';
 export const PROVENANCE = ['fetched', 'verified', 'ai_filled', 'derived'] as const;
 export type Provenance = (typeof PROVENANCE)[number];
 export const PRICE_PROVENANCE = ['fetched', 'verified', 'estimated'] as const;
-export type PriceProvenance = (typeof PRICE_PROVENANCE)[number];
 export const IMAGE_ROLES = ['hero', 'angle', 'in_context', 'detail', 'pack_or_dimensions'] as const;
 export type ImageRole = (typeof IMAGE_ROLES)[number];
 /**
@@ -54,8 +53,6 @@ export interface ImageJudgement {
 }
 export const DOC_TYPES = ['brochure', 'datasheet', 'manual', 'warranty_card', 'certificate'] as const;
 export const STOCK = ['in_stock', 'low', 'out_of_stock', 'preorder'] as const;
-export type StockStatus = (typeof STOCK)[number];
-
 const url = z.string().url().nullable().optional();
 
 export const IntelLeafSchema = z.object({

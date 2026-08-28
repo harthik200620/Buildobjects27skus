@@ -8,22 +8,19 @@ import { useDismiss } from '@/components/useDismiss';
 /**
  * The Build Objects assistant, as a docked panel.
  *
- * ── WHAT IT IS ALLOWED TO SAY ───────────────────────────────────────────────────────────────
- * Nothing it was not handed. Every price, product and figure in a reply came back from a tool in
- * lib/chat/tools.ts during that turn, and the draft was held against a ledger of those facts
- * before the server returned it — see lib/chat/validator.ts. This component renders; it does not
- * decide what is true, and there is no path through it that can print an unchecked number.
+ * WHAT IT IS ALLOWED TO SAY: nothing it was not handed. Every price, product and figure in a reply
+ * came back from a tool in lib/chat/tools.ts during that turn, and the draft was held against a
+ * ledger of those facts before the server returned it (lib/chat/validator.ts). This component
+ * renders; there is no path through it that can print an unchecked number.
  *
- * ── AND WHAT IT WILL NOT ────────────────────────────────────────────────────────────────────
- * Anything that is not Build Objects gets one sentence — "You can ask me any question you have
- * regarding Build Objects" — from a scope gate that runs BEFORE a token is spent. The refusal is
- * the same sentence for an off-topic question, a prompt injection and an unsafe one, because
- * three different refusals tell somebody probing it which guard they tripped.
+ * AND WHAT IT WILL NOT: anything that is not Build Objects gets one sentence — "You can ask me any
+ * question you have regarding Build Objects" — from a scope gate that runs BEFORE a token is spent.
+ * The refusal is the same sentence for an off-topic question, a prompt injection and an unsafe one,
+ * because three different refusals tell somebody probing it which guard they tripped.
  *
- * ── A PANEL, NOT A MODAL ────────────────────────────────────────────────────────────────────
- * It docks to the corner and the page keeps scrolling behind it. Somebody asking "what does this
- * cost" while looking at a product should still be able to look at the product; a modal would
- * make them choose. So there is no scrim, no scroll lock, and nothing here that can lose the
+ * A PANEL, NOT A MODAL. It docks to the corner and the page keeps scrolling behind it. Somebody
+ * asking "what does this cost" while looking at a product should still be able to look at the
+ * product; a modal would make them choose. No scrim, no scroll lock, nothing that can lose the
  * reader's place — a lesson this store has already paid for twice.
  */
 

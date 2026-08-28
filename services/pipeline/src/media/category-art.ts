@@ -23,7 +23,6 @@ const SIZES: { size: ImageSize; width: number }[] = [
   { size: 'card', width: 800 },
   { size: 'gallery', width: 1600 },
 ];
-export const CATEGORY_ART_SIZES = SIZES;
 export const CATEGORY_ART_RATIO = 9 / 16;
 const RATIO = CATEGORY_ART_RATIO;
 

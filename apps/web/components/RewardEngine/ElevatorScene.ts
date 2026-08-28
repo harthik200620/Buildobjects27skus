@@ -2,15 +2,13 @@
 
 /**
  * The BO lift — a reward you can see arriving. Coins in the car, doors close over them, the car
- * rides with the shaft streaming past, and the doors part on what it brought back. The coins
- * going out of sight is occlusion by the doors, not a fade, which is the only version a viewer
- * believes.
+ * rides with the shaft streaming past, and the doors part on what it brought back. The coins going
+ * out of sight is occlusion by the doors, not a fade, the only version a viewer believes.
  *
- * THE SHAFT MOVES AND THE CAR DOES NOT. Identical on screen to flying a camera up a mile of
- * shaft, and it means the geometry is a few metres tall with the rungs recycled as they leave
- * frame. Two consequences: the DOOR FRAME rides with the car (a landing's doorway only exists at
- * a landing), and the shaft sits at the SIDES, since from in front the car occludes anything
- * behind it.
+ * THE SHAFT MOVES AND THE CAR DOES NOT. Identical on screen to flying a camera up a mile of shaft,
+ * and it means the geometry is a few metres tall with the rungs recycled as they leave frame. Two
+ * consequences: the DOOR FRAME rides with the car (a landing's doorway only exists at a landing),
+ * and the shaft sits at the SIDES, since from in front the car occludes anything behind it.
  *
  * The performance contract — nothing here may cost the site anything:
  *
@@ -19,8 +17,7 @@
  *   ONE ENVIRONMENT, generated once: RoomEnvironment through a PMREM at 0.04 roughness.
  *   INSTANCED COINS. Sixty coins are one draw call.
  *   THE LOOP STOPS when the tab is hidden; `dispose()` takes the context, geometries, materials
- *   and PMREM with it.
- *   DPR CAPPED AT 2. Past that it is heat, not detail.
+ *   and PMREM with it.  ·  DPR CAPPED AT 2 — past that it is heat, not detail.
  *
  * Nothing imports three at module scope — the whole scene arrives with the panel.
  */
