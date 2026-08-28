@@ -104,6 +104,25 @@ export default function RulerInput({ label, value, min = 5, max = 100, step = 1,
     e.preventDefault();
   };
 
+  /*
+   * The field's spoken name, whatever shape the visible label is.
+   *
+   * `label` is a ReactNode because the Length ruler decorates it with "from your drawing"; a
+   * string is the common case and a fragment is the awkward one. Taking the first string child is
+   * enough for both, and the unit turns "Length" into "Length, ft" — the two things a person
+   * needs to know before they type a number into it.
+   */
+  const name = React.useMemo(() => {
+    const first = (node: React.ReactNode): string => {
+      if (typeof node === 'string' || typeof node === 'number') return String(node);
+      if (Array.isArray(node)) return node.map(first).find(Boolean) ?? '';
+      if (React.isValidElement(node)) return first((node.props as { children?: React.ReactNode }).children);
+      return '';
+    };
+    const base = first(label).trim() || 'Value';
+    return unit ? `${base}, ${unit}` : base;
+  }, [label, unit]);
+
   const commit = (raw: string) => {
     const n = Number(raw);
     setTyped(null);
@@ -115,7 +134,12 @@ export default function RulerInput({ label, value, min = 5, max = 100, step = 1,
       <div className="ruler-head">
         <span className="wz-label">{label}</span>
         <span className="ruler-value">
+          {/* The visible label belongs to the whole ruler, not to this field, so the field says its
+              own name — "Length, ft". It used to, but only when `label` happened to be a string,
+              and the Length ruler passes a fragment (it carries a "from your drawing" note), so
+              that one input announced nothing at all. `name` below is derived either way. */}
           <input
+            aria-label={name}
             className="ruler-field fig"
             type="number"
             inputMode="decimal"
@@ -128,7 +152,6 @@ export default function RulerInput({ label, value, min = 5, max = 100, step = 1,
             onKeyDown={(e) => {
               if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
             }}
-            aria-label={typeof label === 'string' ? label : undefined}
           />
           <span className="ruler-unit">{unit}</span>
         </span>

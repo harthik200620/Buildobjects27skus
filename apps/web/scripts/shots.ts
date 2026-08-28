@@ -530,8 +530,24 @@ async function motionPass(browser: Browser) {
      * Poll instead, up to six seconds. It settles in well under one when nothing is wrong, and
      * when something IS wrong it still reports it — just without the coin toss.
      */
+    /*
+     * POLLED ON A TIMER, NOT ON A FRAME.
+     *
+     * waitForFunction defaults to polling on requestAnimationFrame, which stalls in precisely the
+     * situation this pass runs in: eighteen contexts have just been driven through this browser,
+     * frames get throttled, and the poll stops asking. It reported "3 still at opacity 0" once
+     * inside a full run while five isolated repetitions of the identical scroll found 0 of 47 —
+     * the page was fine and the waiting was not.
+     *
+     * A 100 ms timer keeps asking whatever the compositor is doing. Ten seconds because the last
+     * element of a staggered grid can be most of a second behind the first, and a slow machine
+     * stretches that; it settles in well under one when nothing is wrong.
+     */
     await page
-      .waitForFunction(`[...document.querySelectorAll('[data-reveal]')].every((e) => +getComputedStyle(e).opacity > 0.99)`, null, { timeout: 6000 })
+      .waitForFunction(`[...document.querySelectorAll('[data-reveal]')].every((e) => +getComputedStyle(e).opacity > 0.99)`, null, {
+        timeout: 10_000,
+        polling: 100,
+      })
       .catch(() => {});
     await page.waitForTimeout(200);
     const m = (await page.evaluate(`(() => {

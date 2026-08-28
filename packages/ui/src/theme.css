@@ -2154,11 +2154,16 @@
     input:not([type="hidden"], [type="checkbox"], [type="radio"], [type="range"]) {
       min-height: 44px;
     }
-    /* A square control needs the other axis too — the gallery's arrows, the search field's clear.
-       Only for buttons with no text in them, so a label is never stretched into a lozenge. */
+    /* A square control needs the other axis too — the gallery's arrows, the search field's clear,
+       the quantity stepper's plus and minus, a "G" in the floors picker, a one-word breadcrumb.
+       Only for controls whose content is a glyph or a word or two, so a label is never stretched
+       into a lozenge. */
     .icon-btn,
     .search-clear,
-    .gal-thumb {
+    .gal-thumb,
+    .qty button,
+    .seg button,
+    .crumbs a {
       min-width: 44px;
     }
   }

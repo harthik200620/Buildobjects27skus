@@ -1911,6 +1911,9 @@
   .prod-card:focus-within .prod-rule {
     transform: scaleX(1);
   }
+  /* THE SPECS WRAP ON A PHONE. `nowrap` plus a `title` attribute is a hover affordance, and a
+     phone has no hover: "Free-flow grout · 80 MPa · 1…" was simply the end of the sentence for
+     anybody on a touch screen. Two lines on a narrow card, one on a wide one. */
   .prod-specs {
     margin: 0;
     font-size: var(--t-fine);
@@ -1919,6 +1922,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  @media (pointer: coarse) {
+    .prod-specs {
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
   /*
    * THE PRICE SITS AT THE BOTTOM, SO PRICES LINE UP ACROSS A ROW.

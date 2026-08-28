@@ -20,6 +20,14 @@ import Wordmark from './Wordmark';
  * because the store does not have them yet, and a plausible-looking contact block that nobody
  * answers is worse than no contact block.
  */
+/*
+ * The four column headings are h2, not h3.
+ *
+ * Every page in this store has one h1 and then these, so h3 skipped a level in the document
+ * outline on every surface — which a screen reader announces as a missing section. `pnpm sweep`
+ * reported "jumps h1 to h3 at Shop" on account, and the same shape on the room view, the listing
+ * and search. They are not subordinate to anything; they are the footer's four sections.
+ */
 export default function Footer({ categories }: { categories: NavCategory[] }) {
   const year = new Date().getFullYear();
   const stocked = [...new Set(categories.filter((c) => c.status === 'live').map((c) => categoryOf(c.slug)))];
@@ -32,7 +40,7 @@ export default function Footer({ categories }: { categories: NavCategory[] }) {
       <div className="shell">
         <div className="footer-cols">
           <nav className="footer-col" aria-labelledby="foot-shop" data-reveal>
-            <h3 id="foot-shop">Shop</h3>
+            <h2 id="foot-shop">Shop</h2>
             {/* The categories that stock something — Concreting, not Cement. The other twenty-six
                 are in the "All" menu and the rail beside the results; a footer column of shelves
                 with nothing on them is a longer footer and a worse one. */}
@@ -49,7 +57,7 @@ export default function Footer({ categories }: { categories: NavCategory[] }) {
           </nav>
 
           <nav className="footer-col" aria-labelledby="foot-tools" data-reveal>
-            <h3 id="foot-tools">Before you order</h3>
+            <h2 id="foot-tools">Before you order</h2>
             <ul>
               <li>
                 <Link href="/estimate">Cost your whole house</Link>
@@ -61,7 +69,7 @@ export default function Footer({ categories }: { categories: NavCategory[] }) {
           </nav>
 
           <div className="footer-col" data-reveal>
-            <h3>How our prices work</h3>
+            <h2>How our prices work</h2>
             <ul className="footer-facts">
               <li>
                 <IconShield size={15} />
@@ -79,7 +87,7 @@ export default function Footer({ categories }: { categories: NavCategory[] }) {
           </div>
 
           <div className="footer-col" data-reveal>
-            <h3>Where we deliver</h3>
+            <h2>Where we deliver</h2>
             <ul className="footer-facts">
               <li>
                 <IconPin size={15} />

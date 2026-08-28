@@ -14,7 +14,7 @@
  *   overlap        two pieces of text occupying the same pixels
  *   headings       a heading level skipped, or more than one h1
  *   alt            an <img> with no alt attribute at all (empty alt is correct for decoration)
- *   focus          a focusable control with no visible focus ring
+ *   focus          a control the Tab key reaches with no visible focus ring
  *   overflow       an element wider than the viewport
  *   orphan         a heading with nothing under it, or a section with a heading and no content
  *   label          a form control with no accessible name
@@ -46,6 +46,14 @@ async function firstSku(): Promise<string> {
   }
 }
 
+/*
+ * NO BACKTICKS ANYWHERE BELOW, INCLUDING IN COMMENTS.
+ *
+ * This is a template literal, so one backtick ends the string and esbuild reports it as a syntax
+ * error thirty lines further down — "Expected ; but found elementsFromPoint" — which points at
+ * innocent code. It has cost three debugging rounds in this codebase already. Quote identifiers
+ * with nothing, or with single quotes.
+ */
 const AUDIT = `(() => {
   const vw = window.innerWidth;
   const coarse = vw < 700;
@@ -54,7 +62,7 @@ const AUDIT = `(() => {
     return s.display !== 'none' && s.visibility !== 'hidden' && +s.opacity > 0.05 && b.width > 0 && b.height > 0; };
   const name = (el) => el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.split(' ').filter(Boolean).slice(0, 2).join('.') : '');
   const say = (el, extra) => name(el) + (extra ? ' ' + extra : '') + ' "' + (el.textContent || el.getAttribute('aria-label') || '').trim().slice(0, 28) + '"';
-  const out = { clipped: [], tap: [], overlap: [], headings: [], alt: [], focus: [], overflow: [], label: [] };
+  const out = { clipped: [], tap: [], overlap: [], headings: [], alt: [], overflow: [], label: [] };
 
   /* 1. Text the page is hiding from the reader. */
   for (const el of document.querySelectorAll('body *')) {
@@ -62,6 +70,9 @@ const AUDIT = `(() => {
     const own = [...el.childNodes].some((n) => n.nodeType === 3 && (n.textContent || '').trim().length > 2);
     if (!own) continue;
     const s = getComputedStyle(el);
+    /* A visually-hidden span is clipped to a 1px box on purpose — that IS the technique. Flagging
+       it is flagging the screen-reader text for being invisible to eyes. */
+    if (el.closest('.visually-hidden, .sr-only') || s.clipPath !== 'none' || (el.clientWidth <= 1 && el.clientHeight <= 1)) continue;
     const clampy = s.textOverflow === 'ellipsis' || s.webkitLineClamp !== 'none' || s.overflow === 'hidden';
     if (!clampy) continue;
     if (el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2) out.clipped.push(say(el));
@@ -93,18 +104,36 @@ const AUDIT = `(() => {
     }
   }
 
-  /* 3. Two pieces of text on the same pixels. */
+  /*
+   * 3. Text a reader cannot see because something else is drawn over it.
+   *
+   * THE FIRST VERSION COMPARED BOUNDING BOXES and reported thirty overlaps, nearly all of them
+   * fiction: two inline spans on one line, a struck-through price and the "(6% off)" beside it, a
+   * facet label and a heading in the same column. A rectangle round a piece of text is not where
+   * the text is.
+   *
+   * elementsFromPoint is the real question — what is actually on top at this pixel — asked at the
+   * middle of each line the element occupies, so a wrapped paragraph is checked line by line
+   * rather than as one tall box. A hit only counts when the thing on top has text of its OWN and
+   * paints something opaque enough to hide what is underneath.
+   */
   const texts = [...document.querySelectorAll('body *')].filter((el) => seen(el)
-    && [...el.childNodes].some((n) => n.nodeType === 3 && (n.textContent || '').trim().length > 1)
-    && getComputedStyle(el).position !== 'fixed');
-  for (let i = 0; i < texts.length; i++) {
-    for (let j = i + 1; j < texts.length; j++) {
-      const a = texts[i], c = texts[j];
-      if (a.contains(c) || c.contains(a)) continue;
-      const p = box(a), q = box(c);
-      const ox = Math.min(p.right, q.right) - Math.max(p.left, q.left);
-      const oy = Math.min(p.bottom, q.bottom) - Math.max(p.top, q.top);
-      if (ox > 6 && oy > 6) { out.overlap.push(name(a) + ' over ' + name(c)); }
+    && [...el.childNodes].some((n) => n.nodeType === 3 && (n.textContent || '').trim().length > 1));
+  const opaque = (el) => { const c = (getComputedStyle(el).backgroundColor.match(/[0-9.]+/g) || []).map(Number);
+    return c.length >= 3 && (c.length < 4 || c[3] > 0.5); };
+  for (const el of texts) {
+    const rects = [...el.getClientRects()];
+    for (const r of rects.slice(0, 4)) {
+      if (r.width < 8 || r.height < 6) continue;
+      const x = r.left + r.width / 2, y = r.top + r.height / 2;
+      if (x < 0 || y < 0 || x > vw || y > window.innerHeight) continue;
+      const stack = document.elementsFromPoint(x, y);
+      const meAt = stack.indexOf(el);
+      if (meAt <= 0) continue;
+      /* Everything drawn above this element at this pixel. */
+      const over = stack.slice(0, meAt).find((o) => !o.contains(el) && opaque(o)
+        && [...o.childNodes].some((n) => n.nodeType === 3 && (n.textContent || '').trim().length > 1));
+      if (over) out.overlap.push(name(over) + ' covers ' + name(el));
     }
   }
 
@@ -121,15 +150,6 @@ const AUDIT = `(() => {
 
   /* 5. Images with no alt AT ALL. alt="" is the correct answer for decoration. */
   for (const im of document.images) if (seen(im) && im.getAttribute('alt') === null) out.alt.push(im.currentSrc.split('/').pop() || 'image');
-
-  /* 6. Focus you can see. */
-  for (const el of [...document.querySelectorAll('a[href], button, [role=button], input, select')].filter(seen).slice(0, 40)) {
-    el.focus();
-    const s = getComputedStyle(el);
-    const ring = (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0) || s.boxShadow !== 'none';
-    if (!ring) out.focus.push(say(el));
-    el.blur();
-  }
 
   /* 7. Anything wider than the window. */
   for (const el of document.querySelectorAll('body *')) {
@@ -181,8 +201,44 @@ async function main() {
       const page = await ctx.newPage();
       try {
         await page.goto(`${BASE}${url}`, { waitUntil: 'load', timeout: 90_000 });
-        await page.waitForTimeout(900);
+        /*
+         * WAIT FOR THE REAL TYPE BEFORE MEASURING ANY OF IT.
+         *
+         * The faces load with `font-display: swap`, so for the first moments the page is set in
+         * system-ui — a wider face than Schibsted Grotesk — and every measurement of whether text
+         * fits its box is taken against type the reader will never see. That is what reported
+         * "Drafting & Measurement Items" as clipped on the home page: measured after the swap it
+         * fits with a line to spare, and a probe that scrolled first (and so waited longer) found
+         * nothing clipped at all.
+         *
+         * `document.fonts.ready` is the exact event, rather than a longer guess at a timeout.
+         */
+        await page.evaluate('document.fonts.ready').catch(() => {});
+        await page.waitForTimeout(700);
         const r = (await page.evaluate(AUDIT)) as Record<string, string[]>;
+
+        /*
+         * FOCUS, WALKED WITH A REAL TAB KEY.
+         *
+         * The first version called el.focus() from inside the page and reported ten controls with
+         * no ring. All ten were fiction: theme.css gives every focusable element a ring through
+         * `:where(a, button, ...):focus-visible`, and a PROGRAMMATIC focus does not make a button
+         * match :focus-visible — that is the whole point of the pseudo-class. Only a keyboard
+         * does, so this presses Tab.
+         */
+        const noRing: string[] = [];
+        for (let i = 0; i < 25; i++) {
+          await page.keyboard.press('Tab');
+          const bad = (await page.evaluate(`(() => {
+            const el = document.activeElement;
+            if (!el || el === document.body) return null;
+            const s = getComputedStyle(el);
+            const ring = (s.outlineStyle !== 'none' && Number.parseFloat(s.outlineWidth) > 0) || s.boxShadow !== 'none' || s.backgroundColor !== getComputedStyle(el.parentElement || document.body).backgroundColor;
+            return ring ? null : el.tagName.toLowerCase() + '.' + (el.className || '').toString().split(' ')[0] + ' "' + (el.textContent || '').trim().slice(0, 22) + '"';
+          })()`)) as string | null;
+          if (bad) noRing.push(bad);
+        }
+        if (noRing.length) r.focus = [...new Set(noRing)].slice(0, 8);
         const key = `${label}/${vp}`;
         const hit = Object.fromEntries(Object.entries(r).filter(([, v]) => v.length));
         if (Object.keys(hit).length) {

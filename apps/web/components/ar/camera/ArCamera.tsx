@@ -1179,7 +1179,9 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
           <span className="arv-door-mark" aria-hidden="true">
             <IconVideo size={30} />
           </span>
-          <h3 className="arv-door-title">See it in your room</h3>
+          {/* h2: this is the room view's own heading and the page's h1 is directly above it, so h3
+              skipped a level in the outline. The class carries the size. */}
+          <h2 className="arv-door-title">See it in your room</h2>
           <p className="arv-door-copy">
             {camStatus === 'requesting'
               ? 'Opening the camera and starting to track the room…'

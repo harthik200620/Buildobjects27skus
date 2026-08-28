@@ -395,6 +395,23 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  /*
+   * THREE LINES ON A PHONE, where the stocked grid is two columns and a tile is about 170px.
+   *
+   * Two is right at three columns on a desktop, where the widest name in the catalogue —
+   * "Drafting & Measurement Items" — lands on two with room. At two columns on a phone it needs
+   * three and was cut.
+   *
+   * Worth recording how long it took to find: `pnpm sweep` reported it as a `span.cat-name` and I
+   * spent three rounds widening the COMPACT tiles, because that is where a cramped name looked
+   * like it would be. It is one of the nine categories that are actually in stock, in the
+   * full-size grid at the top of the page. The detector was right and I was reading it wrong.
+   */
+  @media (max-width: 767.98px) {
+    .cat-name {
+      -webkit-line-clamp: 3;
+    }
+  }
   .cat-meta {
     font-size: var(--t-fine);
     color: var(--ink-3);
@@ -453,11 +470,35 @@
   .cat-card--compact .cat-band {
     padding: var(--s-3);
   }
+  /*
+   * THREE LINES, BECAUSE THE NAME IS THE ONLY THING ON A COMPACT TILE.
+   *
+   * The base `.cat-name` clamps at two, which is right for a full-size tile at 430px across. At
+   * three columns on a phone these are about 115px wide, and six of the twenty-six came out cut:
+   * "Heavy Construction…", "Company Identity &…", "Communication & Furniture…", "Finance &
+   * Accounting…". A tile whose entire content is a name, showing most of a name, is a tile that
+   * has failed at its one job — and unlike a product card there is no price or picture underneath
+   * to make up for it.
+   *
+   * The band is anchored to the bottom edge and the shade above it is a gradient, so a third line
+   * grows upward into the photograph rather than pushing anything out of the tile.
+   */
   .cat-card--compact .cat-name {
     font-size: var(--t-fine);
-    line-height: 1.35;
+    line-height: 1.3;
     font-weight: 600;
     color: var(--ink-2);
+    -webkit-line-clamp: 3;
+  }
+  /* Three columns on a phone leaves about 115px, and one name in the catalogue —
+     "Drafting & Measurement Items" — needs a fourth line even there. The band grows upward into
+     the gradient, so a fourth line costs nothing but the shade it sits on. */
+  /* A 93px tile cannot fit every word in this catalogue on one line, so a word that does not fit
+     breaks rather than overflowing the box sideways — an axis the line clamp does not govern. */
+  @media (max-width: 767.98px) {
+    .cat-card--compact .cat-name {
+      overflow-wrap: anywhere;
+    }
   }
   /* Dimmer than a stocked tile, and dimmer than the old --soon rule: at 0.55 with a full-strength
      name over it the picture was still competing. These are a roadmap, not a shelf. */

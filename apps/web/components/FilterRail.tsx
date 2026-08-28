@@ -405,7 +405,10 @@ export default function FilterRail(props: RailProps) {
 function FacetSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="facet">
-      <h3 className="facet-title">{title}</h3>
+      {/* h2, not h3: the rail sits directly under the page's h1 and nothing comes between them, so
+          h3 skipped a level in the outline. The class keeps the size — the tag carries the
+          structure, and the two do not have to agree. */}
+      <h2 className="facet-title">{title}</h2>
       {children}
     </section>
   );
