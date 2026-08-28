@@ -4,38 +4,20 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 
 /**
- * Three things that all need the scroll position, plus one that does not, so they share one bar.
+ * Four jobs, one bar, one passive listener coalesced into a single rAF. No React state, so no
+ * render happens on scroll at all.
  *
- *   1. `data-scrolled` on <html> once the page has moved off the top. The header reads it and
- *      condenses — the shadow appears and the hairline firms up — which is how a sticky bar
- *      tells you it is floating over content rather than sitting in it. Doing this in CSS alone
- *      is not possible without a scroll-driven timeline, which Safari does not have.
- *   2. `data-nav="away"` while the reader is going DOWN the page, which slides the bar off the
- *      top edge; any upward movement brings it straight back. See the rule in store.css.
- *   3. A 2 px brand rule under the header showing how far down the document you are. This page
- *      is thirty-five tiles and the spec sheets run to a couple of hundred rows; a reader who
- *      cannot see the end of a list cannot judge whether to keep going.
- *
- * One passive listener, coalesced into a single rAF, writing two attributes and one custom
- * property. No state, so no React render happens on scroll at all — at 120 Hz that is the
- * difference between a smooth bar and a stuttering page.
- *
- * ── 4. And it says a page is on its way ──────────────────────────────────────
- *
- * Every page in this store behind the front door is server-rendered on demand — measured on
- * production, about 240 ms to the first byte and a second to a usable page. For that second,
- * clicking a category did NOTHING: the tile you pressed stayed pressed, the page stayed where it
- * was, and the only honest reading of that is that the click missed. It is the single largest
- * source of "this site feels slow" that is not actually slowness.
- *
- * So the same 2 px rule fills while a navigation is in flight. It is the bar the reader already
- * knows rather than a second piece of furniture, and it costs one click listener: the App Router
- * has no navigation events to subscribe to, so the click is the start and the pathname changing is
- * the end.
- *
- * It never gets stuck. A navigation that has not landed in eight seconds gives the bar back to the
- * scroll position, because a progress bar that is still there when the page is not is worse than
- * no progress bar.
+ *   1. `data-scrolled` on <html> once the page has moved off the top; the header reads it and
+ *      firms up. CSS alone cannot do this without a scroll-driven timeline, which Safari lacks.
+ *   2. `data-nav="away"` while the reader is going DOWN, which slides the bar off the top edge.
+ *      Any upward movement brings it back.
+ *   3. A 2px rule showing how far down the document you are — the spec sheets run to a couple of
+ *      hundred rows, and a reader who cannot see the end cannot judge whether to keep going.
+ *   4. The same rule fills while a NAVIGATION is in flight. Every page behind the front door is
+ *      server-rendered on demand, and for that second a click produced no evidence it had landed.
+ *      The App Router publishes no navigation events, so the click is the start and the pathname
+ *      changing is the end. It gives up after eight seconds: a bar still filling when the page is
+ *      not is worse than no bar.
  */
 
 /**

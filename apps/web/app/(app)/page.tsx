@@ -25,24 +25,15 @@ export const revalidate = 60;
 const EAGER = 0;
 
 /**
- * The front door. Three moves and the footer, and the third one is the page.
+ * The front door: the hero, the spine, the categories, and nothing after them.
  *
- * IT SHOWS CATEGORIES, AND IT SHOWS NOTHING AFTER THEM. There are thirty-five and
- * `WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx` is the authority — one sheet each, in this order.
- * Cement is not one of them: CONCRETING is, and cement is a product on that sheet, the same way
- * tiles are a product on FLOORING and glass on DOORS & WINDOWS.
+ * IT SHOWS CATEGORIES. There are thirty-five, and `WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx` is
+ * the authority — one sheet each, in this order. Cement is not one of them: CONCRETING is, and
+ * cement is a product on that sheet, as tiles are on FLOORING and glass on DOORS & WINDOWS.
  *
- * What used to sit below the grid — eight product cards, four promises and a closing call to
- * action — is gone. A front door is a place you pass through, and a page that keeps talking after
- * it has shown you the doors does not trust them. The promises live on the product pages, where
- * they answer a question somebody is actually asking; the shelf lives in search, one click away
- * and better presented there.
- *
- * AND IT CARRIES NO PRICES. Not on a tile, not in the hero, not in a strip. A price on the front
- * door commits the store to a number before the visitor has chosen anything, and "from ₹410" under
- * a category answers a question nobody has asked at that level — it is the cheapest kind of
- * shop-window promise and the first thing a buyer finds a reason to distrust. Every price in this
- * store sits beside the thing it is the price of, with its GST rate and its provenance next to it.
+ * AND IT CARRIES NO PRICES — not on a tile, not in the hero, not in a strip. "From Rs 410" under a
+ * category answers a question nobody has asked at that level. Every price in this store sits beside
+ * the thing it is the price of, with its GST rate and provenance next to it.
  */
 export default async function Home() {
   const [cats, skus] = await Promise.all([loadCatalogueCategories(), loadFlagshipSkus()]);

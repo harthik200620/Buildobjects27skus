@@ -157,25 +157,18 @@ export function billedFraction(line: LineItem, throughPhaseIdx: number, order: P
 }
 
 /**
- * A decision a buyer might revisit.
+ * A decision a buyer might revisit. A PATCH, not a finished set of inputs.
  *
- * A PATCH, NOT A FINISHED SET OF INPUTS - and that shape exists because of a wrong number that
- * shipped. "Add a bedroom" reported MINUS 780 rupees on a 30x40 G+1, and minus 2.4 lakh on a
- * 40x60: adding a bedroom appeared to make the house cheaper.
+ * "Add a bedroom" once reported MINUS 780 rupees on a 30x40 G+1 — adding a bedroom appeared to
+ * make the house cheaper — and nothing in the arithmetic was broken. The engine prices a house two
+ * ways: with no room counts it DERIVES them from area and bills plumbing as one spread line; given
+ * explicit counts it bills per room and itemises every fixture. Both are reasonable and they are
+ * not the same model. Handing the engine explicit counts for the first time made the comparison
+ * "derived house versus itemised house", and one bedroom was lost in the noise of the switch.
  *
- * Nothing in the arithmetic was broken. The engine prices a house two ways depending on what it
- * was told. With no room counts it DERIVES them from area - a door every 150 sqft, a bedroom every
- * 450 - and bills plumbing as one spread line. Given explicit counts it bills doors and points per
- * room and itemises every fixture set. Both are reasonable; they are not the same model. The old
- * decision handed the engine explicit room counts for the first time, so the comparison was never
- * "one more bedroom" - it was "derived house versus itemised house", and one bedroom was lost in
- * the noise of the switch.
- *
- * Two things stop it happening again. The decision is a patch applied to the SAME inputs the
- * baseline was priced from, so a caller cannot build one side out of different state - which is
- * exactly what a React component did with the old `to: EstimateInputs`. And `standardDecisions`
- * below expresses every change in terms the engine already models, without ever switching the
- * house into a different mode.
+ * So the decision is a patch applied to the SAME inputs the baseline was priced from — a caller
+ * cannot build one side out of different state, which is what a React component did with the old
+ * `to: EstimateInputs`.
  */
 export interface Decision {
   /** Stable id so the UI can key a curve to a control. */
@@ -188,19 +181,14 @@ export interface Decision {
 }
 
 /**
- * The decisions worth pricing, defined where the model lives.
+ * The decisions worth pricing, defined where the model lives. These were object literals inside a
+ * React component, and the hard part of each is deciding what the change PHYSICALLY IS — a
+ * modelling question, which written in a component is one nobody tests.
  *
- * These were four object literals inside a React component. Moving them here is not tidying: the
- * hard part of each one is deciding what the change PHYSICALLY IS, which is a modelling question,
- * and a modelling question written in a component is a modelling question nobody tests.
- *
- * A BEDROOM IS FLOOR AREA. The old version incremented a room counter and left the house exactly the
- * same size, which prices the paint on a wall that was never built. A bedroom is its own floor plus
- * its share of the corridor, the landing and the services that reach it - which is precisely what
- * the rate card's `sqft_per_bedroom` already means, so the change is that much more house.
- *
- * A FLOOR needs no such help: the engine already derives area as footprint times floors, so adding
- * one grows the house on its own.
+ * A BEDROOM IS FLOOR AREA. Incrementing a room counter leaves the house the same size, which
+ * prices the paint on a wall that was never built; a bedroom is its own floor plus its share of
+ * the corridor, landing and services, which is what `sqft_per_bedroom` already means. A FLOOR
+ * needs no such help — the engine derives area as footprint times floors.
  */
 export function standardDecisions(base: EstimateResult): Decision[] {
   const inputs = base.inputs;

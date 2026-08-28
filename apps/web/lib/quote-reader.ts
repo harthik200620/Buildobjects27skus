@@ -5,22 +5,15 @@ import { hasAnthropicKey, readDocumentAsJson } from './chat/anthropic';
 /**
  * Reading a contractor's quotation.
  *
- * ── WHY A READER AND NOT A PARSER ───────────────────────────────────────────────────────────
- * `parseQuoteText` in the estimator package already handles a quote somebody pastes out of
- * WhatsApp: last number on the line is the amount, the rest is the label. It is free, instant,
- * offline, and it is right most of the time. It stays, and it is what runs when there is no key.
+ * `parseQuoteText` already handles a quote pasted out of WhatsApp — last number on the line is the
+ * amount, the rest is the label — free, instant, offline, and right most of the time. It stays,
+ * and it is what runs with no key. What it cannot do is read a PHOTOGRAPH, which is how most
+ * people actually hold their quotation. Same shape as lib/drawing.ts, deliberately: gemini →
+ * anthropic → mock by key presence, one strict-JSON call, a timeout, a typed error.
  *
- * What it cannot do is read a PHOTOGRAPH, and a photograph is how most people actually hold their
- * quotation — a page on a contractor's letterhead, shot on a phone, sent on WhatsApp. That is what
- * this is for. It is the same shape as `lib/drawing.ts`, deliberately: gemini → anthropic → mock
- * by key presence, one strict-JSON call, a timeout, a typed error.
- *
- * ── WHAT THE MODEL IS ALLOWED TO SAY ────────────────────────────────────────────────────────
- * It reads the document into typed lines, and it writes the plain-language assessment beside each
- * one. The comparison itself — the range, the percentage, the verdict — is still computed by the
- * estimator engine against a dated rate card, and the UI prints both. That is not a restriction on
- * the model so much as a courtesy to the reader: they can see what the rate card says and what the
- * model says, side by side, and disagree with either.
+ * The model reads the document into typed lines and writes the assessment beside each. The
+ * comparison itself — range, percentage, verdict — is still computed by the engine against a dated
+ * rate card, and the UI prints both, so the reader can disagree with either.
  */
 
 export type QuoteProvider = 'gemini' | 'anthropic' | 'mock';

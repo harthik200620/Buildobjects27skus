@@ -1,24 +1,17 @@
 /**
  * Stage the media the storefront serves into `public/`, so a CDN can serve it.
  *
- * The store reads product photographs from `storage/media` and 3D models from `assets/3d` through
- * two route handlers that hit the filesystem. That works anywhere the repository is on disk — a
- * laptop, a container, Render — and it does not work on Vercel: a serverless function only ships
- * the files Next can trace, a dynamic `fs.readFile` traces nothing, and the bundle is capped at
- * 250 MB anyway. So every image and every model 404'd in production while the pages around them
- * rendered perfectly.
+ * The store reads photographs from `storage/media` and models from `assets/3d` through route
+ * handlers that hit the filesystem. That works anywhere the repo is on disk and does NOT work on
+ * Vercel: a serverless function ships only what Next can trace, a dynamic `fs.readFile` traces
+ * nothing, and the bundle is capped at 250 MB. Every image and model 404'd in production while the
+ * pages around them rendered perfectly.
  *
- * Copying them into `public/` before the build moves them out of the function and onto the CDN,
- * where files of this size belong. The route handlers stay as the fallback for anything not staged.
+ * What ships is a subset: every rendition the storefront can request, plus category art, brand
+ * marks, house renders and brochures — but not the originals (71 MB, which the pipeline keeps to
+ * re-derive renditions and no page has asked for), and not `.stale`, `.bak` or `meshy-input`.
  *
- * What ships is a subset, on purpose:
- *   · every rendition the storefront can request — card, thumb, gallery, zoom, cut-outs, in webp
- *     and avif — plus category art, brand marks, the estimator's house renders and the brochures;
- *   · not the originals (`*-orig.jpg|png|webp`, 71 MB), which the pipeline keeps so it can
- *     re-derive renditions and which no page has ever asked for;
- *   · not `.stale`, `.bak` or `meshy-input` files, which are working notes.
- *
- * Hard links where the filesystem allows them, so staging costs no disk and no time on a rebuild.
+ * Hard links where the filesystem allows, so staging costs no disk and no time on a rebuild.
  */
 import fs from 'node:fs';
 import path from 'node:path';
