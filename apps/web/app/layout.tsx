@@ -4,48 +4,18 @@ import { REVEAL_BOOTSTRAP } from '@/lib/reveal-bootstrap';
 import './globals.css';
 
 /**
- * Type — the Build Objects type program. Four faces, four jobs, no overlap.
+ * Type — two faces, two jobs. Audiowide names things (the brand, every title) and Encode Sans
+ * counts them (every figure, tabular, with a true rupee). Schibsted Grotesk is the working face
+ * for controls, labels, body and nav.
  *
- *   Display 1 (Instrument Serif)  — headlines and section titles. Nothing else.
- *   Display 2 (Audiowide)         — the brand name, wherever it appears, and nothing else.
- *   Sans 3    (Schibsted Grotesk) — every control, label, body and nav: the working face.
- *   Sans 5    (Encode Sans)       — every figure (tabular-nums, a true ₹).
- *
- * Display 1 is the change that carries the restyle. The store's type ramp ran 12 → 24px, a 2×
- * range, and a page whose headline is nearly the size of its caption has no drama in it however
- * correct the rest is. A display tier in a genuine editorial serif, topping out at 92px, is most
- * of the difference between this store and a commodity marketplace. Instrument Serif has one
- * weight and no bold, which is a constraint rather than a gap: display sizes take their weight
- * from SIZE, and a synthesised bold on a high-contrast serif is a smear.
- *
- * Sans 3 replaces Arimo, which is a Helvetica metric clone and therefore has no voice of its own —
- * it was in the store to be neutral and it succeeded. Schibsted Grotesk ships as one variable file
- * covering 400–800, so four static cuts and three round trips become one.
- *
- * Audiowide was briefly removed on the argument that a webfont loaded to set two words is a
- * webfont loaded for a picture, and the wordmark was drawn as vector instead. That was the wrong
- * call: the brand face IS the brand's voice, and a hand-cut substitute — however carefully
- * drawn — reads as a wireframe of the name rather than as the name. It is back, it is the only
- * thing that ever sets the brand name, and components/Wordmark.tsx is the one place that does it.
+ * Instrument Serif is deliberately NOT loaded. A declared source is a preload the first paint
+ * waits on whether or not a glyph asks for it — 23.5 KB on the critical path of every route — and
+ * what it still set was three numerals and one empty-state line. The file is still in public/fonts
+ * and fetch-fonts.mts still fetches it, so bringing it back is one declaration here.
  *
  * Single-word fallbacks ONLY in localFont: next/font writes the list into the CSS variable
- * unquoted, and an unquoted multi-word family is invalid CSS that discards the whole
- * declaration. The ₹-bearing fallbacks live in --font-figure in theme.css, quoted.
- */
-/*
- * INSTRUMENT SERIF IS NOT LOADED ANY MORE, and the reason is worth the note.
- *
- * A declared source is a preload the first paint waits on whether or not a glyph ever asks for
- * it — 23.5 KB on the critical path of every route in the store. What it was still setting, at
- * the end, was three ghost numerals on the front door and one empty-state line. The numerals are
- * figures and now use the figure face; the empty state is a title and now uses the brand face.
- *
- * That leaves two families, which is the right number for this store: Audiowide names things and
- * Encode Sans counts them. A third face is not a third voice, it is a third thing to keep in
- * step, and this one had already fallen out of step without anybody noticing.
- *
- * The file is still in public/fonts and fetch-fonts.mts still fetches it, so bringing it back is
- * one declaration here rather than a round trip.
+ * unquoted, and an unquoted multi-word family is invalid CSS that discards the declaration. The
+ * rupee-bearing fallbacks live in --font-figure in theme.css, quoted.
  */
 const brand = localFont({
   src: [{ path: '../public/fonts/BuildObjectsDisplay2-Regular.woff2', weight: '400', style: 'normal' }],

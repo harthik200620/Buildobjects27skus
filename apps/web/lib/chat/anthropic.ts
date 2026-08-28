@@ -1,29 +1,16 @@
 /**
- * The Anthropic Messages API, over raw HTTP, behind the same contract as gemini.ts.
+ * The Anthropic Messages API over raw HTTP, behind the same contract as gemini.ts. Nothing above
+ * this file knows which model answered, so a provider is a translation of `GenerateArgs` in and
+ * `GenerateResult` out — the grounding guarantee is untouched.
  *
- * ── WHY A SECOND CLIENT AND NOT A REWRITE ───────────────────────────────────────────────────
- * The engine, the tools, the fact ledger and the grounding validator are all written against one
- * shape — `GenerateArgs` in, `GenerateResult` out, with `calls` for the tools the model wants
- * run. Nothing above this file knows or cares which model answered. So a new provider is a new
- * translation of that shape, not a change to any of it: this file speaks Anthropic on one side
- * and the engine's own vocabulary on the other, and the whole grounding guarantee is untouched.
+ * Three places the two APIs disagree, each a silent failure if you get it wrong:
  *
- * ── THE THREE PLACES THE TWO APIs DISAGREE ──────────────────────────────────────────────────
- * Every one of these is a silent failure if you get it wrong, so they are written out:
- *
- *   TOOLS. Gemini takes `parameters`; Anthropic takes `input_schema`. Same JSON Schema, different
- *   key, and a request with the wrong one is accepted with the tools simply ignored — the model
- *   then answers from its own weights and the validator refuses everything it says.
- *
- *   TOOL RESULTS GO BACK AS A USER TURN. Gemini has a `functionResponse` part; Anthropic wants a
- *   `user` message whose content is `tool_result` blocks carrying the `tool_use_id` from the
- *   call. The id has to be the one the model issued, not the tool's name.
- *
- *   `max_tokens` IS REQUIRED. Anthropic rejects a request without it. Gemini defaults.
- *
- * ── AND IT HAS A BASE URL ───────────────────────────────────────────────────────────────────
- * `ANTHROPIC_BASE_URL` so the same client can point at Anthropic directly or at a compatible
- * gateway. Nothing else changes.
+ *   TOOLS. Gemini takes `parameters`, Anthropic `input_schema`. Same JSON Schema, different key,
+ *   and the wrong one is ACCEPTED with the tools ignored — the model then answers from its own
+ *   weights and the validator refuses everything it says.
+ *   TOOL RESULTS GO BACK AS A USER TURN, whose content is `tool_result` blocks carrying the
+ *   `tool_use_id` the model issued — not the tool's name.
+ *   `max_tokens` IS REQUIRED. Gemini defaults; Anthropic rejects the request.
  */
 
 import type { GenerateArgs, GenerateResult } from './gemini';
@@ -34,18 +21,14 @@ const TIMEOUT_MS = 45_000;
 export const ANTHROPIC_VERSION = '2023-06-01';
 
 /**
- * BO_CHAT_*, NOT ANTHROPIC_*, and the reason is a bug this already caused.
+ * BO_CHAT_*, not ANTHROPIC_*.
  *
- * `ANTHROPIC_BASE_URL` is a machine-wide name: an SDK reads it, a shell profile exports it, a
- * local proxy sets it. Next gives the PROCESS environment precedence over `.env` — correctly, so
- * a deploy can override a checked-in default — which means whatever the machine happens to have
- * silently wins over what this app was configured with. On this machine the server's environment
- * carried `http://127.0.0.1:8787`, so every request went to a local port nothing was listening
- * on and came back as "cannot reach its model" while the endpoint in `.env` was fine and a curl
- * to it returned 200 in under two seconds.
+ * `ANTHROPIC_BASE_URL` is a machine-wide name — an SDK reads it, a shell profile exports it, a
+ * local proxy sets it — and Next gives the process environment precedence over `.env`. On this
+ * machine that silently pointed every request at `http://127.0.0.1:8787`, which returned "cannot
+ * reach its model" while the endpoint in `.env` answered a curl in two seconds.
  *
- * The store's assistant is its own setting and gets its own name. ANTHROPIC_* is still read as a
- * fallback for anyone who deliberately sets it, but it can no longer shadow an explicit choice.
+ * ANTHROPIC_* is still read as a fallback, but it can no longer shadow an explicit choice.
  */
 const pick = (...names: string[]): string | undefined => {
   for (const n of names) {
@@ -285,25 +268,17 @@ export async function generate(args: GenerateArgs): Promise<GenerateResult> {
 }
 
 /**
- * READ A DOCUMENT INTO A SCHEMA.
+ * Read a document into a schema: hand it a photograph or a PDF and force a fixed shape back.
  *
- * `generate` above is a conversation: text in, text or tool calls out. This is the other thing this
- * API is good for and the chat path never needed — hand it a photograph or a PDF and force it to
- * answer in a fixed shape.
+ * THE BLOCK TYPE DEPENDS ON THE FILE — an image is an `image` block, a PDF a `document` block,
+ * and sending a PDF as an image is a 400 that reads like a malformed request.
  *
- * Two details carry the whole function:
+ * THE TOOL IS FORCED. `tool_choice: {type:'tool', name}` turns "please reply as JSON" into a
+ * guarantee; asked politely in the prompt, a model that finds a document hard to read explains
+ * why in prose and the caller gets a parse error where it wanted an answer.
  *
- *   THE BLOCK TYPE DEPENDS ON THE FILE. An image is an `image` block, a PDF is a `document` block,
- *   and sending a PDF as an image is a 400 that reads like a malformed request rather than a wrong
- *   content type.
- *
- *   THE TOOL IS FORCED. `tool_choice: {type:'tool', name}` is what turns "please reply as JSON"
- *   into a guarantee. Asked politely in the prompt instead, a model that finds a document hard to
- *   read will explain why in prose, and the caller gets a parse error where it wanted an answer.
- *
- * The retry and timeout behaviour is deliberately the same as `generate`'s, because a document
- * read fails the same ways a chat turn does — an overloaded model, a dropped connection — and two
- * different retry policies in one file is one of them nobody remembers.
+ * Retry and timeout match `generate`'s deliberately — a document read fails the same ways a chat
+ * turn does, and two retry policies in one file is a third thing to remember.
  */
 export interface DocumentReadArgs {
   system: string;

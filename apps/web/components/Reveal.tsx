@@ -13,49 +13,29 @@ declare global {
 }
 
 /**
- * Scroll choreography for the whole store, from one mounted component.
+ * Scroll choreography for the whole store, from one mounted component. A server component marks
+ * anything it wants to arrive with `data-reveal` — a plain attribute, no import, no boundary, no
+ * bundle — and this observer flips it to `data-shown`. The transition is CSS.
  *
- * Every other approach to "animate things in as you reach them" ships a client component per
- * animated element. This ships one. A server component marks anything it wants to arrive with
- * `data-reveal` — a plain attribute, no import, no boundary, no bundle — and this observer,
- * mounted once in the app layout, finds them all and flips them to `data-shown`. The transition
- * itself is CSS (see the MOTION block in packages/ui/src/theme.css); nothing here touches style.
+ * THE FAILSAFE IS CANCELLED FROM INSIDE THE OBSERVER'S FIRST CALLBACK, not at mount, and that is
+ * the whole of it: mounting proves React is alive, not that IntersectionObserver will deliver. A
+ * page that is never composited — a discarded background tab, an undisplayed embed, a headless
+ * renderer — mounts effects and constructs observers happily and never fires a callback, because
+ * intersection is a property of a RENDERED page. Cancelling at mount meant the one situation the
+ * timer existed for was the situation that disarmed it. Observed, not theorised: a whole page
+ * below the hero at opacity 0 indefinitely.
  *
- * ── The failsafe, and why it is armed the way it is ──────────────────────────
+ * If the timer fires first it latches `__boRevealOff` and this component stops hiding anything
+ * for the session. Content is never behind an observer that is not running.
  *
- * Hiding content until a script un-hides it is a bet, and the bet has to be written so that
- * losing it is survivable. The bootstrap in lib/reveal-bootstrap.ts arms a 2.5 s timer that
- * un-hides everything, and the obvious place to cancel it is here, on mount.
+ * A MutationObserver picks up nodes React adds later; the pathname dependency re-scans on client
+ * navigation, where the DOM is replaced wholesale.
  *
- * That is wrong, and it was wrong in a way worth recording: mounting proves React is alive, not
- * that IntersectionObserver is going to deliver. A page that is never composited — a background
- * tab that is discarded, an embedded view that is not displayed, a headless renderer — mounts
- * effects and constructs observers perfectly happily and then never fires a single callback,
- * because intersection is a property of a rendered page. Cancelling the timer at mount meant the
- * one situation the timer existed for was the exact situation that disarmed it. This was observed,
- * not theorised: in a non-compositing preview the whole page below the hero sat at opacity 0
- * indefinitely, and a fresh observer created by hand on a visible element never fired either.
- *
- * So the timer is cancelled from inside the observer's first callback — the only event that
- * proves the mechanism works — and if it fires first it latches `__boRevealOff`, after which this
- * component stops hiding anything for the rest of the session. Content is never behind an
- * observer that is not running.
- *
- * A MutationObserver picks up nodes React adds later (a filter re-render, "show more"), and the
- * pathname dependency re-scans on client navigation, where the DOM is replaced wholesale.
- *
- * ── The second job: photographs arriving ─────────────────────────────────────
- *
- * The same scan marks lazily-loaded images `data-ready` once they have actually decoded, which
- * is what the fade in theme.css transitions on. It lives here rather than in a component of its
- * own because this is already the one place in the store that watches the DOM for new nodes —
- * a second always-mounted client component, a second MutationObserver over document.body, to
- * flip one attribute would be the same work twice.
- *
- * Only `loading="lazy"` images are touched. An eager one is above the fold and is very often the
- * page's largest contentful paint; starting it at opacity 0 would push the store's own LCP out
- * by the length of the fade, which is paying in the one number that matters for an effect nobody
- * asked for. See the note in theme.css.
+ * The same scan marks lazily-loaded images `data-ready` once decoded, which is what the fade in
+ * theme.css transitions on — here rather than in its own component, since this is already the one
+ * place watching the DOM for new nodes. Only `loading="lazy"` images: an eager one is usually the
+ * page's largest contentful paint, and starting it at opacity 0 would push the LCP out by the
+ * length of the fade.
  */
 export default function Reveal() {
   const pathname = usePathname();
