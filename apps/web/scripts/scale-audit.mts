@@ -1,29 +1,17 @@
 /**
  * Count the distinct radii and type sizes each page actually paints.
  *
- * This is the gate for the complaint that is hardest to act on: "it looks cheap". Nobody points
- * at a radius. What they are seeing is a page painting seven different corner radii and seventeen
- * different type sizes — six of which differ from their neighbour by half a pixel — because forty
- * stylesheets each picked a number that looked right in isolation. A reader cannot name it and
- * cannot stop registering it.
+ * The gate for the complaint hardest to act on: "it looks cheap". Nobody points at a radius — what
+ * they are seeing is a page painting seven corner radii and seventeen type sizes, six of which
+ * differ from their neighbour by half a pixel, because forty stylesheets each picked a number that
+ * looked right alone.
  *
- * The home page measured SEVEN radii and SEVENTEEN sizes when this was written, against a token
- * scale that offers six radii and eleven sizes. The strays were 5px and 9px corners, and 10.5,
- * 12.5 and 13.5px type — none of them a token, all of them one increment from one.
+ * It counts DISTINCT values rather than checking them against the token list, because a size can
+ * be legitimate and absent from the scale — the wordmark derives its own from `--wm-size`, and
+ * every display step is a clamp that resolves differently at every viewport. The budgets are
+ * ceilings a page has to work to exceed, not targets.
  *
- * Two things it deliberately does NOT do:
- *
- *   · It does not check values against the token list. A size can be perfectly legitimate and not
- *     appear in the scale — the wordmark derives its own from `--wm-size`, and every display step
- *     is a clamp that resolves differently at every viewport. Counting DISTINCT values catches the
- *     sprawl without arguing about which value is allowed.
- *   · It does not fail on one over. The budgets below are ceilings a page has to work to exceed,
- *     not targets; a page at the ceiling is fine and a page four past it has stopped having a
- *     system.
- *
- *   pnpm --filter @buildobjects/web scale:audit
- *
- * Exits non-zero over budget, so it can join the gate.
+ *   pnpm --filter @buildobjects/web scale:audit    (non-zero over budget, so it can join the gate)
  */
 import { chromium } from 'playwright';
 import { BASE } from './harness';
@@ -114,23 +102,14 @@ for (const route of ROUTES) {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   The header bar, at every width a person actually browses at
-   ═══════════════════════════════════════════════════════════════════════════
-   The bar is one flex row holding a 367px lockup, a nav, a 250px search cue and three
-   actions, and for a while it needed 1560px of viewport to hold all of them. Below
-   that `.header-nav` was allowed to shrink, so it was squeezed narrower than its own
-   labels and "See in room" ran straight through the search field's magnifier — a flex
-   item narrower than its content does not wrap or clip, it overflows onto whatever is
-   beside it.
+/* ── the header bar, at every width a person actually browses at ───────────
+   A flex item narrower than its content does not wrap or clip, it overflows onto whatever is
+   beside it: `.header-nav` was allowed to shrink, so below 1560px "See in room" ran straight
+   through the search field's magnifier. Nothing caught it because every other gate reads ONE
+   width, and 1440 — the width most people browse at — was not it.
 
-   It shipped, and nothing caught it: every gate the store had reads ONE width, and
-   1440 — the width most people actually browse at — was not it.
-
-   So this walks the widths people use and fails if any two children of the bar
-   overlap, if the row overflows its own box, or if the document scrolls sideways.
-   Cheap, and it is the exact defect rather than a proxy for it.
-   ═════════════════════════════════════════════════════════════════════════ */
+   So this walks the widths people use and fails if any two children of the bar overlap, if the
+   row overflows its box, or if the document scrolls sideways. */
 const WIDTHS = [1920, 1680, 1600, 1512, 1440, 1366, 1280, 1180, 1024, 900, 768, 600, 430, 390, 360];
 let collisions = 0;
 console.log('\nthe header bar, across widths:');

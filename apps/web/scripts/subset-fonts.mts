@@ -1,27 +1,18 @@
 /**
- * Cut the three type families down to the glyphs this store actually sets.
+ * Cut the type families down to the glyphs this store actually sets.
  *
- * The faces ship as Google's full releases: Arimo and Encode Sans carry 1,515 and 1,214 glyphs
- * each — Latin, Latin Extended, Greek, Cyrillic and Vietnamese — across four weights apiece. On
- * the home page that measured **408 KB of webfont, 54% of the whole document**, and every byte of
- * the Greek and the Cyrillic was downloaded to render a store written in English.
+ * The faces ship as Google's full releases — 1,515 and 1,214 glyphs across Latin, Greek, Cyrillic
+ * and Vietnamese — which measured 408 KB of webfont on the home page, 54% of the document, to
+ * render a store written in English.
  *
- * This derives the coverage rather than guessing it. It reads every character the app can put on
- * screen — the source, the catalogue JSON, the registry — takes the union with the Latin ranges a
- * browser needs for correct text (quotes, dashes, the rupee, the non-breaking space, the
- * combining marks that Indian and European names use), and asks fontTools for exactly that.
+ * It derives the coverage rather than guessing: every character the app can put on screen, from
+ * the source, the catalogue JSON and the registry, unioned with the ranges below. Deliberately
+ * generous — the derived set is a floor, so a product name arriving tomorrow with an i-diaeresis
+ * still renders. What it drops is Greek, Cyrillic, Vietnamese and several hundred symbols.
  *
- * It is deliberately generous: the derived set is a floor, not a ceiling, and the ranges below add
- * the whole of Latin-1 and Latin Extended-A on top, so a product name that arrives tomorrow with
- * an ï or a ō in it still renders. What it drops is Greek, Cyrillic, Vietnamese and the several
- * hundred symbols and arrows nothing in the store has ever asked for.
- *
- * Run it with `pnpm --filter @buildobjects/web fonts:subset`. It writes new woff2 files beside
- * the originals and prints the saving; the originals are kept under assets/fonts-full/ so the cut
- * can always be widened and redone rather than re-downloaded.
- *
- * Needs Python with fontTools and brotli — it is a build-time tool, not part of `next build`, and
- * it says so and exits 0 if they are missing, so a machine without them can still build.
+ * Originals are kept under assets/fonts-full/, so the cut can be widened and redone rather than
+ * re-downloaded. Needs Python with fontTools and brotli; it says so and exits 0 without them, so
+ * a machine that lacks them can still build.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -40,23 +31,18 @@ const fontsDir = join(web, 'public', 'fonts');
 const fullDir = resolve(web, 'assets', 'fonts-full');
 
 /**
- * Ranges kept whole, whatever the scan finds.
+ * Ranges kept whole, whatever the scan finds. Anything outside them that the app can put on screen
+ * still survives — the scan's character list is passed alongside.
  *
- * These are the ranges a browser needs for correct English-and-Indian-names text, and nothing
- * else. Anything outside them that the app can actually put on screen still survives, because the
- * scan's character list is passed alongside.
+ * U+0000-00FF   ASCII and Latin-1, including the multiplication sign at U+00D7 that dimensions use
+ * U+0100-017F   Latin Extended-A, for the rest of Europe's accents in brand names
+ * U+0300-036F   combining marks — without these a decomposed e-acute loses its accent entirely
+ * U+2000-206F   general punctuation: the dashes, the real quotes, the ellipsis, and the middle dot
+ *               the whole catalogue separates specifications with
+ * U+20A0-20BF   currency, here for exactly one glyph: the rupee at U+20B9
  *
- * U+0000-00FF   ASCII and Latin-1: the alphabet, the digits, and the accented vowels. The
- *               multiplication sign the store writes dimensions with is here too, at U+00D7.
- * U+0100-017F   Latin Extended-A, for the rest of Europe's accents in brand names.
- * U+0300-036F   Combining marks - without these a decomposed e-acute loses its accent entirely.
- * U+2000-206F   General punctuation: the en and em dash, the real quotation marks, the ellipsis,
- *               and the middle dot the whole catalogue separates specifications with.
- * U+20A0-20BF   Currency, which is here for exactly one glyph: the rupee at U+20B9.
- *
- * Deliberately NOT kept: Greek, Cyrillic, Vietnamese, the arrow and mathematical blocks (every
- * arrow in the store is a drawn Lucide icon), and box drawing - which appears in this repository
- * only inside source comments, where no font is involved at all.
+ * NOT kept: Greek, Cyrillic, Vietnamese, the arrow and mathematical blocks (every arrow in the
+ * store is a drawn icon), and box drawing, which appears only inside source comments.
  */
 const KEEP_RANGES = ['U+0000-00FF', 'U+0100-017F', 'U+0300-036F', 'U+2000-206F', 'U+20A0-20BF'].join(',');
 

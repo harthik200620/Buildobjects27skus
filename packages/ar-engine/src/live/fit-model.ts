@@ -2,43 +2,28 @@ import type { ProductDims } from '../types';
 import type { Mat3 } from './pose';
 
 /**
- * FIT A GENERATED MESH TO THE PRODUCT IT IS SUPPOSED TO BE.
+ * Fit a generated mesh to the product it is supposed to be.
  *
- * The meshes in this catalogue are at true scale — `pnpm --filter @buildobjects/assets3d measure`
- * confirms that, once node transforms are applied, every one of the twenty-one is already the size
- * the catalogue says it is. What they are NOT is consistently oriented, and several disagree with
- * their own stated proportions.
+ * The meshes are at true scale — `measure` confirms all twenty-one, once node transforms are
+ * applied — but they are not consistently ORIENTED, and several disagree with their own stated
+ * proportions. Resizing by height alone (`scale = h_mm / meshY`) reads one arbitrary axis as the
+ * product's height. What shipped:
  *
- * The live view resized them by HEIGHT alone: `scale = h_mm / meshY`. That reads one arbitrary axis
- * as though it were the product's height, and where the generator left the long axis somewhere else
- * the result is a product drawn at the wrong size, in the wrong orientation, or both. Measured
- * against what shipped:
+ *   CCT-CPP-USC-TA24L2C-L   stated  70 x  70 x 163   drawn 154 x  70 x  70   on its side
+ *   FIR-SAF-ABC-SP-6KG      stated 160 x 505 x 205   drawn 194 x 505 x 123   facing sideways off
+ *                                                                            the wall
+ *   EPX-FOS-CONBEXTRAEP10   stated 175 x 160 x 110   drawn 729 x 160 x  83   four times too wide
  *
- *   CCT-CPP-USC-TA24L2C-L   stated  70 x  70 x 163 mm   drawn  154 x  70 x  70   lying on its side
- *   FIR-SAF-ABC-SP-6KG      stated 160 x 505 x 205 mm   drawn  194 x 505 x 123   width and depth
- *                                                                                swapped, so the
- *                                                                                extinguisher faced
- *                                                                                sideways off the wall
- *   EPX-FOS-CONBEXTRAEP10   stated 175 x 160 x 110 mm   drawn  729 x 160 x  83   four times too wide
- *   EPX-SIK-SIKADUR31IN     stated 300 x 235 x 220 mm   drawn  235 x 235 x 138   shrunk by a fifth
- *
- * -- WHAT THIS DOES ---------------------------------------------------------------------------
- * The stated dimensions are the truth about the product; the mesh is a picture of it. So: line the
- * mesh's axes up with the product's by RANK — the mesh's longest axis becomes the product's longest
- * dimension, its second longest the second, and so on — then scale uniformly so the longest extent
- * matches. A mesh that already agrees comes through untouched, at scale 1.000, which is what
- * seventeen of the twenty-one now do.
+ * The stated dimensions are the truth about the product; the mesh is a picture of it. So line the
+ * axes up by RANK — longest to longest — and scale uniformly so the longest extent matches. A mesh
+ * that already agrees comes through at scale 1.000, which seventeen of twenty-one do.
  *
  * Rank order rather than a fitted transform, because the only rotations allowed are the six that
- * map axes onto axes. Anything else shears a product, and a sheared cement bag is worse than a
- * badly proportioned one.
- *
- * Uniform rather than per-axis scaling, for the same reason. Per-axis would match all three stated
- * numbers exactly and would stretch any mesh whose proportions disagree — and seven of them do
- * disagree, because these are generated meshes rather than CAD. Uniform keeps the product's overall
- * size on screen honest, which is what a true-scale view is judged on, and leaves the shape alone.
- * Where a secondary axis still differs by more than a fifth, `note` says so instead of hiding it:
- * that is the mesh disagreeing with the catalogue, and it is a content problem, not a maths one.
+ * map axes onto axes; anything else shears, and a sheared cement bag is worse than a badly
+ * proportioned one. Uniform rather than per-axis for the same reason: per-axis would match all
+ * three numbers and stretch any mesh whose proportions disagree, and seven of them do. Where a
+ * secondary axis still differs by more than a fifth, `note` says so — that is the mesh disagreeing
+ * with the catalogue, which is a content problem rather than a maths one.
  */
 
 export interface MeshExtent {

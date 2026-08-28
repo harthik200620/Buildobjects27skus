@@ -88,24 +88,17 @@ export function useScrollLock(locked: boolean): void {
     const prev = { position: body.style.position, top: body.style.top, width: body.style.width };
 
     /*
-     * PIN THE BODY, DO NOT HIDE THE OVERFLOW.
+     * Pin the body; do not hide the overflow.
      *
-     * `overflow: hidden` is the obvious lock and it loses the reader's place. Measured, both
-     * ways round: hiding <body>'s overflow propagates the value to the viewport and reassigns
-     * which element owns the scroll, dropping the offset — ⌘K opened at 300px down put the page
-     * at 0. Hiding the ROOT's overflow does the same, and once it is hidden there is no
-     * scrollable overflow left, so `scrollTo` cannot put the offset back either. Closing the
-     * dialog then returned the reader to the top of a page they were halfway through.
+     * `overflow: hidden` loses the reader's place, measured both ways round: hiding <body>'s
+     * overflow propagates to the viewport and reassigns which element owns the scroll, dropping
+     * the offset, and hiding the ROOT's leaves no scrollable overflow for `scrollTo` to put it
+     * back. Closing the dialog returned the reader to the top of a page they were halfway down.
      *
-     * Pinning the body holds the exact pixel: the page is lifted by the scroll offset it already
-     * had, so it does not appear to move, and the offset is a number we still hold and can hand
-     * back on release. It is also the only form of this that works on iOS Safari.
-     *
-     * The header keeps working. It is `position: sticky` inside body, and body's box still spans
-     * the viewport's top edge, so the bar stays stuck where it was.
-     *
-     * Nothing shifts sideways when the page's scrollbar goes away, because <html> reserves its
-     * space permanently — see `scrollbar-gutter: stable` in the theme.
+     * Pinning holds the exact pixel — the page is lifted by the offset it already had, so it does
+     * not appear to move and the offset is a number we can hand back. It is also the only form of
+     * this that works on iOS Safari. The header keeps working because body's box still spans the
+     * viewport's top edge, and nothing shifts sideways because <html> reserves the scrollbar.
      */
     body.style.position = 'fixed';
     body.style.top = `-${y}px`;

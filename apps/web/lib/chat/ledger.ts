@@ -1,21 +1,16 @@
 /**
- * The fact ledger.
+ * The fact ledger. Every tool call deposits the atoms it will stand behind — the numbers it read
+ * or computed, the entity names it saw, the sources they came from — and the validator holds the
+ * model's draft against it.
  *
- * Every tool call deposits the atoms it is prepared to stand behind: the
- * numbers it computed or read, the entity names it saw in the database, and
- * the sources those came from. The validator then holds the model's draft
- * against this ledger and suppresses anything not in it.
+ * The inversion matters: the usual approach asks a model to cite its sources and trusts it to have
+ * done so. This asks nothing of the model and verifies mechanically. A model that invents "Rs 412
+ * per bag" fails because 412 is not in the ledger, not because it forgot a citation.
  *
- * The inversion matters. The usual grounding approach asks a model to cite its
- * sources and trusts it to have done so; this asks nothing of the model and
- * verifies the output mechanically. A model that invents "₹412 per bag" fails
- * not because it forgot a citation but because 412 is not in the ledger.
- *
- * Numbers are stored at several roundings on purpose. The tool holds
- * `normalised_paise = 32160`; the reply will say "₹321.60" or "₹322" or
- * "₹321". All three are the same fact, and a validator that only knew 32160
- * would reject the correct answer — which is worse than useless, because a
- * validator that fires on true statements gets switched off.
+ * Numbers are stored at several roundings on purpose. The tool holds `normalised_paise = 32160`;
+ * the reply will say "Rs 321.60" or "Rs 322" or "Rs 321", all the same fact. A validator that knew
+ * only 32160 would reject the correct answer — and one that fires on true statements gets switched
+ * off.
  */
 
 /**

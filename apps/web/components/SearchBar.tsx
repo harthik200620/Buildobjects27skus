@@ -9,45 +9,22 @@ import Highlight from './Highlight';
 import { CategoryIcon, IconClockCheck, IconClose, IconSearch } from './icons';
 
 /**
- * ONE SEARCH BAR. The one in the header. It is the field you type into.
+ * One search bar: the one in the header, and it is the field you type into.
  *
- * ── WHAT THIS REPLACES, AND WHY ─────────────────────────────────────────────────────────────
- * The header used to carry a BUTTON dressed as a search field — an icon, grey placeholder text,
- * a ⌘K keycap, a border, the lot — and pressing it opened a full-screen command palette with a
- * SECOND, real field in it. Two search bars, and the one you pressed was not the one you typed
- * into. The reported symptom was exactly that: "when I click search bar it is opening some other
- * search bar."
+ * It used to be a BUTTON dressed as a search field that opened a full-screen palette containing a
+ * SECOND, real field — "when I click search bar it is opening some other search bar". The palette
+ * was a reasonable answer to a layout problem (a wide brand face and a usable field could not
+ * share a 46px row) but it solved that by making the visible control a lie. `--search-w` is 560px
+ * at rest now, so there is room for a real field.
  *
- * The palette was not a bad idea. It was a good answer to a layout problem — Audiowide is a very
- * wide face, and a lockup plus a usable field could not share a 46px header row, so search moved
- * out and the mark got its size back. But it solved that by making the visible search bar a lie,
- * and a control that looks like a field and refuses your keystrokes is a trick played on the
- * reader every single time.
+ * It is a combobox: one input, suggestions dropping UNDER it, the page still scrolling behind
+ * them because a dropdown is not a modal. Three classes of bug leave with the overlay —
+ * `position: fixed` resolving against the header's backdrop-filter instead of the screen, the
+ * header's z-index clamping the palette's, and two scroll locks fighting over the reader's place.
  *
- * The layout problem is gone anyway: --search-w is 560px at rest now, not 250. There is room for
- * a real field, so there is a real field.
- *
- * ── THE SHAPE IT TAKES INSTEAD ──────────────────────────────────────────────────────────────
- * A combobox. One input in the header; suggestions drop UNDER it, anchored to it, the way every
- * search field a person has ever used behaves. The page keeps scrolling behind them because a
- * dropdown is not a modal, so there is no scroll lock to get wrong and no scrim to mis-position.
- *
- * Three whole classes of bug leave with the overlay: `position: fixed` resolving against the
- * header's backdrop-filter instead of the screen, the header's z-index clamping the palette's,
- * and two scroll locks fighting over the reader's place. None of them can happen to a dropdown.
- *
- * ⌘K and `/` now FOCUS the field rather than opening anything, which is what those shortcuts
- * mean when the field is already on screen. Escape closes the suggestions and keeps the text.
- *
- * ── NARROW SCREENS ──────────────────────────────────────────────────────────────────────────
- * Under 720px the header cannot hold a 560px field, so the bar collapses to its icon — and
- * focusing it expands it across the header row IN PLACE. Still one field, still the same one,
- * still the same input element receiving the keystrokes.
- *
- * Everything behind it is unchanged: 80ms debounce, one round trip to /api/search/suggest, the
- * grouped listbox, recent searches in localStorage, `mark.hl` highlighting from Meilisearch, and
- * the ARIA contract — role=combobox on the input, aria-controls=search-listbox, role=listbox and
- * role=option on the results — because that part was correct.
+ * Cmd-K and `/` FOCUS the field rather than opening anything, which is what those shortcuts mean
+ * when the field is already on screen. Under 720px the bar collapses to its icon and focusing it
+ * expands it across the header row in place — still the same input receiving the keystrokes.
  */
 type Suggest = {
   skus: SkuSearchDoc[];

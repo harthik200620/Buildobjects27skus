@@ -11,42 +11,28 @@ import type { QuoteReading } from '@/lib/quote-reader';
 /**
  * Is the quote you were given fair — and what does it come to if you buy the material here?
  *
- * ── WHY THIS IS THE HOOK ────────────────────────────────────────────────────────────────────
- * Almost everybody building a house has two or three contractor quotes on their phone and no way
- * on earth to judge them. There is no published rate for "brickwork in Guntur in August". Today
- * the options are to trust the contractor, or to ask an uncle who built ten years ago.
+ * Three answers, and they are not the same kind of answer:
  *
- * ── THREE ANSWERS, AND THEY ARE NOT THE SAME KIND OF ANSWER ─────────────────────────────────
+ *  1. WHERE EACH LINE SITS against a dated rate card. An average, which a contractor can honestly
+ *     disagree with — better material, harder access, work the estimate excludes.
+ *  2. WHAT THE STORE CHARGES for the same material. Not an opinion: the price on the shelf today,
+ *     so the difference is money the buyer can go and keep. It speaks only for lines the store
+ *     really sells — labour, centering and plastering are left alone, which makes it a floor.
+ *  3. WHETHER THE QUANTITIES HOLD TOGETHER. A quote pricing steel by the bag, or listing a hundred
+ *     bags of cement for an 1800 sqft house, has counted something wrong — and none of that is
+ *     visible reading the lines one at a time.
  *
- *  1. WHERE EACH LINE SITS against a dated rate card. This is an average, and a contractor can
- *     honestly disagree with it — better material, harder access, work the estimate excludes.
- *  2. WHAT THE STORE CHARGES for the same material. This is not an opinion at all: it is the
- *     price on the shelf today, so the difference is money the buyer can actually go and keep.
- *     It only ever speaks for lines the store really sells — labour, centering and plastering
- *     are left completely alone rather than guessed at, which makes the figure a floor.
- *  3. WHETHER THE QUANTITIES HOLD TOGETHER. A quote pricing steel by the bag, or listing a
- *     hundred bags of cement for an eighteen-hundred-square-foot house, or whose steel and
- *     cement disagree with each other, has counted something wrong — and none of that is
- *     visible if you read the lines one at a time.
+ * Nothing runs until the reader asks. Comparing as you type produced half a verdict from a
+ * half-pasted quote, rewriting itself under the reader's hands; typing now clears the last answer
+ * rather than amending it, because an answer to a document no longer in the box is worse than none.
  *
- * ── NOTHING RUNS UNTIL THE READER ASKS ──────────────────────────────────────────────────────
- * This used to compare as you typed, so a half-pasted quote produced half a verdict that
- * rewrote itself under the reader's hands. There is a button now. Typing clears the last answer
- * rather than silently amending it, because an answer to a document that is no longer in the box
- * is worse than no answer.
+ * The rules are visible in the interface: never accuse anyone (a contractor can be dearer for a
+ * dozen good reasons, so this gives the question to ask, not the answer); a line BELOW the range is
+ * flagged harder than one above; unmatchable lines are listed rather than dropped; and the house
+ * being compared against is named every time, including whether it was read from a drawing.
  *
- * ── THE RULES, VISIBLE IN THE INTERFACE ─────────────────────────────────────────────────────
- *  · Never accuse anyone. A contractor can be dearer for a dozen good reasons and the buyer
- *    knows which — this gives them the question to ask, not the answer.
- *  · A line BELOW the range is flagged harder than one above. An over-quote costs money; an
- *    under-quote is how a build stalls at month nine.
- *  · Unmatchable lines are listed. Dropping what we cannot place would make it a lie by omission.
- *  · The house being compared against is named, every time, including whether it was read from a
- *    drawing or set on the form — a comparison against the wrong house is confident nonsense.
- *
- * ── AND IT IS THEIR DOCUMENT ────────────────────────────────────────────────────────────────
- * A quotation is private commercial paper. The pasted text never leaves the tab; a photograph is
- * read and forgotten, never stored. The interface says so beside the box.
+ * A quotation is private commercial paper. Pasted text never leaves the tab; a photograph is read
+ * and forgotten.
  */
 
 export interface TruthProps {
