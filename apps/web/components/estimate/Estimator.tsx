@@ -21,19 +21,8 @@ import {
 } from '@buildobjects/estimator';
 import Link from 'next/link';
 import React from 'react';
-import {
-  IconArrow,
-  IconCheck,
-  IconChevronDown,
-  IconClose,
-  IconInfo,
-  IconMinus,
-  IconPlus,
-  IconPrint,
-  IconRefresh,
-  IconSave,
-  IconShare,
-} from '@/components/icons';
+import { IconArrow, IconCheck, IconChevronDown, IconClose, IconInfo, IconPrint, IconRefresh, IconSave, IconShare } from '@/components/icons';
+import QtyStepper from '@/components/QtyStepper';
 import { productTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
 import { readPicks, removePick, setPickQty } from '@/lib/picks';
@@ -532,15 +521,7 @@ export default function Estimator({
                     <Link href={`/p/${p.sku_code.toLowerCase()}`} className="pick-name">
                       {s ? productTitle(s.brand, s.name) : p.sku_code}
                     </Link>
-                    <div className="qty" role="group" aria-label={`Quantity of ${p.sku_code}`}>
-                      <button type="button" onClick={() => setPickQty(p.sku_code, p.qty - 1)} aria-label="Decrease">
-                        <IconMinus size={14} />
-                      </button>
-                      <span className="qty-val fig">{p.qty}</span>
-                      <button type="button" onClick={() => setPickQty(p.sku_code, p.qty + 1)} aria-label="Increase">
-                        <IconPlus size={14} />
-                      </button>
-                    </div>
+                    <QtyStepper code={p.sku_code} qty={p.qty} onChange={(q) => setPickQty(p.sku_code, q)} />
                     <span className="fig pick-amt">{s?.selling_price ? inr(s.selling_price * p.qty) : '—'}</span>
                     <button type="button" className="icon-btn" style={{ width: 32, height: 32 }} aria-label="Remove" onClick={() => removePick(p.sku_code)}>
                       <IconClose size={14} />

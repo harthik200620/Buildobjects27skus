@@ -28,6 +28,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { parseArgs } from 'node:util';
 import { generateImage, resolveModel } from '@buildobjects/llm';
 import sharp from 'sharp';
 import { mediaStore } from '../src/media/store';
@@ -143,17 +144,19 @@ async function writeRenditions(floors: number, finish: Finish, solar: boolean, s
 }
 
 async function main() {
-  const argv = process.argv.slice(2);
-  const onlyIdx = argv.indexOf('--only');
-  const onlyRaw = argv.find((a) => a.startsWith('--only='))?.slice(7) ?? (onlyIdx >= 0 ? (argv[onlyIdx + 1] ?? '') : '');
+  const { values } = parseArgs({
+    args: process.argv.slice(2),
+    strict: false,
+    options: { only: { type: 'string' }, force: { type: 'boolean' }, sheet: { type: 'boolean' } },
+  });
   const only = new Set(
-    onlyRaw
+    String(values.only ?? '')
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean),
   );
-  const force = argv.includes('--force');
-  const wantSheet = argv.includes('--sheet');
+  const force = !!values.force;
+  const wantSheet = !!values.sheet;
 
   const store = mediaStore();
   const model = await resolveModel('image');

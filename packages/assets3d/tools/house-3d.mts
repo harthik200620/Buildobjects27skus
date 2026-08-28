@@ -17,6 +17,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { parseArgs } from 'node:util';
 import { loadEnv } from '@buildobjects/db';
 import sharp from 'sharp';
 import { ASSETS_DIR, resolveMediaRoot } from '../src/build';
@@ -85,17 +86,19 @@ async function waitFor(provider: MeshyProvider, handle: JobHandle, log: (s: stri
 }
 
 async function main() {
-  const argv = process.argv.slice(2);
-  const onlyIdx = argv.indexOf('--only');
-  const onlyRaw = argv.find((a) => a.startsWith('--only='))?.slice(7) ?? (onlyIdx >= 0 ? (argv[onlyIdx + 1] ?? '') : '');
+  const { values } = parseArgs({
+    args: process.argv.slice(2),
+    strict: false,
+    options: { only: { type: 'string' }, force: { type: 'boolean' }, 'dry-run': { type: 'boolean' } },
+  });
   const only = new Set(
-    onlyRaw
+    String(values.only ?? '')
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean),
   );
-  const force = argv.includes('--force');
-  const dryRun = argv.includes('--dry-run');
+  const force = !!values.force;
+  const dryRun = !!values['dry-run'];
 
   const apiKey = process.env.MESHY_API_KEY?.trim();
   if (!apiKey && !dryRun) throw new Error('MESHY_API_KEY is not set');

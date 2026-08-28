@@ -6,6 +6,7 @@ import { IconSearch } from '@/components/icons';
 import Pagination from '@/components/Pagination';
 import Plate from '@/components/Plate';
 import ProductCard from '@/components/ProductCard';
+import ResultsSection from '@/components/ResultsSection';
 import { allCategories, loadFacetConfig, searchSkus } from '@/lib/catalog';
 import { loadSession, serviceability } from '@/lib/data';
 import { deliverBy } from '@/lib/delivery';
@@ -92,13 +93,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           total={result.total}
           categoryFacet={categoryFacet}
         />
-        <section aria-label="Results">
-          {/* A heading, not just a label. Product titles are h3, and on a phone the facet rail —
-        whose section headings are the h2s — is behind a sheet and not in the document, so
-        the outline went h1 straight to h3. `aria-label` names a landmark but does not put a
-        rung on the ladder; a heading does both, and this one is for screen readers only
-        because the count above it already says it on screen. */}
-          <h2 className="visually-hidden">Results</h2>
+        <ResultsSection>
           {zero ? (
             <div className="cart-state">
               <span className="cart-state-mark">
@@ -136,7 +131,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
               <Pagination pathname="/search" state={state} page={result.page} totalPages={result.totalPages} />
             </>
           )}
-        </section>
+        </ResultsSection>
       </div>
     </div>
   );

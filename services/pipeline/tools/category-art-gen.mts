@@ -21,6 +21,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { parseArgs } from 'node:util';
 import { closeDb } from '@buildobjects/db';
 import { generateImage, resolveModel } from '@buildobjects/llm';
 import sharp from 'sharp';
@@ -116,20 +117,21 @@ function loadOverrides(): Record<string, Override> {
 }
 
 async function main() {
-  const argv = process.argv.slice(2);
-  /* `argv.indexOf('--only') + 1` is 0 when the flag is absent, so a bare `--force` was read as
-     the value of --only and filtered every category out. Only look for a value when the flag
-     is actually there. */
-  const onlyIdx = argv.indexOf('--only');
-  const onlyRaw = argv.find((a) => a.startsWith('--only='))?.slice(7) ?? (onlyIdx >= 0 ? (argv[onlyIdx + 1] ?? '') : '');
+  /* node:util, not a hand scan: `argv.indexOf('--only') + 1` is 0 when the flag is absent, so a
+     bare `--force` was once read as the value of --only and filtered every category out. */
+  const { values } = parseArgs({
+    args: process.argv.slice(2),
+    strict: false,
+    options: { only: { type: 'string' }, force: { type: 'boolean' }, sheet: { type: 'boolean' } },
+  });
   const only = new Set(
-    onlyRaw
+    String(values.only ?? '')
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean),
   );
-  const force = argv.includes('--force');
-  const wantSheet = argv.includes('--sheet');
+  const force = !!values.force;
+  const wantSheet = !!values.sheet;
 
   const taxonomy = JSON.parse(fs.readFileSync(path.join(REGISTRY, 'taxonomy.json'), 'utf8')) as { categories: { slug: string; name?: string }[] };
   const overrides = loadOverrides();

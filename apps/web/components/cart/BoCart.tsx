@@ -4,19 +4,8 @@ import type { CatalogPrices } from '@buildobjects/estimator';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import {
-  IconArrow,
-  IconCart,
-  IconCheckCircle,
-  IconClose,
-  IconCoin,
-  IconEstimate,
-  IconMinus,
-  IconPlus,
-  IconShield,
-  IconStorefront,
-  IconTruck,
-} from '@/components/icons';
+import { IconArrow, IconCart, IconCheckCircle, IconClose, IconCoin, IconEstimate, IconShield, IconStorefront, IconTruck } from '@/components/icons';
+import QtyStepper from '@/components/QtyStepper';
 import { getBoCoins, redeemBoCoins } from '@/lib/coins';
 import { skuTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
@@ -160,15 +149,7 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
                     </p>
                   </div>
 
-                  <div className="qty" role="group" aria-label={`Quantity of ${p.sku_code}`}>
-                    <button type="button" onClick={() => setPickQty(p.sku_code, p.qty - 1)} aria-label="Decrease">
-                      <IconMinus size={14} />
-                    </button>
-                    <span className="qty-val fig">{p.qty}</span>
-                    <button type="button" onClick={() => setPickQty(p.sku_code, p.qty + 1)} aria-label="Increase">
-                      <IconPlus size={14} />
-                    </button>
-                  </div>
+                  <QtyStepper code={p.sku_code} qty={p.qty} onChange={(q) => setPickQty(p.sku_code, q)} />
 
                   <span className="cart-line-total fig">{inr(price * p.qty, { decimals: true })}</span>
 

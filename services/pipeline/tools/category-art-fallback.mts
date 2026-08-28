@@ -1,5 +1,5 @@
 /**
- * `npx tsx services/pipeline/tools/category-art-fallback.mts --only slug,slug [--all-missing]`
+ * `npx tsx services/pipeline/tools/category-art-fallback.mts --only slug,slug`
  *
  * A designed tile for a category that has no photograph yet.
  *
@@ -29,6 +29,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { parseArgs } from 'node:util';
 import { closeDb } from '@buildobjects/db';
 import sharp from 'sharp';
 import { CATEGORY_ART_RATIO, writeCategoryRenditions } from '../src/media/category-art';
@@ -155,10 +156,8 @@ function tileSvg(mark: string): string {
 }
 
 async function main() {
-  const argv = process.argv.slice(2);
-  const onlyIdx = argv.indexOf('--only');
-  const raw = argv.find((a) => a.startsWith('--only='))?.slice(7) ?? (onlyIdx >= 0 ? (argv[onlyIdx + 1] ?? '') : '');
-  const only = raw
+  const { values } = parseArgs({ args: process.argv.slice(2), strict: false, options: { only: { type: 'string' } } });
+  const only = String(values.only ?? '')
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean);

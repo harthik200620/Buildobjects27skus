@@ -12,6 +12,7 @@ import { CategoryIcon, IconArrow } from '@/components/icons';
 import Pagination from '@/components/Pagination';
 import Plate from '@/components/Plate';
 import ProductCard from '@/components/ProductCard';
+import ResultsSection from '@/components/ResultsSection';
 import { allCategories, loadFacetConfig, loadFlagshipSkus, searchSkus } from '@/lib/catalog';
 import { type CategoryGroup, loadCatalogueCategories, loadCategory, loadSession, serviceability } from '@/lib/data';
 import { deliverBy } from '@/lib/delivery';
@@ -175,13 +176,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
             total={result.total}
             sideNav={<CategorySidebar categories={cats} current={category} />}
           />
-          <section aria-label="Results">
-            {/* A heading, not just a label. Product titles are h3, and on a phone the facet rail —
-          whose section headings are the h2s — is behind a sheet and not in the document, so
-          the outline went h1 straight to h3. `aria-label` names a landmark but does not put a
-          rung on the ladder; a heading does both, and this one is for screen readers only
-          because the count above it already says it on screen. */}
-            <h2 className="visually-hidden">Results</h2>
+          <ResultsSection>
             {result.hits.length === 0 ? (
               <div className="empty glass-card" style={{ borderRadius: 'var(--r-2)' }}>
                 <p className="kicker">{displayName(cat.slug, cat.name)}</p>
@@ -235,7 +230,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
                 )}
               </>
             )}
-          </section>
+          </ResultsSection>
         </div>
       )}
     </div>
