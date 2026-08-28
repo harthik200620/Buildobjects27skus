@@ -184,7 +184,7 @@ export default function FilterRail(props: RailProps) {
           <label className="facet-option">
             <input
               type="checkbox"
-              className="facet-checkbox"
+              className="check facet-checkbox"
               checked={checked}
               onChange={(e) => {
                 const attrs = { ...state.attrs };
@@ -303,7 +303,7 @@ export default function FilterRail(props: RailProps) {
             <label className="toolbar-stock-toggle">
               <input
                 type="checkbox"
-                className="facet-checkbox"
+                className="check facet-checkbox"
                 checked={!!state.stock}
                 onChange={(e) => push({ stock: e.target.checked ? true : undefined })}
               />
@@ -459,7 +459,7 @@ function FacetValueList({ values, selected, onToggle }: { values: FacetValueItem
         const disabled = !on && v.liveCount === 0;
         return (
           <label key={v.value} className="facet-option">
-            <input type="checkbox" className="facet-checkbox" checked={on} onChange={() => onToggle(v.value)} />
+            <input type="checkbox" className="check facet-checkbox" checked={on} onChange={() => onToggle(v.value)} />
             {v.swatch && <span className="facet-swatch" style={{ background: v.swatch }} aria-hidden="true" />}
             <div className="facet-option-body">
               <span className={`facet-option-label ${disabled ? 'facet-option-label--empty' : ''}`}>{v.label}</span>

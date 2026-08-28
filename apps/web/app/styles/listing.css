@@ -101,13 +101,20 @@
     line-height: 18px;
   }
 
+  /*
+   * The rail's checkboxes ARE `.check`, the store's own control — see theme.css. They used to be
+   * bare `<input type=checkbox>` with an `accent-color`, which is a NATIVE control: everything
+   * about it comes from the operating system, and `accent-color` only paints the tick, so an
+   * unticked one was a plain grey OS square sitting among a page of custom chips and pills. It is
+   * also the one control the store draws eleven of on a listing page, so it was the most repeated
+   * un-designed thing on the surface.
+   *
+   * Nothing here re-declares size, colour or cursor; the primitive owns those, including the 20 px
+   * bump on a coarse pointer that a 15 px box was never going to satisfy. This is only the
+   * alignment against a label that can wrap to two lines.
+   */
   .facet-checkbox {
     margin-top: 2px;
-    accent-color: var(--color-teal-700);
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-    flex-shrink: 0;
   }
 
   .facet-option-body {

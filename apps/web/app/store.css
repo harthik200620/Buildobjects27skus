@@ -3034,6 +3034,25 @@
     min-height: 40px;
     margin-bottom: 12px;
   }
+  /*
+   * ON A PHONE THE SORT CONTROL LINES UP WITH THE FIRST ROW, NOT WITH THE MIDDLE OF TWO.
+   *
+   * The left side of this bar — Filters, the count, "In stock only" — wraps to two lines at
+   * 390 px, making the bar 82 px tall. `align-items: center` then centred the 36 px sort control
+   * inside those 82, so it sat 23 px below the Filters button and 23 px above the stock toggle:
+   * on neither line, aligned to nothing, which is the single sloppiest thing on the phone
+   * listing. Measured, not guessed — the left group is 188x82 and the sort control 150x36 at y+23.
+   */
+  @media (max-width: 767.98px) {
+    .results-head {
+      align-items: flex-start;
+    }
+    /* The first line is a 44 px touch target and this control is 36; four pixels puts it on the
+       same optical centre rather than merely on the same top edge. */
+    .results-head > .sort-by {
+      margin-top: 4px;
+    }
+  }
   .results-count {
     font-size: 14px;
     line-height: 20px;
