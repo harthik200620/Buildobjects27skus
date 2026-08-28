@@ -173,9 +173,6 @@
   flex: none;
   opacity: 0.85;
 }
-.arv-coach--ok {
-  border-color: color-mix(in oklab, var(--color-ar-ok) 50%, transparent);
-}
 .arv-coach--seeking svg {
   animation: arv-spin 1.4s linear infinite;
 }
@@ -235,30 +232,6 @@
   height: 0;
   border: 7px solid transparent;
   animation: arv-beckon 1.6s ease-in-out infinite;
-}
-.arv-nudge-arrow--up {
-  --arv-beckon-y: -3px;
-
-  margin-top: -7px;
-  border-bottom-color: #fff;
-}
-.arv-nudge-arrow--down {
-  --arv-beckon-y: 3px;
-
-  margin-bottom: -7px;
-  border-top-color: #fff;
-}
-.arv-nudge-arrow--left {
-  --arv-beckon-x: -3px;
-
-  margin-left: -7px;
-  border-right-color: #fff;
-}
-.arv-nudge-arrow--right {
-  --arv-beckon-x: 3px;
-
-  margin-right: -7px;
-  border-left-color: #fff;
 }
 .arv-nudge-cta {
   flex: none;

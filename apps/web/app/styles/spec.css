@@ -83,18 +83,8 @@
     border-radius: 50%;
     background: var(--color-ink-3);
   }
-  .spec-dot--verified {
-    background: var(--color-success);
-  }
-  .spec-dot--fetched {
-    background: var(--color-brand);
-  }
   /* Filled from a class standard rather than read off a datasheet: hollow, because it is the
      one of the three that is not a measured fact about this particular product. */
-  .spec-dot--ai_filled {
-    background: transparent;
-    box-shadow: inset 0 0 0 1.5px var(--color-ink-3);
-  }
 
   /* ── search ─────────────────────────────────────────────────────────────── */
   .spec-search {

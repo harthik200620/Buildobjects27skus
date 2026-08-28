@@ -123,8 +123,18 @@ whose placement it describes, where it takes the band explicitly and can be test
 names a direction now: it is only ever called once the caller has decided the product cannot be
 seen, and silence was what lost it.
 
-**Measured after:** the four floor SKUs at +5 go from `0 px, no nudge` to a visible product and
-"Cement bag is below — Bring it here". **0 rendered nothing at all**, from 5.
+**Measured after, across the whole catalogue: 135 placements, 1 failure, and ZERO silent blanks.**
+Thirty-seven placements draw nothing — and all thirty-seven carry an arrow saying which way the
+product went, which is the contract this feature is judged on. Before: seven failures, of which
+five were blank and silent.
+
+That blank count went UP, from 7 to 37, and the reason is the harness rather than the view. `tilt`
+used to retry a failed pose by sleeping again, which cannot revive a ticker that has stopped — and
+a stopped ticker is exactly what "camera is at -10.0" means, that being NO_SENSOR_PITCH_DEG. It now
+re-arms the feed and retries twice, and **134 of 135 placements reach the pitch they ask for**,
+against three that failed outright and an unknown number that were only part-way through the
+slerp. A camera that actually gets to +25 has genuinely lost sight of more products than one that
+stopped at +5; that they are all signposted is the point.
 
 One remains, and it is a threshold disagreement rather than a silent failure: `epx-fos` at −15
 draws 903 px — a small tin placed 6 m away, which is as close as a floor is visible in the band at

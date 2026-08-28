@@ -139,13 +139,26 @@ async function tilt(page: Page, pitchDeg: number): Promise<{ ok: boolean; why: s
    */
   const read = async () => (await page.evaluate('(() => { const d = window.__arDebug; return d && d.pose ? d.pose.pitchDeg : null; })()')) as number | null;
   let actual = await read();
-  if (actual !== null && Math.abs(actual - pitchDeg) > 8) {
-    /* Screenshots pause the page, and a paused page throttles the ticker below the view's 1500 ms
-       silence timeout, which drops it back to the assumed pitch. Give the feed another second to
-       be believed before calling it a failure. */
+
+  /*
+   * WAITING LONGER CANNOT REVIVE A TICKER THAT HAS STOPPED.
+   *
+   * The retry here used to be a second sleep, and it left three SKUs failing every run at +25 with
+   * "camera is at -10.0" — which is NO_SENSOR_PITCH_DEG exactly, i.e. the view had decided the
+   * sensor was dead and fallen back to the assumed pitch. That happens when the interval is
+   * throttled past the 1500 ms silence timeout, which a background tab and a screenshot both do.
+   * Once it has, no amount of waiting brings the samples back: the timer is the thing that stopped.
+   *
+   * So re-arm the feed and give it a moment, twice, before calling it a failure. A harness that
+   * reports its own flake as a product defect costs more than the defect would.
+   */
+  for (let attempt = 0; attempt < 2 && actual !== null && Math.abs(actual - pitchDeg) > 8; attempt++) {
+    await startTiltFeed(page);
+    await page.evaluate(`(() => { window.__tiltBeta = 90 + (${pitchDeg}); })()`);
     await page.waitForTimeout(1200);
     actual = await read();
   }
+
   if (actual === null) return { ok: false, why: 'no pose reported — is ?debug=1 on the URL?' };
   if (Math.abs(actual - pitchDeg) > 8) return { ok: false, why: `asked for ${pitchDeg} deg, camera is at ${actual.toFixed(1)}` };
   return { ok: true, why: '' };

@@ -22,14 +22,6 @@
 }
 
 /* The HUD SVG: surface boxes, placement footprint, anchor dot and calibration marks. */
-.ar-camera-hud {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-}
 .ar-surface-box rect {
   fill: var(--color-ar-wash);
   stroke: var(--color-ar-line);
@@ -43,33 +35,6 @@
 .ar-surface-box--target rect {
   stroke: var(--color-brand);
   stroke-dasharray: none;
-  stroke-width: 2;
-}
-.ar-footprint {
-  fill: none;
-  stroke-width: 2;
-}
-.ar-footprint--ok {
-  stroke: var(--color-ar-line-strong);
-}
-.ar-footprint--dim {
-  stroke: var(--color-ar-warn);
-}
-.ar-footprint--warn {
-  stroke: var(--color-ar-danger);
-}
-.ar-anchor-dot {
-  fill: var(--color-brand);
-  stroke: var(--color-header-ink);
-  stroke-width: 2;
-}
-.ar-calib-line {
-  stroke: var(--color-brand);
-  stroke-width: 2;
-}
-.ar-calib-dot {
-  fill: var(--color-brand);
-  stroke: var(--color-header-ink);
   stroke-width: 2;
 }
 
@@ -137,46 +102,9 @@
 }
 
 /* The title pill is positioned, so it must not grow: one line, ellipsis, never a second row. */
-.ar-hud-id {
-  max-width: min(64vw, 300px);
-  flex: none;
-}
-.ar-hud-name {
-  overflow: hidden;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
-.ar-surface-prompt {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  /* 100 %, not 92vw: this is a flow child of .ar-top now, and a viewport-relative width is wider
-     than the column it sits in on a narrow phone — which centred it and clipped both ends. */
-  max-width: 100%;
-  padding: 9px 18px;
-  border-radius: var(--radius-lg);
-  background: var(--color-ar-danger);
-  color: var(--color-on-brand);
-  font-size: var(--t-cap);
-  line-height: 18px;
-  font-weight: 600;
-  text-align: left;
-  box-shadow: 0 4px 20px var(--color-ar-shadow);
-  animation: ar-seek 2s infinite ease-in-out;
-}
 .ar-surface-prompt svg {
   flex: none;
-}
-.ar-surface-prompt--ok {
-  background: var(--color-ar-ok);
-  animation: none;
-}
-.ar-surface-prompt--seeking {
-  background: var(--color-ar-warn);
 }
 
 /*
@@ -213,65 +141,9 @@
  * have it brought to you is more useful. Sized and coloured as an action, so it does not read as
  * one more piece of passive status text among the pills above it.
  */
-.ar-nudge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  max-width: min(94vw, 420px);
-  padding: 9px 12px;
-  border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--accent) 22%, rgb(0 0 0 / 0.62));
-  color: #fff;
-  font-size: 12.5px;
-  line-height: 1.25;
-  text-align: left;
-  pointer-events: auto;
-  cursor: pointer;
-  backdrop-filter: blur(10px) saturate(1.3);
-  box-shadow: 0 6px 22px rgb(0 0 0 / 0.35);
-  animation: ar-nudge-in 220ms ease-out both;
-}
 @keyframes ar-nudge-in {
   from {
     opacity: 0;
     transform: translateY(-6px);
-  }
-}
-/* A solid triangle rather than a glyph: an arrow has to read at a glance in a bright room, and a
-   font arrow is at the mercy of whatever the device substitutes for it. */
-.ar-nudge-arrow {
-  flex: none;
-  width: 0;
-  height: 0;
-  border: 7px solid transparent;
-}
-.ar-nudge-arrow--up {
-  border-bottom-color: #fff;
-  margin-top: -7px;
-}
-.ar-nudge-arrow--down {
-  border-top-color: #fff;
-  margin-bottom: -7px;
-}
-.ar-nudge-arrow--left {
-  border-right-color: #fff;
-  margin-left: -7px;
-}
-.ar-nudge-arrow--right {
-  border-left-color: #fff;
-  margin-right: -7px;
-}
-.ar-nudge-cta {
-  flex: none;
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.2);
-  font-weight: 600;
-  white-space: nowrap;
-}
-@media (prefers-reduced-motion: reduce) {
-  .ar-nudge {
-    animation: none;
   }
 }

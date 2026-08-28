@@ -287,63 +287,12 @@
   }
 
   /* ── the three questions ────────────────────────────────────────────────── */
-  .est-ask {
-    display: grid;
-    gap: var(--s-4);
-  }
-  .est-q {
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
-  }
-  .est-q[data-open="true"] {
-    border-color: var(--color-line-strong);
-    background: var(--color-surface-2);
-  }
-  .est-q-head {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .est-q-n {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: none;
-    width: 22px;
-    height: 22px;
-    border-radius: var(--radius-pill);
-    background: var(--color-teal-50);
-    color: var(--color-brand);
-    font-size: var(--t-fine);
-    font-weight: 700;
-    font-family: var(--font-figure);
-  }
-  .est-q-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--color-ink);
-  }
-  .est-q-hint {
-    font-size: var(--t-cap);
-    line-height: 18px;
-    color: var(--color-ink-2);
-    margin-top: 2px;
-  }
 
   /* The two lines under the estimator's heading: what it does, then what its numbers are worth.
      Splitting them is the point - the second is a provenance note, not part of the pitch. */
   .estimate-lede {
     max-width: 68ch;
     text-wrap: pretty;
-  }
-  .estimate-rates {
-    margin-top: var(--s-2);
-    font-size: var(--t-fine);
-    line-height: 17px;
-    color: var(--color-ink-3);
   }
   .estimate-rates .fig {
     color: var(--color-ink-2);
@@ -1369,15 +1318,6 @@
     padding: var(--s-3);
     border-left: 2px solid var(--hair-2);
     border-radius: 0 var(--r-1) var(--r-1) 0;
-  }
-  .truth-line--above {
-    border-left-color: var(--color-coin-ink);
-  }
-  .truth-line--below {
-    border-left-color: var(--color-danger);
-  }
-  .truth-line--within {
-    border-left-color: var(--color-success);
   }
   .truth-line-head {
     display: flex;
