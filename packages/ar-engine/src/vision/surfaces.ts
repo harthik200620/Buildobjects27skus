@@ -6,21 +6,16 @@ import { type CellGrid, gridMean, sobel } from './frame';
 /**
  * Where the surfaces are, worked out on the device.
  *
- * The live camera used to send every third frame to Gemini and wait for a JSON answer. That works
- * and it costs an API key, a round trip and a per-frame bill, so AR only ever ran for whoever had
- * all three. This does the same job locally: segment the frame into flat regions, then decide
- * what each one is using the strongest cue available on a phone — gravity.
+ * Sending every third frame to Gemini works and costs an API key, a round trip and a per-frame
+ * bill, so AR only ran for whoever had all three. This segments the frame into flat regions and
+ * decides what each one is using the strongest cue a phone has: gravity. The device reports its
+ * orientation, so the horizon is known geometry rather than something to infer — flat and wide
+ * below it is floor, flat and bright above it is ceiling, straddling it is a wall. Vision alone
+ * has to find vanishing points and gets a corridor wrong.
  *
- * Gravity is the whole trick. The device already reports its orientation, so the horizon line is
- * known geometry rather than something to infer from pixels: everything below it that is flat and
- * wide is floor, everything above it that is flat and bright is ceiling, and a flat region
- * straddling it is a wall. Vision alone has to work that out from vanishing points and gets it
- * wrong in a corridor; with a gravity vector it is arithmetic.
- *
- * What this deliberately does NOT do is name the room. A model can look at a photo and say
- * "kitchen"; a luminance grid cannot, and pretending otherwise is how a placement gate starts
- * refusing a cement bag in a bedroom for imaginary reasons. It reports `unknown` unless the sky
- * is visible, and the placement rules that care about scene are the two that check for outdoors.
+ * It deliberately does NOT name the room. A luminance grid cannot say "kitchen", and pretending
+ * otherwise is how a placement gate starts refusing a cement bag in a bedroom for imaginary
+ * reasons. It reports `unknown` unless the sky is visible.
  */
 
 /** Cells merge into one region while they are this close in brightness. */

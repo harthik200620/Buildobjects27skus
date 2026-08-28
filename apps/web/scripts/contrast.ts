@@ -1,28 +1,17 @@
 /**
  * pnpm --filter @buildobjects/web contrast
  *
- * Four gates over the deep teal and silver theme, all parsing packages/ui/src/theme.css.
+ * Four gates over the theme, all parsing packages/ui/src/theme.css.
  *
- * 1. CONTRAST. Every pair the theme relies on, measured: text ≥ 4.5, non-text ≥ 3.0.
- * 2. INK-4 IS DECORATIVE. --ink-4 measures 3.6 on the canvas, which is legal for a rule and
- *    illegal for a word. Any selector that sets it as a colour and also sets a font-size above
- *    12px fails. New in v2, because v2 is the first palette with a step this quiet in it.
- * 3. LITERALS IN CSS. A dark theme is only cohesive while every colour comes from a token.
- * 4. LITERALS AS UTILITIES. The same rule applied to .tsx, because a Tailwind colour utility
- *    beats every token in theme.css and neither of the first two gates could see it.
+ * 1. CONTRAST. Every pair the theme relies on, measured: text >= 4.5, non-text >= 3.0.
+ * 2. INK-4 IS DECORATIVE. It measures 3.6 on the canvas — legal for a rule, illegal for a word.
+ * 3. LITERALS IN CSS. A dark theme is cohesive only while every colour comes from a token.
+ * 4. LITERALS AS UTILITIES, in .tsx — a Tailwind colour utility beats every token in theme.css,
+ *    and neither of the first two gates can see one.
  *
- * ── ON RESOLVING TOKENS ────────────────────────────────────────────────────────
- *
- * v2 renamed the palette — --color-ink-2 became --ink-2, --color-surface became --surf-2 — and
- * kept the v1 names as aliases pointing at the new ones, so about nine hundred existing
- * declarations keep working while surfaces are moved over one at a time. That means a token's
- * value is now reached through a chain (`--color-ink-2: var(--ink-2)` → `--ink-2: #c3d6d9`)
- * rather than sitting there as a hex literal.
- *
- * A first pass at this gate read only `--color-*: #hex` and reported eighty-nine failures on a
- * palette where nothing was wrong — every alias looked like a missing token. So it resolves
- * var() chains now, with a depth limit, and it checks the CANONICAL names. If an alias is ever
- * pointed somewhere wrong, gate 1 measures the wrong colour and says so.
+ * Token values are reached through var() chains (`--color-ink-2: var(--ink-2)` -> `#c3d6d9`), so
+ * this resolves them with a depth limit and checks the CANONICAL names. Reading only
+ * `--color-*: #hex` reported eighty-nine failures on a palette where nothing was wrong.
  */
 import fs from 'node:fs';
 import path from 'node:path';

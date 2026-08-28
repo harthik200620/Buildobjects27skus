@@ -1,40 +1,19 @@
 /**
  * The grounding validator. Fails closed.
  *
- * ── WHERE THIS CAME FROM ────────────────────────────────────────────────────
- * Ported from the BuildO price-intelligence assistant, where it was written and
- * calibrated against a live catalogue. The MECHANISM is unchanged, because the
- * mechanism is not domain-specific: a model cannot be trusted to report whether
- * it made something up, so it is never asked, and everything it says is held
- * against a ledger of what the tools actually returned.
+ * A model cannot be trusted to report whether it made something up, so it is never asked. Every
+ * number and named entity in the draft is extracted mechanically and held against the FactLedger
+ * the tools deposited this turn; anything not in the ledger is a violation, and a draft with
+ * violations does not reach the user. The engine gets one silent repair attempt, then the turn
+ * degrades to an honest "I don't have that" — a wrong landed price becomes a signed purchase
+ * order, so being occasionally unhelpful beats being occasionally wrong.
  *
- * What changed here is only the vocabulary and the refusal — this store sells
- * tiles, bulbs, solar, CCTV, extinguishers, glass, epoxy and total stations as
- * well as cement and steel, and it answers to one refusal sentence rather than
- * three.
+ * The failure mode to avoid is firing on TRUE statements: one false positive and the operator
+ * turns the whole thing off. Three deliberate exemptions:
  *
- * The premise: a model cannot be trusted to report whether it made something
- * up, so it is never asked. Every number and every named entity in the draft
- * is extracted mechanically and held against the FactLedger the tools
- * deposited during this turn. Anything not in the ledger is a violation, and a
- * draft with violations does not reach the user.
- *
- * The engine gets one silent repair attempt — the draft goes back to the model
- * with its own violations listed — and if that fails too, the turn degrades to
- * an honest "I don't have that" instead of a plausible fiction. Degrading to
- * silence is the entire point. A price assistant that is occasionally wrong is
- * worth less than one that is occasionally unhelpful, because a wrong landed
- * price becomes a signed purchase order.
- *
- * Calibration is the hard part, and the failure mode to avoid is a validator
- * that fires on true statements: one false positive on a correct answer and
- * the operator turns the whole thing off. So three categories are exempt, and
- * each one is a deliberate hole with a reason:
- *
- *   - Numbers the USER supplied. Echoing "your 50 bags" is not invention.
- *   - Structural numerals: list markers, "step 2 of 3", ordinals in prose.
- *   - A closed vocabulary of domain terms that name nothing — GST, ISI, OPC,
- *     CPVC, "Hyderabad". These are words, not claims.
+ *   - numbers the USER supplied — echoing "your 50 bags" is not invention
+ *   - structural numerals: list markers, "step 2 of 3", ordinals in prose
+ *   - a closed vocabulary that names nothing — GST, ISI, OPC, CPVC, "Hyderabad"
  */
 
 import { capitalisedRuns, type FactLedger } from './ledger';
@@ -736,22 +715,16 @@ export function checkScope(message: string, priorUserText = ''): ScopeVerdict {
   // Short messages are follow-ups; the model has the thread and decides.
   if (!hasSignal && words >= 4) {
     /*
-     * A SHORT FOLLOW-UP INSIDE AN ON-TOPIC CONVERSATION IS ON TOPIC.
+     * A short follow-up inside an on-topic conversation is on topic.
      *
-     * The gate used to judge each message alone. A customer asked about steel, was told it was
-     * coming soon, and wrote "I am asking what is stell" — six words, no signal, because the one
-     * word carrying the subject was mistyped. The gate declined to talk to them at all, mid
-     * conversation, over a typo. That is the worst moment to refuse somebody: they have just told
-     * you the last answer missed, and the shop replies that they can only ask about the shop.
+     * Judging each message alone refused "I am asking what is stell" mid-conversation, over a
+     * typo — the worst moment to refuse somebody, since they have just said the last answer
+     * missed. Any subject word can be mistyped, so the fix cannot be a longer spelling list; the
+     * CONTEXT is what is reliable.
      *
-     * Any subject word can be mistyped, so the fix cannot be a longer list of spellings. What is
-     * reliable is the CONTEXT: the previous turns were plainly about materials, so this one is
-     * too, and the model — which can read "stell" for what it is — should get the chance to say so.
-     *
-     * The out-of-domain patterns above still run on THIS message and still refuse, so a request
-     * for code or a poem cannot slip in behind a question about cement. That is deliberate: the
-     * conversation earns a follow-up the benefit of the doubt about its SUBJECT, never about what
-     * is being asked for.
+     * The out-of-domain patterns above still run on THIS message, so a request for code cannot
+     * slip in behind a question about cement: the conversation earns the benefit of the doubt
+     * about its SUBJECT, never about what is being asked for.
      */
     const followsOnTopic = words <= FOLLOW_UP_WORDS && DOMAIN_SIGNALS.some((p) => p.test(priorUserText));
     if (!followsOnTopic) return { allow: false, reason: 'OFF_TOPIC', reply: REFUSAL_OFF_TOPIC };

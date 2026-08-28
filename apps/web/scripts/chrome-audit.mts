@@ -1,32 +1,19 @@
 /**
  * The chrome, under a real wheel.
  *
- * Every other gate in here reads a page that is standing still. The bar's whole job is what it
- * does while the page MOVES, and three separate defects shipped because nothing measured that:
- *
- *   · Search was `position: fixed; inset: 0` and lived inside the header, which carries a
- *     backdrop-filter — and a backdrop-filter makes an element a containing block for fixed
- *     descendants exactly the way a transform does. So `inset: 0` resolved to the BAR. Measured on
- *     the shipped page at 1024×680: the overlay laid out at 1009×143 and its scrim at 1009×61.
- *     The panel overflowed its box and drew in roughly the right place, so it looked correct and
- *     was not — pressing the dimmed page below the palette did nothing, because there was no
- *     scrim down there to press.
- *   · The catalogue menu is fixed at coordinates measured off its trigger in VIEWPORT space, and
- *     was laid out against the same wrong box.
- *   · Four pinned panels — the filter rail, the buy column, the cart total, the estimator's grand
- *     total — hung from four different heights, none of which was the height of the condensed bar
- *     they were hanging under.
- *
- * So: drive a real wheel, and check the four things that only exist in motion.
+ * Every other gate reads a page standing still. The bar's whole job is what it does while the
+ * page MOVES, and three defects shipped because nothing measured that: a fixed overlay resolving
+ * `inset: 0` against the BAR rather than the viewport (a backdrop-filter makes an element a
+ * containing block for fixed descendants, exactly as a transform does), the catalogue menu laid
+ * out against the same wrong box, and four pinned panels hanging from four different heights.
  *
  *   pnpm --filter @buildobjects/web chrome:audit
  *
- * Exits non-zero on any failure, so it can join the gate.
+ * Exits non-zero on failure, so it can join the gate.
  *
- * ONE RULE FOR EVERYTHING INSIDE A page.evaluate() BELOW: no named inner arrows. tsx compiles
- * `const f = () => …` to esbuild's `__name` helper, which does not exist in the page, and the
- * call dies with `ReferenceError: __name is not defined` — from a line that reads as valid
- * JavaScript. Inline the helper, or write it out twice.
+ * ONE RULE INSIDE EVERY page.evaluate() BELOW: no named inner arrows. tsx compiles
+ * `const f = () => …` to esbuild's `__name` helper, which does not exist in the page, and the call
+ * dies with `ReferenceError: __name is not defined` from a line that reads as valid JavaScript.
  */
 import { chromium, type Page } from 'playwright';
 import { BASE } from './harness';

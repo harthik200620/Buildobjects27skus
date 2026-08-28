@@ -1,31 +1,19 @@
 /**
- * Is the quote you were given fair?
+ * Is the quote you were given fair? Maps a quotation's lines onto the engine's line keys and says
+ * where each sits against a rate card that states its version, city index and basis.
  *
- * ── WHY THIS IS THE HOOK ────────────────────────────────────────────────────────────────────
- * Almost everybody building a house has two or three contractor quotes on a phone and no way at
- * all to judge them. There is no published rate for "brickwork in Guntur in August". The buyer's
- * only options today are to trust the contractor, or to ask an uncle.
+ * Four rules, none negotiable:
  *
- * This maps a quote's lines onto the engine's own line keys and says where each one sits against
- * a rate card that states its version, its city index and its basis. It is not an opinion.
- *
- * ── THE RULES, AND THEY ARE NOT NEGOTIABLE ──────────────────────────────────────────────────
- *
- *  1. NEVER ACCUSE ANYONE. The output is "22 % above our rate for Hyderabad, Aug 2026" with the
- *     rate cited. It is never "your contractor is cheating you". We have not seen the site, the
- *     specification, the access or the terms; a contractor may be dearer for a dozen legitimate
- *     reasons and the buyer is the one who knows which.
- *  2. A LINE BELOW THE RANGE IS FLAGGED HARDER THAN ONE ABOVE. Underquoting is how a build stalls
- *     at month nine with the slab cast and the money gone, and it is the failure mode nobody
- *     warns a first-time builder about. An over-quote costs money; an under-quote costs the house.
- *  3. UNMATCHABLE LINES ARE LISTED, NEVER DROPPED. Quietly ignoring a line the platform cannot
- *     understand is how a comparison becomes a lie by omission.
+ *  1. NEVER ACCUSE ANYONE. "22% above our rate for Hyderabad, Aug 2026", with the rate cited —
+ *     never "your contractor is cheating you". We have not seen the site, the specification or
+ *     the terms, and a contractor may be dearer for a dozen legitimate reasons.
+ *  2. A LINE BELOW THE RANGE IS FLAGGED HARDER THAN ONE ABOVE. An over-quote costs money; an
+ *     under-quote is how a build stalls at month nine with the slab cast and the money gone.
+ *  3. UNMATCHABLE LINES ARE LISTED, NEVER DROPPED — omission is how a comparison becomes a lie.
  *  4. EVERY COMPARISON CARRIES ITS RATE-PACK VERSION AND CITY INDEX, so the buyer can argue with
- *     it. Being arguable is the point — an unarguable number is just another person to trust.
+ *     it. An unarguable number is just another person to trust.
  *
- * ── AND IT IS THEIR DOCUMENT ────────────────────────────────────────────────────────────────
- * A contractor's quotation is a private commercial document. Nothing here persists it. The caller
- * holds it in memory for the session and the UI says so.
+ * A contractor's quotation is a private commercial document. Nothing here persists it.
  */
 import { estimate } from './estimate';
 import type { CatalogPrices, EstimateInputs, EstimateResult, LineItem, Tier } from './types';
@@ -60,20 +48,14 @@ export interface QuotedLine {
 export type QuoteVerdict = 'within' | 'above' | 'below' | 'unmatchable';
 
 /**
- * The same line, bought from the store instead.
+ * The same line, bought from the store instead — the only part of the comparison that is not an
+ * opinion. A rate card is a published average a contractor can honestly disagree with; this is
+ * the price the store sells that exact material for today, which is arithmetic the buyer can act
+ * on.
  *
- * ── WHY THIS IS THE ONLY PART OF THE COMPARISON THAT IS NOT AN OPINION ──────────────────────
- * Everything else here says where a quoted line sits against a rate card, and a rate card is a
- * published average that a contractor can honestly disagree with. This is different: it is the
- * price the store is selling that exact material for today. If a quote charges ₹600 a bag for
- * cement the store sells at ₹500, that is not a judgement about the contractor — it is arithmetic
- * the buyer can act on, because they can buy the cement.
- *
- * ── AND IT ONLY EVER SPEAKS FOR WHAT THE STORE ACTUALLY SELLS ───────────────────────────────
- * A line whose engine rate came from a thumb rule (`rateSource: 'seed'`) is left completely
- * alone. Labour, centering, plastering, the site staying open — the store has no price for any
- * of it and inventing one would be worse than saying nothing. So the saving printed at the top
- * of this card is always a floor, never a claim about the whole quotation.
+ * A line whose engine rate came from a thumb rule (`rateSource: 'seed'`) is left alone — labour,
+ * centering, plastering: the store has no price and inventing one is worse than silence. The
+ * saving at the top of the card is always a floor, never a claim about the whole quotation.
  */
 export interface StoreReprice {
   sku_code: string;

@@ -1,61 +1,28 @@
-/* ═══════════════════════════════════════════════════════════════════════════════
-   THE BUILD OBJECTS ICON SET
-   A drop-in replacement for apps/web/components/icons.tsx
-   ═══════════════════════════════════════════════════════════════════════════════
+/* The Build Objects icon set — bespoke, because a stock icon pack is the fastest way for a
+   visitor to file a site under "template".
 
-   WHY THIS FILE EXISTS
+   THE GRAMMAR. Five rules; an icon that breaks one does not belong in the family.
 
-   The store shipped 93 Lucide icons. Lucide is a good library and it is on
-   several million websites, which is exactly the problem: a stock icon pack is
-   the single fastest way for a visitor to file a site under "template". The
-   BuildO brief bans them in as many words — "custom iconography (no stock
-   icon-pack look)" — and every one of the 93 was a violation.
+   1. GRID          24x24. Art lives inside 3 -> 21, never touching the edge.
+   2. STROKE        1.75, uniform. A toolbar where one glyph is bolder reads as a mistake before
+                    it reads as emphasis.
+   3. CORNERS       Butt caps, miter joins, and a 4.6-unit 45-degree chamfer on the top-right of
+                    every container shape. This is the signature: rounded corners are what every
+                    icon pack does, a chamfer is what a drafting pen does, and it is the one
+                    detail that survives at 16px.
+   4. ACCENT        Exactly one element per icon carries `.ic-a` — never two — so the eye lands in
+                    the same place on every glyph and a row has rhythm instead of noise.
+   5. OPTICAL SIZE  Drawn for 20px. 16px strokes up to 1.9 and 28px+ down to 1.6, because a 1.75
+                    stroke correct at 20 is spindly at 16 and heavy at 32.
 
-   The props contract is identical to the old file's and so is every icon name,
-   with one exception that mattered: the old file also exported CATEGORY_ICONS,
-   CategoryIcon, SPEC_GROUP_ICONS and SpecGroupIcon, and eight call sites render
-   a mark through them from a string that comes out of the database. Those four
-   are rebuilt at the foot of this file against the set below — the swap is not
-   complete without them, and dropping them in would have compiled everywhere
-   except the eight places it mattered.
+     <IconCement size={20} />                          accent inherits the brand teal
+     <IconCement size={20} accent="none" />            monochrome, for dense tables
+     <IconCoin size={20} accent="var(--amber-700)" />  the coin owns amber
 
-   lucide-react is gone from this app's dependencies. It survives as a devDependency
-   of services/pipeline, where category-art-fallback.mts reads glyph geometry out of
-   the installed package to draw a tile for a category that has no photograph yet.
+   The stylesheet needs `.ic-a { color: var(--icon-accent, currentColor); }` once.
 
-   ── THE GRAMMAR ────────────────────────────────────────────────────────────────
-
-   Five rules. An icon that breaks one does not belong in the family.
-
-   1. GRID          24 × 24. Art lives inside 3 → 21, never touching the edge.
-   2. STROKE        1.75, uniform. No icon is heavier or lighter than its
-                    neighbours, because a toolbar where one glyph is bolder reads
-                    as a mistake before it reads as emphasis.
-   3. CORNERS       BUTT CAPS, MITER JOINS, and a 4.6-unit 45° CHAMFER on the
-                    top-right of every container shape. This is the signature.
-                    Rounded corners are what every icon pack does; a chamfer is
-                    what a drafting pen does, and BuildO sells to people who read
-                    drawings. It is the one detail that makes the set unmistakably
-                    ours at 16px, where nothing else survives.
-   4. ACCENT        Exactly one element per icon carries `.ic-a`, which resolves
-                    to --icon-accent (brand teal) and falls back to currentColor.
-                    One accent — never two — so the eye lands in the same place on
-                    every glyph and a row of icons has a rhythm instead of noise.
-   5. OPTICAL SIZE  Icons are drawn for 20px. 16px strokes up to 1.9 and 28px+
-                    down to 1.6 automatically, because a 1.75 stroke that is
-                    correct at 20 is spindly at 16 and heavy at 32.
-
-   ── HOW TO USE ─────────────────────────────────────────────────────────────────
-
-     <IconCement size={20} />                    accent inherits the brand teal
-     <IconCement size={20} accent="none" />      monochrome, for dense tables
-     <IconCoin size={20} accent="var(--amber-700)" />   the coin owns amber
-
-   Put this in the stylesheet once:
-
-     .ic-a { color: var(--icon-accent, currentColor); }
-
-   ═════════════════════════════════════════════════════════════════════════════ */
+   CATEGORY_ICONS, CategoryIcon, SPEC_GROUP_ICONS and SpecGroupIcon are at the foot of this file:
+   eight call sites render a mark from a string that comes out of the database. */
 
 import type React from 'react';
 

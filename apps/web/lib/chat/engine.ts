@@ -1,30 +1,15 @@
 /**
- * The turn loop.
+ * The turn loop: scope gate -> tool loop -> grounding validation -> one silent repair -> answer,
+ * with a refusal at any point that fails. The ordering is the design — the cheapest guard runs
+ * first, and nothing reaches the reader that has not been held against what the tools produced.
  *
- * Scope gate → tool loop → grounding validation → one silent repair → answer, and a refusal at
- * any point that fails. The ordering is the design: the cheapest guard runs first, and nothing
- * reaches the reader that has not been held against the facts the tools actually produced.
+ * The repair pass earns its latency: grounding failures are overwhelmingly ONE bad token in an
+ * otherwise correct answer, and handing the model its own violation list fixes most in a round.
+ * What survives two rounds is not a formatting slip, and that turn degrades to a refusal.
  *
- * The repair pass is worth its latency. Flash's grounding failures are overwhelmingly ONE bad
- * token in an otherwise correct answer — a rounded price, a brand carried over from the previous
- * turn — and handing the model its own violation list fixes most of them in a single round. What
- * survives two rounds is not a formatting slip, and that turn degrades to an honest refusal.
- *
- * ── PORTED, AND WHAT CHANGED ────────────────────────────────────────────────────────────────
- * The loop is the BuildO price-intelligence assistant's, because the loop is the part that is not
- * domain-specific. Three things are different here:
- *
- *   THE TOOLS ARE ASYNC. This store's catalogue is Meilisearch and Postgres, not a local SQLite
- *   file, so every call is awaited and the round's calls run CONCURRENTLY — four sequential
- *   searches would be four round trips where one is enough.
- *
- *   THERE IS NO ANSWER CACHE. The original keyed its cache on SQLite's data_version, so a
- *   collection run invalidated every entry the moment it committed and no stale price could ever
- *   be served. This store has no equivalent signal, and a cache with no invalidation is a
- *   promise to quote yesterday's price at somebody tomorrow. Left out rather than approximated.
- *
- *   THERE IS NO REGION GATE. The original refused a pincode it had no supply data for. Here the
- *   session already carries a served pincode — the store would not have let them in otherwise.
+ * Tool calls in a round run CONCURRENTLY — four sequential searches would be four round trips
+ * where one is enough. There is deliberately NO answer cache: there is no invalidation signal
+ * here, and a cache without one is a promise to quote yesterday's price at somebody tomorrow.
  */
 
 import { allCategories } from '@/lib/catalog';

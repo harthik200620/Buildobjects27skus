@@ -1,46 +1,28 @@
 'use client';
 
 /**
- * THE BO LIFT — a real elevator, in WebGL.
+ * The BO lift — a reward you can see arriving. Coins in the car, doors close over them, the car
+ * rides with the shaft streaming past, and the doors part on what it brought back. The coins
+ * going out of sight is occlusion by the doors, not a fade, which is the only version a viewer
+ * believes.
  *
- * ── WHAT IT HAS TO SELL ─────────────────────────────────────────────────────────────────────
- * A reward you can see arriving. The coins sit in the car with the doors open; the doors close
- * over them; the car RIDES — shaft streaming past, floor plates flicking by, the indicator
- * counting; it decelerates, settles on its springs; and the doors part on what it brought back.
+ * THE SHAFT MOVES AND THE CAR DOES NOT. Identical on screen to flying a camera up a mile of
+ * shaft, and it means the geometry is a few metres tall with the rungs recycled as they leave
+ * frame. Two consequences: the DOOR FRAME rides with the car (a landing's doorway only exists at
+ * a landing), and the shaft sits at the SIDES, since from in front the car occludes anything
+ * behind it.
  *
- * The coins going out of sight is not a fade. The doors physically occlude them, which is the
- * only version of that idea a viewer believes, and it is free: the doors were going to close
- * anyway.
+ * The performance contract — nothing here may cost the site anything:
  *
- * ── WHY THE SHAFT MOVES AND THE CAR DOES NOT ────────────────────────────────────────────────
- * A camera in the lobby watching a lift go up sees nothing move — the doors are shut and the
- * frame is the frame. A camera riding with the car sees the shaft stream past, which is the shot
- * that reads. Rather than fly a camera up a mile of shaft, the car and camera hold still and the
- * SHAFT is what travels: identical on screen, and it means the geometry is a few metres tall
- * instead of a hundred, with the rungs recycled through it as they leave the frame.
- *
- * Which decides where every part belongs, and the first cut got it wrong. The DOOR FRAME rides
- * with the car, because the camera rides with the car — a landing's doorway only exists at a
- * landing, and one that hung in view for the whole journey would be the one thing on screen
- * insisting nothing was moving. And the shaft has to be VISIBLE, which means it cannot be behind
- * the car: from in front, the car occludes everything behind it, so the first cut rendered a
- * shaft nobody could ever see and a ride that looked like a still photograph of a closed door.
- * The shaft is at the SIDES now, either side of the car, with ribbed walls streaming down past it.
- *
- * ── THE PERFORMANCE CONTRACT ────────────────────────────────────────────────────────────────
- * The rule for the whole store is that nothing here may cost the site anything, so:
- *
- *   NO SHADOW MAPS. A shadow map is the single most expensive thing a scene this small can ask
- *   for. The contact under the coins is a painted radial plane and reads better anyway, because
- *   it can be exactly as soft as it should be.
- *   ONE ENVIRONMENT, GENERATED ONCE. RoomEnvironment through a PMREM, which is what makes brushed
- *   metal look like metal. It is built at 0.04 roughness and disposed with the scene.
- *   INSTANCED COINS. Sixty coins are one draw call and one geometry.
- *   THE LOOP STOPS. It runs while the panel is open and pauses the moment the tab is hidden;
- *   `dispose()` takes the context, the geometries, the materials and the PMREM with it.
+ *   NO SHADOW MAPS. The contact under the coins is a painted radial plane, which reads better
+ *   anyway because it can be exactly as soft as it should be.
+ *   ONE ENVIRONMENT, generated once: RoomEnvironment through a PMREM at 0.04 roughness.
+ *   INSTANCED COINS. Sixty coins are one draw call.
+ *   THE LOOP STOPS when the tab is hidden; `dispose()` takes the context, geometries, materials
+ *   and PMREM with it.
  *   DPR CAPPED AT 2. Past that it is heat, not detail.
  *
- * Nothing here imports three at module scope — the whole scene arrives with the panel.
+ * Nothing imports three at module scope — the whole scene arrives with the panel.
  */
 
 import { accelAt, buildProfile, type DriveProfile } from './liftMotion';
@@ -897,24 +879,16 @@ export class ElevatorScene {
   /* ── loop and lifecycle ────────────────────────────────────────────────── */
 
   /**
-   * THE PHASES RUN ON THE WALL CLOCK, NOT ON ACCUMULATED FRAME TIME.
+   * Phases run on the wall clock, not on accumulated frame time.
    *
-   * The first cut summed a clamped `dt` — `min(0.05, elapsed)` — to guard against a backgrounded
-   * tab delivering a minute in one frame and teleporting the car through the shaft. The clamp
-   * works and it has a consequence that is worse than the thing it prevents: on a device that
-   * only manages 15fps, every real frame is 66ms and every clamped frame advances 50, so the
-   * animation runs at three quarters speed. Measured on software GL, a ride specified at 6.7s
-   * took over 9. A slow device is supposed to drop frames, not stretch time.
+   * Summing a clamped `dt` stretches time on a slow device: at 15fps every real frame is 66ms and
+   * every clamped frame advances 50, so a ride specified at 6.7s measured over 9 on software GL.
+   * A slow device is supposed to drop frames, not run in slow motion. Each phase records when it
+   * began and its progress is `(now - start) / duration`.
    *
-   * So each phase records the moment it began and its progress is `(now − start) / duration`. The
-   * ride is 6.7 seconds on every device that exists; a slow one simply draws fewer of them.
-   *
-   * `dt` still exists, for the things that genuinely integrate — the confetti, the coin spin —
-   * and it is still clamped, because those integrate FORWARD and a huge step would fling them.
-   * The difference is that no PHASE depends on it any more.
-   *
-   * A hidden tab pushes the phase's start forward by exactly the time it was hidden, so it
-   * resumes where it stopped rather than finding the ride already over.
+   * `dt` survives for things that genuinely integrate — confetti, coin spin — still clamped,
+   * because those integrate FORWARD and a huge step would fling them. A hidden tab pushes the
+   * phase start forward by exactly the time it was hidden.
    */
   private start() {
     const tick = (now: number) => {

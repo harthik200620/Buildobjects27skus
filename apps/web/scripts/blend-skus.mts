@@ -1,55 +1,28 @@
 /**
- * MAKE EVERY PRODUCT PHOTOGRAPH SIT ON ONE COLOUR, SO THE MOUNT CAN BE THAT COLOUR.
+ * Make every product photograph sit on one colour, so the mount can be that colour.
  *
- * ── THE PROBLEM ─────────────────────────────────────────────────────────────────────────────
- * The 27 SKUs were photographed by 27 different suppliers. Their studio sweeps are #efefef,
- * #f3f3f2, #d3d4d5, #b2b5ae and #fffefe, and the store paints one silver gradient behind all of
- * them. Every mismatch is a visible rectangle: the photograph's own background against the mount's,
- * two greys apart, with a hard edge between them. That edge is the single thing that makes this
- * catalogue read as assembled rather than made.
+ * The 27 SKUs were shot by 27 suppliers on sweeps from #b2b5ae to #fffefe, and the store paints
+ * one silver behind all of them — so every mismatch is a visible rectangle with a hard edge, which
+ * is what makes a catalogue read as assembled rather than made.
  *
- * ── WHAT WAS TRIED FIRST, AND WHY IT IS NOT HERE ────────────────────────────────────────────
- * Keying the sweep to transparency, so the product would sit on the teal page directly. It is the
- * better answer when it works and it does not work on this set. Two contact sheets said so: the
- * flood fill escapes through white products and shreds a cement sack into slivers of print; it
- * cannot tell a marketing collage's white gutter from a sweep and leaves orange diagonals behind;
- * and sweep the product encloses — the arc under a fire extinguisher's hose — stays behind as a
- * bright blob on the dark page. Twenty of twenty-five came out well, which is not a number you
- * can ship a catalogue on.
+ * This recolours the sweep and touches nothing else: pixels within tolerance of the photograph's
+ * own background become one agreed colour, pixels a little further out are eased toward it so
+ * there is no ring. No flood fill, so there is no geometry to get wrong — nothing shreds, nothing
+ * leaks through a white product, and sweep the product encloses is recoloured like any other.
+ * (Keying to transparency was tried first and managed twenty of twenty-five, which is not a number
+ * you can ship a catalogue on.)
  *
- * ── WHAT THIS DOES INSTEAD ──────────────────────────────────────────────────────────────────
- * Recolours the sweep, and touches nothing else. Every pixel within tolerance of the photograph's
- * own background colour becomes ONE agreed colour; pixels a little further out are eased toward
- * it so there is no ring; everything else is left exactly as photographed.
+ * theme.css sets --plate-1 to the same value, so photograph and mount are one surface.
  *
- * There is no flood fill, so there is no geometry to get wrong: nothing can shred, nothing can
- * leak, and a product that touches all four edges is handled like any other. Sweep the product
- * encloses is recoloured too — the same tolerance, the same colour — so the trapped blobs that
- * defeated the matte simply become part of the mount.
+ * Suppliers who ship a marketing composite rather than a photograph are left untouched and given a
+ * mount of THEIR OWN colour, written to lib/plate-colors.ts. So there is no seam on any tile
+ * without a pixel of artwork being altered.
  *
- * The cost is honest and small: a part of a PRODUCT that is within tolerance of its own sweep is
- * flattened into the mount as well. That is a white object on a white background, which was
- * already indistinguishable before this ran.
+ *   blend                     writes in place
+ *   blend -- --dry            reports and writes nothing
+ *   blend -- --sheet out.png  a contact sheet to look at
  *
- * ── AND THE MOUNT IS NOW THAT COLOUR ────────────────────────────────────────────────────────
- * theme.css sets --plate-1 to the same value. Photograph and mount become one surface with no
- * seam anywhere in the catalogue, and the mount's edges are dissolved into the card in CSS, so
- * what is left is a product floating on the page rather than a picture in a box.
- *
- * ── THE ONES THAT ARE NOT PHOTOGRAPHS ───────────────────────────────────────────────────────
- * Some suppliers ship a marketing composite as the product's first image: the bag on a red
- * sunburst, the carton on a gold field. Recolouring those would be vandalism, so this leaves them
- * exactly as they are — and then gives each one a mount of ITS OWN colour, written out to
- * lib/plate-colors.ts and set on the card as a custom property.
- *
- * So there is no seam anywhere, on any tile, without a single pixel of artwork being touched: a
- * studio shot sits on the shared silver, and a composite sits on the colour it was drawn on.
- *
- *   pnpm --filter @buildobjects/web blend            writes in place
- *   pnpm --filter @buildobjects/web blend -- --dry   reports and writes nothing
- *   pnpm --filter @buildobjects/web blend -- --sheet out.png   a contact sheet to look at
- *
- * Idempotent: an image already sitting on the target colour is recognised and skipped.
+ * Idempotent: an image already on the target colour is recognised and skipped.
  */
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';

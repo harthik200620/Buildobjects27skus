@@ -1,36 +1,24 @@
 /**
  * When the money leaves, and what changing your mind costs.
  *
- * ── TWO THINGS, ONE TIMELINE ────────────────────────────────────────────────────────────────
- *
- * `buildSchedule()` spreads the estimate over the calendar. A ₹42L house is an impossible wall
- * of money until you see it as ₹3L in month one, and cash-flow framing is the difference between
- * "I cannot afford this" and "I can plan this".
- *
- * `regretCurve()` is the part nobody has built. For any decision, it prices what changing it
- * LATER costs — flat and cheap while the decision is still upstream of the work it touches, then
- * a hard step at the phase boundary where that work gets executed. Adding a bedroom in month two
- * is a drawing revision. Adding it in month seven means breaking a cast slab.
- *
- * Mid-build changes are the number one way Indian home budgets explode and every contractor
- * prices them after the fact. Pricing them in advance is the whole point of this file.
- *
- * ── THE MODEL ───────────────────────────────────────────────────────────────────────────────
+ * `buildSchedule()` spreads the estimate over the calendar — a Rs 42L house is an impossible wall
+ * of money until you see it as Rs 3L in month one. `regretCurve()` prices changing a decision
+ * LATER: flat while the decision is upstream of the work it touches, then a hard step at the
+ * phase boundary where that work gets executed. Adding a bedroom in month two is a drawing
+ * revision; in month seven it means breaking a cast slab.
  *
  *   changeCost = baseDelta + rework + demolitionAndDisposal + scheduleSlip
  *
- *   baseDelta   the engine, re-run with the decision applied. Not a thumb value — it carries the
- *               same provenance as every other figure the engine produces.
- *   rework      the executed work the change disturbs, lost and then rebuilt out of sequence.
- *               Its SHAPE comes from STRUCTURAL_SPLIT and the phase model, which are real; only
- *               the disturbed share and the out-of-sequence premium are thumb values.
- *   demolition  the same disturbed work in cubic metres, broken and carted away at a real rate.
- *   slip        months added × the contractor's monthly overhead.
+ *   baseDelta   the engine re-run with the decision applied — same provenance as any other figure
+ *   rework      executed work the change disturbs, rebuilt out of sequence. Its SHAPE comes from
+ *               STRUCTURAL_SPLIT and the phase model; only the disturbed share and the
+ *               out-of-sequence premium are thumb values.
+ *   demolition  the same disturbed work in cubic metres, broken and carted at a real rate
+ *   slip        months added x the contractor's monthly overhead
  *
- * Three of those four terms are uncertain, and they compound. So this returns a BAND and never a
- * point figure, the band is wider than the estimate's own, and every term is reported separately
- * so a buyer can argue with any one of them. A single confident number here would be a lie with a
- * decimal point in it.
+ * Three of the four are uncertain and they compound, so this returns a BAND, wider than the
+ * estimate's own, with every term reported separately. A single confident number here would be a
+ * lie with a decimal point in it.
  */
 import { buildMonths, QUANTITIES, SCHEDULE, STRUCTURAL_SPLIT } from '../rates/2026-08';
 import { estimate } from './estimate';

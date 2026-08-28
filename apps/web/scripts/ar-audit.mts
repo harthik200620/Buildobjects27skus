@@ -1,32 +1,19 @@
 /**
- * DOES THE PRODUCT ACTUALLY APPEAR, AT EVERY ANGLE A PHONE IS HELD AT?
+ * Does the product actually appear, at every angle a phone is held at?
  *
- * pnpm --filter @buildobjects/web ar:audit [--base http://localhost:3000] [--only cem-ult-ppc50,...]
- *                                          [--strict] [--shots] [--out dir]
+ * pnpm --filter @buildobjects/web ar:audit [--base URL] [--only sku,...] [--strict] [--shots]
  *
- * Every "I opened the camera and there is no product" report so far was found by a person opening
- * the view and looking at it. That is not a regression test, and the proof is that the bug shipped
- * three times, in three different forms, and was reported the same way each time. The engine-side
- * maths is covered by packages/ar-engine/test/framing.test.ts; this covers the half that maths
- * cannot: three.js, the GLB, the cover map, the DOM and the render loop, all running together.
+ * packages/ar-engine/test/framing.test.ts covers the maths. This covers the half maths cannot:
+ * three.js, the GLB, the cover map, the DOM and the render loop running together.
  *
- * -- HOW IT DRIVES A PHONE FROM A DESKTOP ----------------------------------------------------
- * Two pieces of Chromium plumbing make this possible without a phone in someone's hand:
+ * It drives a phone from a desktop with two pieces of Chromium plumbing:
+ * `--use-fake-device-for-media-stream` gets the view into its streaming state so the whole
+ * placement path runs, and synthetic `deviceorientation` events ARE tilting the phone, since the
+ * view derives its pitch from nothing else.
  *
- *   · `--use-fake-device-for-media-stream` gives getUserMedia a synthetic camera, so the live view
- *     reaches its streaming state and the whole placement path runs for real.
- *   · Synthetic `deviceorientation` events drive the pose. The view derives its pitch from nothing
- *     else, so dispatching alpha/beta/gamma IS tilting the phone — which is what finally makes the
- *     reported top-down case testable rather than a thing to be checked by hand.
- *
- * -- HOW IT COUNTS THE PRODUCT ---------------------------------------------------------------
- * The stage is photographed twice: once as it is, and once with the WebGL canvas hidden. Every
- * pixel that differs is a pixel of product. That works whatever the camera happens to be pointed
- * at, needs no test hook inside the app, and measures the thing the user is complaining about —
- * whether there is a product on the screen — rather than a proxy for it.
- *
- * A frame-time sample runs alongside, because "the website is being lagged" was reported in the
- * same breath, and the render loop is where the cost was.
+ * It counts the product by photographing the stage twice, once with the WebGL canvas hidden;
+ * every differing pixel is product. That needs no test hook and measures the thing being
+ * complained about rather than a proxy for it. A frame-time sample runs alongside.
  */
 
 import fs from 'node:fs';
