@@ -132,12 +132,6 @@
     overflow-wrap: anywhere;
   }
 
-  .facet-option:hover .facet-option-label {
-    color: var(--color-teal-700);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
   .facet-option-label--empty {
     color: var(--color-ink-3) !important;
     text-decoration: line-through !important;
@@ -204,12 +198,6 @@
     line-height: 18px;
   }
 
-  .facet-link:hover .facet-option-label {
-    color: var(--color-teal-700);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
   .facet-link--active .facet-option-label {
     font-weight: 700;
     color: var(--color-teal-800);
@@ -247,6 +235,8 @@
   .facet-band--empty:hover .facet-band-label {
     color: inherit;
   }
+  .facet-option:hover .facet-option-label,
+  .facet-link:hover .facet-option-label,
   .facet-band:hover .facet-band-label {
     color: var(--color-teal-700);
     text-decoration: underline;

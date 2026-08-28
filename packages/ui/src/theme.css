@@ -1129,11 +1129,6 @@
   .check-row:hover {
     color: var(--color-teal-800);
   }
-  .check-row[aria-disabled="true"] {
-    color: var(--color-ink-3);
-    text-decoration: line-through;
-    cursor: not-allowed;
-  }
 
   /* ── chip (32 px pill) ──────────────────────────────────────────────────── */
   .chip {
@@ -1170,6 +1165,7 @@
     color: var(--color-ink);
     font-weight: 600;
   }
+  .check-row[aria-disabled="true"],
   .chip[aria-disabled="true"] {
     color: var(--color-ink-3);
     text-decoration: line-through;
@@ -1227,16 +1223,12 @@
     line-height: 1;
     color: var(--color-ink);
   }
-  .price-sym {
-    font-size: 0.6em;
-    font-weight: 600;
-    margin-top: 0.1em;
-  }
   .price-int {
     font-size: 1em;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
+  .price-sym,
   .price-dec {
     font-size: 0.6em;
     font-weight: 600;
@@ -1296,11 +1288,7 @@
   .price-off {
     color: var(--color-success);
   }
-  .price-gst {
-    font-size: var(--t-fine);
-    line-height: 16px;
-    color: var(--color-ink-3);
-  }
+  .price-gst,
   .price-src {
     font-size: var(--t-fine);
     line-height: 16px;

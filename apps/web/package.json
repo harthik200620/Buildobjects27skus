@@ -14,6 +14,7 @@
     "fonts:subset": "tsx scripts/subset-fonts.mts",
     "icons": "tsx scripts/icon-sheet.mts",
     "lighthouse": "tsx scripts/lighthouse.ts",
+    "css:snapshot": "tsx scripts/css-snapshot.mts",
     "scale:audit": "tsx scripts/scale-audit.mts",
     "shots": "tsx scripts/shots.ts",
     "shots:strict": "tsx scripts/shots.ts --strict",

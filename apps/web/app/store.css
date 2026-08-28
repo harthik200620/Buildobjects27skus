@@ -794,11 +794,6 @@
     font-size: 14px;
     font-weight: 600;
   }
-  .wallet-balance-worth {
-    font-size: var(--t-fine);
-    line-height: 16px;
-    color: var(--color-ink-2);
-  }
   .wallet-balance-worth b {
     color: var(--color-ink);
   }
@@ -882,11 +877,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  .account-who-phone {
-    font-size: var(--t-fine);
-    line-height: 16px;
-    color: var(--color-ink-2);
   }
   .account-edit {
     flex: none;
@@ -2739,36 +2729,9 @@
   }
 
   /* ── listing (v1 FilterRail + pages) ───────────────────────────────────── */
-  /* Explicit areas: the v1 rail returns sibling fragments into this grid, so each child is pinned to its area and the results can never wrap under the rail. */
-  .plp {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "toolbar" "chips" "results";
-    gap: 12px 24px;
-    align-items: start;
-  }
-  .plp > .results-head {
-    grid-area: toolbar;
-    margin-bottom: 0;
-  }
-  .plp > .applied {
-    grid-area: chips;
-    margin-bottom: 0;
-  }
-  .plp > aside[data-rail] {
-    grid-area: rail;
-  }
-  .plp > section[aria-label="Results"] {
-    grid-area: results;
-    min-width: 0;
-  }
-  @media (min-width: 1024px) {
-    .plp {
-      grid-template-columns: 240px minmax(0, 1fr);
-      grid-template-areas: "toolbar toolbar" "chips chips" "rail results";
-      gap: 12px 32px;
-    }
-  }
+  /* The `.plp` grid itself lives in styles/listing.css, which is where listing layout belongs and
+     which loads after this file. It was written out identically in both, so this copy lost every
+     declaration to that one and existed only to be edited by mistake. */
   .rail-sticky {
     position: sticky;
     top: var(--sticky-top);
@@ -3572,6 +3535,8 @@
     border-radius: 3px;
     vertical-align: -1px;
   }
+  .wallet-balance-worth,
+  .account-who-phone,
   .legend-sub {
     font-size: var(--t-fine);
     line-height: 16px;

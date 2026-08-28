@@ -42,11 +42,6 @@
     border-color: var(--color-line-strong);
     color: var(--color-ink);
   }
-  .gal-mode[aria-selected="true"] {
-    background: var(--color-teal-50);
-    border-color: var(--color-teal-600);
-    color: var(--color-ink);
-  }
   .gal-mode svg {
     flex: none;
   }
@@ -194,6 +189,7 @@
       border-color var(--dur-1) var(--ease-out),
       color var(--dur-1) var(--ease-out);
   }
+  .gal-mode[aria-selected="true"],
   .gal-orbit[aria-pressed="true"] {
     background: var(--color-teal-50);
     border-color: var(--color-teal-600);

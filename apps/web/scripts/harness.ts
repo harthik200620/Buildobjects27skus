@@ -23,10 +23,11 @@ const { values } = parseArgs({
     out: { type: 'string' },
     strict: { type: 'boolean' },
     shots: { type: 'boolean' },
+    check: { type: 'boolean' },
   },
 });
 
-export const flags = values as { base?: string; only?: string; out?: string; strict?: boolean; shots?: boolean };
+export const flags = values as { base?: string; only?: string; out?: string; strict?: boolean; shots?: boolean; check?: boolean };
 
 /** `--base`, then BASE_URL, then the production server this repo runs locally. */
 export const BASE = (flags.base ?? process.env.BASE_URL ?? 'http://localhost:3001').replace(/\/$/, '');
@@ -39,7 +40,7 @@ export const only = (flags.only ?? '')
 
 export const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
-/** The two viewports every visual check uses. Desktop is a laptop, mobile is an iPhone 14. */
+/** The viewports every visual check uses. Desktop is a laptop, mobile is an iPhone 14. */
 export const VIEWPORTS = {
   desktop: { viewport: { width: 1350, height: 940 }, deviceScaleFactor: 1 },
   mobile: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },

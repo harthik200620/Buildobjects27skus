@@ -1,4 +1,22 @@
+import { loadEnv } from '@buildobjects/db';
 import type { NextConfig } from 'next';
+
+/*
+ * The repo-root `.env`, loaded once before anything reads it.
+ *
+ * Next looks for env files in `apps/web` and this monorepo keeps one at the root, so until now
+ * the root file reached the server only as a side effect: `@buildobjects/db` calls `loadEnv()` at
+ * module scope, and that mutates `process.env` for the WHOLE process — so whether a variable was
+ * visible depended on whether a route importing the database package had been hit yet.
+ *
+ * Which made authentication order-dependent. A cold server asked the proxy to verify a cookie
+ * before any such route had run, so the proxy read `SESSION_SECRET` as undefined; one request to
+ * /api/auth/login later, the same cookie verified. Both halves silently fell back to the same
+ * development key, so nothing looked wrong until the fallback was removed.
+ *
+ * The config module runs once, in Node, before the server takes a request.
+ */
+loadEnv();
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
