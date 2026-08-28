@@ -86,8 +86,3 @@ export function tooManyRequests(error: string, retryAfterMs: number, extra: Reco
   const s = retryAfterSeconds(retryAfterMs);
   return NextResponse.json({ error, retryAfterMs: s * 1000, ...extra }, { status: 429, headers: { 'Retry-After': String(s), 'Cache-Control': 'no-store' } });
 }
-
-/** @internal */
-export function __resetRateLimitForTests(): void {
-  days.clear();
-}

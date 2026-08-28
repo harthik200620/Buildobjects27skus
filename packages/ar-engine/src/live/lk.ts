@@ -55,17 +55,6 @@ export function downsample2(f: GrayFrame): GrayFrame {
   return { data: out, width: w, height: h };
 }
 
-/** RGBA (canvas `getImageData`) → Rec. 709 luma bytes. */
-export function lumaFromRgba(rgba: Uint8ClampedArray | Uint8Array, width: number, height: number): Uint8Array {
-  const n = width * height,
-    out = new Uint8Array(n);
-  for (let i = 0; i < n; i++) {
-    const j = i * 4;
-    out[i] = (0.2126 * rgba[j] + 0.7152 * rgba[j + 1] + 0.0722 * rgba[j + 2] + 0.5) | 0;
-  }
-  return out;
-}
-
 function sampleBilinear(img: Uint8Array, w: number, h: number, x: number, y: number): number {
   const xc = x < 0 ? 0 : x > w - 1 ? w - 1 : x;
   const yc = y < 0 ? 0 : y > h - 1 ? h - 1 : y;

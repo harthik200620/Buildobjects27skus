@@ -70,6 +70,3 @@ export function contrast(fg: readonly number[], bg: readonly number[]): number {
   const b = luminance(bg);
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
-
-/** AA needs 3:1 for large text — 24px, or 18.66px at 700 — and 4.5:1 for everything else. */
-export const aaThreshold = (px: number, weight: number) => (px >= 24 || (px >= 18.66 && weight >= 700) ? 3 : 4.5);

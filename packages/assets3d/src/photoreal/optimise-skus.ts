@@ -1,28 +1,23 @@
 /**
  * Get the shipped product meshes down to something a phone will load over mobile data.
  *
- * `compressGlb` next door has existed for a while and was written for the house renders. It was
- * never run over the product catalogue, and it shows: the twenty-one GLBs in assets/3d run six to
- * eleven and a half megabytes each, twenty of them over the two-megabyte budget. Broken down, a
- * single cement bag is 5.2 MB of JPEG texture and 292,000 vertices of geometry — raw generator
- * output that nobody trimmed.
+ * `compressGlb` next door was written for the house renders and was never run over the product
+ * catalogue, and it shows: the twenty-one GLBs in assets/3d run six to eleven and a half megabytes
+ * each, twenty of them over the two-megabyte budget. A single cement bag is 5.2 MB of JPEG texture
+ * and 292,000 vertices — raw generator output that nobody trimmed. `SceneRenderer.create` awaits
+ * the whole file before there is anything to place, so the AR view sits empty for about four
+ * seconds on localhost and a great deal longer on mobile data, which is indistinguishable from the
+ * outside from the feature being broken. It was in fact reported as the feature being broken.
  *
- * The cost of that is not abstract. `SceneRenderer.create` awaits the whole file before there is
- * anything to place, so on localhost the AR view sits empty for about four seconds and on a phone
- * on mobile data for a great deal longer — which is indistinguishable, from the outside, from the
- * feature being broken. It was in fact reported as the feature being broken.
+ * It writes IN PLACE: the GLBs are tracked, so the originals are one `git checkout` away and there
+ * is no reason for a second copy of 180 MB on disk. Anything that fails to compress is left alone.
  *
- * ── WHY IT WRITES IN PLACE ──────────────────────────────────────────────────────────────────
- * The GLBs are tracked, so the originals are one `git checkout` away and there is no reason for a
- * second copy of 180 MB on disk. Anything that fails to compress is left exactly as it was.
+ * And it REFUSES TO MAKE THINGS WORSE. Compression can lose — a mesh already small, or one whose
+ * textures are already WebP, can come out bigger — so the result is only written when it is
+ * genuinely smaller. Running this twice is safe, and running it on an already-optimised catalogue
+ * is a no-op rather than a slow degradation.
  *
- * ── WHY IT REFUSES TO MAKE THINGS WORSE ─────────────────────────────────────────────────────
- * Compression can lose: a mesh already small, or one whose textures are already WebP, can come out
- * bigger. The result is only written when it is genuinely smaller, so running this twice is safe
- * and running it on an already-optimised catalogue is a no-op rather than a slow degradation.
- *
- *   pnpm --filter @buildobjects/assets3d optimise            # every SKU
- *   pnpm --filter @buildobjects/assets3d optimise CEM-ULT-PPC50
+ *   pnpm --filter @buildobjects/assets3d optimise [CEM-ULT-PPC50]
  */
 
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises';

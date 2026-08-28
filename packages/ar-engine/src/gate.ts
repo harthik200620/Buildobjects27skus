@@ -1,6 +1,5 @@
 import type { GateResult, PlacementRule, SceneAnalysis, Surface } from './types';
 
-export const GATE_VERSION = 2;
 const MIN_SURFACE_CONFIDENCE = 0.35;
 
 /**

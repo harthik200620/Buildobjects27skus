@@ -38,8 +38,6 @@ const PLINTH_H = 11;
 const DEPTH_X = 0.4;
 const DEPTH_Y = -0.34;
 
-export type BuildPhase = 'ground' | 'plinth' | 'frame' | 'walls' | 'openings' | 'roof' | 'finish';
-
 /**
  * Wall treatment per finish quality — the house is visibly made of something different at each
  * tier, which is the whole reason a picture beats a radio button here. The labels are written

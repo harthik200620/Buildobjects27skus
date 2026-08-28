@@ -1,7 +1,5 @@
 import type { Placement, PlacementRule, ProductDims, ReferenceObject, ScaleEstimate, SceneAnalysis, Surface } from './types';
 
-export const SCALE_VERSION = 2;
-
 /** Real-world sizes of the references the analyser can detect (mm). */
 export const REFERENCE_MM: Record<ReferenceObject['kind'], number> = {
   door: 2030,

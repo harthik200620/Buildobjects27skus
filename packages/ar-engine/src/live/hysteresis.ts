@@ -23,8 +23,6 @@ export interface GateHysteresisOptions {
 }
 
 export const GATE_HYSTERESIS_DEFAULTS: Required<GateHysteresisOptions> = { K: 2, M: 2, fastAllowScene: 0.8, fastAllowSurface: 0.6, fastRejectScene: 0.85 };
-export const WAVERING_LABEL = 'Checking…';
-
 export interface GateHysteresisState {
   status: GateStatus;
   /** The confirmed verdict the HUD shows (null while pending). */

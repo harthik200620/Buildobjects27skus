@@ -1,6 +1,6 @@
 'use client';
 
-import { fitModelToDims, type PlacementRule, type ProductDims, type Surface } from '@buildobjects/ar-engine';
+import { fitModelToDims, type PlacementRule, type ProductDims } from '@buildobjects/ar-engine';
 import type { Object3D, Quaternion, Vector3 } from 'three';
 
 /**
@@ -96,33 +96,14 @@ export function normalizeModel(THREE: ThreeNS, model: Object3D, rule: PlacementR
  * flush items so their back meets it. Walls map the model's +Z (out of the back) onto the
  * normal, which keeps Y up for upright wall items such as an extinguisher.
  */
-export function orientForSurface(THREE: ThreeNS, surface: Surface, n: Vector3, rule: PlacementRule): Quaternion {
+export function orientForSurface(THREE: ThreeNS, n: Vector3, rule: PlacementRule): Quaternion {
   const q = new THREE.Quaternion();
   const normal = n.clone().normalize();
-  const horizontal = Math.abs(normal.y) >= 0.5;
-  if (horizontal && normal.y > 0) return q; // floor / ground / table / roof
-  if (horizontal) {
-    // ceiling: bulb hangs straight down from ceiling with B22 cap at the top and dome at the bottom
-    return q;
-  }
-  // wall / window:
-  // The white wall batten holder socket base is anchored flush against the wall at the back,
-  // and the socket collar and Philips LED bulb extend straight OUTWARD from the wall into the room
-  // along the wall normal vector.
-  if (rule.category === 'bulbs' || rule.orientation === 'hanging') {
-    return q.setFromUnitVectors(new THREE.Vector3(0, -1, 0), normal);
-  } else if (rule.orientation === 'wall_flush' || rule.anchor === 'back') {
-    q.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
-  } else {
-    q.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
-  }
-  if (surface === 'window' && rule.anchor !== 'back') {
-    return q;
-  }
-  return q;
-}
-
-/** Horizontal unit normal from a wall normal given as {x, y, z} (the engine's `VerticalAnchor.n`). */
-export function toVector3(THREE: ThreeNS, v: { x: number; y: number; z: number }): Vector3 {
-  return new THREE.Vector3(v.x, v.y, v.z);
+  // Floor, ground, table, roof, ceiling: normalizeModel has already put the model where the
+  // surface wants it — a bulb hangs from its origin with the cap up — so the holder does not turn.
+  if (Math.abs(normal.y) >= 0.5) return q;
+  // Wall and window. A hanging item points its -Y along the normal; everything else lays the
+  // model's +Z (out of its back) along it, which is what keeps an extinguisher upright.
+  const hangs = rule.category === 'bulbs' || rule.orientation === 'hanging';
+  return q.setFromUnitVectors(new THREE.Vector3(0, hangs ? -1 : 0, hangs ? 0 : 1), normal);
 }

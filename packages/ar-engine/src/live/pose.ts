@@ -101,8 +101,6 @@ export function quatFromDeviceOrientation(alphaDeg: number, betaDeg: number, gam
   return quatNormalize(quatMultiply(quatMultiply(e, Q_MINUS_HALF_PI_X), quatFromAxisAngle(Z_AXIS, -screenAngleDeg * DEG)));
 }
 
-export const MAT3_IDENTITY: Mat3 = [1, 0, 0, 0, 1, 0, 0, 0, 1];
-
 /** Rotation matrix of a unit quaternion (row-major; column j = world direction of local axis j). */
 export function mat3FromQuat(q: Quat): Mat3 {
   const { x, y, z, w } = q;
@@ -122,10 +120,6 @@ export function mat3Mul(a: Mat3, b: Mat3): Mat3 {
   const r: number[] = new Array(9).fill(0);
   for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) r[i * 3 + j] = a[i * 3] * b[j] + a[i * 3 + 1] * b[3 + j] + a[i * 3 + 2] * b[6 + j];
   return r as unknown as Mat3;
-}
-
-export function mat3Transpose(m: Mat3): Mat3 {
-  return [m[0], m[3], m[6], m[1], m[4], m[7], m[2], m[5], m[8]];
 }
 
 /** m · v */

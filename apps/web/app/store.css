@@ -957,10 +957,6 @@
     right: 0;
     top: calc(100% + 6px);
   }
-  .account-wrap .menu-meta .fig {
-    color: var(--color-ink);
-  }
-
   /* ── deliver to ─────────────────────────────────────────────────────────── */
   .deliver-wrap {
     position: relative;
@@ -1705,8 +1701,7 @@
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
   }
-  .prod-media .badge-estimated,
-  .prod-media .badge-cert {
+  .prod-media .badge-estimated {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -2454,8 +2449,7 @@
   /* ── panes → white cards ────────────────────────────────────────────────── */
   .glass,
   .glass-card,
-  .glass-strong,
-  .glass-quiet {
+  .glass-strong {
     background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: var(--radius-md);
@@ -2492,10 +2486,7 @@
       transform: none;
     }
   }
-  .fade-up,
-  .sheet-up,
-  .sheet-in,
-  .tray-in {
+  .fade-up {
     animation: legacy-fade-up 0.16s ease both;
   }
 
@@ -3649,11 +3640,6 @@
     align-items: center;
     font-size: 14px;
     line-height: 20px;
-  }
-  .phase-bar i {
-    display: block;
-    height: 100%;
-    background: var(--color-teal-700);
   }
   /* "Priced from the store" lists whole product names as chips — let them wrap rather than overflow the page. */
   .est a.chip {

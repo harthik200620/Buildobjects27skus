@@ -65,21 +65,13 @@ export interface EstimatePick {
 /* ── v2 input vocabulary ─────────────────────────────────────────────────── */
 export type SoilType = 'hard' | 'medium' | 'soft' | 'black_cotton';
 export const SOIL_TYPES: SoilType[] = ['hard', 'medium', 'soft', 'black_cotton'];
-export const SOIL_LABEL: Record<SoilType, string> = {
-  hard: 'Hard / rocky',
-  medium: 'Medium (murram, gravel)',
-  soft: 'Soft / sandy',
-  black_cotton: 'Black cotton',
-};
 export type FoundationType = 'isolated_footing' | 'raft' | 'pile';
 export const FOUNDATION_TYPES: FoundationType[] = ['isolated_footing', 'raft', 'pile'];
 export const FOUNDATION_LABEL: Record<FoundationType, string> = { isolated_footing: 'Isolated footings', raft: 'Raft', pile: 'Pile' };
 export type RoofType = 'flat_rcc' | 'sloped';
 export const ROOF_TYPES: RoofType[] = ['flat_rcc', 'sloped'];
-export const ROOF_LABEL: Record<RoofType, string> = { flat_rcc: 'Flat RCC', sloped: 'Sloped (tiles / sheet)' };
 export type ExteriorFinish = 'paint' | 'cladding' | 'stone';
 export const EXTERIOR_FINISHES: ExteriorFinish[] = ['paint', 'cladding', 'stone'];
-export const EXTERIOR_FINISH_LABEL: Record<ExteriorFinish, string> = { paint: 'Paint', cladding: 'ACP / HPL cladding', stone: 'Stone cladding' };
 export type StaircaseType = 'rcc_plain' | 'rcc_granite' | 'steel';
 export const STAIRCASE_TYPES: StaircaseType[] = ['rcc_plain', 'rcc_granite', 'steel'];
 export const STAIRCASE_LABEL: Record<StaircaseType, string> = { rcc_plain: 'RCC, plain finish', rcc_granite: 'RCC, granite', steel: 'Steel' };
@@ -88,18 +80,10 @@ export const GATE_TYPES: GateType[] = ['none', 'ms', 'ss', 'automatic'];
 export const GATE_LABEL: Record<GateType, string> = { none: 'No gate', ms: 'MS gate', ss: 'SS gate', automatic: 'Automatic gate' };
 export type RoadAccess = 'good' | 'narrow' | 'no_truck';
 export const ROAD_ACCESS: RoadAccess[] = ['good', 'narrow', 'no_truck'];
-export const ROAD_ACCESS_LABEL: Record<RoadAccess, string> = {
-  good: 'Truck can reach the site',
-  narrow: 'Narrow road (small trucks only)',
-  no_truck: 'No truck access',
-};
 export type SiteWater = 'municipal' | 'borewell' | 'tanker';
 export const SITE_WATER: SiteWater[] = ['municipal', 'borewell', 'tanker'];
-export const SITE_WATER_LABEL: Record<SiteWater, string> = { municipal: 'Municipal supply', borewell: 'Borewell on site', tanker: 'Tanker water' };
 export type SitePower = 'available' | 'temporary';
 export const SITE_POWER: SitePower[] = ['available', 'temporary'];
-export const SITE_POWER_LABEL: Record<SitePower, string> = { available: 'Power connection available', temporary: 'Temporary connection / generator' };
-
 /** Room counts for the whole building (all floors). Drives doors, wall tiles, fixtures, wardrobes and kitchens. */
 export interface RoomCounts {
   bedrooms: number;

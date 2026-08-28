@@ -270,8 +270,6 @@ async function houseEstimate(args: {
 
 /* ── dispatch ────────────────────────────────────────────────────────────── */
 
-export const TOOL_NAMES = ['get_catalogue_scope', 'search_products', 'get_product', 'estimate_house'] as const;
-
 export async function callTool(name: string, args: Record<string, unknown>, _ctx: ToolContext): Promise<ToolResult> {
   switch (name) {
     case 'get_catalogue_scope':

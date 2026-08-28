@@ -3,28 +3,23 @@
  *
  * Grade a generated frame into the backplate set, and write it as the named plate.
  *
- * WHY THIS EXISTS. `design-system/art/MANIFEST.md` says the seven plates were "graded to the
- * canvas and optimised" and never says how. That was fine while nobody had to add an eighth — and
- * the moment somebody did, the only way to match the set was to eyeball it, which is how a set
- * stops being a set. A backplate that is two stops brighter and half a hue warmer than its
- * neighbours does not read as a different photograph; it reads as a page that was assembled by
- * more than one person.
- *
- * WHAT THE HOUSE STYLE ACTUALLY IS, measured off the seven that shipped:
+ * `design-system/art/MANIFEST.md` says the seven plates were "graded to the canvas and optimised"
+ * and never says how, which was fine until somebody had to add an eighth: the only way to match the
+ * set was then to eyeball it, and that is how a set stops being a set. A backplate two stops
+ * brighter and half a hue warmer than its neighbours reads as a page assembled by more than one
+ * person. So the house style, measured off the seven that shipped, is written down:
  *
  *     mean rgb  32, 59, 60      blue ≥ green > red — everything sits in the canvas's own hue
  *     median    46              dark; the copy on top is the brightest thing in the frame
  *     p90       95              and the highlights stay well below white
  *
- * A raw generation lands nowhere near that. The frame this was written for measured 62, 87, 82
- * with a median of 78 — warm, and half a stop up.
- *
- * HOW. Per-channel linear gain, solved rather than guessed: measure the source, compute the gain
- * that would land each channel on its target, apply, measure again, repeat. Three passes gets
- * inside a couple of levels on every channel, and the loop reports what it converged to so the
- * result is checkable rather than trusted. It is deliberately only gain — no curve, no saturation
- * push, no vignette — because the plates already carry their own light and a second grade on top
- * of the generator's is how a photograph starts looking like a filter.
+ * A raw generation lands nowhere near it — the frame this was written for measured 62, 87, 82 at a
+ * median of 78. Per-channel linear gain, solved rather than guessed: measure, compute the gain that
+ * lands each channel on its target, apply, measure again, repeat. Three passes gets inside a couple
+ * of levels on every channel, and the loop reports what it converged to, so the result is checkable
+ * rather than trusted. Only gain — no curve, no saturation push, no vignette — because the plates
+ * carry their own light, and a second grade on top of the generator's is how a photograph starts
+ * looking like a filter.
  *
  * The target defaults to the whole set's average. Pass a plate name that already exists and it
  * matches THAT plate instead, which is what you want when replacing one in the same slot: the

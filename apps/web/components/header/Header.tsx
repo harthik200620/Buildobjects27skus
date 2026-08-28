@@ -13,24 +13,19 @@ import type { NavCategory } from './types';
  *
  *   the lockup · | · Catalogue ▾ · Estimator · —— · ⌘K · —— · coins · cart · account
  *
- * It was two rows and 104 px, plus a 40 px category strip under it: 144 px of chrome above every
- * page. The reason was arithmetic rather than taste — Audiowide is a very wide face, the lockup
- * measured 392 px at a 30 px cap, and a lockup plus an 860 px search field cannot share a row. So
- * the mark was cut to 22 px and the store's own name was the least legible thing on the screen.
+ * It was two rows at 104px plus a 40px category strip: 144px of chrome above every page, for a
+ * reason that was arithmetic rather than taste. Audiowide is very wide — the lockup measured 392px
+ * at a 30px cap — and a lockup plus an 860px search field cannot share a row, so the mark was cut
+ * to 22px and the store's own name was the least legible thing on the screen. Moving search into a
+ * ⌘K overlay (components/SearchBar.tsx) removes the constraint instead of trading against it: the
+ * mark goes to 44px, the strip folds into "Catalogue" as a mega menu, and the bar lands at 76px,
+ * condensing to 62px once the page scrolls under it.
  *
- * Moving search into a ⌘K overlay (see components/SearchBar.tsx) removes the constraint rather
- * than trading against it. The mark goes to 44 px — a third larger than it has ever been — the
- * category strip folds into the row as a mega menu on "Catalogue", and the whole thing lands at
- * 76 px, condensing to 62 px once the page scrolls under it.
- *
- * It is a floating glass bar, inset from the top edge, not flush chrome. That is a real
- * difference and not a decoration: flush chrome has to be darker than everything to stay
- * separate, which is why the old header carried its own near-black palette and its own two white
- * hairlines. A bar that floats is separated by its edge and its shadow, so it can be the same
- * family of teal as the page and the store stops having two colour systems.
- *
- * Deliver-to keeps its own strip below. It sets the pincode that every price on the site is
- * quoted against, which makes it the one piece of chrome that is worth a line of its own.
+ * It floats, inset from the top edge. Flush chrome has to be darker than everything to stay
+ * separate, which is why the old header carried its own near-black palette and two white
+ * hairlines; a bar separated by its edge and its shadow can be the page's own teal, so the store
+ * stops having two colour systems. Deliver-to keeps its own strip below — it sets the pincode
+ * every price on the site is quoted against.
  */
 export default function Header({
   pincode,

@@ -12,7 +12,6 @@ export const REGISTRY_DIR = path.join(PIPELINE_ROOT, 'registry');
 export const CURATED_DIR = path.join(PIPELINE_ROOT, 'data', 'curated');
 export const SHEET_PATH = path.join(REPO_ROOT, 'WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx');
 export const RAW_DIR = path.join(REPO_ROOT, 'storage', 'raw');
-export const REPORTS_DIR = path.join(REPO_ROOT, 'storage', 'reports');
 export const ASSETS_3D_DIR = path.join(REPO_ROOT, 'assets', '3d');
 
 const intEnv = (name: string, dflt: number): number => {
@@ -72,6 +71,4 @@ export const hasGemini = () => env.geminiKey.length > 0;
 /** Per-SKU stages in run order. */
 export const STAGES = ['fetch', 'extract', 'verify', 'fill', 'images', 'brochures', 'describe'] as const;
 export type Stage = (typeof STAGES)[number];
-/** Bumped whenever the image stage's behaviour changes — mixed into the resume hash so `--resume` re-runs images once. */
-export const IMAGES_PIPELINE_VERSION = 2;
 export const MODEL = process.env.PIPELINE_MODEL ?? 'claude-opus-5';

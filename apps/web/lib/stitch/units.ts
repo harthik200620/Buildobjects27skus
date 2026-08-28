@@ -31,7 +31,6 @@ export interface Material {
   tint: RGB | null; // cool bias for metallics
 }
 
-export const COMPOSITION_CELL_SIZE = 16;
 export const SITE_CELL_SIZE = 20;
 
 /* ── colour helpers ─────────────────────────────────────────────────────── */

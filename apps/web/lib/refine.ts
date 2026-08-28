@@ -581,8 +581,3 @@ export function refineStatus(): RefineStatus {
     maxSuggestions: MAX_SUGGESTIONS,
   };
 }
-
-/** @internal */
-export function __resetRefineForTests(): void {
-  cache.clear();
-}

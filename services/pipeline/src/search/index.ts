@@ -60,9 +60,3 @@ export async function indexDocs(docs: SkuSearchDoc[], batch = 1000) {
     await meili().tasks.waitForTask(t.taskUid, { timeout: 600_000 });
   }
 }
-
-export async function deleteDocs(ids: number[]) {
-  if (!ids.length) return;
-  const t = await meili().index(SEARCH_INDEX).deleteDocuments(ids);
-  await meili().tasks.waitForTask(t.taskUid);
-}

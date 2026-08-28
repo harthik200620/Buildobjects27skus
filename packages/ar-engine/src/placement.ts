@@ -1,7 +1,5 @@
 import type { PlacementRule, SceneType, Surface } from './types';
 
-export const PLACEMENT_RULES_VERSION = 2;
-
 const INDOOR: SceneType[] = ['living_room', 'bedroom', 'kitchen', 'bathroom', 'office', 'corridor'];
 
 /**

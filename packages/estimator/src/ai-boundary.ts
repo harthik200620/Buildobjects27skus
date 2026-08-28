@@ -17,7 +17,7 @@
  * Explanations stream; numbers never do. A figure arriving a digit at a time reads as a machine
  * computing it, which is the impression this file exists to prevent.
  */
-import { ADJUSTMENT_CLAMP, ADJUSTMENT_LINE_KEY_RE, INPUT_RANGES, normalizeInputs } from './inputs';
+import { ADJUSTMENT_LINE_KEY_RE, INPUT_RANGES, normalizeInputs } from './inputs';
 import type { Adjustment, EstimateInputs } from './types';
 
 /** Fields of the input schema a model is allowed to propose. Anything else is dropped. */
@@ -167,6 +167,3 @@ export function applyAiPatch(
   }
   return { inputs: normalizeInputs(next as Partial<EstimateInputs>), applied, held };
 }
-
-/** The clamp, re-exported here so the boundary's contract reads in one place. */
-export const AI_ADJUSTMENT_CLAMP = ADJUSTMENT_CLAMP;

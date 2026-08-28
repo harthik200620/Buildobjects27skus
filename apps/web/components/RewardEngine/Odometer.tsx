@@ -5,22 +5,20 @@ import type React from 'react';
 /**
  * THE BALANCE, AS AN ODOMETER.
  *
- * ── WHY NOT A COUNTING NUMBER ───────────────────────────────────────────────────────────────
  * The old balance was one `<p>` whose text was rewritten sixty times a second from a rAF. It
- * counted, and counting is not the same as MOVING: every frame replaced the whole string, so
- * digits that were not changing flickered along with the ones that were, and the figure never
- * held still enough to read while it ran.
+ * counted, and counting is not MOVING: every frame replaced the whole string, so digits that were
+ * not changing flickered along with the ones that were, and the figure never held still enough to
+ * read while it ran.
  *
- * A real odometer moves only the wheels that have to. Each digit is a column of ten glyphs behind
- * a one-glyph window, translated by `-n × 100%`; the CSS transition does the interpolation on the
- * compositor, so the whole thing is one style write per digit per change and zero work per frame.
- * 4 → 5 turns one wheel. 99 → 100 turns three and grows a fourth.
+ * A real odometer moves only the wheels that have to. Each digit is a column of ten glyphs behind a
+ * one-glyph window, translated by `-n × 100%`; the CSS transition interpolates on the compositor,
+ * so the whole thing is one style write per digit per change and zero work per frame. 4 → 5 turns
+ * one wheel; 99 → 100 turns three and grows a fourth.
  *
- * ── AND IT ROLLS THE RIGHT WAY ──────────────────────────────────────────────────────────────
- * Up when you gain, which sounds obvious and is the detail everything of this kind gets wrong:
- * `translateY` DOWN the strip shows a HIGHER digit, because the strip runs 0-9 top to bottom.
- * A wheel that spun the wrong way would read as losing coins on the one screen whose entire job
- * is to say you have won some.
+ * AND IT ROLLS THE RIGHT WAY — up when you gain, which sounds obvious and is the detail everything
+ * of this kind gets wrong: `translateY` DOWN the strip shows a HIGHER digit, because the strip runs
+ * 0-9 top to bottom. A wheel spinning the wrong way would read as losing coins on the one screen
+ * whose entire job is to say you have won some.
  *
  * Digits are tabular figures at a fixed `ch` width, so the frame does not twitch as the wheels
  * pass through 1.

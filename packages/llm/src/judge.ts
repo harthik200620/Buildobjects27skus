@@ -12,8 +12,6 @@ export type ImageBackground = (typeof IMAGE_BACKGROUNDS)[number];
 export const IMAGE_VIEWS = ['front', 'angle', 'side', 'back', 'top', 'detail', 'in_context', 'pack', 'drawing', 'other'] as const;
 export type ImageView = (typeof IMAGE_VIEWS)[number];
 export const SUGGESTED_ROLES = ['hero', 'angle', 'detail', 'in_context', 'pack', 'reject'] as const;
-export type SuggestedRole = (typeof SUGGESTED_ROLES)[number];
-
 /** Background weight in the deterministic score. */
 export const BG_WEIGHT: Record<ImageBackground, number> = { white: 1, studio: 0.9, in_use: 0.6, cluttered: 0.2 };
 
@@ -35,8 +33,6 @@ export const ImageJudgementZ = z.object({
 });
 export type ImageJudgement = z.infer<typeof ImageJudgementZ>;
 export const ImageJudgeBatchZ = z.object({ items: z.array(ImageJudgementZ) });
-export type ImageJudgeBatch = z.infer<typeof ImageJudgeBatchZ>;
-
 export const IMAGE_JUDGE_ITEM_SCHEMA: JsonSchema = obj({
   index: int('1-based position of the image among the numbered image parts'),
   is_product_photo: bool('a photograph (or photoreal render) of the physical product itself'),

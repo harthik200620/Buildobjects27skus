@@ -11,28 +11,23 @@ import type { QuoteReading } from '@/lib/quote-reader';
 /**
  * Is the quote you were given fair — and what does it come to if you buy the material here?
  *
- * Three answers, and they are not the same kind of answer:
+ * Three answers, and not the same kind of answer. WHERE EACH LINE SITS against a dated rate card,
+ * an average a contractor can honestly disagree with — better material, harder access, work the
+ * estimate excludes. WHAT THE STORE CHARGES for the same material, which is not an opinion but the
+ * price on the shelf today; it speaks only for lines the store really sells, leaving labour,
+ * centering and plastering alone, which makes it a floor. And WHETHER THE QUANTITIES HOLD TOGETHER
+ * — a quote pricing steel by the bag, or listing a hundred bags of cement for an 1800 sqft house,
+ * has counted something wrong, and none of that is visible reading the lines one at a time.
  *
- *  1. WHERE EACH LINE SITS against a dated rate card. An average, which a contractor can honestly
- *     disagree with — better material, harder access, work the estimate excludes.
- *  2. WHAT THE STORE CHARGES for the same material. Not an opinion: the price on the shelf today,
- *     so the difference is money the buyer can go and keep. It speaks only for lines the store
- *     really sells — labour, centering and plastering are left alone, which makes it a floor.
- *  3. WHETHER THE QUANTITIES HOLD TOGETHER. A quote pricing steel by the bag, or listing a hundred
- *     bags of cement for an 1800 sqft house, has counted something wrong — and none of that is
- *     visible reading the lines one at a time.
- *
- * Nothing runs until the reader asks. Comparing as you type produced half a verdict from a
- * half-pasted quote, rewriting itself under the reader's hands; typing now clears the last answer
+ * Nothing runs until the reader asks: comparing as you type produced half a verdict from a
+ * half-pasted quote, rewriting itself under the reader's hands. Typing clears the last answer
  * rather than amending it, because an answer to a document no longer in the box is worse than none.
  *
- * The rules are visible in the interface: never accuse anyone (a contractor can be dearer for a
+ * The rules are visible in the interface — never accuse anyone (a contractor can be dearer for a
  * dozen good reasons, so this gives the question to ask, not the answer); a line BELOW the range is
- * flagged harder than one above; unmatchable lines are listed rather than dropped; and the house
- * being compared against is named every time, including whether it was read from a drawing.
- *
- * A quotation is private commercial paper. Pasted text never leaves the tab; a photograph is read
- * and forgotten.
+ * flagged harder than one above; unmatchable lines are listed rather than dropped; the house being
+ * compared against is named every time, including whether it was read from a drawing. A quotation
+ * is private commercial paper: pasted text never leaves the tab, a photograph is read and forgotten.
  */
 
 export interface TruthProps {

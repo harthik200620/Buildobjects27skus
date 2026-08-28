@@ -8,26 +8,24 @@ import { withoutBrand } from '@/lib/label';
 /**
  * THE VIEW IN ROOM, AS A THING SOMEBODY LOOKS AT.
  *
- * What this replaces was eleven floating elements: four pills across the top, a coloured banner, a
- * tip, a nudge, and four more pills along the bottom, each with its own inline styles, all
- * competing for the same attention at the same weight. Nothing was primary. The product's own name
- * was truncated to "UltraTech C..." while "Drag to move · rotate below" got a full-width chip, and
- * the price of the thing you were looking at appeared nowhere at all.
+ * This replaces eleven floating elements competing at the same weight — four pills across the top,
+ * a coloured banner, a tip, a nudge, four more pills along the bottom, each with its own inline
+ * styles. Nothing was primary: the product's own name was truncated to "UltraTech C..." while "Drag
+ * to move · rotate below" got a full-width chip, and the price appeared nowhere at all.
  *
  * The shape here is the one every good camera product converges on, for the same reason: the
  * picture is the content, so chrome lives at the two edges and gets out of the way in between.
  *
- *   TOP        one row. Close, what you are looking at, flip. Nothing else, ever.
- *   MIDDLE     empty, unless there is something to say. Coaching appears while the view is still
- *              looking for a surface and leaves once it has one; the nudge appears only when the
- *              product is off screen. Neither is permanent furniture.
- *   BOTTOM     a sheet, in the order a person needs it: what it is and what it costs, then the
- *              controls that change it, then what to do about it.
+ *   TOP     one row. Close, what you are looking at, flip. Nothing else, ever.
+ *   MIDDLE  empty, unless there is something to say. Coaching appears while the view is still
+ *           looking for a surface and leaves once it has one; the nudge appears only when the
+ *           product is off screen. Neither is permanent furniture.
+ *   BOTTOM  a sheet, in the order a person needs it: what it is and what it costs, then the
+ *           controls that change it, then what to do about it.
  *
- * The controls themselves moved from buttons to gestures — pinch to size, twist to turn, drag to
- * move — because that is what hands do on a camera view, and a pair of +/- buttons stepping 0.2 at
- * a time is a spreadsheet. The buttons remain underneath as the accessible path, which is why they
- * are still here.
+ * The controls moved from buttons to gestures — pinch to size, twist to turn, drag to move —
+ * because that is what hands do on a camera view, and a pair of +/- buttons stepping 0.2 at a time
+ * is a spreadsheet. The buttons remain underneath as the accessible path.
  */
 
 export interface ArHudProps {

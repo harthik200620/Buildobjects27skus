@@ -6,7 +6,7 @@
  * Every id is BIGINT auto-inc; every list endpoint paginates by keyset (`WHERE id > ? LIMIT n`).
  */
 
-import type { ImageJudgement, KeySpec, SpecJson } from '@buildobjects/catalog';
+import { IMAGE_SOURCE_KINDS, type ImageJudgement, type KeySpec, type SpecJson } from '@buildobjects/catalog';
 import { sql } from 'drizzle-orm';
 import {
   bigint,
@@ -270,7 +270,7 @@ export const skuImages = mysqlTable(
     /** Always false since images v2 — no placeholder is ever written; kept for old readers. */
     placeholder: boolean('placeholder').notNull().default(false),
     /** Images v2: where the photo came from (shown in the UI for distributor images). */
-    sourceKind: mysqlEnum('source_kind', ['curated', 'official_page', 'official_pdf', 'distributor', 'unknown']).notNull().default('unknown'),
+    sourceKind: mysqlEnum('source_kind', IMAGE_SOURCE_KINDS).notNull().default('unknown'),
     /** Deterministic judge score 0–1 (see @buildobjects/catalog ImageJudgement). */
     qualityScore: decimal('quality_score', { precision: 3, scale: 2 }),
     judgeJson: json('judge_json').$type<ImageJudgement>(),
@@ -441,10 +441,4 @@ export const otpChallenges = mysqlTable(
 export type Category = typeof categories.$inferSelect;
 export type Brand = typeof brands.$inferSelect;
 export type Product = typeof products.$inferSelect;
-export type Sku = typeof skus.$inferSelect;
-export type Attribute = typeof attributes.$inferSelect;
-export type AttributeGroup = typeof attributeGroups.$inferSelect;
-export type SkuAttributeValue = typeof skuAttributeValues.$inferSelect;
-export type SkuImage = typeof skuImages.$inferSelect;
-export type SkuDocument = typeof skuDocuments.$inferSelect;
 export type Region = typeof regions.$inferSelect;

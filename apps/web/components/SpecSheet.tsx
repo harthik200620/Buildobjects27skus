@@ -6,26 +6,22 @@ import { IconChevronDown, IconClose, IconSearch, SpecGroupIcon } from './icons';
 
 /**
  * The full specification sheet: every figure the catalogue holds for one product, grouped by
- * heading, searchable, and honest about where each number came from.
+ * heading, searchable, and honest about where each number came from. It is the most technical
+ * surface in the store — where a site engineer checks a compressive strength against a drawing —
+ * and three things were wrong with it:
  *
- * This is the most technical surface in the store — it is where a site engineer checks a
- * compressive strength or a lumen output against a drawing — and it used to be the least
- * serious-looking. Three things were wrong with it and all three are fixed here:
- *
- *   1. Twenty-eight emoji as section marks. Replaced by SpecGroupIcon (see components/icons.tsx),
- *      which draws in the row's own ink at the row's own stroke weight.
- *   2. A fabricated documents block. It advertised a "Technical Data Sheet (TDS) · 1.4 MB PDF",
- *      an MSDS and a "BIS & MTC Quality Certificate", with file sizes invented to three
- *      significant figures and Download buttons wired to window.print(). We do not hold those
- *      files. It is deleted rather than restyled — a store that invents a safety datasheet for a
- *      6 kg fire extinguisher is not a store anyone should buy from.
+ *   1. Twenty-eight emoji as section marks, now SpecGroupIcon (components/icons.tsx), drawn in the
+ *      row's own ink at the row's own stroke weight.
+ *   2. A fabricated documents block — a "Technical Data Sheet · 1.4 MB PDF", an MSDS, a "BIS & MTC
+ *      Quality Certificate", sizes invented to three significant figures, Download wired to
+ *      window.print(). We hold none of those files. Deleted rather than restyled: a store that
+ *      invents a safety datasheet for a fire extinguisher is not one anyone should buy from.
  *   3. Provenance hidden in a title attribute, which does not exist on a touch device. Every row
  *      now carries a visible marker, and the legend above says what the three of them mean.
  *
- * Provenance is the reason this component is careful. Roughly half of these values are filled
- * from the industry standard for the product class rather than read off the manufacturer's
- * datasheet, and the sheet never claims otherwise — there is no "verified" badge over the top of
- * the table, because it would be a lie about half its own contents.
+ * Roughly half these values come from the industry standard for the product class rather than the
+ * manufacturer's datasheet, and the sheet never claims otherwise — there is no "verified" badge
+ * over the table, because it would be a lie about half its own contents.
  */
 
 /** What each provenance level actually means, in the words shown to a buyer. */

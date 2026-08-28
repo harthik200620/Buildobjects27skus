@@ -125,20 +125,3 @@ export function normalizeValues(registry: Registry, values: Record<string, Attri
   }
   return { values: out, residual, changed };
 }
-
-/** Loose equality for verification: numbers within ±2 %, strings case-insensitive after whitespace/punctuation squash. */
-export function valuesAgree(a: unknown, b: unknown): boolean {
-  if (a === null || a === undefined || b === null || b === undefined) return false;
-  const na = typeof a === 'number' ? a : Number(String(a).replace(/,/g, ''));
-  const nb = typeof b === 'number' ? b : Number(String(b).replace(/,/g, ''));
-  if (Number.isFinite(na) && Number.isFinite(nb) && (typeof a === 'number' || typeof b === 'number' || /^\s*-?[\d.,]+\s*$/.test(`${a}`))) {
-    return Math.abs(na - nb) <= Math.abs(na) * 0.02 + 1e-9;
-  }
-  if (typeof a === 'boolean' || typeof b === 'boolean') return String(a).toLowerCase() === String(b).toLowerCase();
-  const squash = (s: unknown) =>
-    String(s)
-      .toLowerCase()
-      .normalize('NFKD')
-      .replace(/[^a-z0-9]+/g, '');
-  return squash(a) === squash(b) && squash(a).length > 0;
-}

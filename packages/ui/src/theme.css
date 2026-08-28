@@ -847,8 +847,7 @@
   .btn,
   .btn-primary,
   .btn-secondary,
-  .btn-tertiary,
-  .btn-brand {
+  .btn-tertiary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -874,8 +873,7 @@
   .btn svg,
   .btn-primary svg,
   .btn-secondary svg,
-  .btn-tertiary svg,
-  .btn-brand svg {
+  .btn-tertiary svg {
     flex: none;
   }
 
@@ -921,13 +919,10 @@
     background: var(--color-teal-100);
   }
 
-  /* Header search only: the brand teal as a fill with dark ink on it. */
-
   .btn:disabled,
   .btn-primary:disabled,
   .btn-secondary:disabled,
   .btn-tertiary:disabled,
-  .btn-brand:disabled,
   .btn[aria-disabled="true"],
   .btn-primary[aria-disabled="true"],
   .btn-secondary[aria-disabled="true"] {
@@ -1184,12 +1179,7 @@
 
   /* ── badges ─────────────────────────────────────────────────────────────── */
   .badge,
-  .badge-estimated,
-  .badge-stock,
-  .badge-low,
-  .badge-out,
-  .badge-cert,
-  .badge-muted {
+  .badge-estimated {
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -1205,10 +1195,6 @@
   .badge-estimated {
     background: var(--color-warn-bg);
     color: var(--color-warn);
-  }
-  .badge-stock {
-    background: var(--color-success-bg);
-    color: var(--color-success);
   }
 
   /* Stock lines are text, not pills — the status belongs in the reading order, not beside it. */
@@ -1373,8 +1359,7 @@
     color: var(--color-ink);
     font-weight: 600;
   }
-  .crumb-sep,
-  .crumbs-sep {
+  .crumb-sep {
     flex: none;
     color: var(--color-ink-3);
     padding: 0 2px;
@@ -1403,18 +1388,6 @@
   .table td.fig,
   .table th.fig {
     font-variant-numeric: tabular-nums lining-nums;
-  }
-  .table--compare th,
-  .table--compare td {
-    width: auto;
-    text-align: center;
-  }
-  .table--compare th[scope="row"] {
-    text-align: left;
-    width: 160px;
-  }
-  .table--compare thead th {
-    vertical-align: bottom;
   }
 
   /* ── cards ──────────────────────────────────────────────────────────────── */
@@ -1942,7 +1915,6 @@
     .btn,
     .btn--sm,
     .chip,
-    .chip--sm,
     .check-row,
     .input,
     .input--sm,
@@ -2015,7 +1987,6 @@
        into a lozenge. */
     .icon-btn,
     .search-clear,
-    .gal-thumb,
     .qty button,
     .seg button,
     .crumbs a {

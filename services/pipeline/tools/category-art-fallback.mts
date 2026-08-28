@@ -4,30 +4,24 @@
  * A designed tile for a category that has no photograph yet.
  *
  * `category-art-gen.mts` photographs a category with Gemini and is the right tool whenever it can
- * run. Three of its thirty-seven calls failed on the run that produced the current set — two were
- * aborted and one returned no image — and what got written in their place is a near-white
- * rectangle with a faint grid and corner crop marks. On a grid of thirty-three dark photographs
- * that does not read as "photograph pending". It reads as a hole in the page, and it is the
- * brightest thing on the home page.
+ * run. Three of its thirty-seven calls failed on the run that produced the current set, and what
+ * got written in their place is a near-white rectangle with a faint grid and corner crop marks. On
+ * a grid of thirty-three dark photographs that does not read as "photograph pending" — it reads as
+ * a hole in the page, and it is the brightest thing on the home page.
  *
  * Regenerating is blocked, not slow: the Gemini account answers every image request with
  * `429 RESOURCE_EXHAUSTED — "Your prepayment credits are depleted"`, on both image models the
  * project can address. That is a billing state, so no retry schedule reaches through it.
  *
- * So this draws the tile instead of photographing it, and does not pretend otherwise. It is a
- * deliberate graphic in the store's own palette — the same deep teal ground, the same falloff to
- * near-black, the same faint construction grid as the home page's hero field — carrying the
- * category's own Lucide mark large and quiet. It reads as a designed placeholder, which is what
- * it is, rather than as a photograph that failed to load.
- *
- * Two things it deliberately does NOT do:
- *
- *   · No baked-in text. The tile already prints the category name underneath it; a second name
- *     inside the image would be an untranslatable caption that no CSS can fix — the same reason
- *     `category-art-gen.mts` forbids lettering in its prompts.
- *   · No stock photograph. A search for "excavation" returns somebody's branded machine, and
- *     putting one manufacturer's excavator on the tile that means "excavation" is the
- *     misattribution this repository has already spent a pass removing from its SKU images.
+ * So this draws the tile instead of photographing it, and does not pretend otherwise: a deliberate
+ * graphic in the store's own palette — the same deep teal ground, falloff to near-black and faint
+ * construction grid as the home page's hero field — carrying the category's own Lucide mark large
+ * and quiet. It reads as a designed placeholder, which is what it is. Two things it does NOT do:
+ * bake in text, since the tile already prints the category name underneath and a second name
+ * inside the image is an untranslatable caption no CSS can fix (the same reason the generator
+ * forbids lettering in its prompts); and reach for a stock photograph, since a search for
+ * "excavation" returns somebody's branded machine, which is the misattribution this repository
+ * has already spent a pass removing from its SKU images.
  *
  * It writes through the same `categoryHeroKey(slug, size, version)` path as the photographic
  * generator and updates the same row, so a later `category-art-gen.mts --force` overwrites it

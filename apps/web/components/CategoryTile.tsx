@@ -6,27 +6,17 @@ import { mediaUrl } from '@/lib/media';
  * One tile in a catalogue grid — a category on the home page, a product inside a category page.
  *
  * The same card does both levels on purpose: the tree is CATEGORY → PRODUCT → SKU, and the first
- * two levels are the same act of choosing. Giving them different cards is what made the old home
- * page read as two systems bolted together.
+ * two are the same act of choosing. Different cards for them is what made the old home page read
+ * as two systems bolted together. The photograph is the design and carries no glyph — an earlier
+ * version laid a line drawing over the picture at 34% opacity and put a second copy in a chip.
  *
- * The photograph is the design. It carries no glyph: every category and every product has real
- * art, and an earlier version laid a line drawing over the picture at 34% opacity and then put a
- * second copy of the same drawing in a chip below the name.
+ * `meta` is how many items are on the shelf and what the cheapest costs, which are the two things
+ * a buyer is deciding on. It used to read "1 product · 3 on the shelf" on every stocked tile.
  *
- * `meta` is one line of substance under the name. It used to read "1 product · 3 on the shelf" on
- * every stocked tile — nine tiles, nine identical strings, and "1 product" is a fact about how
- * the catalogue is filed rather than about what is for sale. It now says how many items are on
- * the shelf and what the cheapest of them costs, which are the two things a buyer is deciding on.
- *
- * Elevation comes from `.lift` in theme.css — the one hover rule every card in the store shares.
- * The teal edge and the photograph's scale are the only motion this tile owns.
- *
- * `compact` is the same tile at the size a shelf that is not stocked yet deserves. Twenty-six of
- * the thirty-five categories in this catalogue are still being filled, and drawn at full size
- * they made the front door read as a store with the lights off — twenty-six large photographs,
- * each dimmed, each wearing an "Arriving soon" pill, outnumbering the nine that sell three to
- * one. Compact keeps every one of them on the page, which is the honest thing, and gives them
- * the weight of a list rather than of a shelf.
+ * `compact` is the same tile at the size an unstocked shelf deserves. Twenty-six of thirty-five
+ * categories are still being filled, and at full size they made the front door read as a store
+ * with the lights off. Compact keeps all of them on the page, which is the honest thing, at the
+ * weight of a list rather than of a shelf. Elevation is `.lift` in theme.css.
  */
 /**
  * How wide the tile will actually be drawn, so the browser can pick the right file.

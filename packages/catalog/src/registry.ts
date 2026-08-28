@@ -99,22 +99,9 @@ export const CategorySeedSchema = z.object({
   gst_rate: z.number(),
   brands: z.array(BrandSeedSchema),
 });
-export type CategorySeed = z.infer<typeof CategorySeedSchema>;
-export type BrandSeed = z.infer<typeof BrandSeedSchema>;
-
 /** Default widget for a data type when the registry does not say. */
 export function defaultWidget(t: DataType): FilterWidget {
   return t === 'number' ? 'range' : t === 'boolean' ? 'toggle' : 'checkbox';
-}
-
-/** The slug rule the sheet parser uses for verbatim labels → keys. */
-export function slugKey(label: string): string {
-  return label
-    .toLowerCase()
-    .normalize('NFKD')
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_+|_+$/g, '')
-    .slice(0, 64);
 }
 
 /**
@@ -129,23 +116,22 @@ export function slugKey(label: string): string {
 /**
  * THE THIRTY-FIVE CATEGORIES, and the nine products that sit inside them.
  *
- * The source is `Desktop/Build Objects/PRODUCTS LIST.xlsx` — one sheet per category, thirty-five
- * of them, in this order. Cement is not one: CONCRETING is, and cement is a product in it. The
- * same is true of every flagship the store sells today.
+ * The source is `Desktop/Build Objects/PRODUCTS LIST.xlsx` — one sheet per category, in this
+ * order. Cement is not a category: CONCRETING is, and cement is a product in it. The same is true
+ * of every flagship the store sells today.
  *
- *     category            product              why
- *     CONCRETING          Cement               the gap file's own index reads
- *                                              "CEMENT, LIME, GYPSUM & BINDER GRADES -> CONCRETING"
- *     FLOORING            Tiles                22 tile rows on that sheet; it is the subject
- *     DOORS & WINDOWS     Glass                20 glass rows; "DOORS, WINDOWS, GLASS & ARCHITECTURAL"
- *     ELECTRICALS         Bulbs                "Bulbs", "LED Bulbs"
- *     SECURITY SYSTEMS    CCTV                 the sheet's subject; ELECTRICALS lists only its cables
- *     SOLAR               Solar Panels         "Solar panels"
- *     FIRE SYSTEM         Fire Extinguishers   "Fire Extinguishers"
- *     DRAFTING & MEAS.    Total Stations       "Total Stations"; the other sheets list it as a tool
- *     WATER PROOFING      Epoxy                the construction-chemicals sheet - admixtures, bonding
- *                                              agents, injection grouts. A judgement call: epoxy grout
- *                                              also appears under FLOORING and RAILINGS.
+ *     CONCRETING          Cement          the gap file's own index reads
+ *                                         "CEMENT, LIME, GYPSUM & BINDER GRADES -> CONCRETING"
+ *     FLOORING            Tiles           22 tile rows on that sheet; it is the subject
+ *     DOORS & WINDOWS     Glass           20 glass rows; "DOORS, WINDOWS, GLASS & ARCHITECTURAL"
+ *     ELECTRICALS         Bulbs           "Bulbs", "LED Bulbs"
+ *     SECURITY SYSTEMS    CCTV            the sheet's subject; ELECTRICALS lists only its cables
+ *     SOLAR               Solar Panels    "Solar panels"
+ *     FIRE SYSTEM         Fire Exting'rs  "Fire Extinguishers"
+ *     DRAFTING & MEAS.    Total Stations  "Total Stations"; other sheets list it as a tool
+ *     WATER PROOFING      Epoxy           the construction-chemicals sheet — admixtures, bonding
+ *                                         agents, injection grouts. A judgement call: epoxy grout
+ *                                         also appears under FLOORING and RAILINGS.
  *
  * Twenty-six of the thirty-five have no products yet. They are still real, clickable places —
  * an upcoming category is a promise the buyer can see, not a dead link.
@@ -187,8 +173,6 @@ export const CATEGORIES = [
   { slug: 'storage-packaging', name: 'Storage & Packaging Items' },
   { slug: 'presentation', name: 'Presentation Items' },
 ] as const;
-
-export type CategorySlug = (typeof CATEGORIES)[number]['slug'];
 
 /**
  * Product slug -> the category it belongs to.
@@ -237,13 +221,6 @@ export const DEPARTMENTS = [
   { key: 'external-works', name: 'External Works' },
   { key: 'office-administration', name: 'Office & Administration' },
 ] as const;
-export type DepartmentKey = (typeof DEPARTMENTS)[number]['key'];
-
-/** Nav order of a department key; unknown keys sort last rather than throwing on a page render. */
-export function departmentOrder(key: string): number {
-  const i = DEPARTMENTS.findIndex((d) => d.key === key);
-  return i === -1 ? DEPARTMENTS.length : i;
-}
 export function departmentName(key: string): string {
   return DEPARTMENTS.find((d) => d.key === key)?.name ?? key;
 }

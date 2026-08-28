@@ -87,12 +87,6 @@ export function markWheelSpun(): void {
   localStorage.setItem(SPUN_KEY, 'true');
 }
 
-/** Reset spin wheel status (for testing or re-spins) */
-export function resetWheelStatus(): void {
-  if (typeof window === 'undefined') return;
-  localStorage.removeItem(SPUN_KEY);
-}
-
 /** Get Profile Name */
 export function getProfileName(fallbackPhone?: string): string {
   if (typeof window === 'undefined') return 'Builder / Contractor';

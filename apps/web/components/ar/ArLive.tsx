@@ -151,15 +151,10 @@ export default function ArLive({
 
         let lastHit: { matrix: Matrix4; normal: Vector3 } | null = null;
         const up = new THREE.Vector3(0, 1, 0);
-        const orient = (normal: Vector3) => {
-          const vertical = Math.abs(normal.y) < 0.5;
-          const s = vertical ? 'wall' : normal.y < -0.5 ? 'ceiling' : 'floor';
-          return orientForSurface(THREE, s, normal, rule);
-        };
         const place = () => {
           if (!lastHit) return;
           holder.position.setFromMatrixPosition(lastHit.matrix);
-          holder.quaternion.copy(orient(lastHit.normal));
+          holder.quaternion.copy(orientForSurface(THREE, lastHit.normal, rule));
           if (rule.mountOffsetMm) holder.position.addScaledVector(lastHit.normal, rule.mountOffsetMm / 1000);
           holder.visible = true;
           reticle.visible = false;

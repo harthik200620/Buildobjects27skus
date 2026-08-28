@@ -1,5 +1,4 @@
 import type { PlacementRule, ProductDims, Surface } from '../types';
-import { RAD } from './camera-math';
 import {
   ceilingPlane,
   floorPlane,
@@ -101,11 +100,6 @@ export const screenAnchor = (u: number, v: number, surface: Surface, yawDeg = 0)
 export function anchorToPixel(anchor: Anchor, K: PixelIntrinsics, R: Mat3, C: Vec3): Pixel | null {
   if (anchor.kind === 'screen') return { u: anchor.u, v: anchor.v };
   return projectToPixel(K, R, C, anchor.P);
-}
-
-/** The yaw (degrees) that turns a product's front (+Z local) toward the camera from a horizontal anchor. */
-export function yawFacing(P: Vec3, C: Vec3): number {
-  return Math.atan2(C.x - P.x, C.z - P.z) * RAD;
 }
 
 /** The product's extent on the surface, padded by the rule's clearance on every side (metres): w × d on horizontal surfaces, w × h on walls. */

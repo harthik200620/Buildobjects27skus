@@ -35,7 +35,6 @@
     "@google/genai": "^1.20.0",
     "@google/model-viewer": "^4.1.0",
     "blurhash": "^2.0.5",
-    "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.5",
     "jose": "^6.1.0",
     "lru-cache": "^11.5.2",

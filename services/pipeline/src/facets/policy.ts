@@ -163,7 +163,3 @@ export function loadPolicy(): FilterPolicy {
 export function policyFor(slug: string): CategoryPolicy | null {
   return loadPolicy().categories[slug] ?? null;
 }
-
-export function policyPath(): string {
-  return POLICY_FILE;
-}

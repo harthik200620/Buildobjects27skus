@@ -1,28 +1,22 @@
 /**
  * Make every product photograph sit on one colour, so the mount can be that colour.
  *
- * The 27 SKUs were shot by 27 suppliers on sweeps from #b2b5ae to #fffefe, and the store paints
- * one silver behind all of them — so every mismatch is a visible rectangle with a hard edge, which
- * is what makes a catalogue read as assembled rather than made.
+ * The 27 SKUs were shot by 27 suppliers on sweeps from #b2b5ae to #fffefe and the store paints one
+ * silver behind all of them, so every mismatch is a visible rectangle with a hard edge — which is
+ * what makes a catalogue read as assembled rather than made. theme.css sets --plate-1 to the target,
+ * so photograph and mount become one surface.
  *
- * This recolours the sweep and touches nothing else: pixels within tolerance of the photograph's
- * own background become one agreed colour, pixels a little further out are eased toward it so
- * there is no ring. No flood fill, so there is no geometry to get wrong — nothing shreds, nothing
- * leaks through a white product, and sweep the product encloses is recoloured like any other.
- * (Keying to transparency was tried first and managed twenty of twenty-five, which is not a number
- * you can ship a catalogue on.)
- *
- * theme.css sets --plate-1 to the same value, so photograph and mount are one surface.
+ * This recolours the sweep and nothing else: pixels within tolerance of the photograph's own
+ * background become the agreed colour, pixels a little further out are eased toward it so there is
+ * no ring. No flood fill, so there is no geometry to get wrong — nothing shreds, nothing leaks
+ * through a white product, and sweep the product encloses is recoloured like any other. (Keying to
+ * transparency managed twenty of twenty-five, which is not a number you ship a catalogue on.)
  *
  * Suppliers who ship a marketing composite rather than a photograph are left untouched and given a
- * mount of THEIR OWN colour, written to lib/plate-colors.ts. So there is no seam on any tile
- * without a pixel of artwork being altered.
+ * mount of THEIR OWN colour in lib/plate-colors.ts, so no tile has a seam and no pixel of artwork
+ * is altered to achieve that. Idempotent: an image already on the target colour is skipped.
  *
- *   blend                     writes in place
- *   blend -- --dry            reports and writes nothing
- *   blend -- --sheet out.png  a contact sheet to look at
- *
- * Idempotent: an image already on the target colour is recognised and skipped.
+ *   blend  ·  --dry reports and writes nothing  ·  --sheet out.png draws a contact sheet
  */
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';

@@ -8,25 +8,21 @@ import React from 'react';
 /**
  * TIME — when the money leaves, and what changing your mind costs.
  *
- * ── TWO THINGS ON ONE TIMELINE ──────────────────────────────────────────────────────────────
- *
- * THE CASH FLOW. A ₹34L house is an impossible wall of money. The same house at ₹2.6L in month
- * one is a plan. Nothing about the total changed; the framing did, and the framing is what
- * decides whether somebody starts.
+ * THE CASH FLOW. A ₹34L house is an impossible wall of money; the same house at ₹2.6L in month one
+ * is a plan. Nothing about the total changed, the framing did, and the framing is what decides
+ * whether somebody starts.
  *
  * THE REGRET CURVE, which is the part nobody has built. For any decision on the form, this prices
- * what changing it LATER costs — flat while the decision is still upstream of the work it
- * touches, then a hard step at the phase boundary where that work gets executed. Adding a floor
- * before the footing is a drawing revision. Adding it after the slab is cast is breaking the slab.
+ * what changing it LATER costs — flat while the decision is still upstream of the work it touches,
+ * then a hard step at the phase boundary where that work gets executed. Adding a floor before the
+ * footing is a drawing revision; adding it after the slab is cast is breaking the slab. Mid-build
+ * changes are the number one way an Indian home budget explodes, every contractor prices them
+ * after the fact, and nobody has ever shown the buyer the curve in advance.
  *
- * Mid-build changes are the number one way an Indian home budget explodes. Every contractor
- * prices them after the fact. Nobody has ever shown the buyer the curve in advance.
- *
- * ── AND IT ARRIVES AS A BAND ────────────────────────────────────────────────────────────────
- * Three of the four terms behind a change cost are thumb values that compound, so the curve is
- * drawn as a band and the terms are itemised underneath it. A single confident number here would
- * be a lie with a decimal point in it, and this page's only real asset is that it does not do
- * that.
+ * It arrives as a BAND. Three of the four terms behind a change cost are thumb values that
+ * compound, so the curve is drawn as a band with the terms itemised underneath. A single confident
+ * number here would be a lie with a decimal point in it, and this page's only real asset is that
+ * it does not do that.
  */
 
 export interface TimeProps {

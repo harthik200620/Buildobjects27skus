@@ -345,7 +345,7 @@ export class SceneRenderer {
     holder.position.set(anchor.P.x, anchor.P.y, anchor.P.z);
     if (anchor.kind === 'horizontal') {
       const normal = anchor.surface === 'ceiling' ? new THREE.Vector3(0, -1, 0) : new THREE.Vector3(0, 1, 0);
-      holder.quaternion.copy(orientForSurface(THREE, anchor.surface, normal, rule));
+      holder.quaternion.copy(orientForSurface(THREE, normal, rule));
       holder.rotateY((yawDeg * Math.PI) / 180);
       /*
        * LAY IT DOWN, IF IT IS SUPPOSED TO LIE DOWN.
@@ -375,7 +375,7 @@ export class SceneRenderer {
       this.tilt.rotation.set(0, 0, 0);
       this.tilt.position.set(0, 0, 0);
       const normal = new THREE.Vector3(anchor.n.x, anchor.n.y, anchor.n.z);
-      holder.quaternion.copy(orientForSurface(THREE, anchor.surface, normal, rule));
+      holder.quaternion.copy(orientForSurface(THREE, normal, rule));
       holder.rotateY((yawDeg * Math.PI) / 180);
       if (rule.mountOffsetMm) holder.position.addScaledVector(normal, rule.mountOffsetMm / 1000);
     }

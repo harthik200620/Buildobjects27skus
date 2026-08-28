@@ -32,8 +32,6 @@ export interface Intrinsics {
 }
 
 export const DEFAULT_FOV_LONG_DEG: Record<DeviceClass, number> = { phone: 66, laptop: 70, unknown: 66 };
-/** The lens slider's range, degrees across the long side. */
-export const FOV_LONG_RANGE_DEG: readonly [number, number] = [50, 80];
 const FOV_HARD_CLAMP: readonly [number, number] = [30, 120];
 
 /** `fovShort = 2·atan(tan(fovLong/2)·short/long)`, `fy = (H/2)/tan(fovY/2)`, `fx = fy`, `cx = W/2`, `cy = H/2`. */
@@ -56,10 +54,4 @@ export function scaleIntrinsics(K: Intrinsics, newW: number, newH: number): Intr
   const sx = newW / K.W,
     sy = newH / K.H;
   return { ...K, W: newW, H: newH, fx: K.fx * sx, fy: K.fy * sy, cx: K.cx * sx, cy: K.cy * sy };
-}
-
-/** The long-side FOV (degrees) that a focal length implies — the inverse of `intrinsicsFor` for the lens slider. */
-export function fovLongFromFocal(fPx: number, W: number, H: number): number {
-  const long = Math.max(W, H);
-  return 2 * Math.atan(long / 2 / fPx) * RAD;
 }

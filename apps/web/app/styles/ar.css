@@ -21,24 +21,7 @@
   z-index: 1;
 }
 
-/* The HUD SVG: surface boxes, placement footprint, anchor dot and calibration marks. */
-.ar-surface-box rect {
-  fill: var(--color-ar-wash);
-  stroke: var(--color-ar-line);
-  stroke-dasharray: 6 6;
-}
-.ar-surface-box text {
-  fill: var(--color-ar-line-strong);
-  font: 12px / 16px var(--font-ui);
-}
-/* The surface the product actually needs, once it is found: solid, not dashed. */
-.ar-surface-box--target rect {
-  stroke: var(--color-brand);
-  stroke-dasharray: none;
-  stroke-width: 2;
-}
-
-/* Camera HUD overlays */
+/* The chrome the camera view and the house turntable share: a blurred panel, and a pill on it. */
 .ar-hud-glass {
   background: var(--color-ar-panel);
   backdrop-filter: blur(12px);
@@ -47,7 +30,6 @@
   color: var(--color-header-ink);
   border-radius: var(--radius-pill);
 }
-
 .ar-hud-pill {
   display: inline-flex;
   align-items: center;
@@ -59,91 +41,4 @@
   /* A pill is a label, not a paragraph. Without this the row squeezed "Flip camera" into two
      stacked words and "Re-center" into "Re-" over "center" — the row wraps as whole pills now. */
   white-space: nowrap;
-}
-
-/*
- * The surface prompt. This is the sentence that tells someone their camera is pointed at the
- * wrong thing — "Point your camera at a wall to place this" — so it is the most-read text in
- * the AR view and it must survive being laid over an arbitrary photograph of a room.
- */
-/*
- * The stack the prompt and the interaction tip live in. One absolutely-positioned column, cleared
- * of the title bar once, so the two chips inside it flow and can never collide — with each other
- * or with a product name that wraps.
- */
-.ar-top {
-  position: absolute;
-  top: calc(var(--s-3) + env(safe-area-inset-top));
-  right: var(--s-3);
-  left: var(--s-3);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  pointer-events: none;
-}
-/* Only the controls take pointer events; the chips must not eat a tap meant for the wall. */
-.ar-top button {
-  pointer-events: auto;
-}
-/*
- * The identity row and the controls. Wraps on a narrow phone — and BECAUSE it can wrap, nothing
- * below it may be positioned at a fixed offset: it is a flow child of .ar-top, so the guidance
- * chips move down with it instead of underneath it.
- */
-.ar-topbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  width: 100%;
-}
-
-/* The title pill is positioned, so it must not grow: one line, ellipsis, never a second row. */
-
-.ar-surface-prompt svg {
-  flex: none;
-}
-
-/*
- * No translateX here any more.
- *
- * The prompt used to be centred with `left: 50%; transform: translateX(-50%)`, and these keyframes
- * carried that -50% so the animation would not undo it. When the prompt became a flow child of
- * .ar-top the rule lost its transform — and the KEYFRAMES kept theirs, which shifted the chip half
- * its own width off the left of the screen for as long as it was seeking. Measured at x = -149 in
- * a 430px viewport: the sentence telling somebody where to point their camera, off the side of the
- * camera. An animation that positions is an animation that has to be changed twice.
- */
-@keyframes ar-seek {
-  0%,
-  100% {
-    opacity: 0.96;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.82;
-    transform: scale(0.985);
-  }
-}
-
-/*
- * "IT IS OVER HERE."
- *
- * Shown when the product is outside the frame at the angle the phone is held — a wall item with
- * the camera pointed at the floor, a ceiling bulb with it pointed at a wall, or anything the user
- * dragged and then looked away from. Before this the view rendered nothing and said nothing, which
- * is what "I cannot see the product" looked like from the outside.
- *
- * It is a button, not a chip: reading which way to tilt is useful, and being able to just tap and
- * have it brought to you is more useful. Sized and coloured as an action, so it does not read as
- * one more piece of passive status text among the pills above it.
- */
-@keyframes ar-nudge-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
 }

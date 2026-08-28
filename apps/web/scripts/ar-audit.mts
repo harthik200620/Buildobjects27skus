@@ -3,17 +3,15 @@
  *
  * pnpm --filter @buildobjects/web ar:audit [--base URL] [--only sku,...] [--strict] [--shots]
  *
- * packages/ar-engine/test/framing.test.ts covers the maths. This covers the half maths cannot:
- * three.js, the GLB, the cover map, the DOM and the render loop running together.
+ * packages/ar-engine/test/framing.test.ts covers the maths; this covers the half maths cannot —
+ * three.js, the GLB, the cover map, the DOM and the render loop running together. It drives a phone
+ * from a desktop with two pieces of Chromium plumbing: `--use-fake-device-for-media-stream` gets the
+ * view into its streaming state so the whole placement path runs, and synthetic `deviceorientation`
+ * events ARE tilting the phone, since the view derives its pitch from nothing else.
  *
- * It drives a phone from a desktop with two pieces of Chromium plumbing:
- * `--use-fake-device-for-media-stream` gets the view into its streaming state so the whole
- * placement path runs, and synthetic `deviceorientation` events ARE tilting the phone, since the
- * view derives its pitch from nothing else.
- *
- * It counts the product by photographing the stage twice, once with the WebGL canvas hidden;
- * every differing pixel is product. That needs no test hook and measures the thing being
- * complained about rather than a proxy for it. A frame-time sample runs alongside.
+ * It counts the product by photographing the stage twice, once with the WebGL canvas hidden; every
+ * differing pixel is product. That needs no test hook and measures the thing being complained about
+ * rather than a proxy for it. A frame-time sample runs alongside.
  */
 
 import fs from 'node:fs';
@@ -140,18 +138,16 @@ async function tilt(page: Page, pitchDeg: number): Promise<{ ok: boolean; why: s
   if (Math.abs(actual - pitchDeg) > 8) return { ok: false, why: `asked for ${pitchDeg} deg, camera is at ${actual.toFixed(1)}` };
 
   /*
-   * AND THEN WAIT FOR THE PLACEMENT, WHICH IS THE THING BEING MEASURED.
-   *
-   * Everything above proves the POSE arrived. The placement is a separate, later event: the view
-   * re-frames on its own schedule after the pose moves, and the off-screen check runs at about
-   * 6 Hz rather than every frame. Measuring pixels in that window reads a product mid-flight.
+   * AND THEN WAIT FOR THE PLACEMENT, WHICH IS THE THING BEING MEASURED. Everything above proves the
+   * POSE arrived; the placement is a separate, later event — the view re-frames on its own schedule
+   * after the pose moves, and the off-screen check runs at about 6 Hz rather than every frame, so
+   * measuring pixels in that window reads a product mid-flight.
    *
    * That is the whole of this harness's flakiness, and it was expensive: a run reported "7 of 135
-   * failed" and the same SKU and pitch came back clean on the next run with a correct nudge. It
-   * went into scratch/AR_SCORE.md as five real engine defects. It was not — two exhaustive sweeps
-   * of framePlacement over every SKU, every pitch, both the full frame and the chrome-inset band,
-   * in portrait and landscape, find zero placements that are under-framed without saying so, and
-   * zero that are framed but under 24px on their short side.
+   * failed" and the same SKU and pitch came back clean on the next run. Two exhaustive sweeps of
+   * framePlacement — every SKU, every pitch, full frame and chrome-inset band, portrait and
+   * landscape — find zero placements under-framed without saying so, and zero framed but under
+   * 24px on their short side.
    *
    * So: poll the anchor and the fit line until they stop changing, then measure. Twelve tries at
    * 200 ms is 2.4 s of headroom, and it settles in two or three when nothing is wrong.

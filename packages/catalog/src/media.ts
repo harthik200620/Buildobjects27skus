@@ -21,8 +21,6 @@ const SIZE_SEGMENT: Record<ImageSize, string> = {
   cutout: 'cutout',
   cutoutcard: 'cutout-card',
 };
-const SEGMENT_SIZE: Record<string, ImageSize> = Object.fromEntries(Object.entries(SIZE_SEGMENT).map(([k, v]) => [v, k as ImageSize]));
-
 /** First two hex chars of md5(sku_code) — directory sharding so 400k × 25 files never melts a listing. */
 export function shard(skuCode: string): string {
   return md5Hex(skuCode).slice(0, 2);
@@ -70,9 +68,4 @@ export function withSize(key: string, size: ImageSize, ext?: 'webp' | 'avif' | '
     /-(thumb|card|gallery|zoom|orig|cutout-card|cutout)\.(webp|avif|jpg|png)$/,
     (_m, _s, e) => `-${SIZE_SEGMENT[size]}.${ext ?? (size === 'cutout' ? 'png' : size === 'cutoutcard' ? 'webp' : e)}`,
   );
-}
-/** Parse the size segment of an image key (`…/3-cutout-card.webp` → `cutoutcard`); null when the key is not an image key. */
-export function sizeOfKey(key: string): ImageSize | null {
-  const m = /-(thumb|card|gallery|zoom|orig|cutout-card|cutout)\.(webp|avif|jpg|png)$/.exec(key);
-  return m ? (SEGMENT_SIZE[m[1]] ?? null) : null;
 }

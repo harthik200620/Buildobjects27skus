@@ -32,16 +32,8 @@ export function coverMap(W: number, H: number, w: number, h: number): CoverMap {
   return { W: safeW, H: safeH, w: sw, h: sh, k, x0: (safeW - cw) / 2, y0: (safeH - ch) / 2, cw, ch };
 }
 
-/** Video px → stage CSS px. */
-export const videoToStage = (m: CoverMap, u: number, v: number): { x: number; y: number } => ({ x: (u - m.x0) * m.k, y: (v - m.y0) * m.k });
-
 /** Stage CSS px → video px. */
 export const stageToVideo = (m: CoverMap, x: number, y: number): { u: number; v: number } => ({ u: x / m.k + m.x0, v: y / m.k + m.y0 });
-
-/** True when the video pixel lies inside the visible crop (with a little slack). */
-export function inCrop(m: CoverMap, u: number, v: number, slackPx = 0): boolean {
-  return u >= m.x0 - slackPx && u <= m.x0 + m.cw + slackPx && v >= m.y0 - slackPx && v <= m.y0 + m.ch + slackPx;
-}
 
 /** The minimal three.js camera surface this module needs (avoids a static `three` import). */
 export interface ViewOffsetCamera {

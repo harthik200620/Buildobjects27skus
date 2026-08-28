@@ -1,34 +1,29 @@
 /**
  * What the money physically is.
  *
- * ── WHY ─────────────────────────────────────────────────────────────────────────────────────
- * "₹34,16,796" is an abstraction. Four hundred and thirty tipper-loads of sand is not. The
- * engine already computes every quantity; this turns those quantities into real objects at real
- * dimensions so the MATTER lens can stand them on the plot beside the house.
+ * "₹34,16,796" is an abstraction. Four hundred and thirty tipper-loads of sand is not. The engine
+ * already computes every quantity; this turns those quantities into real objects at real dimensions
+ * so the MATTER lens can stand them on the plot beside the house.
  *
- * ── THE ONE RULE: TRUE SCALE, ALWAYS ────────────────────────────────────────────────────────
- * Nothing here is exaggerated for drama and nothing is shrunk to fit the frame. Some piles come
- * out startlingly large — the sand for a 1,800 sqft house is several lorry-loads and it dwarfs
- * the house's footprint. Some come out startlingly small — twelve tonnes of TMT steel is a cube
- * 1.15 m on a side, which fits in a corner of a bedroom. BOTH DIRECTIONS ARE THE POINT. A buyer
- * who watches this and then stands next to the real delivery has to find that it matches, or
- * everything else this store says about honesty is worth nothing.
+ * THE ONE RULE IS TRUE SCALE, ALWAYS. Nothing is exaggerated for drama or shrunk to fit the frame.
+ * Some piles come out startlingly large — the sand for a 1,800 sqft house dwarfs the house's own
+ * footprint — and some startlingly small: twelve tonnes of TMT steel is a cube 1.15 m on a side,
+ * which fits in a corner of a bedroom. BOTH DIRECTIONS ARE THE POINT. A buyer who watches this and
+ * then stands next to the real delivery has to find that it matches, or everything else this store
+ * says about honesty is worth nothing.
  *
- * ── SOURCES ─────────────────────────────────────────────────────────────────────────────────
- * Densities are handbook values (IS 875 Part 1 for building material unit weights). Unit sizes
- * are the Indian standard trade sizes the rate pack already prices against: the 50 kg cement bag,
- * the 230 × 110 × 70 mm modular brick (IS 1077), 12 m TMT lengths, 600 × 600 vitrified tile in
- * boxes of four. The tipper is the AP/TS 300 cft lorry; sand and aggregate are also sold by the
- * "unit" of 100 cft, which is how a buyer will hear it quoted at the counter.
+ * Densities are handbook values (IS 875 Part 1 for building material unit weights). Unit sizes are
+ * the Indian standard trade sizes the rate pack already prices against: the 50 kg cement bag, the
+ * 230 × 110 × 70 mm modular brick (IS 1077), 12 m TMT lengths, 600 × 600 vitrified tile in boxes
+ * of four. The tipper is the AP/TS 300 cft lorry; sand and aggregate are also sold by the "unit"
+ * of 100 cft, which is how a buyer will hear it quoted at the counter.
  */
-import type { EstimateResult, LineItem } from './types';
+import type { EstimateResult } from './types';
 
 /** 1 cubic foot in cubic metres. Every cft quantity in the engine passes through this. */
 export const CFT_TO_CUM = 0.0283168;
 /** The AP/TS lorry load, and the counter unit sand is quoted in. */
 export const TIPPER_CFT = 300;
-export const SAND_UNIT_CFT = 100;
-
 export type PileShape =
   /** Discrete pieces in a rectangular stack: bags, bricks, boxes, drums. */
   | 'stack'
@@ -297,11 +292,3 @@ export function materialise(result: EstimateResult): MaterialPile[] {
 }
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
-
-/** Which lines have a physical form at all. Used by the UI to decide what MATTER can show. */
-export function isPhysical(line: LineItem): boolean {
-  return BY_KEY.has(line.key);
-}
-
-/** A 5' 6" adult, in metres. Present on the plot in MATTER so the scale means something. */
-export const HUMAN_HEIGHT_M = 1.676;

@@ -22,21 +22,19 @@ export function loadManifest(): AssetManifest | null {
  * `ASSETS` is ./assets/3d — a sibling of apps/web at the repo root, and therefore outside anything
  * Next traces into a serverless bundle. On the deployment `fs.existsSync` against it is false for
  * every SKU, always, so `glbUrl` came back null for all twenty-eight and the AR view had NO MODEL
- * TO LOAD. It rendered a camera feed and nothing else, on every product, since it was deployed.
+ * TO LOAD: a camera feed and nothing else, on every product, since it was deployed.
  *
- * The models are on the CDN regardless: scripts/stage-media.mts copies assets/3d into
- * apps/web/public/3d at build time, filling any gap from assets/3d/placeholders, so there is a
+ * The models are on the CDN regardless — scripts/stage-media.mts copies assets/3d into
+ * apps/web/public/3d at build time, filling any gap from assets/3d/placeholders — so there is a
  * .glb behind /3d/{CODE}.glb for every SKU whether or not the source tree survived into the
  * runtime. Probing the filesystem to decide whether to link a CDN asset was answering the wrong
  * question in the wrong place.
  *
- * So: when the source tree is present — a laptop, the pipeline — the probe still runs and still
- * distinguishes a real mesh from a placeholder, which is what modelNote reports. When it is not,
- * the staged asset is trusted. A 404 is no longer silent either; ArCamera has a visible failed
- * state for it now.
- *
- * Computed once at module load rather than per call: the answer cannot change while the process
- * is alive, and this sits behind every AR page render.
+ * So when the source tree is present — a laptop, the pipeline — the probe still runs and still
+ * distinguishes a real mesh from a placeholder, which is what modelNote reports; when it is not,
+ * the staged asset is trusted. A 404 is no longer silent either: ArCamera has a visible failed
+ * state for it. Computed once at module load, since the answer cannot change while the process is
+ * alive and this sits behind every AR page render.
  */
 const ASSETS_TREE_PRESENT = fs.existsSync(/* turbopackIgnore: true */ ASSETS);
 

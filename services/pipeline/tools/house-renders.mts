@@ -1,35 +1,26 @@
 /**
  * `npx tsx services/pipeline/tools/house-renders.mts [--only 2-medium] [--force] [--sheet]`
  *
- * The house BO Estimator draws, rendered properly.
+ * The house BO Estimator draws, rendered properly. The first version was an SVG elevation built
+ * out of rectangles — honest, every shape bound to a field of the estimate, and it looked like a
+ * diagram, which is the one thing a hero product cannot look like.
  *
- * The first version of this was an SVG elevation built out of rectangles. It was honest — every
- * shape was bound to a field of the estimate — and it looked like a diagram, which is the one
- * thing a hero product cannot look like. Somebody deciding how to spend thirty lakhs wants to see
- * the house, not a wireframe of it.
+ * Accurate is not the bar either. The first render pass briefed the literal truth — bare earth,
+ * plain plaster, an exposed downpipe — and produced thirty joyless boxes. This is the image a
+ * person looks at while deciding to spend thirty lakhs, so it has to show them the home they have
+ * been imagining, at their storey count and their finish, with a real number under it.
  *
- * So the house is a real render now, and specifically a render of a house somebody would want.
- * The first pass briefed the literal truth — bare earth, plain plaster, an exposed downpipe — and
- * produced thirty accurate, joyless boxes. Accurate is not the bar: this is the image a person
- * looks at while deciding to spend thirty lakhs, and it has to show them the home they have been
- * imagining, at their storey count and their finish, with a real number under it.
+ * The configuration space that actually changes what a building looks like is small, so the whole
+ * matrix is pre-generated and the page swaps between stills — generating on each keystroke would
+ * cost twenty seconds and a few paise per drag of a slider.
  *
- * The configuration space that actually changes what a building looks like is small — how many
- * floors, and how well it is finished — so the whole matrix is pre-generated and the page swaps
- * between stills. Generating on each keystroke would cost twenty seconds and a few paise per drag
- * of a slider; thirty files cost one run.
+ *   floors 0 (ground only) … 4 (G+4) · finish basic/medium/premium · solar off/on  =  30 renders
  *
- *   floors  0 (ground only) … 4 (G+4)     5
- *   finish  basic / medium / premium      3
- *   solar   off / on                      2
- *                                        ──
- *                                        30 renders
- *
- * Consistency is the whole game: thirty houses that are obviously thirty different houses would
- * read as a slideshow, not as one building changing. It comes from the DIRECTION block below —
- * one camera, one hour, one plot, one colour grade, written identically into every prompt. It
- * does NOT come from feeding each render the previous one: that was the first attempt, and a
- * reference image of a two-storey house overrode every request for five.
+ * Consistency is the whole game: thirty houses that are obviously thirty different houses read as
+ * a slideshow rather than as one building changing. It comes from the DIRECTION block below — one
+ * camera, one hour, one plot, one colour grade, written identically into every prompt — and NOT
+ * from feeding each render the previous one, which was the first attempt: a reference image of a
+ * two-storey house overrode every request for five.
  *
  * Deliberately NOT in the render: the compound wall, the car porch and the CCTV. Those are
  * separate line items a person can switch off, and a picture that shows a wall the estimate did

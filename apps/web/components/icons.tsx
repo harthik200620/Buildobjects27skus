@@ -94,16 +94,6 @@ export const IconCheckCircle = (p: IconProps) => (
   </Ico>
 );
 
-export const IconDone = IconCheckCircle;
-
-export const IconAlert = (p: IconProps) => (
-  <Ico {...p}>
-    <path d="M12 3.4 21.4 20H2.6z" />
-    <path className="ic-a" d="M12 9.4v4.4" />
-    <path d="M12 16.6v.9" />
-  </Ico>
-);
-
 export const IconInfo = (p: IconProps) => (
   <Ico {...p}>
     <path d="M20.5 12a8.5 8.5 0 1 1-17 0 8.5 8.5 0 0 1 17 0Z" />
@@ -238,20 +228,6 @@ export const IconLogout = (p: IconProps) => (
   </Ico>
 );
 
-export const IconPhone = (p: IconProps) => (
-  <Ico {...p}>
-    <path d="M7.4 3.4h9.2v17.2H7.4z" />
-    <path className="ic-a" d="M10.4 17.8h3.2" />
-    <path d="M7.4 6.8h9.2" />
-  </Ico>
-);
-
-export const IconStar = (p: IconProps) => (
-  <Ico {...p}>
-    <path d="m12 3.4 2.66 5.72 6.14.78-4.5 4.3 1.16 6.14L12 17.4l-5.46 2.94 1.16-6.14-4.5-4.3 6.14-.78z" />
-  </Ico>
-);
-
 export const IconShield = (p: IconProps) => (
   <Ico {...p}>
     <path d="M12 3.2 19.6 6v6.4c0 4.2-3.2 6.9-7.6 8.4-4.4-1.5-7.6-4.2-7.6-8.4V6z" />
@@ -328,29 +304,6 @@ export const IconSend = (p: IconProps) => (
   <Ico {...p}>
     <path d="M20.4 3.6 3.6 10.2l7.2 2.9z" />
     <path className="ic-a" d="m20.4 3.6-9.6 9.5.9 7.3z" />
-  </Ico>
-);
-
-export const IconGift = (p: IconProps) => (
-  <Ico {...p}>
-    <path d="M3.6 9.6h16.8V20H3.6z" />
-    <path d="M3.6 9.6 6.4 6h11.2l2.8 3.6" />
-    <path className="ic-a" d="M12 6v14" />
-  </Ico>
-);
-
-export const IconTrophy = (p: IconProps) => (
-  <Ico {...p}>
-    <path d="M7.4 3.6h9.2v5.6a4.6 4.6 0 0 1-9.2 0z" />
-    <path d="M7.4 5.4H4.2v1.8a3.2 3.2 0 0 0 3.2 3.2M16.6 5.4h3.2v1.8a3.2 3.2 0 0 1-3.2 3.2" />
-    <path className="ic-a" d="M12 13.8v3.4M8.2 20.4h7.6" />
-  </Ico>
-);
-
-export const IconCelebrate = (p: IconProps) => (
-  <Ico {...p}>
-    <path d="m3.6 20.4 5-13.2 8.2 8.2z" />
-    <path className="ic-a" d="M14.8 3.6v3M19 5.4l-2.2 2.2M20.4 10.4h-3" />
   </Ico>
 );
 
@@ -828,12 +781,6 @@ export const IconVolumeOff = (p: IconProps) => (
     <path className="ic-a" d="m16.2 9.8 4.6 4.4M20.8 9.8l-4.6 4.4" />
   </Ico>
 );
-
-/* ── aliases kept so no import breaks ─────────────────────────────────────── */
-export const IconDoneAll = IconCheckCircle;
-
-/* Every export from the previous file, accounted for. If a name is missing at
-   build time the compiler will say so — that is the migration test. */
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    THE TAXONOMY MAPS

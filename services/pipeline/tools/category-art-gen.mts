@@ -4,21 +4,20 @@
  * One premium photograph per category, generated.
  *
  * Thirty-seven categories need a picture and only nine of them sell anything yet, so there was
- * nothing to photograph for twenty-eight of them — they carried a drawn grid rectangle, and the
- * nine live ones borrowed a product hero, which is why Cement's tile was a bag of one brand and
- * Glass's was a facade. Neither is a picture of the category.
+ * nothing to photograph for twenty-eight — they carried a drawn grid rectangle, and the nine live
+ * ones borrowed a product hero, which is why Cement's tile was a bag of one brand and Glass's was
+ * a facade. Neither is a picture of the category.
  *
- * Searching the web for them is the obvious alternative and the wrong one: a search for "bricks"
- * returns brand-stamped product shots, and putting one manufacturer's pallet on the tile that
- * means "bricks" is the same misattribution this repo already spent a pass removing from the SKU
- * images. Generation has no brand to misattribute. Every image here is of the *material*, shot
- * the same way, with no logo, no text and no manufacturer.
+ * Searching the web is the obvious alternative and the wrong one: a search for "bricks" returns
+ * brand-stamped product shots, and putting one manufacturer's pallet on the tile that means
+ * "bricks" is the same misattribution this repo already spent a pass removing from the SKU images.
+ * Generation has no brand to misattribute — every image here is of the *material*, shot the same
+ * way, with no logo, no text and no manufacturer.
  *
  * Written through the same mediaStore keys the storefront already reads
- * (`categoryHeroKey(slug, size)`), so no component changes to pick them up.
- *
- * Cost: one image call per category, a few cents for all thirty-seven. Re-runs skip anything
- * already on disk unless --force, so an interrupted run resumes for free.
+ * (`categoryHeroKey(slug, size)`), so no component changes to pick them up. One image call per
+ * category, a few cents for all thirty-seven; re-runs skip anything already on disk unless
+ * --force, so an interrupted run resumes for free.
  */
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';

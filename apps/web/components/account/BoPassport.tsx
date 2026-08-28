@@ -8,25 +8,20 @@ import { ageFrom, type Gender, loadPassport, loadPhoto, mrz, type Passport, pass
 /**
  * The BO Passport, as a card and as a form.
  *
- * ── WHY A PASSPORT AND NOT A PROFILE PANEL ──────────────────────────────────────────────────
- * A passport data page is the most-read identity layout on earth. Everybody already knows the
- * number is at the top right, the photograph is at the left, the fields are a two-column grid of
- * tiny labels over larger values, and the two lines at the foot are the machine's copy of the
- * rest. Borrowing that means nobody has to be taught how to read this card — which is the whole
- * argument for borrowing any convention.
+ * A passport data page is the most-read identity layout on earth: everybody already knows the
+ * number is at the top right, the photograph at the left, the fields a two-column grid of tiny
+ * labels over larger values, and the two lines at the foot the machine's copy of the rest.
+ * Borrowing it means nobody has to be taught how to read this card.
  *
- * ── AND IT SAYS WHAT IT IS, TWICE ───────────────────────────────────────────────────────────
- * The issuing authority line carries the wordmark, and a standing note says it is not a
- * government document. A loyalty card styled after a passport is a design decision; one that
- * could be mistaken for a travel document is a forgery. The difference is entirely in whether
- * the card tells you which it is, so it tells you.
+ * SO IT SAYS WHAT IT IS, TWICE — the issuing authority line carries the wordmark, and a standing
+ * note says it is not a government document. A loyalty card styled after a passport is a design
+ * decision; one that could be mistaken for a travel document is a forgery, and the difference is
+ * entirely in whether the card tells you which it is.
  *
- * ── THE NUMBER IS NOT A FIELD ───────────────────────────────────────────────────────────────
- * Everything on this card can be edited except the number, which is derived from the account
- * itself — see lib/passport.ts. A number a person can type is a number two people can share.
+ * THE NUMBER IS NOT A FIELD. It is derived from the account itself (lib/passport.ts): a number a
+ * person can type is a number two people can share.
  *
- * ── ONE CARD, TWO STATES ────────────────────────────────────────────────────────────────────
- * Editing happens IN the card, in the same grid, with the same labels: the fields sit exactly
+ * Editing happens IN the card, in the same grid, with the same labels — the fields sit exactly
  * where the values sat, so nothing moves when you press Edit and nothing has to be re-found when
  * you press Done. A separate form on a separate screen is how a card and its data drift apart.
  */

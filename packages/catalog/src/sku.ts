@@ -20,7 +20,6 @@ export type ImageRole = (typeof IMAGE_ROLES)[number];
  * `unknown` = a curated URL on a host we could not classify. Never generated, never AI-upscaled.
  */
 export const IMAGE_SOURCE_KINDS = ['curated', 'official_page', 'official_pdf', 'distributor', 'unknown'] as const;
-export type ImageSourceKind = (typeof IMAGE_SOURCE_KINDS)[number];
 /** The judge's view classification (mirrors @buildobjects/llm IMAGE_VIEWS — kept identical on purpose). */
 export const IMAGE_VIEWS = ['front', 'angle', 'side', 'back', 'top', 'detail', 'in_context', 'pack', 'drawing', 'other'] as const;
 export type ImageView = (typeof IMAGE_VIEWS)[number];
@@ -54,7 +53,6 @@ export interface ImageJudgement {
   cutout?: { provider: 'gemini' | 'knockout'; iou: number | null; area: number; note: string };
 }
 export const DOC_TYPES = ['brochure', 'datasheet', 'manual', 'warranty_card', 'certificate'] as const;
-export type DocType = (typeof DOC_TYPES)[number];
 export const STOCK = ['in_stock', 'low', 'out_of_stock', 'preorder'] as const;
 export type StockStatus = (typeof STOCK)[number];
 
@@ -180,27 +178,4 @@ export interface KeySpec {
   label: string;
   value: string;
   unit: string | null;
-}
-
-/** What a product card needs — the PLP/search read-model, mirrored into Meilisearch. */
-export interface SkuCard {
-  id: number;
-  sku_code: string;
-  slug: string;
-  name: string;
-  brand: string;
-  brand_slug: string;
-  category: string;
-  category_name: string;
-  variant_label: string;
-  selling_price: number | null;
-  mrp: number | null;
-  price_provenance: PriceProvenance;
-  unit: string;
-  pack_qty: number;
-  stock_status: StockStatus;
-  hero_image_key: string | null;
-  blurhash: string | null;
-  card_specs: { label: string; value: string }[];
-  ar: boolean;
 }

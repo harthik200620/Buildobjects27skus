@@ -12,29 +12,18 @@ import type { RewardTier } from './types';
 /**
  * THE BO LIFT.
  *
- * ── THE SEQUENCE, WHICH IS THE WHOLE DESIGN ─────────────────────────────────────────────────
- * The coins are in the car with the doors open, turning under the light. You press the call
- * button. The doors close OVER them — they are occluded, not faded, which is the only version of
- * "and now you cannot see them" a viewer believes. The car rides: the shaft streams past, floor
- * plates flick by, the indicator counts. It decelerates, settles on its springs, and the doors
- * part on what it brought back.
+ * The coins are in the car with the doors open. Press the call button and the doors close OVER
+ * them — occluded, not faded, which is the only version of "and now you cannot see them" a viewer
+ * believes. The car rides, settles on its springs, and the doors part on what it brought back. A
+ * lift has somewhere to be, and arriving is the event.
  *
- * ── WHAT THIS REPLACES ──────────────────────────────────────────────────────────────────────
- * A token orbiting six rooms of a cutaway house on a 2D SVG, with the reward decided by which
- * room it stopped in. It worked and it was a wheel wearing a floor plan: the motion was a loop,
- * so the ending was always "it went round again and this time it stopped". A lift has somewhere
- * to be. It goes there, and arriving is the event.
+ * THE STATE MACHINE IS THE SCENE'S. This component owns no animation clock: ElevatorScene runs one
+ * rAF and calls back at the four moments — closed, each floor passed, arrived, open — and every
+ * sound, haptic and UI change hangs off those. Two timelines that have to agree about when a door
+ * shut is a bug waiting for a slow frame.
  *
- * ── THE STATE MACHINE IS THE SCENE'S ────────────────────────────────────────────────────────
- * This component owns no animation clock. ElevatorScene runs one rAF and calls back at the four
- * moments that matter — closed, each floor passed, arrived, open — and every sound, every haptic
- * and every UI change hangs off those. Two timelines that have to agree about when a door shut
- * is a bug waiting for a slow frame; there is one, and it is the one drawing the door.
- *
- * ── AND IT DEGRADES ─────────────────────────────────────────────────────────────────────────
- * No WebGL, or `prefers-reduced-motion`: the scene resolves straight to open on the result and
- * the panel is a card with a figure on it. Nobody is shown a black rectangle and nobody who has
- * asked for less motion is given a two-and-a-half-second ride.
+ * No WebGL, or `prefers-reduced-motion`: the scene resolves straight to open on the result and the
+ * panel is a card with a figure on it.
  */
 
 /**

@@ -1,25 +1,16 @@
 /**
  * `npx tsx packages/assets3d/tools/house-3d.mts [--only 2-medium] [--force] [--dry-run]`
  *
- * Turns the estimator's house renders into 3D models you can walk around.
+ * Turns the estimator's house renders into 3D models you can walk around. The renders are one
+ * camera angle, which is enough to recognise a building and not enough to understand one — and the
+ * whole argument for BO Estimator over a spreadsheet is that you can *see* what the money builds.
+ * Each render goes through Meshy image-to-3D and comes back as a GLB the page lets you turn, the
+ * same trick the product pages use for a bulb, applied to what the customer actually cares about.
  *
- * The renders are one camera angle. That is enough to recognise a building and not enough to
- * understand one: nobody buys a house from a single three-quarter photograph, and the whole
- * argument for BO Estimator over a spreadsheet is that you can *see* what the money builds. So
- * each render goes through Meshy image-to-3D and comes back as a GLB, and the page lets you turn
- * it — the same trick the product pages already use for a bulb, applied to the thing the customer
- * actually cares about.
- *
- * The matrix is deliberately smaller than the render matrix:
- *
- *   floors  0 … 4      5
- *   finish  basic / medium / premium   3
- *                     ──
- *                     15 models  (~$6 at Meshy's image-to-3D list price)
- *
- * Solar is not a dimension here. It is a few dark rectangles on a roof that image-to-3D will not
- * resolve at any price, and paying to double the matrix for a detail the geometry cannot carry
- * would be spending money to produce the same mesh twice. The still render keeps showing it.
+ * The matrix is deliberately smaller than the render matrix: five floor counts (0 … 4) times three
+ * finishes is 15 models, about $6 at Meshy's image-to-3D list price. Solar is not a dimension. It
+ * is a few dark rectangles on a roof that image-to-3D will not resolve at any price, so doubling
+ * the matrix for it would pay twice for the same mesh; the still render keeps showing it.
  *
  * Every model is written to assets/3d/house/{floors}-{finish}.glb and recorded in
  * assets/3d/house/manifest.json with the job id and what it cost, so a re-run never pays twice.

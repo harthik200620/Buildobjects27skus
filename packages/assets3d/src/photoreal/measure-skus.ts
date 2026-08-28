@@ -6,10 +6,9 @@
  * files that ship, with no browser — and prints the stated dimensions beside the rendered ones for
  * every SKU in the catalogue.
  *
- * It exists because nothing else could answer the question. The good news is that the meshes are
- * genuinely at true scale once node transforms are applied. The bad news is that the view used to
- * resize them by height alone, which drew a CCTV camera lying on its side, an extinguisher with its
- * width and depth swapped, and an epoxy tin four times too wide. `fitModelToDims` in
+ * The meshes are genuinely at true scale once node transforms are applied. What was not was the
+ * view, which resized them by height alone: a CCTV camera lying on its side, an extinguisher with
+ * its width and depth swapped, an epoxy tin four times too wide. `fitModelToDims` in
  * @buildobjects/ar-engine fixes that, and this measures the real function rather than a copy of it,
  * so the two cannot drift.
  *
@@ -17,8 +16,7 @@
  * a bounding box of roughly 1.9 m — the generator's pre-transform normalisation, and not a size
  * anything is ever drawn at.
  *
- *   pnpm --filter @buildobjects/assets3d measure
- *   pnpm --filter @buildobjects/assets3d measure --old      # what the height-only rescale gave
+ *   pnpm --filter @buildobjects/assets3d measure [--old]    # --old: the height-only rescale
  */
 
 import { readdir, readFile } from 'node:fs/promises';

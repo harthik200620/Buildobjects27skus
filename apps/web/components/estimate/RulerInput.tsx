@@ -5,27 +5,22 @@ import React from 'react';
 /**
  * A measuring tape you scroll, for a dimension in feet.
  *
- * ── WHY A RULER AND NOT A NUMBER FIELD ──────────────────────────────────────────────────────
- * A plot's length is a MEASUREMENT, and a number field asks the reader to have already decided
- * one. Most people know their plot as "about thirty by forty" and want to feel the difference
- * between 30 and 32 rather than type it. A tape gives them that: the ticks pass under the needle,
- * the total above changes as they go, and 40 is a place on a scale rather than a value in a box.
+ * A plot's length is a MEASUREMENT, and a number field asks the reader to have already decided one.
+ * Most people know their plot as "about thirty by forty" and want to feel the difference between 30
+ * and 32 rather than type it: the ticks pass under the needle, the total above changes as they go,
+ * and 40 is a place on a scale rather than a value in a box.
  *
- * ── IT IS A SCROLLER, WHICH IS THE POINT AND ALSO THE RISK ───────────────────────────────────
- * Native overflow scrolling, so a trackpad flick and a thumb swipe both have real momentum and
- * neither costs a line of JavaScript. Three details keep that from leaking into the page:
+ * It is native overflow scrolling, so a trackpad flick and a thumb swipe both have real momentum at
+ * no cost in JavaScript. Three details keep that from leaking into the page: `overscroll-behavior-x:
+ * contain`, so the tape running out does not scroll the page behind it — the single most irritating
+ * failure mode of a horizontal strip; `scroll-snap-type: x mandatory`, so it comes to rest ON a foot
+ * and never between two; and reading the value in a rAF rather than on every scroll event, so a fast
+ * flick does not re-render the whole estimate sixty times a second.
  *
- *   `overscroll-behavior-x: contain` — the tape running out does not start scrolling the page
- *     behind it, which is the single most irritating failure mode of a horizontal strip.
- *   `scroll-snap-type: x mandatory` — it always comes to rest ON a foot, never between two.
- *   The value is read in a rAF, not on every scroll event, so a fast flick does not re-render
- *     the whole estimate sixty times a second.
- *
- * ── AND IT IS STILL TYPEABLE ────────────────────────────────────────────────────────────────
- * The figure above the tape is an input. Somebody who knows their plot is 33.5 ft should not
- * have to scroll to it, and somebody on a keyboard should not have to scroll at all — the tape
- * itself is a `slider` with arrow keys, Home and End, and the readout is a plain number field.
- * Scrolling writes the figure; typing scrolls the tape. Neither is the primary.
+ * AND IT IS STILL TYPEABLE. Somebody who knows their plot is 33.5 ft should not have to scroll to
+ * it, and somebody on a keyboard should not have to scroll at all — the tape itself is a `slider`
+ * with arrow keys, Home and End, and the readout is a plain number field. Scrolling writes the
+ * figure; typing scrolls the tape. Neither is the primary.
  */
 
 export interface RulerInputProps {

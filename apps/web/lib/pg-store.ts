@@ -170,10 +170,3 @@ export function ensurePgSchema(): Promise<void> {
   });
   return ready;
 }
-
-export async function closePg(): Promise<void> {
-  if (client) await client.end({ timeout: 5 });
-  client = null;
-  db = null;
-  ready = null;
-}
