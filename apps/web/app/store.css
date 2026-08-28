@@ -1830,6 +1830,19 @@
     color: var(--ink-2);
   }
 
+  /*
+   * THE PRICE SITS AT THE BOTTOM, SO PRICES LINE UP ACROSS A ROW.
+   *
+   * Product names in this catalogue run from "Plus Cement" to "Portland Pozzolana Cement (PPC)
+   * 50 kg bag", and the title is allowed three lines before it clamps. Stacked from the top, that
+   * put two cards side by side in the same row with their prices seventy pixels apart — the
+   * single most obvious "assembled rather than designed" tell a product grid has, and the reason
+   * the eye cannot scan a row of prices.
+   *
+   * The card already stretches to the row's height, so `margin-top: auto` on the price is the
+   * whole fix: everything from the price down — the price, the delivery date, the stock line —
+   * settles on the bottom edge and lines up with its neighbours whatever the title did.
+   */
   .prod-body {
     position: relative;
     flex: 1 1 auto;
@@ -1907,8 +1920,23 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  /*
+   * THE PRICE SITS AT THE BOTTOM, SO PRICES LINE UP ACROSS A ROW.
+   *
+   * Names in this catalogue run from "Plus Cement" to "Portland Pozzolana Cement (PPC) 50 kg bag",
+   * and the title takes up to three lines before it clamps. Stacked from the top, that put two
+   * cards side by side with their prices twenty-two pixels apart on a desktop and thirty-six on a
+   * phone — the tell that says "assembled" rather than "designed", and the reason the eye cannot
+   * run down a column of prices.
+   *
+   * The card already stretches to its row, so `auto` is the whole fix: the price and everything
+   * under it settle on the bottom edge whatever the title did above. The 2px this replaces was
+   * doing the job `auto` now does better — a nudge away from the specs line — so the padding
+   * carries that on, since an auto margin swallows the flex gap it would have had.
+   */
   .prod-card .price-block {
-    margin-top: 2px;
+    margin-top: auto;
+    padding-top: 7px;
   }
 
   /* The delivery promise and the stock line: the two facts a buyer scans for after the price. */
@@ -1955,12 +1983,17 @@
      padding standing at the bottom of every card at rest, because overflow: hidden
      clips content and not padding — measured at 12px against the 0 it is supposed to
      be, across a sixty-card grid. */
+  /* NO `margin-top: auto` HERE ANY MORE — the price block above owns it.
+     Two auto margins in one flex column SHARE the free space rather than one of them taking it,
+     which is why pinning the price to the bottom only half worked: the misalignment between two
+     cards in a row went from 22px to 11 on a desktop and 36 to 18 on a phone, exactly half each
+     time. The price takes the space, so the whole bottom group — price, delivery, stock and this
+     — travels with it and lands on the bottom edge together. */
   .prod-cta {
     position: relative;
     z-index: 1;
     display: grid;
     grid-template-rows: 0fr;
-    margin-top: auto;
     transition: grid-template-rows var(--dur-3) var(--ease-glide);
   }
   .prod-cta-clip {

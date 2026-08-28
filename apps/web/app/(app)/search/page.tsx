@@ -117,10 +117,14 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           ) : (
             <>
               <div className="prod-grid prod-grid--rail stagger">
+                {/* ProductCard is the grid item itself — it carries its own `data-reveal`, and
+                    `.stagger` sets `--i` from nth-child in theme.css. It used to be wrapped in a
+                    plain <div> repeating both, and that wrapper is what broke the row: the grid
+                    stretched the WRAPPER to the tallest card and the card inside kept its own
+                    height, so a two-line title and a three-line title in the same row put their
+                    prices twenty-two pixels apart. */}
                 {result.hits.map((h, i) => (
-                  <div key={h.id} data-reveal style={{ '--i': i % 4 } as React.CSSProperties}>
-                    <ProductCard sku={h} priority={i < 4} highlight={!!state.q} deliverBy={eta} />
-                  </div>
+                  <ProductCard key={h.id} sku={h} priority={i < 4} highlight={!!state.q} deliverBy={eta} />
                 ))}
               </div>
               <Pagination pathname="/search" state={state} page={result.page} totalPages={result.totalPages} />

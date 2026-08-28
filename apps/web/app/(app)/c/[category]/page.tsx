@@ -376,10 +376,9 @@ function CategoryLanding({ group, skus, eta }: { group: CategoryGroup; skus: Sku
             )}
           </div>
           <div className="prod-grid stagger">
+            {/* Direct grid children, so the row stretches them — see the note in search/page.tsx. */}
             {skus.map((sku, i) => (
-              <div key={sku.sku_code} data-reveal style={{ '--i': i % 4 } as React.CSSProperties}>
-                <ProductCard sku={sku} deliverBy={eta} priority={i < 4} />
-              </div>
+              <ProductCard key={sku.sku_code} sku={sku} deliverBy={eta} priority={i < 4} />
             ))}
           </div>
         </section>

@@ -67,6 +67,8 @@ interface Metrics {
   buybox: Rect;
   buyCta: Rect;
   backdrop: number;
+  /** Worst gap, in px, between two prices in the same grid row. Must be 0. */
+  priceSpread: number;
   lowContrast: string[];
   innerHeight: number;
 }
@@ -146,7 +148,38 @@ const METRICS_JS = `(() => {
       lowContrast.push(el.tagName.toLowerCase() + '.' + (el.className || '').toString().split(' ').slice(0, 2).join('.') + ' ' + ratio.toFixed(2) + ':1 "' + (el.textContent || '').trim().slice(0, 24) + '"');
     }
   });
-  return { overflow, firstCard, firstTile, catTiles, catTilesWithArt, results, cardWidths, hasFilterControl, facetOverflow, facetCount, h1InBuyPanel, buybox, buyCta, backdrop, lowContrast, innerHeight: window.innerHeight };
+  /*
+   * DO THE PRICES IN A ROW SIT ON ONE LINE?
+   *
+   * The most obvious tell a product grid has, and the cheapest to lose: names in this catalogue
+   * run from "Plus Cement" to "Portland Pozzolana Cement (PPC) 50 kg bag", the title takes up to
+   * three lines, and anything that stops a card filling its row puts two prices twenty-two pixels
+   * apart. Three separate causes were found and fixed in one sitting — a price stacked from the
+   * top instead of the bottom, two auto margins splitting the free space between them, and a
+   * wrapper div that took the grid's stretch and did not pass it on.
+   *
+   * Cards are grouped into rows by their own top edge, so this holds however many columns the
+   * viewport gives.
+   */
+  const rowSpread = (sel) => {
+    let worst = 0;
+    for (const grid of document.querySelectorAll('.prod-grid')) {
+      const rows = new Map();
+      for (const c of grid.querySelectorAll('.prod-card')) {
+        const t = Math.round(c.getBoundingClientRect().top / 5) * 5;
+        if (!rows.has(t)) rows.set(t, []);
+        rows.get(t).push(c);
+      }
+      for (const [, group] of rows) {
+        if (group.length < 2) continue;
+        const ys = group.map((c) => c.querySelector(sel)).filter(Boolean).map((e) => Math.round(e.getBoundingClientRect().top));
+        if (ys.length > 1) worst = Math.max(worst, Math.max(...ys) - Math.min(...ys));
+      }
+    }
+    return worst;
+  };
+  const priceSpread = rowSpread('.price-block');
+  return { overflow, firstCard, firstTile, catTiles, catTilesWithArt, results, cardWidths, hasFilterControl, facetOverflow, facetCount, h1InBuyPanel, buybox, buyCta, backdrop, lowContrast, priceSpread, innerHeight: window.innerHeight };
 })()`;
 
 /**
@@ -355,6 +388,7 @@ async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile
      * how the twenty-six survived. Three is the whole of the store's intentional glass.
      */
     check(shot.key, viewport, 'backdrop-filter only on persistent chrome', m.backdrop <= 3, `${m.backdrop} elements`);
+    check(shot.key, viewport, 'prices line up across a row', m.priceSpread === 0, `worst gap ${m.priceSpread}px`);
     /*
      * THERE IS NO "nothing loops under reduced motion" CHECK HERE, AND THAT IS DELIBERATE.
      *
