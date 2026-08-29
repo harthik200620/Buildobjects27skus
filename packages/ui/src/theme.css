@@ -1611,8 +1611,9 @@
   }
 
   /* ── small utilities the pages share ────────────────────────────────────── */
+  /* `scrollbar-width` is the standard property and every browser this store supports reads it.
+     The `-ms-` one that used to sit beside it was for IE and pre-Chromium Edge. */
   .no-scrollbar {
-    -ms-overflow-style: none;
     scrollbar-width: none;
   }
   .no-scrollbar::-webkit-scrollbar {

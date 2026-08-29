@@ -139,6 +139,6 @@ export class JobStore {
     fs.writeFileSync(this.file, JSON.stringify(this.data, null, 2));
   }
   snapshot(): JobsFile {
-    return JSON.parse(JSON.stringify(this.data)) as JobsFile;
+    return structuredClone(this.data);
   }
 }
