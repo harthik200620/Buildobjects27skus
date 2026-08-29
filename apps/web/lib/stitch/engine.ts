@@ -132,7 +132,6 @@ export interface Leg {
   drawn: boolean;
   latent?: boolean;
 }
-export type PhysicsMode = 'cloth' | 'jelly' | 'wind' | 'gravity' | 'magnet' | 'ripple';
 export interface MotionSettings {
   mode: MotionMode;
   order: MotionOrder;
@@ -142,7 +141,8 @@ export interface MotionSettings {
   loop: boolean;
 }
 export interface PhysicsSettings {
-  mode: PhysicsMode;
+  /** Cloth, and only cloth. The other five this renderer can do, this store never asks for. */
+  mode: 'cloth';
   spring: number;
   radius: number;
   sway: boolean;
@@ -184,7 +184,6 @@ export class StitchEngine {
   reducedMotion = false;
   physicsEnabled = true;
   pointer = { x: -9999, y: -9999, down: false, active: false };
-  ripples: { x: number; y: number; t0: number }[] = [];
   loopAt: number | null = null;
   travelQueue: { group: string; at: number; reverse: boolean; stitchMs: number }[] = [];
   physicsIdle = false;
@@ -262,7 +261,6 @@ export class StitchEngine {
     this.segments = [];
     this.legs = [];
     this.legsRev++;
-    this.ripples = [];
     this.loopAt = null;
     this.travelQueue = [];
     this.emitWake();
@@ -595,13 +593,6 @@ export class StitchEngine {
     if (this.loopAt != null) this.loopAt += ms;
     for (const t of this.travelQueue) t.at += ms;
   }
-  addRipple(x: number, y: number): void {
-    if (this.physicsEnabled) {
-      this.ripples.push({ x, y, t0: performance.now() });
-      this.physicsIdle = false;
-      this.emitWake();
-    }
-  }
 
   /**
    * One physics step per frame. Cloth: nodes are pushed radially inside
@@ -614,33 +605,12 @@ export class StitchEngine {
       this.physicsIdle = true;
       return 0;
     }
-    const mode = this.physics.mode,
-      ambient = mode === 'wind' || this.physics.sway,
-      poked = this.pointer.active || this.ripples.length > 0;
+    const ambient = this.physics.sway,
+      poked = this.pointer.active;
     if (this.physicsIdle && !poked && !ambient) return 0;
-    let damp = 0.86,
+    const damp = 0.86,
       couple = 0.14,
-      spring = this.physics.spring / 1e3,
-      gravity = 0,
-      magnet = false,
-      wind = 0;
-    if (mode === 'jelly') {
-      damp = 0.94;
-      couple = 0.34;
-      spring *= 0.5;
-    } else if (mode === 'wind') {
-      damp = 0.88;
-      couple = 0.2;
-      wind = 1;
-    } else if (mode === 'gravity') {
-      damp = 0.9;
-      couple = 0.16;
-      gravity = 0.55;
-    } else if (mode === 'magnet') magnet = true;
-    else if (mode === 'ripple') {
-      damp = 0.9;
-      couple = 0.22;
-    }
+      spring = this.physics.spring / 1e3;
     const radius = this.physics.radius,
       inten = this.physics.intensity ?? 1;
     const push = (this.pointer.down ? 1.9 : 0.55) * inten;
@@ -648,7 +618,6 @@ export class StitchEngine {
       legMax = 0.32 * this.cell * inten;
     const now = performance.now();
     let motion = 0;
-    for (let i = this.ripples.length - 1; i >= 0; i--) if (now - this.ripples[i].t0 > 1400) this.ripples.splice(i, 1);
     for (const n of this.nodes.values()) {
       let fx = 0,
         fy = 0;
@@ -659,29 +628,11 @@ export class StitchEngine {
         if (d2 < radius * radius) {
           const d = Math.sqrt(d2) || 1,
             l = 1 - d / radius,
-            a = l * l * radius * 0.9 * push * (magnet ? -1 : 1);
+            a = l * l * radius * 0.9 * push;
           fx += (dx / d) * a;
           fy += (dy / d) * a;
         }
       }
-      if (mode === 'ripple')
-        for (const rp of this.ripples) {
-          const age = (now - rp.t0) / 1400,
-            ring = age * radius * 2.2,
-            dx = n.cx + n.ox - rp.x,
-            dy = n.cy + n.oy - rp.y,
-            d = Math.hypot(dx, dy) || 1;
-          const band = Math.exp(-(((d - ring) / (1.2 * this.cell)) ** 2)),
-            amp = (1 - age) * radius * 0.9;
-          fx += (dx / d) * band * amp;
-          fy += (dy / d) * band * amp;
-        }
-      if (wind > 0) {
-        const ph = 0.004 * now - 0.03 * n.cx - 0.01 * n.cy;
-        fx += (0.6 * Math.sin(ph) + 0.5) * wind * 2.4;
-        fy += Math.sin(1.7 * ph) * wind * 0.9;
-      }
-      if (gravity > 0) fy += 3 * gravity;
       if (this.physics.sway) {
         fx += 0.25 * Math.sin(0.001 * now + 0.05 * n.cy);
         fy += 0.25 * Math.cos(0.0013 * now + 0.05 * n.cx);
@@ -729,8 +680,7 @@ export class StitchEngine {
           if (d2 < radius * radius) {
             const d = Math.sqrt(d2) || 1,
               f = 1 - d / radius,
-              s = magnet ? -1 : 1,
-              a = f * f * push * (l.motifFill ? 0.35 : 0.9) * s;
+              a = f * f * push * (l.motifFill ? 0.35 : 0.9);
             l.vx += (dx / d) * a;
             l.vy += (dy / d) * a;
           }
@@ -1797,7 +1747,7 @@ export interface MountOptions {
   animate?: boolean;
   motion?: Partial<MotionSettings>;
   /** false = no cloth. Otherwise the resting intensity/radius, and the hover envelope. */
-  physics?: false | { mode?: PhysicsMode; intensity: number; radiusCells: number; hover?: HoverPhysics; ambient?: boolean };
+  physics?: false | { intensity: number; radiusCells: number; hover?: HoverPhysics; ambient?: boolean };
   pointerTypes?: 'mouse' | 'all';
   sheen?: boolean;
   castShadow?: boolean;
@@ -1823,7 +1773,7 @@ export interface StitchInstance {
 export function mountStitch(container: HTMLElement, o: MountOptions): StitchInstance {
   const engine = new StitchEngine(o.cols, o.rows, o.cell, o.pad ?? 0);
   const host = document.createElement('div');
-  const clothHover = o.physics !== false && (o.physics?.mode ?? 'cloth') === 'cloth';
+  const clothHover = o.physics !== false;
   Object.assign(host.style, { position: 'absolute', inset: '0', touchAction: clothHover ? (o.pointerTypes === 'all' ? 'none' : 'pan-y') : '' });
   container.appendChild(host);
 
@@ -1839,18 +1789,16 @@ export function mountStitch(container: HTMLElement, o: MountOptions): StitchInst
     envRaf: number | null = null;
   const applyPhysics = (e: number) => {
     if (!ph) {
-      engine.physics.mode = 'cloth';
       engine.physics.sway = false;
       engine.physics.radius = 0;
       engine.physics.intensity = 1;
       return;
     }
     const lerp = (a: number, b: number | undefined) => (b === undefined ? a : a + (b - a) * e);
-    engine.physics.mode = ph.mode ?? 'cloth';
     engine.physics.spring = SITE_CLOTH_PHYSICS.spring;
     engine.physics.intensity = lerp(ph.intensity, hover?.intensity);
     engine.physics.radius = engine.cell * lerp(ph.radiusCells, hover?.radiusCells);
-    engine.physics.sway = !!ph.ambient || engine.physics.mode === 'wind' || e > 0.01;
+    engine.physics.sway = !!ph.ambient || e > 0.01;
   };
   const rampTo = (target: number) => {
     if (!hover) return;

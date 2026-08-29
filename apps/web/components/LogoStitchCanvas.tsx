@@ -18,7 +18,7 @@ import { buildLogoSegments, LOGO_DEFAULT_COLS, logoGrid } from '@/lib/stitch/log
  *             about a second.
  *   thread    "siteCotton", sheen on by default, no cast shadow, width scale 1.
  */
-export const LOGO_PHYSICS = { mode: 'cloth' as const, intensity: 2.75, radiusCells: 5, hover: { intensity: 4, radiusCells: 7, riseMs: 220, fallMs: 520 } };
+export const LOGO_PHYSICS = { intensity: 2.75, radiusCells: 5, hover: { intensity: 4, radiusCells: 7, riseMs: 220, fallMs: 520 } };
 export const LOGO_MOTION: Partial<MotionSettings> = { mode: 'wave', waveDir: 'right', stagger: 14, speed: 320 };
 
 /** Dev-only tuning: ?cols=52 (ignored in production). */

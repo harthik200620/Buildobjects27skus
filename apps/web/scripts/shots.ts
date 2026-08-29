@@ -594,7 +594,24 @@ async function main() {
       await shoot(browser, s, 'desktop');
       await shoot(browser, s, 'mobile');
     }
-    if (!ONLY.length) await motionPass(browser);
+    /*
+     * ITS OWN BROWSER, and that is the whole fix for a check that failed at random.
+     *
+     * The motion pass depends on IntersectionObserver callbacks, which are frame-driven, and
+     * eighteen contexts through one instance is precisely the load that starves them: inside a
+     * full run it reported "3 still at opacity 0", while three replications of the identical
+     * scroll against the same build, in a fresh browser, found 0 of 47 every time. Polling on a
+     * timer rather than a frame fixed the WAITING — it cannot make a starved observer fire.
+     * A second instance costs about a second and the check stops being a coin toss.
+     */
+    if (!ONLY.length) {
+      const fresh = await chromium.launch({ headless: true });
+      try {
+        await motionPass(fresh);
+      } finally {
+        await fresh.close();
+      }
+    }
   } finally {
     await browser.close();
   }

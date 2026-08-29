@@ -58,13 +58,6 @@
   .home .sec--last {
     padding-bottom: var(--s-7);
   }
-  .sec-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--s-9);
-    margin-bottom: var(--s-7);
-  }
   .sec-eyebrow {
     color: var(--color-brand);
     margin-bottom: var(--s-4);

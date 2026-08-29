@@ -48,6 +48,22 @@ const fmtSqft = (n: number) => formatNumber(Math.round(n));
  * and the running total on the right. Every number on screen is estimate(inputs, catalog);
  * LivingHouse is driven by the same object, so the picture can never disagree with the figure.
  */
+
+/** A wizard step's title bar, and the one place a step's optional note sits. */
+const WizHead = ({ title, note }: { title: string; note?: string }) => (
+  <div className="wz-head">
+    <span className="wz-title">{title}</span>
+    {note && <span className="wz-note">{note}</span>}
+  </div>
+);
+
+/** A checkbox and its words, in the one shape the estimator's option lists use. */
+const CheckRow = ({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) => (
+  <label className="check-row">
+    <input type="checkbox" className="check" checked={checked} onChange={(e) => onChange(e.target.checked)} /> {label}
+  </label>
+);
+
 export default function Estimator({
   initialInputs,
   catalog: initialCatalog,
@@ -242,9 +258,7 @@ export default function Estimator({
 
         {/* step 1 — location */}
         <div className="wz-step">
-          <div className="wz-head">
-            <span className="wz-title">Location</span>
-          </div>
+          <WizHead title="Location" />
           <div className="seg" role="group" aria-label="State">
             {STATES.map((s) => (
               <button
@@ -292,9 +306,7 @@ export default function Estimator({
 
         {/* step 2 — the building */}
         <div className="wz-step">
-          <div className="wz-head">
-            <span className="wz-title">The building</span>
-          </div>
+          <WizHead title="The building" />
           <div className="seg" role="group" aria-label="Plot input">
             <button
               type="button"
@@ -390,12 +402,8 @@ export default function Estimator({
           {/* The same list the add-ons use one card down. Two priced options styled one way here
               and another way there is the kind of thing that reads as unconsidered. */}
           <div className="addons">
-            <label className="check-row">
-              <input type="checkbox" className="check" checked={inputs.parking} onChange={(e) => set({ parking: e.target.checked })} /> Car parking porch
-            </label>
-            <label className="check-row">
-              <input type="checkbox" className="check" checked={inputs.compoundWall} onChange={(e) => set({ compoundWall: e.target.checked })} /> Compound wall
-            </label>
+            <CheckRow label="Car parking porch" checked={inputs.parking} onChange={(v) => set({ parking: v })} />
+            <CheckRow label="Compound wall" checked={inputs.compoundWall} onChange={(v) => set({ compoundWall: v })} />
           </div>
           <div className="derived">
             <span>
@@ -435,9 +443,7 @@ export default function Estimator({
 
         {/* step 3 — quality tier + add-ons */}
         <div className="wz-step">
-          <div className="wz-head">
-            <span className="wz-title">Quality tier</span>
-          </div>
+          <WizHead title="Quality tier" />
           {/* The plain three-way segment used to live here and the priced comparison lived in
               the output column, which is one control drawn twice: the same three buttons, one
               of them knowing what it costs. This is that one, moved across — it is an INPUT and
@@ -464,33 +470,13 @@ export default function Estimator({
           {/* Three of them in a two-column grid orphaned the third and wrapped the other two
               onto second lines. One column, one hairline between each — see estimator.css. */}
           <div className="addons">
-            <label className="check-row">
-              <input
-                type="checkbox"
-                className="check"
-                checked={inputs.addons.solar}
-                onChange={(e) => set({ addons: { ...inputs.addons, solar: e.target.checked } })}
-              />
-              Solar rooftop system
-            </label>
-            <label className="check-row">
-              <input
-                type="checkbox"
-                className="check"
-                checked={inputs.addons.cctv}
-                onChange={(e) => set({ addons: { ...inputs.addons, cctv: e.target.checked } })}
-              />
-              HD CCTV security package
-            </label>
-            <label className="check-row">
-              <input
-                type="checkbox"
-                className="check"
-                checked={inputs.addons.fireSafety}
-                onChange={(e) => set({ addons: { ...inputs.addons, fireSafety: e.target.checked } })}
-              />
-              Fire safety &amp; extinguishers
-            </label>
+            <CheckRow label="Solar rooftop system" checked={inputs.addons.solar} onChange={(v) => set({ addons: { ...inputs.addons, solar: v } })} />
+            <CheckRow label="HD CCTV security package" checked={inputs.addons.cctv} onChange={(v) => set({ addons: { ...inputs.addons, cctv: v } })} />
+            <CheckRow
+              label="Fire safety & extinguishers"
+              checked={inputs.addons.fireSafety}
+              onChange={(v) => set({ addons: { ...inputs.addons, fireSafety: v } })}
+            />
           </div>
         </div>
 
@@ -499,20 +485,14 @@ export default function Estimator({
             checkboxes under a price comparison, which is three unrelated jobs in one panel.
             It is a card of its own now, the same shell as every other card on the page. */}
         <div className="wz-step">
-          <div className="wz-head">
-            <span className="wz-title">Your drawing</span>
-            <span className="wz-note">optional</span>
-          </div>
+          <WizHead title="Your drawing" note="optional" />
           <DrawingUpload onReading={onReading} />
         </div>
 
         {/* store picks */}
         {picks.length > 0 && (
           <div className="wz-step">
-            <div className="wz-head">
-              <span className="wz-title">Your store picks</span>
-              <span className="wz-note">priced from the shelf</span>
-            </div>
+            <WizHead title="Your store picks" note="priced from the shelf" />
             <div className="addons">
               {picks.map((p) => {
                 const s = catalog[p.sku_code];

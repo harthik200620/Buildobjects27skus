@@ -61,7 +61,13 @@ export default function Reveal() {
         /* Reaching this line at all is the proof the timer was waiting for. */
         disarm();
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
+          /* Intersecting, or ALREADY PAST. A fast scroll can move the viewport further in one
+             frame than an element is tall, and the only thing the observer ever says about that
+             element is "not intersecting, and above you" — so testing `isIntersecting` alone
+             leaves a flicked-past section blank for the rest of the visit. It is also what makes
+             the motion gate fail once in three runs on a loaded machine: the same starvation, at
+             a scale a laptop can produce and a cheap phone produces every day. */
+          if (!entry.isIntersecting && entry.boundingClientRect.bottom > 0) continue;
           (entry.target as HTMLElement).dataset.shown = '';
           io.unobserve(entry.target);
         }
@@ -94,6 +100,13 @@ export default function Reveal() {
 
     const scan = () => {
       for (const el of document.querySelectorAll('[data-reveal]:not([data-shown])')) {
+        /* Already scrolled past before this ran at all — a client navigation that restores the
+           scroll position, or a hash link. The observer would report nothing for these, because
+           there is no crossing left to report. */
+        if (el.getBoundingClientRect().bottom <= 0) {
+          (el as HTMLElement).dataset.shown = '';
+          continue;
+        }
         if (seen.has(el)) continue;
         seen.add(el);
         io.observe(el);

@@ -2388,6 +2388,13 @@
     color: #fff;
     border: 0;
   }
+  /* This transition does NOT govern the cards you are thinking of. Measured on the front door:
+     every `.cat-card.lift` also carries `data-reveal`, and `.js-reveal [data-reveal]` in theme.css
+     sets `transition: opacity, transform var(--dur-4)` — 640 ms — which beats this rule and is
+     never taken off once the element has been revealed. So a revealed card's 3 px hover rise
+     eases over 640 ms rather than the 150 ms hover was drawn for, and `will-change` stays pinned
+     on it for the life of the page. Left as it is: this is a change to how hovering FEELS and to
+     the compositor budget, and neither belongs in a pass that is only allowed to delete. */
   .lift {
     transition:
       box-shadow 0.15s ease,
@@ -2532,9 +2539,17 @@
   .sec {
     margin-top: 32px;
   }
-  /* `.sec-head` is styled in styles/home.css, and NOT under `.home` — an unscoped rule in a
-     page's own stylesheet, so the front door's spacing governs the section heads on every
-     surface. This file's version set the same five properties and lost all five to it. */
+  /* The section head, for the four surfaces that have one: the front door, a category, a product
+     and the estimator. It lived in styles/home.css and NOT under `.home`, so the front door's own
+     spacing quietly governed all four while this file kept a version that lost every property to
+     it. Same values, moved to the stylesheet all four already share. */
+  .sec-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-9);
+    margin-bottom: var(--s-7);
+  }
   /* Section headings are Audiowide too, and therefore 400 rather than 700 — the subset has one
      cut. It is a wide face, so 18px in it measures like 23px of the UI face; 17 holds the same
      optical size and stops two-word headings wrapping in a card. */
