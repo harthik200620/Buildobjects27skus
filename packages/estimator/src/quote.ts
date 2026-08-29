@@ -252,18 +252,15 @@ const UNIT_WORD: Record<string, string> = {
 const says = (u: string) => UNIT_WORD[u] ?? u;
 
 /**
- * The same line, bought here.
+ * The same line, bought here. Three things hold before a rupee of saving is claimed, and a line
+ * failing any of them is left alone rather than guessed at:
  *
- * Three things have to hold before a rupee of saving is claimed, and if any of them does not the
- * line is left alone rather than guessed at:
- *
- *   1. THE STORE ACTUALLY SELLS IT. `rateSource: 'store'` means this line's rate came off a live
- *      SKU with a real price, not off a thumb rule.
- *   2. THERE IS A QUANTITY TO MULTIPLY. Either the document states one in a unit that agrees
- *      with ours, or we use this house's own quantity — and say which.
- *   3. THE ARITHMETIC IS THE DOCUMENT'S OWN. When the quote states qty AND rate, they have to
- *      multiply out to within 3 % of its amount before its quantity is trusted. A row whose
- *      numbers do not multiply is a row we have misread.
+ *   1. THE STORE ACTUALLY SELLS IT — `rateSource: 'store'`, a live SKU with a real price rather
+ *      than a thumb rule.
+ *   2. THERE IS A QUANTITY TO MULTIPLY — the document's, in a unit that agrees with ours, or this
+ *      house's own, and the output says which.
+ *   3. THE ARITHMETIC IS THE DOCUMENT'S OWN. Given qty AND rate, they must multiply out to within
+ *      3 % of its stated amount. A row whose numbers do not multiply is a row we have misread.
  */
 function repriceFromStore(q: QuotedLine, line: LineItem): StoreReprice | null {
   if (line.rateSource !== 'store' || !line.sku_code || !(line.rate > 0)) return null;
@@ -324,16 +321,12 @@ function lineFlags(q: QuotedLine, line: LineItem, key: string): QuoteFlag[] {
 const fmt = (n: number) => n.toLocaleString('en-IN', { maximumFractionDigits: n < 10 ? 1 : 0 });
 
 /**
- * Cement against steel, which is the one cross-line check worth making.
- *
- * The two move together in a way nothing else on a quotation does: the concrete decides both, so
- * the kilograms of steel per bag of cement is roughly fixed for a given kind of building. A quote
- * that is out on that ratio has mispriced or miscounted one of the two, and it is invisible if
- * you read the lines one at a time.
- *
- * The expected ratio is not a number anybody chose. It is the ratio THIS estimate works out for
- * THIS house from its own published quantities, printed beside the quote's, so the reader can
- * check both against the line items further up the same page.
+ * Cement against steel, the one cross-line check worth making: the concrete decides both, so
+ * kilograms of steel per bag of cement is roughly fixed for a kind of building, and a quote out on
+ * that ratio has mispriced or miscounted one of the two — invisible reading the lines one at a
+ * time. The expected ratio is not a number anybody chose: it is what THIS estimate works out for
+ * THIS house from its own published quantities, printed beside the quote's so the reader can check
+ * both against the line items further up the same page.
  */
 function ratioFlags(quoted: QuotedLine[], byKey: Map<string, LineItem>): QuoteFlag[] {
   const ours = { cement: byKey.get('cement'), steel: byKey.get('steel') };

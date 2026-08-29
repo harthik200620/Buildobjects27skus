@@ -7,20 +7,19 @@ import { add, cameraAxes, type Mat3, normalize, scale, UP, type Vec3, v3 } from 
 /**
  * Where to put the product so the person holding the phone can see it.
  *
- * A fixed screen fraction is not a placement: the old `defaultDropPoint` cast a ray through
- * v = 0.68 for anything on the floor, and the distance to the surface through a fixed pixel varies
- * by four orders of magnitude across the pitches a phone is actually held at. Above about +20 no
- * floor product was placed at all — the ray never met the floor.
+ * A FIXED SCREEN FRACTION IS NOT A PLACEMENT. Casting a ray through v = 0.68 for anything on the
+ * floor means the distance to the surface varies by four orders of magnitude across the pitches a
+ * phone is held at, and above about +20 the ray never meets the floor at all.
  *
- * Every placement has ONE free parameter. On a horizontal surface it is how far along the surface
- * the product sits; on a vertical one it is how far away the wall is, since the HEIGHT is not free
- * (an extinguisher lives at a metre whether or not that frames well).
+ * Every placement has ONE free parameter: on a horizontal surface how far along it the product
+ * sits, on a vertical one how far away the wall is — the HEIGHT is not free, since an
+ * extinguisher lives at a metre whether or not that frames well.
  *
- * So: sweep that parameter, project the product's own box at each candidate, take the one that
- * puts the most of it on screen nearest the row its mount belongs at. When nothing in the physical
- * band can frame it, the product still goes at its honest position and `nudge` says which way to
- * tilt. A sweep rather than a closed form because the closed forms differ per surface and every
- * one of them goes singular somewhere a phone is actually held — forty-eight box projections is
+ * So sweep that parameter, project the product's own box at each candidate, and take the one
+ * putting the most of it on screen nearest the row its mount belongs at; when nothing in the
+ * physical band can frame it the product still goes at its honest position and `nudge` says which
+ * way to tilt. A sweep rather than a closed form because the closed forms differ per surface and
+ * each goes singular somewhere a phone is actually held — and forty-eight box projections is
  * thirty microseconds, once per placement rather than per frame.
  */
 
