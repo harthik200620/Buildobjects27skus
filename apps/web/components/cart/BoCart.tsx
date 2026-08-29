@@ -48,9 +48,7 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
   const netTotal = Math.max(0, subtotal - appliedCoins);
 
   const handleCheckout = () => {
-    if (appliedCoins > 0) {
-      redeemBoCoins(appliedCoins);
-    }
+    if (appliedCoins > 0) redeemBoCoins(appliedCoins);
     clearPicks();
     setOrdered(true);
   };

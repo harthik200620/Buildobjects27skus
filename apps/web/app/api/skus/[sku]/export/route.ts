@@ -7,9 +7,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(_req: NextRequest, ctx: { params: Promise<{ sku: string }> }) {
   const { sku: skuCode } = await ctx.params;
   const data = await loadSkuPage(skuCode);
-  if (!data) {
-    return NextResponse.json({ error: 'SKU not found' }, { status: 404 });
-  }
+  if (!data) return NextResponse.json({ error: 'SKU not found' }, { status: 404 });
 
   const origin = _req.nextUrl.origin;
   const glbUrl = `${origin}/3d/${data.sku.code}.glb`;

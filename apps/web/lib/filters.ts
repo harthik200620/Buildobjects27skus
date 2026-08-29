@@ -138,9 +138,7 @@ export function appliedChips(state: FilterState, config: FacetConfig | null): { 
     chips.push({ key: 'price', label: priceLabel, remove: { price: undefined } });
   }
 
-  if (state.stock) {
-    chips.push({ key: 'stock', label: 'In stock', remove: { stock: undefined } });
-  }
+  if (state.stock) chips.push({ key: 'stock', label: 'In stock', remove: { stock: undefined } });
 
   for (const [k, v] of Object.entries(state.attrs)) {
     const f = byKey.get(k);

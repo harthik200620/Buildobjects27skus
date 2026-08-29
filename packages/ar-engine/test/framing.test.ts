@@ -107,9 +107,7 @@ describe('framePlacement, across every SKU and every camera pitch', () => {
         for (const pitchDeg of PITCHES) {
           const R = cameraRotation({ pitchDeg });
           const f = framePlacement({ K, R, C, rule, dims, surface, view: VIEW });
-          if (f.coverage < 0.72 && f.nudge === null) {
-            bad.push(`${code} ${surface} @${pitchDeg}: ${(f.coverage * 100).toFixed(0)} % on screen and no nudge`);
-          }
+          if (f.coverage < 0.72 && f.nudge === null) bad.push(`${code} ${surface} @${pitchDeg}: ${(f.coverage * 100).toFixed(0)} % on screen and no nudge`);
         }
       }
     }
@@ -148,9 +146,7 @@ describe('framePlacement, across every SKU and every camera pitch', () => {
           run = f.coverage >= 0.9 ? run + 1 : 0;
           bestRun = Math.max(bestRun, run);
         }
-        if (bestRun < NEEDED) {
-          bad.push(`${code} ${surface}: fully visible over only ${bestRun * 5} degrees of tilt (best ${(best * 100).toFixed(0)} %)`);
-        }
+        if (bestRun < NEEDED) bad.push(`${code} ${surface}: fully visible over only ${bestRun * 5} degrees of tilt (best ${(best * 100).toFixed(0)} %)`);
       }
     }
     expect(bad).toEqual([]);
@@ -384,9 +380,7 @@ describe('framing into the band a person can actually see', () => {
           const fit = autoFitScale(dims, first.distanceM, K.fy);
           const f = framePlacement({ K, R, C, rule, dims, surface, view: BAND, scaleMult: fit.scale });
           /* The failure this exists for: nothing visible AND nothing said about it. */
-          if (f.coverage < 0.15 && f.nudge === null) {
-            silent.push(`${code} ${surface} @${pitchDeg}: ${(f.coverage * 100).toFixed(0)} % in the band, no nudge`);
-          }
+          if (f.coverage < 0.15 && f.nudge === null) silent.push(`${code} ${surface} @${pitchDeg}: ${(f.coverage * 100).toFixed(0)} % in the band, no nudge`);
         }
       }
     }

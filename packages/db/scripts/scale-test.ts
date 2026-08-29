@@ -157,9 +157,7 @@ async function main() {
       );
       w.on('completed', () => {
         done++;
-        if (done >= JOBS) {
-          w.close().then(resolve);
-        }
+        if (done >= JOBS) w.close().then(resolve);
       });
     });
     const ms = Math.round(performance.now() - t1);

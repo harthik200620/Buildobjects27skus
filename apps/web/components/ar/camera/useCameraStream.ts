@@ -159,9 +159,7 @@ export function useCameraStream(): CameraStream {
 
         try {
           await v.play();
-          if (v.readyState >= 2) {
-            markStreaming();
-          }
+          if (v.readyState >= 2) markStreaming();
         } catch {
           /* autoplay policy */
         }

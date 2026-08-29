@@ -61,9 +61,7 @@ export default function FilterRail(props: RailProps) {
     const parentKey = f.depends_on.key;
     const parentVal = state.attrs[parentKey];
     if (f.depends_on.values && f.depends_on.values.length > 0) {
-      if (Array.isArray(parentVal)) {
-        return parentVal.some((v) => typeof v === 'string' && f.depends_on!.values!.includes(v));
-      }
+      if (Array.isArray(parentVal)) return parentVal.some((v) => typeof v === 'string' && f.depends_on!.values!.includes(v));
       return typeof parentVal === 'string' && f.depends_on.values.includes(parentVal);
     }
     if (f.depends_on.min !== undefined || f.depends_on.max !== undefined) {

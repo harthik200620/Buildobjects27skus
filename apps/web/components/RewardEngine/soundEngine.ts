@@ -7,21 +7,15 @@ function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
   if (!audioCtx) {
     const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    if (AudioContextClass) {
-      audioCtx = new AudioContextClass();
-    }
+    if (AudioContextClass) audioCtx = new AudioContextClass();
   }
-  if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume().catch(() => {});
-  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
   return audioCtx;
 }
 
 export function setSoundMuted(muted: boolean) {
   isMuted = muted;
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('bo_engine_sound_muted', String(muted));
-  }
+  if (typeof window !== 'undefined') localStorage.setItem('bo_engine_sound_muted', String(muted));
 }
 
 export function getSoundMuted(): boolean {

@@ -459,9 +459,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
       },
       onResult: (analysis) => {
         setSceneAnalysis(analysis);
-        if (rendererRef.current && analysis.lighting) {
-          rendererRef.current.setLighting(analysis.lighting);
-        }
+        if (rendererRef.current && analysis.lighting) rendererRef.current.setLighting(analysis.lighting);
 
         /* Which of THIS product's surfaces is in view. `matchSurface` walks the rule's own
            preference order and treats floor/ground as interchangeable, so a cement bag anchors
@@ -477,9 +475,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
          * frame was enough to move it. A mount change needs a confident reading; below that the
          * rule's own first choice stands.
          */
-        if (m.surface && m.confidence >= SURFACE_SWITCH_CONFIDENCE * 100) {
-          setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
-        }
+        if (m.surface && m.confidence >= SURFACE_SWITCH_CONFIDENCE * 100) setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
       },
       onError: (err) => {
         /* 503 = the vision model is unavailable, not "there is no surface". Refusing to place
@@ -681,17 +677,13 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
         const m = matchSurface(ruleRef.current, local);
         setMatch((prev) => (prev.surface === m.surface && prev.confidence === m.confidence ? prev : m));
         setAnalysed(true);
-        if (m.surface && m.confidence >= SURFACE_SWITCH_CONFIDENCE * 100) {
-          setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
-        }
+        if (m.surface && m.confidence >= SURFACE_SWITCH_CONFIDENCE * 100) setSurface((cur) => (cur === m.surface ? cur : (m.surface as Surface)));
         if (renderer && local.lighting) renderer.setLighting(local.lighting);
       }
     }
 
     // Then the model, on its own schedule, where a key exists.
-    if (hasVideo) {
-      schedulerRef.current?.tick();
-    }
+    if (hasVideo) schedulerRef.current?.tick();
 
     /*
      * AUTO-PLACE ONCE THE POSE IS WORTH TRUSTING, and the guard is about the POSE rather than the
