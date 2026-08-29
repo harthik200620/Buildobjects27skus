@@ -2,21 +2,13 @@
    Home: the catalogue as a taxonomy, on a photograph.
 
    Thirty-five categories in ONE register — one card, one grid, one rhythm. Stocked and
-   upcoming differ by a pill and a quieter photograph, not by a different card in a
-   different grid the way they once did.
+   upcoming differ by a pill and a quieter photograph, not by a different card.
 
-   WHAT CHANGED IN v2. The page was correct and flat. Sections sat 48px apart, the
-   headline was 30px against a 13px subtitle, and the hero was a teal gradient with a
-   grid drawn on it. Three changes carry the difference:
-
-     · SECTION RHYTHM IS --s-10 (128px), not 48. A front door is scanned, and a
-       scanned page needs air between its moves or every move reads as equally
-       urgent, which is the same as none of them being urgent.
-     · THE HEADLINE IS DISPLAY TIER. 44 → 92px of Instrument Serif against a 17px
-       lede. That is the 6× range the v1 ramp never had.
-     · THE HERO STANDS ON A PHOTOGRAPH — a dusk G+1 house with a parapet, a mumty,
-       chajjas and a compound wall. See components/Plate.tsx for the scrim, which is
-       two layers and both are load-bearing.
+   A front door is SCANNED, so it needs air between its moves or every move reads as
+   equally urgent, which is the same as none of them being. That air is the section
+   rhythm below; the headline is display tier against a 17px lede, a 6x range; and the
+   hero stands on a photograph rather than a gradient (components/Plate.tsx owns the
+   scrim, which is two layers and both are load-bearing).
 
    Every measurement here is on the --s-* scale and every duration and curve on the
    --dur-* / --ease-* pair from theme.css. Hand-picked numbers are the specific thing
@@ -29,32 +21,20 @@
     padding-bottom: var(--s-10);
   }
 
-  /*
-   * ── section rhythm ─────────────────────────────────────────────────────────
-   *
-   * 96px between sections, not 128. On a 940px desktop viewport the catalogue — the thing anyone
-   * came here for — began 1783px down: a hero of 746px with 224px of its own padding, then two
-   * 128px gaps and a section head. Nearly two full screens of scrolling before a single category.
-   *
-   * The rhythm is still generous; it is one step down the same scale, and it is applied with the
-   * hero's padding below rather than instead of it. The order does not change: the categories are
-   * the last thing on this page and nothing follows them.
-   */
+  /* ── section rhythm ─────────────────────────────────────────────────────────
+     96px between sections, not 128. At 128 the catalogue — the thing anyone came here for —
+     began 1783px down a 940px viewport: nearly two screenfuls before a single category. One
+     step down the same scale, applied with the hero's padding below rather than instead of it. */
   .home .sec {
     margin-top: var(--s-9);
   }
   .home .sec:first-child {
     margin-top: 0;
   }
-  /* The page ends on the category grid. Without this the last row sits against the footer
-     rule with nothing under it, which reads as the page having been cut off rather than
-     having finished.
-
-     It was --s-9, the same step as the gap BETWEEN sections, and that is the mistake: a gap
-     between two things has to separate them, whereas the space after the last thing only has to
-     stop it touching the rule. Measured on the rendered page, the last tile row sat 270 px clear
-     of the footer — a screenful of nothing, which reads as a page that ran out rather than one
-     that ended. One step down, and the footer's own padding does the rest. */
+  /* The page ends on the category grid, and the space after the LAST thing only has to stop it
+     touching the footer rule — a gap between two things has to separate them, which is why the
+     between-sections step was wrong here and left the last row 270px clear: a screenful of
+     nothing, reading as a page that ran out rather than one that ended. */
   .home .sec--last {
     padding-bottom: var(--s-7);
   }
@@ -114,20 +94,12 @@
   .hero-plate {
     inset: 0 0 -1px 0;
   }
-  /*
-   * THE HERO GETS A LIGHTER SCRIM THAN THE REST OF THE SET.
-   *
-   * The shared `.plate-scrim` is tuned for a 208px banner where a title sits directly on the
-   * photograph and legibility is the only thing that matters — it lands around 88% canvas at the
-   * left edge. On an 838px hero that same recipe crushed the photograph to a faint smudge in the
-   * top right: the frame was there, paid for, and invisible.
-   *
-   * So this one is rebalanced rather than removed. It stays heavy on the LEFT, where the headline
-   * and the lede sit, and opens up across the right half where the building is; vertically it is
-   * heavy under the bar, opens through the middle, and closes to the canvas at the bottom so the
-   * section ends without a seam. The measured result behind the headline is in the commit that
-   * introduced it — contrast is what decides this, not taste.
-   */
+  /* THE HERO GETS A LIGHTER SCRIM THAN THE REST OF THE SET. The shared `.plate-scrim` is tuned
+     for a 208px banner — around 88% canvas at the left edge — and on an 838px hero that recipe
+     crushed the photograph to a smudge: the frame was there, paid for, and invisible. Rebalanced
+     rather than removed: heavy on the LEFT where the headline and lede sit, open across the right
+     half where the building is, and closing to the canvas at the bottom so the section ends
+     without a seam. Contrast decides this, not taste. */
   .hero-plate .plate-scrim {
     background:
       linear-gradient(180deg, rgb(6 24 29 / 92%) 0%, rgb(6 24 29 / 38%) 26%, rgb(6 24 29 / 46%) 68%, var(--color-canvas) 100%),
@@ -182,18 +154,11 @@
     padding-left: var(--s-5);
     border-left: 1px solid var(--hair);
   }
-  /*
-   * ONE STEP BRIGHTER THAN .micro'S DEFAULT, BECAUSE THESE THREE SIT ON A PHOTOGRAPH.
-   *
-   * --ink-3 is 7.9:1 on the canvas and these labels are not on the canvas: they are over a dusk
-   * exterior. Measured against the pixels actually behind them they came to 5.03:1 on a desktop
-   * and 4.41:1 on a phone — under the 4.5 they need, on the viewport most of this store's
-   * customers use, and invisible to a contrast check that walks up to the nearest OPAQUE ancestor
-   * and finds the page canvas.
-   *
-   * --ink-2 is the body step and clears it on both. It also reads better: "Categories" naming the
-   * 38px figure under it was the dimmest thing in the hero.
-   */
+  /* ONE STEP BRIGHTER THAN .micro'S DEFAULT, BECAUSE THESE THREE SIT ON A PHOTOGRAPH. --ink-3 is
+     7.9:1 on the canvas and these labels are not on the canvas: measured against the pixels
+     actually behind them, 5.03:1 on a desktop and 4.41:1 on a phone — under the 4.5 they need, on
+     the viewport most of this store's customers use, and invisible to any contrast check that
+     walks up to the nearest OPAQUE ancestor and finds the page canvas. --ink-2 clears it on both. */
   .hero-facts dt {
     margin-bottom: var(--s-2);
     color: var(--ink-2);
@@ -379,18 +344,11 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  /*
-   * THREE LINES ON A PHONE, where the stocked grid is two columns and a tile is about 170px.
-   *
-   * Two is right at three columns on a desktop, where the widest name in the catalogue —
-   * "Drafting & Measurement Items" — lands on two with room. At two columns on a phone it needs
-   * three and was cut.
-   *
-   * Worth recording how long it took to find: `pnpm sweep` reported it as a `span.cat-name` and I
-   * spent three rounds widening the COMPACT tiles, because that is where a cramped name looked
-   * like it would be. It is one of the nine categories that are actually in stock, in the
-   * full-size grid at the top of the page. The detector was right and I was reading it wrong.
-   */
+  /* THREE LINES ON A PHONE, where the stocked grid is two columns and a tile is about 170px.
+     Two is right at three columns on a desktop, where the longest name in the catalogue —
+     "Drafting & Measurement Items" — lands on two with room; at two columns it needs three.
+     `sweep` reports this as a `span.cat-name`, which is the FULL-SIZE grid, not the compact one
+     below — three rounds went into the wrong tiles before that registered. */
   @media (max-width: 767.98px) {
     .cat-name {
       -webkit-line-clamp: 3;
@@ -454,19 +412,12 @@
   .cat-card--compact .cat-band {
     padding: var(--s-3);
   }
-  /*
-   * THREE LINES, BECAUSE THE NAME IS THE ONLY THING ON A COMPACT TILE.
-   *
-   * The base `.cat-name` clamps at two, which is right for a full-size tile at 430px across. At
-   * three columns on a phone these are about 115px wide, and six of the twenty-six came out cut:
-   * "Heavy Construction…", "Company Identity &…", "Communication & Furniture…", "Finance &
-   * Accounting…". A tile whose entire content is a name, showing most of a name, is a tile that
-   * has failed at its one job — and unlike a product card there is no price or picture underneath
-   * to make up for it.
-   *
-   * The band is anchored to the bottom edge and the shade above it is a gradient, so a third line
-   * grows upward into the photograph rather than pushing anything out of the tile.
-   */
+  /* THREE LINES, BECAUSE THE NAME IS THE ONLY THING ON A COMPACT TILE. The base clamps at two,
+     right for a full-size tile at 430px; at three columns on a phone these are about 115px and
+     six of the twenty-six came out cut. A tile whose entire content is a name, showing most of a
+     name, has failed at its one job — and unlike a product card there is nothing underneath to
+     make up for it. The band is anchored to the bottom and shaded with a gradient, so a third
+     line grows upward into the photograph rather than pushing anything out of the tile. */
   .cat-card--compact .cat-name {
     font-size: var(--t-fine);
     line-height: 1.3;

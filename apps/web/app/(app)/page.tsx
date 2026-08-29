@@ -9,22 +9,6 @@ import { loadCatalogueCategories } from '@/lib/data';
 export const revalidate = 60;
 
 /**
- * Tiles that load eagerly, and the answer is none of them.
- *
- * This was 4, on the reasonable-sounding theory that the first row is above the fold. Measured,
- * it is not: the hero ends at 807 px and the grid starts at 1655 px on a 940 px desktop viewport,
- * and at 2307 px on a phone. Zero tiles are visible on first paint at either size.
- *
- * What `priority` actually did was emit four `<link rel=preload as=image>` for pictures nobody
- * can see, on the same connection that is trying to fetch the hero photograph — which IS the
- * largest contentful paint. On the connections this store is for, that is the LCP losing a race
- * to four thumbnails sitting two screenfuls down the page.
- *
- * The mechanism stays wired up. If the hero is ever shortened, this becomes a number again.
- */
-const EAGER = 0;
-
-/**
  * The front door: the hero, the spine, the categories, and nothing after them.
  *
  * IT SHOWS CATEGORIES. There are thirty-five, and `WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx` is
@@ -55,28 +39,17 @@ export default async function Home() {
         <span className="hero-grid" aria-hidden="true" />
         <div className="shell hero-in">
           {/*
-           * The line is about DELIVERY, not about price.
+           * THE LINE IS ABOUT DELIVERY, NOT PRICE. A house is not built by buying material, it is
+           * built by material ARRIVING: one house today means cement from one dealer, tiles from
+           * another and wiring from a third — eight relationships and eight delivery dates that
+           * never line up. That is the same loss for a builder in a city and a family adding a
+           * room in a village, which is why it reaches the whole of this market at once.
            *
-           * It read "Know what it costs before you order it." above forty-eight words of
-           * everything the store can do. Knowing the price is a real thing this store fixes and
-           * it is not the thing somebody arrives needing: a house is not built by buying
-           * material, it is built by material ARRIVING. One house today means cement from one
-           * dealer, tiles from another and wiring from a third — eight relationships, eight
-           * phone calls, and eight delivery dates that never line up. That is the same loss for
-           * a builder in a city and for a family adding a room in a village, which is why it is
-           * the line that reaches every part of this market at once.
-           *
-           * The kicker above it — a pulsing dot reading "Andhra Pradesh & Telangana" — is gone.
-           * It is the least load-bearing element on the page and the deliver-to strip six inches
-           * below it already names the visitor's own pincode and their own lead time, which is
-           * the specific answer rather than the general one.
-           *
-           * THE SECOND LINE NAMES ONLY WHAT IS ON THE SHELF. It used to lead with "Cement,
-           * steel, ..." and there is no steel in this catalogue — nine of the thirty-seven
-           * categories stock anything, and steel, sand, brick, paint and plumbing are all still
-           * "on the way" on the grid directly below this hero. Seven of the nine are named here;
-           * the two left out are epoxy and total stations, which are trade items rather than
-           * things somebody building a home goes looking for.
+           * THE SECOND LINE NAMES ONLY WHAT IS ON THE SHELF. Seven of the nine stocked categories
+           * are here; steel, sand, brick, paint and plumbing are all still "on the way" on the
+           * grid directly below, so naming them would be a promise this page cannot keep. Epoxy
+           * and total stations are left out as trade items rather than things somebody building
+           * a home goes looking for.
            */}
           <h1 id="home-h" className="d1 hero-title" data-reveal>
             Everything your home needs, in one order.
@@ -179,13 +152,18 @@ export default async function Home() {
             <ul className="cat-grid stagger">
               {stocked.map((c, i) => (
                 /* --i drives the stagger: three columns, so the modulo makes each row cascade
-                   left-to-right rather than the whole row arriving at once. */
+                   left-to-right rather than the whole row arriving at once.
+
+                   NO TILE IS EAGER, and `priority` is deliberately not passed. The hero ends at
+                   807 px and this grid starts at 1655 px on a 940 px desktop, 2307 px on a phone:
+                   nothing here is on the first screen at either size. Preloading the first row
+                   would put four `<link rel=preload as=image>` for invisible thumbnails on the
+                   same connection as the hero photograph, which IS the largest contentful paint. */
                 <li key={c.slug} style={{ '--i': i % 3 } as React.CSSProperties}>
                   <CategoryTile
                     href={`/c/${c.slug}`}
                     name={c.name}
                     heroImageKey={c.heroImageKey}
-                    priority={i < EAGER}
                     meta={c.skuCount > 0 ? `${c.skuCount} ${c.skuCount === 1 ? 'item' : 'items'}` : undefined}
                   />
                 </li>
@@ -198,10 +176,8 @@ export default async function Home() {
               <div className="sec-head sec-head--tight" data-reveal>
                 <div>
                   <p className="micro sec-eyebrow">Filling next</p>
-                  {/* .h3, not .d3. This section is a footnote to the one above it and was being
-                      set at 36 px — two thirds the size of "On the shelf today", for a block
-                      that exists to say "not yet". It also put a seventeenth type size on the
-                      front door, which scale:audit is there to catch. */}
+                  {/* .h3, not .d3: a footnote to the section above it, and a seventeenth type
+                      size on the front door is what scale:audit is there to catch. */}
                   <h2 id="soon-h" className="h3">
                     <span className="fig">{coming.length}</span> more shelves, on the way
                   </h2>
