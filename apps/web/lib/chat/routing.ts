@@ -57,6 +57,4 @@ export function categoriesNamed(message: string, cats: RoutedCategory[], status:
 }
 
 /** The first stocked category named, or null. What the engine's nudge hangs off. */
-export function shelfCategoryNamed(message: string, cats: RoutedCategory[]): string | null {
-  return categoriesNamed(message, cats, 'live')[0] ?? null;
-}
+export const shelfCategoryNamed = (message: string, cats: RoutedCategory[]): string | null => categoriesNamed(message, cats, 'live')[0] ?? null;

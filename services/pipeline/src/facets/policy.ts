@@ -160,6 +160,4 @@ export function loadPolicy(): FilterPolicy {
   return raw;
 }
 
-export function policyFor(slug: string): CategoryPolicy | null {
-  return loadPolicy().categories[slug] ?? null;
-}
+export const policyFor = (slug: string): CategoryPolicy | null => loadPolicy().categories[slug] ?? null;

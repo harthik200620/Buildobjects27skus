@@ -52,9 +52,7 @@ export interface PlotByDims {
 export interface PlotByArea {
   areaSqft: number;
 }
-export function isPlotByDims(p: PlotByDims | PlotByArea): p is PlotByDims {
-  return (p as PlotByDims).lengthFt !== undefined;
-}
+export const isPlotByDims = (p: PlotByDims | PlotByArea): p is PlotByDims => (p as PlotByDims).lengthFt !== undefined;
 
 /** A store SKU the buyer added with "Add to Estimate". Priced from the catalogue snapshot. */
 export interface EstimatePick {

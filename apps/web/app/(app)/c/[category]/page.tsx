@@ -29,9 +29,7 @@ import { inr } from '@/lib/media';
  * that are PRODUCTS — cement, tiles, glass — are not in the registry at all and keep their own
  * name, which is why this cannot simply be `categoryName(slug)`.
  */
-function displayName(slug: string, fallback: string): string {
-  return isProduct(slug) ? fallback : categoryName(slug);
-}
+const displayName = (slug: string, fallback: string): string => (isProduct(slug) ? fallback : categoryName(slug));
 
 type Params = { category: string };
 type Search = Record<string, string | string[] | undefined>;

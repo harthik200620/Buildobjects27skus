@@ -90,9 +90,7 @@ export function readerChain(): Array<Exclude<QuoteProvider, 'mock'>> {
 }
 
 /** What a press would try FIRST, so the interface can say whether reading is possible at all. */
-export function quoteProvider(): QuoteProvider {
-  return readerChain()[0] ?? 'mock';
-}
+export const quoteProvider = (): QuoteProvider => readerChain()[0] ?? 'mock';
 
 const SYSTEM = `You read construction quotations from India and return them as structured data.
 

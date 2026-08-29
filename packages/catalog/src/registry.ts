@@ -100,9 +100,7 @@ export const CategorySeedSchema = z.object({
   brands: z.array(BrandSeedSchema),
 });
 /** Default widget for a data type when the registry does not say. */
-export function defaultWidget(t: DataType): FilterWidget {
-  return t === 'number' ? 'range' : t === 'boolean' ? 'toggle' : 'checkbox';
-}
+export const defaultWidget = (t: DataType): FilterWidget => (t === 'number' ? 'range' : t === 'boolean' ? 'toggle' : 'checkbox');
 
 /**
  * The thirteen departments the thirty-seven categories hang under, in nav order.
@@ -193,18 +191,12 @@ export const PRODUCT_CATEGORY: Record<string, string> = {
 };
 
 /** The category a row belongs to: itself when it is a category, its parent when it is a product. */
-export function categoryOf(slug: string): string {
-  return PRODUCT_CATEGORY[slug] ?? slug;
-}
+export const categoryOf = (slug: string): string => PRODUCT_CATEGORY[slug] ?? slug;
 
-export function categoryName(slug: string): string {
-  return CATEGORIES.find((c) => c.slug === slug)?.name ?? slug;
-}
+export const categoryName = (slug: string): string => CATEGORIES.find((c) => c.slug === slug)?.name ?? slug;
 
 /** True when the slug names a product the store sells rather than a category it sells within. */
-export function isProduct(slug: string): boolean {
-  return slug in PRODUCT_CATEGORY;
-}
+export const isProduct = (slug: string): boolean => slug in PRODUCT_CATEGORY;
 
 export const DEPARTMENTS = [
   { key: 'construction-materials', name: 'Construction Materials' },
@@ -221,6 +213,4 @@ export const DEPARTMENTS = [
   { key: 'external-works', name: 'External Works' },
   { key: 'office-administration', name: 'Office & Administration' },
 ] as const;
-export function departmentName(key: string): string {
-  return DEPARTMENTS.find((d) => d.key === key)?.name ?? key;
-}
+export const departmentName = (key: string): string => DEPARTMENTS.find((d) => d.key === key)?.name ?? key;

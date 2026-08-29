@@ -6,14 +6,10 @@ import { LlmUnavailableError } from './errors';
  * pipeline loads .env through `@buildobjects/db`'s `loadEnv()`; apps/web has it in the environment.
  * This module deliberately does not import dotenv.
  */
-function apiKey(): string {
-  return (process.env.GEMINI_API_KEY ?? '').trim();
-}
+const apiKey = (): string => (process.env.GEMINI_API_KEY ?? '').trim();
 
 /** True when GEMINI_API_KEY is present. Every live feature gates on this and degrades to a labelled mock otherwise. */
-export function hasGemini(): boolean {
-  return apiKey().length > 0;
-}
+export const hasGemini = (): boolean => apiKey().length > 0;
 
 /** Per-request HTTP timeout (GEMINI_TIMEOUT_MS, default 120 s). */
 export function geminiTimeoutMs(): number {

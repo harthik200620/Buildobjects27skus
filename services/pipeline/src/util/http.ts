@@ -128,6 +128,4 @@ export function slugify(s: string): string {
   );
 }
 
-export function sha1(buf: Buffer | string): string {
-  return createHash('sha1').update(buf).digest('hex');
-}
+export const sha1 = (buf: Buffer | string): string => createHash('sha1').update(buf).digest('hex');

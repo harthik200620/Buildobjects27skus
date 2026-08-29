@@ -7,6 +7,4 @@ import { createHash } from 'node:crypto';
  * could be derived in a browser. Nothing derives one in a browser: every caller of `shard` and
  * `imageKey` is a route, a pipeline stage or a script.
  */
-export function md5Hex(input: string): string {
-  return createHash('md5').update(input).digest('hex');
-}
+export const md5Hex = (input: string): string => createHash('md5').update(input).digest('hex');

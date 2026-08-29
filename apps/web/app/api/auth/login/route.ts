@@ -14,9 +14,7 @@ import { cookieOptions, SESSION_COOKIE, SESSION_DAYS, signSession } from '@/lib/
  * is what the seeded table is for.
  */
 const REGIONS = new Set(['hyd', 'vij', 'vizag', 'wgl', 'gnt', 'tpt']);
-function knownRegion(regionId: string, pincode: string): string {
-  return REGIONS.has(regionId) ? regionId : pincode.startsWith('50') ? 'hyd' : 'vij';
-}
+const knownRegion = (regionId: string, pincode: string): string => (REGIONS.has(regionId) ? regionId : pincode.startsWith('50') ? 'hyd' : 'vij');
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));

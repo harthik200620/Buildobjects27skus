@@ -48,14 +48,10 @@ export async function maskPng(w: number, h: number, rects: { left: number; top: 
     .toBuffer();
 }
 
-export function glbOf(meshes: MeshData[], name = 'test'): Buffer {
-  return buildGlb(meshes, name).glb;
-}
+export const glbOf = (meshes: MeshData[], name = 'test'): Buffer => buildGlb(meshes, name).glb;
 
 /** A box GLB with the given extents (metres), centred at `c`. */
-export function boxGlb(w: number, h: number, d: number, c: [number, number, number] = [0, h / 2, 0]): Buffer {
-  return glbOf([box(w, h, d, c, FLAT)]);
-}
+export const boxGlb = (w: number, h: number, d: number, c: [number, number, number] = [0, h / 2, 0]): Buffer => glbOf([box(w, h, d, c, FLAT)]);
 
 /**
  * An L-shaped model: main slab 0.2 × 0.1 × 0.05 standing on y = 0, plus a 0.05 × 0.05 arm at the
@@ -96,9 +92,7 @@ export function specWithDims(w: number, h: number, d: number): SpecJson {
   } as unknown as SpecJson;
 }
 
-export function tmpDir(prefix: string): string {
-  return fs.mkdtempSync(path.join(os.tmpdir(), `bo-assets3d-${prefix}-`));
-}
+export const tmpDir = (prefix: string): string => fs.mkdtempSync(path.join(os.tmpdir(), `bo-assets3d-${prefix}-`));
 
 export const jsonResponse = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
 export const bytesResponse = (buf: Buffer, status = 200) => new Response(new Uint8Array(buf), { status });

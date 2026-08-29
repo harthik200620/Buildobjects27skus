@@ -39,9 +39,7 @@ export function sessionToken(claims: DemoClaims = {}): string {
 }
 
 /** `Cookie:` header value. */
-export function sessionCookie(claims: DemoClaims = {}): string {
-  return `bo_session=${sessionToken(claims)}`;
-}
+export const sessionCookie = (claims: DemoClaims = {}): string => `bo_session=${sessionToken(claims)}`;
 
 /** Playwright `context.addCookies()` entry. */
 export function sessionCookieFor(baseUrl: string, claims: DemoClaims = {}): { name: string; value: string; domain: string; path: string } {

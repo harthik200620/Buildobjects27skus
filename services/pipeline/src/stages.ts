@@ -421,9 +421,7 @@ export async function stageDescribe(w: SkuWork) {
 }
 
 /** Content hash used for resume: curated file + registry version. */
-export function workHash(c: CuratedSku, registry: Registry): string {
-  return sha(JSON.stringify(c) + registry.version);
-}
+export const workHash = (c: CuratedSku, registry: Registry): string => sha(JSON.stringify(c) + registry.version);
 
 export async function loadExistingValues(w: SkuWork) {
   const db = getDb();

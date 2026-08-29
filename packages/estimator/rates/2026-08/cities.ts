@@ -33,6 +33,4 @@ export const CITIES: CityRate[] = [
 
 export const STATE_NAME: Record<StateCode, string> = { AP: 'Andhra Pradesh', TS: 'Telangana' };
 
-export function cityByKey(key: string): CityRate {
-  return CITIES.find((c) => c.key === key) ?? CITIES[0];
-}
+export const cityByKey = (key: string): CityRate => CITIES.find((c) => c.key === key) ?? CITIES[0];

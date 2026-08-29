@@ -91,18 +91,12 @@ export interface StaticSearchResult {
   query: string;
 }
 
-export function staticSkuPage(code: string): unknown | null {
-  return skus[code.toLowerCase()] ?? null;
-}
+export const staticSkuPage = (code: string): unknown | null => skus[code.toLowerCase()] ?? null;
 
-export function staticFacetConfig(category: string | null): FacetConfig | null {
-  return category ? (facetConfigs[category] ?? null) : null;
-}
+export const staticFacetConfig = (category: string | null): FacetConfig | null => (category ? (facetConfigs[category] ?? null) : null);
 
 /** Every SKU the snapshot knows about, unfiltered. */
-function allHits(): SkuSearchDoc[] {
-  return searchAll.hits.length ? searchAll.hits : staticFlagship;
-}
+const allHits = (): SkuSearchDoc[] => (searchAll.hits.length ? searchAll.hits : staticFlagship);
 
 const HITS_PER_PAGE = 24;
 

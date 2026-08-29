@@ -38,15 +38,9 @@ export interface HeroCutout {
 
 export const MAX_TEXTURE_PX = 1024;
 
-export function imageDir(sku: string, mediaRoot: string): string {
-  return path.join(mediaRoot, 'skus', shard(sku), sku, 'img');
-}
-export function cutoutKey(sku: string, position = 1): string {
-  return `skus/${shard(sku)}/${sku}/img/${position}-cutout.png`;
-}
-export function cutoutFile(sku: string, mediaRoot: string, position = 1): string {
-  return path.join(imageDir(sku, mediaRoot), `${position}-cutout.png`);
-}
+export const imageDir = (sku: string, mediaRoot: string): string => path.join(mediaRoot, 'skus', shard(sku), sku, 'img');
+export const cutoutKey = (sku: string, position = 1): string => `skus/${shard(sku)}/${sku}/img/${position}-cutout.png`;
+export const cutoutFile = (sku: string, mediaRoot: string, position = 1): string => path.join(imageDir(sku, mediaRoot), `${position}-cutout.png`);
 export function origFile(sku: string, mediaRoot: string, position = 1): string | null {
   for (const ext of ['png', 'jpg', 'jpeg', 'webp']) {
     const f = path.join(imageDir(sku, mediaRoot), `${position}-orig.${ext}`);

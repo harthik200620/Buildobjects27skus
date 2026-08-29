@@ -19,9 +19,7 @@ const rupees = new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 0, minimum
 const rupeesWithPaise = new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 2, minimumFractionDigits: 2 });
 
 /** Constrains `n` to [lo, hi]. Assumes a finite input — use `clamp01` for untrusted values. */
-export function clamp(n: number, lo: number, hi: number): number {
-  return Math.min(hi, Math.max(lo, n));
-}
+export const clamp = (n: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, n));
 
 /**
  * Coerces any value to a confidence/ratio in [0, 1]. Anything that is not a finite number —
@@ -34,9 +32,7 @@ export function clamp01(value: unknown): number {
 }
 
 /** `1,23,456` — Indian grouping. Whole numbers stay whole; fractions keep up to three places. */
-export function formatNumber(n: number): string {
-  return (Number.isInteger(n) ? integers : decimals).format(n);
-}
+export const formatNumber = (n: number): string => (Number.isInteger(n) ? integers : decimals).format(n);
 
 /**
  * `₹1,23,456`, or `₹1,23,456.50` when `decimals` is asked for and the value actually has paise.

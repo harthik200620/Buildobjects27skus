@@ -90,9 +90,7 @@ function python(): string {
   process.exit(1);
 }
 
-function kb(bytes: number): string {
-  return `${(bytes / 1024).toFixed(1)} KB`;
-}
+const kb = (bytes: number): string => `${(bytes / 1024).toFixed(1)} KB`;
 
 const py = python();
 mkdirSync(fullDir, { recursive: true });

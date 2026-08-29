@@ -95,9 +95,7 @@ function derivedCharacters(): string {
   return [...seen].join('');
 }
 
-function kb(bytes: number): string {
-  return `${(bytes / 1024).toFixed(1)} KB`;
-}
+const kb = (bytes: number): string => `${(bytes / 1024).toFixed(1)} KB`;
 
 function python(): string | null {
   for (const cmd of ['python', 'python3', 'py']) {

@@ -29,9 +29,7 @@ const EQUIVALENT: Partial<Record<Surface, Surface[]>> = {
 };
 
 /** Does a detected surface satisfy a surface the rule asked for? */
-export function surfaceSatisfies(wanted: Surface, found: Surface): boolean {
-  return wanted === found || (EQUIVALENT[wanted]?.includes(found) ?? false);
-}
+export const surfaceSatisfies = (wanted: Surface, found: Surface): boolean => wanted === found || (EQUIVALENT[wanted]?.includes(found) ?? false);
 
 export interface SurfaceMatch {
   /** The rule surface the camera can currently satisfy, or null when none is in view. */
@@ -85,9 +83,7 @@ const CATEGORY_NOUN: Record<string, string> = {
 };
 
 /** "this bulb", "this cement bag", "this product" when the category has no noun written yet. */
-export function productNoun(category: string): string {
-  return `this ${CATEGORY_NOUN[category] ?? 'product'}`;
-}
+export const productNoun = (category: string): string => `this ${CATEGORY_NOUN[category] ?? 'product'}`;
 
 export type PromptTone = 'seek' | 'seeking' | 'ok';
 
@@ -117,9 +113,7 @@ export function surfacePrompt(rule: PlacementRule, match: SurfaceMatch, analysed
   return { tone: 'seek', text: `Point your camera at ${article(rule.surfaceLabel)} to place ${noun}.` };
 }
 
-function cap(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
+const cap = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** "a wall", "an open ground", "the floor" — small, but the prompt is read by everyone. */
 function article(label: string): string {
@@ -229,9 +223,7 @@ export function dropPointFor(rule: PlacementRule, surface: Surface, geo: DropGeo
  * roof, a tile field needs floor. `freeArea` is the analysis's estimate of how much of the best
  * surface is unobstructed; below the threshold the product would be placed through furniture.
  */
-export function needsOpenArea(rule: PlacementRule): boolean {
-  return rule.category === 'solar-panels' || rule.category === 'tiles' || rule.minClearanceMm >= 200;
-}
+export const needsOpenArea = (rule: PlacementRule): boolean => rule.category === 'solar-panels' || rule.category === 'tiles' || rule.minClearanceMm >= 200;
 
 export function hasOpenArea(rule: PlacementRule, analysis: SceneAnalysis | null): boolean {
   if (!needsOpenArea(rule)) return true;
@@ -240,9 +232,7 @@ export function hasOpenArea(rule: PlacementRule, analysis: SceneAnalysis | null)
 }
 
 /** The follow-on sentence when the surface is right but there is not enough of it. */
-export function areaPrompt(rule: PlacementRule): string {
-  return `Not enough clear ${rule.surfaceLabel} in view — step back so more of it is in frame.`;
-}
+export const areaPrompt = (rule: PlacementRule): string => `Not enough clear ${rule.surfaceLabel} in view — step back so more of it is in frame.`;
 
 /**
  * A detection has to be this confident before it is allowed to MOVE the mount.

@@ -42,9 +42,7 @@ function houseSrc(floors: number, tier: Tier, solar: boolean, size: 'card' | 'he
  * will not resolve at any price, so the 3D matrix is floors x finish only and the still render is
  * what carries the panels. See packages/assets3d/tools/house-3d.mts.
  */
-function houseModelSrc(floors: number, tier: Tier): string {
-  return `/3d/house/${Math.max(0, Math.min(FLOORS_MAX, floors))}-${tier}.glb`;
-}
+const houseModelSrc = (floors: number, tier: Tier): string => `/3d/house/${Math.max(0, Math.min(FLOORS_MAX, floors))}-${tier}.glb`;
 
 /**
  * What the estimate is paying for that the render deliberately does not show.

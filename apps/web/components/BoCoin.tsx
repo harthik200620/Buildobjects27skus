@@ -49,6 +49,4 @@ export default function BoCoin({ size = 120, className }: { size?: number; class
  * colour is painted rather than baked, the face keeps its struck-metal treatment — the amber it
  * already had, with the two drop shadows in store.css that read as an engraving.
  */
-function BoCoinMark() {
-  return <span className="bocoin-mark" aria-hidden="true" />;
-}
+const BoCoinMark = () => <span className="bocoin-mark" aria-hidden="true" />;

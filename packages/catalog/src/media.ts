@@ -22,9 +22,7 @@ const SIZE_SEGMENT: Record<ImageSize, string> = {
   cutoutcard: 'cutout-card',
 };
 /** First two hex chars of md5(sku_code) — directory sharding so 400k × 25 files never melts a listing. */
-export function shard(skuCode: string): string {
-  return md5Hex(skuCode).slice(0, 2);
-}
+export const shard = (skuCode: string): string => md5Hex(skuCode).slice(0, 2);
 
 /** `skus/{xx}/{sku_code}/img/{position}-{size}.webp` (cut-outs: `{position}-cutout.png`, `{position}-cutout-card.webp`). */
 export function imageKey(
@@ -36,12 +34,8 @@ export function imageKey(
   return `skus/${shard(skuCode)}/${skuCode}/img/${position}-${SIZE_SEGMENT[size]}.${ext}`;
 }
 /** `skus/{xx}/{sku_code}/docs/{slug}.pdf` */
-export function docKey(skuCode: string, slug: string): string {
-  return `skus/${shard(skuCode)}/${skuCode}/docs/${slug}.pdf`;
-}
-export function brandLogoKey(brandSlug: string, ext: string): string {
-  return `brands/${brandSlug}/logo.${ext}`;
-}
+export const docKey = (skuCode: string, slug: string): string => `skus/${shard(skuCode)}/${skuCode}/docs/${slug}.pdf`;
+export const brandLogoKey = (brandSlug: string, ext: string): string => `brands/${brandSlug}/logo.${ext}`;
 /**
  * `categories/{slug}/hero-card-{version}.webp`
  *
@@ -59,9 +53,7 @@ export function categoryHeroKey(categorySlug: string, size: ImageSize, version?:
   return `categories/${categorySlug}/hero-${SIZE_SEGMENT[size]}${v}.webp`;
 }
 /** The only URL rule the frontend knows. */
-export function mediaUrl(base: string, key: string): string {
-  return `${base.replace(/\/$/, '')}/${key}`;
-}
+export const mediaUrl = (base: string, key: string): string => `${base.replace(/\/$/, '')}/${key}`;
 /** Swap the size segment of an image key: `…/1-card.webp` → `…/1-zoom.webp`, `…/1-cutout.png` → `…/1-cutout-card.webp`. */
 export function withSize(key: string, size: ImageSize, ext?: 'webp' | 'avif' | 'png'): string {
   return key.replace(

@@ -181,9 +181,7 @@ export const MATERIALS: MaterialSpec[] = [
   }),
 ];
 
-function paintDrums(sqft: number): number {
-  return Math.ceil((sqft * PAINT_COATS) / PAINT_SQFT_PER_L / PAINT_DRUM_L);
-}
+const paintDrums = (sqft: number): number => Math.ceil((sqft * PAINT_COATS) / PAINT_SQFT_PER_L / PAINT_DRUM_L);
 
 const BY_KEY = new Map(MATERIALS.map((m) => [m.key, m]));
 

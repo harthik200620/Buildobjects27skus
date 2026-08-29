@@ -25,9 +25,7 @@ export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 export const ASSETS_DIR = path.join(ROOT, 'assets', '3d');
 
 /** MEDIA_ROOT is repo-root relative (the convention of .env and services/pipeline/src/config.ts). */
-export function resolveMediaRoot(env: NodeJS.ProcessEnv = process.env): string {
-  return path.resolve(ROOT, env.MEDIA_ROOT?.trim() || './storage/media');
-}
+export const resolveMediaRoot = (env: NodeJS.ProcessEnv = process.env): string => path.resolve(ROOT, env.MEDIA_ROOT?.trim() || './storage/media');
 
 export function flags(argv: string[]): Record<string, string | boolean> {
   const out: Record<string, string | boolean> = {};

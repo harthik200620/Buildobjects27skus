@@ -14,9 +14,7 @@ export function toast(message: string) {
   if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent(EVENT, { detail: { message } }));
 }
 
-export function useToast() {
-  return React.useCallback((message: string) => toast(message), []);
-}
+export const useToast = () => React.useCallback((message: string) => toast(message), []);
 
 export default function ToastHost() {
   const [msg, setMsg] = React.useState<string | null>(null);

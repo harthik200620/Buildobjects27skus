@@ -43,9 +43,7 @@ function bands(list: Band[], w = W, h = H): Uint8ClampedArray {
   return px;
 }
 
-function analyse(px: Uint8ClampedArray, pitchDeg: number | null) {
-  return detectSurfaces({ grid: gridFromRgba(px, W, H), pitchDeg, fy: FY, height: H });
-}
+const analyse = (px: Uint8ClampedArray, pitchDeg: number | null) => detectSurfaces({ grid: gridFromRgba(px, W, H), pitchDeg, fy: FY, height: H });
 
 describe('horizonFromPitch', () => {
   it('is the inverse of the pitch the pose module derives from a horizon', () => {

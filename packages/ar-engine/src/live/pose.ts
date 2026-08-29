@@ -132,17 +132,13 @@ export function mat3TMulVec(m: Mat3, v: Vec3): Vec3 {
   return { x: m[0] * v.x + m[3] * v.y + m[6] * v.z, y: m[1] * v.x + m[4] * v.y + m[7] * v.z, z: m[2] * v.x + m[5] * v.y + m[8] * v.z };
 }
 
-export function mat3Col(m: Mat3, j: 0 | 1 | 2): Vec3 {
-  return { x: m[j], y: m[3 + j], z: m[6 + j] };
-}
+export const mat3Col = (m: Mat3, j: 0 | 1 | 2): Vec3 => ({ x: m[j], y: m[3 + j], z: m[6 + j] });
 
 /** three.js local (X right, Y up, −Z forward) → pinhole (X right, Y down, Z forward): a half-turn about X. */
 const FLIP_YZ: Mat3 = [1, 0, 0, 0, -1, 0, 0, 0, -1];
 
 /** The pinhole camera-to-world rotation R for a three.js camera quaternion (world = R · cam + C). */
-export function cameraRotationFromQuat(q: Quat): Mat3 {
-  return mat3Mul(mat3FromQuat(q), FLIP_YZ);
-}
+export const cameraRotationFromQuat = (q: Quat): Mat3 => mat3Mul(mat3FromQuat(q), FLIP_YZ);
 
 /** The pinhole camera-to-world rotation for explicit Euler angles (degrees) — laptops (pitch from the horizon) and tests. */
 export function cameraRotation(e: { yawDeg?: number; pitchDeg?: number; rollDeg?: number } = {}): Mat3 {

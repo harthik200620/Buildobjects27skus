@@ -75,9 +75,7 @@ export class GeminiKeyMissing extends Error {
   }
 }
 
-export function hasKey(): boolean {
-  return !!(process.env.GEMINI_API_KEY ?? '').trim();
-}
+export const hasKey = (): boolean => !!(process.env.GEMINI_API_KEY ?? '').trim();
 
 const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504]);
 const MAX_ATTEMPTS = 3;
@@ -261,8 +259,6 @@ function summarise(detail: string): string {
 }
 
 /** Exponential with jitter — a synchronised retry storm is its own outage. */
-function backoff(attempt: number): number {
-  return Math.round(2 ** attempt * 250 * (0.75 + Math.random() * 0.5));
-}
+const backoff = (attempt: number): number => Math.round(2 ** attempt * 250 * (0.75 + Math.random() * 0.5));
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

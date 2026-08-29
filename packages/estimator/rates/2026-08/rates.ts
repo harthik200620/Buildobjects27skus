@@ -140,6 +140,4 @@ export const RATES = {
 } as const;
 
 export type RateKey = keyof typeof RATES;
-export function rate(key: Exclude<RateKey, 'labour_share_of_civil'>, tier: Tier): number {
-  return (RATES[key] as TierRate)[tier];
-}
+export const rate = (key: Exclude<RateKey, 'labour_share_of_civil'>, tier: Tier): number => (RATES[key] as TierRate)[tier];

@@ -385,9 +385,7 @@ export function extractNumbers(text: string): string[] {
   return out;
 }
 
-function toNumber(s: string): number {
-  return Number(s.replace(/,/g, ''));
-}
+const toNumber = (s: string): number => Number(s.replace(/,/g, ''));
 
 /**
  * GRAMMAR IS NEVER A NAME, WHEREVER IT STANDS.

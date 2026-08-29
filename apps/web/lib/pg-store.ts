@@ -88,9 +88,7 @@ function url(): string | null {
   return null;
 }
 
-export function hasPg(): boolean {
-  return url() !== null;
-}
+export const hasPg = (): boolean => url() !== null;
 
 let client: postgres.Sql | null = null;
 let db: PgDb | null = null;

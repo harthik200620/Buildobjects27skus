@@ -19,9 +19,7 @@ export interface WindowLimit {
 }
 
 /** Parses "calls/seconds" (e.g. "5/600"); unset or malformed → `fallback`. */
-export function windowLimit(spec: string | undefined, fallback: WindowLimit): WindowLimit {
-  return parseRateSpec(spec) ?? fallback;
-}
+export const windowLimit = (spec: string | undefined, fallback: WindowLimit): WindowLimit => parseRateSpec(spec) ?? fallback;
 
 /** Positive integer from the environment, else `fallback`. */
 export function envCap(name: string, fallback: number): number {

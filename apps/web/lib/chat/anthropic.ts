@@ -42,17 +42,11 @@ export function anthropicBase(): string {
   return (pick('BO_CHAT_BASE_URL', 'ANTHROPIC_BASE_URL') ?? 'https://api.anthropic.com/v1').replace(/\/+$/, '');
 }
 
-export function anthropicModel(): string {
-  return pick('BO_CHAT_MODEL', 'ANTHROPIC_CHAT_MODEL') ?? 'claude-haiku-4-5-20251001';
-}
+export const anthropicModel = (): string => pick('BO_CHAT_MODEL', 'ANTHROPIC_CHAT_MODEL') ?? 'claude-haiku-4-5-20251001';
 
-export function chatKey(): string | undefined {
-  return pick('BO_CHAT_API_KEY', 'ANTHROPIC_API_KEY');
-}
+export const chatKey = (): string | undefined => pick('BO_CHAT_API_KEY', 'ANTHROPIC_API_KEY');
 
-export function hasAnthropicKey(): boolean {
-  return !!chatKey();
-}
+export const hasAnthropicKey = (): boolean => !!chatKey();
 
 /* Anthropic's content blocks, as narrowly as this file needs them. */
 interface TextBlock {

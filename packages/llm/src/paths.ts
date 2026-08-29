@@ -27,13 +27,9 @@ export function repoRoot(): string {
 }
 
 /** storage/reports under the repo root — model cache, usage log. */
-export function reportsDir(): string {
-  return path.join(repoRoot(), 'storage', 'reports');
-}
+export const reportsDir = (): string => path.join(repoRoot(), 'storage', 'reports');
 
-export function reportPath(name: string): string {
-  return path.join(reportsDir(), name);
-}
+export const reportPath = (name: string): string => path.join(reportsDir(), name);
 
 /** Best-effort write: creates the directory, swallows every error (an unwritable disk must never fail an LLM call). */
 export function writeReport(name: string, data: string, mode: 'write' | 'append' = 'write'): boolean {

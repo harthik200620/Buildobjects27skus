@@ -129,9 +129,7 @@ export function buildSchedule(result: EstimateResult): BuildSchedule {
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /** The ordered phase keys of a build, which is the x-axis of every curve here. */
-export function phaseOrder(result: EstimateResult): PhaseKey[] {
-  return result.phases.map((p) => p.key);
-}
+export const phaseOrder = (result: EstimateResult): PhaseKey[] => result.phases.map((p) => p.key);
 
 /**
  * How much of one line's money has been billed by the end of a given phase.
