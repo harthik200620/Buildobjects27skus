@@ -136,19 +136,13 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
   contents.push({ role: 'user', parts: [{ text: input.message }] });
 
   /*
-   * THE CATALOGUE'S SHAPE, BEFORE THE FIRST TOKEN.
+   * THE CATALOGUE'S SHAPE, BEFORE THE FIRST TOKEN. One memoised read doing two jobs.
    *
-   * One memoised read — the live table when there is a database, the frozen snapshot when there
-   * is not — and it does two jobs at once:
-   *
-   *   IT GOES IN THE PROMPT, so the model knows what the store sells and what it is about to sell
-   *   without spending a get_catalogue_scope round trip to find out. That call costs a whole
-   *   extra generation; this costs about a hundred and forty tokens, once.
-   *
-   *   IT GOES IN THE LEDGER, because the validator rejects any named entity the tools did not
-   *   return, and a category the model only ever saw in its instructions would be rejected as an
-   *   invention. Telling the model something and then refusing to let it repeat that thing is the
-   *   subtle way this feature would have failed.
+   * IT GOES IN THE PROMPT, so the model knows what the store sells without spending a
+   * get_catalogue_scope round trip — that call costs a whole generation, this costs about a
+   * hundred and forty tokens, once. AND IT GOES IN THE LEDGER, because the validator rejects any
+   * named entity the tools did not return: telling the model something and then refusing to let
+   * it repeat that thing is the subtle way this feature would have failed.
    */
   const cats = await allCategories();
   const system = SYSTEM_PROMPT + scopeBlock(cats);
@@ -193,19 +187,14 @@ export async function runTurn(input: EngineInput, deps: EngineDeps = {}): Promis
 
     if (!r.calls.length) {
       /*
-       * THE ONE ANSWER THAT MAY NOT COME FROM MEMORY.
+       * THE ONE ANSWER THAT MAY NOT COME FROM MEMORY, because the prompt is a REQUEST. Asked "what
+       * steel and solar panels do you have", the model answered "both coming soon" — with three
+       * solar panels in stock — the second name having pattern-matched to the first name's answer.
+       * Same build, right locally and wrong in production: model variance, which no wording fixes.
        *
-       * The prompt tells the model to search anything not on the coming-soon list, and the prompt
-       * is a request. Asked "what steel and solar panels do you have", it answered "Steel &
-       * Reinforcement and Solar Panels are both coming soon" — with three solar panels in stock —
-       * because the two lists sat next to each other and the second name pattern-matched to the
-       * first name's answer. The same build gave the right answer locally and the wrong one in
-       * production, which is what model variance looks like and why this cannot be left to
-       * wording alone.
-       *
-       * So when the customer has plainly named a stocked category and the model tried to answer
-       * without looking, it is sent back once. Once, not until it complies: a loop that insists
-       * would spend the whole round budget arguing on the turns where the match was spurious.
+       * So a customer plainly naming a stocked category sends the model back ONCE. Not until it
+       * complies: a loop that insists spends the whole round budget arguing on the turns where the
+       * match was spurious.
        */
       if (onShelf && !searched && !nudged) {
         nudged = true;

@@ -130,13 +130,11 @@ function toMessages(args: GenerateArgs): Array<{ role: 'user' | 'assistant'; con
 /**
  * One POST to /messages, retried, and nothing at all about what the answer means.
  *
- * `generate` and `readDocumentAsJson` each carried their own copy of the transport — abort on a
- * timeout, retry a 429 or a 5xx, back off on a network throw, give up after MAX_ATTEMPTS. Two
- * copies of a retry policy is two policies, and these had already parted company: one honoured
- * `retry-after` and the other ignored it, one treated a non-JSON body as a retryable attempt and
- * the other let `res.json()` throw out of the loop entirely.
+ * `generate` and `readDocumentAsJson` each had their own copy of this, and two copies of a retry
+ * policy is two policies: one honoured `retry-after` and the other ignored it, one treated a
+ * non-JSON body as a retryable attempt and the other let `res.json()` throw out of the loop.
  *
- * The MEANING stays with the caller. A chat turn and a filled-in schema are not the same answer,
+ * The MEANING stays with the caller — a chat turn and a filled-in schema are not the same answer,
  * and a transport that started interpreting bodies would have to know about both.
  */
 type Wire = { ok: true; json: unknown } | { ok: false; error: NonNullable<GenerateResult['error']> };
@@ -265,15 +263,13 @@ export async function generate(args: GenerateArgs): Promise<GenerateResult> {
 /**
  * Read a document into a schema: hand it a photograph or a PDF and force a fixed shape back.
  *
- * THE BLOCK TYPE DEPENDS ON THE FILE — an image is an `image` block, a PDF a `document` block,
- * and sending a PDF as an image is a 400 that reads like a malformed request.
+ * THE BLOCK TYPE DEPENDS ON THE FILE — an image is an `image` block, a PDF a `document` block, and
+ * sending a PDF as an image is a 400 that reads like a malformed request.
  *
  * THE TOOL IS FORCED. `tool_choice: {type:'tool', name}` turns "please reply as JSON" into a
- * guarantee; asked politely in the prompt, a model that finds a document hard to read explains
- * why in prose and the caller gets a parse error where it wanted an answer.
- *
- * Retry and timeout match `generate`'s deliberately — a document read fails the same ways a chat
- * turn does, and two retry policies in one file is a third thing to remember.
+ * guarantee; asked politely in the prompt, a model that finds a document hard to read explains why
+ * in prose and the caller gets a parse error where it wanted an answer. Transport and retries are
+ * `postMessages` above, the same ones a chat turn uses.
  */
 export interface DocumentReadArgs {
   system: string;

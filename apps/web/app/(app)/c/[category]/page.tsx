@@ -20,13 +20,10 @@ import { parseFilters } from '@/lib/filters';
 import { inr } from '@/lib/media';
 
 /**
- * What to call a row from `categories`, given that the table and the workbook disagree.
- *
- * Seven of the thirty-five carry a different name in the database than on the sheet the store
- * takes its taxonomy from — "Steel & Reinforcement" against "Steel", "Paints & Coatings" against
- * "Painting", "Lifts & Elevators" against "Lift Elevators". The tiles, the nav, the rail and the
- * footer all read the registry, so a shopper clicked "Steel" on the home page and landed on a
- * page headed "Steel & Reinforcement".
+ * What to call a row from `categories`, given that the table and the workbook disagree on seven of
+ * the thirty-five — "Steel & Reinforcement" against "Steel", "Lifts & Elevators" against "Lift
+ * Elevators". Tiles, nav, rail and footer all read the registry, so a shopper clicked "Steel" and
+ * landed on a page headed "Steel & Reinforcement".
  *
  * `PRODUCTS LIST.xlsx` is the authority for the thirty-five, so the registry wins for them. Rows
  * that are PRODUCTS — cement, tiles, glass — are not in the registry at all and keep their own

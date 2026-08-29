@@ -54,16 +54,14 @@ const RATIO = 10 / 16;
  * The fixed half of every prompt. Camera, hour, ground and grade never change, because they are
  * what makes thirty images read as one building rather than thirty buildings.
  *
- * The first version of this block briefed the truth and got nothing anyone wanted to look at:
- * "bare levelled earth", "nothing else in the frame", "utilitarian", "exposed rainwater
- * downpipe". Every render came back a correct, accurate, joyless box. But nobody spends thirty
- * lakhs on a box — they spend it on the house they have been picturing for ten years, and the
- * whole job of this image is to show them that house with a real number attached to it.
+ * It briefs the house someone WANTS — golden hour, warm light out of the windows, a planted
+ * approach, a wet driveway holding the sky. Briefing the literal truth ("bare levelled earth",
+ * "utilitarian", "exposed rainwater downpipe") returns thirty accurate, joyless boxes, and nobody
+ * spends thirty lakhs on a box.
  *
- * So the brief is now the house someone actually wants: golden hour, warm light spilling out of
- * the windows, a planted approach, a wet driveway holding the sky. What it must NOT do is invent
- * line items — no compound wall, no gate, no car, because each of those is something the estimate
- * separately prices and can switch off. Landscaping is not a line item; a boundary wall is.
+ * What it must NOT do is invent LINE ITEMS: no compound wall, no gate, no car, because the
+ * estimate prices each of those separately and can switch it off. Landscaping is not a line item;
+ * a boundary wall is.
  */
 const DIRECTION = [
   'Award-winning photorealistic architectural visualisation of a beautiful modern family home in India, of the standard published in an architecture magazine.',
