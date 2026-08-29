@@ -21,12 +21,12 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { parseArgs } from 'node:util';
 import { closeDb } from '@buildobjects/db';
 import { generateImage, resolveModel } from '@buildobjects/llm';
 import sharp from 'sharp';
 import { CATEGORY_ART_RATIO, writeCategoryRenditions } from '../src/media/category-art';
 import { mediaStore } from '../src/media/store';
+import { toolFlags } from '../src/util/flags';
 
 const ROOT = path.resolve(import.meta.dirname, '..', '..', '..');
 const REGISTRY = path.join(ROOT, 'services', 'pipeline', 'registry');
@@ -119,19 +119,8 @@ function loadOverrides(): Record<string, Override> {
 async function main() {
   /* node:util, not a hand scan: `argv.indexOf('--only') + 1` is 0 when the flag is absent, so a
      bare `--force` was once read as the value of --only and filtered every category out. */
-  const { values } = parseArgs({
-    args: process.argv.slice(2),
-    strict: false,
-    options: { only: { type: 'string' }, force: { type: 'boolean' }, sheet: { type: 'boolean' } },
-  });
-  const only = new Set(
-    String(values.only ?? '')
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean),
-  );
-  const force = !!values.force;
-  const wantSheet = !!values.sheet;
+  const { only: onlyList, force, sheet: wantSheet } = toolFlags();
+  const only = new Set(onlyList);
 
   const taxonomy = JSON.parse(fs.readFileSync(path.join(REGISTRY, 'taxonomy.json'), 'utf8')) as { categories: { slug: string; name?: string }[] };
   const overrides = loadOverrides();

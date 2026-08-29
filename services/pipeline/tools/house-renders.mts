@@ -28,10 +28,10 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { parseArgs } from 'node:util';
 import { generateImage, resolveModel } from '@buildobjects/llm';
 import sharp from 'sharp';
 import { mediaStore } from '../src/media/store';
+import { toolFlags } from '../src/util/flags';
 
 const ROOT = path.resolve(import.meta.dirname, '..', '..', '..');
 
@@ -144,19 +144,8 @@ async function writeRenditions(floors: number, finish: Finish, solar: boolean, s
 }
 
 async function main() {
-  const { values } = parseArgs({
-    args: process.argv.slice(2),
-    strict: false,
-    options: { only: { type: 'string' }, force: { type: 'boolean' }, sheet: { type: 'boolean' } },
-  });
-  const only = new Set(
-    String(values.only ?? '')
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean),
-  );
-  const force = !!values.force;
-  const wantSheet = !!values.sheet;
+  const { only: onlyList, force, sheet: wantSheet } = toolFlags();
+  const only = new Set(onlyList);
 
   const store = mediaStore();
   const model = await resolveModel('image');

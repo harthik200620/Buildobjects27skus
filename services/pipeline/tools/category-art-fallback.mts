@@ -29,10 +29,10 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { parseArgs } from 'node:util';
 import { closeDb } from '@buildobjects/db';
 import sharp from 'sharp';
 import { CATEGORY_ART_RATIO, writeCategoryRenditions } from '../src/media/category-art';
+import { toolFlags } from '../src/util/flags';
 
 const ROOT = path.resolve(import.meta.dirname, '..', '..', '..');
 const LUCIDE = path.join(ROOT, 'node_modules', '.pnpm');
@@ -156,11 +156,7 @@ function tileSvg(mark: string): string {
 }
 
 async function main() {
-  const { values } = parseArgs({ args: process.argv.slice(2), strict: false, options: { only: { type: 'string' } } });
-  const only = String(values.only ?? '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const { only } = toolFlags();
   if (only.length === 0) {
     console.log('nothing to do — pass --only slug,slug');
     return;
