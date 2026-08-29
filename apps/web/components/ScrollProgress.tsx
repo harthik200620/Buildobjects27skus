@@ -28,17 +28,16 @@ import React from 'react';
 const FLOOR = 240;
 
 /**
- * How far the reader has to actually travel before the bar changes its mind, in each direction.
+ * How far the reader has to travel before the bar changes its mind, in each direction.
  *
- * Without a deadband this is the single jitteriest thing on a page. A trackpad emits scroll
- * deltas of a pixel or less in BOTH directions during one flick, momentum overshoots and rubber
- * -bands back at the end of every gesture, and a keyboard's own scroll-into-view can nudge
- * upward while the reader is going down. Any of those flips a naive direction check, so the bar
- * flutters. Six pixels of accumulated movement is below what anyone reads as a deliberate scroll
- * and far above what any of that noise produces.
+ * Without a deadband this is the jitteriest thing on a page: a trackpad emits sub-pixel deltas in
+ * BOTH directions during one flick, momentum rubber-bands back at the end of every gesture, and a
+ * keyboard's own scroll-into-view nudges upward while the reader is going down. Each of those
+ * flips a naive direction check. Six pixels is below what anyone reads as a deliberate scroll and
+ * far above what any of that noise produces.
  *
- * Coming back is cheaper than leaving on purpose: reaching for the bar should feel immediate,
- * and losing it should take a deliberate push.
+ * Coming back is cheaper than leaving: reaching for the bar should feel immediate, losing it
+ * should take a deliberate push.
  */
 const AWAY_AFTER = 8;
 const BACK_AFTER = 4;

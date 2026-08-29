@@ -201,14 +201,10 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
   const [sceneAnalysis, setSceneAnalysis] = React.useState<SceneAnalysis | null>(null);
   const [busy, setBusy] = React.useState<string | null>(null);
   /*
-   * WHETHER THERE IS A MODEL TO SHOW YET.
-   *
-   * The meshes on this catalogue run six to eleven megabytes. On a phone on mobile data that is
-   * ten seconds or more of `GLTFLoader.loadAsync` — ten seconds in which the camera was open, the
-   * feed was live, and there was no product and nothing at all saying why. Indistinguishable, from
-   * the outside, from the feature being broken.
-   *
-   * A failed load was worse: silent forever, with the same empty feed.
+   * WHETHER THERE IS A MODEL TO SHOW YET. The meshes run six to eleven megabytes, which on mobile
+   * data is ten seconds or more of `GLTFLoader.loadAsync` — ten seconds of live camera feed with
+   * no product and nothing saying why, which from the outside is the feature being broken. A
+   * failed load was worse: silent forever, with the same empty feed.
    */
   const [modelState, setModelState] = React.useState<'loading' | 'ready' | 'failed'>('loading');
   /*
@@ -492,17 +488,12 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
         if (err.status === 503) setAnalysed(true);
       },
       /*
-       * THE ANALYSER IS GONE. STOP CALLING IT.
-       *
-       * The scheduler has always raised this and nothing has ever listened, which on a deployment
-       * with no vision key — this one — meant it kept firing every 2.5 s until its budget of forty
-       * calls ran out. Each of those captures a 768 px frame and JPEG-encodes it ON THE MAIN
-       * THREAD, so the first hundred seconds of every AR session carried a periodic hitch straight
-       * through the render loop, for forty round trips that could only ever return 503.
-       *
-       * Nothing is lost by stopping. The on-device analyser in the render loop is the primary
-       * source of surfaces and needs no key, no network and no budget; the remote model only ever
-       * refined what it had already found.
+       * THE ANALYSER IS GONE. STOP CALLING IT. The scheduler has always raised this and nothing
+       * listened, so on a deployment with no vision key — this one — it fired every 2.5 s until
+       * its budget of forty ran out. Each of those JPEG-encodes a 768 px frame ON THE MAIN THREAD,
+       * putting a periodic hitch through the render loop for forty round trips that could only
+       * return 503. Nothing is lost by stopping: the on-device analyser in the render loop is the
+       * primary source of surfaces and the remote model only ever refined what it had found.
        */
       onLiveLost: () => {
         schedulerRef.current?.setPaused(true);
@@ -579,16 +570,13 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
         yawDeg: yaw,
       };
       /*
-       * TWICE, BECAUSE THE TWO DECISIONS DEPEND ON EACH OTHER.
-       *
-       * Framing needs to know how big the product will be drawn; auto-fit needs to know how far
-       * away it ended up. Running them in one direction only meant the framing judged an 85 mm
-       * CCTV camera at true size and the renderer then drew it at 536 %, so a placement measured
-       * as comfortably framed rendered off the top of the screen.
-       *
-       * The second pass is another forty-eight box projections — tens of microseconds, once per
-       * placement — and it converges immediately because the scale it feeds back is derived from a
-       * distance that barely moves.
+       * TWICE, BECAUSE THE TWO DECISIONS DEPEND ON EACH OTHER. Framing needs to know how big the
+       * product will be drawn; auto-fit needs to know how far away it ended up. One direction only
+       * meant the framing judged an 85 mm CCTV camera at true size and the renderer then drew it
+       * at 536 %, so a placement measured as comfortably framed rendered off the top of the
+       * screen. The second pass is forty-eight box projections once per placement, and it
+       * converges immediately because the scale it feeds back comes from a distance that barely
+       * moves.
        */
       const first = framePlacement({ ...args, scaleMult: scaleMultRef.current });
       const fit = autoFitScale(dimsRef.current, first.distanceM, K.fy);
@@ -664,14 +652,11 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
       q = gyro.q;
     } else {
       /*
-       * No orientation sensor — a laptop, or a phone that refused the permission.
-       *
-       * This used to derive the pitch from `sceneAnalysis.horizonY`, which the on-device analyser
-       * derives from the pitch it was given: a loop with no ground truth in it, drifting on its
-       * own output. A fixed, stated assumption is worse in principle and far better in practice,
-       * because it is at least stable — the product stops sliding around between frames.
-       *
-       * -10° is a webcam on a laptop lid, tilted slightly down at the person in front of it.
+       * No orientation sensor — a laptop, or a phone that refused the permission. Deriving the
+       * pitch from `sceneAnalysis.horizonY` is the trap: the analyser derives that FROM the pitch
+       * it was given, so it is a loop with no ground truth, drifting on its own output. A fixed
+       * stated assumption is worse in principle and far better in practice because it is stable.
+       * -10° is a webcam on a laptop lid, tilted slightly down at whoever is in front of it.
        */
       const safePitch = NO_SENSOR_PITCH_DEG;
       q = { x: Math.sin((safePitch * Math.PI) / 360), y: 0, z: 0, w: Math.cos((safePitch * Math.PI) / 360) };
@@ -709,17 +694,12 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
     }
 
     /*
-     * AUTO-PLACE ONCE THE POSE IS WORTH TRUSTING.
-     *
-     * Two bugs lived here. The first was that the guard was set BEFORE the placement was attempted,
-     * so a single null anchor on the first frame — which is the normal case, while the pose is
-     * still settling — spent it for the whole session and nothing was ever placed. The second was
-     * the placement itself: a ray through a fixed fraction of the frame, unbounded, which missed
-     * the floor plane entirely whenever the phone was level or tilted up.
-     *
-     * `framePlacement` cannot fail, so the guard is now about the POSE rather than about the
-     * geometry: wait a few frames for the orientation feed to report, then frame once. Without a
-     * sensor the fallback pitch is constant and there is nothing to wait for.
+     * AUTO-PLACE ONCE THE POSE IS WORTH TRUSTING, and the guard is about the POSE rather than the
+     * geometry — `framePlacement` cannot fail, so there is nothing geometric left to guard. Set
+     * before the placement was attempted, it was spent by the single null anchor of the first
+     * frame, which is the normal case while the pose settles, and nothing was ever placed. Wait a
+     * few frames for the orientation feed, then frame once; with no sensor the fallback pitch is
+     * constant and there is nothing to wait for.
      */
     if (!autoPlacedRef.current) {
       poseFramesRef.current += 1;
@@ -737,16 +717,14 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
     }
 
     /*
-     * IS IT STILL ON SCREEN?
+     * IS IT STILL ON SCREEN? At ~6 Hz, not every frame: `screenBounds` projects eight corners of a
+     * Box3, which is real work sixty times a second on a mid-range phone for a question whose
+     * answer cannot change meaningfully between frames.
      *
-     * Checked at ~6 Hz rather than every frame. `screenBounds` builds a Box3 over the model and
-     * projects eight corners, and doing that sixty times a second on a mid-range phone is real
-     * work for a question whose answer cannot change meaningfully between frames.
-     *
-     * Timed rather than counted, and the difference matters on exactly the devices this is for. A
-     * one-in-ten-FRAMES check is 6 Hz at sixty frames a second and 0.7 Hz at seven — so on the slow
-     * phone where a product is most likely to be lost, recovering it took the best part of five
-     * seconds. On a clock it is half a second everywhere.
+     * TIMED RATHER THAN COUNTED, and the difference lands on exactly the devices this is for. One
+     * in ten FRAMES is 6 Hz at sixty fps and 0.7 Hz at seven — so on the slow phone where a product
+     * is most likely to be lost, recovering it took five seconds. On a clock it is half a second
+     * everywhere.
      */
     const nowMs = performance.now();
     if (anchorRef.current && !draggingRef.current && hasVideo && nowMs - visCheckRef.current > 160) {
@@ -777,15 +755,12 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
         /*
          * Gone for about half a second. POINT AT IT; DO NOT FETCH IT.
          *
-         * Re-framing here was the first attempt and it is wrong, which the audit harness showed
-         * plainly: an extinguisher measured at five camera pitches came back pixel-identical at
-         * every one of them, because half a second after each tilt the view quietly moved it back
-         * to the middle of the screen. A product that follows the camera is not in the room — it is
-         * a sticker on the lens, and it undoes the one thing this view is for.
-         *
-         * So the anchor stays where it is and the nudge says which way it went, with a button to
-         * bring it back for anyone who would rather not go looking. Explicit beats magic, and the
-         * arrow is a better answer to "where did it go" than teleportation is.
+         * Re-framing here is the wrong answer and the audit showed it plainly: an extinguisher
+         * measured at five camera pitches came back pixel-identical at every one, because half a
+         * second after each tilt the view had quietly moved it back to the middle. A product that
+         * follows the camera is not in the room, it is a sticker on the lens. So the anchor stays
+         * and the nudge says which way it went, with a button for anyone who would rather not go
+         * looking — an arrow is a better answer to "where did it go" than teleportation.
          */
         if (offScreenFramesRef.current > 3) {
           offScreenFramesRef.current = 3;
@@ -800,16 +775,11 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
     }
 
     /*
-     * THE INSTRUMENT PANEL.
-     *
-     * `debug.ts` describes itself as "the live-camera tier's instrument panel for device testing
-     * and the e2e suite" and nothing has ever written to it, so the panel has always been empty and
-     * every question about what the view was actually doing had to be answered by squinting at a
-     * screenshot. Three SKUs were invisible at every camera angle in the audit and there was no way
-     * to ask why.
-     *
-     * Off unless asked for — `?debug=1`, `localStorage['ar.debug']`, or the build flag — so it
-     * costs a single boolean check per frame in normal use.
+     * THE INSTRUMENT PANEL. `debug.ts` calls itself "the live-camera tier's instrument panel" and
+     * nothing wrote to it, so it was empty and every question about what the view was doing had to
+     * be answered by squinting at a screenshot — three SKUs were invisible at every camera angle
+     * in the audit with no way to ask why. Off unless asked for (`?debug=1`, `localStorage
+     * ['ar.debug']`, or the build flag), so it costs one boolean check per frame in normal use.
      */
     if (debugRef.current) {
       const e = eulerFromCameraRotation(R);
@@ -855,15 +825,13 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
   /*
    * ── 7. HANDS ──────────────────────────────────────────────────────────────
    *
-   * One finger moves it; two fingers size and turn it. Before this there was only the first, and
-   * size and rotation were four buttons stepping 0.2 and 15 degrees a tap — a spreadsheet's
-   * interaction model applied to a camera.
+   * One finger moves it; two size and turn it. Four buttons stepping 0.2 and 15 degrees a tap is
+   * a spreadsheet's interaction model applied to a camera.
    *
-   * Every pointer is tracked, because the number of them is the mode. Dropping from two fingers
-   * back to one has to re-baseline rather than continue, or the product leaps to wherever the
-   * remaining finger happens to be; picking up a second finger mid-drag has to stop the drag, or
-   * the product chases the midpoint. Both fall out of rebuilding the baseline whenever the count
-   * changes.
+   * EVERY POINTER IS TRACKED, BECAUSE THE NUMBER OF THEM IS THE MODE. Dropping from two fingers to
+   * one must re-baseline or the product leaps to wherever the remaining finger is; picking up a
+   * second mid-drag must stop the drag or the product chases the midpoint. Both fall out of
+   * rebuilding the baseline whenever the count changes.
    */
   const pointersRef = React.useRef<Map<number, { x: number; y: number }>>(new Map());
   const pinchRef = React.useRef<{ dist: number; angle: number; scale: number; yaw: number } | null>(null);
@@ -960,13 +928,11 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
   /*
    * ── 7b. TAKE THE PICTURE ──────────────────────────────────────────────────
    *
-   * A camera with no shutter is a strange thing, and this one had none: the only way to keep what
-   * you were looking at was "Make it real", which sends the frame to an image model, takes seconds
-   * and costs money. Most of the time somebody just wants the photo — the bag on their floor, to
-   * send to whoever is paying for it.
-   *
-   * The feed and the WebGL layer are composited at the video's own resolution rather than the
-   * stage's, so the saved image is the full-quality frame and not a screenshot of a phone screen.
+   * A camera with no shutter is a strange thing. "Make it real" sends the frame to an image model,
+   * takes seconds and costs money; most of the time somebody just wants the photo — the bag on
+   * their floor, to send to whoever is paying for it. The feed and the WebGL layer are composited
+   * at the VIDEO's resolution rather than the stage's, so what is saved is the full-quality frame
+   * and not a screenshot of a phone screen.
    */
   const capture = React.useCallback(() => {
     const video = videoRef.current;

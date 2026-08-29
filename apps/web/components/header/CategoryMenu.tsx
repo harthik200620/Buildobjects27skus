@@ -109,18 +109,14 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
       )}
       {open &&
         /*
-         * THE PANEL DOES NOT LIVE IN THE HEADER. It is `position: fixed` at coordinates measured
-         * off the trigger in VIEWPORT space, and the header carries a backdrop-filter — which
-         * makes it a containing block for fixed descendants exactly the way a transform does.
-         * So the menu was being laid out against the bar's padding box rather than the screen,
-         * and when the bar was inset it opened twenty pixels low and a gutter to the right of
-         * the button that opened it.
+         * THE PANEL DOES NOT LIVE IN THE HEADER, and both reasons are the same mistake twice.
+         * It is `position: fixed` at coordinates measured off the trigger in VIEWPORT space, and
+         * the header's backdrop-filter makes it a containing block for fixed descendants exactly
+         * as a transform would — so an inset bar opened the menu twenty pixels low and a gutter
+         * to the right. The header's `z-index: 40` is also a stacking context, which clamped this
+         * panel's 70 to 40 and let the filter sheet's scrim (60) paint over it.
          *
-         * The header also sets z-index: 40 and therefore a stacking context, which clamped this
-         * panel's z-index: 70 to the header's 40 — so any overlay on the page between the two
-         * (the filter sheet's scrim is 60) painted OVER the catalogue menu.
-         *
-         * Both go away by rendering it where it belongs: at the top of the document.
+         * Rendering it at the top of the document is what makes both go away.
          */
         createPortal(
           <>

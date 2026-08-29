@@ -9,22 +9,18 @@ import Highlight from './Highlight';
 import { CategoryIcon, IconClockCheck, IconClose, IconSearch } from './icons';
 
 /**
- * One search bar: the one in the header, and it is the field you type into.
+ * One search bar: the one in the header, and it IS the field you type into — not a button dressed
+ * as one that opens a second, real field somewhere else. `--search-w` is 560px at rest, so the row
+ * has room for the real thing and the visible control does not have to lie.
  *
- * It used to be a BUTTON dressed as a search field that opened a full-screen palette containing a
- * SECOND, real field — "when I click search bar it is opening some other search bar". The palette
- * was a reasonable answer to a layout problem (a wide brand face and a usable field could not
- * share a 46px row) but it solved that by making the visible control a lie. `--search-w` is 560px
- * at rest now, so there is room for a real field.
+ * A combobox, then: one input, suggestions dropping UNDER it, the page still scrolling behind them
+ * because a dropdown is not a modal. Three classes of bug leave with the overlay — `position:
+ * fixed` resolving against the header's backdrop-filter instead of the screen, the header's
+ * z-index clamping the palette's, and two scroll locks fighting over the reader's place.
  *
- * It is a combobox: one input, suggestions dropping UNDER it, the page still scrolling behind
- * them because a dropdown is not a modal. Three classes of bug leave with the overlay —
- * `position: fixed` resolving against the header's backdrop-filter instead of the screen, the
- * header's z-index clamping the palette's, and two scroll locks fighting over the reader's place.
- *
- * Cmd-K and `/` FOCUS the field rather than opening anything, which is what those shortcuts mean
- * when the field is already on screen. Under 720px the bar collapses to its icon and focusing it
- * expands it across the header row in place — still the same input receiving the keystrokes.
+ * ⌘K and `/` FOCUS the field rather than opening anything, which is what those shortcuts mean when
+ * the field is already on screen. Under 720px the bar collapses to its icon and focusing it
+ * expands it across the header row in place — still the same input taking the keystrokes.
  */
 type Suggest = {
   skus: SkuSearchDoc[];

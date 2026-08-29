@@ -5,20 +5,14 @@ import { IconChevronUp, IconClockCheck, IconPin, IconRoom, IconShield } from './
 import Wordmark from './Wordmark';
 
 /**
- * The foot of every page: what we sell, what the tools are, how the prices work, and where the
- * lorry goes.
+ * The foot of every page, carrying the two things a buyer wants confirmed at the bottom of one:
+ * how a price is arrived at, and whether the lorry comes to them. Then what we sell and what the
+ * tools are — each named once, because a column of the same three pages under different names is
+ * how the version before this one filled four rows with two ideas.
  *
- * Four things were wrong with the version this replaces and all four were structural rather than
- * cosmetic. The Tools column pointed at /estimate twice under two names and at /search twice more,
- * so half of it was the same three pages wearing different hats. The About column was an unordered
- * list mixing links with sentences, so two of its four bullets could not be clicked. It ended on a
- * link to /api/health captioned "Service status" — a JSON endpoint aimed at a shopper. And nowhere
- * in it did the store say the two things a buyer actually wants confirmed at the bottom of a page:
- * how a price is arrived at, and whether the lorry comes to them.
- *
- * Nothing here is invented. There is no phone number, address or support hour in this footer,
- * because the store does not have them yet, and a plausible-looking contact block that nobody
- * answers is worse than no contact block.
+ * NOTHING HERE IS INVENTED. No phone number, no address, no support hours: the store does not have
+ * them yet, and a plausible contact block nobody answers is worse than no contact block. Every
+ * bullet is a link — a list that mixes links with sentences leaves half of itself unclickable.
  */
 /*
  * The four column headings are h2, not h3.

@@ -1,17 +1,14 @@
 /* Build Objects — the token layer.
  *
- * Two names for every colour. The canonical ones are short (--ink-2, --surf-2, --hair, --r-3);
- * the v1 names (--color-ink-2, --color-surface, --color-line, --radius-lg) are aliases in
- * section 16. About nine hundred declarations across forty stylesheets still speak the old
- * vocabulary, and surfaces move over as they are restyled.
+ * Two names for every colour: the canonical short ones (--ink-2, --hair, --r-3) and the v1
+ * aliases (--color-ink-2, --color-line, --radius-lg) in section 16, which about nine hundred
+ * declarations across forty stylesheets still speak. The aliases are SEMANTIC, not mechanical —
+ * --color-line and --color-line-2 both resolve to --hair, because an alpha hairline is correct on
+ * every surface and there is no longer a reason for a second, darker one.
  *
- * The aliases are semantic, not mechanical: --color-line and --color-line-2 both resolve to
- * --hair, because an alpha hairline is correct on every surface and there is no longer a reason
- * for a second, darker one.
- *
- * Tailwind generates utilities from the --color-* names, so bg-teal-700 and text-ink-2 keep
- * working. `@theme static`, never inline — components read var(--…) from inline styles and from
- * SVG, so the tokens have to exist as real custom properties.
+ * `@theme static`, never inline: Tailwind generates utilities from the --color-* names, and
+ * components read var(--…) from inline styles and from SVG, so these must be real custom
+ * properties rather than build-time substitutions.
  */
 
 @theme static {
@@ -484,19 +481,16 @@
   html {
     background: var(--color-canvas);
     /*
-     * The scrollbar is always there, so its width never changes anything.
+     * The scrollbar is always there, so its width never changes anything — which is what the
+     * scroll lock needs: pinning <body> removes the page's scrollable overflow, and on a classic
+     * scrollbar that takes fifteen pixels away and shifts the page sideways for as long as a modal
+     * is open.
      *
-     * This is here for the scroll lock. Pinning <body> to hold the reader's place removes the
-     * page's scrollable overflow, which on a classic scrollbar takes fifteen pixels away and
-     * shifts the whole page sideways for as long as a modal is open. Forcing the scrollbar means
-     * there is nothing to take away.
-     *
-     * `scrollbar-gutter: stable` is the modern spelling and it was tried first and is wrong here:
-     * where scrollbars are OVERLAY — macOS, and headless Chromium — it reserves a gutter that was
-     * never otherwise there, so a `position: fixed; inset: 0` overlay came out fifteen pixels
-     * narrower than the screen and left a strip of page uncovered down the right-hand edge.
-     * Measured at 1024: palette 1009, screen 1024. `overflow-y: scroll` does nothing at all under
-     * overlay scrollbars, which is exactly the behaviour wanted.
+     * NOT `scrollbar-gutter: stable`, which is the modern spelling and is wrong here. Where
+     * scrollbars are OVERLAY — macOS, headless Chromium — it reserves a gutter that was never
+     * there, so a `position: fixed; inset: 0` overlay came out narrower than the screen and left a
+     * strip uncovered down the right edge. Measured at 1024: palette 1009, screen 1024.
+     * `overflow-y: scroll` does nothing under overlay scrollbars, which is the behaviour wanted.
      */
     overflow-y: scroll;
     scroll-padding-top: calc(var(--header-h) + 8px);
@@ -626,19 +620,17 @@
      exception, because a price that shifts left when it gains a digit is a
      price the eye cannot compare down a column. */
   /*
-   * EVERY TITLE IN THE STORE IS AUDIOWIDE, AT 400.
+   * EVERY TITLE IN THE STORE IS AUDIOWIDE, AT 400 — display steps and section headings alike, one
+   * voice for every heading on every page.
    *
-   * It used to be the wordmark's face and nothing else. It is the title face now — display
-   * steps and section headings alike — which is one voice for every heading on every page.
+   * 400 EVERYWHERE, and not as a preference: the subset ships ONE cut (`metrics.json` reports
+   * `weights: [400]`), so asking for 600 or 700 gets a browser-synthesised bold. Smeared, and
+   * caught by scripts/type-audit.mts — which exists because that shipped once, at 700, on every
+   * page heading in the store.
    *
-   * 400 EVERYWHERE, and this is not a preference. The subset ships ONE cut: `metrics.json`
-   * reports `weights: [400]`. Asking it for 600 or 700 gets a browser-synthesised bold —
-   * smeared, and caught by scripts/type-audit.mts, which exists because exactly this shipped
-   * once before with Audiowide at 700 on every page heading in the store.
-   *
-   * AND NO FIGURE EVER USES IT. `hasRupee: false` — there is no ₹ glyph in the file, so a
-   * total set in this face renders a fallback box where the currency should be. Figures stay
-   * on --font-figure, without exception.
+   * AND NO FIGURE EVER USES IT. `hasRupee: false`: there is no ₹ glyph in the file, so a total set
+   * in this face renders a fallback box where the currency should be. Figures stay on
+   * --font-figure, without exception.
    */
   .d1,
   .d2,
