@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import BoCoinWheel from '@/components/BoCoinWheel';
-import { IconCart, IconCheck, IconCoin, IconEngine, IconEstimate, IconLogout, IconUser } from '@/components/icons';
+import { IconBoCoin, IconCart, IconCheck, IconEngine, IconEstimate, IconLogout, IconUser } from '@/components/icons';
 import { useDismiss } from '@/components/useDismiss';
 import { getBoCoins, getProfileName, setProfileName as saveProfileName } from '@/lib/coins';
 import { inr } from '@/lib/media';
@@ -113,7 +113,7 @@ export default function AccountMenu({ phone }: { phone: string }) {
               <div>
                 <p className="menu-coins-label">BO Coins</p>
                 <p className="menu-coins-figure fig">
-                  <IconCoin size={15} /> {coins}
+                  <IconBoCoin size={15} /> {coins}
                 </p>
                 <p className="menu-coins-worth">Worth {inr(coins)} in the cart</p>
               </div>

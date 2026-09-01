@@ -5,7 +5,7 @@ import React from 'react';
 import BoCoin from '@/components/BoCoin';
 import BoCoinWheel from '@/components/BoCoinWheel';
 import BoCartMark from '@/components/cart/BoCartMark';
-import { IconClose, IconCoin, IconEngine } from '@/components/icons';
+import { IconBoCoin, IconClose, IconEngine } from '@/components/icons';
 import { useDismiss } from '@/components/useDismiss';
 import { type CoinActivity, getBoCoinHistory, getBoCoins } from '@/lib/coins';
 import { inr } from '@/lib/media';
@@ -71,7 +71,7 @@ export default function CartButton() {
           <div className="wallet fade-in" role="dialog" aria-label="BO Coins wallet">
             <div className="wallet-head">
               <h2 className="wallet-title">
-                <IconCoin size={17} /> BO Coins
+                <IconBoCoin size={17} /> BO Coins
               </h2>
               <button type="button" onClick={() => setWalletOpen(false)} className="wallet-close" aria-label="Close wallet">
                 <IconClose size={15} />

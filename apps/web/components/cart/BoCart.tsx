@@ -4,7 +4,7 @@ import type { CatalogPrices } from '@buildobjects/estimator';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { IconArrow, IconCart, IconCheckCircle, IconClose, IconCoin, IconEstimate, IconShield, IconStorefront, IconTruck } from '@/components/icons';
+import { IconArrow, IconBoCoin, IconCart, IconCheckCircle, IconClose, IconEstimate, IconShield, IconStorefront, IconTruck } from '@/components/icons';
 import QtyStepper from '@/components/QtyStepper';
 import { getBoCoins, redeemBoCoins } from '@/lib/coins';
 import { skuTitle } from '@/lib/label';
@@ -202,7 +202,7 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
           <div className="cart-coins">
             <div className="cart-coins-head">
               <span className="cart-coins-label">
-                <IconCoin size={15} /> BO Coins
+                <IconBoCoin size={15} /> BO Coins
               </span>
               <span className="fig cart-coins-have">{coins} available</span>
             </div>
