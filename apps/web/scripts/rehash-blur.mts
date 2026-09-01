@@ -18,6 +18,14 @@
  * be re-run — it imports loaders that statically import the JSON it deletes, so it destroys its
  * own input partway through. Reading each `{n}-card.webp` and writing back one field is the small,
  * safe half of that job.
+ *
+ * EVERY SNAPSHOT, NOT JUST skus.json. `lib/static-catalogue.ts` — which IS the live site, because
+ * the Vercel deployment has no database — imports four of these files, and `flagship.json`,
+ * `listings.json` and `search-all.json` carry their own copies of the hash. Patching only
+ * `skus.json` fixed the product page and left the pale flash on every card in the listings, the
+ * search results and the home strip: correct locally against MySQL, wrong on the deployment. So
+ * this walks the whole directory and rewrites any object that has a blurhash and an image path to
+ * recompute it from.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -38,40 +46,53 @@ async function blurhashOf(file: string): Promise<string> {
   return encode(new Uint8ClampedArray(data), info.width, info.height, 4, 3);
 }
 
-interface Img {
-  position: number;
-  blurhash?: string;
-  card?: string;
-  gallery?: string;
-  thumb?: string;
-}
-const snap = JSON.parse(fs.readFileSync(SNAPSHOT, 'utf8')) as Record<string, { images?: Img[] }>;
+/**
+ * What a node calls the picture its hash describes. `card` is the grid's rendition and the frame
+ * the mount is sampled from, so it leads; `hero_image_key` is what the listing, search and
+ * flagship snapshots use for the same image.
+ */
+const IMAGE_KEYS = ['card', 'hero_image_key', 'gallery', 'thumb'] as const;
 
 let changed = 0;
 let same = 0;
 let missing = 0;
 
-for (const [sku, row] of Object.entries(snap)) {
-  for (const im of row.images ?? []) {
-    /* The card rendition is the one the grid shows and the one the mount is sampled from, so it
-       is the frame the hash has to describe. */
-    const rel = im.card ?? im.gallery ?? im.thumb;
-    if (!rel) continue;
-    const file = path.join(MEDIA, rel);
-    if (!fs.existsSync(file)) {
-      missing++;
-      continue;
-    }
-    const next = await blurhashOf(file);
-    if (next === im.blurhash) {
-      same++;
-      continue;
-    }
-    changed++;
-    if (!DRY) im.blurhash = next;
+/** Every object anywhere in the tree that has a hash and something to recompute it from. */
+async function walk(node: unknown): Promise<void> {
+  if (Array.isArray(node)) {
+    for (const child of node) await walk(child);
+    return;
   }
-  void sku;
+  if (!node || typeof node !== 'object') return;
+  const rec = node as Record<string, unknown>;
+  if (typeof rec.blurhash === 'string') {
+    const key = IMAGE_KEYS.find((k) => typeof rec[k] === 'string');
+    if (!key) missing++;
+    else {
+      const file = path.join(MEDIA, rec[key] as string);
+      if (!fs.existsSync(file)) missing++;
+      else {
+        const next = await blurhashOf(file);
+        if (next === rec.blurhash) same++;
+        else {
+          changed++;
+          if (!DRY) rec.blurhash = next;
+        }
+      }
+    }
+  }
+  for (const v of Object.values(rec)) await walk(v);
 }
 
-if (!DRY && changed) fs.writeFileSync(SNAPSHOT, `${JSON.stringify(snap, null, 2)}\n`);
-console.log(`${changed} hashes rewritten · ${same} already current · ${missing} with no file${DRY ? ' — dry run, nothing written' : ''}`);
+const dir = path.dirname(SNAPSHOT);
+for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+  const file = path.join(dir, name);
+  const before = changed;
+  const doc = JSON.parse(fs.readFileSync(file, 'utf8')) as unknown;
+  await walk(doc);
+  if (changed > before) {
+    if (!DRY) fs.writeFileSync(file, `${JSON.stringify(doc, null, 2)}\n`);
+    console.log(`  ${name.padEnd(20)} ${changed - before} rewritten`);
+  }
+}
+console.log(`${changed} hashes rewritten · ${same} already current · ${missing} with nothing to read${DRY ? ' — dry run, nothing written' : ''}`);

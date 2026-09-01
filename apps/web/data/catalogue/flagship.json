@@ -50,11 +50,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/89/CEM-ULT-PPC50/img/1-card.webp",
-    "blurhash": "LlRVwkxtyZx]x[j[aPjbtnj]R4ae",
+    "blurhash": "LHB{rds.0CNLt#fjRBe;0nWX},s,",
     "card_specs": [
-      { "label": "Cement type", "value": "PPC" },
-      { "label": "Compressive strength (28 days)", "value": "58 MPa" },
-      { "label": "Net weight per bag", "value": "50 kg" }
+      {
+        "label": "Cement type",
+        "value": "PPC"
+      },
+      {
+        "label": "Compressive strength (28 days)",
+        "value": "58 MPa"
+      },
+      {
+        "label": "Net weight per bag",
+        "value": "50 kg"
+      }
     ],
     "ar": true,
     "created_at": 1787398460,
@@ -121,11 +130,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/bd/CEM-ACC-SP50/img/1-card.webp",
-    "blurhash": "LEG%}sv~0J%gF:bFXUW=0co}ysIU",
+    "blurhash": "LDEBdXrX00t,IAjYTKW=00kq_4Mx",
     "card_specs": [
-      { "label": "Cement type", "value": "PPC" },
-      { "label": "Compressive strength (28 days)", "value": "48 MPa" },
-      { "label": "Net weight per bag", "value": "50 kg" }
+      {
+        "label": "Cement type",
+        "value": "PPC"
+      },
+      {
+        "label": "Compressive strength (28 days)",
+        "value": "48 MPa"
+      },
+      {
+        "label": "Net weight per bag",
+        "value": "50 kg"
+      }
     ],
     "ar": true,
     "created_at": 1787398460,
@@ -192,11 +210,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/3f/CEM-AMB-PLUS50/img/1-card.webp",
-    "blurhash": "LIKJxK}+5W=q?GS5nNr;0fESxCNI",
+    "blurhash": "LIJszP}+5U-4-:S5nNr;02ESxCNH",
     "card_specs": [
-      { "label": "Cement type", "value": "PPC" },
-      { "label": "Compressive strength (28 days)", "value": "50 MPa" },
-      { "label": "Net weight per bag", "value": "50 kg" }
+      {
+        "label": "Cement type",
+        "value": "PPC"
+      },
+      {
+        "label": "Compressive strength (28 days)",
+        "value": "50 MPa"
+      },
+      {
+        "label": "Net weight per bag",
+        "value": "50 kg"
+      }
     ],
     "ar": true,
     "created_at": 1787398460,
@@ -254,11 +281,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/bc/BUL-WIP-GARNET9WB22/img/1-card.webp",
-    "blurhash": "LmR_|xxX*0x^yEf6VskClAoznNaJ",
+    "blurhash": "L9F;ZV};060o0%oK^ObH0D9|}l}m",
     "card_specs": [
-      { "label": "Colour temperature", "value": "6,500 K" },
-      { "label": "Wattage", "value": "9 W" },
-      { "label": "Luminous flux", "value": "900 lm" }
+      {
+        "label": "Colour temperature",
+        "value": "6,500 K"
+      },
+      {
+        "label": "Wattage",
+        "value": "9 W"
+      },
+      {
+        "label": "Luminous flux",
+        "value": "900 lm"
+      }
     ],
     "ar": true,
     "created_at": 1787404908,
@@ -318,11 +354,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/1b/BUL-PHI-ACESAVER9WB22/img/1-card.webp",
-    "blurhash": "LNRMb%ja_2-;-pV@W=oz~pxuNHxu",
+    "blurhash": "L55~CE-;9FNG~U%2E2M{sjWBIqRj",
     "card_specs": [
-      { "label": "Colour temperature", "value": "6,500 K" },
-      { "label": "Wattage", "value": "9 W" },
-      { "label": "Luminous flux", "value": "806 lm" }
+      {
+        "label": "Colour temperature",
+        "value": "6,500 K"
+      },
+      {
+        "label": "Wattage",
+        "value": "9 W"
+      },
+      {
+        "label": "Luminous flux",
+        "value": "806 lm"
+      }
     ],
     "ar": true,
     "created_at": 1787404908,
@@ -382,11 +427,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/65/BUL-HAV-LEDPLUS9WB22/img/1-card.webp",
-    "blurhash": "LISigQ-;~q?b~qj[D%ayj[fQj[fQ",
+    "blurhash": "L03S@Yt,00TK0fWC~pt7-oj[IVWB",
     "card_specs": [
-      { "label": "Colour temperature", "value": "6,500 K" },
-      { "label": "Wattage", "value": "9 W" },
-      { "label": "Luminous flux", "value": "849 lm" }
+      {
+        "label": "Colour temperature",
+        "value": "6,500 K"
+      },
+      {
+        "label": "Wattage",
+        "value": "9 W"
+      },
+      {
+        "label": "Luminous flux",
+        "value": "849 lm"
+      }
     ],
     "ar": true,
     "created_at": 1787404908,
@@ -455,11 +509,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/98/EPX-FOS-CONBEXTRAEP10/img/1-card.webp",
-    "blurhash": "LORfkB_3.8Mx~qxaxuNGgNV@Vso}",
+    "blurhash": "L142^=Fx5l^kPUrrrrTJ6i#-,DFd",
     "card_specs": [
-      { "label": "Epoxy system type", "value": "Free-flow grout" },
-      { "label": "Compressive strength", "value": "80 MPa" },
-      { "label": "Kit / pack size", "value": "1.05 kg" }
+      {
+        "label": "Epoxy system type",
+        "value": "Free-flow grout"
+      },
+      {
+        "label": "Compressive strength",
+        "value": "80 MPa"
+      },
+      {
+        "label": "Kit / pack size",
+        "value": "1.05 kg"
+      }
     ],
     "ar": true,
     "created_at": 1787404918,
@@ -526,11 +589,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/a4/EPX-PID-EPOXYINJGROUT/img/1-card.webp",
-    "blurhash": "LXRyjI%2_N%g%Mj[jaf6%Mj[NGWV",
+    "blurhash": "L15=U=%M00AEb]R*j0xHy@jFLfbv",
     "card_specs": [
-      { "label": "Epoxy system type", "value": "Injection resin" },
-      { "label": "Compressive strength", "value": "70 MPa" },
-      { "label": "Kit / pack size", "value": "3 kg" }
+      {
+        "label": "Epoxy system type",
+        "value": "Injection resin"
+      },
+      {
+        "label": "Compressive strength",
+        "value": "70 MPa"
+      },
+      {
+        "label": "Kit / pack size",
+        "value": "3 kg"
+      }
     ],
     "ar": true,
     "created_at": 1787404927,
@@ -597,11 +669,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/f1/EPX-SIK-SIKADUR31IN/img/1-card.webp",
-    "blurhash": "LPR3TW-;%M%M~qt7M{WB_3ofRjj[",
+    "blurhash": "L27Bv8X900x]9GIUxu%M00Mx_3IU",
     "card_specs": [
-      { "label": "Epoxy system type", "value": "Structural adhesive" },
-      { "label": "Compressive strength", "value": "55 MPa" },
-      { "label": "Kit / pack size", "value": "6 kg" }
+      {
+        "label": "Epoxy system type",
+        "value": "Structural adhesive"
+      },
+      {
+        "label": "Compressive strength",
+        "value": "55 MPa"
+      },
+      {
+        "label": "Kit / pack size",
+        "value": "6 kg"
+      }
     ],
     "ar": true,
     "created_at": 1787404927,
@@ -665,11 +746,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/03/FIR-CEA-MAP90-4KG/img/1-card.webp",
-    "blurhash": "LbO3X^%g?^sA.7ofRQRjyrsUZ~X8",
+    "blurhash": "L7Al9W701[=J6vo3$Sso2c;}|GJk",
     "card_specs": [
-      { "label": "Extinguishing agent", "value": "Mono ammonium phosphate (MAP 90)" },
-      { "label": "Capacity", "value": "4 kg" },
-      { "label": "Fire rating", "value": "4A 144B (IS 15683); 21A 144B (EN 3)" }
+      {
+        "label": "Extinguishing agent",
+        "value": "Mono ammonium phosphate (MAP 90)"
+      },
+      {
+        "label": "Capacity",
+        "value": "4 kg"
+      },
+      {
+        "label": "Fire rating",
+        "value": "4A 144B (IS 15683); 21A 144B (EN 3)"
+      }
     ],
     "ar": true,
     "created_at": 1787404930,
@@ -732,7 +822,7 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/c7/FIR-NEW-CA-EB-01/img/1-card.webp",
-    "blurhash": "LxR{44t7.m%2xGj[f+fP%#oLIAR*",
+    "blurhash": "LECqliSh1b,?,tofJ+WA1usn|_JS",
     "card_specs": [],
     "ar": true,
     "created_at": 1787404934,
@@ -784,11 +874,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/8a/FIR-SAF-ABC-SP-6KG/img/1-card.webp",
-    "blurhash": "LbS6DF%M_Ns:-;WBRQt7tRWBRPt7",
+    "blurhash": "L37^=FJ700}[0xof}]NG0ds:~CI.",
     "card_specs": [
-      { "label": "Extinguishing agent", "value": "Mono ammonium phosphate (MAP 40)" },
-      { "label": "Capacity", "value": "6 kg" },
-      { "label": "Fire rating", "value": "4A:55B" }
+      {
+        "label": "Extinguishing agent",
+        "value": "Mono ammonium phosphate (MAP 40)"
+      },
+      {
+        "label": "Capacity",
+        "value": "6 kg"
+      },
+      {
+        "label": "Fire rating",
+        "value": "4A:55B"
+      }
     ],
     "ar": true,
     "created_at": 1787404939,
@@ -847,11 +946,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/7b/SOL-ADA-ASB-M10-144-575/img/1-card.webp",
-    "blurhash": "L6C?ipMxbv4n~qt79F?b_3-;8_-;",
+    "blurhash": "L5Amk}~p9tIUEMs:s:xuIpt7jFWB",
     "card_specs": [
-      { "label": "Rated power (STC)", "value": "575 Wp" },
-      { "label": "Module efficiency", "value": "22.3 %" },
-      { "label": "Cell technology", "value": "N-type TOPCon" }
+      {
+        "label": "Rated power (STC)",
+        "value": "575 Wp"
+      },
+      {
+        "label": "Module efficiency",
+        "value": "22.3 %"
+      },
+      {
+        "label": "Cell technology",
+        "value": "N-type TOPCon"
+      }
     ],
     "ar": true,
     "created_at": 1787404944,
@@ -910,11 +1018,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/f7/SOL-VIK-PARADEA-550/img/1-card.webp",
-    "blurhash": "L26kbX4n-oIVx]ofayt7_NM{oLWB",
+    "blurhash": "L04.Vo^,0{_N_4t7f+t7EyRjsCkC",
     "card_specs": [
-      { "label": "Rated power (STC)", "value": "550 Wp" },
-      { "label": "Module efficiency", "value": "21.29 %" },
-      { "label": "Cell technology", "value": "Mono PERC" }
+      {
+        "label": "Rated power (STC)",
+        "value": "550 Wp"
+      },
+      {
+        "label": "Module efficiency",
+        "value": "21.29 %"
+      },
+      {
+        "label": "Cell technology",
+        "value": "Mono PERC"
+      }
     ],
     "ar": true,
     "created_at": 1787404946,
@@ -973,11 +1090,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/09/SOL-WAA-BI55-545/img/1-card.webp",
-    "blurhash": "LlL3[Y|H^N=y=cQma0t8?IIUR-XS",
+    "blurhash": "LjEnnl|H=Z$i;M=cwIjas;W-WrNw",
     "card_specs": [
-      { "label": "Rated power (STC)", "value": "545 Wp" },
-      { "label": "Module efficiency", "value": "21.17 %" },
-      { "label": "Cell technology", "value": "Mono PERC" }
+      {
+        "label": "Rated power (STC)",
+        "value": "545 Wp"
+      },
+      {
+        "label": "Module efficiency",
+        "value": "21.17 %"
+      },
+      {
+        "label": "Cell technology",
+        "value": "Mono PERC"
+      }
     ],
     "ar": true,
     "created_at": 1787404947,
@@ -1036,11 +1162,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/76/TIL-JOH-YK1FLCR000000PJ/img/1-card.webp",
-    "blurhash": "LFRCM8^*o$?a~pWFfkjYWFa#kCt8",
+    "blurhash": "LFRL,%^*o$?a~pWFbHjYWFa$f+t8",
     "card_specs": [
-      { "label": "PEI abrasion class", "value": "PEI IV" },
-      { "label": "Surface finish", "value": "Polished" },
-      { "label": "Width", "value": "600 mm" }
+      {
+        "label": "PEI abrasion class",
+        "value": "PEI IV"
+      },
+      {
+        "label": "Surface finish",
+        "value": "Polished"
+      },
+      {
+        "label": "Width",
+        "value": "600 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787404950,
@@ -1099,11 +1234,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/52/TIL-SOM-T31F119001859102/img/1-card.webp",
-    "blurhash": "LJSr+G-;j[-;~pofayj@j[ayj]j[",
+    "blurhash": "L02jG0tmfQtmyZj]fQj]fQfQfQfQ",
     "card_specs": [
-      { "label": "PEI abrasion class", "value": "PEI IV" },
-      { "label": "Surface finish", "value": "Polished" },
-      { "label": "Width", "value": "600 mm" }
+      {
+        "label": "PEI abrasion class",
+        "value": "PEI IV"
+      },
+      {
+        "label": "Surface finish",
+        "value": "Polished"
+      },
+      {
+        "label": "Width",
+        "value": "600 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787404953,
@@ -1162,11 +1306,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/82/TIL-KAJ-GP00215/img/1-card.webp",
-    "blurhash": "LQR:E4-;ay%M~qf6f6ofWBoyj[WB",
+    "blurhash": "L043AS57-;K600_3IU%L~p00%2X8",
     "card_specs": [
-      { "label": "PEI abrasion class", "value": "PEI IV" },
-      { "label": "Surface finish", "value": "Polished" },
-      { "label": "Width", "value": "600 mm" }
+      {
+        "label": "PEI abrasion class",
+        "value": "PEI IV"
+      },
+      {
+        "label": "Surface finish",
+        "value": "Polished"
+      },
+      {
+        "label": "Width",
+        "value": "600 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787404954,
@@ -1222,11 +1375,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/4f/CCT-CPP-USC-TA24L2C-L/img/1-card.webp",
-    "blurhash": "LKGlI+0000ay~q9Foft700xu_3of",
+    "blurhash": "LHDS]=9F00NG?bD%ofxa00xu~qxa",
     "card_specs": [
-      { "label": "Resolution", "value": "2.4 MP" },
-      { "label": "Night-vision (IR) range", "value": "20 m" },
-      { "label": "Lens focal length", "value": "3.6 mm" }
+      {
+        "label": "Resolution",
+        "value": "2.4 MP"
+      },
+      {
+        "label": "Night-vision (IR) range",
+        "value": "20 m"
+      },
+      {
+        "label": "Lens focal length",
+        "value": "3.6 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787463204,
@@ -1282,11 +1444,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/81/CCT-DAH-HDW1200TRQP/img/1-card.webp",
-    "blurhash": "L01p;xpJQ8kXX:fki_j[D4aepdkC",
+    "blurhash": "L01p;xpJL#kXX:bHjEj[D4aepdkC",
     "card_specs": [
-      { "label": "Resolution", "value": "2 MP" },
-      { "label": "Night-vision (IR) range", "value": "30 m" },
-      { "label": "Lens focal length", "value": "3.6 mm" }
+      {
+        "label": "Resolution",
+        "value": "2 MP"
+      },
+      {
+        "label": "Night-vision (IR) range",
+        "value": "30 m"
+      },
+      {
+        "label": "Lens focal length",
+        "value": "3.6 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787463205,
@@ -1342,11 +1513,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/73/CCT-HIK-2CE76D0T-ITPFS/img/1-card.webp",
-    "blurhash": "LNHLl1IU00_3~qofM{of4n%MfQ9F",
+    "blurhash": "LHEMUcD%00~q~qj[D%j[00-;?b4n",
     "card_specs": [
-      { "label": "Resolution", "value": "2 MP" },
-      { "label": "Night-vision (IR) range", "value": "20 m" },
-      { "label": "Lens focal length", "value": "3.6 mm" }
+      {
+        "label": "Resolution",
+        "value": "2 MP"
+      },
+      {
+        "label": "Night-vision (IR) range",
+        "value": "20 m"
+      },
+      {
+        "label": "Lens focal length",
+        "value": "3.6 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787463205,
@@ -1402,11 +1582,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/e0/GLS-AIS-EDGE-NATURAPLUS/img/1-card.webp",
-    "blurhash": "LNBgiHRNV;WAkvV?ROV?R=W9Riad",
+    "blurhash": "LMBX1oRNV;WAkvV?ROV?NOW9Rhad",
     "card_specs": [
-      { "label": "Visible light transmission (VLT)", "value": "45 %" },
-      { "label": "U-value (thermal transmittance)", "value": "4.6 W/m²K" },
-      { "label": "Nominal thickness", "value": "6 mm" }
+      {
+        "label": "Visible light transmission (VLT)",
+        "value": "45 %"
+      },
+      {
+        "label": "U-value (thermal transmittance)",
+        "value": "4.6 W/m²K"
+      },
+      {
+        "label": "Nominal thickness",
+        "value": "6 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787463243,
@@ -1462,11 +1651,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/52/GLS-GUA-CLIMAGUARD-BLUE5/img/1-card.webp",
-    "blurhash": "LdHVxdR4-ntR~qo#SiWAtmkWRkbH",
+    "blurhash": "LdHfJ5R4-nt8~qo#SiWAx^kWRkbH",
     "card_specs": [
-      { "label": "Visible light transmission (VLT)", "value": "36 %" },
-      { "label": "U-value (thermal transmittance)", "value": "5.7 W/m²K" },
-      { "label": "Nominal thickness", "value": "5 mm" }
+      {
+        "label": "Visible light transmission (VLT)",
+        "value": "36 %"
+      },
+      {
+        "label": "U-value (thermal transmittance)",
+        "value": "5.7 W/m²K"
+      },
+      {
+        "label": "Nominal thickness",
+        "value": "5 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787463243,
@@ -1522,11 +1720,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/2a/GLS-SGB-SUNBAN-SAPPHIRE5/img/1-card.webp",
-    "blurhash": "LcE3xTVr-ooz?wadxZofr=bbRkj?",
+    "blurhash": "L97_{4m*Hq%hYRM_I9R+Hqo~krRO",
     "card_specs": [
-      { "label": "Visible light transmission (VLT)", "value": "22.9 %" },
-      { "label": "U-value (thermal transmittance)", "value": "5.72 W/m²K" },
-      { "label": "Nominal thickness", "value": "5 mm" }
+      {
+        "label": "Visible light transmission (VLT)",
+        "value": "22.9 %"
+      },
+      {
+        "label": "U-value (thermal transmittance)",
+        "value": "5.72 W/m²K"
+      },
+      {
+        "label": "Nominal thickness",
+        "value": "5 mm"
+      }
     ],
     "ar": true,
     "created_at": 1787463243,
@@ -1582,11 +1789,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/ce/TST-LEI-TS07-2-R500/img/1-card.webp",
-    "blurhash": "LcRpB@xu~q%M-;ofoLayt7ayWBj[",
+    "blurhash": "L15$SdpI00t8pvofrcRj4Uaf_LkC",
     "card_specs": [
-      { "label": "Angular accuracy", "value": "2 arcsec" },
-      { "label": "Reflectorless range", "value": "500 m" },
-      { "label": "Telescope magnification", "value": "30 x" }
+      {
+        "label": "Angular accuracy",
+        "value": "2 arcsec"
+      },
+      {
+        "label": "Reflectorless range",
+        "value": "500 m"
+      },
+      {
+        "label": "Telescope magnification",
+        "value": "30 x"
+      }
     ],
     "ar": true,
     "created_at": 1787463284,
@@ -1642,11 +1858,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/e3/TST-TOP-GM-52/img/1-card.webp",
-    "blurhash": "L@NwG[oJ~q%L%Lj[R*ayxvj]WCj]",
+    "blurhash": "LCBM#t?F4;WB~Ts:E3ae9cIqRkbH",
     "card_specs": [
-      { "label": "Angular accuracy", "value": "2 arcsec" },
-      { "label": "Reflectorless range", "value": "500 m" },
-      { "label": "Telescope magnification", "value": "30 x" }
+      {
+        "label": "Angular accuracy",
+        "value": "2 arcsec"
+      },
+      {
+        "label": "Reflectorless range",
+        "value": "500 m"
+      },
+      {
+        "label": "Telescope magnification",
+        "value": "30 x"
+      }
     ],
     "ar": true,
     "created_at": 1787463283,
@@ -1702,11 +1927,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/04/TST-TRI-C5-2/img/1-card.webp",
-    "blurhash": "L77o_6p00HT3%%j]M|WC0qa#}*oJ",
+    "blurhash": "L77fZeks0HXW%%j]M|WC0qa#}*j?",
     "card_specs": [
-      { "label": "Angular accuracy", "value": "2 arcsec" },
-      { "label": "Reflectorless range", "value": "800 m" },
-      { "label": "Telescope magnification", "value": "30 x" }
+      {
+        "label": "Angular accuracy",
+        "value": "2 arcsec"
+      },
+      {
+        "label": "Reflectorless range",
+        "value": "800 m"
+      },
+      {
+        "label": "Telescope magnification",
+        "value": "30 x"
+      }
     ],
     "ar": true,
     "created_at": 1787463283,
@@ -1760,11 +1994,20 @@
     "stock": "in_stock",
     "in_stock": true,
     "hero_image_key": "skus/8f/CEM-AMB-KAWACH50/img/1-card.webp",
-    "blurhash": "LZIXBF-6NG}*?F$eR*Nz9ZWAf6I]",
+    "blurhash": "LNBWV*?HE0k7?DxWIrNK~0$_Iuay",
     "card_specs": [
-      { "label": "Cement type", "value": "PPC" },
-      { "label": "Compressive strength (28 days)", "value": "45 MPa" },
-      { "label": "Net weight per bag", "value": "50 kg" }
+      {
+        "label": "Cement type",
+        "value": "PPC"
+      },
+      {
+        "label": "Compressive strength (28 days)",
+        "value": "45 MPa"
+      },
+      {
+        "label": "Net weight per bag",
+        "value": "50 kg"
+      }
     ],
     "ar": true,
     "created_at": 1787464499,
