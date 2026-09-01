@@ -780,17 +780,34 @@
    * `line-height: 1` and the explicit box stop the tall Audiowide ascent from pushing the pill
    * off the 32px header rhythm every other control in the bar sits on.
    */
+  /*
+   * NO RING. The O was set inside a 18px bordered circle, which put a ring around a letter that
+   * is already a ring — two concentric circles reading as a target rather than as a coin, and the
+   * pill it sits in is a third. The glyph carries the whole idea on its own, so it is the only
+   * thing left: the border, the radius and the inset hairline are all gone and the letter grew
+   * into the space they were taking.
+   *
+   * 18px against the pill's 12px figure, which is the ratio that makes it read as a MARK beside a
+   * number rather than as another character in the same string. Audiowide has one weight, so
+   * presence has to come from size — asking for 700 here synthesises a smeared outline, which is
+   * what scripts/type-audit.mts exists to catch.
+   *
+   * 18 AND NOT 17 because the chrome renders on every page and /estimate already spends its whole
+   * type-size budget: a 17px used by nothing else was a sixteenth size on a page allowed fifteen,
+   * and scripts/scale-audit.mts failed on it. 18px is already on that page's ladder, so the mark
+   * gets a step BIGGER and costs no size at all.
+   */
   .coin-o {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 1px solid var(--color-coin-line);
     font-family: var(--font-brand);
-    font-size: 11px;
+    font-size: 18px;
+    /* 400 EXPLICITLY, because .coin-pill sets 700 and this inherits it. Audiowide ships one cut,
+       so a 700 here is not bolder type — it is the browser smearing the 400 outline, which is
+       what scripts/type-audit.mts failed on. The mark's weight comes from its size, above. */
+    font-weight: 400;
     line-height: 1;
     letter-spacing: 0;
     /* Light to dark down the stroke: --amber-800 is the PALE one (#ffcb4d) and --amber-600 the
@@ -799,9 +816,6 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    /* The clip paints the glyph from the gradient; the ring is the element's own border, so it
-       keeps its colour rather than being clipped away with the text. */
-    box-shadow: inset 0 0 0 1px rgb(245 180 10 / 18%);
   }
   .coin-pill-word {
     font-weight: 600;
