@@ -122,6 +122,13 @@ async function capture(vp: ViewportName) {
 }
 
 let bad = 0;
+/**
+ * Whether this run only RECORDED. Without --check the loop writes a fresh baseline and compares
+ * nothing, but `bad` stays 0 either way — so the closing line used to congratulate a run that had
+ * verified nothing, in the exact words of a run that had verified everything. A gate whose pass
+ * message cannot be told from its no-op message is worse than no gate: it is one you trust.
+ */
+let recorded = false;
 for (const vp of Object.keys(VIEWPORTS) as ViewportName[]) {
   if (vp === 'audit') continue;
   const file = path.join(OUT, `${vp}.json`);
@@ -132,6 +139,7 @@ for (const vp of Object.keys(VIEWPORTS) as ViewportName[]) {
     fs.writeFileSync(file, JSON.stringify(now, null, 0));
     const n = Object.values(now).reduce((a, r) => a + Object.keys(r).length, 0);
     console.log(`  wrote ${vp.padEnd(8)} ${ROUTES.length} routes, ${n} elements`);
+    recorded = true;
     continue;
   }
 
@@ -159,5 +167,11 @@ for (const vp of Object.keys(VIEWPORTS) as ViewportName[]) {
   }
 }
 
-console.log(bad ? `\n${bad} difference(s) — the refactor changed what the browser paints` : '\nevery element on every surface computes exactly as it did');
+console.log(
+  bad
+    ? `\n${bad} difference(s) — the refactor changed what the browser paints`
+    : recorded
+      ? '\nbaseline recorded — nothing was compared. Run with --check to verify against it.'
+      : '\nevery element on every surface computes exactly as it did',
+);
 process.exit(bad ? 1 : 0);
