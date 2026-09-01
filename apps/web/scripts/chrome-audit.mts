@@ -267,10 +267,23 @@ const search = await page.evaluate(() => {
 });
 check(search.inputs === 1, `one search field in the header   found ${search.inputs}`);
 check(search.focused.includes('search-input'), `the keystrokes land in it   focus is .${search.focused || '(none)'}`);
-check(
-  !!search.bar && !!search.drop && Math.abs(search.drop[0] - search.bar[0]) <= 1 && Math.abs(search.drop[1] - search.bar[1]) <= 1,
-  `the suggestions hang off the field   bar ${search.bar?.join('→')}   drop ${search.drop?.slice(0, 2).join('→')}`,
-);
+/*
+ * ANCHORED TO THE FIELD, AND AT LEAST AS WIDE AS IT.
+ *
+ * This asked for both edges to match within a pixel, which was the old geometry rather than the
+ * rule: the panel used to be exactly the field's width. It is now wider — the header row is full
+ * (both .header-spacer elements measure 0px), so the field cannot grow much, while the panel
+ * hangs below the chrome and is bounded by nothing. At the field's width the product names
+ * truncated mid-word and the scope chips wrapped onto a second line.
+ *
+ * What the check is FOR is in its own name and in the note on .search-drop in store.css: the
+ * suggestions must hang off the FIELD, not off the viewport, so the header's backdrop-filter
+ * cannot capture them. That is one shared edge, exactly — the right one, since the panel now
+ * extends leftwards under the nav where there is room. Width equality was never the point.
+ */
+const sharesAnEdge = !!search.bar && !!search.drop && (Math.abs(search.drop[0] - search.bar[0]) <= 1 || Math.abs(search.drop[1] - search.bar[1]) <= 1);
+const atLeastAsWide = !!search.bar && !!search.drop && search.drop[1] - search.drop[0] >= search.bar[1] - search.bar[0] - 1;
+check(sharesAnEdge && atLeastAsWide, `the suggestions hang off the field   bar ${search.bar?.join('→')}   drop ${search.drop?.slice(0, 2).join('→')}`);
 check(!!search.drop && search.drop[2] >= search.barBottom, `and below it   field ends ${search.barBottom}   drop starts ${search.drop?.[2]}`);
 await page.keyboard.press('Escape');
 

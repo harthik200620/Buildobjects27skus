@@ -276,8 +276,15 @@
     align-items: center;
     gap: var(--s-2);
     min-width: 0;
-    flex: 1 1 auto;
-    max-width: 720px;
+    /* 720 was capping the field well below what the row could actually give it: the two
+       .header-spacer elements either side are flex:1, so whatever this does not claim they take
+       as empty space. Raised to 920 and the spacers collapse first — the field grows until it
+       genuinely runs into the nav on the left or the wallet on the right, which is the real
+       limit and the one the header's own note is about. */
+    /* grow 20 against the spacers' 1: free space in this row should land in the field, not be
+       split three ways with two empty boxes whose only job is to centre it. */
+    flex: 20 1 auto;
+    max-width: 920px;
     position: relative;
   }
   .header-find > form,

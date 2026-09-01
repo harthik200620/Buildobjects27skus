@@ -211,11 +211,11 @@
   .header-bar {
     display: flex;
     align-items: center;
-    /* 16, not 24. Seven gaps in this row, so the step is 56px — and the row is FULL at every
-       desktop width: measured at 1920 the six controls and their gaps used 1,098 of the 1,464
-       available, leaving 366 for search. The gap is the only place that width was available
-       without taking it off the lockup. */
-    gap: var(--s-4);
+    /* 12, not 16, and it was 24 before that. Seven gaps in this row, so each step down returns
+       28px to the field — and the row is FULL at every desktop width: measured at 1920 the six
+       controls and their gaps used 1,098 of the 1,464 available. The gap is still the only place
+       this width is available without taking it off the lockup. */
+    gap: var(--s-3);
     height: 100%;
     max-width: var(--shell-wide);
     margin: 0 auto;
@@ -223,7 +223,15 @@
   }
 
   .header-logo {
-    --wm-size: 44px;
+    /*
+     * 34, not 44, and this IS taking it off the lockup — which the gap note above says was the
+     * thing it was avoiding. Audiowide is very wide: at 44 the lockup measured 284px of a 1344px
+     * row, a fifth of the chrome spent on a word that never changes, while the field people
+     * actually use was down to 327. A store's masthead is not the place the eye needs help
+     * finding; the search box is. 34 returns about 64px to it and the mark still reads at a
+     * glance, which is the whole job of a lockup.
+     */
+    --wm-size: 34px;
     display: inline-flex;
     align-items: center;
     flex: none;
@@ -360,8 +368,15 @@
      refuses your keystrokes is a trick played on the reader every time they use it. */
   .search {
     position: relative;
-    flex: 0 1 var(--search-w);
-    width: var(--search-w);
+    /*
+     * GROW, do not shrink-from-a-basis. This was `flex: 0 1 var(--search-w)`, and flex-shrink is
+     * weighted BY the basis — so in a row that is already full, raising --search-w made the field
+     * NARROWER, not wider: measured 372px at 1350 and 316px at 1440, the wider viewport giving the
+     * smaller field. Growing from auto inside .header-find makes the token a floor the field
+     * reaches when the row can afford it, instead of a number it is penalised for asking for.
+     */
+    flex: 1 1 auto;
+    max-width: var(--search-w);
     min-width: 0;
   }
   .search-field {
@@ -430,12 +445,27 @@
      laid the old overlay out at the size of the bar instead of the screen — cannot reach them.
      A dropdown is not a modal: the page keeps scrolling behind it, so there is no scroll lock
      here to lose the reader's place with. */
+  /*
+   * THE PANEL IS WIDER THAN THE FIELD, and anchored to the field's RIGHT edge.
+   *
+   * At the field's own width the results were cramped: product names truncated mid-word
+   * ("UltraTech Portland Pozzolana Cement …"), and the scope chips wrapped onto a second line.
+   * The header row is genuinely full — the two spacers either side measure 0px — so the field
+   * cannot be given much more, but the panel hangs below the chrome and is bounded by nothing.
+   *
+   * Anchored right rather than left because the field is centred in the row: extending leftwards
+   * runs under the nav, which is empty space, while extending rightwards would run past the
+   * viewport edge at narrow desktop widths. `min-width: 100%` keeps it at least as wide as the
+   * thing it belongs to.
+   */
   .search-drop {
     position: absolute;
     z-index: 5;
     top: calc(100% + 8px);
-    left: 0;
     right: 0;
+    left: auto;
+    min-width: 100%;
+    width: 620px;
     max-height: min(66vh, 560px);
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -464,6 +494,47 @@
     padding-bottom: var(--s-3);
     margin-bottom: 4px;
     border-bottom: 1px solid var(--hair);
+  }
+  /*
+   * THE SCOPE BUTTONS HAD NO STYLING AT ALL.
+   *
+   * `.scope-chip` is in the markup and was in no stylesheet: measured, every one of them came
+   * back `background: transparent, border: 0, padding: 0, border-radius: 0`. Seven <button>s with
+   * a 6px flex gap and nothing else, so the row that should read as a set of filters —
+   * Everything · Epoxy · Fire Extinguishers · Solar Panels · CCTV · Tiles · Glass — rendered as
+   * one run of unpunctuated words wrapping across two lines. Nothing said they were pressable and
+   * nothing showed which one was on.
+   *
+   * `aria-pressed` already carried the state; it just had no visual. The selected chip now wears
+   * the brand fill, which is the one thing this row has to communicate: what you are about to
+   * search inside.
+   */
+  .scope-chip {
+    flex: none;
+    padding: 5px 11px;
+    border: 1px solid var(--hair-2);
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 4%);
+    color: var(--ink-2);
+    font-size: var(--t-fine);
+    line-height: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+  .scope-chip:hover {
+    border-color: var(--hair-brand);
+    background: rgb(255 255 255 / 9%);
+    color: var(--ink-1);
+  }
+  .scope-chip[aria-pressed="true"] {
+    background: var(--color-teal-700);
+    border-color: var(--hair-brand);
+    color: var(--color-on-brand);
   }
   .search-group {
     padding: var(--s-3) 8px 4px;
@@ -552,7 +623,7 @@
       display: none;
     }
     :root {
-      --search-w: 460px;
+      --search-w: 600px;
     }
   }
   /* 1400, not 1360. At 1366 — a laptop width a lot of people are on — the row fitted
@@ -563,7 +634,7 @@
       display: none;
     }
     :root {
-      --search-w: 420px;
+      --search-w: 540px;
     }
   }
   /* The mark loses its name. At a 34px mark the lockup is 284px — 42% of the row at

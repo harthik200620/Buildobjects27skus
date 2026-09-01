@@ -375,7 +375,7 @@
   /* The search field's resting width. It is a token because the bar's breakpoint ladder steps
      it down four times, and a `width` and a `flex-basis` that disagree is how a field ends up
      one size and reserves another. */
-  --search-w: 560px;
+  --search-w: 680px;
   /* The one offset every pinned panel hangs from, so panels on different pages stop at the same
    * line. It must never change with scroll state: a sticky `top` that animates moves the panel
    * itself, which is what this token exists to prevent. */
