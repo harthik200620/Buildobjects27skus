@@ -73,7 +73,7 @@ export default function ProductCard({
           one its own colour is what leaves no rectangle anywhere in the catalogue. */}
       <div className="prod-media" style={plateFor(sku.sku_code) ? ({ '--plate': plateFor(sku.sku_code) } as React.CSSProperties) : undefined}>
         {img ? (
-          <Img src={img} alt="" width={480} height={480} sizes={sizes} priority={priority} blurhash={sku.blurhash} />
+          <Img src={img} alt="" width={480} height={480} sizes={sizes} priority={priority} />
         ) : (
           <div className="prod-noimg">
             <b>{sku.brand}</b>

@@ -96,3 +96,10 @@ for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
   }
 }
 console.log(`${changed} hashes rewritten · ${same} already current · ${missing} with nothing to read${DRY ? ' — dry run, nothing written' : ''}`);
+/*
+ * IT REWRITES THE WHOLE FILE, NOT THE ONE FIELD. JSON.stringify(…, 2) puts every array element on
+ * its own line; biome keeps short ones inline, so a run that touches one hash reformats thousands
+ * of unrelated lines and `pnpm lint` fails on files this script had no business changing. Saying so
+ * is cheaper than the next person rediscovering it from a red gate.
+ */
+if (changed && !DRY) console.log('  now run: npx biome format --write apps/web/data/catalogue/');

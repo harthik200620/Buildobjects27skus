@@ -1,12 +1,24 @@
-'use client';
-
-import { decode } from 'blurhash';
 import Image from 'next/image';
-import React from 'react';
+import type React from 'react';
 
 /**
- * next/image with a blurhash placeholder painted on a canvas until the rendition lands. The
- * loader picks the pre-derived size, so no byte is ever re-encoded on the way to the screen.
+ * next/image at the pre-derived rendition size, so no byte is re-encoded on the way to the screen.
+ *
+ * NO BLURHASH PLACEHOLDER, DELIBERATELY. This used to decode `sku.blurhash` onto a 32 px canvas
+ * and paint it as the <img>'s own background. The card already paints the RIGHT ground underneath
+ * — `.prod-media::before` fills with `--plate`, the colour sampled from this very photograph's
+ * border by scripts/blend-skus.mts — and the <img> sits above it at z-index 2, so the placeholder
+ * covered the exact answer with an approximation of it.
+ *
+ * On a product shot that approximation is not close. A blurhash is a 4x3 DCT: one large saturated
+ * subject bleeds into every cell, so Ambuja's yellow bag hashed to an amber field (#ad8650) and
+ * painted the whole card amber until the rendition landed — over a photograph whose own background
+ * is #082229. Backgrounds paint into the padding box, so the 9 % padding spread it wider still.
+ * The flat plate is both correct and instant: it is CSS, so it costs no decode, no effect and no
+ * client boundary, which is why this file is no longer 'use client'.
+ *
+ * The hash still earns its keep in the gallery, where every frame has one and there is no
+ * per-frame table to read instead — see lib/plate.ts.
  */
 export default function Img({
   src,
@@ -15,7 +27,6 @@ export default function Img({
   height,
   sizes,
   priority,
-  blurhash,
   className,
   style,
   fill,
@@ -26,38 +37,11 @@ export default function Img({
   height?: number;
   sizes?: string;
   priority?: boolean;
-  blurhash?: string | null;
   className?: string;
   style?: React.CSSProperties;
   fill?: boolean;
 }) {
-  const [dataUrl, setDataUrl] = React.useState<string | undefined>(undefined);
-  React.useEffect(() => {
-    if (!blurhash) return;
-    try {
-      const px = decode(blurhash, 32, 32);
-      const c = document.createElement('canvas');
-      c.width = 32;
-      c.height = 32;
-      const ctx = c.getContext('2d');
-      if (!ctx) return;
-      const img = ctx.createImageData(32, 32);
-      img.data.set(px);
-      ctx.putImageData(img, 0, 0);
-      setDataUrl(c.toDataURL());
-    } catch {
-      /* a bad hash just means no placeholder */
-    }
-  }, [blurhash]);
-  const common = {
-    src,
-    alt,
-    sizes,
-    priority,
-    className,
-    style: { ...style, background: dataUrl ? `url(${dataUrl}) center / cover` : undefined },
-    placeholder: 'empty' as const,
-  };
+  const common = { src, alt, sizes, priority, className, style };
   if (fill) return <Image {...common} fill />;
   return <Image {...common} width={width ?? 480} height={height ?? 480} />;
 }

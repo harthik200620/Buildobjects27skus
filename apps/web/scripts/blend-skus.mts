@@ -53,6 +53,46 @@ const RING_SHARE = 0.3;
     part of the picture — a lifestyle shot, a render, a screenshot — and is left alone. */
 const STUDIO_MIN_LEVEL = 150;
 const STUDIO_MAX_CAST = 26;
+/**
+ * The OTHER kind of background: a flat plate the supplier drew the product on, in any colour.
+ *
+ * The two rules above ask "is this a light, neutral studio sweep", which is a question about the
+ * lighting rather than about whether there is a background at all. A supplier who centres a total
+ * station on solid #0063a4 has unmistakably given us a background — it just is not a sweep — and
+ * the answer was to keep the marketing blue, so one card in the catalogue was a bright blue
+ * rectangle on a dark page. Seven more sat on #082229, close enough to read as intentional and
+ * still not the mount every other card uses.
+ *
+ * Uniformity is the signal that actually separates the cases, and on this catalogue it separates
+ * them with room to spare. Measured over each first frame's border ring: every flat plate scores
+ * 0.757 or better (six of the eight are 0.94+, four are exactly 1), and every real photograph
+ * scores 0.609 or worse — the in-context glass at 0.609, the full-bleed tile swatch at 0.496, the
+ * dark AIS render at 0.273. 0.7 sits in that gap. A scene cannot reach it: sky, floor and wall
+ * never agree to within T0 across nine tenths of a border.
+ *
+ * This admits dark and strongly-coloured grounds that STUDIO_MIN_LEVEL and STUDIO_MAX_CAST reject,
+ * which is the point — but only when the border is almost entirely one colour, which is exactly
+ * when replacing it cannot touch the product.
+ */
+const FLAT_SHARE = 0.7;
+/**
+ * Above this share of the WHOLE frame, the border colour is not a background — it is the picture.
+ *
+ * Uniformity alone cannot tell a product sitting on a plate from a product that fills the frame,
+ * and both score near 1 on the border ring. Johnson's tile is a full-bleed swatch of beige marble:
+ * border 0.95 uniform, and 0.976 of every pixel in the image is that same beige, because the tile
+ * IS the photograph. Sika's third frame is a yellow brand card at 0.975. Recolouring either does
+ * not replace a background, it repaints the product.
+ *
+ * The escape is that a frame already on a dark teal is safe to repaint whatever its coverage — the
+ * near-black studio frames run to 0.96 coverage and are only ever nudged the last few points onto
+ * the exact mount. So a full-frame colour is left alone only when moving it would be a real move:
+ * beige is 185 away from the mount and yellow 229, while every one of those studio frames is
+ * within 15. Both halves are needed; either alone rejects work that should be done.
+ */
+const FULL_FRAME = 0.9;
+/** Close enough to the mount that repainting the whole frame is a nudge rather than a repaint. */
+const NEAR_TARGET = 40;
 /** Already on the target, to within a rounding error of the encoder. */
 const DONE = 5;
 
@@ -102,6 +142,13 @@ async function blend(file: string): Promise<Report> {
   const bg: [number, number, number] = [Math.round(top.r / top.n), Math.round(top.g / top.n), Math.round(top.b / top.n)];
 
   const share = ring.filter((i) => cheb(data[i], data[i + 1], data[i + 2], bg) <= T0).length / ring.length;
+  /* How much of the whole frame the border colour holds — see FULL_FRAME. */
+  let inside = 0;
+  for (let p = 0; p < W * H; p += 1) {
+    const i = p * 4;
+    if (cheb(data[i], data[i + 1], data[i + 2], bg) <= T0) inside += 1;
+  }
+  const cover = inside / (W * H);
   const level = Math.min(bg[0], bg[1], bg[2]);
   const cast = Math.max(bg[0], bg[1], bg[2]) - level;
 
@@ -117,7 +164,11 @@ async function blend(file: string): Promise<Report> {
      rectangle. The mount has to be the colour the image ENDS UP on. */
   const isFirst = file.endsWith(`1-card.webp`) && share >= RING_SHARE;
   const sku = isFirst ? (path.relative(ROOT, file).split(path.sep)[1] ?? null) : null;
-  const leaveAlone = share < RING_SHARE || level < STUDIO_MIN_LEVEL || cast > STUDIO_MAX_CAST;
+  /* Two ways to be a background worth replacing: a light neutral sweep, however soft its edge,
+     or a plate of one flat colour, whatever that colour is. Anything else is the picture. */
+  const studioSweep = share >= RING_SHARE && level >= STUDIO_MIN_LEVEL && cast <= STUDIO_MAX_CAST;
+  const flatPlate = share >= FLAT_SHARE && (cover < FULL_FRAME || cheb(bg[0], bg[1], bg[2], TARGET) <= NEAR_TARGET);
+  const leaveAlone = !studioSweep && !flatPlate;
   /* Left as photographed keeps its own colour; anything the recolour touches lands on TARGET. */
   if (sku) mounts.set(sku, hex(leaveAlone ? bg : TARGET));
   if (leaveAlone) return { file, action: 'no-studio-background', from: bg.join(',') };
