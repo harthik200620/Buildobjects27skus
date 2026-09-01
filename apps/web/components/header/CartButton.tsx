@@ -56,7 +56,13 @@ export default function CartButton() {
           aria-expanded={walletOpen}
           aria-label={`BO Coins balance: ${coins} coins`}
         >
-          <IconCoin size={15} />
+          {/* THE MARK IS AN O, SET IN THE BRAND FACE, IN GOLD. It was a generic coin glyph — a
+              circle with a rim, the same one every loyalty scheme uses — which said "points"
+              rather than "BO Coins". An O in Audiowide is the second letter of the store's own
+              name, so the currency is branded by construction instead of by a label beside it. */}
+          <span className="coin-o" aria-hidden="true">
+            O
+          </span>
           <span className="fig">{coins}</span>
           <span className="coin-pill-word">Coins</span>
         </button>

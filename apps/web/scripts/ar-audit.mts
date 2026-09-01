@@ -151,10 +151,19 @@ async function tilt(page: Page, pitchDeg: number): Promise<{ ok: boolean; why: s
    *
    * So: poll the anchor and the fit line until they stop changing, then measure. Twelve tries at
    * 200 ms is 2.4 s of headroom, and it settles in two or three when nothing is wrong.
+   *
+   * THE NUDGE CHIP IS PART OF THAT STATE, and leaving it out was the rest of the flakiness. The
+   * anchor and the fit line come from `framePlacement`, which runs on the placement's schedule;
+   * the chip comes from a SECOND check — the off-screen test in ArCamera, at about 6 Hz behind a
+   * three-frame debounce. So the fit line could read `0 % on screen · nudge up`, settle, and be
+   * measured while the chip it implies had not been rendered yet: the audit then saw a product
+   * covering no pixels and claiming to be on screen, and failed a placement the view was about to
+   * explain. Four runs of the same commit gave 1, 0, 1 and 3 failures, all with that signature.
+   * Waiting for the chip to stop changing too measures one settled state instead of two halves.
    */
   const snapshot = async () =>
     (await page.evaluate(
-      '(() => { const d = window.__arDebug; return d ? [d.anchor && Math.round(d.anchor.u), d.anchor && Math.round(d.anchor.v), d.fit && d.fit.reason].join("|") : ""; })()',
+      '(() => { const d = window.__arDebug; const n = document.querySelector(".arv-nudge"); return d ? [d.anchor && Math.round(d.anchor.u), d.anchor && Math.round(d.anchor.v), d.fit && d.fit.reason, n ? "nudged" : "clear"].join("|") : ""; })()',
     )) as string;
   let last = await snapshot();
   for (let i = 0; i < 12; i++) {

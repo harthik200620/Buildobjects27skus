@@ -4,8 +4,10 @@
  * Builds assets/3d/placeholders/{SKU}.glb at the SKU's real dimensions and writes
  * assets/3d/manifest.json. When the image stage has produced photo cut-outs
  * (`{n}-cutout.png` under MEDIA_ROOT) the parametric model wears them → `quality: 'textured'`;
- * otherwise it stays a flat-colour `'placeholder'`. A real model at assets/3d/{SKU}.glb always
- * wins (`quality: 'photoreal'`, `placeholder: false`) and keeps its photoreal metadata.
+ * otherwise it stays a flat-colour `'placeholder'`. A real model at assets/3d/{SKU}.glb wins
+ * (`quality: 'photoreal'`, `placeholder: false`) and keeps its photoreal metadata — but only when
+ * `assets/3d/review.json` has not rejected it. That file is why nine cartons, rival-brand sacks
+ * and one human figure are no longer what this store shows in a customer's room.
  *
  * `--textures-from-orig` previews the textured path before cut-outs exist: the original hero on
  * white gets a deterministic near-white knockout. The manifest records `-orig` sources honestly.
@@ -19,6 +21,7 @@ import { eq } from 'drizzle-orm';
 import { BUILDERS } from './builders';
 import { dimsFor, variantHintFor } from './dims';
 import { buildGlb } from './gltf';
+import { loadReview, modelRejected, photosRejected, productPhotoPosition, type Review } from './review';
 import { type BuilderTextures, heroCutoutFor, prepareTextures, usesPhotos } from './textures';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -56,6 +59,8 @@ export interface BuildOneOptions {
   /** The SKU's previous manifest entry — photoreal metadata survives a rebuild when the real GLB still wins. */
   prev?: AssetManifestEntry | null;
   assetsDir?: string;
+  /** Which generated models are accepted. Omitted = accept every GLB that exists, the old behaviour. */
+  review?: Review | null;
 }
 
 export function buildOne(t: BuildTarget, o: BuildOneOptions = {}): { entry: AssetManifestEntry; wrote: boolean; quality: AssetQuality } {
@@ -65,7 +70,19 @@ export function buildOne(t: BuildTarget, o: BuildOneOptions = {}): { entry: Asse
   const { glb, triangles, bbox, textures: textureCount } = buildGlb(meshes, t.code);
   const assetsDir = o.assetsDir ?? ASSETS_DIR;
   const realFile = path.join(assetsDir, `${t.code}.glb`);
-  const real = fs.existsSync(realFile);
+  /*
+   * EXISTING IS NOT THE SAME AS CORRECT, and this line used to treat them as the same thing.
+   * Every file under assets/3d was reconstructed from the SKU's position-1 photo by a provider
+   * that is faithful to whatever it is given — and the manifest says of 21 of the 28 that the
+   * judge never ran. So the store shipped a cardboard carton as the model of a bulb, a Dalmia
+   * sack as the model of an Ambuja one, a hand holding a bottle, and a human figure as a tile.
+   *
+   * A generated model now has to be accepted as well as present. A rejection is not a gap: the
+   * parametric builder above has already run, at the SKU's real dimensions, and drawing that is
+   * strictly better than drawing the box the product came in.
+   */
+  const rejected = o.review ? modelRejected(o.review, t.code) : null;
+  const real = fs.existsSync(realFile) && !rejected;
   let wrote = false;
   if (!real) {
     const dir = path.join(assetsDir, 'placeholders');
@@ -105,6 +122,10 @@ export function buildOne(t: BuildTarget, o: BuildOneOptions = {}): { entry: Asse
     entry.source_images = o.textures.sources;
     if (textureNote) entry.note = textureNote;
   }
+  /* Last, so it outranks the texture note: why this SKU is drawn parametrically when a generated
+     model for it is sitting right there on disk. Without it the manifest looks like the provider
+     was never run, and somebody re-runs it. */
+  if (rejected) entry.note = `generated model rejected — ${rejected}`;
   return { entry, wrote, quality };
 }
 
@@ -117,11 +138,30 @@ export async function texturesFor(
   category: string,
   mediaRoot: string,
   real: RealImagePositions,
-  opts: { fromOrig?: boolean } = {},
+  opts: { fromOrig?: boolean; review?: Review | null } = {},
 ): Promise<{ textures: BuilderTextures | null; source: 'cutout' | 'orig' | null }> {
   if (!usesPhotos(category)) return { textures: null, source: null };
-  const hero = real.hero !== null ? await heroCutoutFor(code, mediaRoot, { position: real.hero, allowOrig: !!opts.fromOrig }) : null;
-  const angle = real.angle !== null ? await heroCutoutFor(code, mediaRoot, { position: real.angle, allowOrig: !!opts.fromOrig }) : null;
+  /*
+   * The same review that gates the model gates the photograph, and it has to: rejecting a bad
+   * model only to print the same bad photograph onto the parametric one that replaces it would
+   * put a Dalmia sack back on an Ambuja SKU by another route. An unbranded bag at the right size
+   * is the honest picture of a cement bag whose only photographs are of somebody else's.
+   */
+  if (opts.review && photosRejected(opts.review, code)) return { textures: null, source: null };
+  /*
+   * WHICH position, and this is the whole point of the vision pass. `real.hero` is the row the
+   * database calls the hero, and roles are numbered rather than read — so it is position 1 for
+   * every SKU in the catalogue, whatever is in the picture. Where the review has looked at the
+   * photographs it pins the one that actually shows the product; the database's answer is the
+   * fallback for a SKU nothing has read yet.
+   */
+  const pinned = opts.review ? productPhotoPosition(opts.review, code) : null;
+  const heroPos = pinned ?? real.hero;
+  /* An angle shot is a SECOND view of the product; when the pinned position is not position 1
+     there is no reason to believe the database's `angle` is one, so it is not assumed. */
+  const anglePos = pinned === null ? real.angle : null;
+  const hero = heroPos !== null ? await heroCutoutFor(code, mediaRoot, { position: heroPos, allowOrig: !!opts.fromOrig }) : null;
+  const angle = anglePos !== null ? await heroCutoutFor(code, mediaRoot, { position: anglePos, allowOrig: !!opts.fromOrig }) : null;
   if (!hero && !angle) return { textures: null, source: null };
   const textures = await prepareTextures(category, {
     hero: hero ? { buffer: hero.buffer, key: hero.key } : null,
@@ -188,31 +228,49 @@ async function main() {
   const realPositions = await loadRealImagePositions(db);
   const prev = readManifest();
   const mediaRoot = resolveMediaRoot();
+  const review = loadReview(ASSETS_DIR);
   const assets: Record<string, AssetManifestEntry> = {};
   let built = 0;
   let reused = 0;
   let textured = 0;
+  const refused: string[] = [];
   for (const t of targets) {
-    const positions = realPositions.get(t.code) ?? { hero: null, angle: null };
-    const { textures, source } = await texturesFor(t.code, t.category, mediaRoot, positions, { fromOrig });
+    const db = realPositions.get(t.code) ?? { hero: null, angle: null };
+    /*
+     * THE PINNED POSITION WINS OVER THE DATABASE'S "HERO".
+     *
+     * `loadRealImagePositions` asks the `sku_images` table which row is the hero, and that table
+     * assigns roles by POSITION — so it answers 1 for every SKU in the catalogue, whatever is in
+     * the frame. `review.json`'s `photo_positions` is the answer a vision pass actually looked at
+     * the pictures to get, and for nine SKUs it points at a photograph sourced later and written
+     * at position 6. Without this line those photographs exist on disk, are recorded as found,
+     * and never reach a model — the texture path would keep printing the carton.
+     */
+    const pinned = productPhotoPosition(review, t.code);
+    const positions = pinned === null ? db : { hero: pinned, angle: db.angle };
+    const { textures, source } = await texturesFor(t.code, t.category, mediaRoot, positions, { fromOrig, review });
     const { entry, wrote, quality } = buildOne(
       { code: t.code, category: t.category, spec: (t.spec ?? null) as SpecJson | null },
-      { textures, prev: prev?.assets[t.code] ?? null },
+      { textures, prev: prev?.assets[t.code] ?? null, review },
     );
     assets[t.code] = entry;
 
     if (wrote) built++;
     else reused++;
+    if (modelRejected(review, t.code)) refused.push(t.code);
     if (quality === 'textured') {
       textured++;
       console.log(`  ${t.code.padEnd(26)} textured — ${entry.textures?.count ?? 0} image(s) from ${source}`);
     }
   }
   // the gate-demo product is not a SKU but the AR page can load it by name
-  const demo = buildOne({ code: 'DEMO-BATHTUB', category: 'bathtub', spec: null }, { prev: prev?.assets['DEMO-BATHTUB'] ?? null });
+  const demo = buildOne({ code: 'DEMO-BATHTUB', category: 'bathtub', spec: null }, { prev: prev?.assets['DEMO-BATHTUB'] ?? null, review });
   assets['DEMO-BATHTUB'] = demo.entry;
   writeManifest(assets);
-  console.log(`${targets.length} SKUs: ${built} built, ${reused} unchanged, ${textured} textured — manifest written`);
+  /* Named, not counted. A rejection means a generated model exists and is being ignored, which is
+     a thing somebody has to be able to see happening rather than infer from a total. */
+  for (const code of refused) console.log(`  ${code.padEnd(26)} generated model REFUSED — ${modelRejected(review, code)}`);
+  console.log(`${targets.length} SKUs: ${built} built, ${reused} unchanged, ${textured} textured, ${refused.length} refused — manifest written`);
   await closeDb();
 }
 

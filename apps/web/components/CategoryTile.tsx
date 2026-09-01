@@ -27,12 +27,14 @@ import { mediaUrl } from '@/lib/media';
  * every photograph on the front door came back soft. A `sizes` that lies costs sharpness or
  * bandwidth, silently, and nothing in a build ever fails.
  *
- *   full     3 up over 1100px · 2 up under it
- *   compact  6 up over 1100px · 4 up to 768 · 3 up below
+ * BOTH GRIDS NOW RUN THE SAME LADDER — 4 up over 1280, 3 up to 1024, 2 up below — so there is one
+ * hint rather than two. The compact grid used to be five and then four across, which is why this
+ * had two entries; sharing the column count is what makes the front door read as one structure,
+ * and it collapses the thing most likely to go stale here into a single line.
  */
 const SIZES = {
-  full: '(max-width: 1100px) 46vw, 31vw',
-  compact: '(max-width: 768px) 31vw, (max-width: 1100px) 23vw, 15vw',
+  full: '(max-width: 1024px) 46vw, (max-width: 1280px) 31vw, 23vw',
+  compact: '(max-width: 1024px) 46vw, (max-width: 1280px) 31vw, 23vw',
 } as const;
 
 export default function CategoryTile({

@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-08-25T13:26:37.815Z",
+  "generated_at": "2026-08-30T13:28:43.456Z",
   "dry_run": false,
   "provider_pref": "auto",
   "providers": [
     "meshy: key present",
     "tripo: no key"
   ],
-  "max_spend_usd": 8,
+  "max_spend_usd": 5,
   "estimated_spend_usd": 0.4,
-  "ledger_spend_usd": 27.599999999999966,
+  "ledger_spend_usd": 29.999999999999957,
   "results": [
     {
-      "sku": "TST-TOP-GM-52",
-      "category": "total-stations",
+      "sku": "SOL-VIK-PARADEA-550",
+      "category": "solar-panels",
       "outcome": "photoreal",
       "provider": "meshy",
-      "job_id": "01a03917-4e16-75e7-b353-90b1a36f1fe4",
+      "job_id": "01a052d8-b8f1-75df-9220-eb4b688d04c2",
       "mode": "single",
       "images": [
         {
-          "key": "skus/e3/TST-TOP-GM-52/img/1-orig.jpg",
+          "key": "SOL-VIK-PARADEA-550#6",
           "role": "front",
           "source": "orig"
         }
@@ -27,9 +27,11 @@
       "cutouts": 0,
       "est_cost_usd": 0.4,
       "warnings": [
-        "meshy: aspect mismatch 21 % vs spec (warn > 15 %)",
+        "meshy: sheet product: z scaled to 30 mm independently (90 mm under a uniform scale)",
+        "meshy: aspect mismatch 29 % vs spec (warn > 15 %)",
         "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-        "meshy: GLB is 8.9 MB (warn > 8 MB)",
+        "meshy: 12.9 MB over the 12 MB budget → compressed to 6.7 MB (98,314 triangles)",
+        "judge skipped — could not read the image for the vision call (colourspace: parameter space not set; colourspace: parameter space not set; colourspace: parameter space not set)",
         "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
       ],
       "quality_report": {
@@ -37,16 +39,18 @@
         "defects": [],
         "judge": "skipped",
         "silhouette_iou": null,
-        "aspect_mismatch": 0.2116833862488826,
+        "aspect_mismatch": 0.2873727848751406,
         "warnings": [
-          "meshy: aspect mismatch 21 % vs spec (warn > 15 %)",
+          "meshy: sheet product: z scaled to 30 mm independently (90 mm under a uniform scale)",
+          "meshy: aspect mismatch 29 % vs spec (warn > 15 %)",
           "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 8.9 MB (warn > 8 MB)",
+          "meshy: 12.9 MB over the 12 MB budget → compressed to 6.7 MB (98,314 triangles)",
+          "judge skipped — could not read the image for the vision call (colourspace: parameter space not set; colourspace: parameter space not set; colourspace: parameter space not set)",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — could not read the image for the vision call (colourspace: parameter space not set; colourspace: parameter space not set; colourspace: parameter space not set)"
       },
-      "file": "TST-TOP-GM-52.glb",
+      "file": "SOL-VIK-PARADEA-550.glb",
       "attempts": 1
     }
   ],

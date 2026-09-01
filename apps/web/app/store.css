@@ -698,6 +698,40 @@
   .coin-pill svg {
     flex: none;
   }
+  /*
+   * The currency mark: a capital O in the brand face, struck in gold.
+   *
+   * Audiowide has one weight (400) and no bold cut, so the weight is left alone — asking for 700
+   * here synthesises a smeared outline, which is what `scripts/type-audit.mts` exists to catch.
+   * Presence comes from size and from the gradient instead: a two-stop amber across the glyph
+   * with a hairline ring behind it, which is how a struck coin catches light on its rim.
+   *
+   * `line-height: 1` and the explicit box stop the tall Audiowide ascent from pushing the pill
+   * off the 32px header rhythm every other control in the bar sits on.
+   */
+  .coin-o {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid var(--color-coin-line);
+    font-family: var(--font-brand);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0;
+    /* Light to dark down the stroke: --amber-800 is the PALE one (#ffcb4d) and --amber-600 the
+       deep one (#e5a408), which is the opposite of what the numbers suggest. */
+    background: linear-gradient(150deg, var(--amber-800) 0%, var(--color-coin) 55%, var(--amber-600) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    /* The clip paints the glyph from the gradient; the ring is the element's own border, so it
+       keeps its colour rather than being clipped away with the text. */
+    box-shadow: inset 0 0 0 1px rgb(245 180 10 / 18%);
+  }
   .coin-pill-word {
     font-weight: 600;
   }
@@ -1670,7 +1704,7 @@
     bottom: 10%;
     height: 16px;
     border-radius: 50%;
-    background: radial-gradient(closest-side, rgb(12 17 19 / 26%), transparent);
+    background: radial-gradient(closest-side, var(--plate-shadow), transparent);
   }
   .prod-media img {
     position: relative;
@@ -1742,21 +1776,28 @@
     font-weight: 600;
     color: var(--color-brand);
   }
+  /*
+   * THE PRODUCT NAME IS SET IN THE SAME FACE AS THE BRAND ABOVE IT.
+   *
+   * It was Audiowide. Audiowide is the WORDMARK face — theme.css says so in as many words, "the
+   * wordmark, nothing else" — and it was being asked to set "Garnet 9 W B22 Cool Day White LED
+   * Bulb". A display face with no bold cut, at 29 % wider per character than the UI face, on the
+   * longest and most technical strings in the store: the names ran to three lines and the card
+   * shouted the model number at you in a face designed for a logo.
+   *
+   * `.prod-brand` directly above it is the working face, and so is this now, which is the point —
+   * the brand and the thing it made read as one label rather than as two typographic ideas
+   * stacked. Audiowide stays where it belongs: the lockup, the coin's O, the section titles.
+   */
   .prod-title {
-    font-family: var(--font-brand);
-    font-weight: 400;
-    letter-spacing: 0;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    letter-spacing: -0.005em;
     position: relative;
     margin: 0;
     /* Two lines' worth RESERVED so short names do not leave the row ragged, and three ALLOWED
-       before it clamps.
-
-       At two, every bulb on the shelf was cut mid-word — "Garnet 9 W B22 Cool Day White LE…",
-       "Ace Saver 9 W B22 Cool Day Light LE…", "LED Plus 9 W B22 Cool Day Light…" — three cards
-       in a row, none of them able to finish the name of the thing it is selling. This catalogue's
-       names are long and technical because the products are, and the title face is Audiowide,
-       which sets about 29 % wider per character than the UI face. Reserving two and permitting
-       three keeps the grid aligned and lets the long ones land. */
+       before it clamps. The reserve stays at two lines even though the narrower face needs fewer
+       of them — it is what keeps the price and the delivery line on one baseline across a row. */
     min-height: 44px;
     font-size: var(--t-h4);
     line-height: 22px;
@@ -2925,7 +2966,7 @@
     bottom: 14%;
     height: 26px;
     border-radius: 50%;
-    background: radial-gradient(closest-side, rgb(12 17 19 / 32%), transparent);
+    background: radial-gradient(closest-side, var(--plate-shadow), transparent);
     pointer-events: none;
   }
   /* Masked with the plate, so the photograph's own rectangle cannot outlive the mount's. */

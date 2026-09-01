@@ -260,47 +260,79 @@
      ═════════════════════════════════════════════════════════════════════════ */
   /* The page gets room for it. A floating button that covers the last two rows of a
      specification table is a button that hides the thing it was opened to ask about. */
-  /*
-   * The assistant steps aside while the camera is open.
-   *
-   * It is fixed to the bottom-right, which is exactly where the AR view puts Size and the shutter,
-   * so it sat on top of them on every phone — a floating button over the one control somebody is
-   * reaching for. ArCamera sets the flag on <body> while it is streaming and clears it on unmount.
-   */
-  body[data-ar-active="1"] .chat-fab {
-    display: none;
+  /* ── the assistant, in the header beside search ────────────────────────────
+     It used to be a 52px circle fixed to the bottom-right of every page. Three things were wrong
+     with that. It covered the AR shutter on a phone, which is why the rule below it existed at
+     all — a `body[data-ar-active]` override whose entire job was to hide a button that should not
+     have been there. It gave the store two separate "ask us" affordances, a search field in the
+     masthead and a bubble over the page, for one question. And a circle floating over content is
+     the house style of a support widget bolted onto a site, which is the specific thing this
+     store is not.
+
+     Beside the field it is a peer of search: type to find a thing, ask to be told about it. It is
+     the same height as every other control in the bar so the row keeps one rhythm. */
+  .header-find {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    flex: 1 1 auto;
+    max-width: 720px;
+    position: relative;
+  }
+  .header-find > form,
+  .header-find > .search {
+    flex: 1 1 auto;
+    min-width: 0;
   }
   .chat-fab {
-    position: fixed;
-    z-index: 60;
-    right: var(--gutter);
-    bottom: var(--gutter);
-    display: grid;
-    place-items: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--hair-2);
-    background: var(--color-teal-700);
-    color: var(--color-on-brand);
-    box-shadow: 0 14px 34px -10px rgb(0 0 0 / 70%);
+    background: color-mix(in oklab, var(--color-teal-700) 26%, transparent);
+    color: var(--ink-1);
+    font-size: var(--t-fine);
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
     transition:
-      transform var(--dur-2) var(--ease-out),
-      background-color var(--dur-2) var(--ease-out);
+      background-color var(--dur-2) var(--ease-out),
+      border-color var(--dur-2) var(--ease-out);
   }
   .chat-fab:hover {
-    transform: translateY(-2px);
-    background: var(--color-teal-800);
+    background: color-mix(in oklab, var(--color-teal-700) 44%, transparent);
+    border-color: var(--hair-brand);
   }
-  .chat-fab:active {
-    transform: none;
+  .chat-fab[aria-expanded="true"] {
+    background: var(--color-teal-700);
+    border-color: var(--hair-brand);
+  }
+  /* The word goes before the field does. Under 1180px the bar is tight enough that a labelled
+     button is the first thing that should give up its width; the icon still says what it is. */
+  @media (max-width: 1179.98px) {
+    .chat-fab-word {
+      display: none;
+    }
+    .chat-fab {
+      padding: 0 10px;
+    }
   }
 
+  /* Hung from the masthead, under the control that opens it, rather than rising from the corner.
+     Fixed rather than absolute inside `.header-find`: the bar is a flex row with its own overflow
+     and stacking, and anchoring a 640px panel inside it makes the panel a layout problem. Top is
+     the header's own height token, so the two cannot drift apart. */
   .chat-panel {
     position: fixed;
     z-index: 61;
     right: var(--gutter);
-    bottom: calc(var(--gutter) + 64px);
+    top: calc(var(--header-h) + 8px);
     display: flex;
     flex-direction: column;
     width: min(392px, calc(100vw - var(--gutter) * 2));
@@ -315,7 +347,7 @@
   @keyframes chat-in {
     from {
       opacity: 0;
-      transform: translateY(10px) scale(0.985);
+      transform: translateY(-10px) scale(0.985);
     }
   }
   @media (prefers-reduced-motion: reduce) {

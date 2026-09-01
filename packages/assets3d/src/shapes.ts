@@ -328,6 +328,124 @@ export function ring(rOuter: number, rInner: number, h: number, seg: number, c: 
   );
 }
 
+export interface SackOptions {
+  /** Cross-section squareness. 2 = an ellipse, 6 = nearly a box; a filled sack sits around 3.2. */
+  squareness?: number;
+  /** Material for the printed panel across the top. Omitted = one mesh, body material throughout. */
+  panel?: Material;
+  /**
+   * Material for the print on the UNDERSIDE. A sack is printed both sides, and the model is
+   * orbited on the product page even though the AR view only ever rests it on a floor — so the
+   * back photo belongs on the mesh, not thrown away because one surface happens to hide it.
+   */
+  underPanel?: Material;
+  /** Fraction of the length and width the panel covers. */
+  panelSpan?: [number, number];
+  segments?: [number, number];
+}
+
+/**
+ * A filled bag lying on its side — cement, sand, plaster, anything sold by the sack.
+ *
+ * A box is not a bag, and on the front of an AR view the difference is the whole thing: a 50 kg
+ * sack of cement drawn as `box(w, d, h)` reads as a slab of polystyrene, which is exactly what it
+ * looked like. What makes it a bag is that the middle is fat and the two ends are pinched into
+ * flat seams, so the silhouette is never a straight line.
+ *
+ * The surface is a superellipse swept along the length, with two independent pinch profiles:
+ * THICKNESS collapses towards the ends (a sealed seam is thin) while WIDTH barely changes (a seam
+ * is as wide as the bag). One profile for both gives a torpedo, which is a different object.
+ *
+ * The bottom is flattened where it meets the floor, because the mass of the contents does that
+ * and a sack floating on two round edges reads as inflatable.
+ *
+ * UVs: u along the length, v around the section, so a printed panel or a bag photo wraps the way
+ * a real print does.
+ */
+export function sack(length: number, thickness: number, width: number, c: V3, mat: Material, opts: SackOptions = {}): MeshData[] {
+  const n = opts.squareness ?? 3.2;
+  const [nu, nv] = opts.segments ?? [40, 36];
+  const [px, pz] = opts.panelSpan ?? [0.62, 0.66];
+  const [cx, cy, cz] = c;
+  const body = new Builder(mat);
+  const panel = opts.panel ? new Builder(opts.panel) : null;
+  const under = opts.underPanel ? new Builder(opts.underPanel) : null;
+
+  /** Superellipse radius at angle t for unit half-axes. */
+  const se = (t: number): [number, number] => {
+    const ct = Math.cos(t),
+      st = Math.sin(t);
+    const k = 2 / n;
+    return [Math.sign(ct) * Math.abs(ct) ** k, Math.sign(st) * Math.abs(st) ** k];
+  };
+  /* |t| -> 1 at the ends. Thickness dies away fast and stops at a seam of real thickness; width
+     only tucks in a little. */
+  const fy = (t: number) => Math.max(0.05, (1 - Math.abs(t) ** 8) ** 0.32);
+  const fz = (t: number) => 1 - 0.16 * Math.abs(t) ** 4;
+
+  const point = (i: number, j: number): { p: V3; uv: V2 } => {
+    const t = (i / nu) * 2 - 1;
+    const a = (j / nv) * Math.PI * 2;
+    const [ez, ey] = se(a);
+    const halfT = (thickness / 2) * fy(t);
+    /* Flatten the underside: the floor takes the bottom third out of the section. */
+    const yUnit = ey < 0 ? ey * 0.62 : ey;
+    return {
+      p: [cx + (t * length) / 2, cy + halfT + yUnit * halfT, cz + ez * (width / 2) * fz(t)],
+      uv: [i / nu, j / nv],
+    };
+  };
+
+  /* v = 0.25 is the top of the section (sin a = 1) and v = 0.75 the underside. */
+  const near = (j: number, centre: number) => {
+    const v = (j % nv) / nv;
+    return Math.min(Math.abs(v - centre), 1 - Math.abs(v - centre)) <= pz * 0.25;
+  };
+  const inPanel = (i: number, j: number) => Math.abs((i / nu) * 2 - 1) <= px && near(j, 0.25);
+  const inUnder = (i: number, j: number) => Math.abs((i / nu) * 2 - 1) <= px && near(j, 0.75);
+
+  /* Two vertex tables, because a quad belongs wholly to one mesh or the other and a shared
+     table would put panel indices into the body's buffer. */
+  const key = (i: number, j: number) => `${i}:${j % nv}`;
+  const idx = new Map<string, number>();
+  const pIdx = new Map<string, number>();
+  const uIdx = new Map<string, number>();
+  const vert = (b: Builder, table: Map<string, number>, i: number, j: number): number => {
+    const k = key(i, j);
+    const hit = table.get(k);
+    if (hit !== undefined) return hit;
+    const { p, uv } = point(i, j % nv === j ? j : j % nv);
+    /* Central-difference normal from the two neighbouring rings and columns. */
+    const a = point(Math.min(nu, i + 1), j).p,
+      bb = point(Math.max(0, i - 1), j).p;
+    const cc = point(i, (j + 1) % nv).p,
+      dd = point(i, (j - 1 + nv) % nv).p;
+    const nrm = norm(cross(sub(a, bb), sub(cc, dd)));
+    const v = b.vertex(p, nrm, uv);
+    table.set(k, v);
+    return v;
+  };
+
+  for (let i = 0; i < nu; i++)
+    for (let j = 0; j < nv; j++) {
+      const usePanel = panel && inPanel(i, j) && inPanel(i + 1, j) && inPanel(i, j + 1) && inPanel(i + 1, j + 1);
+      const useUnder = !usePanel && under && inUnder(i, j) && inUnder(i + 1, j) && inUnder(i, j + 1) && inUnder(i + 1, j + 1);
+      const b = usePanel ? panel : useUnder ? under : body;
+      const table = usePanel ? pIdx : useUnder ? uIdx : idx;
+      const a = vert(b, table, i, j),
+        bb = vert(b, table, i + 1, j),
+        cc = vert(b, table, i + 1, j + 1),
+        dd = vert(b, table, i, j + 1);
+      b.face(a, bb, cc);
+      b.face(a, cc, dd);
+    }
+
+  const out = [body.mesh()];
+  if (panel && pIdx.size) out.push(panel.mesh());
+  if (under && uIdx.size) out.push(under.mesh());
+  return out;
+}
+
 /** sRGB (0–1) → linear, for a `baseColorFactor` taken from a photo's mean colour. */
 export const srgbToLinear = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
 
@@ -390,4 +508,20 @@ export const MAT = {
   tripodLeg: { name: 'tripod-leg', color: [0.88, 0.88, 0.9, 1], metallic: 0.85, roughness: 0.3 } as Material,
   tripodShoe: { name: 'tripod-shoe', color: [0.12, 0.12, 0.14, 1], metallic: 0.6, roughness: 0.5 } as Material,
   groutJoint: { name: 'grout-joint', color: [0.75, 0.74, 0.7, 1], metallic: 0, roughness: 0.95 } as Material,
+  /* Woven polypropylene, the sack every Indian cement brand ships in: near-white, faintly warm,
+     and matte enough that the bulge reads as fabric under a key light rather than as plastic.
+     NOTE THE VALUES ARE LINEAR. glTF baseColorFactor is linear light, and gltf.ts writes
+     `m.color` straight through, so an sRGB-looking 0.9 here would render around 0.96 and blow
+     out under the key light — which is what happened to the first panel colour below. 0.72
+     linear is about 0.88 sRGB, a white sack that still has shading in it. */
+  sackWoven: { name: 'sack-woven', color: [0.72, 0.71, 0.67, 1], metallic: 0, roughness: 0.94 } as Material,
+  /* The printed panel across the top of a bag. Deliberately a neutral slate, not a brand colour:
+     the catalogue has no photograph of the right bag, so the panel says "this face is printed"
+     without saying whose print it is. */
+  sackPanel: { name: 'sack-panel', color: [0.075, 0.085, 0.1, 1], metallic: 0, roughness: 0.85 } as Material,
+  /* The ring of infra-red LEDs around a camera lens: dark, slightly violet, and glossy, which is
+     how the filter glass over them reads with the illuminators off. It is the one detail that
+     makes a white blob on a wall legible as a camera. */
+  displayGlass: { name: 'display-glass', color: [0.05, 0.07, 0.06, 1], metallic: 0.1, roughness: 0.08 } as Material,
+  irWindow: { name: 'ir-window', color: [0.028, 0.026, 0.038, 1], metallic: 0.25, roughness: 0.1 } as Material,
 };

@@ -151,7 +151,7 @@ export default async function Home() {
 
             <ul className="cat-grid stagger">
               {stocked.map((c, i) => (
-                /* --i drives the stagger: three columns, so the modulo makes each row cascade
+                /* --i drives the stagger: four columns, so the modulo makes each row cascade
                    left-to-right rather than the whole row arriving at once.
 
                    NO TILE IS EAGER, and `priority` is deliberately not passed. The hero ends at
@@ -159,7 +159,7 @@ export default async function Home() {
                    nothing here is on the first screen at either size. Preloading the first row
                    would put four `<link rel=preload as=image>` for invisible thumbnails on the
                    same connection as the hero photograph, which IS the largest contentful paint. */
-                <li key={c.slug} style={{ '--i': i % 3 } as React.CSSProperties}>
+                <li key={c.slug} style={{ '--i': i % 4 } as React.CSSProperties}>
                   <CategoryTile
                     href={`/c/${c.slug}`}
                     name={c.name}
@@ -186,7 +186,7 @@ export default async function Home() {
               </div>
               <ul className="cat-grid cat-grid--compact stagger">
                 {coming.map((c, i) => (
-                  <li key={c.slug} style={{ '--i': i % 6 } as React.CSSProperties}>
+                  <li key={c.slug} style={{ '--i': i % 4 } as React.CSSProperties}>
                     <CategoryTile href={`/c/${c.slug}`} name={c.name} heroImageKey={c.heroImageKey} soon compact />
                   </li>
                 ))}

@@ -10,7 +10,9 @@
     "media:generate": "tsx src/media/generate-site-art.ts",
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run --passWithNoTests",
-    "validate": "tsx src/validate-curated.ts"
+    "validate": "tsx src/validate-curated.ts",
+    "images:classify": "tsx tools/classify-images.mts",
+    "images:source": "tsx tools/source-product-photos.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

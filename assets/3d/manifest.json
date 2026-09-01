@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T13:26:37.810Z",
+  "generated_at": "2026-09-01T08:22:48.630Z",
   "assets": {
     "EPX-SIK-SIKADUR31IN": {
       "file": "EPX-SIK-SIKADUR31IN.glb",
@@ -20,11 +20,11 @@
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-25T10:34:20.500Z",
       "source_images": [
         "skus/f1/EPX-SIK-SIKADUR31IN/img/1-orig.jpg"
       ],
       "job_id": "01a03879-e082-7f28-89d4-8329d86aab0a",
-      "generated_at": "2026-08-25T10:34:20.500Z",
       "axis_map": "x,y,z",
       "front_yaw_deg": 180,
       "quality_report": {
@@ -50,102 +50,65 @@
       "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "EPX-FOS-CONBEXTRAEP10": {
-      "file": "EPX-FOS-CONBEXTRAEP10.glb",
+      "file": "placeholders/EPX-FOS-CONBEXTRAEP10.glb",
       "category": "epoxy",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 175,
         "h": 160,
         "d": 110
       },
       "bbox_m": {
-        "x": 0.17499999701976776,
-        "y": 0.038421083241701126,
-        "z": 0.019994904287159443
+        "x": 0.10847130045294762,
+        "y": 0.16733470559120178,
+        "z": 0.07161000370979309
       },
-      "triangles": 84409,
-      "builder": "photoreal",
+      "triangles": 1608,
+      "builder": "epoxy",
+      "variant": "two-part-kit",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/98/EPX-FOS-CONBEXTRAEP10/img/1-orig.webp"
-      ],
-      "job_id": "01a0390b-3be9-7538-9755-ad3d4778f68a",
-      "generated_at": "2026-08-25T13:13:04.651Z",
-      "axis_map": "x,y,z",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.8182281487284065,
-        "warnings": [
-          "meshy: aspect mismatch 82 % vs spec (warn > 15 %)",
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 9.7 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
-      "textures": {
-        "count": 3,
-        "max_px": 2048,
-        "sources": [
-          "meshy"
-        ]
-      },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:46.423Z",
+      "note": "generated model rejected — Degenerate: floating text and a small cube."
     },
     "EPX-PID-EPOXYINJGROUT": {
-      "file": "EPX-PID-EPOXYINJGROUT.glb",
+      "file": "placeholders/EPX-PID-EPOXYINJGROUT.glb",
       "category": "epoxy",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 230,
         "h": 210,
         "d": 155
       },
       "bbox_m": {
-        "x": 0.23000000417232513,
-        "y": 0.15968094766139984,
-        "z": 0.06908740103244781
+        "x": 0.15161865204572678,
+        "y": 0.22098371386528015,
+        "z": 0.10090500116348267
       },
-      "triangles": 98580,
-      "builder": "photoreal",
+      "triangles": 1464,
+      "builder": "epoxy",
+      "variant": "two-part-kit",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/a4/EPX-PID-EPOXYINJGROUT/img/1-orig.webp"
-      ],
-      "job_id": "01a0390d-a34c-724b-b9f1-73f75458bd5b",
-      "generated_at": "2026-08-25T13:15:26.206Z",
-      "axis_map": "-y,x,z",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.5542748284337932,
-        "warnings": [
-          "meshy: aspect mismatch 55 % vs spec (warn > 15 %)",
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 9.6 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
+      "quality": "textured",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:46.679Z",
       "textures": {
-        "count": 3,
-        "max_px": 2048,
+        "count": 1,
+        "max_px": 1024,
         "sources": [
-          "meshy"
+          "skus/a4/EPX-PID-EPOXYINJGROUT/img/6-orig.jpg"
+        ],
+        "mean_colour": [
+          0.6884873729351342,
+          0.6738184606972321,
+          0.6680604354807013
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "source_images": [
+        "skus/a4/EPX-PID-EPOXYINJGROUT/img/6-orig.jpg"
+      ],
+      "note": "generated model rejected — A human hand holding a bottle. The source photo is a hand demonstrating the nozzle and the reconstruction kept the hand."
     },
     "FIR-CEA-MAP90-4KG": {
       "file": "placeholders/FIR-CEA-MAP90-4KG.glb",
@@ -161,13 +124,29 @@
         "y": 0.39673173427581787,
         "z": 0.12309600040316582
       },
-      "triangles": 1052,
+      "triangles": 1112,
       "builder": "fire-extinguishers",
       "variant": "stored-pressure",
       "usdz": null,
-      "quality": "placeholder",
+      "quality": "textured",
       "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.488Z"
+      "generated_at": "2026-09-01T08:22:47.194Z",
+      "textures": {
+        "count": 1,
+        "max_px": 1024,
+        "sources": [
+          "skus/03/FIR-CEA-MAP90-4KG/img/1-orig.png"
+        ],
+        "mean_colour": [
+          0.22733441521139705,
+          0.18127704695159313,
+          0.22426440669041053
+        ]
+      },
+      "source_images": [
+        "skus/03/FIR-CEA-MAP90-4KG/img/1-orig.png"
+      ],
+      "note": "label band = middle band of the hero with wall mounting bracket"
     },
     "FIR-SAF-ABC-SP-6KG": {
       "file": "FIR-SAF-ABC-SP-6KG.glb",
@@ -188,11 +167,11 @@
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-25T10:39:19.878Z",
       "source_images": [
         "skus/8a/FIR-SAF-ABC-SP-6KG/img/1-orig.webp"
       ],
       "job_id": "01a0387e-8798-78de-bf44-098bdfab007c",
-      "generated_at": "2026-08-25T10:39:19.878Z",
       "axis_map": "z,y,-x",
       "front_yaw_deg": 270,
       "quality_report": {
@@ -218,52 +197,42 @@
       "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "FIR-NEW-CA-EB-01": {
-      "file": "FIR-NEW-CA-EB-01.glb",
+      "file": "placeholders/FIR-NEW-CA-EB-01.glb",
       "category": "fire-extinguishers",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 300,
         "h": 800,
         "d": 300
       },
       "bbox_m": {
-        "x": 0.5409404039382935,
-        "y": 0.800000011920929,
-        "z": 0.25036241859197617
+        "x": 0.2703000009059906,
+        "y": 0.7109067440032959,
+        "z": 0.2569199949502945
       },
-      "triangles": 97339,
-      "builder": "photoreal",
+      "triangles": 1112,
+      "builder": "fire-extinguishers",
+      "variant": "stored-pressure",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/c7/FIR-NEW-CA-EB-01/img/1-orig.jpg"
-      ],
-      "job_id": "01a0387c-3b05-781e-80b5-97ac6997806c",
-      "generated_at": "2026-08-25T10:36:51.179Z",
-      "axis_map": "x,y,z",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": 0.5526872619551417,
-        "aspect_mismatch": 0.8031346593522558,
-        "warnings": [
-          "meshy: aspect mismatch 80 % vs spec (warn > 15 %)",
-          "meshy: GLB is 10.1 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
+      "quality": "textured",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:47.365Z",
       "textures": {
-        "count": 3,
-        "max_px": 2048,
+        "count": 1,
+        "max_px": 1024,
         "sources": [
-          "meshy"
+          "skus/c7/FIR-NEW-CA-EB-01/img/1-orig.png"
+        ],
+        "mean_colour": [
+          0.16215880150888481,
+          0.18661696490119487,
+          0.22701637417662376
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "source_images": [
+        "skus/c7/FIR-NEW-CA-EB-01/img/1-orig.png"
+      ],
+      "note": "generated model rejected — A portable extinguisher, but this SKU is an extinguisher CABINET (CA-EB-01) - the images are right and the model is of the wrong object."
     },
     "SOL-WAA-BI55-545": {
       "file": "SOL-WAA-BI55-545.glb",
@@ -284,11 +253,11 @@
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-25T12:34:48.866Z",
       "source_images": [
         "skus/09/SOL-WAA-BI55-545/img/1-orig.webp"
       ],
       "job_id": "01a038e8-086a-75d1-88bd-5ac46ca5226c",
-      "generated_at": "2026-08-25T12:34:48.866Z",
       "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -329,65 +298,67 @@
         "y": 0.7972999811172485,
         "z": 2.2780001163482666
       },
-      "triangles": 228,
+      "triangles": 156,
       "builder": "solar-panels",
       "variant": "framed-module",
       "usdz": null,
-      "quality": "placeholder",
+      "quality": "textured",
       "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.502Z"
+      "generated_at": "2026-09-01T08:22:47.623Z",
+      "textures": {
+        "count": 1,
+        "max_px": 1024,
+        "sources": [
+          "skus/7b/SOL-ADA-ASB-M10-144-575/img/3-orig.png"
+        ],
+        "mean_colour": [
+          0.4000559340826025,
+          0.37808799682503214,
+          0.3705794886066204
+        ]
+      },
+      "source_images": [
+        "skus/7b/SOL-ADA-ASB-M10-144-575/img/3-orig.png"
+      ],
+      "note": "cell face = hero cut-out with tilt mounting rack"
     },
     "SOL-VIK-PARADEA-550": {
-      "file": "SOL-VIK-PARADEA-550.glb",
+      "file": "placeholders/SOL-VIK-PARADEA-550.glb",
       "category": "solar-panels",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 1134,
         "h": 2278,
         "d": 30
       },
       "bbox_m": {
-        "x": 0.7863850593566895,
-        "y": 2.277999997138977,
-        "z": 0.03000000026077032
+        "x": 1.1339999437332153,
+        "y": 0.7972999811172485,
+        "z": 2.2780001163482666
       },
-      "triangles": 97654,
-      "builder": "photoreal",
+      "triangles": 156,
+      "builder": "solar-panels",
+      "variant": "framed-module",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/f7/SOL-VIK-PARADEA-550/img/1-orig.png"
-      ],
-      "job_id": "01a038d9-2acf-7f2b-b604-7e9167f9b8ca",
-      "generated_at": "2026-08-25T12:18:47.224Z",
-      "axis_map": "x,y,z",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.3065387548373482,
-        "warnings": [
-          "meshy: sheet product: z scaled to 30 mm independently (255 mm under a uniform scale)",
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: sheet product: z scaled to 30 mm independently (209 mm under a uniform scale)",
-          "meshy: aspect mismatch 31 % vs spec (warn > 15 %)",
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 11.5 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
+      "quality": "textured",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:47.776Z",
       "textures": {
-        "count": 3,
-        "max_px": 2048,
+        "count": 1,
+        "max_px": 1024,
         "sources": [
-          "meshy"
+          "skus/f7/SOL-VIK-PARADEA-550/img/6-orig.png"
+        ],
+        "mean_colour": [
+          0.11553191479743671,
+          0.1357317587914463,
+          0.2024594955444684
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "source_images": [
+        "skus/f7/SOL-VIK-PARADEA-550/img/6-orig.png"
+      ],
+      "note": "generated model rejected — Judged 0.00 against its own source photograph, same_product=false — \"a completely different object, a surrealist artistic sculpture\". Twice: the first attempt embossed a human figure across the panel (0.34). A flat rectangular module gives single-image photogrammetry no depth cue to work from, so the provider invents one. The parametric framed module at 1134 x 2278 is the honest picture."
     },
     "TIL-KAJ-GP00215": {
       "file": "TIL-KAJ-GP00215.glb",
@@ -408,11 +379,11 @@
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-25T10:58:14.187Z",
       "source_images": [
         "skus/82/TIL-KAJ-GP00215/img/1-orig.jpg"
       ],
       "job_id": "01a03890-21ca-74e5-8e62-b201d095f830",
-      "generated_at": "2026-08-25T10:58:14.187Z",
       "axis_map": "-y,x,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -438,54 +409,42 @@
       "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "TIL-SOM-T31F119001859102": {
-      "file": "TIL-SOM-T31F119001859102.glb",
+      "file": "placeholders/TIL-SOM-T31F119001859102.glb",
       "category": "tiles",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 600,
         "h": 1200,
         "d": 9
       },
       "bbox_m": {
-        "x": 0.5175255537033081,
-        "y": 1.199999988079071,
-        "z": 0.009000000078231096
+        "x": 0.6000000238418579,
+        "y": 0.008999999612569809,
+        "z": 1.2000000476837158
       },
-      "triangles": 98000,
-      "builder": "photoreal",
+      "triangles": 24,
+      "builder": "tiles",
+      "variant": "slab",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/52/TIL-SOM-T31F119001859102/img/1-orig.jpg"
-      ],
-      "job_id": "01a03914-9626-781c-aac2-e97baf8dab5c",
-      "generated_at": "2026-08-25T13:23:38.811Z",
-      "axis_map": "x,y,z",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.13745743071627903,
-        "warnings": [
-          "meshy: simplified 1,03,464 → 98,000 triangles",
-          "meshy: sheet product: z scaled to 9 mm independently (344 mm under a uniform scale)",
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 9.6 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
+      "quality": "textured",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:48.383Z",
       "textures": {
-        "count": 3,
-        "max_px": 2048,
+        "count": 1,
+        "max_px": 1024,
         "sources": [
-          "meshy"
+          "skus/52/TIL-SOM-T31F119001859102/img/1-orig.png"
+        ],
+        "mean_colour": [
+          0.0493007994025476,
+          0.1710565689768802,
+          0.20767139017427028
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "source_images": [
+        "skus/52/TIL-SOM-T31F119001859102/img/1-orig.png"
+      ],
+      "note": "generated model rejected — A human figure. The five source images are all clean tile faces, so this is the provider failing on its own, which is the reason a gate has to exist at all rather than only better inputs."
     },
     "TIL-JOH-YK1FLCR000000PJ": {
       "file": "TIL-JOH-YK1FLCR000000PJ.glb",
@@ -506,11 +465,11 @@
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-25T12:37:37.019Z",
       "source_images": [
         "skus/76/TIL-JOH-YK1FLCR000000PJ/img/1-orig.jpg"
       ],
       "job_id": "01a038ea-aae1-7697-85b6-79dbe05bfd8e",
-      "generated_at": "2026-08-25T12:37:37.019Z",
       "axis_map": "-y,x,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -556,11 +515,11 @@
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-23T19:18:23.275Z",
       "source_images": [
         "skus/1b/BUL-PHI-ACESAVER9WB22/img/1-orig.jpg"
       ],
       "job_id": "01a0300d-4b61-799a-a2ee-63e505655796",
-      "generated_at": "2026-08-23T19:18:23.275Z",
       "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -585,98 +544,50 @@
       "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "BUL-HAV-LEDPLUS9WB22": {
-      "file": "BUL-HAV-LEDPLUS9WB22.glb",
+      "file": "placeholders/BUL-HAV-LEDPLUS9WB22.glb",
       "category": "bulbs",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 60,
         "h": 113,
         "d": 60
       },
       "bbox_m": {
-        "x": 0.051272548735141754,
-        "y": 0.11300000175833702,
-        "z": 0.10384175926446915
+        "x": 0.05999999865889549,
+        "y": 0.11299999803304672,
+        "z": 0.05999999865889549
       },
-      "triangles": 89856,
-      "builder": "photoreal",
+      "triangles": 1212,
+      "builder": "bulbs",
+      "variant": "a60-b22",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/65/BUL-HAV-LEDPLUS9WB22/img/1-orig.webp"
-      ],
-      "job_id": "01a03904-116e-7df6-9049-3ced9fc410e5",
-      "generated_at": "2026-08-25T13:05:31.346Z",
-      "axis_map": "x,z,-y",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": 0.7843498273878021,
-        "aspect_mismatch": 0.7306960292494801,
-        "warnings": [
-          "meshy: aspect mismatch 73 % vs spec (warn > 15 %)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
-      "textures": {
-        "count": 3,
-        "max_px": 2048,
-        "sources": [
-          "meshy"
-        ]
-      },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:46.417Z",
+      "note": "generated model rejected — The model is the retail carton. Image 1 is the Havells 9W box with the bulb printed on its face, so that is what came back - a cuboid wearing box artwork."
     },
     "BUL-WIP-GARNET9WB22": {
-      "file": "BUL-WIP-GARNET9WB22.glb",
+      "file": "placeholders/BUL-WIP-GARNET9WB22.glb",
       "category": "bulbs",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 60,
         "h": 110,
         "d": 60
       },
       "bbox_m": {
-        "x": 0.10741482675075531,
+        "x": 0.05999999865889549,
         "y": 0.10999999940395355,
-        "z": 0.07082313299179077
+        "z": 0.05999999865889549
       },
-      "triangles": 95051,
-      "builder": "photoreal",
+      "triangles": 1212,
+      "builder": "bulbs",
+      "variant": "a60-b22",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/bc/BUL-WIP-GARNET9WB22/img/1-orig.webp"
-      ],
-      "job_id": "01a0386e-18f2-7bdd-b9c7-a5f3e5ab0e48",
-      "generated_at": "2026-08-25T10:21:27.288Z",
-      "axis_map": "-y,x,z",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": 0.7491224299734938,
-        "aspect_mismatch": 0.7902471093666347,
-        "warnings": [
-          "meshy: aspect mismatch 79 % vs spec (warn > 15 %)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
-      "textures": {
-        "count": 3,
-        "max_px": 2048,
-        "sources": [
-          "meshy"
-        ]
-      },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:46.409Z",
+      "note": "generated model rejected — The carton again, with two loose bulbs fused to it. Image 1 is the Wipro Garnet box beside its contents."
     },
     "CEM-ULT-PPC50": {
       "file": "CEM-ULT-PPC50.glb",
@@ -697,11 +608,11 @@
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-25T10:29:17.994Z",
       "source_images": [
         "skus/89/CEM-ULT-PPC50/img/1-orig.png"
       ],
       "job_id": "01a03875-53e7-7006-a25b-ff7f60763031",
-      "generated_at": "2026-08-25T10:29:17.994Z",
       "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -727,102 +638,80 @@
       "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
     },
     "CEM-ACC-SP50": {
-      "file": "CEM-ACC-SP50.glb",
+      "file": "placeholders/CEM-ACC-SP50.glb",
       "category": "cement",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 450,
         "h": 700,
         "d": 140
       },
       "bbox_m": {
-        "x": 0.211517833173275,
-        "y": 0.699999988079071,
-        "z": 0.2001945599913597
+        "x": 0.44999998807907104,
+        "y": 0.13867000059690326,
+        "z": 0.699999988079071
       },
-      "triangles": 60249,
-      "builder": "photoreal",
+      "triangles": 2880,
+      "builder": "cement",
+      "variant": "bag-flat",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/bd/CEM-ACC-SP50/img/1-orig.webp"
-      ],
-      "job_id": "01a03873-33db-7d5f-9897-381a9db3499a",
-      "generated_at": "2026-08-25T10:26:48.124Z",
-      "axis_map": "z,x,y",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.5299603785556852,
-        "warnings": [
-          "meshy: aspect mismatch 53 % vs spec (warn > 15 %)",
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 8.1 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
+      "quality": "textured",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:46.010Z",
       "textures": {
-        "count": 3,
-        "max_px": 2048,
+        "count": 1,
+        "max_px": 1024,
         "sources": [
-          "meshy"
+          "skus/bd/CEM-ACC-SP50/img/6-orig.jpg"
+        ],
+        "mean_colour": [
+          0.7161161299324265,
+          0.52378652427441,
+          0.5593189942470875
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "source_images": [
+        "skus/bd/CEM-ACC-SP50/img/6-orig.jpg"
+      ],
+      "note": "generated model rejected — Degenerate: a few floating fragments and unreadable text, no bag. Nothing here is a 50 kg sack."
     },
     "CEM-AMB-PLUS50": {
-      "file": "CEM-AMB-PLUS50.glb",
+      "file": "placeholders/CEM-AMB-PLUS50.glb",
       "category": "cement",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 450,
         "h": 700,
         "d": 140
       },
       "bbox_m": {
-        "x": 0.40760013461112976,
-        "y": 0.699999988079071,
-        "z": 0.2362629473209381
+        "x": 0.44999998807907104,
+        "y": 0.13867000059690326,
+        "z": 0.699999988079071
       },
-      "triangles": 98781,
-      "builder": "photoreal",
+      "triangles": 2880,
+      "builder": "cement",
+      "variant": "bag-flat",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/3f/CEM-AMB-PLUS50/img/1-orig.webp"
-      ],
-      "job_id": "01a03875-eeb5-7df9-acd1-4f833b2c36d1",
-      "generated_at": "2026-08-25T10:30:20.596Z",
-      "axis_map": "-y,x,z",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": 0.4904598289348637,
-        "aspect_mismatch": 0.6875924761237764,
-        "warnings": [
-          "meshy: aspect mismatch 69 % vs spec (warn > 15 %)",
-          "meshy: front uncertain: best silhouette IoU 0.49 at 0°",
-          "meshy: GLB is 10.0 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
+      "quality": "textured",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:46.292Z",
       "textures": {
-        "count": 3,
-        "max_px": 2048,
+        "count": 1,
+        "max_px": 1024,
         "sources": [
-          "meshy"
+          "skus/3f/CEM-AMB-PLUS50/img/6-orig.jpg"
+        ],
+        "mean_colour": [
+          0.7165872935496751,
+          0.5618509608311361,
+          0.4287640999106763
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "source_images": [
+        "skus/3f/CEM-AMB-PLUS50/img/6-orig.jpg"
+      ],
+      "note": "generated model rejected — A rival brand's bag. Image 1 for this SKU is a Dalmia sack, and the model wears Dalmia's blue and yellow livery on an Ambuja SKU - the exact thing isRivalHost() exists to stop, arriving as geometry instead of as an image."
     },
     "DEMO-BATHTUB": {
       "file": "placeholders/DEMO-BATHTUB.glb",
@@ -844,7 +733,7 @@
       "usdz": null,
       "quality": "placeholder",
       "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.556Z"
+      "generated_at": "2026-09-01T08:22:48.629Z"
     },
     "CCT-HIK-2CE76D0T-ITPFS": {
       "file": "CCT-HIK-2CE76D0T-ITPFS.glb",
@@ -856,33 +745,33 @@
         "d": 84.6
       },
       "bbox_m": {
-        "x": 0.08460000157356262,
-        "y": 0.07665375247597694,
-        "z": 0.08452161028981209
+        "x": 0.08459999784827232,
+        "y": 0.07670792937278748,
+        "z": 0.08460325375199318
       },
-      "triangles": 97348,
+      "triangles": 97776,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-30T13:16:57.795Z",
       "source_images": [
-        "skus/73/CCT-HIK-2CE76D0T-ITPFS/img/1-orig.png"
+        "CCT-HIK-2CE76D0T-ITPFS#6"
       ],
-      "job_id": "01a03870-6c7b-7edb-accb-950c883908fd",
-      "generated_at": "2026-08-25T10:24:37.002Z",
+      "job_id": "01a052ce-5145-769a-9527-83066b6e1d37",
       "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
-        "silhouette_iou": 0.8547739834936019,
-        "aspect_mismatch": 0.028469557481775445,
+        "silhouette_iou": 0.8530191681187969,
+        "aspect_mismatch": 0.027782906721152488,
         "warnings": [
-          "meshy: GLB is 8.2 MB (warn > 8 MB)",
+          "judge skipped — colourspace: parameter space not set",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — colourspace: parameter space not set"
       },
       "textures": {
         "count": 3,
@@ -891,7 +780,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge 0.82 (silhouette 0.85, colour 0.80, branding 0.90) — Lens bezel has visible pixelation/jagged edges suggesting lower polygon geometry; Lens interior appears overly dark/black compared to photo's more detailed lens structure; Minor surface roughness visible on white body inconsistent with photo's smooth finish; Lens frame ring proportions slightly less defined than reference photo"
     },
     "CCT-DAH-HDW1200TRQP": {
       "file": "placeholders/CCT-DAH-HDW1200TRQP.glb",
@@ -903,17 +792,33 @@
         "d": 97.1
       },
       "bbox_m": {
-        "x": 0.10486800223588943,
-        "y": 0.07460000365972519,
-        "z": 0.10486800223588943
+        "x": 0.10098399966955185,
+        "y": 0.0931871251668781,
+        "z": 0.10098399966955185
       },
-      "triangles": 1728,
+      "triangles": 3444,
       "builder": "cctv",
-      "variant": "dome",
+      "variant": "turret",
       "usdz": null,
-      "quality": "placeholder",
+      "quality": "textured",
       "provider": "parametric",
-      "generated_at": "2026-08-23T15:51:30.526Z"
+      "generated_at": "2026-09-01T08:22:48.535Z",
+      "textures": {
+        "count": 0,
+        "max_px": 1024,
+        "sources": [
+          "skus/81/CCT-DAH-HDW1200TRQP/img/6-orig.png"
+        ],
+        "mean_colour": [
+          0.7079271667755911,
+          0.7232078308801129,
+          0.7402433147536784
+        ]
+      },
+      "source_images": [
+        "skus/81/CCT-DAH-HDW1200TRQP/img/6-orig.png"
+      ],
+      "note": "body colour from the hero photo"
     },
     "CCT-CPP-USC-TA24L2C-L": {
       "file": "CCT-CPP-USC-TA24L2C-L.glb",
@@ -926,32 +831,33 @@
       },
       "bbox_m": {
         "x": 0.16340000182390213,
-        "y": 0.07415196299552917,
-        "z": 0.07422082126140594
+        "y": 0.0706801749765873,
+        "z": 0.07279004529118538
       },
-      "triangles": 98505,
+      "triangles": 98276,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-30T13:14:04.956Z",
       "source_images": [
-        "skus/4f/CCT-CPP-USC-TA24L2C-L/img/1-orig.png"
+        "CCT-CPP-USC-TA24L2C-L#6"
       ],
-      "job_id": "01a03870-675b-7ed9-9ec3-e967957c419a",
-      "generated_at": "2026-08-25T10:24:28.691Z",
+      "job_id": "01a052cc-016e-7663-aba3-fce4a59192b8",
       "axis_map": "x,y,z",
       "front_yaw_deg": 270,
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
-        "silhouette_iou": 0.6798128342245989,
-        "aspect_mismatch": 0.06387320680539427,
+        "silhouette_iou": 0.677231025854879,
+        "aspect_mismatch": 0.03985781828670356,
         "warnings": [
-          "meshy: GLB is 9.0 MB (warn > 8 MB)",
+          "meshy: GLB is 8.6 MB (warn > 8 MB)",
+          "judge skipped — colourspace: parameter space not set",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — colourspace: parameter space not set"
       },
       "textures": {
         "count": 3,
@@ -960,7 +866,7 @@
           "meshy"
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge 0.82 (silhouette 0.85, colour 0.80, branding 0.90) — render shows front-facing view while photo shows side angle - perspective differs significantly; barrel proportions slightly more rounded in render than photo"
     },
     "GLS-SGB-SUNBAN-SAPPHIRE5": {
       "file": "placeholders/GLS-SGB-SUNBAN-SAPPHIRE5.glb",
@@ -972,33 +878,17 @@
         "d": 5
       },
       "bbox_m": {
-        "x": 1.6019552946090698,
-        "y": 1.800000011920929,
-        "z": 0.004999999888241291
+        "x": 1.2000000476837158,
+        "y": 1.7999999523162842,
+        "z": 0.005100000184029341
       },
-      "triangles": 90524,
-      "builder": "photoreal",
+      "triangles": 24,
+      "builder": "glass",
+      "variant": "pane",
       "usdz": null,
       "quality": "placeholder",
       "provider": "parametric",
-      "source_images": [
-        "skus/2a/GLS-SGB-SUNBAN-SAPPHIRE5/img/1-orig.webp"
-      ],
-      "job_id": "01a038d3-8a93-7d64-815a-acbcad9d1556",
-      "generated_at": "2026-08-25T12:12:47.383Z",
-      "axis_map": "x,y,z",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "note": "image-to-3D skipped: architectural glass is photographed as a facade, so the mesh was a building (see NO_IMAGE_TO_3D in packages/assets3d/src/photoreal/run.ts)"
-      },
-      "textures": {
-        "count": 3,
-        "max_px": 2048,
-        "sources": [
-          "meshy"
-        ]
-      },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "generated_at": "2026-09-01T08:22:48.621Z"
     },
     "GLS-AIS-EDGE-NATURAPLUS": {
       "file": "placeholders/GLS-AIS-EDGE-NATURAPLUS.glb",
@@ -1010,33 +900,17 @@
         "d": 6
       },
       "bbox_m": {
-        "x": 1.4164249300956726,
-        "y": 1.800000011920929,
-        "z": 0.006000000052154064
+        "x": 1.2000000476837158,
+        "y": 1.7999999523162842,
+        "z": 0.006120000034570694
       },
-      "triangles": 96806,
-      "builder": "photoreal",
+      "triangles": 24,
+      "builder": "glass",
+      "variant": "pane",
       "usdz": null,
       "quality": "placeholder",
       "provider": "parametric",
-      "source_images": [
-        "skus/e0/GLS-AIS-EDGE-NATURAPLUS/img/1-orig.jpg"
-      ],
-      "job_id": "01a038de-69ad-7385-bc0f-fe5e531131ee",
-      "generated_at": "2026-08-25T12:26:12.791Z",
-      "axis_map": "z,x,y",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "note": "image-to-3D skipped: architectural glass is photographed as a facade, so the mesh was a building (see NO_IMAGE_TO_3D in packages/assets3d/src/photoreal/run.ts)"
-      },
-      "textures": {
-        "count": 3,
-        "max_px": 2048,
-        "sources": [
-          "meshy"
-        ]
-      },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "generated_at": "2026-09-01T08:22:48.619Z"
     },
     "GLS-GUA-CLIMAGUARD-BLUE5": {
       "file": "placeholders/GLS-GUA-CLIMAGUARD-BLUE5.glb",
@@ -1048,33 +922,17 @@
         "d": 5
       },
       "bbox_m": {
-        "x": 1.7964433431625366,
-        "y": 1.800000011920929,
-        "z": 0.004999999888241291
+        "x": 1.2000000476837158,
+        "y": 1.7999999523162842,
+        "z": 0.005100000184029341
       },
-      "triangles": 92900,
-      "builder": "photoreal",
+      "triangles": 24,
+      "builder": "glass",
+      "variant": "pane",
       "usdz": null,
       "quality": "placeholder",
       "provider": "parametric",
-      "source_images": [
-        "skus/52/GLS-GUA-CLIMAGUARD-BLUE5/img/1-orig.jpg"
-      ],
-      "job_id": "01a038d1-2cd2-7ca9-8b88-b9445325ea34",
-      "generated_at": "2026-08-25T12:09:42.521Z",
-      "axis_map": "x,z,-y",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "note": "image-to-3D skipped: architectural glass is photographed as a facade, so the mesh was a building (see NO_IMAGE_TO_3D in packages/assets3d/src/photoreal/run.ts)"
-      },
-      "textures": {
-        "count": 3,
-        "max_px": 2048,
-        "sources": [
-          "meshy"
-        ]
-      },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "generated_at": "2026-09-01T08:22:48.620Z"
     },
     "TST-LEI-TS07-2-R500": {
       "file": "TST-LEI-TS07-2-R500.glb",
@@ -1095,11 +953,11 @@
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-25T12:46:32.521Z",
       "source_images": [
         "skus/ce/TST-LEI-TS07-2-R500/img/1-orig.jpg"
       ],
       "job_id": "01a038f2-cda2-789a-aafc-7000fca04c1b",
-      "generated_at": "2026-08-25T12:46:32.521Z",
       "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
@@ -1133,34 +991,34 @@
         "d": 169
       },
       "bbox_m": {
-        "x": 0.1979087069630623,
+        "x": 0.18558616936206818,
         "y": 0.318000003695488,
-        "z": 0.1893388032913208
+        "z": 0.16462364792823792
       },
-      "triangles": 99537,
+      "triangles": 99766,
       "builder": "photoreal",
       "usdz": null,
       "quality": "photoreal",
       "provider": "meshy",
+      "generated_at": "2026-08-30T13:22:26.832Z",
       "source_images": [
-        "skus/04/TST-TRI-C5-2/img/1-orig.png"
+        "TST-TRI-C5-2#6"
       ],
-      "job_id": "01a038f8-7bb7-7aac-b0c9-0d983f5af9ed",
-      "generated_at": "2026-08-25T12:54:00.489Z",
-      "axis_map": "z,y,-x",
+      "job_id": "01a052d3-a578-7530-9967-a4d0f2eb134e",
+      "axis_map": "x,y,z",
       "front_yaw_deg": 0,
       "quality_report": {
         "overall": null,
         "defects": [],
         "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.1203479553683286,
+        "silhouette_iou": 0.8713172149557405,
+        "aspect_mismatch": 0.09909628775855536,
         "warnings": [
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
           "meshy: GLB is 10.2 MB (warn > 8 MB)",
+          "judge skipped — colourspace: parameter space not set",
           "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
         ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+        "note": "judge skipped — colourspace: parameter space not set"
       },
       "textures": {
         "count": 3,
@@ -1169,56 +1027,30 @@
           "meshy"
         ]
       },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "note": "judge 0.78 (silhouette 0.85, colour 0.80, branding 0.70) — branding text on control panel is illegible in render; telescope reflections lack fine detail compared to photo"
     },
     "TST-TOP-GM-52": {
-      "file": "TST-TOP-GM-52.glb",
+      "file": "placeholders/TST-TOP-GM-52.glb",
       "category": "total-stations",
-      "placeholder": false,
+      "placeholder": true,
       "dims_mm": {
         "w": 183,
         "h": 348,
         "d": 181
       },
       "bbox_m": {
-        "x": 0.2217380553483963,
-        "y": 0.3479999899864197,
-        "z": 0.20958036929368973
+        "x": 0.16835999488830566,
+        "y": 0.3375999927520752,
+        "z": 0.18862000107765198
       },
-      "triangles": 97352,
-      "builder": "photoreal",
+      "triangles": 740,
+      "builder": "total-stations",
+      "variant": "instrument",
       "usdz": null,
-      "quality": "photoreal",
-      "provider": "meshy",
-      "source_images": [
-        "skus/e3/TST-TOP-GM-52/img/1-orig.jpg"
-      ],
-      "job_id": "01a03917-4e16-75e7-b353-90b1a36f1fe4",
-      "generated_at": "2026-08-25T13:26:37.808Z",
-      "axis_map": "z,y,-x",
-      "front_yaw_deg": 0,
-      "quality_report": {
-        "overall": null,
-        "defects": [],
-        "judge": "skipped",
-        "silhouette_iou": null,
-        "aspect_mismatch": 0.2116833862488826,
-        "warnings": [
-          "meshy: aspect mismatch 21 % vs spec (warn > 15 %)",
-          "meshy: front check skipped: hero cut-out is a full rectangle (no silhouette)",
-          "meshy: GLB is 8.9 MB (warn > 8 MB)",
-          "provider USDZ kept un-normalised under photoreal/raw (axes / scale differ) — Quick Look exports from the GLB"
-        ],
-        "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
-      },
-      "textures": {
-        "count": 3,
-        "max_px": 2048,
-        "sources": [
-          "meshy"
-        ]
-      },
-      "note": "judge skipped — no vision assist wired (@buildobjects/llm judgeModelMatch)"
+      "quality": "placeholder",
+      "provider": "parametric",
+      "generated_at": "2026-09-01T08:22:48.626Z",
+      "note": "generated model rejected — A dark crate. The Topcon GM-52 is a total station; this is its shipping case at best."
     }
   }
 }

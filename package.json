@@ -29,7 +29,9 @@
     "scale:seed": "pnpm --filter @buildobjects/db seed:scale",
     "scale:test": "pnpm --filter @buildobjects/db scale:test",
     "contrast": "pnpm --filter @buildobjects/web contrast",
-    "validate": "pnpm --filter @buildobjects/pipeline validate"
+    "validate": "pnpm --filter @buildobjects/pipeline validate",
+    "images:classify": "pnpm --filter @buildobjects/pipeline images:classify",
+    "images:source": "pnpm --filter @buildobjects/pipeline images:source"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.10",

@@ -1,0 +1,1347 @@
+{
+  "_": "What each catalogue photograph actually shows, read by a vision model rather than inferred from its position.",
+  "_why": [
+    "sku_images.role is assigned by POSITION (stages.ts: `const role = IMAGE_ROLES[i]`, enforced by",
+    "validate-curated.ts), so it says 1:hero 2:angle 3:in_context 4:detail 5:pack for every SKU in the",
+    "catalogue whatever the pictures show. It cannot describe content, and the 3D pipeline was reading",
+    "it as though it could — which is how a bulb came to be modelled as its cardboard carton.",
+    "",
+    "`product_photo` is the only position a 3D model may be built or textured from: a bare, single,",
+    "correctly-branded unit on a clean ground. null means this SKU has no such photograph, and the",
+    "honest thing to draw is a parametric model at its real dimensions.",
+    "",
+    "Regenerate with: npx tsx services/pipeline/tools/classify-images.mts --write"
+  ],
+  "model": "claude-haiku-4-5-20251001",
+  "generated_at": "2026-08-30T08:29:46.673Z",
+  "skus": {
+    "CEM-ULT-PPC50": {
+      "brand": "UltraTech Cement",
+      "name": "UltraTech Portland Pozzolana Cement (PPC)",
+      "category": "cement",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 packaging_only, #2 packaging_only, #3 other_product, #4 lifestyle_or_stock, #5 lifestyle_or_stock",
+      "positions": {
+        "1": {
+          "shows": "packaging_only",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The image shows only a cement bag with 'SAURAN' branding, not UltraTech Cement — a different brand."
+        },
+        "2": {
+          "shows": "packaging_only",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "A white cement bag with 'SAURAN' branding (a different company), not UltraTech Cement."
+        },
+        "3": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows loose cement powder being held in hands with 'SAURAN' branding and 'Construction Contact Cement' labeling — a different brand and product type, not UltraTech PPC in packaging."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "A construction worker on a job site with tools and equipment — a lifestyle/stock photo scene, not a product photograph of UltraTech Cement."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows people reviewing architectural blueprints at a table; no cement product is visible."
+        }
+      }
+    },
+    "CEM-ACC-SP50": {
+      "brand": "ACC",
+      "name": "ACC Suraksha Power Cement",
+      "category": "cement",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 packaging_only, #2 other_product, #3 packaging_only, #4 product_in_packaging, #5 other_product",
+      "positions": {
+        "1": {
+          "shows": "packaging_only",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "A cement bag showing the Dalmia brand, not ACC Suraksha as specified."
+        },
+        "2": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "This is fiberglass mesh tape for drywall, not ACC Suraksha Power Cement."
+        },
+        "3": {
+          "shows": "packaging_only",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "White cement bag with 'SAURAN' branding (not ACC), in a lifestyle scene with wood, tools, and interior background."
+        },
+        "4": {
+          "shows": "product_in_packaging",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The bucket shows a product with visible branding 'Devman' (not ACC), making it a different brand product than specified."
+        },
+        "5": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows two paint tubes (not cement) with non-ACC branding, a multi-unit composition, and a cluttered wooden surface background."
+        }
+      }
+    },
+    "CEM-AMB-PLUS50": {
+      "brand": "Ambuja Cements",
+      "name": "Ambuja Plus Cement",
+      "category": "cement",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 packaging_only, #2 packaging_only, #3 other_product, #4 product_in_packaging, #5 lifestyle_or_stock",
+      "positions": {
+        "1": {
+          "shows": "packaging_only",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The image shows a cement bag with branding for 'SAURAN' (a different brand), not Ambuja Cements as specified."
+        },
+        "2": {
+          "shows": "packaging_only",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "White bag labeled 'SAURAN' (not Ambuja Cements branding) on a wooden workbench with blurred background and other objects."
+        },
+        "3": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "This is a wooden plank or building material, not Ambuja Cements cement product."
+        },
+        "4": {
+          "shows": "product_in_packaging",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The image shows a cement bag with branding for 'JK Super Cement,' not Ambuja Cements."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows people reviewing architectural blueprints at a table; no cement product is visible."
+        }
+      }
+    },
+    "BUL-WIP-GARNET9WB22": {
+      "brand": "Wipro Lighting",
+      "name": "Wipro Garnet 9 W B22 Cool Day White LED Bulb",
+      "category": "bulbs",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 product_in_packaging, #2 product_in_packaging, #3 product_in_packaging, #4 product_in_packaging, #5 no_product",
+      "positions": {
+        "1": {
+          "shows": "product_in_packaging",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "The bulb is shown with its packaging box visible; the background is not clean — there is a reflective surface and shadow beneath the product."
+        },
+        "2": {
+          "shows": "product_in_packaging",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows three units of the product, each displayed with its packaging box, not a single bare bulb."
+        },
+        "3": {
+          "shows": "product_in_packaging",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows two units of the bulb with packaging boxes visible, and a reflective surface backdrop rather than a clean studio background."
+        },
+        "4": {
+          "shows": "product_in_packaging",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows two bulbs with packaging boxes visible, multiple units, and a gradient background that is not clean/seamless."
+        },
+        "5": {
+          "shows": "no_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The image is entirely blank white with no visible product, bulb, packaging, or identifiable content."
+        }
+      }
+    },
+    "BUL-PHI-ACESAVER9WB22": {
+      "brand": "Philips (Signify)",
+      "name": "Philips Ace Saver 9 W B22 Cool Day Light LED Bulb",
+      "category": "bulbs",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 product_in_packaging, #2 product_in_packaging, #3 product_in_packaging, #4 other_product, #5 no_product",
+      "positions": {
+        "1": {
+          "shows": "product_in_packaging",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "The bulb and its purple Philips Ace Saver box are both visible together, but the background is a gradient pink/purple studio backdrop, not clean white or seamless."
+        },
+        "2": {
+          "shows": "product_in_packaging",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows six packaged units of the bulb in a grid layout, not a single bare product."
+        },
+        "3": {
+          "shows": "product_in_packaging",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows four bulbs arranged in a grid with an ISI certification badge overlay, not a single bare product unit."
+        },
+        "4": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a Philips blender with accessories and ingredients, not a Philips Ace Saver LED bulb."
+        },
+        "5": {
+          "shows": "no_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The image appears to be blank or nearly entirely white with no visible product."
+        }
+      }
+    },
+    "BUL-HAV-LEDPLUS9WB22": {
+      "brand": "Havells",
+      "name": "Havells LED Plus 9 W B22 Cool Day Light Lamp V7",
+      "category": "bulbs",
+      "product_photo": 6,
+      "why": "sourced from the brand's own page: Single white LED bulb with B22 base and Havells branding visible, photographed against a plain white studio background.",
+      "positions": {
+        "1": {
+          "shows": "product_in_packaging",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "The bulb is visible inside its colorful Havells box with a dark background, not a bare product on a clean studio backdrop."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Marketing collage with lifestyle scenes, people, and multiple bulbs in installed contexts rather than a single bare product on a clean background."
+        },
+        "3": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Marketing banner showing an installed scene with furniture, multiple light bulbs as comparison imagery, and promotional text; not a standalone product photograph."
+        },
+        "4": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows four identical Havells LED bulbs arranged in a product display, not a single unit."
+        },
+        "5": {
+          "shows": "no_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The image is blank or entirely white with no visible product."
+        }
+      },
+      "sourced_from": "https://havells.com/media/catalog/product/l/h/lhldddbnl5r009_1.jpg"
+    },
+    "EPX-FOS-CONBEXTRAEP10": {
+      "brand": "Fosroc",
+      "name": "Fosroc Conbextra EP10 High-Strength Epoxy Resin Grout",
+      "category": "epoxy",
+      "product_photo": null,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 other_product, #2 lifestyle_or_stock, #3 other_product, #4 other_product, #5 product_in_packaging",
+      "positions": {
+        "1": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a caulk/sealant product branded 'LBH' with lifestyle usage photos, not Fosroc Conbextra EP10 epoxy resin grout."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a hand holding a product in a lifestyle scene; the packaging displays 'SEAM BEAUTY AGENT' branding, not Fosroc; background is not clean studio."
+        },
+        "3": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "The image shows a MYK LATICRETE SP-100 grout bucket, not Fosroc Conbextra EP10, in a lifestyle bathroom setting with background clutter."
+        },
+        "4": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The image shows a Craft Basket brand epoxy grout container, not a Fosroc product."
+        },
+        "5": {
+          "shows": "product_in_packaging",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The bucket shows a different product (MYK Laticrete SP-100 stainless grout, not Fosroc Conbextra EP10) with branding from a different company."
+        }
+      }
+    },
+    "EPX-PID-EPOXYINJGROUT": {
+      "brand": "Pidilite (Dr. Fixit)",
+      "name": "Dr. Fixit Epoxy Injection Grout (206)",
+      "category": "epoxy",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 lifestyle_or_stock, #2 lifestyle_or_stock, #3 other_product, #4 no_product, #5 lifestyle_or_stock",
+      "positions": {
+        "1": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "A hand holding the product over tiled bathroom wall in an installation scene with a watermark for a different company (Niptron)."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Product is being held in a hand against an installed tile background, making it a lifestyle/application shot rather than a studio photograph suitable for 3D modeling."
+        },
+        "3": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a KRYIOK Premium Epoxy Grout product (different brand) and a tiled background scene, not Dr. Fixit Epoxy Injection Grout bare product."
+        },
+        "4": {
+          "shows": "no_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows computer monitors with code on screen in an office setting, not the Dr. Fixit Epoxy Injection Grout product."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows people working in an industrial/factory setting with equipment, not the Dr. Fixit product itself."
+        }
+      }
+    },
+    "EPX-SIK-SIKADUR31IN": {
+      "brand": "Sika",
+      "name": "Sika Sikadur-31 IN Structural Epoxy Adhesive",
+      "category": "epoxy",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 product_in_packaging, #2 other_product, #3 product_in_packaging, #4 other_product, #5 lifestyle_or_stock",
+      "positions": {
+        "1": {
+          "shows": "product_in_packaging",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Three units of epoxy adhesive shown together in their packaging (bucket and two bottles with dispensers), not a single bare product."
+        },
+        "2": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a MagicMart waterproof glue bucket with an included brush accessory, not Sika Sikadur-31 IN Structural Epoxy Adhesive."
+        },
+        "3": {
+          "shows": "product_in_packaging",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows two epoxy adhesive tubes with their cartridges visible, plus packaging above them, against a non-studio background with visible surface and edges."
+        },
+        "4": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a VazzLox waterproof glue container with an accessory brush, not Sika Sikadur-31 IN Structural Epoxy Adhesive."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows people working in an industrial setting with equipment, not the Sikadur-31 epoxy adhesive product itself."
+        }
+      }
+    },
+    "FIR-CEA-MAP90-4KG": {
+      "brand": "Ceasefire",
+      "name": "Ceasefire ABC Powder MAP 90 Fire Extinguisher 4 kg",
+      "category": "fire-extinguishers",
+      "product_photo": 1,
+      "why": "A single red fire extinguisher with yellow handle, Ceasefire branding visible, against a plain white background.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single red fire extinguisher with yellow handle, Ceasefire branding visible, against a plain white background."
+        },
+        "2": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single Ceasefire ABC Powder fire extinguisher without packaging on a plain white background."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "Red fire extinguisher with blue handle and black hose, Ceasefire branding visible, plain white background, ready for 3D modeling."
+        },
+        "4": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Fire extinguisher shown against a chain-link fence with green foliage background; branding reads 'Red Bottle' not 'Ceasefire'."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a construction worker on a job site with tools and background scenery, not the Ceasefire fire extinguisher product."
+        }
+      }
+    },
+    "FIR-NEW-CA-EB-01": {
+      "brand": "Newage Fire Protection",
+      "name": "NewAge Extinguisher Box CA-EB-01 (single extinguisher cabinet)",
+      "category": "fire-extinguishers",
+      "product_photo": 1,
+      "why": "A single red fire extinguisher cabinet with 'FIRE EXTINGUISHER' text visible, shown as the bare product against a plain white background.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single red fire extinguisher cabinet with 'FIRE EXTINGUISHER' text visible, shown as the bare product against a plain white background."
+        },
+        "2": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "This is a fire hose cabinet, not a fire extinguisher cabinet; it contains a coiled hose reel, not an extinguisher."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single red fire extinguisher cabinet with two doors labeled FIRE and FIRE HOSE, shown as the bare product against a plain white background."
+        },
+        "4": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single red fire extinguisher cabinet with two glass doors and 'FIRE' labels, photographed against a plain white background."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is a stock photo of a construction worker on a job site with tools and people in the background — not the NewAge Extinguisher Box CA-EB-01 product."
+        }
+      }
+    },
+    "FIR-SAF-ABC-SP-6KG": {
+      "brand": "Safex Fire",
+      "name": "Safex 6 kg ABC Portable Stored Pressure Fire Extinguisher",
+      "category": "fire-extinguishers",
+      "product_photo": 1,
+      "why": "Single fire extinguisher with yellow handle and red cylinder on white background; generic product labeling visible, no competing brand names.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "Single fire extinguisher with yellow handle and red cylinder on white background; generic product labeling visible, no competing brand names."
+        },
+        "2": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "The fire extinguisher itself is clearly visible and branded with 'SAFEX' and 'SAFETY CALL', but the background is a busy kitchen counter with a textured surface, other objects, and a tiled backsplash."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single red ABC powder fire extinguisher with visible capacity marking '6' and Safex branding, photographed against a plain white background."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Construction site scene with workers in safety gear and equipment; no fire extinguisher visible."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Construction site scene with a worker, tools, and background activity—no fire extinguisher visible."
+        }
+      }
+    },
+    "SOL-ADA-ASB-M10-144-575": {
+      "brand": "Adani Solar",
+      "name": "Adani Solar ELAN Shine TOPCon Gen-II ASB-M10-144-575 575 Wp Bifacial Module",
+      "category": "solar-panels",
+      "product_photo": 3,
+      "why": "A single Adani Solar bifacial panel with 144 cells in a 4×36 grid, shown front-facing against a white background with visible spec labels at the top.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows two solar panels side by side (not a single unit), with visible junction boxes and cables attached to the right panel."
+        },
+        "2": {
+          "shows": "bare_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Two solar panels are shown side by side against a white background, not a single unit."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single Adani Solar bifacial panel with 144 cells in a 4×36 grid, shown front-facing against a white background with visible spec labels at the top."
+        },
+        "4": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows two solar panels side by side, not the single Adani Solar ELAN Shine TOPCon module specified."
+        },
+        "5": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows two solar panels arranged in an open-book configuration, not the single Adani Solar ELAN Shine TOPCon module specified."
+        }
+      }
+    },
+    "SOL-VIK-PARADEA-550": {
+      "brand": "Vikram Solar",
+      "name": "Vikram Solar Paradea VSMDH.72.550.05 550 Wp Bifacial Glass-Glass Module",
+      "category": "solar-panels",
+      "product_photo": 6,
+      "why": "sourced from the brand's own page: Single bifacial glass-glass solar panel with white frame and gridded cell structure against plain black background, matching the Paradea VSMDH.72.550.05 specification.",
+      "positions": {
+        "1": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is a landscape photograph of a rural field and sky with no solar panel visible."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is a landscape photograph of a rural field and sky with no solar panel visible."
+        },
+        "3": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a solar panel in an indoor lifestyle scene with other products, accessories, and a plant visible; branding visible is 'WAAREE', not Vikram Solar."
+        },
+        "4": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The label shows 'Senses LA Power Solution LLP' with model 'SPE32-550', which is a different brand and product than Vikram Solar Paradea VSMDH.72.550.05."
+        },
+        "5": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows an array or schematic diagram of multiple solar panels, not a single Vikram Solar Paradea module unit."
+        }
+      },
+      "sourced_from": "https://www.vikramsolar.com/wp-content/uploads/2022/10/paradea_g12_120.png"
+    },
+    "SOL-WAA-BI55-545": {
+      "brand": "Waaree",
+      "name": "Waaree Bi-55-545 545 Wp Bifacial Dual-Glass Mono PERC Solar Module",
+      "category": "solar-panels",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 lifestyle_or_stock, #2 bare_product, #3 bare_product, #4 lifestyle_or_stock, #5 lifestyle_or_stock",
+      "positions": {
+        "1": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a solar panel installed in a residential setting with houses, sky, plants, and paving visible; the panel is branded 'LOOM SOLAR', not Waaree."
+        },
+        "2": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Solar panel against a colored geometric background (orange, green, white) rather than a plain studio backdrop."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Solar panel against a colored geometric background (orange, green, white) rather than a plain studio backdrop."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is a staged interior design scene with furniture and decor; no Waaree solar panel is visible in the image."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Aerial photograph of an installed solar farm with hundreds of panels in a landscape scene, not a catalogue shot of a single product unit."
+        }
+      }
+    },
+    "TIL-JOH-YK1FLCR000000PJ": {
+      "brand": "Johnson (H&R Johnson India)",
+      "name": "Johnson Marbonite Elite Floral Crema Vitrified Tile 600x1200 mm Polished",
+      "category": "tiles",
+      "product_photo": 1,
+      "why": "A single polished tile swatch filling the frame edge-to-edge with no background, showing the cream and gold floral surface pattern clearly.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished tile swatch filling the frame edge-to-edge with no background, showing the cream and gold floral surface pattern clearly."
+        },
+        "2": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished tile with a cream-colored floral pattern and speckled surface fills the frame against a neutral background."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished tile swatch with a uniform gray surface and neutral studio background, no visible branding."
+        },
+        "4": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished tile with a crema-colored floral marble pattern fills the frame edge-to-edge against a neutral background."
+        },
+        "5": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished tile with a crema floral marble pattern photographed against a neutral background with no visible competing branding."
+        }
+      }
+    },
+    "TIL-SOM-T31F119001859102": {
+      "brand": "Somany Ceramics",
+      "name": "Somany Duragres Grande El Sedona Crema FP Vitrified Tile 600x1200 mm",
+      "category": "tiles",
+      "product_photo": 1,
+      "why": "A single cream-colored vitrified tile with marble texture fills the frame against a neutral background.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single cream-colored vitrified tile with marble texture fills the frame against a neutral background."
+        },
+        "2": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single cream-colored vitrified tile with subtle texture shown against a plain light background with no visible competing branding."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single ceramic tile with a cream-colored marble-like finish shown against a seamless, clean background with no visible competing branding."
+        },
+        "4": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single vitrified tile with a cream marble texture photographed against a plain seamless background."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Interior design photograph of a luxury lounge with installed flooring and furnishings; no isolated tile product visible."
+        }
+      }
+    },
+    "TIL-KAJ-GP00215": {
+      "brand": "Kajaria Ceramics",
+      "name": "Kajaria Venato Bianco Glazed Vitrified Tile 600x1200 mm Polished",
+      "category": "tiles",
+      "product_photo": 1,
+      "why": "A single polished ceramic tile with marble-like veining shown against a clean, seamless white background.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished ceramic tile with marble-like veining shown against a clean, seamless white background."
+        },
+        "2": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished tile with white and grey marble veining fills the frame against a neutral background with no visible competing branding."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished ceramic tile with marble veining pattern against a plain white background, filling the frame edge to edge."
+        },
+        "4": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished ceramic tile with veined white/gray pattern photographed against a clean white background."
+        },
+        "5": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single polished ceramic tile with white marble-veining pattern fills the frame against a plain white background."
+        }
+      }
+    },
+    "CCT-CPP-USC-TA24L2C-L": {
+      "brand": "CP PLUS",
+      "name": "CP PLUS CP-USC-TA24L2C-L 2.4 MP Dual Light Bullet Camera 20 m",
+      "category": "cctv",
+      "product_photo": 6,
+      "why": "sourced from the brand's own page: Single CP PLUS bullet camera with mounting bracket against plain black background, matching the specified model.",
+      "positions": {
+        "1": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "This is a Wi-Fi router with four antennas, not a bullet camera."
+        },
+        "2": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "This is a Wi-Fi router with four antennas, not a bullet camera."
+        },
+        "3": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "This is a Wi-Fi router with four antennas, not a bullet camera."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows multiple security cameras mounted on a brick wall in an installed/deployed scene, not a single bare product for 3D modeling."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Construction site scene with workers, equipment, and materials — not a product photograph."
+        }
+      },
+      "sourced_from": "https://cpplusworld.com/prodassets/product/small/ae19185a-9508-4340-a03e-7d3a3b67b1bc.png"
+    },
+    "CCT-DAH-HDW1200TRQP": {
+      "brand": "Dahua",
+      "name": "Dahua HAC-HDW1200TRQ 2 MP IR HDCVI Fixed-focal Eyeball Camera",
+      "category": "cctv",
+      "product_photo": 6,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 accessory_only, #2 other_product, #3 other_product, #4 lifestyle_or_stock, #5 lifestyle_or_stock",
+      "positions": {
+        "1": {
+          "shows": "accessory_only",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "This is a mounting bracket with hose clamps, not the Dahua HAC-HDW1200TRQ camera itself."
+        },
+        "2": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "This is a Manomay brand camera, not a Dahua HAC-HDW1200TRQ; the visible branding names a different company."
+        },
+        "3": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": false,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The visible branding reads 'PRAMA' (or similar), not 'Dahua' — this is a different brand's camera."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Multiple security cameras installed on a brick wall in a real environment, not a studio photograph of a single bare product."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Construction site scene with workers, equipment, and materials—not a product photograph suitable for 3D modeling."
+        }
+      }
+    },
+    "CCT-HIK-2CE76D0T-ITPFS": {
+      "brand": "Hikvision",
+      "name": "Hikvision DS-2CE76D0T-ITPFS 2 MP Audio Indoor Fixed Turret Camera",
+      "category": "cctv",
+      "product_photo": 6,
+      "why": "sourced from the brand's own page: White turret camera with Hikvision branding, no packaging, isolated on black background, matches the specified model's form factor.",
+      "positions": {
+        "1": {
+          "shows": "accessory_only",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows a complete surveillance kit with multiple cameras, a recorder, cables, and a hard drive — not the single bare Hikvision DS-2CE76D0T-ITPFS turret camera alone."
+        },
+        "2": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows four different camera models (two bullet cameras on left, two turret cameras on right), not a single DS-2CE76D0T-ITPFS unit."
+        },
+        "3": {
+          "shows": "other_product",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a Hikvision DVR recorder (top and bottom units), not the DS-2CE76D0T-ITPFS turret camera specified."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows multiple security cameras mounted on a brick wall in an installed scene, not a single bare product for 3D modeling."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Construction site scene with workers, equipment, and materials — not a product photograph."
+        }
+      },
+      "sourced_from": "https://www.hikvisionindia.com/media/Product/pictures/DS-2CE76D0T-ITPFS_m0RJXha.png"
+    },
+    "GLS-AIS-EDGE-NATURAPLUS": {
+      "brand": "AIS (Asahi India Glass)",
+      "name": "AIS Ecosense Edge Natura Plus Solar-Control Low-E Glass 6 mm",
+      "category": "glass",
+      "product_photo": null,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 lifestyle_or_stock, #2 lifestyle_or_stock, #3 lifestyle_or_stock, #4 lifestyle_or_stock, #5 lifestyle_or_stock",
+      "positions": {
+        "1": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is an installed architectural scene showing glass windows on a building facade, not a bare product for 3D modeling."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is an architectural photograph of buildings with installed glass facades, landscaping, and people—a lifestyle/stock image, not a product shot of bare glass."
+        },
+        "3": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Marketing banner showing installed glass in buildings with landscape scenery and product variant labels, not a bare product photograph."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is an installed architectural scene showing solar-control glass in a modern building facade with live vegetation, not a product photograph suitable for 3D modeling."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows a product render at top and a lifestyle/installed scene (car windshield) at bottom, not a bare product suitable for 3D modeling."
+        }
+      }
+    },
+    "GLS-GUA-CLIMAGUARD-BLUE5": {
+      "brand": "Guardian Glass",
+      "name": "Guardian ClimaGuard Blue Solar-Control Glass 5 mm",
+      "category": "glass",
+      "product_photo": null,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 lifestyle_or_stock, #2 lifestyle_or_stock, #3 lifestyle_or_stock, #4 lifestyle_or_stock, #5 lifestyle_or_stock",
+      "positions": {
+        "1": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is an architectural photograph of a building facade with blue glass panels installed, not a product photograph of a bare 5mm glass sheet."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": false,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Image shows an installed building facade with the glass product integrated into architecture, not a standalone product for 3D modeling."
+        },
+        "3": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is an installed architectural scene showing glass panels integrated into a building facade, not a bare product suitable for 3D modeling."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "An installed architectural scene showing glass panels integrated into a large building facade, not a product photograph."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is an installed scene showing a building facade with multiple window installations in an architectural context, not a photograph of the bare glass product itself."
+        }
+      }
+    },
+    "GLS-SGB-SUNBAN-SAPPHIRE5": {
+      "brand": "Saint-Gobain",
+      "name": "Saint-Gobain Sun Ban SGG Sapphire Blue Solar-Control Glass 5 mm",
+      "category": "glass",
+      "product_photo": null,
+      "why": "no bare, single, correctly-branded unit on a clean ground among 5 images — #1 lifestyle_or_stock, #2 other_product, #3 lifestyle_or_stock, #4 lifestyle_or_stock, #5 other_product",
+      "positions": {
+        "1": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Marketing lifestyle image showing before/after installation of glass film on windows with outdoor scenery and interior scene visible."
+        },
+        "2": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows welding goggles with a solar panel and labeled diagram, not Saint-Gobain SGG Sapphire Blue Solar-Control Glass 5mm sheet."
+        },
+        "3": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "A human hand peeling back a sheet of glass film in an installed/demonstration scene, not a product photograph of bare glass."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is an installed scene showing multiple glass panels in an architectural application with an outdoor landscape visible through them, not a product photograph suitable for 3D modeling."
+        },
+        "5": {
+          "shows": "other_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "Image shows a rolled window film or tint product with metal/plastic housing, not a flat 5mm glass sheet."
+        }
+      }
+    },
+    "TST-LEI-TS07-2-R500": {
+      "brand": "Leica Geosystems",
+      "name": "Leica FlexLine TS07 2\" R500 Manual Total Station",
+      "category": "total-stations",
+      "product_photo": 1,
+      "why": "A single Leica total station photographed against a plain white background with no packaging or accessories visible.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "A single Leica total station photographed against a plain white background with no packaging or accessories visible."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Construction site scene showing a total station mounted on a tripod in an installed/working environment, not a catalog shot of the bare product."
+        },
+        "3": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "Single Leica FlexLine total station photographed against a plain white background with no packaging or distracting elements."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "The total station is shown against a stylized mountain/landscape backdrop rather than a plain studio background, making it a marketing or lifestyle image."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is a construction site photograph showing a worker using a total station in the field, not a product photography suitable for 3D modeling."
+        }
+      }
+    },
+    "TST-TOP-GM-52": {
+      "brand": "Topcon",
+      "name": "Topcon GM-52 2\" Reflectorless Total Station",
+      "category": "total-stations",
+      "product_photo": 1,
+      "why": "Single Topcon total station against a plain white background with no packaging or accessories visible.",
+      "positions": {
+        "1": {
+          "shows": "bare_product",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": true,
+          "why": "Single Topcon total station against a plain white background with no packaging or accessories visible."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is a lifestyle/installed scene showing surveying equipment in use outdoors with people and natural landscape background, not a studio photograph of the bare product."
+        },
+        "3": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "A person is operating the total station in an outdoor field setting, making this a lifestyle photograph rather than a product-only shot."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Construction site scene with cranes and cityscape; no Topcon GM-52 total station visible."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "Person using the total station in an outdoor forest setting, not a studio shot of the bare product."
+        }
+      }
+    },
+    "TST-TRI-C5-2": {
+      "brand": "Trimble",
+      "name": "Trimble C5 2\" Mechanical Total Station",
+      "category": "total-stations",
+      "product_photo": 6,
+      "why": "sourced from the brand's own page: Single Trimble C5 total station photographed bare against a black studio background, front-facing view showing the instrument clearly.",
+      "positions": {
+        "1": {
+          "shows": "product_in_packaging",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": true,
+          "usable_for_3d": false,
+          "why": "The total station is shown with its carrying case/bag, which constitutes packaging alongside the bare product."
+        },
+        "2": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "A person in safety gear is holding and demonstrating the total station in an active work environment with blurred background."
+        },
+        "3": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "A total station is installed in an outdoor field survey scene with landscape, sky, and road visible in the background."
+        },
+        "4": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": true,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "The total station is mounted on a tripod in an outdoor construction site with heavy machinery and workers visible in the background."
+        },
+        "5": {
+          "shows": "lifestyle_or_stock",
+          "single_unit": false,
+          "brand_ok": true,
+          "clean_background": false,
+          "usable_for_3d": false,
+          "why": "This is a construction site scene with a worker and various tools, not a photograph of a Trimble C5 Total Station product."
+        }
+      },
+      "sourced_from": "https://images.ctfassets.net/1nvkn1423yot/3cSDqj8ZqX3SE45Pq503Je/1071896224b58e47cc962e00743b173d/geo-c5-productpage-fullbackgroundproducthero-800x960.png"
+    }
+  }
+}

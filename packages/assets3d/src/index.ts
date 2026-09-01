@@ -23,5 +23,6 @@ export { estimateCost, type Outcome, pollUntilDone, type RunOptions, type RunRep
 export * from './photoreal/select-images';
 export { TRIPO_COST_USD, TripoProvider } from './photoreal/tripo';
 export * from './photoreal/types';
+export * from './review';
 export * from './shapes';
 export * from './textures';

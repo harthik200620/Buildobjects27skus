@@ -4,7 +4,7 @@
  * x / z, front facing +Z, with brand-appropriate materials. When the image stage has produced
  * photo cut-outs they are mapped onto the model (`textured: true`):
  *
- *   cement             front / back faces = hero / angle cut-outs, sides = mean colour
+ *   cement             printed panel on the sack = hero cut-out, weave = mean colour
  *   tiles              top face = the tile face
  *   solar-panels       cell face = hero
  *   epoxy              label wrap on the front half of each tin (u ∈ [0.25, 0.75])
@@ -13,10 +13,12 @@
  *   cctv               body colour = mean colour of the photo
  *   bulbs, total stations, bathtub, generic — unchanged (emissive / flat colours)
  *
- * A real GLB dropped in as assets/3d/{SKU_CODE}.glb replaces any of them with no code change.
+ * A real GLB at assets/3d/{SKU_CODE}.glb replaces any of them with no code change — PROVIDED
+ * assets/3d/review.json has not rejected it. Nine were, for being the carton rather than the
+ * product; see that file.
  */
 import type { MeshData } from './gltf';
-import { box, boxFaces, cylinder, dome, lathe, MAT, ring, rotate, texturedMaterial, tintedMaterial, translate } from './shapes';
+import { box, boxFaces, cylinder, dome, lathe, MAT, ring, rotate, sack, texturedMaterial, tintedMaterial, translate } from './shapes';
 import type { BuilderTextures } from './textures';
 
 export interface Dims {
@@ -112,8 +114,7 @@ const bulb: Builder = ({ w, h }, { variant, textures: t }) => {
   };
 };
 
-/** CCTV: dome (base ring + smoked hemisphere) or bullet (cylinder body + lens ring + bracket). Body colour from the photo. */
-/** CCTV: dome (base ring + smoked hemisphere + mount ring) or bullet (cylinder body + lens ring + swivel wall bracket). Body colour from the photo. */
+/** CCTV: a turret (eyeball in a cradle, lens along the mount axis) or a bullet on a swivel bracket. Body colour from the photo when the review allows one. */
 const cctv: Builder = ({ w, h, d }, { variant, textures: t }) => {
   const bodyMat = t?.mean ? tintedMaterial('cctv-body', t.mean, { roughness: 0.5 }) : MAT.whitePlastic;
   const textured = !!t?.mean,
@@ -144,14 +145,72 @@ const cctv: Builder = ({ w, h, d }, { variant, textures: t }) => {
     const plateP = translate(plate, [0, 0, len * 0.25]);
     return { meshes: [bodyZ, lens, lensGlass, hood, arm, swivelBall, plateP], variant: 'bullet', textured, textureNote };
   }
-  const r = w / 2,
-    baseH = Math.max(0.02, h * 0.32);
-  const mountRing = cylinder(r * 1.08, r * 1.08, 0.006, SEG, [0, 0, 0], MAT.bracketSteel);
-  const base = cylinder(r, r * 0.97, baseH, SEG, [0, 0.006, 0], bodyMat, { smooth: true });
-  const trim = ring(r * 0.97, r * 0.8, 0.004, SEG, [0, baseH + 0.006, 0], MAT.blackPlastic);
-  const bubble = dome(Math.min(r * 0.8, h - baseH), SEG, [0, baseH + 0.006, 0], MAT.smokedDome, 0.5, 12, { smooth: true });
-  const lens = dome(r * 0.22, 24, [0, baseH + 0.01, 0], MAT.lensGlass, 0.5, 6, { smooth: true });
-  return { meshes: [mountRing, base, trim, bubble, lens], variant: 'dome', textured, textureNote };
+  /*
+   * TURRET ("eyeball"), not a smoked dome — which is what a Dahua HDW1200TRQ and most fixed
+   * cameras in this catalogue actually are, and what the old model was not. It was a cylinder,
+   * a flat ring and a tinted hemisphere: at AR size that reads as a dessert bowl, which is fair
+   * comment on "cartoon cctv".
+   *
+   * What makes a camera legible at 90 mm on a wall is not polygon count, it is the FACE: a black
+   * bezel with a recessed glass lens and the ring of IR LEDs around it. That is the silhouette
+   * everybody recognises, so it is modelled rather than implied, and the ball is leaned so the
+   * face turns towards the room instead of presenting a blank sphere to the viewer.
+   */
+  const R = w / 2;
+  const baseH = Math.max(0.012, h * 0.16);
+  const ballR = Math.min(R * 0.94, (h - baseH) * 0.92);
+  const tilt = 0.38; // ~22° of lean towards +Z, the aim an installer leaves on a wall camera
+  const ballY = baseH + ballR * 0.62;
+
+  /* Mounting plate and the cradle the eyeball sits in. */
+  const plate = cylinder(R * 1.04, R * 0.98, baseH * 0.45, SEG, [0, 0, 0], MAT.whitePlastic, { smooth: true });
+  const cradle = lathe(
+    [
+      [R * 0.98, 0],
+      [R * 0.99, baseH * 0.5],
+      [R * 0.88, baseH],
+      [R * 0.72, baseH * 1.35],
+    ],
+    SEG,
+    [0, baseH * 0.45, 0],
+    MAT.whitePlastic,
+    false,
+    { smooth: true },
+  );
+  const ball = dome(ballR, SEG, [0, ballY, 0], bodyMat, 0.62, 16, { smooth: true });
+  /* The underside of the ball, so it is a ball and not a bowl seen from below. */
+  const ballUnder = rotate(dome(ballR, SEG, [0, 0, 0], bodyMat, 0.42, 12, { smooth: true }), 'x', Math.PI, [0, 0, 0]);
+
+  /* The face: bezel, IR ring, lens, and a glass cover over the whole recess. */
+  const faceR = ballR * 0.74;
+  const bezel = rotate(cylinder(faceR, faceR * 0.99, 0.004, SEG, [0, 0, 0], MAT.blackPlastic, { smooth: true }), 'x', Math.PI / 2);
+  const irRing = rotate(ring(faceR * 0.92, faceR * 0.6, 0.003, SEG, [0, 0, 0], MAT.irWindow), 'x', Math.PI / 2);
+  const lensBarrel = rotate(cylinder(faceR * 0.44, faceR * 0.4, 0.012, 24, [0, 0, 0], MAT.blackPlastic, { smooth: true }), 'x', Math.PI / 2);
+  const lensGlass = rotate(dome(faceR * 0.38, 24, [0, 0, 0], MAT.lensGlass, 0.4, 8, { smooth: true }), 'x', Math.PI / 2);
+  /*
+   * THE LENS LOOKS AWAY FROM THE MOUNT — along +Y, not +Z — and that is a placement decision, not
+   * a modelling preference.
+   *
+   * A model here has two distinguished directions: it stands on -Y and it faces +Z. On a floor
+   * both survive. On a WALL they cannot: render3d.ts turns the model a quarter about X so the
+   * base goes into the wall, which is the only way to mount it, and that same quarter turn sends
+   * whatever faced +Z straight down at the floor. Built facing +Z, this camera arrived on a wall
+   * staring at the skirting board.
+   *
+   * So a wall-mounted device is built with its business end along the axis it stands on, pointing
+   * away from the mount. Then the quarter turn puts the plate flat on the wall and the lens out
+   * into the room, and `ceiling_flush` (a half turn) puts the plate on the ceiling and the lens
+   * down — both correct from one model, which is the test that says the convention is the right
+   * one rather than a fix for one case.
+   *
+   * The 22° lean toward +Z is the aim an installer leaves on a wall camera, and it is what stops
+   * the AR view presenting a featureless white sphere with the lens hidden on top.
+   */
+  const at = (m: MeshData, up: number) => translate(rotate(m, 'x', -Math.PI / 2), [0, ballY + ballR * up, 0]);
+  const face = [at(bezel, 0.7), at(irRing, 0.73), at(lensBarrel, 0.74), at(lensGlass, 0.82)];
+  const head = [ball, translate(ballUnder, [0, ballY, 0]), ...face].map((m) => rotate(m, 'x', tilt, [0, ballY, 0]));
+
+  return { meshes: [plate, cradle, ...head], variant: 'turret', textured, textureNote };
 };
 
 /** Tile: a slab lying flat (w × thickness × length) with a darker edge; the top face wears the tile face photo. */
@@ -286,46 +345,124 @@ const extinguisher: Builder = ({ w, h }, { textures: t }) => {
   return { meshes: [...common, labelBand], variant: 'stored-pressure', textured: false };
 };
 
-/** Cement bag lying flat: a pillow-ish box; the printed face (top when flat) wears the hero, the underside the angle shot. */
+/**
+ * Cement sack lying flat on the floor, printed panel up.
+ *
+ * ONE SHAPE, PHOTOGRAPH OR NOT. This used to be two different objects: a `boxFaces` slab when a
+ * photo was available and a `box` with a coloured band when it was not — so whether a 50 kg sack
+ * was bag-shaped depended on whether the image stage had run. A rectangular slab reads as
+ * polystyrene either way; the silhouette gives it away before the print does. `sack()` sweeps a
+ * superellipse along the length and pinches both ends into seams, which is the shape the contents
+ * actually make, and the photo — when there is an honest one — is mapped onto that.
+ *
+ * TODAY THERE IS NO HONEST ONE. Every cement SKU here is photographed as somebody else's bag:
+ * Dalmia on two, JK Super on a third, a 1 kg contact-cement pouch on the rest. assets/3d/review.json
+ * refuses them, so the sack arrives unprinted and wears a neutral panel instead. An unbranded bag
+ * at 450 × 700 × 140 is a true statement; a bag in a rival's livery is not, and it is what shipped.
+ *
+ * Built long-axis-along-X and turned a quarter so the seams end up on Z, keeping the bounding box
+ * the flat version had (X = w, Y = d, Z = h) — the AR placement rectangle is computed from it.
+ */
 const cement: Builder = ({ w, h, d }, { textures: t }) => {
-  if (t?.hero) {
-    const sides = tintedMaterial('bag-side', t.mean ?? t.hero.mean, { roughness: 0.9 });
-    const faces = boxFaces(
-      w,
-      d,
-      h,
-      [0, d / 2, 0],
-      {
-        top: texturedMaterial('bag-front', t.hero, { roughness: 0.85 }),
-        bottom: texturedMaterial('bag-back', t.angle ?? t.hero, { roughness: 0.85 }),
-        rest: sides,
-      },
-      'all',
-    );
-    return {
-      meshes: faces,
-      variant: 'bag-flat',
-      textured: true,
-      textureNote: `printed face = hero cut-out, underside = ${t.angle ? 'angle cut-out' : 'hero cut-out'}, sides = mean colour`,
-    };
-  }
-  const bag = box(w, d, h, [0, d / 2, 0], MAT.paper); // lying flat: height = thickness (d)
-  const band = box(w * 1.002, d * 0.45, h * 0.3, [0, d / 2, 0], MAT.label);
-  const topFold = box(w * 0.96, d * 0.12, 0.02, [0, d * 0.55, h / 2 - 0.012], MAT.paper);
-  return { meshes: [bag, band, topFold], variant: 'bag-flat', textured: false };
+  const printed = t?.hero ? texturedMaterial('bag-print', t.hero, { roughness: 0.85 }) : MAT.sackPanel;
+  /* The back of the bag, on the underside — what `t.angle` has always been for. */
+  const underside = t?.hero ? texturedMaterial('bag-print-back', t.angle ?? t.hero, { roughness: 0.85 }) : undefined;
+  const meshes = sack(h, d, w, [0, 0, 0], t?.mean ? tintedMaterial('bag-weave', t.mean, { roughness: 0.92 }) : MAT.sackWoven, {
+    squareness: 3.1,
+    panel: printed,
+    underPanel: underside,
+    panelSpan: [0.66, 0.7],
+  }).map((m) => rotate(m, 'y', Math.PI / 2));
+  return {
+    meshes,
+    variant: 'bag-flat',
+    textured: !!t?.hero,
+    textureNote: t?.hero ? 'printed panel = hero cut-out, mapped onto the sack; weave = mean colour' : undefined,
+  };
 };
 
-/** Epoxy kit: a part-A tin with a lid and a smaller part-B tin beside it, plus applicator tool. */
+/**
+ * Two-part epoxy kit: a resin pail and a smaller hardener tin, standing on the floor together.
+ *
+ * A pail is not a plain cylinder. What says "tin of resin" is the rolled rim at the top, the
+ * recessed lid inside it and the wire bail handle — that silhouette is the whole recognition,
+ * and without it two smooth drums read as batteries. The straight-sided cylinders here were
+ * doing exactly that.
+ *
+ * The loose spatula is gone. It was a flat black slab lying on the floor beside the tins, and at
+ * AR size it read as a piece of debris rather than an applicator — a detail that costs
+ * recognition instead of adding it.
+ *
+ * Unlabelled unless the review lets a photograph through, and for every epoxy SKU in this
+ * catalogue it does not: the pictures are MYK Laticrete, Craft Basket, Kritok, MagicMart, Kafuter
+ * and VazzLox tubs, and not one of them is Fosroc, Pidilite or Sika.
+ */
 const epoxy: Builder = ({ w, h, d }, { textures: t }) => {
   const rA = (Math.min(w, d) / 2) * 0.62,
     hA = h;
-  const tinA = cylinder(rA, rA, hA * 0.93, SEG, [-rA * 0.55, 0, 0], MAT.tin, { smooth: true });
-  const lidA = cylinder(rA * 1.03, rA * 1.03, hA * 0.07, SEG, [-rA * 0.55, hA * 0.93, 0], MAT.tin, { smooth: true });
+  const xA = -rA * 0.55;
+  /* Pail wall: a slight taper (pails stack), a rolled rim, and the lid sunk inside it. */
+  const bodyA = lathe(
+    [
+      [rA * 0.9, 0],
+      [rA * 0.93, hA * 0.04],
+      [rA, hA * 0.86],
+      [rA * 1.05, hA * 0.92],
+      [rA * 1.03, hA * 0.96],
+      [rA * 0.96, hA * 0.94],
+    ],
+    SEG,
+    [xA, 0, 0],
+    MAT.tin,
+    true,
+    { smooth: true },
+  );
+  const lidA = cylinder(rA * 0.95, rA * 0.93, hA * 0.035, SEG, [xA, hA * 0.9, 0], MAT.tin, { smooth: true });
+  /* Wire bail across the pail, on two lugs — the part of a tin the eye finds first.
+     Swept as short segments along a semicircle rather than as an arc of a lathe: a lathe revolves
+     about Y, so no rotation of it produces a handle standing UP over the lid, and the attempt
+     rendered as a blip on the rim. Twelve segments is smooth enough at 90 mm. */
+  const bailSeg = 12;
+  const bailR = rA * 1.0;
+  const wire = 0.0022;
+  const bail: MeshData[] = [];
+  for (let i = 0; i < bailSeg; i++) {
+    const a0 = Math.PI * (i / bailSeg),
+      a1 = Math.PI * ((i + 1) / bailSeg);
+    const x0 = -Math.cos(a0) * bailR,
+      y0 = Math.sin(a0) * bailR * 0.62;
+    const x1 = -Math.cos(a1) * bailR,
+      y1 = Math.sin(a1) * bailR * 0.62;
+    const len = Math.hypot(x1 - x0, y1 - y0);
+    const seg = box(len, wire * 2, wire * 2, [0, 0, 0], MAT.bracketSteel);
+    bail.push(translate(rotate(seg, 'z', Math.atan2(y1 - y0, x1 - x0)), [xA + (x0 + x1) / 2, hA * 0.9 + (y0 + y1) / 2, 0]));
+  }
+  const lugs = [
+    box(0.006, hA * 0.06, 0.004, [xA - rA * 1.01, hA * 0.86, 0], MAT.bracketSteel),
+    box(0.006, hA * 0.06, 0.004, [xA + rA * 1.01, hA * 0.86, 0], MAT.bracketSteel),
+  ];
+
   const rB = rA * 0.55,
-    hB = hA * 0.6;
-  const tinB = cylinder(rB, rB, hB * 0.92, SEG, [rA * 0.95, 0, rA * 0.1], MAT.tin, { smooth: true });
-  const lidB = cylinder(rB * 1.03, rB * 1.03, hB * 0.08, SEG, [rA * 0.95, hB * 0.92, rA * 0.1], MAT.tin, { smooth: true });
-  const spatula = box(0.025, 0.004, 0.14, [rA * 0.35, 0.002, rA * 0.8], MAT.blackPlastic);
+    hB = hA * 0.6,
+    xB = rA * 0.95,
+    zB = rA * 0.1;
+  const bodyB = lathe(
+    [
+      [rB * 0.92, 0],
+      [rB * 0.95, hB * 0.05],
+      [rB, hB * 0.84],
+      [rB * 1.06, hB * 0.91],
+      [rB * 1.04, hB * 0.96],
+      [rB * 0.95, hB * 0.93],
+    ],
+    SEG,
+    [xB, 0, zB],
+    MAT.tin,
+    true,
+    { smooth: true },
+  );
+  const lidB = cylinder(rB * 0.94, rB * 0.92, hB * 0.04, SEG, [xB, hB * 0.88, zB], MAT.tin, { smooth: true });
+
   const label = (r: number, hh: number, c: [number, number, number]): MeshData[] => {
     if (t?.hero) {
       const front = cylinder(r, r, hh, SEG, c, texturedMaterial('tin-label-photo', t.hero, { roughness: 0.6 }), {
@@ -339,75 +476,116 @@ const epoxy: Builder = ({ w, h, d }, { textures: t }) => {
     }
     return [cylinder(r, r, hh, SEG, c, MAT.tinLabel, { smooth: true })];
   };
-  const labelA = label(rA * 1.004, hA * 0.45, [-rA * 0.55, hA * 0.25, 0]);
-  const labelB = label(rB * 1.004, hB * 0.4, [rA * 0.95, hB * 0.25, rA * 0.1]);
+  const labelA = label(rA * 1.006, hA * 0.5, [xA, hA * 0.2, 0]);
+  const labelB = label(rB * 1.008, hB * 0.46, [xB, hB * 0.2, zB]);
   return {
-    meshes: [tinA, lidA, ...labelA, tinB, lidB, ...labelB, spatula],
+    meshes: [bodyA, lidA, ...bail, ...lugs, ...labelA, bodyB, lidB, ...labelB],
     variant: 'two-part-kit',
     textured: !!t?.hero,
     textureNote: t?.hero ? 'label wrap = hero cut-out on the front half of each tin' : undefined,
   };
 };
 
-/** Total station on a survey tripod at working height (~1.5 m): 3 aluminum legs with shoes, head plate, tribrach, optical scope. */
+/**
+ * Total station — THE INSTRUMENT, and not the tripod under it.
+ *
+ * It used to build a 1.6 m survey tripod with the instrument on top, and that is wrong twice
+ * over. `dims_mm` for a GM-52 is 183 x 348 x 181: the instrument. The mesh came out 1.00 x 1.92
+ * x 0.87, so the AR view — which scales a model to the SKU's real dimensions — squashed the whole
+ * tripod down to 348 mm and left the instrument about 63 mm tall. The AR audit sees that as a
+ * product covering 1014 px when it claims to be on screen, and fails it.
+ *
+ * And the tripod is already accounted for: PLACEMENT_RULES['total-stations'] carries
+ * `mountOffsetMm: 1500`, which is the engine's way of standing it at working height. A tripod in
+ * the mesh AS WELL puts the instrument at three metres.
+ *
+ * The other two total stations in the catalogue are supplied models of the instrument alone, at
+ * 0.35 m. This now matches them, which is the other half of the argument: one category should
+ * not be two different objects at two different scales depending on which model won.
+ */
 const totalStation: Builder = ({ w, h, d }) => {
-  const tripodH = 1.45,
-    legLen = 1.62,
-    legR = 0.016,
-    spread = 0.55;
-  const legs: MeshData[] = [];
-  const shoes: MeshData[] = [];
-  const clamps: MeshData[] = [];
+  const bodyW = Math.max(w, 0.12),
+    bodyH = Math.max(h, 0.2),
+    bodyD = Math.max(d, 0.12);
+  /* Tribrach: the levelling base it clamps to a tripod head by, three footscrews under it. */
+  const tribrachH = bodyH * 0.15;
+  const tribrach = lathe(
+    [
+      [bodyW * 0.34, 0],
+      [bodyW * 0.4, tribrachH * 0.35],
+      [bodyW * 0.36, tribrachH],
+    ],
+    24,
+    [0, 0, 0],
+    MAT.instrumentDark,
+    true,
+    { smooth: true },
+  );
+  const screws: MeshData[] = [];
   for (let i = 0; i < 3; i++) {
-    const a = (i / 3) * Math.PI * 2;
-    const leg = cylinder(legR, legR * 0.8, legLen, 12, [0, 0, 0], MAT.tripodLeg, { smooth: true });
-    const tilt = Math.asin(spread / legLen);
-    const tilted = rotate(leg, 'x', -tilt, [0, 0, 0]);
-    legs.push(translate(rotate(tilted, 'y', a, [0, 0, 0]), [0, 0, 0]));
-
-    // Steel point shoes on the floor
-    const shoe = cylinder(0.024, 0.005, 0.06, 12, [-Math.sin(a) * spread, 0, -Math.cos(a) * spread], MAT.tripodShoe);
-    shoes.push(shoe);
-
-    // Leg quick-clamp lock
-    const clamp = box(0.04, 0.03, 0.04, [-Math.sin(a) * spread * 0.5, tripodH * 0.5, -Math.cos(a) * spread * 0.5], MAT.instrumentDark);
-    clamps.push(clamp);
+    const a = (i / 3) * Math.PI * 2 + 0.5;
+    screws.push(cylinder(0.008, 0.009, tribrachH * 0.8, 12, [Math.cos(a) * bodyW * 0.3, 0, Math.sin(a) * bodyW * 0.3], MAT.bracketSteel, { smooth: true }));
   }
-  const placed = legs.map((l, i) => {
-    const a = (i / 3) * Math.PI * 2;
-    return translate(l, [-Math.sin(a) * spread, 0, -Math.cos(a) * spread]);
-  });
-  const head = cylinder(0.09, 0.09, 0.035, 24, [0, tripodH, 0], MAT.instrumentDark);
-  const tribrach = box(0.13, 0.03, 0.13, [0, tripodH + 0.05, 0], MAT.instrumentDark);
-  const base = cylinder(0.07, 0.075, 0.05, 24, [0, tripodH + 0.065, 0], MAT.instrument);
-  const bodyW = Math.max(w, 0.16),
-    bodyH = Math.max(h, 0.22),
-    bodyD = Math.max(d, 0.14);
-  const standL = box(bodyW * 0.22, bodyH * 0.7, bodyD * 0.6, [-bodyW * 0.39, tripodH + 0.115 + bodyH * 0.35, 0], MAT.instrument);
-  const standR = box(bodyW * 0.22, bodyH * 0.7, bodyD * 0.6, [bodyW * 0.39, tripodH + 0.115 + bodyH * 0.35, 0], MAT.instrument);
-  const keyboard = rotate(box(bodyW * 0.55, bodyH * 0.3, 0.012, [0, tripodH + 0.115 + bodyH * 0.2, bodyD * 0.35], MAT.instrumentDark), 'x', -0.35, [
+  /* Alidade: the part that turns. A round lower body, two standards, the telescope between. */
+  const baseY = tribrachH;
+  const lowerH = bodyH * 0.24;
+  const lower = lathe(
+    [
+      [bodyW * 0.42, 0],
+      [bodyW * 0.46, lowerH * 0.4],
+      [bodyW * 0.44, lowerH],
+    ],
+    28,
+    [0, baseY, 0],
+    MAT.instrument,
+    false,
+    { smooth: true },
+  );
+  const standY = baseY + lowerH;
+  const standH = bodyH * 0.46;
+  const standL = box(bodyW * 0.26, standH, bodyD * 0.55, [-bodyW * 0.32, standY + standH / 2, 0], MAT.instrument);
+  const standR = box(bodyW * 0.26, standH, bodyD * 0.55, [bodyW * 0.32, standY + standH / 2, 0], MAT.instrument);
+  /* The telescope: a horizontal barrel on the trunnion axis, objective facing +Z. */
+  const telY = standY + standH * 0.62;
+  const telR = Math.min(bodyW * 0.17, standH * 0.3);
+  /* CENTRED ON THE TRUNNION AXIS, not hung off the front of it. A cylinder turned onto Z spans
+     [0, len], so translating it by +len/2 pushed the whole barrel forward and took the model's
+     depth to 348 mm against a declared 181 — and depth is one of the three numbers the AR view
+     scales by. Centred, the barrel is where a telescope is: through the standards. */
+  const telLen = bodyD * 0.9;
+  const telescope = translate(rotate(cylinder(telR, telR, telLen, 24, [0, 0, 0], MAT.instrumentDark, { smooth: true }), 'x', Math.PI / 2), [
     0,
-    tripodH + 0.115 + bodyH * 0.05,
-    bodyD * 0.35,
+    telY,
+    -telLen / 2,
   ]);
-  const telescope = translate(rotate(cylinder(0.03, 0.03, bodyD * 1.1, 24, [0, 0, 0], MAT.instrumentDark), 'x', Math.PI / 2, [0, 0, 0]), [
+  const objective = translate(rotate(cylinder(telR * 0.94, telR * 0.94, 0.004, 24, [0, 0, 0], MAT.lensGlass), 'x', Math.PI / 2), [0, telY, telLen / 2]);
+  const eyeLen = bodyD * 0.12;
+  const eyepiece = translate(rotate(cylinder(telR * 0.5, telR * 0.42, eyeLen, 16, [0, 0, 0], MAT.instrumentDark, { smooth: true }), 'x', Math.PI / 2), [
     0,
-    tripodH + 0.115 + bodyH * 0.55,
-    bodyD * 0.55,
+    telY,
+    -telLen / 2 - eyeLen,
   ]);
-  const objective = translate(rotate(cylinder(0.031, 0.031, 0.004, 24, [0, 0, 0], MAT.lensGlass), 'x', Math.PI / 2, [0, 0, 0]), [
+  /* Keypad and display, tilted back on the front of the near standard — the face an operator reads. */
+  const keypad = rotate(box(bodyW * 0.62, standH * 0.62, 0.01, [0, standY + standH * 0.42, bodyD * 0.29], MAT.instrumentDark), 'x', -0.22, [
     0,
-    tripodH + 0.115 + bodyH * 0.55,
-    bodyD * 0.55 + 0.002,
+    standY + standH * 0.42,
+    bodyD * 0.29,
   ]);
-  const handle = box(bodyW * 0.7, 0.014, 0.02, [0, tripodH + 0.115 + bodyH * 0.78, 0], MAT.instrumentDark);
-  const handlePosts = [
-    box(0.012, bodyH * 0.1, 0.02, [-bodyW * 0.3, tripodH + 0.115 + bodyH * 0.73, 0], MAT.instrumentDark),
-    box(0.012, bodyH * 0.1, 0.02, [bodyW * 0.3, tripodH + 0.115 + bodyH * 0.73, 0], MAT.instrumentDark),
+  const display = rotate(box(bodyW * 0.5, standH * 0.26, 0.003, [0, standY + standH * 0.55, bodyD * 0.3], MAT.displayGlass), 'x', -0.22, [
+    0,
+    standY + standH * 0.42,
+    bodyD * 0.29,
+  ]);
+  /* Carrying handle across the top, which is most of the silhouette from a distance. */
+  const handleY = standY + standH;
+  const handle = box(bodyW * 0.5, 0.014, bodyD * 0.16, [0, handleY + bodyH * 0.1, 0], MAT.instrumentDark);
+  const posts = [
+    box(0.014, bodyH * 0.1, bodyD * 0.16, [-bodyW * 0.24, handleY + bodyH * 0.05, 0], MAT.instrumentDark),
+    box(0.014, bodyH * 0.1, bodyD * 0.16, [bodyW * 0.24, handleY + bodyH * 0.05, 0], MAT.instrumentDark),
   ];
   return {
-    meshes: [...placed, ...shoes, ...clamps, head, tribrach, base, standL, standR, keyboard, telescope, objective, handle, ...handlePosts],
-    variant: 'on-tripod',
+    meshes: [tribrach, ...screws, lower, standL, standR, telescope, objective, eyepiece, keypad, display, handle, ...posts],
+    variant: 'instrument',
     textured: false,
   };
 };

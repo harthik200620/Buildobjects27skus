@@ -32,11 +32,16 @@ const DRY = process.argv.includes('--dry');
 const SHEET = process.argv.includes('--sheet') ? (process.argv[process.argv.indexOf('--sheet') + 1] ?? null) : null;
 
 /**
- * THE ONE COLOUR. A silver with a teal cast in it, so the mount belongs to the page's palette
- * instead of being the one neutral thing on a teal screen. Keep this and --plate-1 in theme.css
- * identical; they are the two halves of one surface.
+ * THE ONE COLOUR — now the store's own dark mount rather than a silver one.
+ *
+ * A pale sweep on a #06181d page is a lit rectangle however carefully the mount matches it: the
+ * seam goes away and the BLOCK does not. Recolouring to --plate-dark puts the photograph on the
+ * page's surface instead, so a card is a card with an object on it rather than a picture pasted
+ * into one.
+ *
+ * Keep this and --plate-1 / --plate-2 in theme.css identical; they are the halves of one surface.
  */
-const TARGET: [number, number, number] = [0xe6, 0xed, 0xee];
+const TARGET: [number, number, number] = [0x16, 0x32, 0x3b];
 
 /** Inside this of the photograph's own background: it IS the background. */
 const T0 = 20;
@@ -101,13 +106,21 @@ async function blend(file: string): Promise<Report> {
   const cast = Math.max(bg[0], bg[1], bg[2]) - level;
 
   /* The card, the search row and the PDP hero all show image ONE, so image one's background is
-     the colour its mount has to be. Recorded before the recolour, and only when the border
-     really is one colour — a border that is half product has no mount colour to give. */
-  if (file.endsWith(`1-card.webp`) && share >= RING_SHARE) {
-    const sku = path.relative(ROOT, file).split(path.sep)[1];
-    if (sku) mounts.set(sku, hex(bg));
-  }
-  if (share < RING_SHARE || level < STUDIO_MIN_LEVEL || cast > STUDIO_MAX_CAST) return { file, action: 'no-studio-background', from: bg.join(',') };
+     the colour its mount has to be — and only when the border really is one colour, because a
+     border that is half product has no mount colour to give.
+     
+     RECORDED AFTER THE DECISION, NOT BEFORE IT. This used to sample the background and write it
+     down before the recolour ran, which was invisibly fine while the target was the same silver
+     the photographs were already on: the before and after were the same number. The moment the
+     target moved to the dark mount they stopped agreeing — the image was recoloured to #16323b
+     and its mount was recorded as #e6eded, so every card drew a dark photograph inside a white
+     rectangle. The mount has to be the colour the image ENDS UP on. */
+  const isFirst = file.endsWith(`1-card.webp`) && share >= RING_SHARE;
+  const sku = isFirst ? (path.relative(ROOT, file).split(path.sep)[1] ?? null) : null;
+  const leaveAlone = share < RING_SHARE || level < STUDIO_MIN_LEVEL || cast > STUDIO_MAX_CAST;
+  /* Left as photographed keeps its own colour; anything the recolour touches lands on TARGET. */
+  if (sku) mounts.set(sku, hex(leaveAlone ? bg : TARGET));
+  if (leaveAlone) return { file, action: 'no-studio-background', from: bg.join(',') };
   if (cheb(bg[0], bg[1], bg[2], TARGET) <= DONE) return { file, action: 'already' };
 
   for (let p = 0; p < W * H; p += 1) {

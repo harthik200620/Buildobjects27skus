@@ -129,6 +129,9 @@ function visibleBand(
 /** Assumed camera pitch when the device reports no orientation. See the pose block for why. */
 const NO_SENSOR_PITCH_DEG = -10;
 
+/** Below this much solved coverage, the view does not accept "it is on screen" from anywhere. */
+const MIN_SOLVED_COVERAGE = 0.02;
+
 export default function ArCamera({ glbUrl, rule, dims, category, name, brand, price, unit, thumbnail, pdpHref, onExit }: ArCameraProps) {
   const { videoRef, start, stop, status: camStatus, error: camError } = useCameraStream();
   const stageRef = React.useRef<HTMLDivElement | null>(null);
@@ -138,6 +141,17 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
   const anchorRef = React.useRef<Anchor | null>(null);
   const coverMapRef = React.useRef<CoverMap | null>(null);
   const offScreenFramesRef = React.useRef<number>(0);
+  /*
+   * How much of the product the SOLVER last said was on screen.
+   *
+   * There are two opinions about visibility in this file and they can disagree. `framePlacement`
+   * computes a coverage from the projected geometry; the off-screen check below measures the
+   * drawn bounding box against the visible band. When they disagreed the second one won, because
+   * it runs later — and for a small product scaled x5.36 at 4.66 m it judged a box "15 % inside"
+   * that painted no pixels at all, so it cleared an arrow the solver had just raised. The audit
+   * saw a product covering nothing and claiming to be on screen, twice, every run.
+   */
+  const coverageRef = React.useRef<number>(1);
   const autoPlacedRef = React.useRef<boolean>(false);
   const draggingRef = React.useRef<boolean>(false);
   const lastPoseRef = React.useRef<{ q: Quat; R: Mat3; C: Vec3 } | null>(null);
@@ -583,6 +597,7 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
       offScreenFramesRef.current = 0;
       applyAutoFit(targetSurface, f.distanceM);
       setPlaced(true);
+      coverageRef.current = f.coverage;
       setNudge((cur) => (cur === f.nudge ? cur : f.nudge));
       setOversized((cur) => (cur === f.oversized ? cur : f.oversized));
       if (debugRef.current) {
@@ -760,10 +775,13 @@ export default function ArCamera({ glbUrl, rule, dims, category, name, brand, pr
              made from, and one fewer traversal of the scene graph per check. */
           setNudge(nudgeFromBounds(bounds, { w: map.w, top: band.stageTop, bottom: band.stageBottom }));
         }
-      } else {
+      } else if (coverageRef.current >= MIN_SOLVED_COVERAGE) {
         offScreenFramesRef.current = 0;
         setNudge((cur) => (cur === null ? cur : null));
       }
+      /* Bounds say visible, the solver says nothing is on screen: believe the solver and leave the
+         arrow up. Clearing it here is how a product that draws no pixels came to offer no
+         explanation — the one state this view must never be in. */
     }
 
     /*

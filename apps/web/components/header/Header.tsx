@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import ChatPanel from '@/components/ChatPanel';
 import SearchBar from '@/components/SearchBar';
 import Wordmark from '@/components/Wordmark';
 import AccountMenu from './AccountMenu';
@@ -56,7 +57,17 @@ export default function Header({
           {/* TWO spacers, one either side of search: equal flex, so the field lands in the middle
               of the row rather than wherever the left-hand group happens to end. */}
           <span className="header-spacer" />
-          <SearchBar categories={categories} />
+          <div className="header-find">
+            <SearchBar categories={categories} />
+            {/* THE ASSISTANT LIVES WITH SEARCH, not in the corner of the screen.
+                It was a floating circle pinned bottom-right, which put it on top of the AR
+                shutter on a phone (there is a `body[data-ar-active]` rule further down whose only
+                job was to hide it) and gave the store two competing "ask us" affordances — a
+                search field in the masthead and a bubble over the page. They answer the same
+                question. Sitting them side by side says so: type to find a thing, ask to be told
+                about it. */}
+            <ChatPanel />
+          </div>
           <span className="header-spacer" />
           <CartButton />
           <AccountMenu phone={phone} />

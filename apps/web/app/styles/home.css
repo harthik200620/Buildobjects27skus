@@ -17,8 +17,11 @@
    ---------------------------------------------------------------------------- */
 
 @layer components {
+  /* NO PADDING HERE. .sec--last below already pays for the gap to the footer, and .home paid for
+     it a second time at 128px — 216px of empty canvas under the last row of tiles, which is the
+     same "page that ran out" the note on .sec--last was written to fix. One owner per gap. */
   .home {
-    padding-bottom: var(--s-10);
+    padding-bottom: 0;
   }
 
   /* ── section rhythm ─────────────────────────────────────────────────────────
@@ -36,7 +39,7 @@
      between-sections step was wrong here and left the last row 270px clear: a screenful of
      nothing, reading as a page that ran out rather than one that ended. */
   .home .sec--last {
-    padding-bottom: var(--s-7);
+    padding-bottom: var(--s-8);
   }
   .sec-eyebrow {
     color: var(--color-brand);
@@ -261,19 +264,33 @@
      bottom-weighted shade, and the only things that move on hover are the card (up
      4px), its edge (to brand teal) and the photograph itself (1.06). One gesture per
      property; nothing flashes. */
-  /* THREE ACROSS, NOT FOUR. There are nine stocked categories, so four columns left a row of
-     four, a row of four, and one tile alone against three empty columns — the shape a page makes
-     when it has run out rather than finished. Three gives exactly three full rows, and it gives
-     each photograph half as much again to work with, which this photography earns. */
+  /* FOUR ACROSS, AND THE TILE IS 16:9 — WHICH IS THE RATIO THE ART WAS DRAWN AT.
+     Every file under public/media/categories is 800 x 450. The tile was 1/1.06, so `object-fit:
+     cover` was throwing away 47% of the width of every category photograph to fill a shape none
+     of them is: the cement pallet lost its pallet, the solar panel lost the end it recedes to.
+     Matching the source ratio crops nothing, and it is why the number is 16/9 and not a taste.
+
+     THE SIZE, IN THREE STEPS, BECAUSE THE FILE SHOULD SAY WHERE IT HAS BEEN. Nine near-square
+     tiles at 432 x 458 stacked into 1407px of grid — a screen and a half to offer nine links,
+     from a tile wider than the product card that sells the thing inside it (.prod-grid packs
+     those at 220px). 16:9 at three across brought that to 407 x 229 and 770px of grid. Four
+     across is 320 x 180 and 572px.
+
+     NINE OVER FOUR LEAVES ONE ALONE. Four, four, then a single tile against three empty columns.
+     An earlier version of this note rejected exactly that, and it was right about what it looks
+     like — it is the plainest ragged row on the page. It is here because four across is what was
+     asked for, and because the tile it buys is finally the same weight class as the product card
+     it leads to. If the orphan ever has to go, the fix is a tenth cell that is a link, not a
+     narrower grid. */
   .cat-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--s-4);
   }
   .cat-card {
     position: relative;
     display: block;
-    aspect-ratio: 1 / 1.06;
+    aspect-ratio: 16 / 9;
     border-radius: var(--r-3);
     overflow: hidden;
     background: var(--surf-1);
@@ -358,6 +375,41 @@
     font-size: var(--t-fine);
     color: var(--ink-3);
   }
+  /* ── the band has to follow the tile, not the viewport ─────────────────────
+     A 16:9 tile gets SHORT as it gets narrow, and the band is a fixed cost: padding, the name,
+     the count. Measured across every width this store is used at, the shade went from 42% of the
+     card at 1920 to 67% at 1280 and 85% at 360 — a caption turning into the card, which is the
+     same "where did the photograph go" this file has already had to fix once.
+
+     Governed by the CARD, because the card is what actually varies: four columns at 1280 and two
+     at 767 both draw a ~280px tile and both want the same type, and no viewport query can say
+     that in one rule. Specificity is unchanged by @container, so `.cat-card--compact .cat-name`
+     (0,2,0) still beats these (0,1,0) — the roadmap tiles keep their own size and are untouched.
+
+     THE NUMBERS ARE CONTENT-BOX, NOT BORDER-BOX. A container query measures the content box, and
+     .cat-card carries a 1px border, so 285 here fires at a 287px tile. Set at 300 it fired at
+     1350 — a 302px tile whose 18px name fitted on one line at 49% band and did not need helping.
+     285 is the width at which the longest name in the catalogue, "Drafting & Measurement Items",
+     stops fitting: 284 wraps it and takes the band to 67%. */
+  .cat-card {
+    container-type: inline-size;
+  }
+  @container (max-width: 285px) {
+    .cat-name {
+      font-size: var(--t-body);
+    }
+  }
+  @container (max-width: 210px) {
+    .cat-name {
+      font-size: var(--t-fine);
+    }
+    .cat-meta {
+      font-size: var(--t-micro);
+    }
+    .cat-band {
+      padding: var(--s-3);
+    }
+  }
   .cat-meta .fig {
     color: var(--ink-2);
   }
@@ -383,15 +435,38 @@
     font-weight: 600;
     color: var(--ink-3);
   }
-  @media (max-width: 1099.98px) {
+  /* THE COLUMN DROPS ARE SET BY THE BAND, NOT BY DEVICE NAMES.
+     A 16:9 tile gets SHORT as it gets narrow, and the name, its count and the padding around them
+     are a fixed height — about 75px on one line and 98px on two. So a narrow tile is mostly
+     shade. Measured on this catalogue with four columns held to 1100px: a 241px tile, the longest
+     name on two lines, and the band covering 79% of the card — the photograph gone behind the
+     gradient, which is the exact failure this file has already fixed once on the compact grid.
+
+     The floor is a tile wide enough that the band stays near half the card, which is ~280px.
+     Each breakpoint below is the width at which the next column count would cross it:
+
+       >= 1280   4 up   284 -> 324px      1024-1280   3 up   303 -> 383px
+       768-1024  2 up   345 -> 462px      < 768       2 up   square, see below */
+  @media (max-width: 1279.98px) {
+    .cat-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 1023.98px) {
     .cat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+  /* THE PHONE KEEPS THE SQUARE. Two columns of a 390px screen is a 169px tile; at 16:9 that is a
+     95px photograph carrying a name that wants two lines and a count under it — the shade would
+     be the tile. The crop is the price, and on a 169px thumbnail it is one nobody can see. */
   @media (max-width: 767.98px) {
     .cat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--s-3);
+    }
+    .cat-card {
+      aspect-ratio: 1 / 1;
     }
   }
 
@@ -399,14 +474,34 @@
      Same tile, a third of the area. Twenty-six of the thirty-five categories in this catalogue
      are still being filled, and at full size they buried the nine that sell: the front door
      opened onto four dimmed photographs wearing "Arriving soon" pills. Every one of them is still
-     on the page — hiding them would be the dishonest fix — but at the weight of a list, six
-     across instead of four, so the eye reads the block rather than each tile in it. */
+     on the page — hiding them would be the dishonest fix — but at the weight of a list, five
+     across instead of four, so the eye reads the block rather than each tile in it.
+
+     FOUR, THE SAME AS THE SHELF ABOVE IT. The page used to run three stocked tiles per row over
+     five smaller ones, and two column counts on one page read as two systems rather than as one
+     catalogue at two states of readiness. Sharing the count is what makes the front door a
+     structure: the columns line up down the whole page, and the difference between "on the shelf"
+     and "on the way" is carried by treatment — a dimmer photograph, a smaller name, a shorter
+     tile — rather than by a different grid.
+
+     Twenty-six over four is six rows and two on the last, which is a tidier ending than the five
+     across it replaces (six rows and ONE). The tile grows from 259 to 320px, so every name still
+     sits on one line. */
   .cat-grid--compact {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--s-3);
   }
+  /* 16:9 here for the same reason as the tile above: it is what the art is, so nothing is cropped.
+
+     ON THE HEIGHT, PLAINLY, BECAUSE AN EARLIER NOTE HERE CLAIMED THE OPPOSITE. At 1/0.82 and six
+     across this block was 915px against the stocked grid's 770 — a roadmap outweighing the shop.
+     Landscape at six across brought it to 643, under the shop, which is the order these two
+     belong in. Five across puts it back to 935, OVER it again: six rows instead of five, because
+     twenty-six over five is six rows. That is the cost of the wider tile and it is a real one —
+     the block below the shop is now the taller of the two. Anyone reducing this page again should
+     start here, and the lever is the column count, not the ratio. */
   .cat-card--compact {
-    aspect-ratio: 1 / 0.82;
+    aspect-ratio: 16 / 9;
     border-radius: var(--r-2);
   }
   .cat-card--compact .cat-band {
@@ -435,13 +530,24 @@
       overflow-wrap: anywhere;
     }
   }
-  /* Dimmer than a stocked tile, and dimmer than the old --soon rule: at 0.55 with a full-strength
-     name over it the picture was still competing. These are a roadmap, not a shelf. */
+  /* MEASURED, NOT PICKED. At 0.4 these twenty-six photographs came out at 0.024 mean luminance
+     and a tonal range of 0.048, against 0.558 for a stocked tile measured the same way: nine per
+     cent of a picture — requested, downloaded, decoded, and black. And .cat-card--soon's
+     `saturate(0.7)` was still on top of it: equal specificity, earlier in the file, so the
+     opacity below overrode that rule's opacity and inherited its filter. What was meant as
+     "quieter than the shelf" had become "not there", which is what a reader reports as the
+     tiles not showing.
+
+     0.88 with the filter cancelled is a photograph again. The demotion survives it — at FULL
+     opacity a compact tile still carries only 37% of a stocked tile's tonal range, because it is
+     a third the size and served a third the pixels — so the picture no longer has to say "not in
+     stock" by being unreadable. The heading over the grid says it in words. */
   .cat-card--compact .cat-photo img {
-    opacity: 0.4;
+    opacity: 0.88;
+    filter: none;
   }
   .cat-card--compact:hover .cat-photo img {
-    opacity: 0.62;
+    opacity: 1;
   }
   .cat-card--compact:hover .cat-name {
     color: var(--ink-1);
@@ -454,15 +560,28 @@
   .sec-head--tight {
     margin-bottom: var(--s-5);
   }
-  @media (max-width: 1099.98px) {
+  /* The roadmap steps down with the shelf above it, one row behind — 4 / 3 / 2 against the
+     stocked grid's 4 / 3 / 2 — so the columns keep lining up as the page narrows. Sharing the
+     count only reads as structure if it survives the breakpoints. */
+  @media (max-width: 1279.98px) {
     .cat-grid--compact {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 1023.98px) {
+    .cat-grid--compact {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   @media (max-width: 767.98px) {
     .cat-grid--compact {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--s-2);
+    }
+    /* Three columns of a 390px screen is a 111px tile, and 16:9 makes that 62px — less than the
+       three lines "Drafting & Measurement Items" needs plus the padding under them. The phone
+       keeps the taller box for the same reason the stocked tile keeps its square there. */
+    .cat-card--compact {
+      aspect-ratio: 1 / 0.82;
     }
     .cat-card--compact .cat-band {
       padding: var(--s-2);

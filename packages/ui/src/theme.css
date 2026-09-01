@@ -134,21 +134,50 @@
      the silver plate below was putting a white rectangle behind two thirds of the store's
      photography. One step above the card it sits on, so the object still has a ground to stand
      on rather than dissolving into the page. */
+  /*
+   * THE MOUNT IS DARK, AND SO IS THE SWEEP BEHIND EVERY PRODUCT.
+   *
+   * It was #e6edee — a pale silver, chosen when the answer to "brand photography is shot on white"
+   * was to make the white deliberate. It is a coherent idea and on a #06181d page it is still a
+   * light rectangle: every card on the shelf was a bright tile with a dark page around it, and the
+   * catalogue read as photographs pasted onto a site rather than as one surface.
+   *
+   * So the sweep moved instead of the mount. `scripts/blend-skus.mts` recolours each photograph's
+   * own background to THIS value, and the mount is the same value, so the two are one surface —
+   * the same trick as before, pointed at the store's palette instead of away from it. One step
+   * above --surf-2 (#0e2a33), the card it sits on, so an object still has a ground to stand on
+   * rather than dissolving into the card.
+   *
+   * THE THREE NUMBERS MUST MOVE TOGETHER: this, --plate-2, and TARGET in blend-skus.mts. Change
+   * one and the seam is back.
+   */
   --plate-dark: #16323b;
-  --plate-1: #e6edee;
-  --plate-2: #e6edee;
+  --plate-1: #16323b;
+  --plate-2: #16323b;
   /* Where the mount falls away at its edges — see --plate-mask. Flat cannot make an object look
      photographed, so the modelling moved OUT of the plate's fill and onto a mask over both plate
      and photograph at once: they darken together, so softening the tile can never reopen a seam. */
-  --plate-0: #cfdadb;
+  --plate-0: #0e2a33;
+  /*
+   * The floor an object casts onto the mount.
+   *
+   * It was written twice as the literal `rgb(12 17 19 / …)` — which is #0c1113, the value
+   * --on-plate-1 used to hold back when the mount was silver. The contrast gate accepted it
+   * because it matched a token by coincidence, and the moment the plate went dark and that token
+   * became light ink, two shadows turned into untokenised colours. Named here so the coincidence
+   * cannot happen again, and darkened: a 26 % wash of near-black reads as a shadow on a pale
+   * plate and as nothing at all on #16323b.
+   */
+  --plate-shadow: rgb(2 10 13 / 52%);
   /* Two linear fades intersected, not a radial vignette. A radial mask cannot dissolve a
      rectangle evenly — whatever you size it to, the four mid-edges fade last and they are most
      of the edge. Two ramps composited with `intersect` fade all four sides by the same 6%. */
   --plate-mask:
     linear-gradient(90deg, rgb(0 0 0 / 0%) 0%, #000 6%, #000 94%, rgb(0 0 0 / 0%) 100%),
     linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, #000 6%, #000 94%, rgb(0 0 0 / 0%) 100%);
-  --on-plate-1: #0c1113; /* 16.9 on plate */
-  --on-plate-2: #52605f; /*  5.4 on plate */
+  /* Light ink now the plate is dark. Measured on #16323b: 13.9 and 6.6. */
+  --on-plate-1: #f2f8f9;
+  --on-plate-2: #a9c0c4;
 
   /* THE LIT STAGE. One recipe, used by the product gallery and by anything else that
      has to make a single object look photographed rather than pasted. The bright centre

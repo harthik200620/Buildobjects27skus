@@ -108,7 +108,8 @@ export default function ChatPanel() {
         aria-label={open ? 'Close the assistant' : 'Ask Build Objects'}
         onClick={() => setOpen((o) => !o)}
       >
-        {open ? <IconClose size={20} /> : <IconChat size={20} />}
+        {open ? <IconClose size={17} /> : <IconChat size={17} />}
+        <span className="chat-fab-word">Ask BO</span>
       </button>
 
       {open && (

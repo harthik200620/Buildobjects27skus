@@ -18,6 +18,7 @@ import type { AssetManifestEntry, AssetQualityReport } from '@buildobjects/catal
 import { closeDb, getDb } from '@buildobjects/db';
 import { ASSETS_DIR, flags, resolveMediaRoot, writeManifest } from '../build';
 import { type DimsResult, dimsFor } from '../dims';
+import { loadReview, productPhotoPosition } from '../review';
 import { heroCutoutFor } from '../textures';
 import type { FetchLike } from './http';
 import { decide, inputHash, JOBS_FILE, type JobDecision, type JobRecord, JobStore } from './jobs';
@@ -144,6 +145,8 @@ interface Ctx {
   dryRun: boolean;
   force: boolean;
   maxSpend: number;
+  /** Which photograph shows the product, per SKU — see assets/3d/review.json. */
+  review: ReturnType<typeof loadReview>;
   spent: number;
   fatal: ProviderError | null;
 }
@@ -200,7 +203,7 @@ async function planSku(t: PhotorealTarget, ctx: Ctx): Promise<SkuPlan> {
   // Some categories are photographed as context, not as product — see NO_IMAGE_TO_3D.
   const excluded = NO_IMAGE_TO_3D[t.category];
   if (excluded) return { ...base, skip: excluded };
-  const views = selectViews(t, ctx.mediaRoot, { extraCutoutDirs: [ctx.cutoutsDir] });
+  const views = selectViews(t, ctx.mediaRoot, { extraCutoutDirs: [ctx.cutoutsDir], leadPosition: productPhotoPosition(ctx.review, t.code) ?? undefined });
   if (!views.length)
     return {
       ...base,
@@ -536,6 +539,7 @@ export async function runPhotoreal(opts: RunOptions): Promise<RunReport> {
     dryRun,
     force: !!opts.force,
     maxSpend,
+    review: loadReview(opts.assetsDir ?? ASSETS_DIR),
     spent: 0,
     fatal: null,
   };
@@ -659,6 +663,11 @@ async function main() {
   const f = flags(process.argv.slice(2));
   const assist = typeof f.assist === 'string' ? await loadAssist(f.assist) : null;
   const report = await runPhotoreal({
+    /* SILENT BY DEFAULT WAS THE BUG. `runPhotoreal`'s `log` falls back to a no-op for the tests,
+       and `main` never overrode it — so the CLI that submits paid jobs to an image-to-3D provider
+       printed nothing at all: not the provider, not the spend, not the outcome. It looked like it
+       had done nothing. */
+    log: (line: string) => console.log(line),
     sku: typeof f.sku === 'string' ? f.sku : undefined,
     category: typeof f.category === 'string' ? f.category : undefined,
     force: !!f.force,

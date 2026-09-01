@@ -23,7 +23,8 @@
     "sweep": "tsx scripts/sweep.mts",
     "test": "vitest run --passWithNoTests",
     "type:audit": "tsx scripts/type-audit.mts",
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json",
+    "rehash-blur": "tsx scripts/rehash-blur.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

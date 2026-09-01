@@ -97,10 +97,37 @@ export interface SelectedView {
  * without one there is nothing honest to model from. `extraCutoutDirs` lets the runner keep
  * assist-made cut-outs outside MEDIA_ROOT (`assets/3d/cutouts/{SKU}/{n}-cutout.png`).
  */
-export function selectViews(t: PhotorealTarget, mediaRoot: string, opts: { max?: number; extraCutoutDirs?: string[] } = {}): SelectedView[] {
+export function selectViews(
+  t: PhotorealTarget,
+  mediaRoot: string,
+  opts: { max?: number; extraCutoutDirs?: string[]; leadPosition?: number } = {},
+): SelectedView[] {
   const out: SelectedView[] = [];
+  /*
+   * THE LEAD VIEW IS WHAT THE PROVIDER RECONSTRUCTS, and it must not be chosen by position.
+   *
+   * `orderViews` ranks by `role`, and roles in this catalogue are assigned by position — so the
+   * lead was `sku_images` position 1 for every SKU, whatever was in the frame. That is how a
+   * retail carton became the model of a bulb and a Dahua bracket the model of a camera.
+   *
+   * `leadPosition` is the position a vision pass has confirmed shows the product
+   * (`assets/3d/review.json`, `photo_positions`). It may be a position with no database row at
+   * all — a photograph sourced from the brand's own site is written beside the original five —
+   * so it is resolved from the file on disk rather than from `t.images`.
+   */
+  if (opts.leadPosition !== undefined) {
+    const orig = origFile(t.code, mediaRoot, opts.leadPosition);
+    const cut =
+      [
+        cutoutFile(t.code, mediaRoot, opts.leadPosition),
+        ...(opts.extraCutoutDirs ?? []).map((d) => path.join(d, t.code, `${opts.leadPosition}-cutout.png`)),
+      ].find((f) => fs.existsSync(f)) ?? null;
+    if (orig || cut)
+      out.push({ position: opts.leadPosition, role: 'hero', key: `${t.code}#${opts.leadPosition}`, viewRole: 'front', origFile: orig, cutoutFile: cut });
+  }
   for (const img of orderViews(t.images)) {
     if (out.length === 0 && img.role !== 'hero') break;
+    if (img.position === opts.leadPosition) continue;
     const orig = origFile(t.code, mediaRoot, img.position);
     const candidates = [
       cutoutFile(t.code, mediaRoot, img.position),
