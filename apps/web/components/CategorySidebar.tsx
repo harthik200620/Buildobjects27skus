@@ -23,7 +23,7 @@ export default function CategorySidebar({ categories, current }: { categories: C
   return (
     <nav className="cat-rail" aria-label="All categories">
       <h2 className="cat-rail-head">Categories</h2>
-      {/* Capped and scrollable: thirty-five links is taller than most viewports, and an
+      {/* Capped and scrollable: thirty-six links is taller than most viewports, and an
           uncapped list is what used to push every filter off the bottom of the rail. */}
       <div className="cat-rail-scroll">
         <ul className="cat-rail-list">

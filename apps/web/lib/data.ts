@@ -143,7 +143,7 @@ export async function loadSession(): Promise<SessionClaims | null> {
   return verifySession(jar.get(SESSION_COOKIE)?.value);
 }
 
-/** One of the thirty-five categories, with any products that sit inside it. */
+/** One of the thirty-six categories, with any products that sit inside it. */
 export interface CategoryGroup {
   slug: string;
   name: string;
@@ -161,7 +161,8 @@ export interface CategoryGroup {
 }
 
 /**
- * The catalogue's top level: the thirty-five categories of `PRODUCTS LIST.xlsx`.
+ * The catalogue's top level: the thirty-six categories of `PRODUCTS LIST.xlsx` — the workbook has
+ * thirty-five sheets, and its COMMUNICATION & FURNITURE sheet is carried here as two shelves.
  *
  * Built by folding the `categories` table onto `CATEGORIES`. Twenty-six of those rows ARE a
  * category and pass straight through; nine are products and are filed under the category the

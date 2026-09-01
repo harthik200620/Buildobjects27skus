@@ -23,7 +23,7 @@ export interface RailProps {
   /**
    * Secondary navigation for the rail — the category tree on a listing page.
    *
-   * Rendered BELOW the facets. It used to be above them, which put thirty-seven category links
+   * Rendered BELOW the facets. It used to be above them, which put thirty-eight category links
    * between the top of the rail and the first filter: on a category page the filters are the
    * tool you came for, and they were off-screen until you scrolled past the whole catalogue.
    */
@@ -229,7 +229,7 @@ export default function FilterRail(props: RailProps) {
       {/*
         Category, as a filter rather than as navigation.
 
-        The search page used to render this AND the full thirty-five-category tree underneath it,
+        The search page used to render this AND the full thirty-six-category tree underneath it,
         so the same nine names appeared twice in one 300 px column — once with a count that
         narrowed the results in place, once as a link that threw the other filters away. This one
         stays because it is the one that filters; the tree is still one click away in the header's

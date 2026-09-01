@@ -13,7 +13,7 @@ import { mediaUrl } from '@/lib/media';
  * `meta` is how many items are on the shelf and what the cheapest costs, which are the two things
  * a buyer is deciding on. It used to read "1 product · 3 on the shelf" on every stocked tile.
  *
- * `compact` is the same tile at the size an unstocked shelf deserves. Twenty-six of thirty-five
+ * `compact` is the same tile at the size an unstocked shelf deserves. Twenty-seven of thirty-six
  * categories are still being filled, and at full size they made the front door read as a store
  * with the lights off. Compact keeps all of them on the page, which is the honest thing, at the
  * weight of a list rather than of a shelf. Elevation is `.lift` in theme.css.

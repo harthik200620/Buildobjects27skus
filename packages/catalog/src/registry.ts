@@ -112,7 +112,7 @@ export const defaultWidget = (t: DataType): FilterWidget => (t === 'number' ? 'r
  * `services/pipeline/registry/taxonomy.json` is validated against these keys at seed time.
  */
 /**
- * THE THIRTY-FIVE CATEGORIES, and the nine products that sit inside them.
+ * THE THIRTY-SIX CATEGORIES, and the nine products that sit inside them.
  *
  * The source is `Desktop/Build Objects/PRODUCTS LIST.xlsx` — one sheet per category, in this
  * order. Cement is not a category: CONCRETING is, and cement is a product in it. The same is true
@@ -131,7 +131,7 @@ export const defaultWidget = (t: DataType): FilterWidget => (t === 'number' ? 'r
  *                                         agents, injection grouts. A judgement call: epoxy grout
  *                                         also appears under FLOORING and RAILINGS.
  *
- * Twenty-six of the thirty-five have no products yet. They are still real, clickable places —
+ * Twenty-seven of the thirty-six have no products yet. They are still real, clickable places —
  * an upcoming category is a promise the buyer can see, not a dead link.
  */
 export const CATEGORIES = [
@@ -165,7 +165,8 @@ export const CATEGORIES = [
   { slug: 'stationery', name: 'Stationery & Office Supplies' },
   { slug: 'paper-sheet', name: 'Paper, Boards & Sheet Materials' },
   { slug: 'electronic-printing', name: 'Electronics & Printing Equipment' },
-  { slug: 'communication-furniture', name: 'Communication & Furniture Items' },
+  { slug: 'communication', name: 'Communication & Collaboration Equipment' },
+  { slug: 'furniture', name: 'Furniture & Workplace Solutions' },
   { slug: 'drafting-measurement', name: 'Surveying, Drafting & Measurement Equipment' },
   { slug: 'finance-accounting', name: 'Finance & Accounting Supplies' },
   { slug: 'storage-packaging', name: 'Storage & Packaging Solutions' },

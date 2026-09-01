@@ -67,7 +67,7 @@ export default function CategoryMenu({ categories, variant }: { categories: NavC
 
   const close = () => setOpen(false);
   const panelId = `${id}-panel`;
-  /* The thirty-five categories of PRODUCTS LIST.xlsx. The nine that stock something lead, each
+  /* The thirty-six categories of PRODUCTS LIST.xlsx. The nine that stock something lead, each
      naming the products inside it; the rest follow as places the catalogue will reach. */
   const products = categories.filter((c) => isProduct(c.slug));
   const groups = CATEGORIES.map((d) => ({ key: d.slug, name: d.name, categories: products.filter((c) => categoryOf(c.slug) === d.slug) }));

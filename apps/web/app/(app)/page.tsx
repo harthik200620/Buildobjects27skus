@@ -11,7 +11,7 @@ export const revalidate = 60;
 /**
  * The front door: the hero, the spine, the categories, and nothing after them.
  *
- * IT SHOWS CATEGORIES. There are thirty-five, and `WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx` is
+ * IT SHOWS CATEGORIES. There are thirty-six, and `WHOLE_PRODUCT_LIST_BO_PRODUCT_CALENDAR.xlsx` is
  * the authority — one sheet each, in this order. Cement is not one of them: CONCRETING is, and
  * cement is a product on that sheet, as tiles are on FLOORING and glass on DOORS & WINDOWS.
  *
@@ -121,7 +121,7 @@ export default async function Home() {
       </section>
 
       {/* ── the catalogue's top level, and the end of the page ───────────────
-          Two grids, not one, and the split is the whole point. Nine of the thirty-five categories
+          Two grids, not one, and the split is the whole point. Nine of the thirty-six categories
           have something on the shelf; twenty-six do not yet. Drawn at the same size and shuffled
           together — which is what this was — the front door opened onto four dimmed "Arriving
           soon" tiles and read as a store with the lights off. What sells leads, at full size. What

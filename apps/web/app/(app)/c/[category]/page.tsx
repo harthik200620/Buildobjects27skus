@@ -21,11 +21,11 @@ import { inr } from '@/lib/media';
 
 /**
  * What to call a row from `categories`, given that the table and the workbook disagree on seven of
- * the thirty-five — "Steel & Reinforcement" against "Steel", "Lifts & Elevators" against "Lift
+ * the thirty-six — "Steel & Reinforcement" against "Steel", "Lifts & Elevators" against "Lift
  * Elevators". Tiles, nav, rail and footer all read the registry, so a shopper clicked "Steel" and
  * landed on a page headed "Steel & Reinforcement".
  *
- * `PRODUCTS LIST.xlsx` is the authority for the thirty-five, so the registry wins for them. Rows
+ * `PRODUCTS LIST.xlsx` is the authority for the thirty-six, so the registry wins for them. Rows
  * that are PRODUCTS — cement, tiles, glass — are not in the registry at all and keep their own
  * name, which is why this cannot simply be `categoryName(slug)`.
  */
@@ -249,11 +249,12 @@ async function landingData(group: CategoryGroup): Promise<{ skus: SkuSearchDoc[]
 }
 
 /**
- * A category: one of the thirty-five sheets in `PRODUCTS LIST.xlsx`.
+ * A category: one of the thirty-five sheets in `PRODUCTS LIST.xlsx` — thirty-six shelves, because
+ * that workbook's COMMUNICATION & FURNITURE sheet is carried here as two.
  *
  * It has no filters and no price rail because a category does not have specifications — its
  * products do. What it owes the buyer is the answer to "what is in here": the products, and when
- * any of them are stocked, a way straight through to the shelf. Twenty-six of the thirty-five
+ * any of them are stocked, a way straight through to the shelf. Twenty-seven of the thirty-six
  * have nothing in them yet and say so rather than pretending otherwise.
  */
 function CategoryLanding({ group, skus, eta }: { group: CategoryGroup; skus: SkuSearchDoc[]; eta: string | null }) {

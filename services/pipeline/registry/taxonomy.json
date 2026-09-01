@@ -1,5 +1,5 @@
 {
-  "$comment": "The storefront's category tree: thirteen departments, thirty-seven categories, nine of them live. Departments come from column A of the specification workbook, which pairs a department with the category beneath it — Electrical Items / Bulbs, Surveying Equipment / Total Stations. The twenty-eight upcoming categories are the sheets of 'PRODUCTS LIST.xlsx' that no live category already covers (CONCRETING is Cement, FLOORING is Tiles, DOORS & WINDOWS is Glass, ELECTRICALS is Bulbs, FIRE SYSTEM is Fire Extinguishers, SOLAR is Solar Panels, SECURITY SYSTEMS is CCTV). They carry no products yet and say so; every field here is seeded into the categories table so the nav, the sidebar, the homepage and the counts all read one source. `icon` must be a key of CATEGORY_ICONS in apps/web/components/icons.tsx.",
+  "$comment": "The storefront's category tree: thirteen departments, thirty-eight categories, nine of them live. Departments come from column A of the specification workbook, which pairs a department with the category beneath it — Electrical Items / Bulbs, Surveying Equipment / Total Stations. The twenty-nine upcoming categories are the sheets of 'PRODUCTS LIST.xlsx' that no live category already covers (CONCRETING is Cement, FLOORING is Tiles, DOORS & WINDOWS is Glass, ELECTRICALS is Bulbs, FIRE SYSTEM is Fire Extinguishers, SOLAR is Solar Panels, SECURITY SYSTEMS is CCTV). They carry no products yet and say so; every field here is seeded into the categories table so the nav, the sidebar, the homepage and the counts all read one source. `icon` must be a key of CATEGORY_ICONS in apps/web/components/icons.tsx.",
 
   "departments": [
     { "key": "construction-materials", "name": "Construction Materials", "display_order": 1 },
@@ -63,7 +63,8 @@
     { "slug": "stationery", "department": "office-administration", "status": "upcoming", "name": "Stationery Items", "icon": "stationery" },
     { "slug": "paper-sheet", "department": "office-administration", "status": "upcoming", "name": "Paper & Sheet Items", "icon": "paper" },
     { "slug": "electronic-printing", "department": "office-administration", "status": "upcoming", "name": "Electronic & Printing Items", "icon": "printing" },
-    { "slug": "communication-furniture", "department": "office-administration", "status": "upcoming", "name": "Communication & Furniture", "icon": "furniture" },
+    { "slug": "communication", "department": "office-administration", "status": "upcoming", "name": "Communication & Collaboration Equipment", "icon": "communication" },
+    { "slug": "furniture", "department": "office-administration", "status": "upcoming", "name": "Furniture & Workplace Solutions", "icon": "furniture" },
     { "slug": "finance-accounting", "department": "office-administration", "status": "upcoming", "name": "Finance & Accounting Items", "icon": "finance" },
     { "slug": "storage-packaging", "department": "office-administration", "status": "upcoming", "name": "Storage & Packaging Items", "icon": "storage" },
     { "slug": "presentation", "department": "office-administration", "status": "upcoming", "name": "Presentation Items", "icon": "presentation" }

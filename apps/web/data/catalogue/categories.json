@@ -3,127 +3,172 @@
     "slug": "epoxy",
     "code": "EPX",
     "name": "Epoxy",
-    "nameTe": "ఎపాక్సీ",
-    "nameHi": "एपॉक्सी",
+    "nameTe": "\u0c0e\u0c2a\u0c3e\u0c15\u0c4d\u0c38\u0c40",
+    "nameHi": "\u090f\u092a\u0949\u0915\u094d\u0938\u0940",
     "icon": "epoxy",
     "heroImageKey": "categories/epoxy/hero-card-c5b66c46ce.webp",
     "unit": "kit",
     "department": "construction-chemicals",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 1295, "max_price": 2200 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 1295,
+      "max_price": 2200
+    }
   },
   {
     "slug": "fire-extinguishers",
     "code": "FIR",
     "name": "Fire Extinguishers",
-    "nameTe": "అగ్నిమాపక యంత్రాలు",
-    "nameHi": "अग्निशामक यंत्र",
+    "nameTe": "\u0c05\u0c17\u0c4d\u0c28\u0c3f\u0c2e\u0c3e\u0c2a\u0c15 \u0c2f\u0c02\u0c24\u0c4d\u0c30\u0c3e\u0c32\u0c41",
+    "nameHi": "\u0905\u0917\u094d\u0928\u093f\u0936\u093e\u092e\u0915 \u092f\u0902\u0924\u094d\u0930",
     "icon": "extinguisher",
     "heroImageKey": "categories/fire-extinguishers/hero-card-855463c91e.webp",
     "unit": "piece",
     "department": "safety-fire",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 4399, "max_price": 10230 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 4399,
+      "max_price": 10230
+    }
   },
   {
     "slug": "solar-panels",
     "code": "SOL",
     "name": "Solar Panels",
-    "nameTe": "సోలార్ ప్యానెల్స్",
-    "nameHi": "सोलर पैनल",
+    "nameTe": "\u0c38\u0c4b\u0c32\u0c3e\u0c30\u0c4d \u0c2a\u0c4d\u0c2f\u0c3e\u0c28\u0c46\u0c32\u0c4d\u0c38\u0c4d",
+    "nameHi": "\u0938\u094b\u0932\u0930 \u092a\u0948\u0928\u0932",
     "icon": "solar",
     "heroImageKey": "categories/solar-panels/hero-card-b69b3af93b.webp",
     "unit": "panel",
     "department": "solar-energy",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 11499, "max_price": 12300 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 11499,
+      "max_price": 12300
+    }
   },
   {
     "slug": "cctv",
     "code": "CCT",
     "name": "CCTV",
-    "nameTe": "సీసీటీవీ కెమెరాలు",
-    "nameHi": "सीसीटीवी कैमरा",
+    "nameTe": "\u0c38\u0c40\u0c38\u0c40\u0c1f\u0c40\u0c35\u0c40 \u0c15\u0c46\u0c2e\u0c46\u0c30\u0c3e\u0c32\u0c41",
+    "nameHi": "\u0938\u0940\u0938\u0940\u091f\u0940\u0935\u0940 \u0915\u0948\u092e\u0930\u093e",
     "icon": "cctv",
     "heroImageKey": "categories/cctv/hero-card-226051ab88.webp",
     "unit": "piece",
     "department": "cctv-security",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 1230, "max_price": 1350 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 1230,
+      "max_price": 1350
+    }
   },
   {
     "slug": "tiles",
     "code": "TIL",
     "name": "Tiles",
-    "nameTe": "టైల్స్",
-    "nameHi": "टाइल्स",
+    "nameTe": "\u0c1f\u0c48\u0c32\u0c4d\u0c38\u0c4d",
+    "nameHi": "\u091f\u093e\u0907\u0932\u094d\u0938",
     "icon": "tiles",
     "heroImageKey": "categories/tiles/hero-card-07864386f3.webp",
     "unit": "box",
     "department": "building-materials",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 1160, "max_price": 1240 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 1160,
+      "max_price": 1240
+    }
   },
   {
     "slug": "glass",
     "code": "GLS",
     "name": "Glass",
-    "nameTe": "గాజు",
-    "nameHi": "कांच",
+    "nameTe": "\u0c17\u0c3e\u0c1c\u0c41",
+    "nameHi": "\u0915\u093e\u0902\u091a",
     "icon": "glass",
     "heroImageKey": "categories/glass/hero-card-b69b01c9e5.webp",
     "unit": "sqft",
     "department": "building-materials",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 50, "max_price": 95 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 50,
+      "max_price": 95
+    }
   },
   {
     "slug": "total-stations",
     "code": "TST",
     "name": "Total Stations",
-    "nameTe": "టోటల్ స్టేషన్లు",
-    "nameHi": "टोटल स्टेशन",
+    "nameTe": "\u0c1f\u0c4b\u0c1f\u0c32\u0c4d \u0c38\u0c4d\u0c1f\u0c47\u0c37\u0c28\u0c4d\u0c32\u0c41",
+    "nameHi": "\u091f\u094b\u091f\u0932 \u0938\u094d\u091f\u0947\u0936\u0928",
     "icon": "total-station",
     "heroImageKey": "categories/total-stations/hero-card-0f3d5e8d85.webp",
     "unit": "piece",
     "department": "surveying-equipment",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 395000, "max_price": 825000 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 395000,
+      "max_price": 825000
+    }
   },
   {
     "slug": "bulbs",
     "code": "BUL",
     "name": "Bulbs",
-    "nameTe": "బల్బులు",
-    "nameHi": "बल्ब",
+    "nameTe": "\u0c2c\u0c32\u0c4d\u0c2c\u0c41\u0c32\u0c41",
+    "nameHi": "\u092c\u0932\u094d\u092c",
     "icon": "bulb",
     "heroImageKey": "categories/bulbs/hero-card-1ce82cfe97.webp",
     "unit": "piece",
     "department": "electrical-items",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 65, "max_price": 129 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 65,
+      "max_price": 129
+    }
   },
   {
     "slug": "cement",
     "code": "CEM",
     "name": "Cement",
-    "nameTe": "సిమెంట్",
-    "nameHi": "सीमेंट",
+    "nameTe": "\u0c38\u0c3f\u0c2e\u0c46\u0c02\u0c1f\u0c4d",
+    "nameHi": "\u0938\u0940\u092e\u0947\u0902\u091f",
     "icon": "cement",
     "heroImageKey": "categories/cement/hero-card-25ef525b34.webp",
     "unit": "bag",
     "department": "construction-materials",
     "status": "live",
     "brandCount": 3,
-    "stats": { "sku_count": 3, "in_stock": 3, "min_price": 410, "max_price": 437 }
+    "stats": {
+      "sku_count": 3,
+      "in_stock": 3,
+      "min_price": 410,
+      "max_price": 437
+    }
   },
   {
     "slug": "bricks-and-blocks",
@@ -137,7 +182,12 @@
     "department": "construction-materials",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "steel",
@@ -151,7 +201,12 @@
     "department": "construction-materials",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "roofing",
@@ -165,7 +220,12 @@
     "department": "building-materials",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "painting",
@@ -179,7 +239,12 @@
     "department": "building-materials",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "internal-works",
@@ -193,7 +258,12 @@
     "department": "building-materials",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "kitchen-ware",
@@ -207,7 +277,12 @@
     "department": "building-materials",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "waterproofing",
@@ -221,7 +296,12 @@
     "department": "construction-chemicals",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "safety-equipment",
@@ -235,7 +315,12 @@
     "department": "safety-fire",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "drafting-measurement",
@@ -249,7 +334,12 @@
     "department": "surveying-equipment",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "excavation",
@@ -263,7 +353,12 @@
     "department": "site-structure",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "centering",
@@ -277,7 +372,12 @@
     "department": "site-structure",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "railings",
@@ -291,7 +391,12 @@
     "department": "site-structure",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "plumbing",
@@ -305,7 +410,12 @@
     "department": "mep-services",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "hvac-materials",
@@ -319,7 +429,12 @@
     "department": "mep-services",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "lift-elevators",
@@ -333,7 +448,12 @@
     "department": "mep-services",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "heavy-equipment",
@@ -347,7 +467,12 @@
     "department": "site-machinery",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "transport-systems",
@@ -361,7 +486,12 @@
     "department": "site-machinery",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "machineries",
@@ -375,7 +505,12 @@
     "department": "site-machinery",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "external-works",
@@ -389,7 +524,12 @@
     "department": "external-works",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "branding",
@@ -403,7 +543,12 @@
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "administration",
@@ -417,7 +562,12 @@
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "stationery",
@@ -431,7 +581,12 @@
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "paper-sheet",
@@ -445,7 +600,12 @@
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "electronic-printing",
@@ -459,21 +619,50 @@
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
-    "slug": "communication-furniture",
+    "slug": "communication",
     "code": "COM",
-    "name": "Communication & Furniture",
+    "name": "Communication & Collaboration Equipment",
     "nameTe": null,
     "nameHi": null,
-    "icon": "furniture",
-    "heroImageKey": "categories/communication-furniture/hero-card-2c3fbf3f4b.webp",
+    "icon": "communication",
+    "heroImageKey": "categories/communication/hero-card-70e8105782.webp",
     "unit": null,
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
+  },
+  {
+    "slug": "furniture",
+    "code": "FUR",
+    "name": "Furniture & Workplace Solutions",
+    "nameTe": null,
+    "nameHi": null,
+    "icon": "furniture",
+    "heroImageKey": "categories/furniture/hero-card-2c3fbf3f4b.webp",
+    "unit": null,
+    "department": "office-administration",
+    "status": "upcoming",
+    "brandCount": 0,
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "finance-accounting",
@@ -487,7 +676,12 @@
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "storage-packaging",
@@ -501,7 +695,12 @@
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   },
   {
     "slug": "presentation",
@@ -515,6 +714,11 @@
     "department": "office-administration",
     "status": "upcoming",
     "brandCount": 0,
-    "stats": { "sku_count": 0, "in_stock": 0, "min_price": null, "max_price": null }
+    "stats": {
+      "sku_count": 0,
+      "in_stock": 0,
+      "min_price": null,
+      "max_price": null
+    }
   }
 ]

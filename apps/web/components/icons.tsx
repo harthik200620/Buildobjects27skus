@@ -711,6 +711,20 @@ export const IconRailings = (p: IconProps) => (
   </Ico>
 );
 
+/* A desk phone: the body, the handset lying across its cradle, and the drop of the cord. The
+   accent is the handset, because that is the part that says "call" rather than "box".
+
+   NOT IconChat, which was the obvious reuse and the wrong one — that speech box is the BO
+   assistant's mark in the header, and a category wearing it reads as "chat to BO" rather than as
+   the shelf that sells telephones and conferencing kit. */
+export const IconCommunication = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M4.8 11.4h14.4v7.8H4.8z" />
+    <path className="ic-a" d="M7.2 5.2h9.6v3.4H7.2z" />
+    <path d="M9.2 8.6v2.8M14.8 8.6v2.8" />
+  </Ico>
+);
+
 export const IconFurniture = (p: IconProps) => (
   <Ico {...p}>
     <path d="M4 11.4V7.6h16v3.8" />
@@ -864,6 +878,7 @@ export const CATEGORY_ICONS: Record<string, (p: IconProps) => React.JSX.Element>
   stationery: IconStationery,
   paper: IconPaper,
   printing: IconPrinting,
+  communication: IconCommunication,
   furniture: IconFurniture,
   drafting: IconDrafting,
   finance: IconFinance,
