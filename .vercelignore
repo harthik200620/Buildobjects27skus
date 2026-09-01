@@ -1,0 +1,63 @@
+# What NOT to upload to Vercel.
+#
+# There was no such file, and `vercel --prod` from this repo therefore tried to upload FIFTEEN
+# GIGABYTES and aborted part-way through. The CLI uploads the whole working tree — it does not read
+# .gitignore — and this is a pnpm monorepo with a build cache, a git history and 724 MB of raw
+# provider output sitting in it.
+#
+# The project's rootDirectory is apps/web, but the upload has to be the repo root or the workspace
+# packages do not resolve. So the rule is: send the sources and the things the build reads from
+# OUTSIDE apps/web, and nothing else.
+#
+# scripts/stage-media.mts reads exactly three places outside apps/web, and all three must survive:
+#   storage/media        -> public/media
+#   assets/3d            -> public/3d   (top-level .glb + manifest.json, gaps filled from placeholders/)
+#   design-system/art    -> public/art
+# Excluding any of those ships a store with no photographs, no 3D models, or no backplates.
+
+# THE LOCAL DATABASE, SEARCH INDEX AND CACHE — 12.4 GB, and the entire reason the first deploy
+# aborted at 15 GB. `infra/local.mjs` runs MySQL, MeiliSearch and Redis from here without Docker
+# (see `pnpm infra:up`), so their data directories live in the working tree. The deployment has no
+# database at all — it serves the frozen snapshot in lib/static-catalogue.ts — so none of this is
+# wanted, and the scripts that manage it are dev-only.
+infra
+
+# Dependencies and caches — Vercel installs and builds its own.
+node_modules
+**/node_modules
+.turbo
+**/.turbo
+.next
+**/.next
+.vercel
+
+# History. Vercel builds from the uploaded files, not from git.
+.git
+
+# Staged copies of media that the build regenerates from the sources below. Uploading these ships
+# every photograph twice.
+apps/web/public/media
+apps/web/public/3d
+apps/web/public/art
+
+# 724 MB of what the image-to-3D provider returned before normalisation. stage-media's `pick`
+# already refuses it — nothing reads it back — and it is the single largest thing in the repo.
+assets/3d/photoreal
+
+# Generated models that assets/3d/review.json refuses. Kept in git as evidence, never served:
+# stage-media only picks top-level .glb files, so these would be dead weight on the CDN.
+assets/3d/rejected
+
+# Captured brand pages, audit reports and run logs. Inputs to the pipeline, not to the store.
+storage/raw
+storage/reports
+storage/calendar
+storage/*.log
+
+# Local scratch.
+*.log
+.env
+.env.*
+
+# Reference renders kept for comparison; not served.
+generated images
