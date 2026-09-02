@@ -287,43 +287,6 @@ export const IconCoin = (p: IconProps) => (
   </Ico>
 );
 
-/*
- * THE BO COINS MARK — the same O the header pill wears, drawn as an icon.
- *
- * IconCoin above is a COIN: a rim, an O struck into it, four ticks. That is right for the
- * `commercial` spec group, where the subject is money in general. It is wrong for BO Coins,
- * because the store already decided the currency IS the letter — `.coin-o` in store.css sets an
- * Audiowide O in gold in the header with nothing around it, on the reasoning that a ring drawn
- * around a letter that is already a ring reads as a target rather than as a coin. Clicking that
- * pill opened a wallet whose title still wore the rim, so one currency had two marks arguing on
- * the same screen.
- *
- * 18 because scale-audit counts the font-size of SVG text like any other type on the page, and
- * the note above IconCoin records what an off-scale value cost last time. 21 was the first try and
- * it put /cart at twelve sizes against eleven — the cart renders this glyph on load, and 21 was on
- * the type scale but not on that page's. 18 already was, and it is also exactly the size of the
- * `.coin-o` in the header pill, so the two marks for one currency are now the same letter at the
- * same size. The letter carries the whole mark, so it fills the box the rim used to occupy.
- */
-export const IconBoCoin = (p: IconProps) => (
-  <Ico {...p}>
-    <text
-      className="ic-a"
-      x="12"
-      y="12.4"
-      textAnchor="middle"
-      dominantBaseline="central"
-      fontFamily="var(--font-brand)"
-      fontWeight="400"
-      fontSize="18"
-      fill="currentColor"
-      stroke="none"
-    >
-      O
-    </text>
-  </Ico>
-);
-
 /* The assistant. A speech box on the family's chamfered container, with the tail cut from the
    same 45 degrees as the corner — so the one diagonal in the glyph appears twice and reads as
    deliberate. The accent is the line being spoken, not the box. */

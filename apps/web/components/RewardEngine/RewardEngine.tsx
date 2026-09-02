@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { IconBoCoin, IconClose, IconVolumeOff, IconVolumeOn } from '@/components/icons';
+import { BoCoinStill } from '@/components/BoCoin';
+import { IconClose, IconVolumeOff, IconVolumeOn } from '@/components/icons';
 import { addBoCoins, getBoCoins, markWheelSpun } from '@/lib/coins';
 import { ElevatorScene, FLOORS, SURPRISE_FLOOR } from './ElevatorScene';
 import { triggerHaptic } from './hapticEngine';
@@ -184,7 +185,7 @@ export default function RewardEngine({ onClose, initialBalance }: { onClose?: ()
           the point of the machine and hiding it until the end would make the ride the point. */}
       <div className="bolift-balance">
         <span className="bolift-balance-label micro">
-          <IconBoCoin size={14} accent="var(--amber-700)" /> Your balance
+          <BoCoinStill size={14} /> Your balance
         </span>
         <span className="bolift-balance-fig">
           <Odometer value={balance} min={2} aria-label={`${balance} BO Coins`} />

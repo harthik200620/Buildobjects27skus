@@ -769,54 +769,6 @@
   .coin-pill svg {
     flex: none;
   }
-  /*
-   * The currency mark: a capital O in the brand face, struck in gold.
-   *
-   * Audiowide has one weight (400) and no bold cut, so the weight is left alone — asking for 700
-   * here synthesises a smeared outline, which is what `scripts/type-audit.mts` exists to catch.
-   * Presence comes from size and from the gradient instead: a two-stop amber across the glyph
-   * with a hairline ring behind it, which is how a struck coin catches light on its rim.
-   *
-   * `line-height: 1` and the explicit box stop the tall Audiowide ascent from pushing the pill
-   * off the 32px header rhythm every other control in the bar sits on.
-   */
-  /*
-   * NO RING. The O was set inside a 18px bordered circle, which put a ring around a letter that
-   * is already a ring — two concentric circles reading as a target rather than as a coin, and the
-   * pill it sits in is a third. The glyph carries the whole idea on its own, so it is the only
-   * thing left: the border, the radius and the inset hairline are all gone and the letter grew
-   * into the space they were taking.
-   *
-   * 18px against the pill's 12px figure, which is the ratio that makes it read as a MARK beside a
-   * number rather than as another character in the same string. Audiowide has one weight, so
-   * presence has to come from size — asking for 700 here synthesises a smeared outline, which is
-   * what scripts/type-audit.mts exists to catch.
-   *
-   * 18 AND NOT 17 because the chrome renders on every page and /estimate already spends its whole
-   * type-size budget: a 17px used by nothing else was a sixteenth size on a page allowed fifteen,
-   * and scripts/scale-audit.mts failed on it. 18px is already on that page's ladder, so the mark
-   * gets a step BIGGER and costs no size at all.
-   */
-  .coin-o {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: none;
-    font-family: var(--font-brand);
-    font-size: 18px;
-    /* 400 EXPLICITLY, because .coin-pill sets 700 and this inherits it. Audiowide ships one cut,
-       so a 700 here is not bolder type — it is the browser smearing the 400 outline, which is
-       what scripts/type-audit.mts failed on. The mark's weight comes from its size, above. */
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: 0;
-    /* Light to dark down the stroke: --amber-800 is the PALE one (#ffcb4d) and --amber-600 the
-       deep one (#e5a408), which is the opposite of what the numbers suggest. */
-    background: linear-gradient(150deg, var(--amber-800) 0%, var(--color-coin) 55%, var(--amber-600) 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
   .coin-pill-word {
     font-weight: 600;
   }
@@ -3895,6 +3847,41 @@
     -webkit-mask: url("/logo-mark-mono-128.png") center / contain no-repeat;
     mask: url("/logo-mark-mono-128.png") center / contain no-repeat;
     filter: drop-shadow(0 2px 0 rgb(122 85 4 / 60%)) drop-shadow(0 -1px 0 rgb(255 227 155 / 50%));
+  }
+  /*
+   * The coin held still, at icon size — see components/BoCoin.tsx.
+   *
+   * Everything here overrides ONE thing: scale. The face's gradient and the masked mark come
+   * through untouched from the rules above, so the small coin and the spinning one are the same
+   * object; what could not come through is the depth budget. `inset 0 0 0 9px` is a ninth of a
+   * 64px coin and the whole of a 16px one, so the ring and the inner shading are restated in `em`
+   * against a font-size the component sets to its own pixel size. --glow-amber goes too: a halo
+   * that reads as struck metal at 64px reads as a smudge beside 12px type.
+   */
+  .bocoin--still {
+    border-radius: 50%;
+  }
+  .bocoin--still .bocoin-face {
+    /* Darker than --amber-300, which is the mark's colour on the big coin and the right one there:
+       at 64px the device has enough area that mid-brown on gold reads as struck metal. At 18px it
+       has none, so the same brown reads as a smudge. This is the deepest tone in the coin's own
+       family, chosen so the device is legible as a SHAPE first. */
+    color: var(--amber-200);
+    box-shadow:
+      inset 0 0 0 0.055em rgb(74 51 2 / 62%),
+      inset 0 0 0.28em rgb(122 85 4 / 42%);
+  }
+  /*
+   * BIGGER AND UNENGRAVED. The device is the brand mark — three ruled strokes leading into a bowl
+   * — and at 58 % of an 18 px coin those strokes are barely a pixel each, which is a smudge and
+   * not a logo. 72 % buys back the width they need. The two drop shadows go with them: on a
+   * 120 px face they read as an engraving, but a 1 px shadow under a 13 px glyph is a fifth of
+   * the mark in shadow, and it filled the counters in.
+   */
+  .bocoin--still .bocoin-mark {
+    width: 72%;
+    height: 72%;
+    filter: none;
   }
   /* Stopped face-on: the frame that carries the meaning. */
   @media (prefers-reduced-motion: reduce) {

@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import React from 'react';
-import BoCoin from '@/components/BoCoin';
+import BoCoin, { BoCoinStill } from '@/components/BoCoin';
 import BoCoinWheel from '@/components/BoCoinWheel';
 import BoCartMark from '@/components/cart/BoCartMark';
-import { IconBoCoin, IconClose, IconEngine } from '@/components/icons';
+import { IconClose, IconEngine } from '@/components/icons';
 import { useDismiss } from '@/components/useDismiss';
 import { type CoinActivity, getBoCoinHistory, getBoCoins } from '@/lib/coins';
 import { inr } from '@/lib/media';
@@ -56,13 +56,11 @@ export default function CartButton() {
           aria-expanded={walletOpen}
           aria-label={`BO Coins balance: ${coins} coins`}
         >
-          {/* THE MARK IS AN O, SET IN THE BRAND FACE, IN GOLD. It was a generic coin glyph — a
-              circle with a rim, the same one every loyalty scheme uses — which said "points"
-              rather than "BO Coins". An O in Audiowide is the second letter of the store's own
-              name, so the currency is branded by construction instead of by a label beside it. */}
-          <span className="coin-o" aria-hidden="true">
-            O
-          </span>
+          {/* THE MARK IS THE COIN, STRUCK AND HELD STILL. It was a gold Audiowide O — the second
+              letter of the store's own name, which branded the currency but did not say money,
+              and which disagreed with the coin sitting in the wallet the pill opens. Now the pill
+              and the wallet show one object at two sizes. See components/BoCoin.tsx. */}
+          <BoCoinStill size={20} />
           <span className="fig">{coins}</span>
           <span className="coin-pill-word">Coins</span>
         </button>
@@ -71,7 +69,7 @@ export default function CartButton() {
           <div className="wallet fade-in" role="dialog" aria-label="BO Coins wallet">
             <div className="wallet-head">
               <h2 className="wallet-title">
-                <IconBoCoin size={17} /> BO Coins
+                <BoCoinStill size={17} /> BO Coins
               </h2>
               <button type="button" onClick={() => setWalletOpen(false)} className="wallet-close" aria-label="Close wallet">
                 <IconClose size={15} />

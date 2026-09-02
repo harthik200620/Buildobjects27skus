@@ -50,3 +50,36 @@ export default function BoCoin({ size = 120, className }: { size?: number; class
  * already had, with the two drop shadows in store.css that read as an engraving.
  */
 const BoCoinMark = () => <span className="bocoin-mark" aria-hidden="true" />;
+
+/**
+ * The same coin, struck once and held still, at the sizes an icon lives at.
+ *
+ * The currency's mark used to be a gold letter O — first ringed, then bare — while the wallet it
+ * opened showed this coin. Two marks for one currency, and the letter was the weaker of them: it
+ * said "the second letter of the brand", where the coin says "money". So the coin is the mark
+ * everywhere now, and the letter is gone.
+ *
+ * IT REUSES `.bocoin-face` AND `.bocoin-mark` RATHER THAN RESTATING THEM, which is the whole
+ * point — the gradient, the mask and the engraving are literally the same declarations the
+ * spinning one uses, so the small mark cannot drift away from the object it stands for.
+ *
+ * What it does not reuse is the depth. The spin, the milled rim on its own layer 7px back and the
+ * travelling glint are all things you can only read at 64px and up; at 16px they are noise, and
+ * the rim in particular aliases into a grey fringe. What survives is the face and the device.
+ *
+ * `fontSize` is set to the pixel size so `.bocoin--still` can write its shadows in `em` — the
+ * spinning coin's are absolute (`inset 0 0 0 9px`), which at 16px would swallow the whole face.
+ */
+export function BoCoinStill({ size = 16, className }: { size?: number; className?: string }) {
+  return (
+    <span
+      className={className ? `bocoin bocoin--still ${className}` : 'bocoin bocoin--still'}
+      style={{ width: size, height: size, fontSize: size }}
+      aria-hidden="true"
+    >
+      <span className="bocoin-face">
+        <BoCoinMark />
+      </span>
+    </span>
+  );
+}

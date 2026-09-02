@@ -246,6 +246,9 @@
      A currency must not be the brand colour, or it reads as a feature rather
      than as money. Amber is the second and last accent in the system; anything
      that is not a coin, a reward or a warning may not use it.                    */
+  /* The die. Struck into the coin's face at icon size, where --amber-300 on gold is a smudge
+     rather than a mark — see .bocoin--still in store.css. Darkest rung on the ramp. */
+  --amber-200: #4a3302;
   --amber-300: #7a5504;
   --amber-500: #c98f06;
   --amber-600: #e5a408;
