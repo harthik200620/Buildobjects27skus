@@ -1717,6 +1717,12 @@
      value of the mask that can reopen the seam between them. */
   .prod-media {
     position: relative;
+    /* ISOLATED so the three layers below — plate, floor shadow, photograph — stack against each
+       other and not against the card. Without it `.prod-media img`'s z-index: 2 competes with the
+       card's own layers, and it won: the stretched link that makes the whole card clickable has no
+       z-index, so the photograph sat on top of it and swallowed every click aimed at the product.
+       See `.prod-title a::after`. */
+    isolation: isolate;
     aspect-ratio: 4 / 3.4;
     background: transparent;
     overflow: hidden;
@@ -1798,7 +1804,6 @@
    * settles on the bottom edge and lines up with its neighbours whatever the title did.
    */
   .prod-body {
-    position: relative;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
@@ -1830,7 +1835,6 @@
     font-family: var(--font-ui);
     font-weight: 600;
     letter-spacing: -0.005em;
-    position: relative;
     margin: 0;
     /* Two lines' worth RESERVED so short names do not leave the row ragged, and three ALLOWED
        before it clamps. The reserve stays at two lines even though the narrower face needs fewer
@@ -1848,7 +1852,23 @@
     color: inherit;
     text-decoration: none;
   }
-  /* The stretched link: the whole card is the target; the CTA row sits above it. */
+  /*
+   * The stretched link: the whole card is the target, and the CTA row sits above it.
+   *
+   * IT DEPENDS ON TWO THINGS THAT ARE EASY TO BREAK BY ACCIDENT, and both had been broken, so the
+   * only clickable part of a product card was the title text — 165x45 of a 234x517 card. Clicking
+   * the photograph did nothing at all.
+   *
+   *   1. `.prod-card` MUST be the nearest positioned ancestor. `.prod-body` and `.prod-title` had
+   *      each picked up a `position: relative` that nothing used, and the nearer of them won: this
+   *      inset:0 resolved against the title's own box. `.prod-title` also clips, so even its own
+   *      box would not have escaped.
+   *   2. Nothing between here and the card may outrank it. `.prod-media img` sits at z-index 2 and
+   *      the media box did not isolate, so the photograph painted over this. See `.prod-media`.
+   *
+   * If either is reintroduced the card stops opening, silently and without a test failing — which
+   * is why apps/web/lib/product-card.test.ts now asserts both.
+   */
   .prod-title a::after {
     content: "";
     position: absolute;
