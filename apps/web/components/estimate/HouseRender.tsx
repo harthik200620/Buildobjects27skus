@@ -42,7 +42,8 @@ function houseSrc(floors: number, tier: Tier, solar: boolean, size: 'card' | 'he
  * will not resolve at any price, so the 3D matrix is floors x finish only and the still render is
  * what carries the panels. See packages/assets3d/tools/house-3d.mts.
  */
-const houseModelSrc = (floors: number, tier: Tier): string => `/3d/house/${Math.max(0, Math.min(FLOORS_MAX, floors))}-${tier}.glb`;
+const houseModelKey = (floors: number, tier: Tier): string => `${Math.max(0, Math.min(FLOORS_MAX, floors))}-${tier}`;
+const houseModelSrc = (floors: number, tier: Tier): string => `/3d/house/${houseModelKey(floors, tier)}.glb`;
 
 /**
  * What the estimate is paying for that the render deliberately does not show.
@@ -82,21 +83,38 @@ export default function HouseRender({ result, highlight = null }: { result: Esti
   useScrollLock(turntable);
 
   /*
-   * Whether this configuration has a mesh at all. Asked once per configuration with a HEAD, so
-   * the "Turn it around" button only ever appears when pressing it will work — an interactive
-   * affordance that opens onto an error is worse than no affordance.
+   * Whether this configuration has a mesh at all — so the "Turn it around" button only ever
+   * appears when pressing it will work. An interactive affordance that opens onto an error is
+   * worse than no affordance.
+   *
+   * IT ASKS THE MANIFEST, NOT THE FILE. This used to HEAD the model itself, once per
+   * configuration. That answers correctly and it answers by 404ing, which the browser logs as a
+   * failed request whether or not the code handles it — and since only `1-basic` was ever
+   * generated while the default tier is medium, every visit to /estimate opened with a red console
+   * error about a file nobody asked for. The manifest is the list of what exists, it is 388 bytes,
+   * it is fetched once for the whole session instead of once per slider move, and it stays right
+   * as more meshes are generated.
    */
   const modelSrc = houseModelSrc(inputs.floors, inputs.tier);
-  const [hasModel, setHasModel] = React.useState(false);
+  const [built, setBuilt] = React.useState<Set<string> | null>(null);
   React.useEffect(() => {
     let alive = true;
-    setTurntable(false);
-    fetch(modelSrc, { method: 'HEAD' })
-      .then((r) => alive && setHasModel(r.ok))
-      .catch(() => alive && setHasModel(false));
+    fetch('/3d/house/manifest.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j: { models?: Record<string, unknown> } | null) => {
+        if (alive) setBuilt(new Set(Object.keys(j?.models ?? {})));
+      })
+      .catch(() => alive && setBuilt(new Set()));
     return () => {
       alive = false;
     };
+  }, []);
+
+  const hasModel = built?.has(houseModelKey(inputs.floors, inputs.tier)) ?? false;
+  /* A configuration change closes the turntable: the mesh it is showing is no longer the estimate. */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: keyed on the model, not on the setter
+  React.useEffect(() => {
+    setTurntable(false);
   }, [modelSrc]);
 
   React.useEffect(() => {
