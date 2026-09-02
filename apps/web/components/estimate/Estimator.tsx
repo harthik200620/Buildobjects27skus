@@ -13,6 +13,7 @@ import {
   isPlotByDims,
   LEDGER_LABEL,
   type LineItem,
+  mergeCatalog,
   type StateCode,
   standardDecisions,
   TIER_LABEL,
@@ -92,18 +93,46 @@ export default function Estimator({
   const result: EstimateResult = React.useMemo(() => estimate(inputs, catalog), [inputs, catalog]);
   const unconfirmed = !!drawing && !drawing.confirmed;
 
+  /*
+   * Every SKU code this device has already asked the endpoint about, whether or not an answer came
+   * back. It is the loop breaker, and the loop it breaks was live.
+   *
+   * THE BUG. This effect read `catalog`, fetched the prices it was missing, merged them with
+   * `setCatalog(c => ({ ...c, ...j }))` and listed `[catalog]` as its dependency. The merge
+   * allocates a new object every time, so the identity always changed, so the effect always ran
+   * again. That is harmless only while the answer is complete: the second pass finds nothing
+   * missing and stops. The moment the endpoint returns 200 with a code absent from the body, the
+   * pass finds the same code missing, fetches again, merges again — forever, as fast as the
+   * network allows.
+   *
+   * IT WAS NOT HYPOTHETICAL. /api/estimate/catalog prices SKUs out of the database, and returns
+   * `{}` when it cannot reach one — and the deployment has no database at all. So every visitor to
+   * /estimate carrying a single "Add to Estimate" pick opened an unbounded request loop against
+   * production. It surfaced as a design gate timing out, because Playwright cannot reach
+   * networkidle on a page that never stops fetching.
+   *
+   * Two independent fixes, either of which would stop it, because one is about this effect and the
+   * other is about anyone who writes the next one:
+   *   - a code is asked about ONCE per mount, so an unpriceable SKU cannot be re-requested;
+   *   - the merge returns the PREVIOUS object when the answer adds nothing, so a no-op response
+   *     cannot change state at all.
+   * The dependency is now `[]`: nothing this effect sets is anything it reads.
+   */
+  const asked = React.useRef<Set<string>>(new Set(Object.keys(initialCatalog)));
+
   /* picks from the store ("Add to Estimate") live on this device — merge their prices into the snapshot */
   React.useEffect(() => {
     let alive = true;
     const sync = async () => {
       const picks = readPicks();
-      const missing = picks.map((p) => p.sku_code).filter((c) => !catalog[c]);
+      const missing = picks.map((p) => p.sku_code).filter((c) => !asked.current.has(c));
       if (missing.length) {
+        for (const c of missing) asked.current.add(c);
         try {
           const r = await fetch(`/api/estimate/catalog?codes=${encodeURIComponent(missing.join(','))}`);
           if (r.ok) {
-            const j = await r.json();
-            if (alive) setCatalog((c) => ({ ...c, ...j }));
+            const j = (await r.json()) as CatalogPrices;
+            if (alive) setCatalog((c) => mergeCatalog(c, j));
           }
         } catch {
           /* seed rates still apply */
@@ -117,8 +146,7 @@ export default function Estimator({
       alive = false;
       window.removeEventListener('bo-picks', sync);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [catalog]);
+  }, []);
 
   /* shareable URL state, back-button safe */
   React.useEffect(() => {

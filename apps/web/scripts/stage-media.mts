@@ -50,9 +50,17 @@ const JOBS: Job[] = [
     from: path.join(REPO, 'assets', '3d'),
     to: path.join(PUBLIC, '3d'),
     label: '3d',
-    /* Only the delivered models and the manifest. `photoreal/` holds what the provider returned
-       before normalisation — 724 MB that nothing reads back. */
-    pick: (rel) => !rel.includes('/') && (rel.endsWith('.glb') || rel === 'manifest.json'),
+    /*
+     * The delivered models and their manifests: the SKU meshes at the top level, and `house/`.
+     *
+     * `photoreal/` is what the provider returned before normalisation — 724 MB that nothing reads
+     * back — so nesting was excluded wholesale, and that quietly took `house/` with it. The
+     * estimator asks for `/3d/house/{floors}-{tier}.glb`; every one of them 404'd, and because the
+     * component HEAD-probes before offering "Turn it around" the failure was perfectly silent —
+     * the button simply never appeared, on any configuration, for anyone. 4 MB for the one mesh
+     * that exists.
+     */
+    pick: (rel) => (!rel.includes('/') || rel.startsWith('house/')) && (rel.endsWith('.glb') || rel.endsWith('manifest.json')),
     /*
      * Seven SKUs have no photoreal model and wear a generated parametric one instead. On a machine
      * with the repository the route handler finds those under `placeholders/`; a CDN has no such

@@ -29,3 +29,22 @@ export function perSqft(s: CatalogPrice | null): number | null {
   if (s.unit === 'sqft' && s.selling_price) return s.selling_price;
   return null;
 }
+
+/**
+ * Fold a price response into the snapshot the calculator is holding.
+ *
+ * IT RETURNS `prev` UNCHANGED WHEN THE ANSWER ADDS NOTHING, and that is the whole point rather
+ * than an optimisation. The caller is a React effect that merges into state the effect itself
+ * reads; written as `{ ...prev, ...incoming }` it allocates a new object every time, so the state
+ * identity always changes, so the effect always runs again. While every asked-for code comes back
+ * that terminates on the second pass. When one does not — /api/estimate/catalog answers 200 with
+ * `{}` if it cannot reach the database, and the deployment has none — the same code is missing
+ * every pass, and the page fetches forever.
+ *
+ * Returning the previous object makes a no-op response a no-op state update, which React drops.
+ * A merge that cannot change identity cannot drive a loop, whoever writes the next effect.
+ */
+export function mergeCatalog(prev: CatalogPrices, incoming: CatalogPrices): CatalogPrices {
+  const gained = Object.keys(incoming).some((code) => !(code in prev));
+  return gained ? { ...prev, ...incoming } : prev;
+}
