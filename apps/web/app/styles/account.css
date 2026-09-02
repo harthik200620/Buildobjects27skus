@@ -326,7 +326,12 @@
     .chat-fab-word {
       display: none;
     }
+    /* 44 WIDE EVEN WITHOUT THE WORD. Dropping the label left a 39px button, and a 39px target is
+       below the 44x44 minimum every touch guideline agrees on — scripts/sweep.mts flagged it on
+       every mobile surface in the store. The padding still tightens; min-width is what stops the
+       tightening from crossing into a control your thumb misses. */
     .chat-fab {
+      min-width: 44px;
       padding: 0 10px;
     }
   }
