@@ -383,8 +383,10 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    height: 46px;
-    padding: 0 10px 0 16px;
+    /* 42, not 46. The bar was taller than every other control in the row — the coin pill and the
+       assistant are both under 41 — so it read as a panel rather than as a field. */
+    height: 42px;
+    padding: 0 8px 0 14px;
     border-radius: var(--r-2);
     background: rgb(255 255 255 / 4.5%);
     border: 1px solid var(--hair-2);
@@ -418,8 +420,70 @@
   .search-input::placeholder {
     color: var(--ink-3);
   }
-  .search-input:focus {
+  /*
+   * ONE BOX, NOT TWO. theme.css gives every focusable a `box-shadow: var(--ring-focus)` and its own
+   * `border-radius` — correct for a bare control, wrong for an input that is already inside a
+   * field with a ring of its own. Focusing the bar drew a second rounded rectangle INSIDE the
+   * first, which is the "weird" the field looked when you clicked it.
+   *
+   * `outline: none` alone did not do it: the global rule paints with box-shadow, not outline, so
+   * the inner rectangle survived a rule written to remove it. Both are cancelled here, and the
+   * ring on `.search-field:focus-within` above is the only focus affordance the control has.
+   */
+  .search-input:focus,
+  .search-input:focus-visible {
     outline: none;
+    box-shadow: none;
+  }
+  /* The ghost hint needs something to be absolute inside, and the input still has to flex. */
+  .search-inputwrap {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+  }
+  /*
+   * The rotating hint: one shelf name at a time, arriving from the left.
+   *
+   * It sits exactly where the placeholder would and is `aria-hidden`, so it is decoration over a
+   * field whose real label never moves. `pointer-events: none` keeps the whole width of the bar
+   * clickable — the hint must never be the thing a click lands on.
+   */
+  .search-ghost {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.32em;
+    overflow: hidden;
+    pointer-events: none;
+    color: var(--ink-3);
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+  }
+  .search-ghost-word {
+    display: inline-block;
+    color: var(--ink-2);
+    font-weight: 600;
+    animation: search-ghost-in 460ms var(--ease-glide) both;
+  }
+  @keyframes search-ghost-in {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  /* A hint that moves is a preference, not a requirement: it still rotates, it just stops sliding. */
+  @media (prefers-reduced-motion: reduce) {
+    .search-ghost-word {
+      animation: none;
+    }
   }
   .search-clear {
     display: grid;
@@ -1017,45 +1081,6 @@
     position: relative;
     flex: none;
   }
-  .deliver-to {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    height: 48px;
-    max-width: 240px;
-    padding: 0 8px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    color: #fff;
-    background: none;
-    cursor: pointer;
-    text-align: left;
-  }
-  .deliver-to:hover {
-    border-color: var(--color-chrome-hair-strong);
-  }
-  .deliver-to > svg {
-    flex: none;
-    color: var(--color-header-ink-2);
-  }
-  .deliver-to-text {
-    min-width: 0;
-  }
-  .deliver-to-label {
-    display: block;
-    font-size: var(--t-fine);
-    line-height: 14px;
-    color: var(--color-header-ink-2);
-  }
-  .deliver-to-value {
-    display: block;
-    font-size: 14px;
-    line-height: 18px;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
   .deliver-pop {
     left: 0;
     top: calc(100% + 4px);
@@ -1110,9 +1135,6 @@
      after `.deliver-strip { display: none }` on purpose: same specificity, so it has to come
      later to win. */
   @media (max-width: 1279.98px) {
-    .deliver-wrap--header {
-      display: none;
-    }
     .header-action-label {
       display: none;
     }
@@ -1126,7 +1148,7 @@
     align-items: center;
     gap: 6px;
     max-width: 100%;
-    height: 36px;
+    height: 40px;
     padding: 0;
     border: 0;
     background: none;
@@ -1139,10 +1161,45 @@
     flex: none;
     color: var(--color-header-ink-2);
   }
+  /*
+   * THE PLACE IS THE HEADLINE. This was one 13px line — "Deliver to Hyderabad 500001" — with the
+   * city and the pincode at the same weight, so the row read as a label and the place inside it
+   * had to be hunted for. The city now sets the line: 18px, bold, on the baseline the pin points
+   * at. The caption before it and the pincode after it are both --t-fine, which is what makes the
+   * city look like the answer and them look like the question and the detail.
+   */
   .deliver-strip-text {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    min-width: 0;
     white-space: nowrap;
+  }
+  .deliver-strip-label {
+    flex: none;
+    font-size: var(--t-fine);
+    color: var(--color-header-ink-2);
+  }
+  .deliver-strip-city {
+    font-size: var(--t-h4);
+    font-weight: 700;
+    line-height: 22px;
+    letter-spacing: -0.01em;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .deliver-strip-addr {
+    flex: none;
+    font-size: var(--t-fine);
+    /* No font-weight: the figure face ships fewer cuts than the ramp suggests, and asking for 500
+       had the browser synthesising one — scripts/type-audit.mts fails on exactly that. Inheriting
+       the button's 400 is a real file, and the pincode's job here is to recede anyway. */
+    color: var(--color-header-ink-2);
+  }
+  /* The pin is the size of the place it points at, not of the caption beside it. */
+  .deliver-strip-pin {
+    flex: none;
+    align-self: center;
   }
   .deliver-strip-text b {
     font-weight: 700;
@@ -1444,9 +1501,6 @@
     .account-wrap {
       display: flex;
       align-items: center;
-    }
-    .deliver-wrap--header {
-      display: none;
     }
     .deliver-strip {
       display: block;

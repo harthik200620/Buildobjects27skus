@@ -36,7 +36,7 @@ export default function AddToEstimate({
   const onClick = () => {
     addPick({ sku_code: skuCode, qty: Math.max(1, Math.round(qty)) });
     const n = readPicks().reduce((s, p) => s + p.qty, 0);
-    toast(`Added to your estimate · ${n} ${n === 1 ? 'item' : 'items'}`);
+    toast(`Added · ${n} ${n === 1 ? 'item' : 'items'} in your cart`, { label: 'View cart', href: '/cart' });
     setAdded(true);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => setAdded(false), 1400);

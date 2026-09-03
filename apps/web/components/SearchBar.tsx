@@ -46,7 +46,7 @@ const ICON_BY_SLUG: Record<string, string> = {
   bulbs: 'bulb',
 };
 
-export default function SearchBar({ categories = [] }: { categories?: { slug: string; name: string }[] }) {
+export default function SearchBar({ categories = [] }: { categories?: { slug: string; name: string; status?: 'live' | 'upcoming' }[] }) {
   const router = useRouter();
   const pathname = usePathname();
   /* `open` means the suggestions are showing, not that a modal exists. There is nothing to
@@ -213,7 +213,52 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
   const zero = q.trim().length > 1 && data && data.skus.length === 0 && data.categories.length === 0 && data.brands.length === 0;
   const groupLabel = (k: Row['kind']) =>
     k === 'sku' ? 'Products' : k === 'category' ? 'Categories' : k === 'brand' ? 'Brands' : k === 'recent' ? 'Recent searches' : '';
-  const scopeName = scope ? (categories.find((c) => c.slug === scope)?.name ?? null) : null;
+  /*
+   * THE SHELVES THAT HOLD SOMETHING — nine of the thirty-six.
+   *
+   * Both the scope chips and the rotating hint read from this rather than from every category in
+   * the nav. Scoping a search to an upcoming category could never return a row, so offering it was
+   * an invitation to an empty result; and a hint that names a shelf the store cannot sell from is
+   * an advertisement for nothing. The chip row was previously cut to the first six, which was a
+   * width fix applied to the wrong list — filtering fixes the width AND the meaning.
+   */
+  const shelves = React.useMemo(() => categories.filter((c) => c.status !== 'upcoming'), [categories]);
+  const scopeName = scope ? (shelves.find((c) => c.slug === scope)?.name ?? null) : null;
+
+  /*
+   * THE HINT ROTATES THROUGH WHAT THE STORE ACTUALLY STOCKS, one shelf at a time.
+   *
+   * It is not the `placeholder` attribute, because that cannot animate and cannot be read a word
+   * at a time — it is a sibling span laid over the field, `aria-hidden`, with the input's own
+   * placeholder emptied while it shows. Screen readers keep the stable `aria-label`; sighted
+   * readers get the catalogue naming itself.
+   *
+   * IT STOPS THE MOMENT THE FIELD IS THE READER'S. Typing, focus, or an open panel all end it —
+   * a word moving under a caret is the field arguing with the person using it. `spinning` is the
+   * single condition, so the animation, the emptied placeholder and the ghost cannot disagree.
+   */
+  const [hint, setHint] = React.useState(0);
+  /*
+   * ONLY WHERE THERE IS A FIELD TO PUT IT IN. Under 720px the bar is its glyph until you touch it
+   * (see the breakpoint note in store.css), so a hint would be a sentence inside a 40px circle —
+   * scripts/sweep.mts caught it clipped on all nine mobile surfaces. `false` until the effect
+   * runs, so the server and the first client paint agree and there is no hydration mismatch.
+   */
+  const [roomy, setRoomy] = React.useState(false);
+  React.useEffect(() => {
+    const mq = window.matchMedia('(min-width: 720px)');
+    const sync = () => setRoomy(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  const spinning = roomy && !q && !open && !scope && shelves.length > 1;
+  React.useEffect(() => {
+    if (!spinning) return;
+    const t = setInterval(() => setHint((i) => (i + 1) % shelves.length), 2400);
+    return () => clearInterval(t);
+  }, [spinning, shelves.length]);
 
   return (
     <div className="search" ref={wrap} data-open={open ? 'true' : undefined}>
@@ -226,27 +271,37 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
         }}
       >
         <IconSearch size={18} />
-        <input
-          ref={ref}
-          className="search-input"
-          value={q}
-          onChange={(e) => {
-            setQ(e.target.value);
-            fetchSuggest(e.target.value);
-            setOpen(true);
-          }}
-          onFocus={() => setOpen(true)}
-          onKeyDown={onKeyDown}
-          placeholder={scopeName ? `Search in ${scopeName}` : 'Search the catalogue'}
-          aria-label="Search products"
-          role="combobox"
-          aria-haspopup="listbox"
-          aria-autocomplete="list"
-          aria-expanded={open && rows.length > 0}
-          aria-controls="search-listbox"
-          autoComplete="off"
-          enterKeyHint="search"
-        />
+        <span className="search-inputwrap">
+          <input
+            ref={ref}
+            className="search-input"
+            value={q}
+            onChange={(e) => {
+              setQ(e.target.value);
+              fetchSuggest(e.target.value);
+              setOpen(true);
+            }}
+            onFocus={() => setOpen(true)}
+            onKeyDown={onKeyDown}
+            placeholder={spinning ? '' : scopeName ? `Search in ${scopeName}` : 'Search the catalogue'}
+            aria-label="Search products"
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            aria-expanded={open && rows.length > 0}
+            aria-controls="search-listbox"
+            autoComplete="off"
+            enterKeyHint="search"
+          />
+          {spinning && (
+            <span className="search-ghost" aria-hidden="true">
+              Search{' '}
+              <span key={hint} className="search-ghost-word">
+                {shelves[hint].name}
+              </span>
+            </span>
+          )}
+        </span>
         {q ? (
           <button
             type="button"
@@ -273,12 +328,12 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
           is irrelevant to it. */}
       {open && (
         <div className="search-drop">
-          {categories.length > 0 && (
+          {shelves.length > 0 && (
             <div className="search-scopes" role="group" aria-label="Search in">
               <button type="button" className="scope-chip" aria-pressed={scope === ''} onClick={() => setScope('')}>
                 Everything
               </button>
-              {categories.slice(0, 6).map((c) => (
+              {shelves.map((c) => (
                 <button key={c.slug} type="button" className="scope-chip" aria-pressed={scope === c.slug} onClick={() => setScope(c.slug)}>
                   {c.name}
                 </button>

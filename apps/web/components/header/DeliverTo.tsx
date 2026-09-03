@@ -14,17 +14,7 @@ type Note = { ok: boolean; text: string };
  * tree so every price and delivery date is landed at the new pincode. A popover on desktop,
  * a bottom sheet on a phone — same DOM, CSS decides.
  */
-export default function DeliverTo({
-  pincode,
-  regionName,
-  deliveryDays,
-  variant = 'header',
-}: {
-  pincode: string;
-  regionName: string;
-  deliveryDays: number | null;
-  variant?: 'header' | 'strip';
-}) {
+export default function DeliverTo({ pincode, regionName, deliveryDays }: { pincode: string; regionName: string; deliveryDays: number | null }) {
   const router = useRouter();
   const id = React.useId();
   const [open, setOpen] = React.useState(false);
@@ -114,34 +104,18 @@ export default function DeliverTo({
     </>
   );
 
-  if (variant === 'strip') {
-    return (
-      <div className="deliver-wrap deliver-wrap--strip" ref={wrap}>
-        <button ref={trigger} type="button" className="deliver-strip-btn" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="dialog">
-          <IconPin size={16} />
-          <span className="deliver-strip-text">
-            Deliver to{' '}
-            <b>
-              {regionName} <span className="fig">{pincode}</span>
-            </b>
-          </span>
-          <IconChevronDown size={14} />
-        </button>
-        {panel}
-      </div>
-    );
-  }
-
   return (
-    <div className="deliver-wrap deliver-wrap--header" ref={wrap}>
-      <button ref={trigger} type="button" className="deliver-to" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="dialog">
-        <IconPin size={20} />
-        <span className="deliver-to-text">
-          <span className="deliver-to-label">Deliver to</span>
-          <span className="deliver-to-value">
-            {regionName} <span className="fig">{pincode}</span>
-          </span>
+    <div className="deliver-wrap deliver-wrap--strip" ref={wrap}>
+      <button ref={trigger} type="button" className="deliver-strip-btn" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="dialog">
+        <IconPin size={20} className="deliver-strip-pin" />
+        {/* The CITY is what a reader checks at a glance, so it carries the size and the weight;
+            the pincode is what they check once the city is already right, so it follows. */}
+        <span className="deliver-strip-text">
+          <span className="deliver-strip-label">Deliver to</span>
+          <b className="deliver-strip-city">{regionName}</b>
+          <span className="deliver-strip-addr fig">{pincode}</span>
         </span>
+        <IconChevronDown size={14} />
       </button>
       {panel}
     </div>

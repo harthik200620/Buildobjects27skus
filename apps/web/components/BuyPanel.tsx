@@ -6,6 +6,7 @@ import type { SkuPageData } from '@/lib/catalog';
 import { inr, pctOff } from '@/lib/media';
 import { addPick, readPicks } from '@/lib/picks';
 import { IconCheck, IconInfo, IconMinus, IconPlus, IconReturn, IconRoom, IconShield, IconTruck } from './icons';
+import { toast } from './Toast';
 
 /**
  * Sticky buy panel: brand + name (name in Encode Sans — Audiowide never sets a line that could
@@ -48,7 +49,11 @@ export default function BuyPanel({ data, pincode }: { data: SkuPageData; pincode
 
   function add() {
     addPick({ sku_code: sku.code, qty });
-    setAdded(readPicks().reduce((n, p) => n + p.qty, 0));
+    const n = readPicks().reduce((total, p) => total + p.qty, 0);
+    setAdded(n);
+    /* The button says what happened; the toast says where it went. Both carry the same count,
+       from the same read, so the panel and the header can never disagree about the basket. */
+    toast(`Added · ${n} ${n === 1 ? 'item' : 'items'} in your cart`, { label: 'View cart', href: '/cart' });
     setTimeout(() => setAdded(null), 2400);
   }
   const dated = sku.priceFetchedAt ? new Date(sku.priceFetchedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : null;

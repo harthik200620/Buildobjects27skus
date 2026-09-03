@@ -215,9 +215,28 @@ async function main() {
           const bad = (await page.evaluate(`(() => {
             const el = document.activeElement;
             if (!el || el === document.body) return null;
+            const paints = (n) => {
+              const s = getComputedStyle(n);
+              return (s.outlineStyle !== 'none' && Number.parseFloat(s.outlineWidth) > 0) || s.boxShadow !== 'none';
+            };
             const s = getComputedStyle(el);
-            const ring = (s.outlineStyle !== 'none' && Number.parseFloat(s.outlineWidth) > 0) || s.boxShadow !== 'none' || s.backgroundColor !== getComputedStyle(el.parentElement || document.body).backgroundColor;
-            return ring ? null : el.tagName.toLowerCase() + '.' + (el.className || '').toString().split(' ')[0] + ' "' + (el.textContent || '').trim().slice(0, 22) + '"';
+            if (paints(el) || s.backgroundColor !== getComputedStyle(el.parentElement || document.body).backgroundColor) return null;
+            /*
+             * THE RING MAY BE ON THE THING THE CONTROL IS INSIDE. A bare input inside a field —
+             * the search bar, and any combobox built the same way — puts the ring on the field,
+             * because the input has no border of its own and a ring on it floats unattached in
+             * the middle of the control. Rejecting that pattern would push every such control
+             * toward drawing TWO rings, which is the defect, not the fix.
+             *
+             * Kept strict: the ancestor must actually contain the focus (:focus-within) and must
+             * actually paint. It cannot see whether the paint is CAUSED by the focus, so a wrapper
+             * with a permanent shadow could mask a missing ring — which is why the search field's
+             * own ring is asserted directly in lib/search-bar.test.ts rather than left to this.
+             */
+            for (let n = el.parentElement, i = 0; n && i < 3; n = n.parentElement, i++) {
+              if (n.matches(':focus-within') && paints(n)) return null;
+            }
+            return el.tagName.toLowerCase() + '.' + (el.className || '').toString().split(' ')[0] + ' "' + (el.textContent || '').trim().slice(0, 22) + '"';
           })()`)) as string | null;
           if (bad) noRing.push(bad);
         }

@@ -75,7 +75,7 @@ export default function Header({
       </header>
       <div className="deliver-strip">
         <div className="shell">
-          <DeliverTo pincode={pincode} regionName={regionName} deliveryDays={deliveryDays} variant="strip" />
+          <DeliverTo pincode={pincode} regionName={regionName} deliveryDays={deliveryDays} />
         </div>
       </div>
     </>

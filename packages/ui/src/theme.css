@@ -1473,6 +1473,25 @@
     box-shadow: var(--shadow-3);
     font-size: 14px;
     line-height: 20px;
+    /* A row, because a toast may carry one action beside its message — see components/Toast.tsx. */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .toast-msg {
+    min-width: 0;
+  }
+  /* Underlined text, not a second button: a filled control inside a 2.6-second message reads as a
+     race against the clock. It is an offer to go and look, and the toast leaves either way. */
+  .toast-action {
+    flex: none;
+    padding-left: 12px;
+    border-left: 1px solid var(--color-line);
+    color: var(--color-brand);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
   }
 
   /* ── overlays ───────────────────────────────────────────────────────────── */
