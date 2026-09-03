@@ -67,7 +67,6 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
   const [data, setData] = React.useState<Suggest | null>(null);
   const [sel, setSel] = React.useState(-1);
   const [recent, setRecent] = React.useState<string[]>([]);
-  const [mac, setMac] = React.useState(false);
   const ref = React.useRef<HTMLInputElement | null>(null);
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const seq = React.useRef(0);
@@ -76,7 +75,6 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
     const p = new URLSearchParams(window.location.search);
     setQ(p.get('q') ?? '');
     setScope(p.get('category') ?? '');
-    setMac(/Mac|iPhone|iPad/.test(navigator.platform) || /Mac/.test(navigator.userAgent));
     try {
       setRecent(JSON.parse(localStorage.getItem(RECENT_KEY) ?? '[]'));
     } catch {
@@ -315,12 +313,7 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
           >
             <IconClose size={16} />
           </button>
-        ) : (
-          <kbd className="search-keys">
-            <span>{mac ? '⌘' : 'Ctrl'}</span>
-            <span>K</span>
-          </kbd>
-        )}
+        ) : null}
       </form>
 
       {/* The suggestions hang off the field, not off the viewport. Absolute inside a relative

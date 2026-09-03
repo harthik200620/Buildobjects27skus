@@ -498,11 +498,6 @@
     color: var(--ink-1);
     background: rgb(255 255 255 / 8%);
   }
-  .search-keys {
-    display: flex;
-    gap: 3px;
-    flex: none;
-  }
 
   /* THE SUGGESTIONS HANG OFF THE FIELD. Absolute inside a relative wrapper, so the header's
      backdrop-filter — which makes it a containing block for anything FIXED, and which is what
@@ -655,20 +650,6 @@
     padding: var(--s-4) 8px;
     color: var(--ink-3);
   }
-  .search-keys span {
-    display: grid;
-    place-items: center;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 5px;
-    border-radius: var(--r-1);
-    background: rgb(255 255 255 / 7%);
-    border: 1px solid var(--hair-2);
-    font-family: var(--font-ui);
-    font-size: var(--t-micro);
-    line-height: 1;
-    color: var(--ink-3);
-  }
 
   /* ── the degradation ladder ───────────────────────────────────────────────
      Full dress needs about 1400px, which is wider than the laptop most people browse on, so the
@@ -768,8 +749,7 @@
       justify-content: flex-start;
       background: var(--surf-3);
     }
-    .search-input,
-    .search .search-keys {
+    .search-input {
       display: none;
     }
     .search:focus-within .search-input,
