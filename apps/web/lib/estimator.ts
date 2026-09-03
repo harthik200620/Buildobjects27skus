@@ -3,6 +3,7 @@ import type { SpecJson } from '@buildobjects/catalog';
 import { brands, categories, getDb, num, products, skus } from '@buildobjects/db';
 import { CATALOG_MAP, type CatalogPrice, type CatalogPrices } from '@buildobjects/estimator';
 import { and, asc, desc, eq, gte, inArray, isNotNull } from 'drizzle-orm';
+import type { SkuPageData } from './catalog';
 
 /**
  * The store ↔ calculator bridge (server side). Loads ONLY the SKUs the calculator can use —
@@ -92,11 +93,35 @@ export function toCatalogPrice(r: Row): CatalogPrice {
   };
 }
 
+/**
+ * One exact-code lookup against the frozen catalogue — the same 27-SKU snapshot every other
+ * loader falls back to, read through `staticSkuPage` rather than re-parsed here, so there is one
+ * place that knows the JSON's shape.
+ *
+ * `toCatalogPrice` was written against a database `Row`; `SkuPageData` carries the same facts
+ * under nested objects instead of flat columns, so this is a re-shape, not a re-derivation.
+ */
+function catalogPriceFromStatic(code: string, page: SkuPageData): CatalogPrice {
+  return toCatalogPrice({
+    code,
+    name: page.product.name,
+    variant: page.sku.variant,
+    brand: page.brand.name,
+    category: page.category.slug,
+    price: page.sku.price,
+    prov: page.sku.priceProvenance,
+    unit: page.sku.unit,
+    packQty: page.sku.packQty,
+    stock: page.sku.stock,
+    spec: page.sku.specJson,
+  });
+}
+
 export async function loadCalculatorCatalog(extraCodes: string[] = []): Promise<CatalogPrices> {
   const out: CatalogPrices = {};
+  const codes = new Set(extraCodes.filter((c) => /^[A-Z0-9-]{3,32}$/.test(c)));
+  for (const e of Object.values(CATALOG_MAP)) for (const c of Object.values(e.codes ?? {})) if (c) codes.add(c);
   try {
-    const codes = new Set(extraCodes.filter((c) => /^[A-Z0-9-]{3,32}$/.test(c)));
-    for (const e of Object.values(CATALOG_MAP)) for (const c of Object.values(e.codes ?? {})) if (c) codes.add(c);
     if (codes.size) for (const r of await base().where(inArray(skus.skuCode, [...codes]))) out[r.code] = toCatalogPrice(r as Row);
     // Rank fallbacks per mapped category: cheapest, dearest, and the first SKU at or above the price midpoint.
     for (const e of Object.values(CATALOG_MAP)) {
@@ -115,6 +140,32 @@ export async function loadCalculatorCatalog(extraCodes: string[] = []): Promise<
     }
   } catch (e) {
     console.warn('[estimator] catalogue snapshot unavailable, seed rates apply:', (e as Error).message);
+  }
+
+  /*
+   * WHATEVER THE DATABASE COULD NOT NAME, THE SNAPSHOT CAN — for an exact code, which is all
+   * `extraCodes` and `CATALOG_MAP`'s explicit codes ever are.
+   *
+   * The comment above this function said "seed rates apply" and left it there, which is correct
+   * for the RANKING loop above: "cheapest in category" over 27 snapshot rows is not the same
+   * question as "cheapest in category" over the live catalogue, so a database outage should not
+   * pretend to answer it — the estimator's own rate card is the honest fallback for that.
+   *
+   * It is not correct for a SPECIFIC code. The cart calls this with an empty `extraCodes` but
+   * still needs every code CATALOG_MAP names; "Add to Estimate" calls it with the exact SKU a
+   * shopper picked off a product page. Both are asking "what does THIS SKU cost", which the
+   * snapshot answers exactly, because it is exported from the same database by the same pipeline.
+   * The deployment has no database at all, so before this every visitor's cart, and this session's
+   * own /estimate picks, priced every line at zero rupees — silently, because `?? 0` is a valid
+   * price for something backordered forever, not a sign the data never arrived.
+   */
+  const missing = [...codes].filter((c) => !out[c]);
+  if (missing.length) {
+    const { staticSkuPage } = await import('./static-catalogue');
+    for (const code of missing) {
+      const page = staticSkuPage(code) as SkuPageData | null;
+      if (page) out[code] = catalogPriceFromStatic(code, page);
+    }
   }
   return out;
 }
