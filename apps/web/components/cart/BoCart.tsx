@@ -11,6 +11,7 @@ import { getBoCoins, redeemBoCoins } from '@/lib/coins';
 import { skuTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
 import { clearPicks, type PickItem, readPicks, removePick, setPickQty } from '@/lib/picks';
+import { markOrdered } from '@/lib/shopper';
 
 export default function BoCart({ initialCatalog, images = {} }: { initialCatalog: CatalogPrices; images?: Record<string, string | null> }) {
   const [picks, setPicks] = React.useState<PickItem[]>([]);
@@ -50,6 +51,9 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
 
   const handleCheckout = () => {
     if (appliedCoins > 0) redeemBoCoins(appliedCoins);
+    /* Before the cart is emptied: what was in it is what "Previously ordered" means, and once
+       `clearPicks()` has run there is nothing left to remember. */
+    markOrdered(picks.map((p) => p.sku_code));
     clearPicks();
     setOrdered(true);
   };

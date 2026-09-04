@@ -191,6 +191,13 @@
       // the legend beneath repeats every number as text. Hover only emphasises a slice.
       "includes": ["apps/web/components/estimate/Donut.tsx"],
       "linter": { "rules": { "a11y": { "noStaticElementInteractions": "off" } } }
+    },
+    {
+      // The rating row. Every star is a real <button> with its own label and its own focus and
+      // blur handlers; the one handler on the wrapper is `onMouseLeave`, which exists only to
+      // put the hover preview back and has no keyboard equivalent to be missing.
+      "includes": ["apps/web/components/YourVerdict.tsx"],
+      "linter": { "rules": { "a11y": { "noStaticElementInteractions": "off" } } }
     }
   ]
 }

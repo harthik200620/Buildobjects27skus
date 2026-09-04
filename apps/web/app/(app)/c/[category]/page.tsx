@@ -68,7 +68,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
 
   const cat = await loadCategory(category);
   if (!cat) {
-    if (group) return <CategoryLanding group={group} skus={[]} eta={null} initial={EMPTY_SHELF} />;
+    if (group) return <CategoryLanding group={group} skus={[]} eta={null} regionDays={null} initial={EMPTY_SHELF} />;
     notFound();
   }
   const state = parseFilters(sp);
@@ -242,12 +242,13 @@ export default async function CategoryPage({ params, searchParams }: { params: P
  * whole stocked catalogue is twenty-eight documents and is already cached — a category holding
  * two products would otherwise cost two round trips to answer a question one filter answers.
  */
-async function landingData(group: CategoryGroup): Promise<{ skus: SkuSearchDoc[]; eta: string | null }> {
+async function landingData(group: CategoryGroup): Promise<{ skus: SkuSearchDoc[]; eta: string | null; regionDays: number | null }> {
   const slugs = new Set(group.products.map((c) => c.slug));
   const [all, session] = await Promise.all([loadFlagshipSkus(), loadSession()]);
   const skus = all.filter((s) => slugs.has(s.category));
-  const eta = session ? deliverBy((await serviceability(session.pincode)).deliveryDays) : null;
-  return { skus, eta };
+  /* The lead time itself, not only the date it prints as: the Schedule chip has to compare it. */
+  const regionDays = session ? ((await serviceability(session.pincode)).deliveryDays ?? null) : null;
+  return { skus, eta: deliverBy(regionDays), regionDays };
 }
 
 /**
@@ -259,7 +260,19 @@ async function landingData(group: CategoryGroup): Promise<{ skus: SkuSearchDoc[]
  * any of them are stocked, a way straight through to the shelf. Twenty-seven of the thirty-six
  * have nothing in them yet and say so rather than pretending otherwise.
  */
-function CategoryLanding({ group, skus, eta, initial }: { group: CategoryGroup; skus: SkuSearchDoc[]; eta: string | null; initial: ShelfState }) {
+function CategoryLanding({
+  group,
+  skus,
+  eta,
+  regionDays,
+  initial,
+}: {
+  group: CategoryGroup;
+  skus: SkuSearchDoc[];
+  eta: string | null;
+  regionDays: number | null;
+  initial: ShelfState;
+}) {
   const prices = skus.map((s) => s.selling_price).filter((n): n is number => typeof n === 'number');
   /*
    * Count what this page is about to draw, not what the categories table remembers.
@@ -376,7 +389,7 @@ function CategoryLanding({ group, skus, eta, initial }: { group: CategoryGroup; 
            * the server anything. ShelfBar hides and reorders the cards below it in place; they
            * stay server-rendered, and a reader with no JavaScript sees the whole shelf.
            */}
-          <ShelfBar facts={factsOf(skus)} initial={initial}>
+          <ShelfBar facts={factsOf(skus, regionDays)} initial={initial}>
             <div className="prod-grid stagger">
               {/* Direct grid children, so the row stretches them — see the note in search/page.tsx. */}
               {skus.map((sku, i) => (

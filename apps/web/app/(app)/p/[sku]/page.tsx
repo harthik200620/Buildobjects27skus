@@ -10,7 +10,9 @@ import Gallery from '@/components/Gallery';
 import { IconReticle, IconRoom } from '@/components/icons';
 import Markdown from '@/components/Markdown';
 import ProductCard from '@/components/ProductCard';
+import RecordView from '@/components/RecordView';
 import SpecSheet from '@/components/SpecSheet';
+import YourVerdict from '@/components/YourVerdict';
 import { loadSkuPage, similarSkus } from '@/lib/catalog';
 import { loadSession } from '@/lib/data';
 
@@ -42,6 +44,8 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   return (
     <div className="page shell">
+      {/* "New to you" filters on what you have NOT opened, so something has to notice that you did. */}
+      <RecordView sku={data.sku.code} />
       {/* Home / Concreting / Cement / UltraTech — the whole tree, not the last two rungs of it.
           The trail used to jump from Home straight to the product's own row, so a reader who
           arrived from a search had no way back up to the category the item sits in. */}
@@ -130,6 +134,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
         <aside className="pdp-sticky">
           <BuyPanel data={data} pincode={session?.pincode ?? '500001'} />
+          <YourVerdict sku={data.sku.code} />
           {coverage && (coverage.placeholders ?? 0) > 0 && (
             <p className="note mt-3 px-1">
               {(coverage.images ?? 0) - (coverage.placeholders ?? 0)} of {coverage.images ?? 0} views are photographs from {data.brand.name}. The rest are

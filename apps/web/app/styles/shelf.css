@@ -8,6 +8,7 @@
      ═════════════════════════════════════════════════════════════════════════ */
   .shelf-bar {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     margin: 0 0 var(--s-4);
@@ -96,32 +97,22 @@
     background: rgb(4 23 27 / 22%);
   }
 
+  /*
+   * THE COUNT TAKES A LINE OF ITS OWN, at every width. Beside the chips it was pressed against a
+   * row that scrolls, and the last chip ran underneath it cut mid-word — which reads as a bug
+   * rather than as "there is more to scroll". There are nine chips now and the row overflows on
+   * most screens, so there is no width at which sharing the line is the better answer.
+   */
   .shelf-count {
-    flex: none;
-    margin-left: auto;
-    padding-left: 8px;
+    width: 100%;
+    margin: 0;
     color: var(--ink-3);
     font-size: var(--t-fine);
-  }
-  /*
-   * On a narrow screen the count sat against the scrolling row and the last chip ran under it,
-   * cut mid-word — which reads as a bug rather than as "there is more to scroll". Below this
-   * width it takes a line of its own and the chips get the whole width.
-   */
-  @media (max-width: 719.98px) {
-    .shelf-bar {
-      flex-wrap: wrap;
-    }
-    .shelf-count {
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      text-align: right;
-    }
+    text-align: right;
   }
 
   /* ── the panel behind "Filters" ─────────────────────────────────────────── */
-  .shelf-filters-wrap {
+  .shelf-pop-wrap {
     position: relative;
     flex: none;
   }
@@ -218,5 +209,158 @@
     font: inherit;
     text-decoration: underline;
     cursor: pointer;
+  }
+
+  .shelf-panel--dates {
+    left: auto;
+    right: 0;
+  }
+  .shelf-note {
+    display: block;
+    color: var(--ink-3);
+    font-size: var(--t-micro);
+    line-height: 1.45;
+  }
+  .shelf-panel-foot .shelf-note {
+    flex: 1 1 auto;
+    align-self: center;
+  }
+  .shelf-name input {
+    width: 100%;
+    min-height: 36px;
+    margin: 8px 0;
+    padding: 0 10px;
+    border: 1px solid var(--hair-3);
+    border-radius: var(--r-2);
+    background: rgb(255 255 255 / 4%);
+    color: var(--ink-1);
+    font: inherit;
+  }
+  .shelf-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .shelf-empty-why {
+    margin-top: 4px;
+    color: var(--ink-4);
+    font-size: 11px;
+  }
+  .shelf-empty .btn {
+    margin-top: var(--s-4);
+  }
+
+  /* ── your stars and your heart, on the product page ─────────────────────────
+     components/YourVerdict.tsx. Labelled as YOURS because that is what it is: no one else has
+     rated anything in this store, and a number here that nobody set would be the one thing on a
+     product page with nothing behind it. */
+  .verdict {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--hair);
+  }
+  .verdict-label {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--ink-3);
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .verdict-row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .verdict-star {
+    display: inline-flex;
+    padding: 6px 2px;
+    border: 0;
+    background: none;
+    color: var(--hair-3);
+    cursor: pointer;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+  .verdict-star svg {
+    fill: currentcolor;
+  }
+  .verdict-star[data-on] {
+    color: var(--amber-700);
+  }
+  .verdict-said {
+    margin-left: 8px;
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+  }
+  .verdict-love {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--hair-2);
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 4%);
+    color: var(--ink-2);
+    font-size: var(--t-fine);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+  .verdict-love svg {
+    fill: currentcolor;
+  }
+  .verdict-love:hover {
+    border-color: var(--hair-brand);
+    color: var(--ink-1);
+  }
+  .verdict-love[aria-pressed="true"] {
+    border-color: var(--hair-amber);
+    background: rgb(245 180 10 / 12%);
+    color: var(--amber-800);
+  }
+  @media (pointer: coarse) {
+    .verdict-love {
+      min-height: 44px;
+    }
+    .verdict-star {
+      padding: 12px 4px;
+    }
+  }
+
+  /* ── a list a friend shared ─────────────────────────────────────────────────
+     components/FriendLoves.tsx. It asks before it keeps anything, because a link that wrote to
+     your device silently is a link anyone could send you. */
+  .friendbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-4);
+    padding: 10px var(--gutter);
+    border-bottom: 1px solid var(--hair-amber);
+    background: rgb(245 180 10 / 10%);
+    color: var(--ink-1);
+  }
+  .friendbar-msg {
+    font-size: var(--t-fine);
+  }
+  .friendbar-acts {
+    display: flex;
+    gap: 8px;
   }
 }

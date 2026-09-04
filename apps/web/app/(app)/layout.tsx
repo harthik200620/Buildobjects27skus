@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import Footer from '@/components/Footer';
+import FriendLoves from '@/components/FriendLoves';
 import Header from '@/components/header/Header';
 import Reveal from '@/components/Reveal';
 import ScrollProgress from '@/components/ScrollProgress';
@@ -28,6 +29,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <ScrollProgress />
       <Reveal />
       <Header pincode={session.pincode} phone={session.phone} regionName={svc.name} deliveryDays={svc.deliveryDays} categories={categories} />
+      {/* A link someone sent, offering the things they love — see components/FriendLoves.tsx. */}
+      <FriendLoves />
       <main id="main">{children}</main>
       <Footer categories={categories} />
       <ToastHost />
