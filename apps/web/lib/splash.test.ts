@@ -294,6 +294,72 @@ describe('splash.css ends every sequence on the settled picture', () => {
   });
 });
 
+describe('splash.css can play the sequence more than once', () => {
+  /*
+   * THE BUG THIS GUARDS, which shipped. Every animation was declared on the element that runs it
+   * — `.splash-beam { animation: splash-beam … }` — so all of them started when the document was
+   * parsed, ran once and finished. Showing the overlay again for a client-side navigation puts
+   * `.splash--on` back on the CONTAINER and says nothing to the children, whose animations were
+   * long over. The reader clicked a link and got the settled mark: no star, no beam, no drawing.
+   *
+   * A declaration that arrives with a class is cancelled when the class goes and created afresh
+   * when it returns, which is a restart. So every animation of the sequence must be reachable
+   * only through `.splash--on`, and that is what this asserts — by name, from the stylesheet, so
+   * that moving one back onto its element fails here rather than in front of a customer.
+   */
+  /** Every rule in the file, as [selector, declarations], ignoring @keyframes' own frames. */
+  const rules: [string, string][] = [];
+  {
+    const withoutKeyframes = css.replace(/@keyframes[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '');
+    for (const m of withoutKeyframes.matchAll(/([^{}]+)\{([^{}]*)\}/g)) rules.push([m[1].trim(), m[2]]);
+  }
+
+  /** The animation names one rule sets, whether by shorthand or by `animation-name`. */
+  function namesIn(decls: string): string[] {
+    const out: string[] = [];
+    for (const m of decls.matchAll(/animation(?:-name)?\s*:([^;]+);/g)) for (const n of m[1].matchAll(/splash-[a-z-]+/g)) out.push(n[0]);
+    return out;
+  }
+
+  /* Everything the sequence is made of. The failsafe and the reduced-motion appearance are NOT
+     here: they belong to the overlay itself, which is the element the class is on. */
+  const SEQUENCE = [
+    'splash-beam',
+    'splash-beam-halo',
+    'splash-ghost',
+    'splash-stem-side',
+    'splash-stem-mid',
+    'splash-bowl',
+    'splash-draw',
+    'splash-draw-inner',
+    'splash-bloom-stems',
+    'splash-bloom-bowl',
+    'splash-breathe',
+    'splash-head',
+    'splash-sweep',
+    'splash-star-core',
+    'splash-star-halo',
+    'splash-twinkle',
+  ];
+
+  it.each(SEQUENCE)('%s is only ever run from a rule scoped to .splash--on', (name) => {
+    const carriers = rules.filter(([, decls]) => namesIn(decls).includes(name));
+    expect(carriers.length, `${name} is declared nowhere`).toBeGreaterThan(0);
+    for (const [selector] of carriers) expect(selector, `${selector} runs ${name} without .splash--on, so it can only ever play once`).toContain('.splash--on');
+  });
+
+  it('has a keyframes block for every animation it names', () => {
+    for (const name of SEQUENCE) expect(css, `@keyframes ${name} is missing`).toContain(`@keyframes ${name} {`);
+  });
+
+  it('leaves the failsafe on the overlay itself, where a class change restarts it anyway', () => {
+    for (const [selector, decls] of rules) {
+      if (!namesIn(decls).includes('splash-failsafe')) continue;
+      expect(selector).toContain('.splash--on');
+    }
+  });
+});
+
 describe('splash.css keeps the page reachable', () => {
   it('lets the overlay go on its own if no script ever arrives', () => {
     const on = rule('.splash--on');

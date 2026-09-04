@@ -114,12 +114,10 @@
     mix-blend-mode: plus-lighter;
     pointer-events: none;
     will-change: scale;
-    animation: splash-beam var(--splash-seq) linear both;
   }
   .splash-beam--halo {
     height: calc(var(--s) * var(--beam-band));
     background: radial-gradient(50% 50% at 50% 50%, rgb(180 241 243 / 88%), rgb(86 211 216 / 58%) 46%, rgb(86 211 216 / 0%) 80%);
-    animation-name: splash-beam-halo;
   }
   .splash-beam--core {
     height: calc(var(--s) * var(--beam-stem) * 0.5);
@@ -204,7 +202,6 @@
   }
   .splash-ghost {
     fill: rgb(86 211 216 / 14%);
-    animation: splash-ghost var(--splash-seq) linear both;
   }
   @keyframes splash-ghost {
     0% {
@@ -218,10 +215,6 @@
 
   .splash-stem {
     fill: var(--teal-700);
-    animation: splash-stem-side var(--splash-seq) linear both;
-  }
-  .splash-stem--2 {
-    animation-name: splash-stem-mid;
   }
   /* White-hot as the light lands, then the brand teal. */
   @keyframes splash-stem-mid {
@@ -257,9 +250,6 @@
     }
   }
 
-  .splash-bowl {
-    animation: splash-bowl var(--splash-seq) linear both;
-  }
   @keyframes splash-bowl {
     0%,
     88% {
@@ -278,10 +268,6 @@
     stroke-linejoin: round;
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    animation: splash-draw var(--splash-seq) linear both;
-  }
-  .splash-draw--inner {
-    animation-name: splash-draw-inner;
   }
   @keyframes splash-draw {
     0%,
@@ -310,16 +296,6 @@
     fill: var(--teal-700);
     opacity: 0;
     mix-blend-mode: plus-lighter;
-  }
-  .splash-bloom--stems {
-    animation:
-      splash-bloom-stems var(--splash-seq) linear both,
-      splash-breathe 2800ms ease-in-out var(--splash-seq) infinite;
-  }
-  .splash-bloom--bowl {
-    animation:
-      splash-bloom-bowl var(--splash-seq) linear both,
-      splash-breathe 2800ms ease-in-out var(--splash-seq) infinite;
   }
   @keyframes splash-bloom-stems {
     0%,
@@ -361,9 +337,6 @@
     opacity: 0;
     mix-blend-mode: plus-lighter;
   }
-  .splash-head {
-    animation: splash-head var(--splash-seq) linear both;
-  }
   /* Rides the outer ring's spine on the same easing as the draw, so it stays on the leading edge. */
   @keyframes splash-head {
     0%,
@@ -383,9 +356,6 @@
       offset-distance: 100%;
       opacity: 0;
     }
-  }
-  .splash-sweep {
-    animation: splash-sweep 2800ms var(--ease-inout) var(--splash-seq) infinite;
   }
   @keyframes splash-sweep {
     0% {
@@ -436,19 +406,12 @@
   }
   .splash-star-core {
     fill: var(--ink-1);
-    animation: splash-star-core var(--splash-seq) linear both;
-  }
-  .splash-star-halo {
-    animation: splash-star-halo var(--splash-seq) linear both;
   }
   .splash-ray {
     fill: var(--ink-1);
   }
   .splash-ray--short {
     fill: var(--teal-900);
-  }
-  .splash-star-rays {
-    animation: splash-twinkle var(--splash-seq) linear both;
   }
   /* Ignition: a flare, a flicker, then a steady point that is brightest while the beam is out
      and settles to a glint once the mark carries the light. */
@@ -542,5 +505,74 @@
       opacity: 0.4;
       rotate: 0deg;
     }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     THE RUN — every animation of the sequence, and the reason they are all here
+     ═══════════════════════════════════════════════════════════════════════════
+     EACH ONE IS SCOPED TO `.splash--on`, and that scoping is the whole mechanism by which the
+     sequence can play a SECOND time. This is the bug it fixes, which shipped: the declarations
+     used to sit on the elements themselves, so they started when the document was parsed, ran
+     once, and finished. Re-showing the overlay for a client-side navigation put `.splash--on`
+     back on the container and changed nothing about the children — their animations had already
+     finished and nothing had asked them to start again. The reader clicked a link and got the
+     settled mark: no star, no beam, no drawing. Exactly the picture, with none of the animation.
+
+     A declaration that arrives WITH a class is cancelled when the class is removed and created
+     afresh when it returns, which is a new animation starting at zero. lib/splash.ts removes the
+     class, forces a reflow so the browser sees two distinct states, and adds it back — and that
+     is a restart only because of the selectors below.
+
+     Order matters twice here: the modifiers (`--halo`, `--2`, `--inner`) carry the same
+     specificity as the bases they override, so each must follow its base.
+     ═════════════════════════════════════════════════════════════════════════ */
+  .splash--on .splash-beam {
+    animation: splash-beam var(--splash-seq) linear both;
+  }
+  .splash--on .splash-beam--halo {
+    animation-name: splash-beam-halo;
+  }
+  .splash--on .splash-ghost {
+    animation: splash-ghost var(--splash-seq) linear both;
+  }
+  .splash--on .splash-stem {
+    animation: splash-stem-side var(--splash-seq) linear both;
+  }
+  .splash--on .splash-stem--2 {
+    animation-name: splash-stem-mid;
+  }
+  .splash--on .splash-bowl {
+    animation: splash-bowl var(--splash-seq) linear both;
+  }
+  .splash--on .splash-draw {
+    animation: splash-draw var(--splash-seq) linear both;
+  }
+  .splash--on .splash-draw--inner {
+    animation-name: splash-draw-inner;
+  }
+  .splash--on .splash-bloom--stems {
+    animation:
+      splash-bloom-stems var(--splash-seq) linear both,
+      splash-breathe 2800ms ease-in-out var(--splash-seq) infinite;
+  }
+  .splash--on .splash-bloom--bowl {
+    animation:
+      splash-bloom-bowl var(--splash-seq) linear both,
+      splash-breathe 2800ms ease-in-out var(--splash-seq) infinite;
+  }
+  .splash--on .splash-head {
+    animation: splash-head var(--splash-seq) linear both;
+  }
+  .splash--on .splash-sweep {
+    animation: splash-sweep 2800ms var(--ease-inout) var(--splash-seq) infinite;
+  }
+  .splash--on .splash-star-core {
+    animation: splash-star-core var(--splash-seq) linear both;
+  }
+  .splash--on .splash-star-halo {
+    animation: splash-star-halo var(--splash-seq) linear both;
+  }
+  .splash--on .splash-star-rays {
+    animation: splash-twinkle var(--splash-seq) linear both;
   }
 }
