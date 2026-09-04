@@ -125,32 +125,6 @@
   :root[data-nav="away"] .scroll-progress {
     opacity: 0;
   }
-  /* A page is on its way. The same rule doing the other job it is shaped for: every page behind
-   * the front door is server-rendered on demand, and for that second a click produced no evidence
-   * it had landed. It runs to 70% and waits — the only honest shape for a bar that cannot know
-   * how far along it is — and the page replacing itself is what finishes it. Overrides the
-   * hidden-header state, because a navigation begun then is when it is needed most. */
-  :root[data-nav-pending] .scroll-progress {
-    opacity: 1;
-    animation: nav-pending 6s var(--ease-out) forwards;
-  }
-  @keyframes nav-pending {
-    from {
-      transform: scaleX(0.06);
-    }
-    to {
-      transform: scaleX(0.7);
-    }
-  }
-  /* Reduced motion still gets the feedback — it is information, not decoration — as a bar that
-     appears at a fixed width rather than one that travels. */
-  @media (prefers-reduced-motion: reduce) {
-    :root[data-nav-pending] .scroll-progress {
-      animation: none;
-      transform: scaleX(0.4);
-    }
-  }
-
   /* ── the bar ──────────────────────────────────────────────────────────────
      Full width, flush to the top edge, and it leaves on the way down.
 

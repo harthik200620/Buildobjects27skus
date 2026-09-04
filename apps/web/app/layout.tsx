@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
+import Splash from '@/components/Splash';
+import SplashController from '@/components/SplashController';
 import { REVEAL_BOOTSTRAP } from '@/lib/reveal-bootstrap';
 import './globals.css';
 
@@ -94,7 +96,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: REVEAL_BOOTSTRAP }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {/*
+         * First in the body so it is the first thing painted, on every load, before the page
+         * behind it has been sent — app/loading.tsx is what lets the document go out that early.
+         * The controller comes last so it hydrates after every loading boundary in the tree.
+         */}
+        <Splash />
+        {children}
+        <SplashController />
+      </body>
     </html>
   );
 }

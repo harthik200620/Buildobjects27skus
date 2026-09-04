@@ -77,6 +77,19 @@ export async function seedCart(page: Page): Promise<void> {
   );
 }
 
+/**
+ * Wait for the loading overlay (components/Splash.tsx) to lift. Until it has, the page beneath
+ * cannot be clicked — the overlay is what a reader is looking at — so any check that clicks
+ * something waits here first. Under the reduced motion these contexts default to, it lifts at
+ * hydration; with motion on, after its full sequence.
+ */
+export async function settled(page: Page): Promise<void> {
+  await page.waitForFunction(`(() => { const s = document.getElementById('bo-splash'); return !s || !s.classList.contains('splash--on'); })()`, null, {
+    polling: 100,
+    timeout: 20_000,
+  });
+}
+
 /** sRGB channel to linear light, per WCAG 2.1. */
 const linear = (v: number) => {
   const c = v / 255;

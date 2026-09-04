@@ -12,7 +12,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { type Browser, type BrowserContext, chromium, type Page } from 'playwright';
 import sharp from 'sharp';
-import { BASE, flags, only, openPage, REPO, VIEWPORTS } from './harness';
+import { SPLASH_FADE_MS, SPLASH_SEQUENCE_MS } from '../lib/splash-timing';
+import { BASE, flags, only, openPage, REPO, settled, VIEWPORTS } from './harness';
 import { sessionCookie, sessionCookieFor } from './session-cookie';
 
 const STRICT = !!flags.strict;
@@ -533,25 +534,27 @@ async function motionPass(browser: Browser) {
   }
 
   /*
-   * The navigation bar, which has exactly one way to fail badly: staying up.
+   * The loading overlay, which has exactly one way to fail badly: staying up.
    *
-   * It fills while a page is on its way and the arriving page is what finishes it. A bar still
-   * filling after the page has landed is worse than no bar, and it is invisible to every other
-   * check here — a screenshot of a settled page cannot show it.
+   * It rises on a click and the arriving page is what lets it go, after its full sequence. An
+   * overlay still up after the page has landed hides the whole store, and it is invisible to
+   * every other check here — they run under reduced motion, where it lifts at hydration.
    */
-  const { page: navPage, ctx: nav } = await openPage(browser);
+  const { page: navPage, ctx: nav } = await openPage(browser, { motion: 'no-preference' });
   try {
-    const pending = () => navPage.evaluate(`document.documentElement.hasAttribute('data-nav-pending')`) as Promise<boolean>;
+    const up = () => navPage.evaluate(`document.getElementById('bo-splash')?.classList.contains('splash--on') ?? false`) as Promise<boolean>;
     await navPage.goto(`${BASE}/`, { waitUntil: 'load', timeout: 120_000 });
-    check('motion', 'desktop', 'the navigation bar is down when nothing is in flight', !(await pending()));
+    await settled(navPage);
+    check('motion', 'desktop', 'the loading overlay is down when nothing is in flight', !(await up()));
     await navPage.locator('.cat-grid a').first().click({ noWaitAfter: true });
     await navPage.waitForTimeout(60);
-    check('motion', 'desktop', 'a click raises the navigation bar', await pending());
+    check('motion', 'desktop', 'a click raises the loading overlay', await up());
     await navPage.waitForURL(/\/c\//, { timeout: 60_000 });
-    await navPage.waitForTimeout(500);
-    check('motion', 'desktop', 'the arriving page puts it back down', !(await pending()), 'a bar still filling after the page has landed');
+    /* The whole sequence, the fade, and a margin for a loaded machine. */
+    await navPage.waitForTimeout(SPLASH_SEQUENCE_MS + SPLASH_FADE_MS + 900);
+    check('motion', 'desktop', 'the arriving page puts it back down', !(await up()), 'an overlay still up after the page has landed');
   } catch (e) {
-    check('motion', 'desktop', 'the navigation bar behaves', false, (e as Error).message.slice(0, 90));
+    check('motion', 'desktop', 'the loading overlay behaves', false, (e as Error).message.slice(0, 90));
   } finally {
     await nav.close();
   }

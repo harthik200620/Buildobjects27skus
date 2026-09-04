@@ -1,10 +1,9 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import React from 'react';
 
 /**
- * Four jobs, one bar, one passive listener coalesced into a single rAF. No React state, so no
+ * Three jobs, one bar, one passive listener coalesced into a single rAF. No React state, so no
  * render happens on scroll at all.
  *
  *   1. `data-scrolled` on <html> once the page has moved off the top; the header reads it and
@@ -13,11 +12,12 @@ import React from 'react';
  *      Any upward movement brings it back.
  *   3. A 2px rule showing how far down the document you are — the spec sheets run to a couple of
  *      hundred rows, and a reader who cannot see the end cannot judge whether to keep going.
- *   4. The same rule fills while a NAVIGATION is in flight. Every page behind the front door is
- *      server-rendered on demand, and for that second a click produced no evidence it had landed.
- *      The App Router publishes no navigation events, so the click is the start and the pathname
- *      changing is the end. It gives up after eight seconds: a bar still filling when the page is
- *      not is worse than no bar.
+ *
+ * It USED to have a fourth: filling while a navigation was in flight, from the click to the
+ * pathname changing. Two things retired it at once. The loading overlay (components/Splash.tsx)
+ * now covers every navigation, so a two-pixel bar behind it had no reader; and the loading
+ * boundaries that overlay rests on commit a navigation the moment they mount, so the pathname
+ * changed within a frame of the click and the bar's "in flight" lasted no longer than that.
  */
 
 /**
@@ -44,52 +44,6 @@ const BACK_AFTER = 4;
 
 export default function ScrollProgress() {
   const bar = React.useRef<HTMLDivElement | null>(null);
-  const pathname = usePathname();
-
-  /*
-   * The pending navigation, watched from the one place that already owns this element.
-   *
-   * `pathname` is the finish line — when it changes, whatever was in flight has landed. It is a
-   * separate effect from the scroll listener below so that a navigation does not tear down and
-   * rebuild the scroll machinery.
-   */
-  React.useEffect(() => {
-    const root = document.documentElement;
-    let timer = 0;
-    const done = () => {
-      window.clearTimeout(timer);
-      timer = 0;
-      delete root.dataset.navPending;
-    };
-    /* A click that will actually navigate: same origin, a real path, not a new tab, not a hash on
-       the page you are already on, and not something the page has already handled itself. */
-    const onClick = (e: MouseEvent) => {
-      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      const a = (e.target as HTMLElement | null)?.closest?.('a');
-      if (!a || a.target === '_blank' || a.hasAttribute('download')) return;
-      const href = a.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-      const url = new URL(a.href, location.href);
-      if (url.origin !== location.origin) return;
-      if (url.pathname + url.search === location.pathname + location.search) return;
-      root.dataset.navPending = '1';
-      window.clearTimeout(timer);
-      /* The failsafe. A bar still filling after the page has given up says the wrong thing. */
-      timer = window.setTimeout(done, 8000);
-    };
-    document.addEventListener('click', onClick, { capture: true });
-    return () => {
-      document.removeEventListener('click', onClick, { capture: true });
-      done();
-    };
-  }, []);
-
-  /* The finish line: this runs on every completed navigation. */
-  // biome-ignore lint/correctness/useExhaustiveDependencies: `pathname` is the event, not a value read in the body — the effect exists to fire when it changes.
-  React.useEffect(() => {
-    delete document.documentElement.dataset.navPending;
-  }, [pathname]);
-
   React.useEffect(() => {
     const root = document.documentElement;
     let frame = 0;

@@ -1,0 +1,546 @@
+@layer components {
+  /* ═══════════════════════════════════════════════════════════════════════════
+     THE SPLASH — the mark igniting while a page loads
+     ═══════════════════════════════════════════════════════════════════════════
+     Markup in components/Splash.tsx, which also explains the sequence; the decision of when it
+     leaves is in lib/splash.ts. Everything that moves here moves on ONE CLOCK: every sequence
+     animation lasts --splash-seq and places its events as percentages of it, so the whole
+     choreography can be read as a timeline —
+
+        0 %  the star lights at the centre of the middle stem
+       10 %  the beam sets out, both ways, along the stem's lean
+       40 %  it has left the page through the top and bottom edges
+       44 %  it turns back
+       56 %  it has come home to the length of the stems; the middle stem lights
+       60 %  the two outer stems light
+       65 %  the bowl starts to draw, outer ring first
+       90 %  the bowl is drawn; the mark cools from white to teal
+      100 %  settled — and from here the bloom breathes and a glint runs up the middle stem
+             until the page is ready
+
+     — and so that prefers-reduced-motion, which theme.css honours by collapsing every duration
+     to nothing, lands every one of them on its LAST frame: the mark lit and still, nothing in
+     flight. Each set of keyframes below ends on exactly that.
+     ═════════════════════════════════════════════════════════════════════════ */
+  .splash {
+    /* The stage is square, the mark fills 88 % of it. 44vmin keeps it whole on a phone held
+       either way; 360 px is as large as the mark's stroke can go before it reads as a poster. */
+    --s: clamp(200px, 44vmin, 360px);
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: var(--color-canvas);
+    /* Additive light inside, and nothing of the page beneath in the blend. */
+    isolation: isolate;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .splash--on {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    /*
+     * THE FAILSAFE. The overlay is shown by markup and hidden by script, so a session where the
+     * script never arrives — blocked, failed, still downloading on a bad connection — would sit
+     * behind it forever. Well after any page should have appeared, it goes on its own.
+     */
+    animation: splash-failsafe 1ms linear calc(var(--splash-seq) + 6500ms) forwards;
+  }
+  .splash--out {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--splash-fade) var(--ease-exit);
+  }
+  @keyframes splash-failsafe {
+    to {
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+  /* A reduced-motion reader gets a still mark, and only when a page is genuinely slow: nothing
+     is shown for the first fifth of a second, which is longer than most navigations take. */
+  @media (prefers-reduced-motion: reduce) {
+    .splash--on {
+      animation:
+        splash-appear 1ms linear 220ms both,
+        splash-failsafe 1ms linear calc(var(--splash-seq) + 6500ms) forwards;
+    }
+  }
+  @keyframes splash-appear {
+    from {
+      visibility: hidden;
+      opacity: 0;
+    }
+    to {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .splash-stage {
+    position: relative;
+    width: var(--s);
+    height: var(--s);
+    transition: scale var(--splash-fade) var(--ease-exit);
+  }
+  /* Lifts a little as it goes, so the page arrives from behind it rather than under it. */
+  .splash--out .splash-stage {
+    scale: 1.06;
+  }
+
+  /* ── the beam ──────────────────────────────────────────────────────────────
+     Three gradients on one axis, from the middle stem's centre, leaning as it leans. The band
+     is as wide as the three stems together; the core is half a stem; the edge is two pixels of
+     pure ink, which is what "sharp" is. Each one only ever scales along its own length, which
+     the compositor does without repainting a pixel. */
+  .splash-beam {
+    position: absolute;
+    left: var(--beam-x);
+    top: var(--beam-y);
+    /* Long enough to leave through the top and bottom of any viewport at the mark's lean, with
+       the gradient's fade landing about where the edges are; and the stems' own length, which is
+       where it comes home to. Their ratio is the last keyframe. */
+    --full: 132vh;
+    --home: calc(var(--s) * var(--beam-len));
+    width: var(--full);
+    translate: -50% -50%;
+    rotate: var(--beam-angle);
+    scale: 0 1;
+    mix-blend-mode: plus-lighter;
+    pointer-events: none;
+    will-change: scale;
+    animation: splash-beam var(--splash-seq) linear both;
+  }
+  .splash-beam--halo {
+    height: calc(var(--s) * var(--beam-band));
+    background: radial-gradient(50% 50% at 50% 50%, rgb(180 241 243 / 88%), rgb(86 211 216 / 58%) 46%, rgb(86 211 216 / 0%) 80%);
+    animation-name: splash-beam-halo;
+  }
+  .splash-beam--core {
+    height: calc(var(--s) * var(--beam-stem) * 0.5);
+    background: radial-gradient(50% 50% at 50% 50%, var(--ink-1), rgb(242 248 249 / 70%) 28%, rgb(180 241 243 / 0%) 74%);
+  }
+  .splash-beam--edge {
+    height: 2px;
+    background: var(--ink-1);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent);
+  }
+  /*
+   * EASINGS ARE WRITTEN OUT inside the keyframes, not read from the theme's --ease-* tokens: a
+   * timing function inside a keyframe block is parsed with the block, before there is any element
+   * to resolve a custom property against, so `animation-timing-function: var(--ease-glide)` there
+   * silently means `linear`. (Seen: the beam crawling out at constant speed.) The three curves are
+   * --ease-glide, --ease-inout and --ease-out from theme.css, verbatim.
+   */
+  @keyframes splash-beam {
+    0%,
+    10% {
+      scale: 0 1;
+      opacity: 0.55;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    40% {
+      scale: 1 1;
+      opacity: 1;
+    }
+    44% {
+      scale: 1 1;
+      opacity: 1;
+      animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    56%,
+    58% {
+      scale: calc(var(--home) / var(--full)) 1;
+      opacity: 1;
+    }
+    64%,
+    100% {
+      scale: calc(var(--home) / var(--full)) 1;
+      opacity: 0;
+    }
+  }
+  /* The band is the light's breadth; it thins as the light comes home to a line. */
+  @keyframes splash-beam-halo {
+    0%,
+    10% {
+      scale: 0 1;
+      opacity: 0.4;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    40% {
+      scale: 1 1;
+      opacity: 1;
+    }
+    44% {
+      scale: 1 1;
+      opacity: 1;
+      animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    56% {
+      scale: calc(var(--home) / var(--full)) 1;
+      opacity: 0.35;
+    }
+    62%,
+    100% {
+      scale: calc(var(--home) / var(--full)) 1;
+      opacity: 0;
+    }
+  }
+
+  /* ── the mark ─────────────────────────────────────────────────────────── */
+  .splash-mark {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    mix-blend-mode: plus-lighter;
+  }
+  .splash-ghost {
+    fill: rgb(86 211 216 / 14%);
+    animation: splash-ghost var(--splash-seq) linear both;
+  }
+  @keyframes splash-ghost {
+    0% {
+      opacity: 0;
+    }
+    12%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .splash-stem {
+    fill: var(--teal-700);
+    animation: splash-stem-side var(--splash-seq) linear both;
+  }
+  .splash-stem--2 {
+    animation-name: splash-stem-mid;
+  }
+  /* White-hot as the light lands, then the brand teal. */
+  @keyframes splash-stem-mid {
+    0%,
+    54% {
+      opacity: 0;
+      fill: var(--ink-1);
+    }
+    57% {
+      opacity: 1;
+      fill: var(--ink-1);
+    }
+    65%,
+    100% {
+      opacity: 1;
+      fill: var(--teal-700);
+    }
+  }
+  @keyframes splash-stem-side {
+    0%,
+    58% {
+      opacity: 0;
+      fill: var(--ink-1);
+    }
+    61% {
+      opacity: 1;
+      fill: var(--ink-1);
+    }
+    69%,
+    100% {
+      opacity: 1;
+      fill: var(--teal-700);
+    }
+  }
+
+  .splash-bowl {
+    animation: splash-bowl var(--splash-seq) linear both;
+  }
+  @keyframes splash-bowl {
+    0%,
+    88% {
+      fill: var(--ink-1);
+    }
+    100% {
+      fill: var(--teal-700);
+    }
+  }
+  /* The mask: a stroke along each ring's spine, drawn by dashoffset. pathLength="1" on the paths
+     is what lets one dasharray serve both rings whatever their true lengths. */
+  .splash-draw {
+    fill: none;
+    stroke: #fff;
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: splash-draw var(--splash-seq) linear both;
+  }
+  .splash-draw--inner {
+    animation-name: splash-draw-inner;
+  }
+  @keyframes splash-draw {
+    0%,
+    65% {
+      stroke-dashoffset: 1;
+      animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    90%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes splash-draw-inner {
+    0%,
+    67% {
+      stroke-dashoffset: 1;
+      animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    92%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .splash-bloom {
+    fill: var(--teal-700);
+    opacity: 0;
+    mix-blend-mode: plus-lighter;
+  }
+  .splash-bloom--stems {
+    animation:
+      splash-bloom-stems var(--splash-seq) linear both,
+      splash-breathe 2800ms ease-in-out var(--splash-seq) infinite;
+  }
+  .splash-bloom--bowl {
+    animation:
+      splash-bloom-bowl var(--splash-seq) linear both,
+      splash-breathe 2800ms ease-in-out var(--splash-seq) infinite;
+  }
+  @keyframes splash-bloom-stems {
+    0%,
+    55% {
+      opacity: 0;
+    }
+    64%,
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes splash-bloom-bowl {
+    0%,
+    86% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  /* The hold: the lit mark breathing while the page is still on its way. Ends where it began. */
+  @keyframes splash-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+
+  /* ── the glints ────────────────────────────────────────────────────────── */
+  .splash-glint {
+    fill: var(--ink-1);
+  }
+  .splash-head,
+  .splash-sweep {
+    offset-rotate: 0deg;
+    opacity: 0;
+    mix-blend-mode: plus-lighter;
+  }
+  .splash-head {
+    animation: splash-head var(--splash-seq) linear both;
+  }
+  /* Rides the outer ring's spine on the same easing as the draw, so it stays on the leading edge. */
+  @keyframes splash-head {
+    0%,
+    65% {
+      offset-distance: 0%;
+      opacity: 0;
+      animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    67% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+  }
+  .splash-sweep {
+    animation: splash-sweep 2800ms var(--ease-inout) var(--splash-seq) infinite;
+  }
+  @keyframes splash-sweep {
+    0% {
+      offset-distance: 0%;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    34% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+    100% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+  }
+  /* A browser without motion paths gets the mark without its riders rather than two stray dots. */
+  @supports not (offset-path: path("M0 0 L1 1")) {
+    .splash-head,
+    .splash-sweep {
+      display: none;
+    }
+  }
+
+  /* ── the star ──────────────────────────────────────────────────────────── */
+  .splash-halo-in {
+    stop-color: var(--teal-900);
+    stop-opacity: 1;
+  }
+  .splash-halo-mid {
+    stop-color: var(--teal-700);
+    stop-opacity: 0.45;
+  }
+  .splash-halo-out {
+    stop-color: var(--teal-700);
+    stop-opacity: 0;
+  }
+  .splash-star {
+    mix-blend-mode: plus-lighter;
+  }
+  .splash-star-core,
+  .splash-star-halo,
+  .splash-star-rays {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .splash-star-core {
+    fill: var(--ink-1);
+    animation: splash-star-core var(--splash-seq) linear both;
+  }
+  .splash-star-halo {
+    animation: splash-star-halo var(--splash-seq) linear both;
+  }
+  .splash-ray {
+    fill: var(--ink-1);
+  }
+  .splash-ray--short {
+    fill: var(--teal-900);
+  }
+  .splash-star-rays {
+    animation: splash-twinkle var(--splash-seq) linear both;
+  }
+  /* Ignition: a flare, a flicker, then a steady point that is brightest while the beam is out
+     and settles to a glint once the mark carries the light. */
+  @keyframes splash-star-core {
+    0% {
+      scale: 0;
+      opacity: 0;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    5% {
+      scale: 1.8;
+      opacity: 1;
+    }
+    11% {
+      scale: 1;
+    }
+    40% {
+      scale: 1.3;
+      opacity: 1;
+    }
+    58% {
+      scale: 1;
+    }
+    70%,
+    100% {
+      scale: 0.42;
+      opacity: 0.85;
+    }
+  }
+  @keyframes splash-star-halo {
+    0% {
+      scale: 0.15;
+      opacity: 0;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    9% {
+      scale: 0.8;
+      opacity: 0.95;
+    }
+    40% {
+      scale: 1.25;
+      opacity: 1;
+    }
+    58% {
+      scale: 1;
+      opacity: 0.65;
+    }
+    72%,
+    100% {
+      scale: 0.6;
+      opacity: 0.3;
+    }
+  }
+  @keyframes splash-twinkle {
+    0% {
+      scale: 0;
+      opacity: 0;
+      rotate: 0deg;
+    }
+    4% {
+      scale: 0.55;
+      opacity: 1;
+    }
+    7% {
+      scale: 1.2;
+      rotate: 7deg;
+    }
+    10% {
+      scale: 0.85;
+      rotate: -5deg;
+    }
+    13% {
+      scale: 1.1;
+      rotate: 2deg;
+    }
+    16% {
+      scale: 0.95;
+      rotate: 0deg;
+    }
+    40% {
+      scale: 1;
+      opacity: 1;
+    }
+    60% {
+      scale: 0.75;
+      opacity: 0.7;
+    }
+    72%,
+    100% {
+      scale: 0.45;
+      opacity: 0.4;
+      rotate: 0deg;
+    }
+  }
+}
