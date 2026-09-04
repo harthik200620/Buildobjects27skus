@@ -1,0 +1,222 @@
+@layer components {
+  /* ═══════════════════════════════════════════════════════════════════════════
+     THE SHELF BAR — the filter chips over "On the shelf now"
+     ═══════════════════════════════════════════════════════════════════════════
+     Markup and behaviour in components/shelf/ShelfBar.tsx; which chips a shelf may offer is
+     decided in lib/shelf.ts. It replaced a "Filter and compare" link that led away from the
+     shelf it sat above.
+     ═════════════════════════════════════════════════════════════════════════ */
+  .shelf-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 var(--s-4);
+  }
+
+  /*
+   * One line that scrolls, never two that reflow: the row sits directly above the grid and a chip
+   * wrapping onto a second line moves every card down by 44px as you press it.
+   *
+   * "Filters" is deliberately NOT in here. An element that scrolls its overflow also CLIPS an
+   * absolutely-positioned descendant, so the panel hanging below the button was cut off at the
+   * row's own height — present in the DOM, and invisible. Keeping it outside fixes that and pins
+   * it, which is what it wants to be: the chips scroll past a control that stays put.
+   */
+  .shelf-chips {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* Room for the focus ring, which is drawn outside the chip. */
+    padding: 3px 2px;
+    margin: -3px -2px;
+  }
+  .shelf-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shelf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--hair-2);
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 4%);
+    color: var(--ink-2);
+    font-size: var(--t-fine);
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out),
+      color var(--dur-1) var(--ease-out);
+  }
+  /* 44 is the number every platform agrees on, and scripts/sweep.mts holds this page to it. */
+  @media (pointer: coarse) {
+    .shelf-chip {
+      min-height: 44px;
+    }
+  }
+  .shelf-chip:hover {
+    border-color: var(--hair-brand);
+    background: rgb(255 255 255 / 9%);
+    color: var(--ink-1);
+  }
+  .shelf-chip[aria-pressed="true"] {
+    background: var(--color-teal-700);
+    border-color: var(--hair-brand);
+    color: var(--color-on-brand);
+  }
+  .shelf-chip--clear {
+    color: var(--ink-3);
+  }
+  .shelf-chip-caret {
+    margin-left: -2px;
+    opacity: 0.7;
+  }
+  /* The little count on a chip, in the figure face like every other number in the store. */
+  .shelf-chip-n {
+    min-width: 18px;
+    padding: 0 5px;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 10%);
+    font-size: var(--t-micro);
+    line-height: 18px;
+    text-align: center;
+  }
+  .shelf-chip[aria-pressed="true"] .shelf-chip-n {
+    background: rgb(4 23 27 / 22%);
+  }
+
+  .shelf-count {
+    flex: none;
+    margin-left: auto;
+    padding-left: 8px;
+    color: var(--ink-3);
+    font-size: var(--t-fine);
+  }
+  /*
+   * On a narrow screen the count sat against the scrolling row and the last chip ran under it,
+   * cut mid-word — which reads as a bug rather than as "there is more to scroll". Below this
+   * width it takes a line of its own and the chips get the whole width.
+   */
+  @media (max-width: 719.98px) {
+    .shelf-bar {
+      flex-wrap: wrap;
+    }
+    .shelf-count {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      text-align: right;
+    }
+  }
+
+  /* ── the panel behind "Filters" ─────────────────────────────────────────── */
+  .shelf-filters-wrap {
+    position: relative;
+    flex: none;
+  }
+  .shelf-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 40;
+    width: max-content;
+    min-width: 240px;
+    max-width: min(320px, calc(100vw - 32px));
+    padding: var(--s-4);
+    border: 1px solid var(--hair-2);
+    border-radius: var(--r-3);
+    background: var(--surf-3);
+    box-shadow: var(--shadow-3, 0 18px 48px -12px rgb(0 0 0 / 55%));
+    animation: shelf-panel-in var(--dur-2) var(--ease-out) both;
+  }
+  @keyframes shelf-panel-in {
+    from {
+      opacity: 0;
+      translate: 0 -6px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+  .shelf-field {
+    border: 0;
+    padding: 0;
+    margin: 0 0 var(--s-4);
+  }
+  .shelf-legend {
+    padding: 0;
+    margin-bottom: 6px;
+    color: var(--ink-3);
+    font-size: var(--t-micro);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .shelf-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 36px;
+    color: var(--ink-2);
+    font-size: var(--t-fine);
+    cursor: pointer;
+  }
+  .shelf-opt:hover {
+    color: var(--ink-1);
+  }
+  .shelf-opt input {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-teal-700);
+  }
+  .shelf-opt-n {
+    margin-left: auto;
+    color: var(--ink-3);
+    font-size: var(--t-micro);
+  }
+  .shelf-panel-foot {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--hair);
+  }
+
+  /* ── the grid underneath ────────────────────────────────────────────────── */
+  /*
+   * `.prod-card` sets `display: flex`, and a class beats the user-agent's `[hidden]` rule — so
+   * without this a filtered-out card stays exactly where it was. This is the line that makes the
+   * chips do anything at all.
+   */
+  .prod-card[hidden] {
+    display: none;
+  }
+  .shelf-empty {
+    padding: var(--s-6) 0;
+    color: var(--ink-3);
+    font-size: var(--t-body);
+    text-align: center;
+  }
+  .shelf-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-teal-700);
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

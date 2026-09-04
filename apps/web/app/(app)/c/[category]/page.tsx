@@ -13,11 +13,13 @@ import Pagination from '@/components/Pagination';
 import Plate from '@/components/Plate';
 import ProductCard from '@/components/ProductCard';
 import ResultsSection from '@/components/ResultsSection';
+import ShelfBar from '@/components/shelf/ShelfBar';
 import { allCategories, loadFacetConfig, loadFlagshipSkus, searchSkus } from '@/lib/catalog';
 import { type CategoryGroup, loadCatalogueCategories, loadCategory, loadSession, serviceability } from '@/lib/data';
 import { deliverBy } from '@/lib/delivery';
 import { parseFilters } from '@/lib/filters';
 import { inr } from '@/lib/media';
+import { decodeShelf, EMPTY_SHELF, factsOf, type ShelfState } from '@/lib/shelf';
 
 /**
  * What to call a row from `categories`, given that the table and the workbook disagree on seven of
@@ -62,11 +64,11 @@ export default async function CategoryPage({ params, searchParams }: { params: P
    * with a product filed under them, and the category is the level above.
    */
   const group = (await loadCatalogueCategories()).find((g) => g.slug === category);
-  if (group && group.products.length > 0) return <CategoryLanding group={group} {...(await landingData(group))} />;
+  if (group && group.products.length > 0) return <CategoryLanding group={group} initial={decodeShelf(sp)} {...(await landingData(group))} />;
 
   const cat = await loadCategory(category);
   if (!cat) {
-    if (group) return <CategoryLanding group={group} skus={[]} eta={null} />;
+    if (group) return <CategoryLanding group={group} skus={[]} eta={null} initial={EMPTY_SHELF} />;
     notFound();
   }
   const state = parseFilters(sp);
@@ -257,8 +259,7 @@ async function landingData(group: CategoryGroup): Promise<{ skus: SkuSearchDoc[]
  * any of them are stocked, a way straight through to the shelf. Twenty-seven of the thirty-six
  * have nothing in them yet and say so rather than pretending otherwise.
  */
-function CategoryLanding({ group, skus, eta }: { group: CategoryGroup; skus: SkuSearchDoc[]; eta: string | null }) {
-  const live = group.products.filter((c) => c.status === 'live');
+function CategoryLanding({ group, skus, eta, initial }: { group: CategoryGroup; skus: SkuSearchDoc[]; eta: string | null; initial: ShelfState }) {
   const prices = skus.map((s) => s.selling_price).filter((n): n is number => typeof n === 'number');
   /*
    * Count what this page is about to draw, not what the categories table remembers.
@@ -366,18 +367,23 @@ function CategoryLanding({ group, skus, eta }: { group: CategoryGroup; skus: Sku
               </h2>
               <p className="sec-sub">Every price is per unit and includes GST — the rate is on each product page.</p>
             </div>
-            {live.length > 0 && (
-              <Link href={`/search?category=${live[0].slug}`} className="sec-more">
-                Filter and compare <IconArrow size={14} style={{ display: 'inline', verticalAlign: -1 }} />
-              </Link>
-            )}
           </div>
-          <div className="prod-grid stagger">
-            {/* Direct grid children, so the row stretches them — see the note in search/page.tsx. */}
-            {skus.map((sku, i) => (
-              <ProductCard key={sku.sku_code} sku={sku} deliverBy={eta} priority={i < 4} />
-            ))}
-          </div>
+          {/*
+           * The chips do the filtering here rather than sending the reader to /search to do it.
+           * This used to be a "Filter and compare" link, which is an odd thing to offer above the
+           * very things it would filter: the shelf is at most a dozen items and they are already
+           * on the page, so narrowing them is a decision the browser can answer without asking
+           * the server anything. ShelfBar hides and reorders the cards below it in place; they
+           * stay server-rendered, and a reader with no JavaScript sees the whole shelf.
+           */}
+          <ShelfBar facts={factsOf(skus)} initial={initial}>
+            <div className="prod-grid stagger">
+              {/* Direct grid children, so the row stretches them — see the note in search/page.tsx. */}
+              {skus.map((sku, i) => (
+                <ProductCard key={sku.sku_code} sku={sku} deliverBy={eta} priority={i < 4} />
+              ))}
+            </div>
+          </ShelfBar>
         </section>
       )}
 
