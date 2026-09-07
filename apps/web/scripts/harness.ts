@@ -84,10 +84,28 @@ export async function seedCart(page: Page): Promise<void> {
  * hydration; with motion on, after its full sequence.
  */
 export async function settled(page: Page): Promise<void> {
-  await page.waitForFunction(`(() => { const s = document.getElementById('bo-splash'); return !s || !s.classList.contains('splash--on'); })()`, null, {
-    polling: 100,
-    timeout: 20_000,
-  });
+  /*
+   * A FUNCTION, NOT A STRING. Playwright evaluates a string predicate with `eval` inside the page,
+   * and the store now ships a CSP with no 'unsafe-eval' — so a string here fails with
+   * "Evaluating a string as JavaScript violates the following Content Security Policy directive",
+   * and the gate reports a defect in the page that is really a defect in the gate. A function is
+   * serialised and called, and needs no eval.
+   *
+   * Note this is the opposite of the rule for `page.evaluate` PROBES elsewhere in these scripts,
+   * which are strings on purpose: tsx compiles a named inner arrow to esbuild's `__name` helper,
+   * which does not exist in the page. Keep predicates anonymous and they can be functions safely.
+   */
+  await page.waitForFunction(
+    () => {
+      /* No overlay at all, or one that is no longer running its sequence — either is "gone". */
+      return !document.getElementById('bo-splash')?.classList.contains('splash--on');
+    },
+    null,
+    {
+      polling: 100,
+      timeout: 20_000,
+    },
+  );
 }
 
 /** sRGB channel to linear light, per WCAG 2.1. */

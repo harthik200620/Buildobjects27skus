@@ -29,7 +29,15 @@ import { BASE, openPage, seedCart } from './harness';
  */
 const ROUTES: { path: string; radii: number; sizes: number }[] = [
   { path: '/', radii: 6, sizes: 15 },
-  { path: '/search', radii: 7, sizes: 11 },
+  /*
+   * TWO ENTRIES, BECAUSE /search IS NOW TWO PAGES. With nothing asked for it renders the category
+   * directory; with a query, a filter or `?all=1` it renders the results grid. The single budget
+   * here described the results grid, so the directory failed it on arrival — 12 sizes against 11
+   * — for carrying the headings a directory has and a grid does not (a section title, an eyebrow,
+   * a sub-line). That is the page being a different page, not the page sprawling.
+   */
+  { path: '/search', radii: 5, sizes: 13 },
+  { path: '/search?all=1', radii: 7, sizes: 11 },
   { path: '/c/bulbs', radii: 7, sizes: 12 },
   { path: '/p/cem-ult-ppc50', radii: 8, sizes: 14 },
   { path: '/cart', radii: 7, sizes: 11 },

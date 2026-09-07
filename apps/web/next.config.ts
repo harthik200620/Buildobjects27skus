@@ -68,6 +68,30 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['three'],
   },
+  /*
+   * ── WHO GETS THE DESCRIPTION IN <head> ─────────────────────────────────────────────────────
+   *
+   * Every page under (app) sits behind a loading boundary, which is deliberate and is what makes
+   * the first byte fast: the document is sent the moment the root layout renders, without waiting
+   * on the session, serviceability and catalogue reads (see app/loading.tsx). The cost is that
+   * `generateMetadata` resolves AFTER the head has been flushed, so Next streams the metadata into
+   * the body and React hoists it on the client.
+   *
+   * Which is fine for anything that runs JavaScript, and silently wrong for anything that does
+   * not. Measured on the built server: `/c/bulbs` and `/p/cem-ult-ppc50` both emitted
+   * `<meta name="description">` into the BODY for every user agent, Googlebot included — so a
+   * product link pasted into WhatsApp, Slack or X previewed with a title and no description, and
+   * Lighthouse scored the category page 91 on SEO for a description it could not find.
+   *
+   * This is the documented control. A user agent matching it gets blocking metadata — a slightly
+   * later first byte, and a complete <head>. The list is the crawlers that matter to this store
+   * and NOT a general "if it looks like a bot": every entry here is paying for its head with
+   * latency, and a human should never be on it.
+   *
+   * WhatsApp is first because it is how a link is shared in this market.
+   */
+  htmlLimitedBots:
+    /WhatsApp|facebookexternalhit|Twitterbot|Slackbot|LinkedInBot|TelegramBot|Discordbot|Googlebot|bingbot|Applebot|Slurp|DuckDuckBot|SkypeUriPreview|redditbot|Pinterest/,
   async headers() {
     // Media and models are staged into public/ before the build (scripts/stage-media.mts) so a CDN
     // serves them; without a rule here they would go out as `max-age=0, must-revalidate`, which is
@@ -87,7 +111,107 @@ const nextConfig: NextConfig = {
     //     day it corrects itself.
     const immutable = [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }];
     const oneDay = [{ key: 'Cache-Control', value: 'public, max-age=86400' }];
+
+    /*
+     * ── THE SECURITY HEADERS ────────────────────────────────────────────────────────────────
+     *
+     * There were none. Not a weak set — none: no CSP, no HSTS, no nosniff, no Referrer-Policy,
+     * no Permissions-Policy, nothing saying whether this store may be framed. Every one of these
+     * is a header a browser will enforce for free if you send it, and a header a browser cannot
+     * guess if you do not.
+     *
+     * They are set here rather than in `proxy.ts` on purpose. The proxy runs per REQUEST and only
+     * on paths its matcher does not exclude — which deliberately excludes /_next, /media, /fonts
+     * and /3d, i.e. most of what the store actually serves. `headers()` is applied by the CDN to
+     * everything, costs no invocation, and cannot be skipped by a route that returns early.
+     */
+    const security = [
+      /* Two years, subdomains included, and preload-eligible. Vercel terminates TLS, so every
+         request that reaches us is already HTTPS; this is about the NEXT visit, made by typing
+         the host without a scheme. */
+      { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+      /* A JPEG that sniffs as HTML is a stored XSS. `/media` serves user-visible files under keys
+         the catalogue chose, and this is what stops any of them being executed as something else. */
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      /* A pincode and a SKU are on almost every URL in this store. Cross-origin referrers get the
+         origin only; same-origin navigation keeps the full path, which is what analytics of our
+         own would need. */
+      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      /*
+       * THE CAMERA IS NOT BLANKET-DENIED, because the store genuinely uses it: "see it in your
+       * room" is a live camera feed (components/ar/camera). `self` is the narrowest grant that
+       * keeps that working — the page may ask, an embedded third party never can.
+       *
+       * Everything else the store has no business asking for is denied outright rather than left
+       * to the browser's default, so an injected script cannot quietly start geolocating people.
+       */
+      {
+        key: 'Permissions-Policy',
+        value: [
+          'accelerometer=(self)',
+          'camera=(self)',
+          'gyroscope=(self)',
+          'geolocation=()',
+          'microphone=()',
+          'payment=()',
+          'usb=()',
+          'interest-cohort=()',
+        ].join(', '),
+      },
+      /* Clickjacking. `frame-ancestors` in the CSP below is the modern control and this is the
+         same statement for anything that only understands the old header. */
+      { key: 'X-Frame-Options', value: 'DENY' },
+      /* A cross-origin opener cannot reach into this window. */
+      { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+      {
+        key: 'Content-Security-Policy',
+        /*
+         * WHAT THIS DOES AND DOES NOT COVER — worth being exact about, because a CSP that is
+         * described as stronger than it is, is worse than none.
+         *
+         * `script-src` carries 'unsafe-inline'. It has to: the store is statically rendered and
+         * CDN-cached, Next injects its own inline bootstrap into every document, and layout.tsx
+         * adds one more (lib/reveal-bootstrap.ts) that must run before first paint. The strict
+         * alternative is a per-request nonce, and a nonce makes every page dynamic — it would
+         * trade the CDN, and the load time this upgrade is meant to improve, for the hardening.
+         * That is the wrong trade for a storefront with no user-generated content: there is no
+         * path by which a stranger's markup reaches these pages.
+         *
+         * So this is NOT XSS-proof, and the directives that are doing real work are the others:
+         *
+         *   default-src 'self'      nothing loads from anywhere else by default
+         *   connect-src 'self'      an injected script cannot exfiltrate to its own server; every
+         *                           AI call in this app is made server-side, so the browser has no
+         *                           legitimate cross-origin fetch to make
+         *   frame-ancestors 'none'  the store cannot be framed — clickjacking
+         *   base-uri 'self'         a <base> tag cannot repoint every relative URL on the page
+         *   form-action 'self'      a form cannot be made to POST a pincode and phone elsewhere
+         *   object-src 'none'       no Flash-era plugin surface
+         *
+         * blob: and data: appear on img-src and media-src because the AR view is built on them —
+         * the camera frame, the composite the shopper saves, and the USDZ handed to Quick Look
+         * are all object URLs.
+         */
+        value: [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline'",
+          "style-src 'self' 'unsafe-inline'",
+          "img-src 'self' data: blob:",
+          "media-src 'self' data: blob:",
+          "font-src 'self'",
+          "connect-src 'self'",
+          "worker-src 'self' blob:",
+          "frame-ancestors 'none'",
+          "base-uri 'self'",
+          "form-action 'self'",
+          "object-src 'none'",
+          'upgrade-insecure-requests',
+        ].join('; '),
+      },
+    ];
+
     return [
+      { source: '/:path*', headers: security },
       { source: '/fonts/:path*', headers: immutable },
       { source: '/media/:path*', headers: immutable },
       { source: '/3d/:path*', headers: oneDay },

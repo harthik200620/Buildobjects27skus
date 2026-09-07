@@ -809,7 +809,8 @@
   .lockup {
     display: inline-flex;
     align-items: center;
-    gap: calc(var(--wm-size, 44px) * 0.34);
+    /* Off the WORD, not the mark, so growing the mark does not also grow the space beside it. */
+    gap: calc(var(--wm-size, 44px) * var(--wm-ratio, 0.75) * 0.45);
   }
   .wordmark-mark {
     display: block;
@@ -827,7 +828,21 @@
        one that stops "BUILD OBJECTS" from being 630 px wide at a 44 px mark. Optical, not
        arithmetic: a wordmark whose capitals match the mark's full height always looks too big,
        because the mark has margin inside it and the letters do not. */
-    font-size: calc(var(--wm-size, 44px) * 0.75);
+    /*
+     * --wm-ratio EXISTS SO THE MARK CAN GROW WITHOUT THE WORD GROWING WITH IT.
+     *
+     * The two were locked at 0.75, and that made the lockup a single dial with no good setting.
+     * The mark is a thin-stroked keystoned "b"; at the 34px the header had settled on, its
+     * strokes fall below the width at which they hold against a near-black bar, and it reads as
+     * a smudge before it reads as a logo. But raising the one number to fix that also set BUILD
+     * OBJECTS in Audiowide — a very wide face — proportionally larger, and the row has no width
+     * to give: the field people actually use is what pays for it.
+     *
+     * So the header now sets a larger --wm-size and a smaller --wm-ratio, and gets a mark a third
+     * bigger with the word at the size it already was. Everywhere else omits the ratio and keeps
+     * the 0.75 the lockup was drawn at.
+     */
+    font-size: calc(var(--wm-size, 44px) * var(--wm-ratio, 0.75));
     line-height: 1;
     text-transform: uppercase;
     letter-spacing: 0.01em;

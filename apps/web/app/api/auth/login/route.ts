@@ -3,6 +3,7 @@ import { getDb, regions, sessions, users } from '@buildobjects/db';
 import { eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import { ensurePgSchema, getPg, hasPg, pgSessions, pgUsers } from '@/lib/pg-store';
+import { clientIp, LOGIN_PER_IP, LOGIN_PER_PHONE, takeAll, tooManyRequests } from '@/lib/rate-limit';
 import { cookieOptions, SESSION_COOKIE, SESSION_DAYS, signSession } from '@/lib/session';
 
 /**
@@ -24,6 +25,24 @@ export async function POST(req: Request) {
   let regionId = String(body.regionId ?? 'hyd');
 
   if (!/^[6-9]\d{9}$/.test(phone)) return NextResponse.json({ error: 'Enter a valid 10-digit Indian mobile number' }, { status: 400 });
+
+  /*
+   * THROTTLED BEFORE THE CODE IS COMPARED, which is the only place it is worth doing.
+   *
+   * This handler verifies a six-digit code. Unthrottled, the whole keyspace is a million requests
+   * — an afternoon — and the fact that today's code is fixed and printed on the sign-in screen
+   * hides that shape rather than changing it. The throttle is what has to be right before the
+   * code generation becomes real, not after.
+   *
+   * A wrong code costs a slot exactly as a right one does: counting only failures lets an
+   * attacker reset their own budget by interleaving a valid sign-in.
+   */
+  const gate = takeAll([
+    { key: `login:ip:${clientIp(req)}`, limit: LOGIN_PER_IP },
+    { key: `login:phone:${phone}`, limit: LOGIN_PER_PHONE },
+  ]);
+  if (!gate.ok) return tooManyRequests('Too many sign-in attempts. Wait a moment and try again.', gate.retryAfterMs);
+
   if (otp !== '000000') return NextResponse.json({ error: 'That code did not match. Demo code is 000000.' }, { status: 401 });
   if (!/^5[0-3]\d{4}$/.test(pincode))
     return NextResponse.json(

@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import CategoryTile from '@/components/CategoryTile';
+import CategoryDirectory from '@/components/CategoryDirectory';
 import CountUp from '@/components/home/CountUp';
-import { IconArrow, IconEstimate, IconStorefront } from '@/components/icons';
+import { IconEstimate, IconStorefront } from '@/components/icons';
 import Plate from '@/components/Plate';
 import { loadFlagshipSkus } from '@/lib/catalog';
 import { loadCatalogueCategories } from '@/lib/data';
@@ -22,7 +22,6 @@ export const revalidate = 60;
 export default async function Home() {
   const [cats, skus] = await Promise.all([loadCatalogueCategories(), loadFlagshipSkus()]);
   const stocked = cats.filter((c) => c.status === 'live');
-  const coming = cats.filter((c) => c.status !== 'live');
   const brands = new Set(skus.map((s) => s.brand)).size;
 
   return (
@@ -131,69 +130,24 @@ export default async function Home() {
           <EmptyShelves />
         </section>
       ) : (
-        <>
-          <section className="shell sec" aria-labelledby="cats-h">
-            <div className="sec-head" data-reveal>
-              <div>
-                <p className="micro sec-eyebrow">The catalogue</p>
-                <h2 id="cats-h" className="d2">
-                  On the shelf today
-                </h2>
-                <p className="lede sec-sub">
-                  <span className="fig">{stocked.length}</span> categories, <span className="fig">{skus.length}</span> items, delivered across Andhra Pradesh
-                  and Telangana.
-                </p>
-              </div>
-              <Link href="/search" className="sec-more">
-                Browse everything <IconArrow size={16} />
-              </Link>
-            </div>
-
-            <ul className="cat-grid stagger">
-              {stocked.map((c, i) => (
-                /* --i drives the stagger: four columns, so the modulo makes each row cascade
-                   left-to-right rather than the whole row arriving at once.
-
-                   NO TILE IS EAGER, and `priority` is deliberately not passed. The hero ends at
-                   807 px and this grid starts at 1655 px on a 940 px desktop, 2307 px on a phone:
-                   nothing here is on the first screen at either size. Preloading the first row
-                   would put four `<link rel=preload as=image>` for invisible thumbnails on the
-                   same connection as the hero photograph, which IS the largest contentful paint. */
-                <li key={c.slug} style={{ '--i': i % 4 } as React.CSSProperties}>
-                  <CategoryTile
-                    href={`/c/${c.slug}`}
-                    name={c.name}
-                    heroImageKey={c.heroImageKey}
-                    meta={c.skuCount > 0 ? `${c.skuCount} ${c.skuCount === 1 ? 'item' : 'items'}` : undefined}
-                  />
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          {coming.length > 0 && (
-            <section className="shell sec sec--last" aria-labelledby="soon-h">
-              <div className="sec-head sec-head--tight" data-reveal>
-                <div>
-                  <p className="micro sec-eyebrow">Filling next</p>
-                  {/* .h3, not .d3: a footnote to the section above it, and a seventeenth type
-                      size on the front door is what scale:audit is there to catch. */}
-                  <h2 id="soon-h" className="h3">
-                    <span className="fig">{coming.length}</span> more shelves, on the way
-                  </h2>
-                  <p className="lede sec-sub">Open any of them and it will tell you plainly where it stands — nothing here pretends to be in stock.</p>
-                </div>
-              </div>
-              <ul className="cat-grid cat-grid--compact stagger">
-                {coming.map((c, i) => (
-                  <li key={c.slug} style={{ '--i': i % 4 } as React.CSSProperties}>
-                    <CategoryTile href={`/c/${c.slug}`} name={c.name} heroImageKey={c.heroImageKey} soon compact />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-        </>
+        /* The same directory the catalogue page draws — see components/CategoryDirectory.tsx.
+           It lived here in full and `/search` drew a flat product grid instead, which is how the
+           two surfaces came to disagree about what this store sells. */
+        <CategoryDirectory
+          categories={cats}
+          itemCount={skus.length}
+          headingId="cats-h"
+          eyebrow="The catalogue"
+          title="On the shelf today"
+          sub={
+            <>
+              <span className="fig">{stocked.length}</span> categories, <span className="fig">{skus.length}</span> items, delivered across Andhra Pradesh and
+              Telangana.
+            </>
+          }
+          moreHref="/search"
+          moreLabel="Browse the catalogue"
+        />
       )}
     </div>
   );

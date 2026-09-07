@@ -27,6 +27,49 @@ export function envCap(name: string, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
 }
 
+/*
+ * ── THE SIGN-IN THROTTLES ──────────────────────────────────────────────────────────────────
+ *
+ * Both auth routes were unthrottled, and they are the two endpoints a stranger can reach without
+ * a session — the whole internet can call them.
+ *
+ *   /api/auth/otp    WRITES A DATABASE ROW PER CALL, with no dedupe. A hundred thousand requests
+ *                    are a hundred thousand rows, from one script, for free. And on the day the
+ *                    demo code becomes a real SMS, the same endpoint sends a hundred thousand
+ *                    messages to whatever numbers the caller chooses — at our cost, to people who
+ *                    did not ask for them.
+ *   /api/auth/login  verifies a SIX-DIGIT code. Unthrottled, a million guesses walks the entire
+ *                    keyspace; the demo code being fixed today only hides the shape of that.
+ *
+ * The numbers are set for a real person, not for a comfortable margin. Nobody asks for more than
+ * a handful of codes for one number in ten minutes, and nobody types more than ten wrong ones.
+ *
+ * PER NUMBER AS WELL AS PER ADDRESS, and the two are separate buckets. An address alone misses
+ * the attack that matters — one number bombarded from many addresses — and a number alone misses
+ * a single host walking a list of numbers. Both keys have to pass.
+ */
+export const OTP_PER_IP: WindowLimit = { limit: 10, windowMs: 600_000 };
+export const OTP_PER_PHONE: WindowLimit = { limit: 5, windowMs: 600_000 };
+export const LOGIN_PER_IP: WindowLimit = { limit: 20, windowMs: 600_000 };
+export const LOGIN_PER_PHONE: WindowLimit = { limit: 10, windowMs: 600_000 };
+
+/**
+ * Take a slot from every bucket, and refuse if any of them is empty.
+ *
+ * IT ASKS ALL OF THEM EVEN AFTER ONE REFUSES. Short-circuiting would leave the later buckets
+ * un-consumed, so an attacker who has exhausted the per-address limit would still have a full
+ * per-number allowance waiting the moment they changed address. The longest wait is returned, so
+ * the caller is told the truth about when they may try again.
+ */
+export function takeAll(entries: { key: string; limit: WindowLimit }[], now = Date.now()): RateLimitResult {
+  let worst: RateLimitResult | null = null;
+  for (const { key, limit } of entries) {
+    const r = rateLimit(key, limit.limit, limit.windowMs, now);
+    if (!r.ok && (!worst || r.retryAfterMs > worst.retryAfterMs)) worst = r;
+  }
+  return worst ?? { ok: true, limit: 0, remaining: 0, retryAfterMs: 0 };
+}
+
 export const REFINE_DEFAULT_LIMIT: WindowLimit = { limit: 5, windowMs: 600_000 };
 export const REFINE_DEFAULT_DAILY_CAP = 200;
 export const DRAWING_LIMIT: WindowLimit = { limit: 10, windowMs: 600_000 };

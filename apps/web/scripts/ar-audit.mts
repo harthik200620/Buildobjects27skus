@@ -303,7 +303,7 @@ async function main() {
       await page.waitForSelector('canvas.ar-camera-webgl', { timeout: 30000 }).catch(() => {});
       /* And for the mesh: SceneRenderer.create awaits the whole file before there is anything to
          place, and the view says so while it does. */
-      await page.waitForFunction(`!document.body.innerText.includes('Loading ')`, null, { timeout: 30000 }).catch(() => {});
+      await page.waitForFunction(() => !document.body.innerText.includes('Loading '), null, { timeout: 30000 }).catch(() => {});
       await page.waitForTimeout(2000);
       await startTiltFeed(page);
 

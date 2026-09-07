@@ -56,6 +56,34 @@ export function parseFilters(params: Params): FilterState & { q: string; page: n
   return state;
 }
 
+/**
+ * Has the shopper asked this page for anything?
+ *
+ * `false` means they have — a query, a category, a facet, a page or a sort — and the results grid
+ * is the answer. `true` means they arrived with an empty URL, and the answer is the category
+ * directory rather than every product in the catalogue in one flat grid.
+ *
+ * It is written as "no state at all" rather than as a list of the cases that should show the
+ * directory, because the failure modes are opposite sizes. Forgetting a filter here would show
+ * somebody the directory when they had asked for results — their filter silently ignored, on a
+ * page that looks deliberate. Forgetting one the other way shows a list to somebody who asked for
+ * nothing, which is only the old behaviour back again. So every field of the parsed state is
+ * checked, and `?all=1` is the one explicit way to ask for the flat list.
+ */
+export function isBrowsing(state: ReturnType<typeof parseFilters>, params: Params): boolean {
+  if (first(params.all) === '1') return false;
+  return (
+    !state.q &&
+    !state.category &&
+    !state.brand?.length &&
+    !state.price &&
+    !state.stock &&
+    (!state.sort || state.sort === 'relevance') &&
+    state.page === 1 &&
+    Object.keys(state.attrs ?? {}).length === 0
+  );
+}
+
 export function toQuery(state: Partial<FilterState & { q: string; page: number; category?: string }>): string {
   const p = new URLSearchParams();
   if (state.q) p.set('q', state.q);

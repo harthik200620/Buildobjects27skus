@@ -511,7 +511,7 @@ async function motionPass(browser: Browser) {
      * stretches that; it settles in well under one when nothing is wrong.
      */
     await page
-      .waitForFunction(`[...document.querySelectorAll('[data-reveal]')].every((e) => +getComputedStyle(e).opacity > 0.99)`, null, {
+      .waitForFunction(() => [...document.querySelectorAll('[data-reveal]')].every((e) => +getComputedStyle(e).opacity > 0.99), null, {
         timeout: 10_000,
         polling: 100,
       })

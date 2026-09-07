@@ -48,7 +48,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   }
   const group = (await loadCatalogueCategories()).find((g) => g.slug === category);
   return group
-    ? { title: group.name, description: `${group.products.length} products in ${group.name} — ${group.products.map((c) => c.name).join(', ')}.` }
+    ? {
+        title: group.name,
+        /* Eight of the nine stocked categories hold exactly one product, so "1 products in
+           Flooring" was the line most of them actually shipped — in the search snippet and in
+           every link preview. */
+        description: `${group.products.length} ${group.products.length === 1 ? 'product' : 'products'} in ${group.name} — ${group.products.map((c) => c.name).join(', ')}.`,
+      }
     : { title: 'Category' };
 }
 

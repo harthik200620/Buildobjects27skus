@@ -25,7 +25,8 @@
     "type:audit": "tsx scripts/type-audit.mts",
     "typecheck": "tsc -p tsconfig.json",
     "rehash-blur": "tsx scripts/rehash-blur.mts",
-    "greet:derive": "tsx scripts/derive-greeting.mts"
+    "greet:derive": "tsx scripts/derive-greeting.mts",
+    "images:audit": "tsx scripts/image-audit.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

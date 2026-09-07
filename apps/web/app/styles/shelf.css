@@ -337,7 +337,19 @@
     .verdict-love {
       min-height: 44px;
     }
+    /*
+     * 44 WIDE AS WELL AS 44 TALL. The vertical padding here already bought the height, and the
+     * horizontal padding was 4px — a 28px-wide target, which `sweep` reports as five findings on
+     * the product page and which in the hand means rating a product three when you meant four.
+     *
+     * min-width rather than more padding, and centred, so the star itself does not grow: the
+     * target gets bigger and the drawing stays the size it was designed at. Five of them at 44
+     * plus the row's 2px gaps is 228px, comfortably inside the narrowest phone this store
+     * supports.
+     */
     .verdict-star {
+      min-width: 44px;
+      justify-content: center;
       padding: 12px 4px;
     }
   }

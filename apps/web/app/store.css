@@ -91,6 +91,16 @@
        specification table — a button covering the thing it was opened to ask about. */
     padding-bottom: calc(48px + 52px + var(--gutter));
   }
+  /*
+   * The box a pending route stands in — components/SplashSensor.tsx.
+   *
+   * Same min-height as `.page`, so the footer sits where it is going to sit before the page it
+   * follows has arrived. Without it the footer painted under the header and then jumped, for a
+   * CLS of 0.529 on every cold route. Nothing is drawn here; the splash is over it.
+   */
+  .page-pending {
+    min-height: calc(100dvh - var(--header-h) - var(--nav-h));
+  }
   .page .crumbs {
     margin: var(--s-4) 0 var(--s-2);
   }
@@ -198,14 +208,23 @@
 
   .header-logo {
     /*
-     * 34, not 44, and this IS taking it off the lockup — which the gap note above says was the
-     * thing it was avoiding. Audiowide is very wide: at 44 the lockup measured 284px of a 1344px
-     * row, a fifth of the chrome spent on a word that never changes, while the field people
-     * actually use was down to 327. A store's masthead is not the place the eye needs help
-     * finding; the search box is. 34 returns about 64px to it and the mark still reads at a
-     * glance, which is the whole job of a lockup.
+     * THE MARK IS 46 AND THE WORD IS STILL 25.5 — see --wm-ratio in theme.css.
+     *
+     * This was one number at 34, and 34 was itself a retreat from 44: Audiowide is very wide, and
+     * at 44 the lockup took 284px of a 1344px row while the search field — the control people
+     * actually use — was down to 327. So the word had to come down, and the mark came down with
+     * it because they shared a dial.
+     *
+     * That left the mark too small to read. It is three hairline strokes and a bowl; at 34px on a
+     * near-black bar the strokes are below the width at which they hold, and it registers as a
+     * teal smudge rather than as a logo. Reported plainly: "the logo is not visible clearly".
+     *
+     * Splitting the dial settles both. 46 × 0.555 puts the word at 25.5px, which is exactly where
+     * 34 × 0.75 had it, so the row keeps every pixel it won — the lockup grows by the 12px the
+     * mark itself gained and nothing else moves.
      */
-    --wm-size: 34px;
+    --wm-size: 46px;
+    --wm-ratio: 0.555;
     display: inline-flex;
     align-items: center;
     flex: none;
@@ -636,7 +655,8 @@
        <  720   search collapses to its glyph and expands on focus */
   @media (max-width: 1499.98px) {
     .header-logo {
-      --wm-size: 34px;
+      --wm-size: 40px;
+      --wm-ratio: 0.55;
     }
     .coin-pill-word {
       display: none;
@@ -694,8 +714,10 @@
     }
   }
   @media (max-width: 719.98px) {
+    /* A phone shows the mark alone (the word is hidden below), so there is no word to protect
+       and the ratio does not apply — this is simply how big the mark should be on a 390px bar. */
     .header-logo {
-      --wm-size: 26px;
+      --wm-size: 34px;
     }
     /* Under 720px the header cannot hold a 560px field, so the bar collapses to its icon — and
        focusing it expands it ACROSS THE HEADER ROW IN PLACE. Still one field, still the same
@@ -1439,7 +1461,7 @@
       cursor: pointer;
     }
     .header-logo {
-      --wm-size: 26px;
+      --wm-size: 34px;
       margin-left: 0;
       border: 0;
     }

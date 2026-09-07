@@ -41,6 +41,22 @@
   .home .sec--last {
     padding-bottom: var(--s-8);
   }
+
+  /* ── the flat every-item list, under the directory ─────────────────────────
+     The catalogue offers it and the front door does not — see CategoryDirectory.tsx. Centred and
+     alone so it reads as the end of the page rather than as another row of the grid above it. */
+  /* The catalogue page runs the same rhythm as the front door — the directory is the same
+     structure and the base .sec step (32px) reads as a cramped version of it. */
+  .page--dir .sec {
+    margin-top: var(--s-9);
+  }
+  .cat-dir-all {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--s-8);
+    /* No padding under it — `.page` already pays for the gap to the footer, and both paying is
+       what leaves a third of a screen of empty canvas at the end of the catalogue. */
+  }
   .sec-eyebrow {
     color: var(--color-brand);
     margin-bottom: var(--s-4);
@@ -287,10 +303,28 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--s-4);
   }
+  /*
+   * ── THE CAPTION IS UNDER THE PHOTOGRAPH, NOT ON IT ─────────────────────────────────────────
+   *
+   * It sat on it, and the notes further down this file are the record of what that cost: four
+   * separate rounds of "the shade has become the tile", a container query to shrink the type when
+   * the band grew past half the card, and a phone breakpoint that changed the crop to buy the
+   * caption room. Every one of those was a symptom of the same thing — a caption of fixed height
+   * competing for a box of variable height with the picture underneath it.
+   *
+   * And it never actually worked. Measuring the rendered grid with the words hidden, eight of the
+   * thirty-six tiles failed even the 3:1 large-text bar against their own photographs, the worst
+   * at 1.62:1 — white type over a stack of pale tiles. Deepening the gradient enough to fix that
+   * would have dimmed every photograph on the page to protect type that did not have to be there.
+   *
+   * Below the photograph, on the store's own surface, the name reads at 13:1 on every tile,
+   * forever, whatever picture arrives tomorrow. The photograph is uncovered. The whole class of
+   * bug is gone, and so is the machinery that was managing it.
+   */
   .cat-card {
     position: relative;
-    display: block;
-    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
     border-radius: var(--r-3);
     overflow: hidden;
     background: var(--surf-1);
@@ -307,8 +341,11 @@
     box-shadow: 0 18px 40px rgb(0 0 0 / 50%);
   }
   .cat-photo {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    /* The ratio moved here from .cat-card. It is what the art is drawn at, so nothing is cropped,
+       and the caption below is now free to be whatever height its words need. */
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
     transition: transform var(--dur-4) var(--ease-glide);
   }
   .cat-photo img {
@@ -324,13 +361,13 @@
       transform: none;
     }
   }
-  /* The shade. Transparent for the top third so the photograph is a photograph, then
-     down to near-black so the name has something to sit on whatever is behind it. */
+  /* A short fade at the foot of the photograph, so it meets the caption's surface instead of
+     ending on a line. It carries no legibility any more — nothing is written on it. */
   .cat-photo::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, transparent 30%, rgb(6 24 29 / 90%) 100%);
+    background: linear-gradient(180deg, rgb(6 24 29 / 0%) 62%, rgb(6 24 29 / 42%) 100%);
   }
   .cat-card--soon .cat-photo img {
     opacity: 0.55;
@@ -340,14 +377,16 @@
     opacity: 0.72;
   }
   .cat-band {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: var(--s-4);
+    /* In the flow, under the picture. `flex: 1` so every card in a row ends level even when one
+       name wraps to two lines and its neighbour does not — the ragged bottom edge was the other
+       half of what made this grid look unfinished. */
+    flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     gap: 4px;
+    padding: var(--s-4);
+    background: var(--surf-1);
   }
   .cat-name {
     font-size: var(--t-h4);
@@ -375,22 +414,18 @@
     font-size: var(--t-fine);
     color: var(--ink-3);
   }
-  /* ── the band has to follow the tile, not the viewport ─────────────────────
-     A 16:9 tile gets SHORT as it gets narrow, and the band is a fixed cost: padding, the name,
-     the count. Measured across every width this store is used at, the shade went from 42% of the
-     card at 1920 to 67% at 1280 and 85% at 360 — a caption turning into the card, which is the
-     same "where did the photograph go" this file has already had to fix once.
+  /* ── the caption's type follows the tile, not the viewport ─────────────────
+     This began as damage control: a 16:9 tile gets short as it gets narrow, the caption sat on
+     top of it at a fixed height, and past a certain width the shade WAS the card. That is no
+     longer possible — the caption is below the picture and takes the room it needs.
 
-     Governed by the CARD, because the card is what actually varies: four columns at 1280 and two
-     at 767 both draw a ~280px tile and both want the same type, and no viewport query can say
-     that in one rule. Specificity is unchanged by @container, so `.cat-card--compact .cat-name`
-     (0,2,0) still beats these (0,1,0) — the roadmap tiles keep their own size and are untouched.
+     The query stays because the second reason it was written is still true: four columns at 1280
+     and two at 767 both draw a ~280px tile and both want the same type, and no viewport query can
+     say that in one rule. It is now about type fitting a narrow column, nothing more.
 
-     THE NUMBERS ARE CONTENT-BOX, NOT BORDER-BOX. A container query measures the content box, and
-     .cat-card carries a 1px border, so 285 here fires at a 287px tile. Set at 300 it fired at
-     1350 — a 302px tile whose 18px name fitted on one line at 49% band and did not need helping.
-     285 is the width at which the longest name in the catalogue, "Drafting & Measurement Items",
-     stops fitting: 284 wraps it and takes the band to 67%. */
+     THE NUMBERS ARE CONTENT-BOX. A container query measures the content box and .cat-card carries
+     a 1px border, so 285 here fires at a 287px tile — the width at which the longest name in the
+     catalogue, "Surveying, Drafting & Measurement Equipment", stops fitting two lines. */
   .cat-card {
     container-type: inline-size;
   }
@@ -435,18 +470,14 @@
     font-weight: 600;
     color: var(--ink-3);
   }
-  /* THE COLUMN DROPS ARE SET BY THE BAND, NOT BY DEVICE NAMES.
-     A 16:9 tile gets SHORT as it gets narrow, and the name, its count and the padding around them
-     are a fixed height — about 75px on one line and 98px on two. So a narrow tile is mostly
-     shade. Measured on this catalogue with four columns held to 1100px: a 241px tile, the longest
-     name on two lines, and the band covering 79% of the card — the photograph gone behind the
-     gradient, which is the exact failure this file has already fixed once on the compact grid.
-
-     The floor is a tile wide enough that the band stays near half the card, which is ~280px.
-     Each breakpoint below is the width at which the next column count would cross it:
+  /* THE COLUMN DROPS KEEP THE PHOTOGRAPH BIG ENOUGH TO BE ONE.
+     These were originally set by how much of the card the caption was eating; with the caption
+     out of the picture the constraint is simply the picture — below about 280px a 16:9 category
+     photograph stops carrying any detail and becomes a texture. Each breakpoint is the width at
+     which the next column count would cross that:
 
        >= 1280   4 up   284 -> 324px      1024-1280   3 up   303 -> 383px
-       768-1024  2 up   345 -> 462px      < 768       2 up   square, see below */
+       768-1024  2 up   345 -> 462px      < 768       2 up   4:3, see below */
   @media (max-width: 1279.98px) {
     .cat-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -457,16 +488,18 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  /* THE PHONE KEEPS THE SQUARE. Two columns of a 390px screen is a 169px tile; at 16:9 that is a
-     95px photograph carrying a name that wants two lines and a count under it — the shade would
-     be the tile. The crop is the price, and on a 169px thumbnail it is one nobody can see. */
+  /* A PHONE TRADES THE CROP FOR HEIGHT. Two columns of a 390px screen is a 169px tile; at 16:9
+     that is a 95px photograph, which is a strip rather than a picture. 4:3 gives it 127px. */
   @media (max-width: 767.98px) {
     .cat-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--s-3);
     }
-    .cat-card {
-      aspect-ratio: 1 / 1;
+    /* 4:3, not the square this used to force. The square existed to give an OVERLAID caption
+       somewhere to sit on a 169px tile; the caption is below the picture now, so the crop can go
+       back to being about the photograph. */
+    .cat-photo {
+      aspect-ratio: 4 / 3;
     }
   }
 
@@ -501,7 +534,6 @@
      the block below the shop is now the taller of the two. Anyone reducing this page again should
      start here, and the lever is the column count, not the ratio. */
   .cat-card--compact {
-    aspect-ratio: 16 / 9;
     border-radius: var(--r-2);
   }
   .cat-card--compact .cat-band {
@@ -512,7 +544,7 @@
      six of the twenty-six came out cut. A tile whose entire content is a name, showing most of a
      name, has failed at its one job — and unlike a product card there is nothing underneath to
      make up for it. The band is anchored to the bottom and shaded with a gradient, so a third
-     line grows upward into the photograph rather than pushing anything out of the tile. */
+     line simply makes the caption taller, which it is now free to do. */
   .cat-card--compact .cat-name {
     font-size: var(--t-fine);
     line-height: 1.3;
@@ -520,9 +552,6 @@
     color: var(--ink-2);
     -webkit-line-clamp: 3;
   }
-  /* Three columns on a phone leaves about 115px, and one name in the catalogue —
-     "Drafting & Measurement Items" — needs a fourth line even there. The band grows upward into
-     the gradient, so a fourth line costs nothing but the shade it sits on. */
   /* A 93px tile cannot fit every word in this catalogue on one line, so a word that does not fit
      breaks rather than overflowing the box sideways — an axis the line clamp does not govern. */
   @media (max-width: 767.98px) {
@@ -552,10 +581,7 @@
   .cat-card--compact:hover .cat-name {
     color: var(--ink-1);
   }
-  /* The shade can be shorter when the name is one small line. */
-  .cat-card--compact .cat-photo::after {
-    background: linear-gradient(180deg, transparent 40%, rgb(6 24 29 / 92%) 100%);
-  }
+
   /* A heading whose section is a footnote to the one above it does not need the full drop. */
   .sec-head--tight {
     margin-bottom: var(--s-5);
@@ -576,12 +602,6 @@
   @media (max-width: 767.98px) {
     .cat-grid--compact {
       gap: var(--s-2);
-    }
-    /* Three columns of a 390px screen is a 111px tile, and 16:9 makes that 62px — less than the
-       three lines "Drafting & Measurement Items" needs plus the padding under them. The phone
-       keeps the taller box for the same reason the stocked tile keeps its square there. */
-    .cat-card--compact {
-      aspect-ratio: 1 / 0.82;
     }
     .cat-card--compact .cat-band {
       padding: var(--s-2);

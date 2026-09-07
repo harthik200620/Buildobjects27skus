@@ -1,6 +1,7 @@
 import { getDb, otpChallenges } from '@buildobjects/db';
 import { NextResponse } from 'next/server';
 import { ensurePgSchema, getPg, hasPg, pgOtpChallenges } from '@/lib/pg-store';
+import { clientIp, OTP_PER_IP, OTP_PER_PHONE, takeAll, tooManyRequests } from '@/lib/rate-limit';
 
 /**
  * Demo OTP: any Indian mobile number, the fixed code below, ten-minute validity. Nothing is sent
@@ -17,6 +18,23 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   const phone = String(body.phone ?? '').replace(/\D/g, '');
   if (!/^[6-9]\d{9}$/.test(phone)) return NextResponse.json({ error: 'Enter a valid 10-digit Indian mobile number' }, { status: 400 });
+
+  /*
+   * THROTTLED AFTER THE FORMAT CHECK, BEFORE THE WRITE.
+   *
+   * After, so a malformed number costs a caller nothing and is not able to burn a real number's
+   * allowance by naming it badly. Before, because the write is the thing being protected: this
+   * handler inserts a row per call with no dedupe, and today's fixed demo code is the only reason
+   * it is not also an SMS gateway pointed at whatever numbers a script chooses.
+   *
+   * See lib/rate-limit.ts for why the address and the number are separate buckets.
+   */
+  const gate = takeAll([
+    { key: `otp:ip:${clientIp(req)}`, limit: OTP_PER_IP },
+    { key: `otp:phone:${phone}`, limit: OTP_PER_PHONE },
+  ]);
+  if (!gate.ok) return tooManyRequests('Too many codes requested. Wait a moment and try again.', gate.retryAfterMs);
+
   const expiresAt = new Date(Date.now() + VALIDITY_MS);
   try {
     if (hasPg()) {

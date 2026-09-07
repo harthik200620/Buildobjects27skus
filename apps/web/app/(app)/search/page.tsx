@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import CategoryDirectory from '@/components/CategoryDirectory';
 import CategoryStrip from '@/components/CategoryStrip';
 import FilterRail from '@/components/FilterRail';
 import { IconSearch } from '@/components/icons';
@@ -7,22 +8,38 @@ import Pagination from '@/components/Pagination';
 import Plate from '@/components/Plate';
 import ProductCard from '@/components/ProductCard';
 import ResultsSection from '@/components/ResultsSection';
-import { allCategories, loadFacetConfig, searchSkus } from '@/lib/catalog';
-import { loadSession, serviceability } from '@/lib/data';
+import { allCategories, loadFacetConfig, loadFlagshipSkus, searchSkus } from '@/lib/catalog';
+import { loadCatalogueCategories, loadSession, serviceability } from '@/lib/data';
 import { deliverBy } from '@/lib/delivery';
-import { parseFilters } from '@/lib/filters';
+import { isBrowsing, parseFilters } from '@/lib/filters';
 
 type Search = Record<string, string | string[] | undefined>;
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<Search> }): Promise<Metadata> {
   const sp = await searchParams;
   const q = (Array.isArray(sp.q) ? sp.q[0] : sp.q) ?? '';
-  return { title: q ? `“${q}”` : 'All products' };
+  return { title: q ? `“${q}”` : 'The catalogue' };
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<Search> }) {
   const sp = await searchParams;
   const state = parseFilters(sp);
+
+  /*
+   * THE CATALOGUE OPENS ON CATEGORIES, NOT ON A PRODUCT LIST.
+   *
+   * This page used to answer "Catalogue" with all twenty-eight products in one flat grid beside a
+   * text sidebar, which is the store's own taxonomy — CATEGORY → PRODUCT → SKU — contradicted by
+   * the page whose whole job is to present it. A first-time buyer looking for tiles was handed
+   * cement, bulbs, fire extinguishers and a solar panel in the first row.
+   *
+   * So: nothing asked for means the directory. A query, a category, a facet, a sort or an
+   * explicit `?all=1` all mean the shopper HAS asked something, and the results grid answers.
+   * `?all=1` is what "see everything in one list" links to, so the flat view is never more than
+   * one click away — it is no longer the thing you get for not having asked.
+   */
+  if (isBrowsing(state, sp)) return <CataloguePage />;
+
   const [cats, session] = await Promise.all([allCategories(), loadSession()]);
   const config = state.category ? await loadFacetConfig(state.category) : null;
   const result = await searchSkus({ state, config });
@@ -133,6 +150,49 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           )}
         </ResultsSection>
       </div>
+    </div>
+  );
+}
+
+/**
+ * The catalogue's front page: every category the store has, stocked ones first.
+ *
+ * It shares `CategoryDirectory` with the home page, so the two cannot disagree about what is on
+ * the shelf — which is exactly how they came to disagree in the first place.
+ */
+async function CataloguePage() {
+  const [cats, skus] = await Promise.all([loadCatalogueCategories(), loadFlagshipSkus()]);
+  const stocked = cats.filter((c) => c.status === 'live').length;
+
+  return (
+    <div className="page page--dir">
+      <header className="shell page-head page-head--plate">
+        <Plate name="catalogue-aisle" position="50% 46%" />
+        <div className="page-head-in">
+          <div>
+            <h1 className="page-title">The catalogue</h1>
+            <p className="page-sub">
+              <span className="fig">{cats.length}</span> categories. <span className="fig">{stocked}</span> of them are stocked today, holding{' '}
+              <span className="fig">{skus.length}</span> items — priced per unit with GST included, each carrying the source of every figure.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <CategoryDirectory
+        categories={cats}
+        itemCount={skus.length}
+        headingId="cat-dir"
+        eyebrow="On the shelf"
+        title="What we stock today"
+        sub={
+          <>
+            <span className="fig">{stocked}</span> categories, <span className="fig">{skus.length}</span> items, delivered across Andhra Pradesh and Telangana.
+          </>
+        }
+        flatHref="/search?all=1"
+        flatLabel={`See all ${skus.length} items in one list`}
+      />
     </div>
   );
 }
