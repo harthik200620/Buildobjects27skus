@@ -159,7 +159,8 @@ export default function Welcome({
                 <span className="field-label" id="welcome-city-label">
                   Deliver to
                 </span>
-                <div className="segmented segmented--lg" role="group" aria-labelledby="welcome-city-label">
+                {/* Four cities do not fit one line in this column — see .segmented--grid in theme.css. */}
+                <div className="segmented segmented--lg segmented--grid" role="group" aria-labelledby="welcome-city-label">
                   {regions.map((r) => (
                     <button
                       key={r.region_id}

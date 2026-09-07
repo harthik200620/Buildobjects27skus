@@ -1,0 +1,294 @@
+@layer components {
+  /* ═══════════════════════════════════════════════════════════════════════════
+     THE CITY GREETING — నమస్కారం, once, after signing in
+     ═══════════════════════════════════════════════════════════════════════════
+     Markup and timing in components/CityGreeting.tsx; the city and its photographs in
+     lib/greeting.ts. It plays after the loading mark has cleared, holds for about two seconds,
+     and any gesture ends it.
+
+     THE TYPE, WHICH IS THE WHOLE DESIGN.
+
+       నమస్కారం   Noto Serif Telugu at 600, as large as the frame allows. It is the greeting, so
+                  it is the only thing on the screen at display size. A modulated Telugu stroke has
+                  the warmth this moment wants; the store's own display face has no Telugu at all,
+                  and a UI grotesque set this large reads as a system notification.
+       తిరుపతి     The same face at 500 and about two fifths the size — related, clearly subordinate,
+                  and in the brand teal so the eye lands on the greeting first and the place second.
+       TIRUPATI   The store's own face, 12px, tracked wide, in the quietest ink. This is the one
+                  line the STORE speaks rather than the city, so it is set in the store's voice,
+                  and its geometry against the Telugu serif is the contrast that makes both look
+                  chosen. It is a caption; at caption size Audiowide's width is an asset.
+
+     No dark-mode branch: the store has one appearance, and this is over a photograph anyway.
+     ═════════════════════════════════════════════════════════════════════════ */
+  .greet {
+    position: fixed;
+    inset: 0;
+    /* Under the loading mark (10000), over everything else. The mark plays first and this is
+       revealed as it lifts, so the two read as one sequence rather than a collision. */
+    z-index: 9500;
+    overflow: hidden;
+    background: var(--color-canvas);
+    /* Nothing here is interactive; the gesture that dismisses it is caught on the window. */
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+  }
+  /* Armed, photograph still decoding, mark still up: in the DOM and showing nothing. */
+  .greet[data-phase="armed"] {
+    visibility: hidden;
+  }
+  /*
+   * FULLY OPAQUE, WITH NO FADE OF ITS OWN. The splash is above this and opaque, so the greeting
+   * simply becomes the thing behind it; the splash's own fade is the transition, and it lifts onto
+   * the greeting rather than onto the store. Fading in here is what made the first version show
+   * the store first and then slide a greeting over it.
+   */
+  .greet[data-phase="ready"],
+  .greet[data-phase="showing"] {
+    visibility: visible;
+    opacity: 1;
+  }
+  /* The degraded path only: the photograph outlasted the splash, so this does arrive over a store
+     the reader can see, and a cut would be worse than a short fade. */
+  .greet[data-late] {
+    transition: opacity 320ms var(--ease-out);
+  }
+  /* Held at the push's starting scale before the words begin, so nothing jumps when they do. */
+  .greet[data-phase="ready"] .greet-pic img {
+    transform: scale(1.05);
+  }
+  .greet[data-phase="leaving"] {
+    animation: greet-leave var(--greet-out) var(--ease-exit) both;
+  }
+  @keyframes greet-leave {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      /* Lifts away rather than dissolving in place, so the store arrives from behind it. */
+      transform: scale(1.04);
+    }
+  }
+
+  /* ── the photograph ─────────────────────────────────────────────────────── */
+  .greet-pic {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+  .greet-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 42%;
+  }
+  .greet[data-phase="showing"] .greet-pic img,
+  .greet[data-phase="leaving"] .greet-pic img {
+    /* A slow push, started from slightly wide. Four seconds for four per cent: below the rate at
+       which anyone sees it move, above the rate at which the frame feels dead. */
+    animation: greet-push 4s var(--ease-inout) both;
+  }
+  @keyframes greet-push {
+    from {
+      transform: scale(1.05);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  /*
+   * The scrim, and it does two jobs. It carries the photograph down into the store's own canvas
+   * colour so the words never sit on the lit part of the frame — the gopuram is the brightest
+   * thing in the picture and the type is directly under it — and it puts the same deep teal at
+   * the edges that the page behind is painted in, so the greeting dissolves into the store rather
+   * than off it.
+   */
+  .greet-scrim {
+    position: absolute;
+    inset: 0;
+    /*
+     * MANY STOPS, NOT FOUR. Three widely spaced stops put a visible horizontal seam across the
+     * base of the temple — the eye finds the point where a gradient changes rate long before it
+     * finds the gradient. These follow roughly an ease-in curve, so the picture goes down into
+     * the canvas colour without ever announcing where.
+     *
+     * The top is light on purpose: that sky is the best colour in the photograph and a scrim
+     * heavy enough to protect type it does not carry is a scrim doing nothing but dimming.
+     */
+    background:
+      linear-gradient(
+        180deg,
+        rgb(6 24 29 / 34%) 0%,
+        rgb(6 24 29 / 14%) 18%,
+        rgb(6 24 29 / 10%) 34%,
+        rgb(6 24 29 / 22%) 48%,
+        rgb(6 24 29 / 42%) 60%,
+        rgb(6 24 29 / 64%) 70%,
+        rgb(6 24 29 / 82%) 79%,
+        rgb(6 24 29 / 93%) 88%,
+        rgb(6 24 29 / 99%) 95%,
+        var(--color-canvas) 100%
+      ),
+      /*
+       * A WASH FROM THE LEFT, where the words are. Measured against the rendered frame, the
+       * greeting's worst contrast was 3.19:1 — the point where the white of నమస్కారం crosses the
+       * lit face of the gopuram, which is the brightest thing in the photograph. That clears the
+       * large-text bar and nothing more, on the one line the screen exists to show. Deepening the
+       * vertical scrim instead would have dimmed the temple to fix the type, which is the wrong
+       * thing to spend: this darkens only the side the type is on and leaves the subject alone.
+       */
+      linear-gradient(100deg, rgb(6 24 29 / 78%) 0%, rgb(6 24 29 / 62%) 22%, rgb(6 24 29 / 30%) 44%, rgb(6 24 29 / 0%) 66%),
+      /* And a soft corner fall-off, so the frame has edges without a hard vignette. */
+      radial-gradient(125% 85% at 50% 32%, rgb(6 24 29 / 0%) 45%, rgb(6 24 29 / 42%) 100%);
+  }
+  .greet-grain {
+    position: absolute;
+    inset: 0;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: overlay;
+    /* The same inline fractal noise the body wears — see theme.css. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ── the words ──────────────────────────────────────────────────────────── */
+  .greet-words {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: var(--shell-wide);
+    margin: 0 auto;
+    padding: 0 var(--gutter) clamp(var(--s-7), 9vh, 92px);
+  }
+
+  /*
+   * THE GREETING. clamp's middle term is in vw so it fills the frame at every width, and the
+   * ceiling stops it becoming a poster on a desktop. line-height 0.95 because Telugu's vowel
+   * signs sit above and below the base glyph and the default line box leaves a visible gap under
+   * a single line set this large.
+   */
+  .greet-hello {
+    font-family: var(--font-telugu);
+    font-weight: 600;
+    font-size: clamp(3.6rem, 14.5vw, 10.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.005em;
+    color: var(--ink-1);
+    /* Two shadows, not one: a tight dark contact shadow that holds the letterform against the
+       brightest part of the photograph, and a wide warm bloom picked from the lamplight on the
+       gopuram so the words belong to the light in the frame. */
+    text-shadow:
+      0 2px 26px rgb(4 23 27 / 62%),
+      0 0 90px rgb(245 180 10 / 16%);
+  }
+  .greet-city {
+    margin-top: 0.18em;
+    font-family: var(--font-telugu);
+    font-weight: 500;
+    font-size: clamp(1.7rem, 5.9vw, 4rem);
+    line-height: 1.1;
+    color: var(--teal-800);
+    text-shadow: 0 2px 20px rgb(4 23 27 / 60%);
+  }
+  .greet-rule {
+    width: 56px;
+    height: 1px;
+    margin: clamp(18px, 3.2vh, 30px) 0 clamp(12px, 2vh, 18px);
+    background: linear-gradient(90deg, var(--color-teal-700), rgb(86 211 216 / 0%));
+  }
+  .greet-latin {
+    font-family: var(--font-brand);
+    font-weight: 400;
+    font-size: var(--t-micro);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  /*
+   * The separator takes the line's own ink rather than the decorative one. --ink-4 measures 3.6:1
+   * and the contrast gate holds it to sizes it declares; a middle dot dimmer than the words it
+   * separates is a colour spent on nothing anyway, when the spacing already does the separating.
+   */
+  .greet-dot {
+    margin: 0 0.7em;
+  }
+
+  /*
+   * Each line arrives on its own beat, and each is the same movement: up and in. The distances are
+   * small — a greeting that flies in is a splash screen, and this is meant to read as something
+   * being said.
+   */
+  .greet[data-phase="showing"] .greet-hello,
+  .greet[data-phase="showing"] .greet-city,
+  .greet[data-phase="showing"] .greet-rule,
+  .greet[data-phase="showing"] .greet-latin {
+    animation: greet-rise 760ms var(--ease-glide) both;
+  }
+  .greet[data-phase="showing"] .greet-city {
+    animation-delay: 150ms;
+  }
+  .greet[data-phase="showing"] .greet-rule {
+    animation-delay: 300ms;
+  }
+  .greet[data-phase="showing"] .greet-latin {
+    animation-delay: 380ms;
+  }
+  @keyframes greet-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 22px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* Announced to a screen reader, drawn for nobody. */
+  .greet-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ── a phone ────────────────────────────────────────────────────────────
+     The portrait crop, and the words further up the frame: a thumb rests over the bottom of a
+     phone, and the greeting should not be the thing under it. */
+  @media (max-width: 719.98px) {
+    .greet-pic img {
+      object-position: 50% 32%;
+    }
+    .greet-words {
+      padding-bottom: clamp(var(--s-7), 16vh, 140px);
+    }
+    .greet-hello {
+      font-size: clamp(3rem, 16vw, 5rem);
+    }
+    .greet-city {
+      font-size: clamp(1.5rem, 7.4vw, 2.4rem);
+    }
+  }
+
+  /*
+   * A reader who has asked for no motion still gets the greeting — it is content, not decoration
+   * — held still and let go a little sooner. theme.css already collapses every duration to
+   * nothing, so all that is needed here is to make sure the still frame is the FINISHED one:
+   * every animation above ends on the visible state, so a zeroed duration lands there.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .greet[data-phase="showing"] .greet-pic img {
+      transform: none;
+    }
+  }
+}

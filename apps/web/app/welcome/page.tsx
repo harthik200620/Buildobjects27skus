@@ -23,7 +23,7 @@ export const revalidate = 3600;
 
 export default async function WelcomePage() {
   const regions = await loadRegions();
-  /* The seg control fits three names; the pincode field accepts any AP/TS pincode. */
-  const shown = regions.filter((r) => ['hyd', 'vij', 'vizag'].includes(r.region_id));
+  /* The four seeded cities; the pincode field accepts any AP/TS pincode. */
+  const shown = regions.filter((r) => ['hyd', 'vij', 'vizag', 'tpt'].includes(r.region_id));
   return <WelcomeGate regions={shown.length ? shown : regions} />;
 }

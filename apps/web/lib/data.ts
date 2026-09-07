@@ -36,6 +36,22 @@ const FALLBACK_REGIONS: ServiceRegion[] = [
     deliveryDays: 2,
   },
   {
+    /*
+     * Tirupati. Added with the sign-in greeting: `lib/greeting.ts` keys a city's welcome to a
+     * region id, and a greeting for a city the store does not serve would be a screen nobody can
+     * ever reach. 517001-517644 is the Chittoor/Tirupati block; the lead time is Vijayawada's,
+     * being a comparable distance from the same depots.
+     */
+    region_id: 'tpt',
+    name: 'Tirupati',
+    state_code: 'AP',
+    pincode_from: '517001',
+    pincode_to: '517644',
+    default_pincode: '517501',
+    serviceable: true,
+    deliveryDays: 3,
+  },
+  {
     region_id: 'vij',
     name: 'Vijayawada',
     state_code: 'AP',

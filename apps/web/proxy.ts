@@ -19,6 +19,9 @@ const PUBLIC = [
   /^\/api\/serviceability/,
   /^\/media\//,
   /^\/fonts\//,
+  /* The city greeting's photographs. Brand artwork, not anybody's data — and gating them costs an
+     edge invocation to conclude "this is a picture", which is what the matcher note below is about. */
+  /^\/greet\//,
   /^\/3d\//,
   /^\/img\//,
   /^\/_next\//,
@@ -80,5 +83,5 @@ export default async function proxy(req: NextRequest) {
  * caught by the second.
  */
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|media/|fonts/|3d/|img/|favicon.ico|icon.png|apple-icon.png|robots.txt|manifest.webmanifest).*)'],
+  matcher: ['/((?!_next/static|_next/image|media/|fonts/|3d/|img/|greet/|favicon.ico|icon.png|apple-icon.png|robots.txt|manifest.webmanifest).*)'],
 };

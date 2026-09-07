@@ -2301,9 +2301,20 @@
   .welcome-card .field-label:first-child {
     margin-top: 0;
   }
+  /*
+   * Full width in this card, whatever shape the control is inside.
+   *
+   * `display` is set only on the one that has not chosen its own. This rule is two class
+   * selectors and beats `.segmented--grid`'s one, so when the city chooser grew to four names and
+   * became a grid, this quietly turned it back into a flex row and clipped Visakhapatnam off the
+   * end — the modifier was correct, present, and outranked. A layout rule that overrides a
+   * layout modifier has to say which one it means.
+   */
   .welcome-card .segmented {
-    display: flex;
     width: 100%;
+  }
+  .welcome-card .segmented:not(.segmented--grid) {
+    display: flex;
   }
   .welcome-row {
     display: flex;

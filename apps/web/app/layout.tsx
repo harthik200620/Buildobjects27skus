@@ -56,6 +56,28 @@ const figure = localFont({
   fallback: ['system-ui', 'sans-serif'],
 });
 
+/**
+ * Telugu, for the city greeting after sign-in and for nothing else.
+ *
+ * PRELOAD IS OFF, and that is the whole reason this is a separate declaration rather than a
+ * fallback on --font-ui-face. A declared source is a preload the first paint waits on whether or
+ * not a glyph asks for it — the note on Instrument Serif above is that lesson — and this face is
+ * asked for on ONE screen, once, immediately after an OTP. Preloading it would put 22 KB on the
+ * critical path of every route in the store to set two words a shopper sees at most once a
+ * session. Without the preload it is fetched when the greeting mounts, which is when it exists.
+ *
+ * Noto Serif Telugu, not a sans: the greeting is warm and ceremonial, the store's own display face
+ * has no Telugu at all, and a modulated stroke at 130px carries that register where a UI grotesque
+ * would read as a system notification.
+ */
+const telugu = localFont({
+  src: [{ path: '../public/fonts/BuildObjectsTelugu-Variable.woff2', weight: '400 700', style: 'normal' }],
+  display: 'swap',
+  preload: false,
+  variable: '--font-telugu-face',
+  fallback: ['serif'],
+});
+
 export const metadata: Metadata = {
   title: { default: 'Build Objects', template: '%s · Build Objects' },
   description:
@@ -75,7 +97,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     // One appearance: deep teal and silver. No theme toggle, no prefers-color-scheme branch.
-    <html lang="en" className={`${brand.variable} ${ui.variable} ${figure.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${brand.variable} ${ui.variable} ${figure.variable} ${telugu.variable}`} suppressHydrationWarning>
       <head>
         {/*
          * Arms the scroll choreography before the browser paints, which is the only place it can

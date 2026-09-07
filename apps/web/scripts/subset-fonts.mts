@@ -54,6 +54,46 @@ const KEEP_RANGES = ['U+0000-00FF', 'U+0100-017F', 'U+0300-036F', 'U+2000-206F',
  * asks for: kerning, standard and contextual ligatures, the tabular and lining figures every
  * price and specification is set in, and the mark-attachment tables that make U+0300-036F work.
  */
+/**
+ * Faces that carry a script of their own, and must NOT be given the app-wide character set.
+ *
+ * The Telugu face sets exactly two words, on one screen, after sign-in. Cut with everybody else it
+ * came out at 45.6 KB, because the app-wide set is almost entirely Latin and the ranges above are
+ * kept whatever the scan finds — so it was carrying a second, unused copy of the alphabet the
+ * other four faces already draw better. Its own block and the two Indic joiners are the whole job:
+ * the block rather than just the glyphs in `lib/greeting.ts`, so that adding a city tomorrow is a
+ * line of data and not a silently missing conjunct.
+ *
+ * U+0C00-0C7F   Telugu
+ * U+200C-200D   zero-width non-joiner and joiner, which Indic shaping needs and which are
+ *               invisible in a source file — easy to drop, and impossible to notice until a
+ *               conjunct renders as two letters
+ */
+const OWN_SCRIPT: Record<string, string> = {
+  /*
+   * U+0020 and U+00A0 are in here because the greeting is two words. Without the space the
+   * browser falls back for it — a different face, a different advance — and the line measured
+   * three pixels wider than the same string in the untouched font, which is the sort of thing
+   * nobody sees and everybody feels. U+25CC is the dotted circle a shaper draws around an
+   * orphaned mark; if it is ever needed the alternative is a missing-glyph box.
+   */
+  'BuildObjectsTelugu-Variable.woff2': 'U+0020,U+00A0,U+0C00-0C7F,U+200C-200D,U+25CC',
+};
+
+/**
+ * AND THEY KEEP EVERY LAYOUT FEATURE, which is not a nicety.
+ *
+ * KEEP_FEATURES below is a Latin list, and a Latin list applied to Telugu produced a font with no
+ * GSUB and no GPOS at all — every one of `akhn blwf blws haln rphf abvs psts` and the mark tables
+ * gone. Those are not decoration in an Indic script, they are how it is written: `akhn` and `blwf`
+ * are what turn స + ◌్ + క into the conjunct స్క, and without them the browser draws the pieces
+ * side by side with a visible halant, which is not a spelling of the word. It shipped that way and
+ * was reported as "the Telugu is broken", correctly.
+ *
+ * `*` on a face cut to a hundred glyphs costs almost nothing and cannot be wrong the way a list
+ * can. lib/greeting.test.ts asserts the tables survive.
+ */
+
 const KEEP_FEATURES = ['kern', 'liga', 'clig', 'calt', 'ccmp', 'locl', 'mark', 'mkmk', 'tnum', 'lnum'].join(',');
 
 /** Where user-visible text can come from. Everything here is scanned character by character. */
@@ -135,15 +175,18 @@ for (const face of faces) {
   const source = join(fullDir, face);
   const target = join(fontsDir, face);
   const wasBytes = statSync(source).size;
+  const own = OWN_SCRIPT[face];
   execFileSync(
     py,
     [
       '-m',
       'fontTools.subset',
       source,
-      `--unicodes=${KEEP_RANGES}`,
-      `--text-file=${charFile}`,
-      `--layout-features=${KEEP_FEATURES}`,
+      `--unicodes=${own ?? KEEP_RANGES}`,
+      /* A face with a script of its own takes the range and nothing else; passing the app's
+         character list as well would hand it back the Latin the range deliberately leaves out. */
+      ...(own ? [] : [`--text-file=${charFile}`]),
+      `--layout-features=${own ? '*' : KEEP_FEATURES}`,
       '--flavor=woff2',
       '--notdef-outline',
       `--output-file=${target}`,

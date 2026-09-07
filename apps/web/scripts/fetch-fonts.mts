@@ -31,7 +31,7 @@ const tmpDir = join(fullDir, '.download');
 const RAW = 'https://raw.githubusercontent.com/google/fonts/main/ofl/';
 
 /**
- * The type programme. Four faces, four jobs.
+ * The type programme. Five faces, five jobs.
  *
  * Display 1 and Sans 3 are new. Display 2 (Audiowide) and Sans 5 (Encode Sans) are already in the
  * repository and are NOT re-fetched — Encode Sans in particular carries a true ₹ and correct
@@ -74,6 +74,13 @@ const FACES: Face[] = [
     licence: 'schibstedgrotesk/OFL.txt',
     family: 'Schibsted Grotesk (variable, 400–800)',
     role: 'Sans 3 — every control, label, body and nav',
+  },
+  {
+    out: 'BuildObjectsTelugu-Variable',
+    from: 'notoseriftelugu/NotoSerifTelugu[wght].ttf',
+    licence: 'notoseriftelugu/OFL.txt',
+    family: 'Noto Serif Telugu (variable, 400–700)',
+    role: 'Telugu — the city greeting after sign-in, and nothing else',
   },
 ];
 
@@ -142,7 +149,18 @@ for (const face of FACES) {
     console.error(`  licence for ${family}: ${response.status}`);
     process.exit(1);
   }
-  const name = `OFL-${face.family.split(' ')[0]}${face.family.includes('Grotesk') ? 'Grotesk' : 'Serif'}.txt`;
+  /*
+   * The family, with the parenthetical and any italic dropped, spaces closed up. The rule this
+   * replaces was `first word + (Grotesk ? 'Grotesk' : 'Serif')`, which held for exactly the four
+   * faces it was written against and named Noto Serif Telugu's licence `OFL-NotoSerif.txt` — the
+   * right text under the name of a different family, which is the one thing a licence file must
+   * not be. Dropping "Italic" keeps a family's two cuts on one file rather than two identical ones.
+   */
+  const name = `OFL-${face.family
+    .split('(')[0]
+    .replace(/Italic/g, '')
+    .trim()
+    .replace(/\s+/g, '')}.txt`;
   writeFileSync(join(licenceDir, name), await response.text(), 'utf8');
   console.log(`  licence ${name}`);
 }

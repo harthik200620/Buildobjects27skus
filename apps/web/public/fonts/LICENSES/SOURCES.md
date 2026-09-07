@@ -33,3 +33,8 @@ BuildObjectsSans3-Variable.woff2
   Schibsted Grotesk (variable, 400–800)
   Sans 3 — every control, label, body and nav
   SIL Open Font License 1.1 — google/fonts/ofl/schibstedgrotesk
+
+BuildObjectsTelugu-Variable.woff2
+  Noto Serif Telugu (variable, 400–700)
+  Telugu — the city greeting after sign-in, and nothing else
+  SIL Open Font License 1.1 — google/fonts/ofl/notoseriftelugu

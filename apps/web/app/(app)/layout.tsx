@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import CityGreeting from '@/components/CityGreeting';
 import Footer from '@/components/Footer';
 import FriendLoves from '@/components/FriendLoves';
 import Header from '@/components/header/Header';
@@ -8,6 +9,7 @@ import SkipLink from '@/components/SkipLink';
 import ToastHost from '@/components/Toast';
 import { allCategories } from '@/lib/catalog';
 import { loadSession, serviceability } from '@/lib/data';
+import { greetingFor } from '@/lib/greeting';
 
 /**
  * Every page behind the door shares the shell: skip link, the floating header bar, the
@@ -25,6 +27,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const categories = cats.map((c) => ({ slug: c.slug, name: c.name, nameTe: c.nameTe, icon: c.icon, department: c.department, status: c.status }));
   return (
     <>
+      {/* The city's welcome, once, right after signing in — see components/CityGreeting.tsx. */}
+      <CityGreeting city={greetingFor(svc.regionId)} />
       <SkipLink />
       <ScrollProgress />
       <Reveal />

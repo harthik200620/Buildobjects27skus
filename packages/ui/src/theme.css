@@ -25,6 +25,10 @@
   --font-ui: var(--font-ui-face), "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
   --font-figure: var(--font-figure-face), "Encode Sans", "Segoe UI Variable Text", system-ui, sans-serif;
   --font-brand: var(--font-brand-face), "Audiowide", system-ui, sans-serif;
+  /* Telugu, for the sign-in greeting. The named fallbacks are the Telugu faces the three desktop
+     and mobile platforms actually ship, so the greeting still reads before the webfont lands —
+     Nirmala on Windows, Kohinoor on Apple, Noto on Android. */
+  --font-telugu: var(--font-telugu-face), "Noto Serif Telugu", "Nirmala UI", "Kohinoor Telugu", "Noto Sans Telugu", serif;
 
   /* Instrument Serif has one weight (400) and an italic. Display sizes get their
      weight from SIZE, not from a bold — never synthesise a bold on it. */
@@ -1651,6 +1655,45 @@
   }
   .segmented--lg > * {
     min-height: 42px;
+  }
+
+  /*
+   * A SEGMENTED CONTROL THAT WRAPS, for a set that outgrew one line.
+   *
+   * The base is `inline-flex` with `overflow: hidden`, which is right for two or three choices and
+   * silently wrong for more: adding Tirupati to the front door's four cities put 422px of buttons
+   * in a 366px row and clipped Visakhapatnam off the end — no scrollbar, no ellipsis, just a city
+   * you could not choose. Two columns is the honest shape at this width, since the longest name
+   * needs 133px and a quarter of the row is 91px.
+   *
+   * The dividers are the GAP rather than borders: in a grid, a border-left on every cell draws a
+   * line down the outer left edge of the second row, and turning that off needs a rule per column
+   * count. A one-pixel gap over the line colour is the same drawing with none of that.
+   */
+  .segmented--grid {
+    display: grid;
+    /*
+     * auto-fit, not a media query. The first attempt at this switched to four columns above
+     * 620px of VIEWPORT — and the control lives in a 366px card whatever the window is doing, so
+     * on a wide desktop it dutifully made four 91px columns and clipped a 132px city name inside
+     * each. The width that decides this is the container's, and auto-fit is how a grid asks it:
+     * as many columns as fit at 150px, which is two here and four in a wider home.
+     */
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+    gap: 1px;
+    width: 100%;
+    background: var(--color-line);
+  }
+  .segmented--grid > * {
+    border-left: 0;
+    /* Tighter than the flex row's 14px. A grid cell cannot borrow width from its neighbours the
+       way a flex item can, so the padding is what decides whether the longest label fits — at
+       360px the two cells are 138px and "Visakhapatnam" is 104px of type. */
+    padding: 0 8px;
+    background: var(--color-surface);
+  }
+  .segmented--grid > :hover {
+    background: var(--color-surface-2);
   }
 
   /* ── small utilities the pages share ────────────────────────────────────── */

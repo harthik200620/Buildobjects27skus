@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { armGreeting } from '@/lib/greet-session';
+import { splash } from '@/lib/splash';
 import Welcome, { type Region, type WelcomeStep } from './Welcome';
 
 /**
@@ -74,6 +76,20 @@ export default function WelcomeGate({ regions }: { regions: Region[] }) {
       });
       const j = await res.json();
       if (!res.ok) throw new Error(j.error || 'That code did not match');
+      /*
+       * Before the router leaves, in this order, and the order is the whole sequence.
+       *
+       * `armGreeting` writes the ticket components/CityGreeting.tsx spends. `hold` raises the
+       * loading mark over the front door NOW — signing in does not otherwise raise it, because a
+       * router.replace is not a link click and the destination rarely suspends long enough for the
+       * loading boundary to matter. Without it the store simply appeared and the greeting slid
+       * over it a moment later, which is what "first the page opens and then the welcome comes"
+       * was describing. With it the mark covers the change, the greeting becomes opaque behind the
+       * mark, and the mark lifts onto the greeting. CityGreeting releases the hold; the mark's own
+       * failsafe covers the case where it never mounts.
+       */
+      armGreeting(regionId);
+      splash().hold();
       router.replace(destination());
       router.refresh();
     } catch (e) {
