@@ -410,6 +410,42 @@
     max-width: var(--search-w);
     min-width: 0;
   }
+  /*
+   * ── THE FIND GROUP: the field and the assistant, as one unit in the row ──────────────────
+   *
+   * MOVED HERE FROM styles/account.css, and the move is the fix rather than tidying. Declared
+   * there, `.header-find > .search` is a two-class selector at (0,2,0) and the rule that collapses
+   * the field on a phone is `.search` at (0,1,0) — so the descendant selector won at EVERY width,
+   * the field never became its icon, and what a phone actually got was whatever pixels the row had
+   * left over: 43px at 393, 10px at 360, and nothing at all at 320. Reported from a real phone as
+   * the search bar being out of line with everything else, which is exactly what a 10px-wide field
+   * beside a full-size button looks like.
+   */
+  .header-find {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-width: 0;
+    /* 720 was capping the field well below what the row could actually give it: the two
+       .header-spacer elements either side are flex:1, so whatever this does not claim they take
+       as empty space. Raised to 920 and the spacers collapse first — the field grows until it
+       genuinely runs into the nav on the left or the wallet on the right, which is the real
+       limit and the one the header's own note is about. */
+    /* grow 20 against the spacers' 1: free space in this row should land in the field, not be
+       split three ways with two empty boxes whose only job is to centre it. */
+    flex: 20 1 auto;
+    max-width: 920px;
+    position: relative;
+  }
+  .header-find > form,
+  .header-find > .search {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  /*
+   * On a phone the field is an ICON, and this has to be the same shape of selector as the rule
+   * above or it loses to it again. `.search` alone is not enough here — see the note above.
+   */
   .search-field {
     display: flex;
     align-items: center;
@@ -752,6 +788,42 @@
     }
   }
   @media (max-width: 719.98px) {
+    /*
+   * ── THE PHONE HEADER: SIX EQUAL TARGETS, EVENLY SPACED ──────────────────────────────────
+   *
+   * It was seven controls in a row that fits about five, and it showed: measured at 360 the cart
+   * was drawn ON TOP of the assistant, and at 320 both of them were inside it. Reported from a
+   * real phone as the search bar not being lined up with anything, which is what a squeezed row
+   * looks like from the outside.
+   *
+   * The arithmetic, at 360: 16 of padding, a 44 mark, a 90 nav, a 98 find group, a 44 cart, a 44
+   * account and six 10px gaps is 376 — sixteen more than the screen. Something had to go, and the
+   * honest candidate is the ESTIMATOR LINK, because it is the only control in the bar that is
+   * already somewhere else: the ≡ menu carries "BO Estimator" in its own list. Nothing is lost and
+   * the row drops to 322, which fits every phone width down to 320 with room to spare.
+   *
+   * What is left is one rhythm: six targets, all 44, evenly spaced by the row itself rather than
+   * by two invisible flex spacers trying to centre a field that is now an icon.
+   */
+    .navlink--tool {
+      display: none;
+    }
+    /* The spacers exist to centre a wide field between the two groups. There is no wide field on a
+       phone, so they have nothing to centre and `space-between` distributes the row instead. */
+    .header-spacer {
+      display: none;
+    }
+    .header-bar {
+      justify-content: space-between;
+      gap: 4px;
+    }
+    .header-find {
+      flex: none;
+      gap: 4px;
+    }
+    .header-find > .search {
+      flex: none;
+    }
     /* A phone shows the mark alone (the word is hidden below), so there is no word to protect
        and the ratio does not apply — this is simply how big the mark should be on a 390px bar. */
     .header-logo {
@@ -760,25 +832,49 @@
     /* Under 720px the header cannot hold a 560px field, so the bar collapses to its icon — and
        focusing it expands it ACROSS THE HEADER ROW IN PLACE. Still one field, still the same
        input element receiving the keystrokes; only its width changed. */
+    /* 44, not 42: the same target as every other control in the row, so the six read as one set
+       rather than as five buttons and a smaller sixth. */
     .search {
       flex: none;
-      width: 42px;
+      width: 44px;
       transition: width var(--dur-3) var(--ease-out);
     }
+    /*
+     * OPEN, IT HANGS FROM THE MASTHEAD — fixed to the viewport, not absolute inside the row.
+     *
+     * `absolute` here resolved against `.header-find`, which on a phone is a ~96px box holding
+     * two icon buttons: left and right gutters inside it left the expanded field FOUR PIXELS
+     * wide. It is the same trap `.chat-panel` documents a few rules away, and it takes the same
+     * answer — the bar is a flex row with its own overflow and stacking, so anything that has to
+     * span it is positioned against the viewport and aligned by the header's own height token.
+     */
     .search:focus-within,
     .search[data-open="true"] {
-      position: absolute;
+      position: fixed;
       left: var(--gutter);
       right: var(--gutter);
+      top: calc((var(--header-h) - 44px) / 2);
       width: auto;
-      z-index: 2;
+      /* --search-w is a ceiling for a field sharing a row. Open on a phone it shares the row with
+         nothing — it covers it — so the ceiling would leave it 300px inside a 353px space. */
+      max-width: none;
+      /* Over the row it covers, and under the chat panel at 61. */
+      z-index: 60;
     }
+    /* A CIRCLE, to match the assistant beside it. Collapsed this is an icon button and not a
+       field, and a rounded square beside a round button is the kind of near-miss that reads as
+       misalignment without being nameable. It becomes a pill again when it expands, which is
+       when it is a field again. */
     .search-field {
+      width: 44px;
+      height: 44px;
       padding: 0;
       justify-content: center;
+      border-radius: var(--r-pill);
     }
     .search:focus-within .search-field,
     .search[data-open="true"] .search-field {
+      width: auto;
       padding: 0 10px 0 16px;
       justify-content: flex-start;
       background: var(--surf-3);

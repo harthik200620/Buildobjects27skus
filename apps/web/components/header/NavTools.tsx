@@ -23,7 +23,10 @@ import { IconEstimate } from '@/components/icons';
 export default function NavTools() {
   const pathname = usePathname();
   return (
-    <Link href="/estimate" className="navlink" aria-current={pathname.startsWith('/estimate') ? 'page' : undefined}>
+    /* `navlink--tool` so the phone header can drop THIS link and keep the catalogue menu, which
+       is also a .navlink. The ≡ menu carries "BO Estimator" in its own list, so nothing is lost
+       there and the row goes from seven controls to six. See store.css. */
+    <Link href="/estimate" className="navlink navlink--tool" aria-current={pathname.startsWith('/estimate') ? 'page' : undefined}>
       <IconEstimate size={17} />
       Estimator
     </Link>

@@ -267,6 +267,25 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
           e.preventDefault();
           go(q);
         }}
+        /*
+         * ON A PHONE THE COLLAPSED FIELD IS A BUTTON, and until this it was a dead one.
+         *
+         * Below 720px store.css shrinks this to a 44px circle and sets `display: none` on the
+         * input — and an input that is not displayed cannot be focused, so `onFocus` never fired,
+         * `open` never became true, and the CSS rule that expands the field (keyed on
+         * `[data-open]` / `:focus-within`) never matched. Tapping search on a phone did nothing
+         * at all.
+         *
+         * Focusing the input on a click of the FIELD is what closes that loop: the click sets
+         * `open`, the CSS expands, and the same input that was hidden a frame ago is the one the
+         * keyboard lands in. `preventDefault` is not wanted — a tap on the expanded field should
+         * still put the caret where the reader tapped.
+         */
+        onClick={() => {
+          if (!open) setOpen(true);
+          /* After the class lands, or the input is still display:none when focus is attempted. */
+          requestAnimationFrame(() => ref.current?.focus());
+        }}
       >
         <IconSearch size={18} />
         <span className="search-inputwrap">
