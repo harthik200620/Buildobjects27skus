@@ -19,18 +19,21 @@ import { splash } from '@/lib/splash';
  * onto the greeting, never onto the store. The words wait for it to go before they move, watched
  * rather than timed, because a slow page holds the splash longer than any constant would guess.
  *
- * IT IS ALWAYS SKIPPABLE. A tap, a click or any key ends it immediately. A screen a person cannot
- * get past is not premium however well it is set, and somebody signing in at a site office on a
- * phone has a reason to be in a hurry.
+ * IT IS A DOOR NOW, NOT A DISSOLVE. It used to hold for about two seconds and let itself out, and
+ * any tap, key or scroll would end it early. It waits instead: the city says hello, and the reader
+ * decides when to walk in. That is the whole point of the change — the store should not appear
+ * behind a greeting nobody chose to leave.
  *
- * IT IS NOT A DIALOG. Nothing here is interactive except getting rid of it, and it is decorative
- * over content that is already there — so it is aria-hidden with a polite live region announcing
- * the greeting once, rather than a modal that traps focus for two seconds.
+ * WHICH MAKES IT A DIALOG, and it has to be treated as one. A screen that waits for a click is
+ * modal whether or not it says so: it takes the pointer, it takes the Tab key, and it has to be
+ * announced and escapable. So `aria-hidden` is gone, the backdrop stops clicks reaching a store
+ * the reader cannot see, focus starts and stays on the one control, and Escape does what the
+ * button does — somebody signing in at a site office on a phone still has a reason to be in a
+ * hurry, and a screen a person cannot get past is not premium however well it is set.
  */
 
 /** The beats, in milliseconds from the moment the mark clears. */
 const IN = 900;
-const HOLD = 1900;
 const OUT = 620;
 
 /** Is the loading mark still covering the screen? */
@@ -132,14 +135,36 @@ export default function CityGreeting({ city }: { city: City | null }) {
     setPhase((p) => (p === 'showing' ? 'leaving' : p));
   }, []);
 
-  /* Its own clock, and any gesture that means "I have read it". */
+  /*
+   * The one control, and the keyboard around it.
+   *
+   * FOCUS GOES TO THE BUTTON and stays there. There is exactly one thing to do on this screen, so
+   * the trap is a single line — Tab and Shift-Tab put focus back — rather than a ring of sentinel
+   * nodes. Without it, Tab walks into a store the reader cannot see and cannot get back out of,
+   * which is the specific way a modal built out of an overlay usually fails.
+   *
+   * ESCAPE IS THE WAY OUT. The button is the way in; a person who does not want the ceremony
+   * should not have to find it with a mouse.
+   */
+  const go = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
     if (phase !== 'showing') return;
-    const t = window.setTimeout(leave, IN + HOLD);
-    for (const e of ['pointerdown', 'keydown', 'wheel'] as const) window.addEventListener(e, leave, { passive: true });
+    /* After the button's own entrance delay, so focus does not land on something mid-flight. */
+    const focus = window.setTimeout(() => go.current?.focus({ preventScroll: true }), IN);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        leave();
+        return;
+      }
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        go.current?.focus({ preventScroll: true });
+      }
+    };
+    window.addEventListener('keydown', onKey);
     return () => {
-      window.clearTimeout(t);
-      for (const e of ['pointerdown', 'keydown', 'wheel'] as const) window.removeEventListener(e, leave);
+      window.clearTimeout(focus);
+      window.removeEventListener('keydown', onKey);
     };
   }, [phase, leave]);
 
@@ -156,7 +181,9 @@ export default function CityGreeting({ city }: { city: City | null }) {
       className="greet"
       data-phase={phase}
       data-late={late ? '' : undefined}
-      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="greet-said greet-place greet-where"
       style={{ '--greet-in': `${IN}ms`, '--greet-out': `${OUT}ms` } as React.CSSProperties}
     >
       {/*
@@ -180,20 +207,36 @@ export default function CityGreeting({ city }: { city: City | null }) {
       <div className="greet-grain" />
 
       <div className="greet-words">
-        <p className="greet-hello">{city.hello}</p>
-        <p className="greet-city">{city.cityTe}</p>
+        {/*
+         * The two lines the screen exists to say, unchanged — the greeting at display size and the
+         * city beneath it. They are the dialog's name between them (`aria-labelledby` takes a
+         * list), so it is announced on arrival by being the label rather than by a live region
+         * repeating it. `lang` so a screen reader speaks Telugu instead of spelling it out in the
+         * page's language.
+         */}
+        <p className="greet-hello" id="greet-said" lang="te">
+          {city.hello}
+        </p>
+        <p className="greet-city" id="greet-place" lang="te">
+          {city.cityTe}
+        </p>
         <span className="greet-rule" />
-        <p className="greet-latin">
+        <p className="greet-latin" id="greet-where">
           {city.city}
           <span className="greet-dot">·</span>
           {city.state}
         </p>
-      </div>
 
-      {/* Said once, for a reader who is not looking at it. */}
-      <p className="greet-sr" role="status" aria-live="polite" aria-hidden={false}>
-        {city.hello} {city.cityTe} — {city.city}, {city.state}
-      </p>
+        {/* The door. Nothing else on this screen is interactive, and nothing happens until it is
+            pressed — see the note at the top of this file. */}
+        <button type="button" ref={go} className="greet-go" onClick={leave}>
+          <span className="greet-go-word">Enter Build Objects World</span>
+          <svg className="greet-go-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
+            <path d="M4 12h15" />
+            <path d="m13 6 6 6-6 6" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }

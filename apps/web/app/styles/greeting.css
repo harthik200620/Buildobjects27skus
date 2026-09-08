@@ -29,10 +29,22 @@
     z-index: 9500;
     overflow: hidden;
     background: var(--color-canvas);
-    /* Nothing here is interactive; the gesture that dismisses it is caught on the window. */
-    pointer-events: none;
+    /*
+     * IT TAKES THE POINTER, because it now waits for one. This was `none` while the screen let
+     * itself out after two seconds and nothing on it could be clicked. It holds until the button
+     * is pressed, so a click that fell through would land on a store the reader cannot see —
+     * a link followed by accident, on a page they have not been shown yet. The button re-enables
+     * pointer events for itself and is the only thing on the screen that has them.
+     */
+    pointer-events: auto;
     visibility: hidden;
     opacity: 0;
+  }
+  /* Hidden phases must not swallow anything: `visibility: hidden` already stops hit-testing, but
+     the armed phase is in the DOM over a live store and this says so outright. */
+  .greet[data-phase="armed"],
+  .greet[data-phase="idle"] {
+    pointer-events: none;
   }
   /* Armed, photograph still decoding, mark still up: in the DOM and showing nothing. */
   .greet[data-phase="armed"] {
@@ -210,6 +222,134 @@
     text-transform: uppercase;
     color: var(--ink-3);
   }
+  /* ── the door ───────────────────────────────────────────────────────────────
+     "Enter Build Objects World". The screen waits for it, so it has to look like the thing that
+     is waited for — see the note at the top of components/CityGreeting.tsx.
+
+     IT IS THE PHOTOGRAPH'S OWN LIGHT, NOT A NEW COLOUR. Everything here is the brand teal
+     (--teal-700, the same hue as తిరుపతి above it and the rule between them) or an alpha of it,
+     over the warm amber the gopuram is lit in. Nothing is introduced that the frame did not
+     already contain, which is what makes it belong to the picture rather than sit on it.
+
+     THE FACE IS THE STORE'S. Audiowide, uppercase and tracked wide — the same voice as the
+     TIRUPATI caption directly above. The city speaks Telugu on this screen and the store speaks
+     Audiowide; the button is the store answering, so it is set in the store's face. Audiowide has
+     one cut, so this asks for 400 and never a bolder weight. */
+  .greet-go {
+    /* The one thing on this screen that can be clicked. */
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: clamp(24px, 3.6vh, 38px);
+    /* 56, comfortably over the 44 the sweep gate holds tap targets to — this is the only control
+       on the screen and it is pressed once, so it can afford to be unmissable. */
+    min-height: 56px;
+    padding: 0 clamp(22px, 3vw, 34px);
+    border: 1px solid var(--color-teal-700);
+    border-radius: var(--r-pill);
+    /*
+     * A lit pane over a ground that is NEARLY OPAQUE, and the second half of that is measured
+     * rather than styled. At 46% the pill let the photograph through, which looked well enough on
+     * a laptop and failed on a phone: the portrait crop centres on the gopuram, so the button
+     * lands on the brightest thing in the frame and the label measured 1.66:1 against its own
+     * ground — white on lit stone, on the one control this screen exists to offer.
+     *
+     * 88% is what makes the label independent of the photograph behind it. The teal stays as a
+     * tint on top, lightened to 14/5 so it colours the pill without lifting it back out of
+     * contrast; the glow below carries the shape, and the glow was never the part that had to be
+     * see-through.
+     */
+    background: linear-gradient(180deg, rgb(86 211 216 / 14%) 0%, rgb(86 211 216 / 5%) 100%), rgb(6 24 29 / 88%);
+    color: var(--ink-1);
+    font-family: var(--font-brand);
+    font-weight: 400;
+    font-size: var(--t-cap);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    /*
+     * THE GLOW IS A BOX-SHADOW, and the first attempt at it is worth recording because it looked
+     * fine and measured 1.66:1.
+     *
+     * It was a blurred ::before at `inset: -2px` with `z-index: -1`, which reads as "behind the
+     * button". It is not: inside a stacking context the element's own background paints FIRST and
+     * negative-z-index children paint on top of it. So the teal halo was laid across the face of
+     * the pill, lifting the ground under a white label to roughly the luminance of the teal
+     * itself — an unreadable button that looked, at a glance, like a nicely glowing one.
+     *
+     * A box-shadow cannot make that mistake: it is painted outside the border box by definition,
+     * so the glow is only ever a halo and the label keeps the ground the rule above gives it.
+     */
+    position: relative;
+    box-shadow:
+      inset 0 1px 0 rgb(180 241 243 / 24%),
+      0 0 0 1px rgb(86 211 216 / 18%),
+      0 6px 22px rgb(86 211 216 / 22%),
+      0 0 34px rgb(86 211 216 / 26%);
+    animation: greet-breathe 3.2s var(--ease-inout) infinite;
+    transition:
+      background var(--dur-2) var(--ease-out),
+      border-color var(--dur-2) var(--ease-out);
+  }
+  /*
+   * Slow, and it ENDS ON THE CALM FRAME. theme.css collapses every duration to nothing under
+   * `prefers-reduced-motion`, so a zeroed animation lands on its last keyframe — which has to be
+   * the state the button should simply sit in, not the peak of the pulse.
+   */
+  @keyframes greet-breathe {
+    0% {
+      box-shadow:
+        inset 0 1px 0 rgb(180 241 243 / 24%),
+        0 0 0 1px rgb(86 211 216 / 18%),
+        0 6px 22px rgb(86 211 216 / 22%),
+        0 0 34px rgb(86 211 216 / 26%);
+    }
+    50% {
+      box-shadow:
+        inset 0 1px 0 rgb(180 241 243 / 30%),
+        0 0 0 1px rgb(86 211 216 / 30%),
+        0 6px 26px rgb(86 211 216 / 34%),
+        0 0 58px rgb(86 211 216 / 46%);
+    }
+    100% {
+      box-shadow:
+        inset 0 1px 0 rgb(180 241 243 / 24%),
+        0 0 0 1px rgb(86 211 216 / 18%),
+        0 6px 22px rgb(86 211 216 / 22%),
+        0 0 34px rgb(86 211 216 / 26%);
+    }
+  }
+  .greet-go:hover {
+    background: linear-gradient(180deg, rgb(86 211 216 / 22%) 0%, rgb(86 211 216 / 9%) 100%), rgb(6 24 29 / 86%);
+    border-color: var(--teal-800);
+  }
+  /*
+   * THE PRESS IS NOT A TRANSFORM. The arrival animation below runs on this element with
+   * `both`, so its final frame keeps a transform applied for the life of the screen — and an
+   * animation beats a plain declaration in the cascade, so `transform: translateY(1px)` here
+   * would simply never paint. The press reads as the light going flat instead, which over a
+   * photograph is the clearer signal anyway.
+   */
+  .greet-go:active {
+    /* The light goes flat. `animation: none` first, or the pulse would keep overwriting it. */
+    animation: none;
+    box-shadow:
+      inset 0 2px 6px rgb(4 23 27 / 46%),
+      0 0 0 1px rgb(86 211 216 / 18%);
+  }
+  /* Keyboard focus is the FIRST thing on this screen — see the focus effect in CityGreeting.tsx —
+     so the ring has to be unmistakable over a photograph rather than a hairline. */
+  .greet-go:focus-visible {
+    outline: 2px solid var(--teal-900);
+    outline-offset: 3px;
+  }
+  .greet-go-arrow {
+    color: var(--color-teal-700);
+    flex: none;
+  }
+
   /*
    * The separator takes the line's own ink rather than the decorative one. --ink-4 measures 3.6:1
    * and the contrast gate holds it to sizes it declares; a middle dot dimmer than the words it
@@ -227,7 +367,8 @@
   .greet[data-phase="showing"] .greet-hello,
   .greet[data-phase="showing"] .greet-city,
   .greet[data-phase="showing"] .greet-rule,
-  .greet[data-phase="showing"] .greet-latin {
+  .greet[data-phase="showing"] .greet-latin,
+  .greet[data-phase="showing"] .greet-go {
     animation: greet-rise 760ms var(--ease-glide) both;
   }
   .greet[data-phase="showing"] .greet-city {
@@ -238,6 +379,10 @@
   }
   .greet[data-phase="showing"] .greet-latin {
     animation-delay: 380ms;
+  }
+  /* Last, and after a beat of its own: the city finishes speaking before the store answers. */
+  .greet[data-phase="showing"] .greet-go {
+    animation-delay: 560ms;
   }
   @keyframes greet-rise {
     from {
@@ -289,6 +434,22 @@
   @media (prefers-reduced-motion: reduce) {
     .greet[data-phase="showing"] .greet-pic img {
       transform: none;
+    }
+  }
+}
+
+/*
+ * THE DOOR KEEPS ITS SIZE ON A PHONE, and it has to say so from `touch` to do it.
+ *
+ * theme.css floors every button to 44px inside `@layer touch`, which is declared after
+ * `components` — so a later layer beats a class, and `.greet-go`'s own 56 was being overridden
+ * DOWNWARD to 44 on every touch device. That floor is right for a store full of controls; this
+ * is the only control on its screen, and the one thing a signed-in shopper has to find.
+ */
+@layer touch {
+  @media (pointer: coarse) {
+    .greet-go {
+      min-height: 56px;
     }
   }
 }

@@ -157,10 +157,87 @@ describe('greeting.css keeps the screen escapable and legible', () => {
     return css.slice(css.indexOf('{', at) + 1, css.indexOf('\n  }', at));
   };
 
-  /* It covers the whole viewport, so anything it swallowed would be unreachable for its whole
-     life. Nothing in it is interactive; the gesture that dismisses it is caught on the window. */
-  it('never eats a click', () => {
-    expect(rule('.greet')).toMatch(/pointer-events:\s*none/);
+  /*
+   * IT NOW TAKES THE POINTER, AND THAT IS THE CHANGE. This asserted `pointer-events: none` for as
+   * long as the screen let itself out after two seconds and nothing on it could be clicked. It
+   * waits for a button now, so a click that fell through would land on a store the reader has not
+   * been shown — a link followed by accident, over an opaque screen. Blocking is the correct
+   * behaviour for a modal, and the property worth holding is the one below it: exactly one thing
+   * on the screen can be clicked.
+   */
+  it('blocks the store behind it while it waits', () => {
+    expect(rule('.greet')).toMatch(/pointer-events:\s*auto/);
+  });
+
+  it('swallows nothing while it is hidden — the armed phase sits over a live store', () => {
+    const at = css.indexOf('.greet[data-phase="armed"],');
+    expect(at, 'no rule releases the pointer while the greeting is hidden').toBeGreaterThan(-1);
+    expect(css.slice(at, css.indexOf('}', at))).toMatch(/pointer-events:\s*none/);
+  });
+
+  it('has exactly one control, and it is the button', () => {
+    const interactive = css.match(/^\s{2}\.greet-[\w-]+\s*\{[^}]*cursor:\s*pointer/gm) ?? [];
+    expect(interactive).toHaveLength(1);
+    expect(interactive[0]).toContain('.greet-go');
+  });
+
+  /*
+   * The door's own rules. It is the only thing between a signed-in shopper and the store, so a
+   * change that makes it invisible, unreachable or too small to hit is a change that strands
+   * them on a photograph.
+   */
+  it('the door is big enough to hit', () => {
+    /* The sweep gate holds tap targets to 44; this is the one control on the screen. */
+    expect(Number(rule('.greet-go').match(/min-height:\s*(\d+)px/)?.[1])).toBeGreaterThanOrEqual(44);
+  });
+
+  it('the door can be clicked, though the backdrop around it is inert to the store', () => {
+    expect(rule('.greet-go')).toMatch(/pointer-events:\s*auto/);
+  });
+
+  /*
+   * THE GLOW IS A BOX-SHADOW, NOT A BLURRED LAYER, and this holds it there.
+   *
+   * The first version was a blurred `::before` at `z-index: -1`, which reads as "behind the
+   * button" and is not: an element's own background paints before its negative-z-index children,
+   * so the halo was laid across the FACE of the pill and the white label measured 1.66:1 against
+   * it. A box-shadow is painted outside the border box by definition and cannot do that — so the
+   * mechanism is the assertion, because the mechanism is what was wrong.
+   */
+  it('the door glows outside its own edge, never across it', () => {
+    const go = rule('.greet-go');
+    expect(go).toMatch(/box-shadow:/);
+    expect(go).toContain('greet-breathe');
+    /* 86 211 216 is --teal-700 — the hue of the city's name and the rule above it. Nothing on
+       this screen introduces a colour the photograph did not already carry. */
+    expect(go).toContain('rgb(86 211 216');
+    expect(css.slice(css.indexOf('  .greet-go {'), css.indexOf('  .greet-go:hover'))).not.toContain('filter: blur');
+  });
+
+  /*
+   * theme.css collapses every duration to nothing under prefers-reduced-motion, so an animation's
+   * LAST keyframe is what a reader who asked for no motion is left looking at. For a pulse that
+   * has to be the calm frame, not the peak — otherwise the button sits permanently at its
+   * brightest, which is the one state it was never meant to hold.
+   */
+  it('the glow settles calm rather than at its peak when motion is off', () => {
+    const at = css.indexOf('@keyframes greet-breathe');
+    const frames = css.slice(at, css.indexOf('.greet-go:hover', at));
+    /* The widest blur radius in each frame is how bright the halo is at that moment. */
+    const widest = (frame: string) => Math.max(...[...frame.matchAll(/0 0 (\d+)px rgb/g)].map((m) => Number(m[1])));
+    const first = widest(frames.slice(frames.indexOf('0% {'), frames.indexOf('50% {')));
+    const peak = widest(frames.slice(frames.indexOf('50% {'), frames.indexOf('100% {')));
+    const last = widest(frames.slice(frames.indexOf('100% {')));
+    expect(last).toBe(first);
+    expect(peak).toBeGreaterThan(last);
+  });
+
+  it('the door takes the store voice, at the one weight Audiowide has', () => {
+    const go = rule('.greet-go');
+    expect(go).toContain('font-family: var(--font-brand)');
+    /* Audiowide ships one cut; anything else is a browser-synthesised bold, which type:audit
+       fails and which renders smeared. */
+    expect(go).toMatch(/font-weight:\s*400/);
   });
 
   /*
