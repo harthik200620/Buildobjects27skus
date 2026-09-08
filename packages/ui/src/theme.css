@@ -495,6 +495,33 @@
   --color-ar-shadow: rgb(0 0 0 / 40%);
 }
 
+/*
+ * ── THE SMALLEST TWO STEPS GROW ON A PHONE ──────────────────────────────────────────────────
+ *
+ * Outside `@theme`, because that block is Tailwind's and takes plain declarations only — a media
+ * query inside it is not a token override, it is dropped. A plain unlayered `:root` is, and it
+ * beats every layered rule, which is what a token needs to do.
+ *
+ * 11px is a defensible caption at arm's length on a desktop and it is not one held at reading
+ * distance in a hand, in daylight, on a building site. The mobile audit found it 74 times across
+ * 15 of 16 screens — the section eyebrows, every brand name on every product card, the item
+ * counts under the category tiles — and it is most of what "cannot see it properly on the phone"
+ * actually means.
+ *
+ * 12 and 13, which is one step of this same scale rather than a new size: --t-micro takes
+ * --t-fine's value and --t-fine takes --t-cap's. Nothing new is introduced, the ladder keeps its
+ * shape, and the type audit still counts the sizes it already knows. Leading moves with them,
+ * because 11/14 set at 12px is tighter than it was drawn to be.
+ */
+@media (max-width: 767.98px) {
+  :root {
+    --t-micro: 0.75rem;
+    --t-micro-lh: 1rem; /* 12/16 */
+    --t-fine: 0.8125rem;
+    --t-fine-lh: 1.125rem; /* 13/18 */
+  }
+}
+
 /* A page without the app header (the front door) has no header height. */
 :root:not(:has(.header)) {
   --header-h: 0px;
@@ -740,9 +767,11 @@
     line-height: var(--t-meta-lh);
     color: var(--ink-3);
   }
+  /* The token, not the literal it happens to equal: 0.75rem IS --t-fine on a desktop, so this
+     read as correct and quietly opted out of the one place the scale changes — a phone. */
   .caption {
-    font-size: 0.75rem;
-    line-height: 1rem;
+    font-size: var(--t-fine);
+    line-height: var(--t-fine-lh);
     color: var(--ink-3);
   }
 
@@ -793,6 +822,37 @@
   }
   .tnum {
     font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /*
+   * ── A ROW THAT SCROLLS SHOULD LOOK LIKE ONE ─────────────────────────────────────────────
+   *
+   * Reported plainly: "not able to see some corner things". A chip row on a phone ends by
+   * slicing whatever chip happens to reach the edge — "Solar Pane" — and a word cut in half at
+   * the exact edge of the screen does not read as "there is more this way". It reads as broken,
+   * and the reader stops rather than swiping.
+   *
+   * `mask-image` fades the last few pixels instead of cutting them, and the fade only appears on
+   * the side there is actually more content on: the two custom properties are set by
+   * `--edge-l` / `--edge-r`, which components/useEdgeFade.ts writes from scroll position. At rest
+   * at the start of a row that is the right edge only, which is exactly the affordance wanted.
+   *
+   * A mask rather than a gradient overlay because these rows sit on several different grounds —
+   * a card, the canvas, a photograph — and an overlay would have to know which. A mask does not.
+   */
+  .edge-fade {
+    --edge-l: 0px;
+    --edge-r: 0px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--edge-l), #000 calc(100% - var(--edge-r)), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 var(--edge-l), #000 calc(100% - var(--edge-r)), transparent 100%);
+  }
+  /* The scrollbar is the desktop affordance; on a touch row the fade is, and a 15px trough under
+     a 32px chip is a bigger visual cost than the hint is worth. */
+  .edge-fade {
+    scrollbar-width: none;
+  }
+  .edge-fade::-webkit-scrollbar {
+    display: none;
   }
 
   /* One accent element per icon, per the icon set's grammar. Named here rather

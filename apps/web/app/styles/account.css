@@ -32,8 +32,19 @@
   }
 
   /* ── the header band ─────────────────────────────────────────────────── */
+  /*
+   * IT WRAPS ON A PHONE. The issuer block and the serial sat on one row with the serial at
+   * `flex: none`, which is right on a card 820px wide and impossible on one 348px wide: measured
+   * on a 360px screen the number ran from 244 to 387 — off the side of a card that clips its
+   * overflow, so the last digits of the one number nobody can look up were simply gone.
+   *
+   * `flex-wrap` lets the serial drop under the issuer when the row cannot hold both, and it
+   * re-aligns left when it does, because a right-aligned block on its own line reads as a
+   * mistake.
+   */
   .pass-band {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--s-4);
@@ -41,15 +52,28 @@
     border-bottom: 1px solid var(--hair);
     background: linear-gradient(180deg, color-mix(in oklab, var(--color-brand) 7%, transparent), transparent);
   }
+  /*
+   * --ink-2, not --ink-3. This card is not the canvas: its ground is a guilloché over
+   * `linear-gradient(152deg, var(--surf-3), var(--surf-2))`, which is lighter than the page — and
+   * --ink-3 is specified at 7.9:1 against the CANVAS, so on this surface it measures 4.34:1 and
+   * misses the 4.5 body-text bar. The token was right and the surface under it was not the one it
+   * was chosen for.
+   */
   .pass-issuer-sub {
     margin-top: 6px;
-    color: var(--ink-3);
+    color: var(--ink-2);
     text-transform: none;
     letter-spacing: 0;
   }
   .pass-number {
     flex: none;
     text-align: right;
+  }
+  /* On its own line it is no longer opposite anything, so it stops pretending to be. */
+  @media (max-width: 479.98px) {
+    .pass-number {
+      text-align: left;
+    }
   }
   .pass-number .micro {
     color: var(--ink-3);

@@ -58,7 +58,17 @@ export default function BoCartMark({ size = 26, arriveKey, className }: BoCartMa
     <span key={seq} className={className ? `bocart ${className}` : 'bocart'} style={{ width: Math.round(size * 1.16), height: size }} aria-hidden="true">
       <span className="bocart-rig">
         {/* The load: the real mark, not a redrawing of it. */}
-        <img className="bocart-load" src="/logo-mark-128.png" alt="" draggable={false} style={{ height: loadH, marginBottom: gapH }} />
+        {/* The 64 rung, because this is drawn between 11 and 16 CSS px — 32 to 48 device pixels,
+            against a 128 px file. See the same ladder on components/Wordmark.tsx. */}
+        <img
+          className="bocart-load"
+          src="/logo-mark-128.png"
+          srcSet="/logo-mark-64.png 64w, /logo-mark-128.png 128w"
+          sizes={`${loadH}px`}
+          alt=""
+          draggable={false}
+          style={{ height: loadH, marginBottom: gapH }}
+        />
         {/* The chassis: one deck and two wheels, and nothing else. */}
         <svg className="bocart-chassis" viewBox="0 0 100 34" fill="none" preserveAspectRatio="xMidYMax meet" aria-hidden="true" style={{ height: deckH }}>
           <rect x="3" y="0" width="94" height="7" rx="3.5" fill="currentColor" />

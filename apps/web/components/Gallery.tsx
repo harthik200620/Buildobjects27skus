@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import React from 'react';
 import type * as THREE from 'three';
+import { useEdgeFade } from '@/components/useEdgeFade';
 import type { SkuImageView } from '@/lib/catalog';
 import { mediaUrl } from '@/lib/media';
 import { groundFor, plateFor } from '@/lib/plate';
@@ -31,6 +32,9 @@ export interface GalleryProps {
 }
 
 export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
+  /* The thumbnail strip scrolls once a product has more than four frames. */
+  const thumbRow = useEdgeFade<HTMLDivElement>();
+
   const [viewMode, setViewMode] = React.useState<'photos' | '3d'>('photos');
   const [i, setI] = React.useState(0);
   const [lens, setLens] = React.useState<{ x: number; y: number } | null>(null);
@@ -340,8 +344,20 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
             <div className="gallery-track" style={{ transform: `translateX(-${i * 100}%)` }}>
               {images.map((im, idx) => (
                 <div key={im.position} className="gallery-slide" aria-hidden={idx !== i}>
+                  {/*
+                   * THREE RUNGS, NOT ONE. This was `gallery` alone — a 1080px file for every
+                   * device, which is right on a 3x phone and 1.7x more than a 2x one can show.
+                   * The renditions the pipeline already writes are 480 / 1080 / 2048, so the
+                   * ladder costs nothing but saying so.
+                   *
+                   * `sizes` is the frame the slide is drawn in: full width inside the gutters on
+                   * a phone, and the gallery column above that. A `sizes` that lies costs either
+                   * sharpness or bandwidth, silently — the same note as CategoryTile.
+                   */}
                   <img
                     src={mediaUrl(im.gallery)!}
+                    srcSet={`${mediaUrl(im.card)} 480w, ${mediaUrl(im.gallery)} 1080w, ${mediaUrl(im.zoom)} 2048w`}
+                    sizes="(max-width: 767px) 100vw, (max-width: 1200px) 52vw, 620px"
                     alt={im.alt || `${name} — ${ROLE_LABEL[im.role] ?? im.role}`}
                     draggable={false}
                     loading={idx === 0 ? 'eager' : 'lazy'}
@@ -426,7 +442,7 @@ export default function Gallery({ images, name, skuCode, dims }: GalleryProps) {
             </div>
           </div>
 
-          <div className="thumbs no-scrollbar" role="tablist" aria-label="Choose image">
+          <div ref={thumbRow} className="thumbs no-scrollbar edge-fade" role="tablist" aria-label="Choose image">
             {images.map((im, idx) => (
               <button
                 key={im.position}

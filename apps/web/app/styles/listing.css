@@ -139,7 +139,7 @@
   }
 
   .facet-option-note {
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 15px;
     color: var(--color-ink-3);
     margin-top: 1px;
@@ -323,7 +323,7 @@
 
   .facet-range-hint {
     margin-top: 4px;
-    font-size: 11px;
+    font-size: var(--t-micro);
     color: var(--color-ink-3);
   }
 
@@ -494,7 +494,7 @@
   .cat-rail-dept-name {
     margin-bottom: 4px;
     padding-left: 6px;
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -527,7 +527,7 @@
   }
   .soon-label {
     margin-top: 22px;
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -584,7 +584,7 @@
     flex-direction: column-reverse;
   }
   .cat-land-facts dt {
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     font-weight: 600;
     letter-spacing: 0.06em;

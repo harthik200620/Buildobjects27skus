@@ -599,12 +599,48 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+  /*
+   * ── ON A PHONE THE ROADMAP IS A LIST, NOT A WALL OF PHOTOGRAPHS ─────────────────────────
+   *
+   * All twenty-seven shelves still appear, still in order, still one tap from the page that says
+   * where each one stands. What changes is the weight: on a 390px screen a two-column photo grid
+   * of empty shelves was fourteen rows and about 2,800px — roughly half the entire front door,
+   * spent on the part of the catalogue that has nothing to sell yet, and twenty-seven image
+   * requests to say so. Reported as the page looking messy on a phone, which it was.
+   *
+   * As rows it is about 620px and no images at all. Nothing is hidden: hiding an empty shelf
+   * would be the dishonest fix, and the heading above still counts them out loud.
+   *
+   * The photograph is removed rather than shrunk, and that is deliberate — the tiles are
+   * `loading="lazy"`, so a `.cat-photo` with no box is never intersected and never fetched. The
+   * bytes are not merely smaller; they are not asked for.
+   */
   @media (max-width: 767.98px) {
     .cat-grid--compact {
-      gap: var(--s-2);
+      gap: 6px;
+    }
+    .cat-card--compact {
+      aspect-ratio: auto;
+    }
+    .cat-card--compact .cat-photo {
+      display: none;
     }
     .cat-card--compact .cat-band {
-      padding: var(--s-2);
+      /* A row, and a row a thumb can hit: 44 is the floor every other control here keeps. */
+      min-height: 44px;
+      justify-content: center;
+      padding: 8px 10px;
+    }
+    .cat-card--compact .cat-name {
+      /*
+       * THREE, and the two I first wrote was wrong for the reason I gave for it. "Without a
+       * picture competing there is room for two" reads sensibly and gets the arithmetic
+       * backwards: no picture means the row is free to be TALLER, and three names in this
+       * catalogue need it — "Safety Equipment & Personal Protective Equipment (PPE)",
+       * "Transportation & Material Handling Systems", "Communication & Collaboration Equipment".
+       * `sweep` caught all three, clipped, on the front door.
+       */
+      -webkit-line-clamp: 3;
     }
   }
 

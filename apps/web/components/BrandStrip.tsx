@@ -61,7 +61,10 @@ export default function BrandStrip({ brand }: { brand: SkuPageData['brand'] }) {
         <div className="brand-logo">
           {logo ? <img src={logo} alt={`${brand.name} logo`} /> : <span className="fig font-semibold text-[16px]">{brand.name}</span>}
         </div>
-        <p className="text-[11px] mt-2" style={{ color: 'var(--ink-3)' }}>
+        {/* `.caption`, not `text-[11px]` with an inline colour: an arbitrary size is outside the
+            type scale, so it never grew with the rest of the small type on a phone and stayed the
+            one 11px line left on the product page. */}
+        <p className="caption mt-2">
           {brand.domains[0] ? (
             <a href={`https://${brand.domains[0]}`} target="_blank" rel="noreferrer" className="underline decoration-dotted underline-offset-2">
               {brand.domains[0]}

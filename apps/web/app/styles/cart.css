@@ -329,7 +329,7 @@
     color: var(--color-ink);
   }
   .cart-net-note {
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     color: var(--color-ink-3);
   }

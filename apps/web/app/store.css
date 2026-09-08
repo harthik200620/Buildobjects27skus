@@ -82,6 +82,44 @@
       linear-gradient(180deg, rgb(6 24 29 / 62%) 0%, rgb(6 24 29 / 18%) 38%, rgb(6 24 29 / 80%) 100%),
       linear-gradient(90deg, rgb(6 24 29 / 74%) 0%, rgb(6 24 29 / 8%) 54%);
   }
+  /*
+   * ON A PHONE THE WASH HAS TO COVER THE WHOLE PLATE, because the words do.
+   *
+   * The rule above protects the LEFT — 74% clearing by 54% across — which is right on a desktop,
+   * where the copy sits in the left third and the photograph gets the rest. A 350px plate has no
+   * left third: the title and the line under it run the full width, straight through the part
+   * the wash has already cleared. Measured on an iPhone 14, "The catalogue" came out at 2.13:1
+   * and the line under it at 1.19:1 against the picture behind them — the page heading, on the
+   * page, unreadable.
+   *
+   * So the phone gets a vertical wash instead of a horizontal one, and it is set from the
+   * photograph rather than by eye. Sampling the rendered plate in ten bands, the picture is
+   * ALREADY dark almost everywhere — mean luminance 0.009 to 0.034, which white reads at 11 to
+   * 16:1. What fails is a handful of HOT PIXELS: the lamps, at 0.48 and 0.55, and one of them
+   * lands under the heading. A mean cannot see that and neither can an eye scanning a thumbnail.
+   *
+   * Hence the shape below. The top eighth keeps the photograph, because that is where the lamps
+   * are and they are the whole reason for the picture; from 22% — where the copy starts — it
+   * goes down hard, so a hot pixel behind a letter composites to 0.023 and the heading reads at
+   * 13:1 whatever the crop happens to put there. Many stops rather than three, for the same
+   * reason the sign-in greeting has them: the eye finds the point where a gradient changes rate
+   * long before it finds the gradient.
+   */
+  @media (max-width: 767.98px) {
+    .plate-scrim {
+      background: linear-gradient(
+        180deg,
+        rgb(6 24 29 / 22%) 0%,
+        rgb(6 24 29 / 16%) 12%,
+        rgb(6 24 29 / 62%) 22%,
+        rgb(6 24 29 / 88%) 32%,
+        rgb(6 24 29 / 96%) 45%,
+        rgb(6 24 29 / 98%) 60%,
+        rgb(6 24 29 / 99%) 100%
+      );
+    }
+  }
+
   /* Longhands on purpose: a `padding` shorthand here would wipe .shell's horizontal padding. */
   .page {
     min-height: calc(100dvh - var(--header-h) - var(--nav-h));
@@ -881,7 +919,7 @@
     grid-row: 1 / 4;
   }
   .wallet-balance-label {
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     font-weight: 600;
     letter-spacing: 0.06em;
@@ -913,7 +951,7 @@
   }
   .wallet-history-h {
     margin-bottom: var(--s-2);
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -1021,7 +1059,7 @@
     background: var(--color-coin-wash);
   }
   .menu-coins-label {
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -1039,7 +1077,7 @@
     color: var(--color-coin-ink);
   }
   .menu-coins-worth {
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     color: var(--color-ink-2);
   }
@@ -1267,7 +1305,7 @@
   }
   .cat-menu-dept-name {
     padding: 0 12px 4px;
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -2126,14 +2164,22 @@
   }
 
   /* ── quantity stepper ───────────────────────────────────────────────────── */
+  /*
+   * THE HEIGHT IS A FLOOR, NOT A FIXED SIZE, and the box does not clip.
+   *
+   * `height: 40px` plus `overflow: hidden` is a trap on a phone. The touch layer floors every
+   * button to 44, so the two steppers plus the field measured 160px of content inside a 137px
+   * box — and the box hid the difference rather than growing, which means the "+" was simply
+   * not on the screen. A stepper missing its plus is a product page that cannot be bought from.
+   */
   .qty {
     display: inline-flex;
     align-items: stretch;
-    height: 40px;
+    min-height: 40px;
+    max-width: 100%;
     background: var(--color-surface);
     border: 1px solid var(--color-line-strong);
     border-radius: var(--radius-md);
-    overflow: hidden;
   }
   .qty button {
     width: 40px;
@@ -2143,6 +2189,15 @@
     background: transparent;
     color: var(--color-ink);
     cursor: pointer;
+  }
+  /* The container used to clip these to its own radius; it no longer clips anything, so the two
+     end buttons carry the corners themselves — otherwise a hover fill paints a square corner
+     over a rounded box. */
+  .qty button:first-child {
+    border-radius: calc(var(--radius-md) - 1px) 0 0 calc(var(--radius-md) - 1px);
+  }
+  .qty button:last-child {
+    border-radius: 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0;
   }
   .qty button:hover:not(:disabled) {
     background: var(--color-surface-2);
@@ -2827,7 +2882,7 @@
     border-radius: var(--radius-sm);
     background: var(--color-surface-2);
     color: var(--color-ink-2);
-    font-size: 11px;
+    font-size: var(--t-micro);
     line-height: 16px;
     font-weight: 600;
     letter-spacing: 0.04em;

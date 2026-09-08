@@ -249,7 +249,7 @@
   .shelf-empty-why {
     margin-top: 4px;
     color: var(--ink-4);
-    font-size: 11px;
+    font-size: var(--t-micro);
   }
   .shelf-empty .btn {
     margin-top: var(--s-4);

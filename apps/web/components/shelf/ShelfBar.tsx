@@ -4,6 +4,7 @@ import React from 'react';
 import { IconChevronDown, IconClose, IconFilter } from '@/components/icons';
 import ShareLoves from '@/components/shelf/ShareLoves';
 import { useDismiss } from '@/components/useDismiss';
+import { useEdgeFade } from '@/components/useEdgeFade';
 import { deliverBy } from '@/lib/delivery';
 import { readPicks } from '@/lib/picks';
 import {
@@ -142,6 +143,9 @@ export default function ShelfBar({ facts, initial, children }: { facts: ShelfFac
     setOpen(null);
   };
 
+  /* The chip row is wider than a phone; the fade says which side it continues on. */
+  const chipRow = useEdgeFade<HTMLDivElement>();
+
   return (
     <>
       <div className="shelf-bar">
@@ -200,7 +204,7 @@ export default function ShelfBar({ facts, initial, children }: { facts: ShelfFac
           )}
         </div>
 
-        <div className="shelf-chips" role="group" aria-label="Filter this shelf">
+        <div ref={chipRow} className="shelf-chips edge-fade" role="group" aria-label="Filter this shelf">
           {chips.map((c) =>
             c.key === 'schedule' ? (
               <div className="shelf-pop-wrap" key={c.key} ref={scheduleRef}>

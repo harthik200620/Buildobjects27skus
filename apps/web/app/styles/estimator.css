@@ -838,6 +838,31 @@
     background: none;
     cursor: pointer;
   }
+  /*
+   * ON A PHONE THE MONTHS SCROLL RATHER THAN SHRINK.
+   *
+   * Eight bars sharing a 350px column is 19px each, and a 19px-wide button is below even WCAG
+   * 2.2's 24px floor, let alone the 44 this store holds everything else to — measured, every bar
+   * on the estimator failed, and the two beside a selected one were 4px apart. Sharing the width
+   * further as the build gets longer only makes it worse.
+   *
+   * So the row becomes swipeable and each bar takes a real target. Seven fit at a time and the
+   * rest are a flick away, which is how a phone shows a series it cannot fit — and the chart is
+   * still a chart, because the bars keep their heights and their order.
+   */
+  @media (max-width: 767.98px) {
+    .time-bars {
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      /* Room for the scrollbar on the platforms that draw one, so it never sits on a bar. */
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    .time-bar {
+      flex: 0 0 44px;
+      scroll-snap-align: center;
+    }
+  }
   /* FLAT, and that is the fix rather than the simplification.
 
      The fill was `linear-gradient(180deg, coin-ink, white 8%)` over `height: var(--h)`, and a

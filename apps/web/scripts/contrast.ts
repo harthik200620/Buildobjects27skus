@@ -170,7 +170,16 @@ for (const file of APP_CSS) {
     const size = body.match(/font-size\s*:\s*([\d.]+)px/);
     /* A font-size in rem: 0.75rem is the 12px ceiling. */
     const rem = body.match(/font-size\s*:\s*([\d.]+)rem/);
-    const px = size ? parseFloat(size[1]) : rem ? parseFloat(rem[1]) * 16 : null;
+    /*
+     * A font-size given as a TOKEN counts as stated, for the two tokens that are small by
+     * definition. --t-micro and --t-fine are 11 and 12 on a desktop and 12 and 13 on a phone,
+     * so both are inside this ceiling at every width — and reading them as "unstated" made the
+     * gate punish the very thing it wants, which is a size taken from the scale instead of typed
+     * as a number. Every other token is left unrecognised on purpose: an unknown one is exactly
+     * the case this check exists to catch.
+     */
+    const token = body.match(/font-size\s*:\s*var\(--t-(micro|fine)\)/);
+    const px = size ? parseFloat(size[1]) : rem ? parseFloat(rem[1]) * 16 : token ? 12 : null;
     /*
      * SAYING NOTHING ABOUT THE SIZE IS NOT THE SAME AS BEING SMALL.
      *

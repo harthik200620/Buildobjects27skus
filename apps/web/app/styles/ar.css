@@ -100,7 +100,7 @@
   border-radius: 6px;
   background: var(--color-ar-panel);
   color: var(--color-brand);
-  font-size: 11px;
+  font-size: var(--t-micro);
   font-weight: 600;
   white-space: nowrap;
 }

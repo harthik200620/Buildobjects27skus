@@ -36,6 +36,17 @@ function houseSrc(floors: number, tier: Tier, solar: boolean, size: 'card' | 'he
 }
 
 /**
+ * The two renditions of one render, as a srcset.
+ *
+ * `-hero` is 1440x900 and `-card` is 720x450, and they differ only in size — so the pair is a
+ * width ladder and the browser can be told to pick. Derived from the hero's own URL rather than
+ * rebuilt from the inputs, so the crossfade's incoming frame gets the same ladder as the one it
+ * is replacing without either of them having to know the configuration.
+ */
+const ladder = (heroUrl: string | null): string | undefined =>
+  heroUrl?.includes('-hero.webp') ? `${heroUrl.replace('-hero.webp', '-card.webp')} 720w, ${heroUrl} 1440w` : undefined;
+
+/**
  * The mesh for this configuration, served by /3d/*.
  *
  * There is no `-solar` variant: solar is a handful of dark rectangles on a roof that image-to-3D
@@ -68,6 +79,20 @@ export default function HouseRender({ result, highlight = null }: { result: Esti
   const solar = inputs.addons.solar;
   const src = houseSrc(inputs.floors, inputs.tier, solar, 'hero');
   const url = mediaUrl(src);
+  /*
+   * A PHONE GETS THE 720 CARD, NOT THE 1440 HERO.
+   *
+   * This was one fixed src, so every device downloaded the hero: 121 KB to paint a frame 636
+   * device pixels wide on an iPhone, where the 43 KB card is already sharper than the screen can
+   * show. It is the largest image on /estimate and it is above the fold, so it was 78 KB on the
+   * critical path of the page this company is known for.
+   *
+   * `sizes` is the honest measurement, not a guess: the frame is the full column inside the
+   * gutters up to 720px, and half the shell above that. A `sizes` that lies costs either
+   * sharpness or bandwidth, silently, and nothing in a build ever fails — see the same note on
+   * CategoryTile.
+   */
+  const SIZES = '(max-width: 767px) 100vw, (max-width: 1200px) 50vw, 620px';
 
   /*
    * Two stacked images and a crossfade, rather than one <img> whose src changes. Swapping the src
@@ -160,12 +185,18 @@ export default function HouseRender({ result, highlight = null }: { result: Esti
             key={shown}
             className="hr-img"
             src={shown}
+            srcSet={ladder(shown)}
+            sizes={SIZES}
             alt={`A ${derived.floorsLabel} house, ${TIER_WORD[inputs.tier]} finish${solar ? ', with rooftop solar' : ''}`}
             onError={() => setFailed(true)}
             decoding="async"
           />
         )}
-        {!turntable && incoming && <img className="hr-img hr-img--in" src={incoming} alt="" aria-hidden decoding="async" />}
+        {/* The incoming frame carries the same ladder, or a slider move would fetch the 1440
+            hero on a phone every time — undoing on every change what the first paint got right. */}
+        {!turntable && incoming && (
+          <img className="hr-img hr-img--in" src={incoming} srcSet={ladder(incoming)} sizes={SIZES} alt="" aria-hidden decoding="async" />
+        )}
         {!turntable && hasModel && (
           <button type="button" className="hr-3d" onClick={() => setTurntable(true)}>
             <IconRoom size={15} /> Turn it around
