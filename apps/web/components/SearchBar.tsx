@@ -258,6 +258,14 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
     return () => clearInterval(t);
   }, [spinning, shelves.length]);
 
+  /* Opens the collapsed field and puts the caret in it. No waiting for a frame: the input is
+     sized to nothing rather than undisplayed on a phone (see store.css), so it can take focus
+     immediately and its own :focus-within is what expands the field. */
+  const openField = React.useCallback(() => {
+    setOpen(true);
+    ref.current?.focus();
+  }, []);
+
   return (
     <div className="search" ref={wrap} data-open={open ? 'true' : undefined}>
       <form
@@ -267,27 +275,41 @@ export default function SearchBar({ categories = [] }: { categories?: { slug: st
           e.preventDefault();
           go(q);
         }}
-        /*
-         * ON A PHONE THE COLLAPSED FIELD IS A BUTTON, and until this it was a dead one.
-         *
-         * Below 720px store.css shrinks this to a 44px circle and sets `display: none` on the
-         * input — and an input that is not displayed cannot be focused, so `onFocus` never fired,
-         * `open` never became true, and the CSS rule that expands the field (keyed on
-         * `[data-open]` / `:focus-within`) never matched. Tapping search on a phone did nothing
-         * at all.
-         *
-         * Focusing the input on a click of the FIELD is what closes that loop: the click sets
-         * `open`, the CSS expands, and the same input that was hidden a frame ago is the one the
-         * keyboard lands in. `preventDefault` is not wanted — a tap on the expanded field should
-         * still put the caret where the reader tapped.
-         */
-        onClick={() => {
-          if (!open) setOpen(true);
-          /* After the class lands, or the input is still display:none when focus is attempted. */
-          requestAnimationFrame(() => ref.current?.focus());
-        }}
       >
-        <IconSearch size={18} />
+        {/*
+         * A REAL BUTTON, because on a phone this IS the control.
+         *
+         * Below 720px store.css shrinks the field to a 44px circle and hides the input — and an
+         * input that is not shown cannot be focused, so `onFocus` never fired, `data-open` never
+         * became true, and the rule that expands the field never matched. Tapping search on a
+         * phone did nothing at all.
+         *
+         * A <button> rather than a click handler on the form: it is focusable, Enter and Space
+         * work on it for free, and it is announced as the control it is. On a desktop the field
+         * is already open and pressing it simply puts the caret in the input, which is what
+         * clicking a magnifier should do anywhere.
+         */}
+        <button
+          type="button"
+          className="search-go"
+          aria-label="Search the catalogue"
+          /*
+           * `preventDefault` on the press is what puts the caret in the INPUT rather than on the
+           * button. A pointer press focuses the thing pressed, and that happens after this
+           * handler unless the default is refused — measured on a phone, the field expanded (the
+           * button had focus, so :focus-within matched) and everything typed went nowhere.
+           *
+           * onClick stays for the keyboard: Enter and Space on a focused button fire click and
+           * never fire pointerdown.
+           */
+          onPointerDown={(e) => {
+            e.preventDefault();
+            openField();
+          }}
+          onClick={openField}
+        >
+          <IconSearch size={18} />
+        </button>
         <span className="search-inputwrap">
           <input
             ref={ref}

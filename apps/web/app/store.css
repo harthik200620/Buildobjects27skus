@@ -462,6 +462,19 @@
       border-color var(--dur-2) var(--ease-out),
       background-color var(--dur-2) var(--ease-out);
   }
+  /* The magnifier is a button now — see SearchBar.tsx. Unstyled by default so the desktop field
+     looks exactly as it did; on a phone it grows to fill the collapsed circle. */
+  .search-go {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
   .search-field:hover {
     border-color: var(--hair-brand);
     background: rgb(255 255 255 / 7%);
@@ -861,6 +874,24 @@
       /* Over the row it covers, and under the chat panel at 61. */
       z-index: 60;
     }
+    /* Collapsed, the button IS the control — so it takes the whole 44px circle rather than
+       leaving a thumb to find an 18px glyph inside it.
+
+       `calc(100% + 2px)` with a -1px margin, not `100%`: the field carries a 1px border, so a
+       button filling its CONTENT box is 42 wide, and `sweep` reports a 42px target on every
+       surface in the store. The two pixels are the border, and the target should include it. */
+    .search-go {
+      width: calc(100% + 2px);
+      height: calc(100% + 2px);
+      margin: -1px;
+      border-radius: var(--r-pill);
+    }
+    .search:focus-within .search-go,
+    .search[data-open="true"] .search-go {
+      width: auto;
+      height: auto;
+      margin: 0;
+    }
     /* A CIRCLE, to match the assistant beside it. Collapsed this is an icon button and not a
        field, and a rounded square beside a round button is the kind of near-miss that reads as
        misalignment without being nameable. It becomes a pill again when it expands, which is
@@ -879,12 +910,29 @@
       justify-content: flex-start;
       background: var(--surf-3);
     }
+    /*
+     * COLLAPSED, THE INPUT IS SIZED TO NOTHING — NOT `display: none`.
+     *
+     * It was display:none, and that is a race with itself: focusing an element that is not
+     * displayed does nothing, so the tap that opened the field could not also put the caret in it,
+     * and the only way round was to wait a frame for the class to land and hope. Measured, the tap
+     * path expanded the field and left focus on the BUTTON — a search box open with the keyboard
+     * pointed nowhere.
+     *
+     * Zero width keeps it in the layout and focusable, so the click focuses the input, the input's
+     * own :focus-within expands the field, and there is nothing to sequence.
+     */
     .search-input {
-      display: none;
+      width: 0;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      opacity: 0;
     }
     .search:focus-within .search-input,
     .search[data-open="true"] .search-input {
-      display: block;
+      width: 100%;
+      opacity: 1;
     }
   }
 
@@ -2801,11 +2849,30 @@
     gap: var(--s-4);
     width: 100%;
   }
+  /*
+   * ── ON A PHONE THE HEAD IS FULL-BLEED, AND ITS TEXT SITS ON THE PAGE GUTTER ──────────────
+   *
+   * `.page-head--plate` sets `padding` as a SHORTHAND, which wipes the horizontal gutter that
+   * `.shell` gives it — so the heading started wherever the plate's own padding put it while
+   * every section beneath it started at the gutter. Measured on an iPhone: the title at 24px,
+   * the content at 20. Four pixels is not something anyone can name, and it is exactly what
+   * "the text is not aligned" means when you are looking at the page rather than the CSS.
+   *
+   * The answer is not to shrink the padding — that would put the words against the edge of a
+   * photograph. It is to let the plate BLEED to the screen edges, which a phone wants anyway,
+   * and spend its horizontal padding on the gutter itself. The picture gets the full width, the
+   * words line up with everything under them, and the two are the same number.
+   */
   @media (max-width: 767.98px) {
     .page-head--plate {
       min-height: 150px;
-      padding: var(--s-6) var(--s-5) var(--s-5);
-      border-radius: var(--r-4);
+      margin-left: calc(var(--gutter) * -1);
+      margin-right: calc(var(--gutter) * -1);
+      padding: var(--s-6) var(--gutter) var(--s-5);
+      /* Edge to edge: a radius and a side border only make sense on a card that has margins. */
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
     }
   }
   /*

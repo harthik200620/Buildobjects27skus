@@ -20,6 +20,7 @@
  *                 behind it rather than against the token it was meant to sit on.
  *   REACH         the primary action of the page sitting below the fold with nothing above it
  *                 saying so.
+ *   ALIGNED       a block of text starting a few pixels off the column everything else starts on.
  *   SAFE AREA     content inside the notch or the home indicator on a modern phone.
  *   WEIGHT        bytes over the wire, and images larger than the box they are drawn into.
  *   MOTION        layout shift after first paint.
@@ -73,7 +74,7 @@ const note = (surface: string, device: string, check: string, detail: string) =>
  */
 const PROBE = `(() => {
   const vw = document.documentElement.clientWidth;
-  const out = { vw, overflow: [], clipped: [], tap: [], crowded: [], text: [], safe: [], oversized: [], docW: document.documentElement.scrollWidth };
+  const out = { vw, overflow: [], clipped: [], tap: [], crowded: [], text: [], safe: [], oversized: [], aligned: [], docW: document.documentElement.scrollWidth };
 
   const seen = (el) => {
     const cs = getComputedStyle(el);
@@ -234,10 +235,114 @@ const PROBE = `(() => {
     const cs = getComputedStyle(el);
     if (cs.position !== 'fixed' && cs.position !== 'sticky') continue;
     const r = el.getBoundingClientRect();
-    const touchesBottom = Math.abs(r.bottom - window.innerHeight) < 2 && r.height > 8;
+    /* A backdrop covering the whole viewport is not content sitting on the home indicator — the
+       splash and the greeting both cover the screen by design. */
+    const coversAll = r.height >= window.innerHeight - 2 && r.width >= vw - 2;
+    const touchesBottom = !coversAll && Math.abs(r.bottom - window.innerHeight) < 2 && r.height > 8;
     const pads = cs.paddingBottom + '|' + cs.paddingTop;
     if (touchesBottom && !/env\\(|constant\\(/.test(el.getAttribute('style') || '') && Number.parseFloat(cs.paddingBottom) < 8) {
       out.safe.push(name(el) + ' sits on the bottom edge with ' + cs.paddingBottom + ' below it (' + pads + ')');
+    }
+  }
+  /*
+   * ── ALIGNMENT: does every line of text start on the edge its neighbours start on? ─────────
+   *
+   * "Everything should be perfectly aligned" has a measurable form, but not the obvious one.
+   * Comparing every run of text to the PAGE gutter reports a card's own padding as a defect —
+   * a price inside a product card is aligned to the card, and should be. Measured that way this
+   * produced twenty-three findings of which almost all were the design.
+   *
+   * So each run is grouped by its FRAME: the nearest ancestor that actually paints something —
+   * a background or a border — which is the edge the eye lines that text up against. Within a
+   * frame, the dominant left edge is found by counting, and a run two to twelve pixels off it is
+   * the bug: a near miss is a block that was MEANT to line up and does not, which is exactly what
+   * reads as untidy without being nameable. Twelve or more is an indent, and saying otherwise
+   * would be reporting the design.
+   *
+   * And one thing across frames: a frame as wide as the page — a page head, a full-bleed band —
+   * has to start its text on the page's own gutter, or the heading sits off the column
+   * everything beneath it uses.
+   */
+  /* .shell is this store's content column — its left plus its own padding IS the gutter every
+     page lines up on. Reading it off main instead gave 0, and then reported the footer for
+     starting at the gutter. (No backticks anywhere in this probe — see the note on srOnly.) */
+  const PAGE_GUTTER = (() => {
+    const shell = document.querySelector('main .shell') || document.querySelector('.shell');
+    if (!shell) return null;
+    const cs = getComputedStyle(shell);
+    return Math.round(shell.getBoundingClientRect().left + Number.parseFloat(cs.paddingLeft || '0'));
+  })();
+
+  const paints = (el) => {
+    const cs = getComputedStyle(el);
+    if (cs.backgroundColor && cs.backgroundColor !== 'rgba(0, 0, 0, 0)' && cs.backgroundColor !== 'transparent') return true;
+    if (cs.backgroundImage && cs.backgroundImage !== 'none') return true;
+    return Number.parseFloat(cs.borderLeftWidth || '0') > 0 || Number.parseFloat(cs.borderTopWidth || '0') > 0;
+  };
+  const frameOf = (el) => {
+    for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) if (paints(p)) return p;
+    return document.body;
+  };
+
+  const groups = new Map();
+  for (const el of document.querySelectorAll('p, h1, h2, h3, h4, li, dd, dt, span, a, label, td, th, button')) {
+    if (!seen(el) || srOnly(el)) continue;
+    const own = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 1);
+    if (!own || inScroller(el)) continue;
+    const cs = getComputedStyle(el);
+    if (cs.position === 'fixed' || cs.position === 'absolute') continue;
+    /* Centred and right-aligned text is lined up with something else on purpose. */
+    if (cs.textAlign === 'center' || cs.textAlign === 'right' || cs.textAlign === 'end') continue;
+    const r = el.getBoundingClientRect();
+    if (r.width < 24 || r.height < 6) continue;
+    /*
+     * MID-LINE RUNS HAVE NO LEFT EDGE OF THEIR OWN. "₹65 /piece" is three inline spans, and the
+     * digits start where the rupee sign ends — that is the sentence being set, not a block failing
+     * to line up. Anything whose previous sibling ends on the same line, near its left, is skipped.
+     */
+    const prev = el.previousElementSibling;
+    if (prev) {
+      const pr = prev.getBoundingClientRect();
+      /*
+       * Same line and immediately to the left: this run starts where the previous one ended, so
+       * its left edge is a sentence being set and not a block that failed to line up.
+       *
+       * Judged by vertical OVERLAP, not by matching bottoms. The rupee sign in a price is a raised
+       * superscript at a smaller size, so it sits 7px off the digits after it — a bottoms-match
+       * test missed that and kept reporting every price on every listing.
+       */
+      const overlap = Math.min(pr.bottom, r.bottom) - Math.max(pr.top, r.top);
+      if (pr.width > 0 && overlap > Math.min(pr.height, r.height) * 0.5 && r.left - pr.right < 16 && r.left >= pr.left) continue;
+    }
+    const frame = frameOf(el);
+    if (!groups.has(frame)) groups.set(frame, []);
+    groups.get(frame).push({ x: Math.round(r.left), name: name(el), text: el.innerText.trim().slice(0, 24) });
+  }
+
+  const said = new Set();
+  for (const [frame, runs] of groups) {
+    if (runs.length < 3) continue;
+    const tally = new Map();
+    for (const r of runs) tally.set(r.x, (tally.get(r.x) ?? 0) + 1);
+    let edge = null;
+    let best = 0;
+    for (const [x, n] of tally) if (n > best || (n === best && edge !== null && x < edge)) { best = n; edge = x; }
+    for (const r of runs) {
+      const off = r.x - edge;
+      if (off < 2 || off > 12) continue;
+      const key = r.name + ':' + off;
+      if (said.has(key)) continue;
+      said.add(key);
+      out.aligned.push(r.name + ' starts ' + off + 'px right of the ' + (frame === document.body ? 'page' : 'card') + ' edge (' + edge + 'px) — "' + r.text + '"');
+    }
+    /* A frame the width of the page starts its text on the page's gutter. */
+    const fr = frame.getBoundingClientRect();
+    if (PAGE_GUTTER !== null && frame !== document.body && fr.width >= vw - 2 && edge !== null) {
+      const off = Math.abs(edge - PAGE_GUTTER);
+      if (off >= 2 && off <= 24 && !said.has('frame' + off)) {
+        said.add('frame' + off);
+        out.aligned.push(name(frame) + ' is full width but its text starts at ' + edge + 'px, not the page gutter (' + PAGE_GUTTER + 'px)');
+      }
     }
   }
   return out;
@@ -368,6 +473,7 @@ async function run(browser: Browser) {
           overflow: string[];
           clipped: string[];
           tap: string[];
+          aligned: string[];
           crowded: string[];
           text: string[];
           safe: string[];
@@ -382,6 +488,7 @@ async function run(browser: Browser) {
         for (const d of m.text.slice(0, 6)) note(surface.key, device.name, 'text', d);
         for (const d of m.safe.slice(0, 3)) note(surface.key, device.name, 'safe area', d);
         for (const d of m.oversized.slice(0, 4)) note(surface.key, device.name, 'weight', d);
+        for (const d of m.aligned.slice(0, 8)) note(surface.key, device.name, 'aligned', d);
 
         for (const c of (await measureContrast(page, device.dpr)).slice(0, 6)) {
           note(surface.key, device.name, 'contrast', `${c.ratio.toFixed(2)}:1 — ${c.where} — "${c.text}"`);
@@ -412,11 +519,12 @@ async function run(browser: Browser) {
  * an oversized image is a slow page rather than a broken one.
  */
 const WEIGHTS: Record<string, number> = {
-  broken: 20,
-  overflow: 16,
-  'cut off': 16,
-  tap: 14,
-  contrast: 14,
+  broken: 18,
+  overflow: 14,
+  'cut off': 14,
+  tap: 12,
+  contrast: 12,
+  aligned: 10,
   text: 8,
   crowded: 6,
   'safe area': 4,

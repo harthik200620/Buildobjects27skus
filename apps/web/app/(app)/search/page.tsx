@@ -166,18 +166,24 @@ async function CataloguePage() {
 
   return (
     <div className="page page--dir">
-      <header className="shell page-head page-head--plate">
-        <Plate name="catalogue-aisle" position="50% 46%" />
-        <div className="page-head-in">
-          <div>
-            <h1 className="page-title">The catalogue</h1>
-            <p className="page-sub">
-              <span className="fig">{cats.length}</span> categories. <span className="fig">{stocked}</span> of them are stocked today, holding{' '}
-              <span className="fig">{skus.length}</span> items — priced per unit with GST included, each carrying the source of every figure.
-            </p>
+      {/* The head is wrapped in its own `.shell` rather than being one: `.page-head--plate` sets
+          `padding` as a shorthand, which wipes `.shell`'s horizontal gutter — so on this page the
+          heading sat at 24px while every section under it started at 20. Every other page in the
+          store nests it this way; this one was the odd one out. */}
+      <div className="shell">
+        <header className="page-head page-head--plate">
+          <Plate name="catalogue-aisle" position="50% 46%" />
+          <div className="page-head-in">
+            <div>
+              <h1 className="page-title">The catalogue</h1>
+              <p className="page-sub">
+                <span className="fig">{cats.length}</span> categories. <span className="fig">{stocked}</span> of them are stocked today, holding{' '}
+                <span className="fig">{skus.length}</span> items — priced per unit with GST included, each carrying the source of every figure.
+              </p>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
       <CategoryDirectory
         categories={cats}
