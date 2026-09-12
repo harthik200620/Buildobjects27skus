@@ -11,6 +11,22 @@ import type { Partner, Place } from './types';
  * on roads a loaded vehicle can actually use — and `scripts/routes-fetch.mts` fails the run if a
  * committed route ever drifts onto a track, a driveway or a footway.
  *
+ * WHAT THAT BUYS, on the delivery leg, as routes-fetch prints it:
+ *
+ *   Hyderabad      89 % primary, 11 % ramp
+ *   Tirupati       98 % secondary
+ *   Vijayawada    100 % primary
+ *   Visakhapatnam  69 % primary, 31 % secondary
+ *
+ * A POINT IS NOT ENOUGH ON ITS OWN: it has to be on the right SIDE. Four of these were moved
+ * across a divided carriageway, because a router obeying the median sends the truck to the next
+ * U-turn gap and back — 1.85 km of road to cover 300 m, which reads as a mistake even though it
+ * is what a real driver would have to do. Pick a point, then check which way the traffic runs.
+ *
+ * Choosing them is a measurement, not an opinion: route each candidate, classify the result, and
+ * keep the one with the most major road and the least detour. Tirupati's door leg was 68 %
+ * tertiary with an address chosen by eye and is 98 % secondary with one chosen this way.
+ *
  * THE TRIPS ARE SHORT ON PURPOSE. A yard and a door about two kilometres apart is what a twenty
  * minute promise costs when the vehicle is a loaded truck routed at truck speeds — around
  * 19 km/h through these cities — rather than a scooter carrying a milk packet. Every city here
@@ -48,8 +64,8 @@ export const CITIES: Record<string, City> = {
   tpt: {
     id: 'tpt',
     name: 'Tirupati',
-    yard: { name: 'K.T. Road yard', address: 'K.T. Road, Tirupati 517501', lat: 13.63858, lng: 79.418501 },
-    drop: { name: 'Prakasam Road', address: 'Prakasam Road, Tirupati 517501', lat: 13.630841, lng: 79.413438 },
+    yard: { name: 'K.T. Road yard', address: 'K.T. Road, Tirupati 517501', lat: 13.63898, lng: 79.418901 },
+    drop: { name: 'Indira Maidanam', address: 'Indira Maidanam Road, Tirupati 517501', lat: 13.635099, lng: 79.425115 },
     partnerAt: { lat: 13.642082, lng: 79.428991 },
     partner: { name: 'Srinivasulu Naidu', phone: '9440217788', rating: 4.8, trips: 1180, vehicle: { number: 'AP 03 TC 2210', model: 'Mahindra Jeeto' } },
     traffic: { peak: 1.12, day: 1.05, night: 0.95 },
@@ -58,8 +74,8 @@ export const CITIES: Record<string, City> = {
     id: 'vij',
     name: 'Vijayawada',
     yard: { name: 'Auto Nagar yard', address: 'Old NH16, Auto Nagar, Vijayawada 520007', lat: 16.518553, lng: 80.674241 },
-    drop: { name: 'Mahanadu Road', address: 'Mahanadu Road, Vijayawada 520007', lat: 16.5075, lng: 80.6792 },
-    partnerAt: { lat: 16.51664, lng: 80.672258 },
+    drop: { name: 'Benz Circle', address: 'Old NH16 at Benz Circle, Vijayawada 520010', lat: 16.508986, lng: 80.664927 },
+    partnerAt: { lat: 16.523843, lng: 80.674001 },
     partner: { name: 'Venkata Rao', phone: '9989034412', rating: 4.9, trips: 1960, vehicle: { number: 'AP 16 TE 7788', model: 'Tata Ace Gold' } },
     traffic: { peak: 1.18, day: 1.08, night: 0.95 },
   },
