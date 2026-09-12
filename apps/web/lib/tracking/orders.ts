@@ -13,6 +13,20 @@ const KEEP = 10;
 export const DEMO_SPEED = 12;
 export const SPEEDS = [1, 12, 40];
 
+/**
+ * The four digits the customer reads out when the truck arrives.
+ *
+ * Derived from the order id rather than stored, so it is the same on every device that opens the
+ * order and there is nothing extra to keep in step. In a real system the driver's app holds the
+ * matching code and the yard issues both — here it exists because a delivery in India without a
+ * handover code does not look like a delivery, and because it gives the arrival a last beat.
+ */
+export const deliveryCode = (orderId: string): string => {
+  let h = 7;
+  for (const ch of orderId) h = (h * 31 + ch.charCodeAt(0)) % 10000;
+  return String(h).padStart(4, '0');
+};
+
 function read(): Order[] {
   if (typeof window === 'undefined') return [];
   try {

@@ -32,6 +32,7 @@
       grid-template-areas:
         "map head"
         "map partner"
+        "map route"
         "map lines";
       align-items: start;
     }
@@ -45,6 +46,9 @@
     }
     .tk-partner {
       grid-area: partner;
+    }
+    .tk-route {
+      grid-area: route;
     }
     .tk-lines {
       grid-area: lines;
@@ -208,6 +212,153 @@
     }
   }
 
+  /* Distance and speed, under the rail — the two numbers the ETA above is made of. */
+  .tk-gauge {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--hair);
+    font-size: var(--t-cap);
+    line-height: var(--t-cap-lh);
+    color: var(--ink-3);
+  }
+  .tk-gauge b {
+    color: var(--ink-1);
+    font-variant-numeric: tabular-nums;
+  }
+  /* --ink-3, not --ink-4: scripts/contrast.ts holds ink-4 to decoration only, and this and the
+     two below are all de-emphasised TEXT — a stopped truck, a turn already taken, a spent code. */
+  .tk-gauge-still {
+    color: var(--ink-3);
+  }
+
+  /* ── the route, written out ── */
+  .tk-route {
+    padding: var(--s-4) var(--s-5);
+  }
+  .tk-route > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-size: var(--t-cap);
+    font-weight: 600;
+    color: var(--ink-1);
+    cursor: pointer;
+    list-style: none;
+  }
+  .tk-route > summary::-webkit-details-marker {
+    display: none;
+  }
+  /* A chevron that turns, rather than the browser's triangle. */
+  .tk-route > summary::after {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-left: 2px;
+    border-right: 2px solid var(--ink-3);
+    border-bottom: 2px solid var(--ink-3);
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .tk-route[open] > summary::after {
+    transform: rotate(-135deg) translate(-2px, -2px);
+  }
+  .tk-route-count {
+    margin-left: auto;
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+  .tk-route-list {
+    display: grid;
+    gap: 2px;
+    margin: var(--s-3) 0 0;
+    padding: var(--s-3) 0 0;
+    border-top: 1px solid var(--hair);
+    list-style: none;
+    counter-reset: turn;
+  }
+  .tk-route-list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 2px var(--s-3);
+    padding: 7px 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: var(--t-cap);
+    line-height: var(--t-cap-lh);
+    color: var(--ink-2);
+  }
+  .tk-route-list li:last-child {
+    border-bottom: 0;
+  }
+  /* Behind the driver: dimmed and struck through, the way a satnav greys what is done. */
+  .tk-route-list li.is-passed {
+    color: var(--ink-3);
+  }
+  .tk-route-list li.is-passed .tk-route-move {
+    text-decoration: line-through;
+  }
+  .tk-route-list li.is-now {
+    margin: 0 calc(var(--s-3) * -1);
+    padding: 7px var(--s-3);
+    border-radius: var(--radius-sm);
+    border-bottom-color: transparent;
+    background: color-mix(in oklab, var(--color-teal-700) 14%, transparent);
+    color: var(--ink-1);
+  }
+  .tk-route-move {
+    font-weight: 600;
+  }
+  .tk-route-road {
+    grid-column: 1;
+    font-size: var(--t-fine);
+    line-height: var(--t-fine-lh);
+    color: var(--ink-3);
+  }
+  .tk-route-far {
+    grid-row: 1;
+    grid-column: 2;
+    color: var(--ink-3);
+  }
+
+  /* ── the handover code ── */
+  .tk-code {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+    padding: var(--s-3) var(--s-4);
+    border: 1px dashed var(--hair-brand);
+    border-radius: var(--radius-md);
+    background: color-mix(in oklab, var(--color-teal-700) 10%, transparent);
+  }
+  .tk-code-label {
+    font-size: var(--t-fine);
+    line-height: var(--t-fine-lh);
+    color: var(--ink-2);
+  }
+  .tk-code-digits {
+    font-size: var(--t-fig-lg);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--color-teal-700);
+  }
+  .tk-code.is-done {
+    border-style: solid;
+    border-color: var(--hair);
+    background: transparent;
+  }
+  .tk-code.is-done .tk-code-digits {
+    color: var(--ink-3);
+    text-decoration: line-through;
+  }
+
   /* ── the map ── */
   .tk-map-wrap {
     position: relative;
@@ -215,6 +366,8 @@
 
   /* The next manoeuvre, over the map's top edge. Two lines: what the driver does next, and the
      road under the truck now — the same two things a satnav puts in front of a windscreen. */
+  /* An arrow and a distance, the shape of every satnav plate. It replaced a wrapped sentence
+     that ran to four lines on a phone and hid a third of the map. */
   .tk-turn {
     position: absolute;
     z-index: 3;
@@ -222,28 +375,46 @@
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 1px;
-    max-width: min(340px, calc(100% - 140px));
-    padding: 7px 14px;
-    border-radius: var(--radius-pill);
+    gap: 10px;
+    max-width: min(320px, calc(100% - 130px));
+    padding: 8px 14px 8px 10px;
+    border-radius: var(--r-3);
     border: 1px solid var(--hair-brand);
     background: color-mix(in oklab, var(--color-canvas) 92%, var(--color-teal-700));
     box-shadow: var(--sh-1);
-    text-align: center;
   }
-  .tk-turn-move {
+  .tk-turn-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: color-mix(in oklab, var(--color-teal-700) 22%, transparent);
+    color: var(--color-teal-800);
+  }
+  .tk-turn-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .tk-turn-far {
     font-size: var(--t-cap);
-    line-height: var(--t-cap-lh);
+    line-height: 1.2;
     font-weight: 600;
     color: var(--ink-1);
-    text-wrap: balance;
+    font-variant-numeric: tabular-nums;
   }
-  .tk-turn-now {
+  .tk-turn-road {
+    /* One line, clipped: a road name is a label, and a plate that grows to fit the longest name
+       in the city is a plate that covers the map it sits on. */
+    overflow: hidden;
     font-size: var(--t-micro);
     line-height: var(--t-micro-lh);
-    color: var(--ink-3);
+    color: var(--ink-2);
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .tk-map {
     position: relative;

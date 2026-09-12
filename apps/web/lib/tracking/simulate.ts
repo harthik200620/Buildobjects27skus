@@ -76,18 +76,35 @@ export function trapezoid(t: number, ramp = 0.08): number {
   return v * (x - ramp / 2);
 }
 
+/**
+ * The slope of that curve — speed as a multiple of the leg's average.
+ *
+ * It is the derivative rather than a difference between two positions, because a speed read off
+ * successive frames is noise divided by noise: at sixty frames a second the truck moves a few
+ * centimetres and the answer swings wildly. The curve is known, so its gradient is known.
+ */
+export function trapezoidSpeed(t: number, ramp = 0.08): number {
+  const x = Math.min(1, Math.max(0, t));
+  const v = 1 / (1 - ramp);
+  if (x < ramp) return (v * x) / ramp;
+  if (x > 1 - ramp) return (v * (1 - x)) / ramp;
+  return v;
+}
+
 export const simMinutes = (o: Order, now = Date.now()): number => (o.clock.simMs + (now - o.clock.wallMs) * o.clock.speed) / 60_000;
 
 const latLng = ([lng, lat]: number[]) => ({ lat, lng });
 
-function drive(r: Road, t: number) {
+/** Where the truck is on one road, which way it points, how fast, and what is left ahead. */
+function drive(r: Road, t: number, legMinutes: number) {
   const d = trapezoid(t) * r.km;
   const here = along(r.line, d);
   const left = r.km - d;
   /* At the very end there is nothing ahead to look at, so look back instead. */
   const [a, b] = left > LOOK_AHEAD_KM ? [here, along(r.line, d + LOOK_AHEAD_KM)] : [along(r.line, Math.max(0, r.km - LOOK_AHEAD_KM)), along(r.line, r.km)];
   const remaining = left > 0.001 ? (lineSliceAlong(r.line, d, r.km).geometry.coordinates as [number, number][]) : [];
-  return { at: latLng(here.geometry.coordinates), heading: (bearing(a, b) + 360) % 360, left, remaining, km: d };
+  const kmh = legMinutes > 0 ? (r.km / (legMinutes / 60)) * trapezoidSpeed(t) : 0;
+  return { at: latLng(here.geometry.coordinates), heading: (bearing(a, b) + 360) % 360, left, remaining, km: d, kmh: Math.round(kmh) };
 }
 
 /** "HITEC City–Kondapur Main Road" and "Hitec City - Kondapur Main Road" are the same road. */
@@ -124,34 +141,40 @@ function directionsAt(leg: Leg, km: number): Directions {
     let to = (end - km) * 1000;
     for (let j = i + 1; j < leg.steps.length; j++) {
       if (isManoeuvre(leg.steps[j], road)) {
-        return { road, next: { move: leg.steps[j].move, road: sameRoad(leg.steps[j].road, road) ? '' : leg.steps[j].road, inM: Math.max(0, Math.round(to)) } };
+        const next = { move: leg.steps[j].move, road: sameRoad(leg.steps[j].road, road) ? '' : leg.steps[j].road, inM: Math.max(0, Math.round(to)) };
+        return { road, next, stepIndex: i };
       }
       to += leg.steps[j].m;
     }
-    return { road, next: null };
+    return { road, next: null, stepIndex: i };
   }
-  return { road: '', next: null };
+  return { road: '', next: null, stepIndex: 0 };
 }
 
 export function snapshot(p: Plan, min: number): Snapshot {
   const { marks, roads, legs } = p;
   const base = { etaMin: Math.max(0, Math.ceil(marks.delivered - min)), done: Math.min(1, Math.max(0, min / marks.delivered)) };
+  /* Everything still to drive, both legs — what the reader means by "how far away is it". */
+  const toDoor = (leftOnThisLeg: number, legIndex: 0 | 1) => Math.round((leftOnThisLeg + (legIndex === 0 ? roads[1].km : 0)) * 1000);
 
   if (min < marks.assigned) {
-    return { ...base, phase: 'confirmed', legIndex: 0, at: null, heading: 0, remaining: legs[0].coords, directions: null };
+    const metresLeft = Math.round((roads[0].km + roads[1].km) * 1000);
+    return { ...base, phase: 'confirmed', legIndex: 0, at: null, heading: 0, remaining: legs[0].coords, directions: null, metresLeft, kmh: 0 };
   }
   if (min < marks.atYard) {
-    const { km, left: _, ...d } = drive(roads[0], (min - marks.assigned) / (marks.atYard - marks.assigned));
-    return { ...base, phase: 'assigned', legIndex: 0, ...d, directions: directionsAt(legs[0], km) };
+    const { km, left, ...d } = drive(roads[0], (min - marks.assigned) / (marks.atYard - marks.assigned), marks.atYard - marks.assigned);
+    return { ...base, phase: 'assigned', legIndex: 0, ...d, directions: directionsAt(legs[0], km), metresLeft: toDoor(left, 0) };
   }
   if (min < marks.loaded) {
-    const { at, heading } = drive(roads[1], 0);
-    return { ...base, phase: 'at_yard', legIndex: 1, at, heading, remaining: legs[1].coords, directions: directionsAt(legs[1], 0) };
+    const { at, heading } = drive(roads[1], 0, 0);
+    const rest = { remaining: legs[1].coords, directions: directionsAt(legs[1], 0), metresLeft: toDoor(roads[1].km, 1), kmh: 0 };
+    return { ...base, phase: 'at_yard', legIndex: 1, at, heading, ...rest };
   }
   if (min < marks.delivered) {
-    const { km, left, ...d } = drive(roads[1], (min - marks.loaded) / (marks.delivered - marks.loaded));
-    return { ...base, phase: left < ARRIVING_KM ? 'arriving' : 'on_the_way', legIndex: 1, ...d, directions: directionsAt(legs[1], km) };
+    const { km, left, ...d } = drive(roads[1], (min - marks.loaded) / (marks.delivered - marks.loaded), marks.delivered - marks.loaded);
+    const phase = left < ARRIVING_KM ? 'arriving' : 'on_the_way';
+    return { ...base, phase, legIndex: 1, ...d, directions: directionsAt(legs[1], km), metresLeft: toDoor(left, 1) };
   }
-  const { at, heading } = drive(roads[1], 1);
-  return { phase: 'delivered', legIndex: 1, at, heading, etaMin: 0, done: 1, remaining: [], directions: null };
+  const { at, heading } = drive(roads[1], 1, 0);
+  return { phase: 'delivered', legIndex: 1, at, heading, etaMin: 0, done: 1, remaining: [], directions: null, metresLeft: 0, kmh: 0 };
 }

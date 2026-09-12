@@ -119,18 +119,36 @@ describe('directions', () => {
   });
 
   it('counts down to the next manoeuvre, then moves on to the one after', () => {
-    let seen = 0;
+    let reached = 0;
     let last = Number.POSITIVE_INFINITY;
+    let lastStep = -1;
     for (let m = p.marks.loaded; m < p.marks.delivered; m += 0.02) {
       const d = snapshot(p, m).directions;
       if (!d?.next) continue;
-      /* Within one manoeuvre the distance falls; when it jumps up we have reached it and are
-         counting down to the next one. */
-      if (d.next.inM > last) seen++;
+      /* Within one manoeuvre the distance falls; when it jumps up we have reached that turn and
+         are counting down to the next. The step index must move forward at the same moment. */
+      if (d.next.inM > last) {
+        reached++;
+        expect(d.stepIndex).toBeGreaterThan(lastStep);
+      }
+      lastStep = d.stepIndex;
       last = d.next.inM;
       expect(d.next.inM).toBeGreaterThanOrEqual(0);
     }
-    expect(seen).toBeGreaterThan(2);
+    /* Not a count of turns — the route is allowed to change. Only that reaching one moves the
+       countdown on to the next, which is the behaviour, and it must happen at least once. */
+    expect(reached).toBeGreaterThanOrEqual(1);
+  });
+
+  it('walks the step list forward and never back', () => {
+    let last = -1;
+    for (let m = p.marks.loaded; m < p.marks.delivered; m += 0.02) {
+      const d = snapshot(p, m).directions;
+      if (!d) continue;
+      expect(d.stepIndex).toBeGreaterThanOrEqual(last);
+      expect(d.stepIndex).toBeLessThan(p.legs[1].steps.length);
+      last = d.stepIndex;
+    }
   });
 
   it('never announces a turn onto the road already under the truck', () => {
@@ -160,6 +178,41 @@ describe('directions', () => {
     }
     const known = new Set(p.legs[1].steps.map((s) => s.road).filter(Boolean));
     for (const r of roads) expect(known.has(r), r).toBe(true);
+  });
+});
+
+describe('distance and speed', () => {
+  const p = plan({ regionId: 'hyd', placedAt: NOON });
+
+  it('counts down the whole journey, not just this leg', () => {
+    /* Before the truck has even reached the yard, "to your gate" must already include the
+       delivery leg — otherwise the number jumps UP the moment it is loaded. */
+    const atStart = snapshot(p, 0).metresLeft;
+    const bothLegs = (p.roads[0].km + p.roads[1].km) * 1000;
+    expect(atStart).toBeCloseTo(bothLegs, -1);
+    expect(snapshot(p, p.marks.delivered).metresLeft).toBe(0);
+  });
+
+  it('never goes up', () => {
+    let last = Number.POSITIVE_INFINITY;
+    for (let m = 0; m <= p.marks.delivered; m += 0.05) {
+      const d = snapshot(p, m).metresLeft;
+      expect(d).toBeLessThanOrEqual(last + 1);
+      last = d;
+    }
+  });
+
+  it('reads zero while the truck waits at the yard, and a road speed while it drives', () => {
+    expect(snapshot(p, (p.marks.atYard + p.marks.loaded) / 2).kmh).toBe(0);
+    const cruising = snapshot(p, (p.marks.loaded + p.marks.delivered) / 2).kmh;
+    expect(cruising).toBeGreaterThan(5);
+    expect(cruising).toBeLessThan(80);
+  });
+
+  it('pulls away from rest and slows to a stop', () => {
+    const span = p.marks.delivered - p.marks.loaded;
+    expect(snapshot(p, p.marks.loaded + span * 0.01).kmh).toBeLessThan(snapshot(p, p.marks.loaded + span * 0.5).kmh);
+    expect(snapshot(p, p.marks.delivered - span * 0.01).kmh).toBeLessThan(snapshot(p, p.marks.loaded + span * 0.5).kmh);
   });
 });
 

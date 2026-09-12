@@ -66,6 +66,8 @@ export interface Directions {
   road: string;
   /** Null on the last step, where the next thing that happens is arriving. */
   next: { move: string; road: string; inM: number } | null;
+  /** Index into the current leg's `steps`, so the list can show where the driver has got to. */
+  stepIndex: number;
 }
 
 export interface Snapshot {
@@ -83,4 +85,8 @@ export interface Snapshot {
   remaining: [number, number][];
   /** Where the driver is in the turn-by-turn; null before a partner is on the road. */
   directions: Directions | null;
+  /** Road metres still to drive before the door — both legs, not just this one. */
+  metresLeft: number;
+  /** How fast the truck is going right now. Zero while it waits at the yard. */
+  kmh: number;
 }

@@ -40,7 +40,17 @@ export function useTracking(order: Order) {
       heading = smoothHeading(heading, next.heading, dt);
       for (const listener of listeners.current) listener({ ...next, heading });
 
-      const key = `${next.phase}/${next.etaMin}`;
+      /*
+       * WHAT COUNTS AS A CHANGE WORTH RE-RENDERING FOR.
+       *
+       * The phase and the minute are what the headline and the ETA read from. The distance and
+       * the speed are shown too, and they move continuously — keyed on phase and minute alone
+       * they sat frozen for a whole minute while the truck visibly drove. Rounding them into
+       * buckets keeps them honest without handing the cards the map's frame rate: fifty metres
+       * and five km/h are finer than anyone can read off a moving number, and come to two or
+       * three renders a second at the fastest demo speed.
+       */
+      const key = `${next.phase}/${next.etaMin}/${Math.round(next.metresLeft / 50)}/${Math.round(next.kmh / 5)}`;
       if (key !== shown) {
         shown = key;
         setSnap(next);

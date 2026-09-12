@@ -8,7 +8,7 @@ import { IconArrow, IconCheck, IconPin } from '@/components/icons';
 import { inr } from '@/lib/media';
 import { addPick } from '@/lib/picks';
 import { maskedPhone } from '@/lib/tracking/cities';
-import { readOrder, SPEEDS, setSpeed } from '@/lib/tracking/orders';
+import { deliveryCode, readOrder, SPEEDS, setSpeed } from '@/lib/tracking/orders';
 import type { Order, Phase } from '@/lib/tracking/types';
 import { useTracking } from './useTracking';
 
@@ -21,6 +21,9 @@ const STEP: Record<Phase, number> = { confirmed: 0, assigned: 1, at_yard: 1, on_
 
 /** The router's manoeuvre vocabulary, in words a person would use. */
 const MOVE: Record<string, string> = {
+  depart: 'Set off',
+  'depart-left': 'Set off',
+  'depart-right': 'Set off',
   'turn-left': 'Turn left',
   'turn-right': 'Turn right',
   'turn-slight left': 'Bear left',
@@ -33,27 +36,71 @@ const MOVE: Record<string, string> = {
   'end of road-straight': 'Straight on at the end of the road',
   'fork-left': 'Keep left at the fork',
   'fork-right': 'Keep right at the fork',
+  'fork-straight': 'Carry straight on at the fork',
   'roundabout-left': 'Into the roundabout',
   'roundabout-right': 'Into the roundabout',
   'exit roundabout-left': 'Leave the roundabout',
   'exit roundabout-right': 'Leave the roundabout',
   'exit roundabout-slight left': 'Leave the roundabout',
   'exit roundabout-slight right': 'Leave the roundabout',
+  'exit-left': 'Take the exit on the left',
+  'exit-right': 'Take the exit on the right',
   'merge-left': 'Merge left',
   'merge-right': 'Merge right',
   'ramp-left': 'Take the ramp on the left',
   'ramp-right': 'Take the ramp on the right',
+  'ramp-straight': 'Stay on the ramp',
   'new name-straight': 'Carry straight on',
   'continue-uturn': 'Turn back',
   arrive: 'Arrive',
+  'arrive-left': 'Arrive, on the left',
+  'arrive-right': 'Arrive, on the right',
 };
+
+const moveWords = (move: string) => MOVE[move] ?? MOVE[move.split('-')[0]] ?? 'Carry on';
+
+/** "400 m" / "1.5 km" — rounded the way a driver reads a sign, never to a false precision. */
+const distance = (m: number) => (m >= 1000 ? `${(m / 1000).toFixed(1)} km` : `${Math.max(10, Math.round(m / 10) * 10)} m`);
 
 /** "Turn right onto HITEC City Road in 400 m" — or without the road where it has no name. */
 function directionLine(next: { move: string; road: string; inM: number }): string {
-  const move = MOVE[next.move] ?? MOVE[next.move.split('-')[0]] ?? 'Carry on';
-  const where = next.road ? `${move} onto ${next.road}` : move;
-  const far = next.inM >= 1000 ? `${(next.inM / 1000).toFixed(1)} km` : `${Math.max(10, Math.round(next.inM / 10) * 10)} m`;
-  return `${where} in ${far}`;
+  const where = next.road ? `${moveWords(next.move)} onto ${next.road}` : moveWords(next.move);
+  return `${where} in ${distance(next.inM)}`;
+}
+
+/**
+ * The manoeuvre as an arrow, the way every satnav draws it.
+ *
+ * A SHAPE RATHER THAN A SENTENCE, because on a 375px screen the sentence wrapped onto four lines
+ * and covered a third of the map — and because a driver reads an arrow at a glance and a clause
+ * never. The words are still there for a screen reader, and the whole route is written out in
+ * full in the panel below.
+ */
+function TurnArrow({ move }: { move: string }) {
+  const stroke = { fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
+  const side = /right/.test(move) ? 1 : -1;
+  const path = /uturn/.test(move)
+    ? 'M9 21V10a4 4 0 0 1 8 0v4'
+    : /roundabout/.test(move)
+      ? 'M12 21v-6m0 0a3.5 3.5 0 1 1 3.5-3.5'
+      : /straight|depart|new name|arrive/.test(move)
+        ? 'M12 21V5'
+        : /slight/.test(move)
+          ? 'M12 21v-8l4-4'
+          : 'M12 21v-6h6';
+  const tip = /uturn/.test(move) ? 'M13.5 12.5 17 16l3.5-3.5' : /straight|depart|new name|arrive/.test(move) ? 'M7.5 9.5 12 5l4.5 4.5' : 'M15 12l4 3-4 3';
+  return (
+    <svg
+      viewBox="0 0 24 26"
+      width="22"
+      height="24"
+      aria-hidden="true"
+      style={side === -1 && !/straight|depart|uturn|new name|arrive/.test(move) ? { transform: 'scaleX(-1)' } : undefined}
+    >
+      <path d={path} {...stroke} />
+      <path d={tip} {...stroke} />
+    </svg>
+  );
 }
 
 function headline(phase: Phase, first: string, yard: string, drop: string): [string, string] {
@@ -126,6 +173,24 @@ function Tracker({ order, onChange }: { order: Order; onChange: (o: Order) => vo
             </li>
           ))}
         </ol>
+        {/* How far and how fast — the two numbers the ETA is made of. Showing them is what turns
+            "8 minutes" from a claim into something the reader can watch being earned. */}
+        {!done && snap.metresLeft > 0 && (
+          <p className="tk-gauge">
+            <span>
+              <b className="fig">{distance(snap.metresLeft)}</b> to your gate
+            </span>
+            <span className={snap.kmh > 0 ? undefined : 'tk-gauge-still'}>
+              {snap.kmh > 0 ? (
+                <>
+                  moving at <b className="fig">{snap.kmh} km/h</b>
+                </>
+              ) : (
+                'stopped at the yard'
+              )}
+            </span>
+          </p>
+        )}
       </section>
 
       <div className="tk-map-wrap">
@@ -133,8 +198,16 @@ function Tracker({ order, onChange }: { order: Order; onChange: (o: Order) => vo
             because that is what it describes, and it is the answer to "where has he got to". */}
         {snap.directions?.next && (
           <p className="tk-turn" aria-live="polite">
-            <span className="tk-turn-move">{directionLine(snap.directions.next)}</span>
-            {snap.directions.road && <span className="tk-turn-now">on {snap.directions.road}</span>}
+            <span className="tk-turn-icon">
+              <TurnArrow move={snap.directions.next.move} />
+            </span>
+            <span className="tk-turn-text">
+              <span className="tk-turn-far fig">{distance(snap.directions.next.inM)}</span>
+              <span className="tk-turn-road">{snap.directions.next.road || snap.directions.road || moveWords(snap.directions.next.move)}</span>
+            </span>
+            {/* The arrow and the distance are what a driver reads; the sentence is what a screen
+                reader needs, and it is the same fact said once for each kind of reader. */}
+            <span className="visually-hidden">{directionLine(snap.directions.next)}</span>
           </p>
         )}
         <TrackingMap plan={plan} snap={snap} subscribe={subscribe} />
@@ -196,6 +269,30 @@ function Tracker({ order, onChange }: { order: Order; onChange: (o: Order) => vo
         )}
       </section>
 
+      {/* The whole route, written out. "Show the routes well" means a reader can check it, and
+          a list of real road names is the only form of a route a person can actually check. */}
+      {snap.directions && (
+        <details className="tk-route card">
+          <summary>
+            <span>The route from here</span>
+            <span className="tk-route-count fig">{plan.legs[snap.legIndex].steps.length - snap.directions.stepIndex} turns left</span>
+          </summary>
+          <ol className="tk-route-list">
+            {plan.legs[snap.legIndex].steps.map((s, i) => {
+              const passed = i < (snap.directions?.stepIndex ?? 0);
+              const now = i === snap.directions?.stepIndex;
+              return (
+                <li key={`${s.move}-${s.road}-${i}`} className={passed ? 'is-passed' : now ? 'is-now' : undefined}>
+                  <span className="tk-route-move">{moveWords(s.move)}</span>
+                  {s.road && <span className="tk-route-road">{s.road}</span>}
+                  {s.m > 0 && <span className="tk-route-far fig">{distance(s.m)}</span>}
+                </li>
+              );
+            })}
+          </ol>
+        </details>
+      )}
+
       <section className="tk-lines card" aria-label="Your load">
         <h2 className="tk-h2">Your load</h2>
         <ul className="tk-line-list">
@@ -223,6 +320,17 @@ function Tracker({ order, onChange }: { order: Order; onChange: (o: Order) => vo
         <p className="tk-addr">
           <IconPin size={14} /> {city.drop.address}
         </p>
+
+        {/* The handover code. Shown from the moment the load is on the truck, because that is
+            when it becomes useful, and given its own block because the customer has to read it
+            out loud to somebody standing in front of them. */}
+        {STEP[snap.phase] >= 2 && (
+          <p className={`tk-code${done ? ' is-done' : ''}`}>
+            <span className="tk-code-label">{done ? 'Delivery code used' : 'Give the driver this code'}</span>
+            <span className="tk-code-digits fig">{deliveryCode(order.id)}</span>
+          </p>
+        )}
+
         {done && <Again order={order} />}
       </section>
     </div>
