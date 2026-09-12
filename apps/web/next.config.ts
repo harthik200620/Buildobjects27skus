@@ -191,12 +191,16 @@ const nextConfig: NextConfig = {
          * blob: and data: appear on img-src and media-src because the AR view is built on them —
          * the camera frame, the composite the shopper saves, and the USDZ handed to Quick Look
          * are all object URLs.
+         *
+         * tile.openstreetmap.org is the one third-party origin: the order-tracking map's tiles.
+         * Leaflet itself is bundled and the road geometry is a static file in the repo, so no
+         * script, style or connection leaves 'self' for the map — only the pictures of the roads.
          */
         value: [
           "default-src 'self'",
           "script-src 'self' 'unsafe-inline'",
           "style-src 'self' 'unsafe-inline'",
-          "img-src 'self' data: blob:",
+          "img-src 'self' data: blob: https://tile.openstreetmap.org",
           "media-src 'self' data: blob:",
           "font-src 'self'",
           "connect-src 'self'",

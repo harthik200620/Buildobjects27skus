@@ -68,3 +68,6 @@ AGENTS.md
 CLAUDE.md
 .claude/
 scratch/
+
+# pnpm content-addressable store, when pnpm is pointed at the repo (local machine state)
+.pnpm-store/

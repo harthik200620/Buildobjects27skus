@@ -20,3 +20,19 @@
 @import "./styles/greeting.css";
 @import "./styles/shelf.css";
 @import "./styles/splash.css";
+
+/*
+ * Leaflet's own stylesheet, for the order tracker's map.
+ *
+ * IT IS IMPORTED HERE, INTO A LAYER, RATHER THAN FROM THE COMPONENT. An unlayered stylesheet beats
+ * every layered one no matter how specific the layered selector is, so importing it from
+ * TrackingMap.tsx put all of Leaflet's defaults above the `@layer components` rules meant to
+ * theme them: the map kept Leaflet's white tooltips and 30px zoom buttons and no override could
+ * reach them. Naming the layer puts both in the same cascade, where source order decides — so
+ * order.css must come after this line, and does.
+ *
+ * The cost is 3.5 KB gzipped on every page instead of only this one. That is the price of the
+ * rule being deterministic rather than depending on which stylesheet Next injects first.
+ */
+@import "leaflet/dist/leaflet.css" layer(components);
+@import "./styles/order.css";

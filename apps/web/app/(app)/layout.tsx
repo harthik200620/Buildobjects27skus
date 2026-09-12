@@ -3,6 +3,7 @@ import CityGreeting from '@/components/CityGreeting';
 import Footer from '@/components/Footer';
 import FriendLoves from '@/components/FriendLoves';
 import Header from '@/components/header/Header';
+import ActiveOrderPill from '@/components/order/ActiveOrderPill';
 import Reveal from '@/components/Reveal';
 import ScrollProgress from '@/components/ScrollProgress';
 import SkipLink from '@/components/SkipLink';
@@ -37,6 +38,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <FriendLoves />
       <main id="main">{children}</main>
       <Footer categories={categories} />
+      {/* "Arriving in 8 min", on every page while a truck is on the road — see components/order. */}
+      <ActiveOrderPill />
       <ToastHost />
     </>
   );

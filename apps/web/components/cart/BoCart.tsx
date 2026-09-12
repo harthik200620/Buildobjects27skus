@@ -3,22 +3,38 @@
 import type { CatalogPrices } from '@buildobjects/estimator';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { BoCoinStill } from '@/components/BoCoin';
-import { IconArrow, IconCart, IconCheckCircle, IconClose, IconEstimate, IconShield, IconStorefront, IconTruck } from '@/components/icons';
+import { IconArrow, IconCart, IconCheckCircle, IconClose, IconEstimate, IconPin, IconShield, IconStorefront, IconTruck } from '@/components/icons';
 import QtyStepper from '@/components/QtyStepper';
 import { getBoCoins, redeemBoCoins } from '@/lib/coins';
 import { skuTitle } from '@/lib/label';
 import { inr } from '@/lib/media';
 import { clearPicks, type PickItem, readPicks, removePick, setPickQty } from '@/lib/picks';
 import { markOrdered } from '@/lib/shopper';
+import { cityFor } from '@/lib/tracking/cities';
+import { placeOrder } from '@/lib/tracking/orders';
+import { promiseMinutes } from '@/lib/tracking/simulate';
 
-export default function BoCart({ initialCatalog, images = {} }: { initialCatalog: CatalogPrices; images?: Record<string, string | null> }) {
+export default function BoCart({
+  initialCatalog,
+  images = {},
+  regionId = 'hyd',
+}: {
+  initialCatalog: CatalogPrices;
+  images?: Record<string, string | null>;
+  /** The session's delivery region — which demo yard the truck leaves from. */
+  regionId?: string;
+}) {
+  const router = useRouter();
+  const city = cityFor(regionId);
   const [picks, setPicks] = React.useState<PickItem[]>([]);
   const catalog = initialCatalog;
   const [coins, setCoins] = React.useState(0);
   const [useCoins, setUseCoins] = React.useState(true);
   const [ordered, setOrdered] = React.useState(false);
+  const [orderId, setOrderId] = React.useState('');
 
   React.useEffect(() => {
     const sync = () => {
@@ -54,10 +70,22 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
     /* Before the cart is emptied: what was in it is what "Previously ordered" means, and once
        `clearPicks()` has run there is nothing left to remember. */
     markOrdered(picks.map((p) => p.sku_code));
+    const order = placeOrder({
+      regionId,
+      lines: picks.map((p) => {
+        const s = catalog[p.sku_code];
+        return { sku: p.sku_code, name: s ? skuTitle(s.name, s.brand) : p.sku_code, qty: p.qty, unit: s?.unit ?? 'unit' };
+      }),
+      total: netTotal,
+      coins: appliedCoins,
+    });
     clearPicks();
+    setOrderId(order.id);
     setOrdered(true);
+    router.push(`/order/${order.id}`);
   };
 
+  /* Seen for the moment between the click and the tracking page — and by anyone who comes back. */
   if (ordered) {
     return (
       <div className="cart-state">
@@ -66,8 +94,7 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
         </span>
         <h2 className="cart-state-h">Order placed</h2>
         <p className="cart-state-p">
-          Your order is with us. We call to confirm the load and the delivery slot before anything leaves the yard — nothing is dispatched until you have agreed
-          both.
+          Order <b>{orderId}</b> is with the {city.yard.name}. The truck leaves as soon as it is loaded.
           {appliedCoins > 0 && (
             <>
               {' '}
@@ -76,11 +103,11 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
           )}
         </p>
         <div className="cart-state-cta">
-          <Link href="/search" className="btn btn-primary btn--lg">
-            Keep shopping
+          <Link href={`/order/${orderId}`} className="btn btn-primary btn--lg">
+            <IconTruck size={16} /> Track the truck
           </Link>
-          <Link href="/estimate" className="btn btn-secondary btn--lg">
-            <IconEstimate size={16} /> Open the estimator
+          <Link href="/search" className="btn btn-secondary btn--lg">
+            Keep shopping
           </Link>
         </div>
       </div>
@@ -192,7 +219,11 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
           </li>
           <li>
             <IconEstimate size={17} />
-            <span>We call to confirm the load and the slot before anything is dispatched.</span>
+            {/* This read "We call to confirm the load and the slot before anything is dispatched",
+                which was true when an order was a phone call and is not true of a truck that
+                leaves the yard in minutes. The page now tracks that truck; the assurance has to
+                describe the same thing the tracker shows. */}
+            <span>You see the truck, the driver and the minutes to your gate from the moment you order.</span>
           </li>
         </ul>
       </div>
@@ -222,6 +253,18 @@ export default function BoCart({ initialCatalog, images = {} }: { initialCatalog
             ) : (
               <p className="cart-coins-none">No coins yet. The BO Engine in your account hands them out; they never expire.</p>
             )}
+          </div>
+
+          {/* Where the truck is going and how long it takes — the same sum the tracker then counts
+              down, so the promise here and the ETA there cannot disagree. */}
+          <div className="cart-deliver">
+            <p className="cart-deliver-head">
+              <IconPin size={14} /> Deliver to
+            </p>
+            <p className="cart-deliver-addr">{city.drop.address}</p>
+            <p className="cart-deliver-when">
+              Truck from the {city.yard.name} · about <b className="fig">{promiseMinutes(regionId)} min</b>
+            </p>
           </div>
 
           <dl className="cart-totals">

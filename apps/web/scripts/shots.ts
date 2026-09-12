@@ -40,7 +40,20 @@ interface Shot {
   key: string;
   url: string;
   auth: boolean;
+  /** Runs in the page before any of its own scripts — for state the app keeps in localStorage. */
+  seed?: string;
 }
+
+/*
+ * An order frozen mid-road. The tracker keeps orders on the device (lib/tracking/orders.ts), so
+ * the page has nothing to show without one; speed 0 parks the truck at minute eight of the trip
+ * — on the way, partner assigned — so every shot is the same frame.
+ */
+const ORDER_SEED = `localStorage.setItem('bo_orders', JSON.stringify([{
+  id: 'BO-SHOT01', regionId: 'hyd', placedAt: Date.now() - 480000,
+  lines: [{ sku: 'CEM-ULT-PPC50', name: 'UltraTech PPC 50 kg', qty: 12, unit: 'bag' }, { sku: 'TIL-KAJ-GP00215', name: 'Kajaria GP00215 tile', qty: 4, unit: 'box' }],
+  total: 6240, coins: 120, clock: { simMs: 480000, wallMs: Date.now(), speed: 0 },
+}]))`;
 
 type Rect = { x: number; y: number; w: number; h: number } | null;
 interface Metrics {
@@ -284,6 +297,7 @@ async function shoot(browser: Browser, shot: Shot, viewport: 'desktop' | 'mobile
       : { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, reducedMotion: 'reduce' },
   );
   if (shot.auth) await ctx.addCookies([sessionCookieFor(BASE)]);
+  if (shot.seed) await ctx.addInitScript(shot.seed);
   const page: Page = await ctx.newPage();
   const label = `${shot.key}-${viewport}`;
   try {
@@ -589,6 +603,7 @@ async function main() {
     { key: 'cart', url: '/cart', auth: true },
     { key: 'account', url: '/account', auth: true },
     { key: 'welcome', url: '/welcome', auth: false },
+    { key: 'order', url: '/order/BO-SHOT01', auth: true, seed: ORDER_SEED },
   ];
   const shots = ONLY.length ? all.filter((s) => ONLY.includes(s.key)) : all;
   const browser = await chromium.launch({ headless: true });

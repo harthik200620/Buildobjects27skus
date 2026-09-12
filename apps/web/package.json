@@ -27,7 +27,9 @@
     "rehash-blur": "tsx scripts/rehash-blur.mts",
     "greet:derive": "tsx scripts/derive-greeting.mts",
     "images:audit": "tsx scripts/image-audit.mts",
-    "mobile:audit": "tsx scripts/mobile-audit.mts"
+    "mobile:audit": "tsx scripts/mobile-audit.mts",
+    "routes:fetch": "tsx scripts/routes-fetch.mts",
+    "tracking:audit": "tsx scripts/tracking-audit.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",
@@ -39,9 +41,15 @@
     "@buildobjects/ui": "workspace:*",
     "@google/genai": "^1.20.0",
     "@google/model-viewer": "^4.1.0",
+    "@turf/along": "7.4.0",
+    "@turf/bearing": "7.4.0",
+    "@turf/helpers": "7.4.0",
+    "@turf/length": "7.4.0",
+    "@turf/line-slice-along": "7.4.0",
     "blurhash": "^2.0.5",
     "drizzle-orm": "^0.44.5",
     "jose": "^6.1.0",
+    "leaflet": "1.9.4",
     "lru-cache": "^11.5.2",
     "meilisearch": "^0.53.0",
     "mysql2": "^3.14.3",
@@ -55,6 +63,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
+    "@types/leaflet": "1.9.22",
     "@types/node": "^24.7.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",

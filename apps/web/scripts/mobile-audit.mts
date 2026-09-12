@@ -45,7 +45,18 @@ const DEVICES = [
   { name: 'small', width: 360, height: 780, dpr: 2 },
 ] as const;
 
-const SURFACES: { key: string; url: string; auth: boolean }[] = [
+/*
+ * The tracker keeps orders on the device, so its page has nothing to show without one. Speed 0
+ * parks the truck eight minutes into the trip — on the way, partner assigned, both cards up —
+ * so every device measures the same frame.
+ */
+const ORDER_SEED = `localStorage.setItem('bo_orders', JSON.stringify([{
+  id: 'BO-MOB001', regionId: 'hyd', placedAt: Date.now() - 480000,
+  lines: [{ sku: 'CEM-ULT-PPC50', name: 'UltraTech PPC 50 kg', qty: 12, unit: 'bag' }, { sku: 'TIL-KAJ-GP00215', name: 'Kajaria GP00215 tile', qty: 4, unit: 'box' }],
+  total: 6240, coins: 120, clock: { simMs: 480000, wallMs: Date.now(), speed: 0 },
+}]))`;
+
+const SURFACES: { key: string; url: string; auth: boolean; seed?: string }[] = [
   { key: 'welcome', url: '/welcome', auth: false },
   { key: 'home', url: '/', auth: true },
   { key: 'catalogue', url: '/search', auth: true },
@@ -54,6 +65,7 @@ const SURFACES: { key: string; url: string; auth: boolean }[] = [
   { key: 'cart', url: '/cart', auth: true },
   { key: 'estimate', url: '/estimate', auth: true },
   { key: 'account', url: '/account', auth: true },
+  { key: 'order', url: '/order/BO-MOB001', auth: true, seed: ORDER_SEED },
 ];
 
 interface Finding {
@@ -457,6 +469,7 @@ async function run(browser: Browser) {
         reducedMotion: 'reduce',
       });
       if (surface.auth) await ctx.addCookies([sessionCookieFor(BASE)]);
+      if (surface.seed) await ctx.addInitScript(surface.seed);
       const page = await ctx.newPage();
       let bytes = 0;
       page.on('response', (r) => {

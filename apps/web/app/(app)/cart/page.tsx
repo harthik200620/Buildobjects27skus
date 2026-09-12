@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import BoCart from '@/components/cart/BoCart';
 import Plate from '@/components/Plate';
 import { loadFlagshipSkus } from '@/lib/catalog';
+import { loadSession } from '@/lib/data';
 import { loadCalculatorCatalog } from '@/lib/estimator';
 import { mediaUrl } from '@/lib/media';
 
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CartPage() {
-  const catalog = await loadCalculatorCatalog([]);
+  const [catalog, session] = await Promise.all([loadCalculatorCatalog([]), loadSession()]);
 
   /*
    * The picture for each line.
@@ -48,7 +49,7 @@ export default async function CartPage() {
           </div>
         </div>
       </header>
-      <BoCart initialCatalog={catalog} images={images} />
+      <BoCart initialCatalog={catalog} images={images} regionId={session?.regionId} />
     </div>
   );
 }
