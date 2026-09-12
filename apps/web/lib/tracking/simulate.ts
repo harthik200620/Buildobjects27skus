@@ -5,7 +5,7 @@ import length from '@turf/length';
 import lineSliceAlong from '@turf/line-slice-along';
 import { type City, cityFor } from './cities';
 import routes from './routes.json';
-import type { Directions, Leg, Order, Snapshot, Step } from './types';
+import type { Directions, Leg, Order, Snapshot, Step, TripEvent } from './types';
 
 /**
  * The trip as a timeline, and the truck as a function of time.
@@ -89,6 +89,16 @@ export function trapezoidSpeed(t: number, ramp = 0.08): number {
   if (x < ramp) return (v * x) / ramp;
   if (x > 1 - ramp) return (v * (1 - x)) / ramp;
   return v;
+}
+
+/** The curve run backwards: at what time fraction had the truck covered distance fraction s? */
+export function trapezoidInverse(s: number, ramp = 0.08): number {
+  const d = Math.min(1, Math.max(0, s));
+  const v = 1 / (1 - ramp);
+  const knee = (v * ramp) / 2;
+  if (d < knee) return Math.sqrt((2 * ramp * d) / v);
+  if (d > 1 - knee) return 1 - Math.sqrt((2 * ramp * (1 - d)) / v);
+  return d / v + ramp / 2;
 }
 
 export const simMinutes = (o: Order, now = Date.now()): number => (o.clock.simMs + (now - o.clock.wallMs) * o.clock.speed) / 60_000;
@@ -177,4 +187,46 @@ export function snapshot(p: Plan, min: number): Snapshot {
   }
   const { at, heading } = drive(roads[1], 1, 0);
   return { phase: 'delivered', legIndex: 1, at, heading, etaMin: 0, done: 1, remaining: [], directions: null, metresLeft: 0, kmh: 0 };
+}
+
+/**
+ * The trip as a feed — what has happened so far, newest first.
+ *
+ * Every line is derived from the same marks the snapshot uses, so the feed cannot say the truck
+ * was loaded at a time the ETA disagrees with. Turns come from the router's manoeuvres: the
+ * moment the truck reached each one is the curve run backwards from that turn's distance along
+ * the leg, which is why `trapezoidInverse` exists. Times are in the trip's own clock — placedAt
+ * plus the minutes into the trip — so at demo speed they read as a real afternoon would.
+ */
+export function events(p: Plan, order: Pick<Order, 'id' | 'placedAt' | 'lines'>, min: number): TripEvent[] {
+  const { marks, legs, roads, city } = p;
+  const first = city.partner.name.split(' ')[0];
+  const at = (m: number) => order.placedAt + m * 60_000;
+  const out: TripEvent[] = [{ at: at(0), text: `Order ${order.id} confirmed` }];
+
+  if (min >= marks.assigned) out.push({ at: at(marks.assigned), text: `${first} assigned · ${city.partner.vehicle.model}, ${city.partner.vehicle.number}` });
+  if (min >= marks.atYard) out.push({ at: at(marks.atYard), text: `${first} reached the ${city.yard.name}` });
+  if (min >= marks.loaded) {
+    const load = order.lines.map((l) => `${l.qty} ${l.unit} ${l.name}`).join(', ');
+    out.push({ at: at(marks.loaded), text: `Loaded and checked against your order: ${load}` });
+  }
+
+  /* The turns actually taken so far on the way to the door. */
+  const steps = legs[1].steps;
+  const span = marks.delivered - marks.loaded;
+  let run = 0;
+  for (let i = 1; i < steps.length; i++) {
+    run += steps[i - 1].m / 1000;
+    const step = steps[i];
+    if (step.road && !step.move.startsWith('arrive') && isManoeuvre(step, steps[i - 1].road) && !sameRoad(step.road, steps[i - 1].road)) {
+      const when = marks.loaded + span * trapezoidInverse(run / roads[1].km);
+      if (min >= when) {
+        const verb = /left|right/.test(step.move) ? 'turned onto' : 'joined';
+        out.push({ at: at(when), text: `${first} ${verb} ${step.road}` });
+      }
+    }
+  }
+
+  if (min >= marks.delivered) out.push({ at: at(marks.delivered), text: `Delivered to ${city.drop.name}` });
+  return out.sort((a, b) => b.at - a.at);
 }

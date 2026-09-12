@@ -162,15 +162,18 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
      * themselves as buttons and then have no action. Turning it off is what makes
      * `interactive: false` true all the way down rather than only for the mouse.
      */
-    const pin = (p: { lat: number; lng: number }, html: string, label: string) =>
+    /* The door's label sits ABOVE its pin. The route is framed so the door is near the bottom of
+       the map, and on a phone the sheet rises over that edge — a label hung below the pin was the
+       first thing it swallowed. The yard, framed near the top, keeps its label below. */
+    const pin = (p: { lat: number; lng: number }, html: string, label: string, direction: 'top' | 'bottom') =>
       L.marker([p.lat, p.lng], {
         icon: L.divIcon({ className: 'tk-pin', html, iconSize: [36, 44], iconAnchor: [18, 42] }),
         interactive: false,
         keyboard: false,
       })
-        .bindTooltip(label, { permanent: true, direction: 'bottom', offset: [0, 2], className: 'tk-tip' })
+        .bindTooltip(label, { permanent: true, direction, offset: [0, direction === 'top' ? -44 : 2], className: 'tk-tip' })
         .addTo(map);
-    const pins: [L.Marker, L.Marker] = [pin(plan.city.yard, YARD, plan.city.yard.name), pin(plan.city.drop, HOME, 'Your site')];
+    const pins: [L.Marker, L.Marker] = [pin(plan.city.yard, YARD, plan.city.yard.name, 'bottom'), pin(plan.city.drop, HOME, 'Your site', 'top')];
     const truck = L.marker([0, 0], {
       icon: L.divIcon({ className: 'tk-truck', html: `<div class="tk-truck-in">${TRUCK}</div>`, iconSize: [44, 44], iconAnchor: [22, 22] }),
       interactive: false,

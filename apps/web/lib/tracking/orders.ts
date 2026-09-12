@@ -69,3 +69,13 @@ export function setSpeed(id: string, speed: number): Order | null {
   write(orders);
   return { ...o };
 }
+
+/** The stars a customer gives the partner once the load is at the door. Kept with the order. */
+export function rateOrder(id: string, stars: number): Order | null {
+  const orders = read();
+  const o = orders.find((x) => x.id === id);
+  if (!o) return null;
+  o.rating = Math.max(1, Math.min(5, Math.round(stars)));
+  write(orders);
+  return { ...o };
+}

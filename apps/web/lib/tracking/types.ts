@@ -43,6 +43,15 @@ export interface Order {
    * changes so the truck never jumps. A real order has speed 1 and never rebases.
    */
   clock: { simMs: number; wallMs: number; speed: number };
+  /** Stars the customer gave the partner after delivery, 1–5. Absent until they do. */
+  rating?: number;
+}
+
+/** One line of the live feed: something that happened on the trip, and when. */
+export interface TripEvent {
+  /** Epoch ms in the trip's own clock — placedAt plus the minutes into the trip. */
+  at: number;
+  text: string;
 }
 
 /** One manoeuvre from the router: how far it runs, what the driver does, the road it joins. */

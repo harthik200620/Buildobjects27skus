@@ -1,11 +1,12 @@
 /* ── order tracking ──────────────────────────────────────────────────────────
-   The page is the ETA, the map and three cards. On a phone they stack in that
-   order, as Blinkit's do; on a desktop the map takes the left and stays put while
-   the cards scroll. Every figure is set in the figure face, every heading in the
+   The page is the map, the ETA and four cards. On a phone the map runs edge to
+   edge at the top and the cards rise over its bottom edge, the way every delivery
+   app's sheet does; on a desktop the map takes the left and stays put while the
+   cards scroll. Every figure is set in the figure face, every heading in the
    brand face — the same rules the rest of the store keeps. */
 @layer components {
   .order-page {
-    padding-top: var(--s-4);
+    padding-top: 0;
   }
   .tk {
     display: grid;
@@ -22,30 +23,74 @@
   }
   .tk-head,
   .tk-partner,
-  .tk-lines {
+  .tk-feed,
+  .tk-lines,
+  .tk-rate {
     padding: var(--s-5);
+  }
+  .tk-nowrap {
+    white-space: nowrap;
+  }
+
+  /* ── the phone: the map bleeds to the edges, the sheet rises over it ── */
+  .tk-map-wrap {
+    position: relative;
+    margin: 0 calc(var(--gutter) * -1);
+  }
+  .tk-head {
+    position: relative;
+    z-index: 2;
+    margin-top: -40px;
+    box-shadow: var(--sh-2);
+  }
+  /* A soft fade over the map's lower edge, so the sheet's shadow has something to land on. */
+  .tk-map-wrap::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 80px;
+    background: linear-gradient(180deg, transparent, rgb(6 24 29 / 85%));
+    pointer-events: none;
+    z-index: 2;
   }
 
   @media (min-width: 1024px) {
+    .order-page {
+      padding-top: var(--s-4);
+    }
     .tk {
       grid-template-columns: minmax(0, 1.45fr) minmax(340px, 1fr);
       grid-template-areas:
         "map head"
         "map partner"
+        "map feed"
         "map route"
-        "map lines";
+        "map lines"
+        "map rate"
+        "map cta";
       align-items: start;
     }
     .tk-map-wrap {
       grid-area: map;
       position: sticky;
       top: calc(var(--header-h) + var(--s-4));
+      margin: 0;
+    }
+    .tk-map-wrap::after {
+      display: none;
     }
     .tk-head {
       grid-area: head;
+      margin-top: 0;
+      box-shadow: none;
     }
     .tk-partner {
       grid-area: partner;
+    }
+    .tk-feed {
+      grid-area: feed;
     }
     .tk-route {
       grid-area: route;
@@ -53,321 +98,112 @@
     .tk-lines {
       grid-area: lines;
     }
+    .tk-rate {
+      grid-area: rate;
+    }
+    .tk-cta {
+      grid-area: cta;
+    }
   }
 
-  /* ── the head: what is happening, and when it lands ── */
-  .tk-head-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--s-4);
-    margin-top: var(--s-2);
-  }
-  .tk-head-text {
-    min-width: 0;
-    animation: tk-rise var(--dur-4) var(--ease-out) both;
-  }
-  .tk-title {
-    font-family: var(--font-brand);
-    font-size: var(--t-h3);
-    line-height: var(--t-h3-lh);
-    font-weight: 400;
-    letter-spacing: 0;
+  /* ── over the map: back, live, the next turn, the demo speed ── */
+  .tk-back,
+  .tk-live,
+  .tk-recentre,
+  .tk-speed {
+    position: absolute;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 40px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--hair-2);
+    /* Opaque, not glass: these sit over a map that redraws sixty times a second, and a
+       backdrop-filter here is a compositing pass over animating content on every frame. */
+    background: color-mix(in oklab, var(--color-canvas) 92%, var(--surf-2));
     color: var(--ink-1);
-    text-wrap: balance;
-  }
-  .tk-sub {
-    margin-top: 4px;
-    font-size: var(--t-cap);
-    line-height: var(--t-cap-lh);
-    color: var(--ink-2);
-    text-wrap: pretty;
-  }
-  .tk-eta {
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-  }
-  .tk-eta-label {
-    font-size: var(--t-micro);
-    line-height: var(--t-micro-lh);
-    letter-spacing: var(--track-micro);
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-  .tk-eta-fig {
-    font-size: var(--t-fig-lg);
-    line-height: 1.15;
+    font-size: var(--t-fine);
     font-weight: 600;
-    color: var(--color-teal-700);
     font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    animation: tk-tick var(--dur-3) var(--ease-out) both;
+    box-shadow: var(--sh-1);
   }
-  .tk-eta-mark {
-    display: grid;
-    place-items: center;
+  /* 44 square — the store's floor for anything a thumb is meant to hit, and the mobile gate's. */
+  .tk-back {
+    top: 12px;
+    left: 12px;
     width: 44px;
     height: 44px;
-    border-radius: 50%;
-    background: var(--ok-bg);
-    color: var(--ok);
-    border: 1px solid color-mix(in oklab, var(--ok) 40%, transparent);
-    animation: tk-pop var(--dur-4) var(--ease-spring) both;
-  }
-  @keyframes tk-rise {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-  }
-  @keyframes tk-tick {
-    from {
-      opacity: 0;
-      transform: translateY(-4px);
-    }
-  }
-  @keyframes tk-pop {
-    from {
-      transform: scale(0.6);
-      opacity: 0;
-    }
-  }
-
-  /* Four steps on a rail. The rail between two dots lights when the earlier one is done. */
-  .tk-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    margin: var(--s-5) 0 0;
     padding: 0;
-    list-style: none;
   }
-  .tk-steps li {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    text-align: center;
-    font-size: var(--t-micro);
-    line-height: var(--t-micro-lh);
-    /* --ink-4 measured 3.25:1 against the card and failed AA. A step nobody has reached yet is
-       still a label somebody reads to know what is coming. */
-    color: var(--ink-3);
-    text-wrap: balance;
-  }
-  .tk-steps li + li::before {
-    content: "";
-    position: absolute;
-    top: 9px;
-    right: 50%;
-    left: -50%;
-    height: 2px;
-    background: var(--hair-2);
-    transition: background-color var(--dur-4) var(--ease-out);
-  }
-  .tk-steps li.is-done + li::before {
-    background: var(--color-teal-700);
-  }
-  .tk-step-dot {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid var(--hair-3);
-    background: var(--color-surface);
-    color: var(--color-on-brand);
-    transition:
-      background-color var(--dur-3) var(--ease-out),
-      border-color var(--dur-3) var(--ease-out);
-  }
-  .tk-steps li.is-done,
-  .tk-steps li.is-now {
+  .tk-live {
+    top: 12px;
+    left: 12px;
+    height: 32px;
+    padding: 0 12px 0 10px;
     color: var(--ink-2);
   }
-  .tk-steps li.is-now {
-    color: var(--ink-1);
-    font-weight: 600;
-  }
-  .tk-steps li.is-done .tk-step-dot {
-    background: var(--color-teal-700);
-    border-color: var(--color-teal-700);
-  }
-  .tk-steps li.is-now .tk-step-dot {
-    border-color: var(--color-teal-700);
-    animation: tk-pulse 1.8s var(--ease-inout) infinite;
-  }
-  @keyframes tk-pulse {
-    0%,
-    100% {
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-teal-700) 24%, transparent);
-    }
-    50% {
-      box-shadow: 0 0 0 8px color-mix(in oklab, var(--color-teal-700) 6%, transparent);
-    }
-  }
-
-  /* Distance and speed, under the rail — the two numbers the ETA above is made of. */
-  .tk-gauge {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--s-3);
-    margin-top: var(--s-4);
-    padding-top: var(--s-3);
-    border-top: 1px solid var(--hair);
-    font-size: var(--t-cap);
-    line-height: var(--t-cap-lh);
-    color: var(--ink-3);
-  }
-  .tk-gauge b {
-    color: var(--ink-1);
-    font-variant-numeric: tabular-nums;
-  }
-  /* --ink-3, not --ink-4: scripts/contrast.ts holds ink-4 to decoration only, and this and the
-     two below are all de-emphasised TEXT — a stopped truck, a turn already taken, a spent code. */
-  .tk-gauge-still {
-    color: var(--ink-3);
-  }
-
-  /* ── the route, written out ── */
-  .tk-route {
-    padding: var(--s-4) var(--s-5);
-  }
-  .tk-route > summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-3);
-    font-size: var(--t-cap);
-    font-weight: 600;
-    color: var(--ink-1);
-    cursor: pointer;
-    list-style: none;
-  }
-  .tk-route > summary::-webkit-details-marker {
-    display: none;
-  }
-  /* A chevron that turns, rather than the browser's triangle. */
-  .tk-route > summary::after {
-    content: "";
-    flex: none;
+  .tk-live i {
     width: 8px;
     height: 8px;
-    margin-left: 2px;
-    border-right: 2px solid var(--ink-3);
-    border-bottom: 2px solid var(--ink-3);
-    transform: rotate(45deg) translate(-2px, -2px);
-    transition: transform var(--dur-2) var(--ease-out);
+    border-radius: 50%;
+    background: var(--ok);
+    animation: tk-beat 1.6s ease-out infinite;
   }
-  .tk-route[open] > summary::after {
-    transform: rotate(-135deg) translate(-2px, -2px);
+  @keyframes tk-beat {
+    0% {
+      box-shadow: 0 0 0 0 rgb(86 224 140 / 60%);
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 7px rgb(86 224 140 / 0%);
+    }
   }
-  .tk-route-count {
-    margin-left: auto;
-    font-weight: 400;
-    color: var(--ink-3);
+  .tk-recentre {
+    top: 12px;
+    right: 12px;
+    height: 32px;
+    padding: 0 12px;
+    z-index: 1001;
+    cursor: pointer;
+    animation: tk-rise var(--dur-3) var(--ease-out) both;
   }
-  .tk-route-list {
-    display: grid;
-    gap: 2px;
-    margin: var(--s-3) 0 0;
-    padding: var(--s-3) 0 0;
-    border-top: 1px solid var(--hair);
-    list-style: none;
-    counter-reset: turn;
-  }
-  .tk-route-list li {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: baseline;
-    gap: 2px var(--s-3);
-    padding: 7px 0;
-    border-bottom: 1px solid var(--hair);
-    font-size: var(--t-cap);
-    line-height: var(--t-cap-lh);
+  .tk-speed {
+    left: 12px;
+    bottom: 12px;
+    height: 32px;
+    padding: 0 12px;
     color: var(--ink-2);
+    cursor: pointer;
+    transition:
+      color var(--dur-2) var(--ease-out),
+      border-color var(--dur-2) var(--ease-out);
   }
-  .tk-route-list li:last-child {
-    border-bottom: 0;
-  }
-  /* Behind the driver: dimmed and struck through, the way a satnav greys what is done. */
-  .tk-route-list li.is-passed {
-    color: var(--ink-3);
-  }
-  .tk-route-list li.is-passed .tk-route-move {
-    text-decoration: line-through;
-  }
-  .tk-route-list li.is-now {
-    margin: 0 calc(var(--s-3) * -1);
-    padding: 7px var(--s-3);
-    border-radius: var(--radius-sm);
-    border-bottom-color: transparent;
-    background: color-mix(in oklab, var(--color-teal-700) 14%, transparent);
+  .tk-recentre:hover,
+  .tk-speed:hover {
     color: var(--ink-1);
+    border-color: var(--hair-3);
   }
-  .tk-route-move {
-    font-weight: 600;
+  /* On a phone the back button holds the top-left and the turn plate the middle; there is no
+     room for a Live pill on 390px, and the avatar's moving dot and the feed already say it. */
+  @media (max-width: 1023.98px) {
+    .tk-live {
+      display: none;
+    }
+    /* The sheet rises 40px over the map, so anything pinned to the map's bottom edge would be
+       under it. The speed control clears the overlap. */
+    .tk-speed {
+      bottom: 52px;
+    }
   }
-  .tk-route-road {
-    grid-column: 1;
-    font-size: var(--t-fine);
-    line-height: var(--t-fine-lh);
-    color: var(--ink-3);
-  }
-  .tk-route-far {
-    grid-row: 1;
-    grid-column: 2;
-    color: var(--ink-3);
-  }
-
-  /* ── the handover code ── */
-  .tk-code {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-3);
-    margin-top: var(--s-4);
-    padding: var(--s-3) var(--s-4);
-    border: 1px dashed var(--hair-brand);
-    border-radius: var(--radius-md);
-    background: color-mix(in oklab, var(--color-teal-700) 10%, transparent);
-  }
-  .tk-code-label {
-    font-size: var(--t-fine);
-    line-height: var(--t-fine-lh);
-    color: var(--ink-2);
-  }
-  .tk-code-digits {
-    font-size: var(--t-fig-lg);
-    line-height: 1.1;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    color: var(--color-teal-700);
-  }
-  .tk-code.is-done {
-    border-style: solid;
-    border-color: var(--hair);
-    background: transparent;
-  }
-  .tk-code.is-done .tk-code-digits {
-    color: var(--ink-3);
-    text-decoration: line-through;
+  @media (min-width: 1024px) {
+    .tk-back {
+      display: none;
+    }
   }
 
-  /* ── the map ── */
-  .tk-map-wrap {
-    position: relative;
-  }
-
-  /* The next manoeuvre, over the map's top edge. Two lines: what the driver does next, and the
-     road under the truck now — the same two things a satnav puts in front of a windscreen. */
-  /* An arrow and a distance, the shape of every satnav plate. It replaced a wrapped sentence
-     that ran to four lines on a phone and hid a third of the map. */
+  /* The next manoeuvre: an arrow and a distance, the shape of every satnav plate. */
   .tk-turn {
     position: absolute;
     z-index: 3;
@@ -407,8 +243,6 @@
     font-variant-numeric: tabular-nums;
   }
   .tk-turn-road {
-    /* One line, clipped: a road name is a label, and a plate that grows to fit the longest name
-       in the city is a plate that covers the map it sits on. */
     overflow: hidden;
     font-size: var(--t-micro);
     line-height: var(--t-micro-lh);
@@ -416,13 +250,190 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  /* ── the head: what is happening, and when it lands ── */
+  .tk-head-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-top: var(--s-2);
+  }
+  .tk-head-text {
+    min-width: 0;
+    animation: tk-rise var(--dur-4) var(--ease-out) both;
+  }
+  .tk-title {
+    font-family: var(--font-brand);
+    font-size: var(--t-h3);
+    line-height: var(--t-h3-lh);
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--ink-1);
+    text-wrap: balance;
+  }
+  .tk-sub {
+    margin-top: 4px;
+    font-size: var(--t-cap);
+    line-height: var(--t-cap-lh);
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+  .tk-sub b {
+    color: var(--ink-1);
+    font-weight: 600;
+  }
+  .tk-eta {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .tk-eta-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .tk-eta-label {
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    letter-spacing: var(--track-micro);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .tk-eta-fig {
+    font-size: var(--t-fig-lg);
+    line-height: 1.15;
+    font-weight: 600;
+    color: var(--color-teal-700);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    animation: tk-tick var(--dur-3) var(--ease-out) both;
+  }
+  .tk-eta-mark {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--ok-bg);
+    color: var(--ok);
+    border: 1px solid color-mix(in oklab, var(--ok) 40%, transparent);
+    animation: tk-pop var(--dur-4) var(--ease-spring) both;
+  }
+  /* The ring: how much of the whole job is done. It eases between reads rather than stepping,
+     so a fifty-metre update reads as motion and not as a tick. */
+  .tk-ring {
+    position: relative;
+    flex: none;
+    width: 64px;
+    height: 64px;
+  }
+  .tk-ring svg {
+    transform: rotate(-90deg);
+  }
+  .tk-ring circle {
+    fill: none;
+    stroke-width: 5;
+  }
+  .tk-ring-track {
+    stroke: var(--hair-2);
+  }
+  .tk-ring-fill {
+    stroke: var(--color-teal-700);
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    transition: stroke-dashoffset var(--dur-5) var(--ease-out);
+  }
+  .tk-ring b {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: var(--t-cap);
+    font-weight: 600;
+    color: var(--ink-1);
+  }
+  @keyframes tk-rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  @keyframes tk-tick {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  @keyframes tk-pop {
+    from {
+      transform: scale(0.6);
+      opacity: 0;
+    }
+  }
+
+  /* Four segments on a rail: done ones are solid, the live one carries a moving sheen. */
+  .tk-steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    margin: var(--s-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tk-steps li {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: var(--t-fine);
+    line-height: var(--t-fine-lh);
+    /* --ink-4 measured 3.25:1 against the card and failed AA. A step nobody has reached yet is
+       still a label somebody reads to know what is coming. */
+    color: var(--ink-3);
+    text-wrap: balance;
+  }
+  .tk-step-bar {
+    position: relative;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--hair-2);
+    overflow: hidden;
+    transition: background-color var(--dur-4) var(--ease-out);
+  }
+  .tk-steps li.is-done .tk-step-bar {
+    background: var(--color-teal-700);
+  }
+  .tk-steps li.is-now .tk-step-bar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--color-teal-700) 0 55%, transparent 55%);
+    animation: tk-shimmer 1.8s var(--ease-out) infinite;
+  }
+  @keyframes tk-shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  .tk-steps li.is-done {
+    color: var(--ink-2);
+  }
+  .tk-steps li.is-now {
+    color: var(--ink-1);
+    font-weight: 600;
+  }
+
+  /* ── the map ── */
   .tk-map {
     position: relative;
     isolation: isolate;
-    height: clamp(300px, 46dvh, 560px);
+    height: clamp(300px, 48dvh, 560px);
     overflow: hidden;
-    border-radius: var(--r-4);
-    border: 1px solid var(--hair);
     background: var(--color-canvas-2);
   }
   @media (min-width: 1024px) {
@@ -430,6 +441,8 @@
       height: calc(100dvh - var(--header-h) - var(--s-6));
       min-height: 520px;
       max-height: 760px;
+      border-radius: var(--r-4);
+      border: 1px solid var(--hair);
     }
   }
   .tk-canvas {
@@ -440,8 +453,8 @@
     outline: 2px solid var(--color-teal-700);
     outline-offset: -2px;
   }
-  /* A teal wash over CARTO's neutral greys: above the tiles, under the road and the
-     markers, so the map is the store's colour rather than a stranger's. */
+  /* A teal wash over the tiles: above them, under the road and the markers, so the map is the
+     store's colour rather than a stranger's. */
   .tk-wash {
     position: absolute;
     inset: 0;
@@ -449,48 +462,6 @@
     pointer-events: none;
     background: rgb(86 211 216 / 6%);
     mix-blend-mode: screen;
-  }
-  /*
-   * OPAQUE, NOT GLASS — and this is the one page in the store where that matters most.
-   *
-   * These sit over a map that redraws sixty times a second, so a backdrop-filter here is a
-   * compositing pass over animating content on every frame, which is exactly the cost the
-   * blur budget in scripts/shots.ts exists to hold down. The header's glass is over a page
-   * that mostly sits still; this is not. A solid ground costs nothing and reads better against
-   * moving streets anyway.
-   */
-  .tk-recentre,
-  .tk-speed {
-    position: absolute;
-    z-index: 2;
-    top: 12px;
-    height: 32px;
-    padding: 0 12px;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--hair-2);
-    background: color-mix(in oklab, var(--color-canvas) 92%, var(--surf-2));
-    color: var(--ink-2);
-    font-size: var(--t-fine);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    cursor: pointer;
-    transition:
-      color var(--dur-2) var(--ease-out),
-      border-color var(--dur-2) var(--ease-out);
-  }
-  .tk-recentre {
-    right: 12px;
-    z-index: 1001;
-    color: var(--ink-1);
-    animation: tk-rise var(--dur-3) var(--ease-out) both;
-  }
-  .tk-speed {
-    left: 12px;
-  }
-  .tk-recentre:hover,
-  .tk-speed:hover {
-    color: var(--ink-1);
-    border-color: var(--hair-3);
   }
 
   /* Leaflet, in the store's clothes. */
@@ -525,9 +496,15 @@
   .tk-map .leaflet-control-zoom a:hover {
     background: var(--surf-3);
   }
+  /* On a phone the sheet covers the map's bottom edge, so the zoom control and the credit step
+     up above it. */
+  @media (max-width: 1023.98px) {
+    .tk-map .leaflet-bottom {
+      bottom: 40px;
+    }
+  }
   /* OpenStreetMap's licence requires this credit, so it is not decoration and is not allowed to
-     be unreadable: Leaflet ships it at 10px in mid-grey, which fails AA on both counts. Set at
-     the store's own smallest size and ink, with a tall enough link to press. */
+     be unreadable: Leaflet ships it at 10px in mid-grey, which fails AA on both counts. */
   .tk-map .leaflet-control-attribution {
     padding: 0 8px;
     background: rgb(6 24 29 / 86%);
@@ -535,9 +512,8 @@
     font-size: var(--t-fine);
     line-height: 24px;
   }
-  /* Padding out to 44 and pulled back by the same margin: the link is a full-size touch target
-     while the credit line stays the quiet 24px strip it should be. A legal credit does not get to
-     become a bar across the bottom of the map, and it does not get to be untappable either. */
+  /* Padding out to 44 and pulled back by the same margin: a full-size touch target on a credit
+     line that stays the quiet 24px strip it should be. */
   .tk-map .leaflet-control-attribution a {
     display: inline-block;
     padding: 10px 4px;
@@ -555,8 +531,6 @@
     font-size: var(--t-micro);
     font-weight: 600;
     letter-spacing: 0.02em;
-    /* Wraps rather than running off: a yard name is as long as the place is called, and the map
-       clips its own overflow. Leaflet's default `white-space: nowrap` is overridden here. */
     max-width: 130px;
     white-space: normal;
     text-align: center;
@@ -625,6 +599,7 @@
     gap: var(--s-3);
   }
   .tk-avatar {
+    position: relative;
     flex: none;
     display: grid;
     place-items: center;
@@ -636,6 +611,21 @@
     color: var(--color-teal-800);
     font: 700 var(--t-cap) / 1 var(--font-figure);
     letter-spacing: 0.04em;
+  }
+  /* A green dot while the wheels turn: the smallest honest "live" there is. */
+  .tk-avatar i {
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--color-surface);
+    background: var(--ink-4);
+    transition: background-color var(--dur-3) var(--ease-out);
+  }
+  .tk-avatar.is-moving i {
+    background: var(--ok);
   }
   .tk-partner-who {
     flex: 1;
@@ -650,29 +640,48 @@
     line-height: var(--t-cap-lh);
     color: var(--ink-3);
   }
-  .tk-partner-facts {
-    display: grid;
+  .tk-partner-acts {
+    display: flex;
     gap: var(--s-2);
-    margin: var(--s-4) 0 0;
-    padding-top: var(--s-4);
-    border-top: 1px solid var(--hair);
+    flex: none;
   }
-  .tk-partner-facts div {
+  .tk-act {
     display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: var(--s-3);
-    font-size: var(--t-cap);
-    line-height: var(--t-cap-lh);
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--hair-3);
+    background: var(--color-surface);
+    color: var(--ink-1);
+    transition: background-color var(--dur-2) var(--ease-out);
   }
-  .tk-partner-facts dt {
-    color: var(--ink-3);
+  .tk-act:hover {
+    background: var(--color-surface-2);
+  }
+  .tk-act--call {
+    background: var(--color-teal-700);
+    border-color: var(--color-teal-700);
+    color: var(--color-on-brand);
+  }
+  .tk-act--call:hover {
+    background: var(--color-teal-800);
+  }
+  .tk-partner-facts {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+    margin: var(--s-3) 0 0;
+    padding-top: var(--s-3);
+    border-top: 1px solid var(--hair);
+    font-size: var(--t-fine);
+    line-height: var(--t-fine-lh);
+    color: var(--ink-1);
   }
   .tk-partner-facts dd {
     margin: 0;
-    color: var(--ink-1);
   }
-  /* --ink-4 measured 3.25:1 here. "masked for the partner's privacy" is the sentence that
-     explains why a phone number is half hidden — quiet, but never unreadable. */
   .tk-muted {
     color: var(--ink-3);
   }
@@ -698,11 +707,164 @@
     }
   }
 
-  /* ── the load ── */
+  /* ── the feed ── */
+  .tk-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
   .tk-h2 {
-    margin-bottom: var(--s-3);
     font: 600 var(--t-body) / var(--t-body-lh) var(--font-ui);
     color: var(--ink-1);
+  }
+  .tk-fine {
+    font-size: var(--t-fine);
+    line-height: var(--t-fine-lh);
+  }
+  .tk-feed {
+    padding-bottom: var(--s-3);
+  }
+  .tk-feed-list {
+    margin: var(--s-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tk-feed-list li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px 14px 1fr;
+    gap: 0 10px;
+    align-items: start;
+    padding: 8px 0;
+    font-size: var(--t-cap);
+    line-height: var(--t-cap-lh);
+    color: var(--ink-2);
+  }
+  .tk-feed-list time {
+    font-size: var(--t-fine);
+    line-height: var(--t-cap-lh);
+    color: var(--ink-3);
+  }
+  .tk-feed-list i {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    margin: 5px 3px;
+    border-radius: 50%;
+    background: var(--hair-3);
+  }
+  /* The thread between dots, drawn upward from each dot to the one above it. */
+  .tk-feed-list li + li i::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    bottom: 12px;
+    width: 2px;
+    height: 24px;
+    background: var(--hair-2);
+  }
+  .tk-feed-list li.is-now {
+    color: var(--ink-1);
+  }
+  .tk-feed-list li.is-now i {
+    background: var(--color-teal-700);
+    box-shadow: 0 0 0 4px rgb(86 211 216 / 18%);
+  }
+
+  /* ── the route, written out ── */
+  .tk-route {
+    padding: var(--s-4) var(--s-5);
+  }
+  .tk-route > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-size: var(--t-cap);
+    font-weight: 600;
+    color: var(--ink-1);
+    cursor: pointer;
+    list-style: none;
+  }
+  .tk-route > summary::-webkit-details-marker {
+    display: none;
+  }
+  .tk-route > summary::after {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-left: 2px;
+    border-right: 2px solid var(--ink-3);
+    border-bottom: 2px solid var(--ink-3);
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  .tk-route[open] > summary::after {
+    transform: rotate(-135deg) translate(-2px, -2px);
+  }
+  .tk-route-count {
+    margin-left: auto;
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+  .tk-route-list {
+    display: grid;
+    gap: 2px;
+    margin: var(--s-3) 0 0;
+    padding: var(--s-3) 0 0;
+    border-top: 1px solid var(--hair);
+    list-style: none;
+  }
+  .tk-route-list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 2px var(--s-3);
+    padding: 7px 0;
+    border-bottom: 1px solid var(--hair);
+    font-size: var(--t-cap);
+    line-height: var(--t-cap-lh);
+    color: var(--ink-2);
+  }
+  .tk-route-list li:last-child {
+    border-bottom: 0;
+  }
+  /* --ink-3, not --ink-4: scripts/contrast.ts holds ink-4 to decoration only, and these are all
+     de-emphasised TEXT — a turn already taken, a code already used. */
+  .tk-route-list li.is-passed {
+    color: var(--ink-3);
+  }
+  .tk-route-list li.is-passed .tk-route-move {
+    text-decoration: line-through;
+  }
+  .tk-route-list li.is-now {
+    margin: 0 calc(var(--s-3) * -1);
+    padding: 7px var(--s-3);
+    border-radius: var(--radius-sm);
+    border-bottom-color: transparent;
+    background: color-mix(in oklab, var(--color-teal-700) 14%, transparent);
+    color: var(--ink-1);
+  }
+  .tk-route-move {
+    font-weight: 600;
+  }
+  .tk-route-road {
+    grid-column: 1;
+    font-size: var(--t-fine);
+    line-height: var(--t-fine-lh);
+    color: var(--ink-3);
+  }
+  .tk-route-far {
+    grid-row: 1;
+    grid-column: 2;
+    color: var(--ink-3);
+  }
+
+  /* ── the load ── */
+  .tk-lines .tk-h2 {
+    margin-bottom: var(--s-3);
   }
   .tk-line-list {
     display: grid;
@@ -754,11 +916,75 @@
     flex: none;
     margin-top: 1px;
   }
-  .tk-cta {
+
+  /* ── the handover code ── */
+  .tk-code {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     gap: var(--s-3);
     margin-top: var(--s-4);
+    padding: var(--s-3) var(--s-4);
+    border: 1px dashed var(--hair-brand);
+    border-radius: var(--radius-md);
+    background: color-mix(in oklab, var(--color-teal-700) 10%, transparent);
+  }
+  .tk-code-label {
+    font-size: var(--t-fine);
+    line-height: var(--t-fine-lh);
+    color: var(--ink-2);
+  }
+  .tk-code-digits {
+    font-size: var(--t-fig-lg);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--color-teal-700);
+  }
+  .tk-code.is-done {
+    border-style: solid;
+    border-color: var(--hair);
+    background: transparent;
+  }
+  .tk-code.is-done .tk-code-digits {
+    color: var(--ink-3);
+    text-decoration: line-through;
+  }
+
+  /* ── at the door: the rating and what to do next ── */
+  .tk-stars {
+    display: flex;
+    gap: 2px;
+    margin-top: var(--s-3);
+  }
+  .tk-star {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--hair-3);
+    cursor: pointer;
+    transition:
+      color var(--dur-1) var(--ease-out),
+      transform var(--dur-2) var(--ease-spring);
+  }
+  .tk-star.is-on {
+    color: var(--color-teal-700);
+  }
+  .tk-star:hover {
+    transform: scale(1.12);
+  }
+  .tk-star:focus-visible {
+    outline: 2px solid var(--color-teal-700);
+    outline-offset: -2px;
+  }
+  .tk-cta {
+    display: grid;
+    gap: var(--s-3);
   }
 
   /* ── "Arriving in 8 min", on every other page ── */
@@ -834,22 +1060,13 @@
   @media (max-width: 767.98px) {
     .tk-head,
     .tk-partner,
-    .tk-lines {
+    .tk-feed,
+    .tk-lines,
+    .tk-rate {
       padding: var(--s-4);
-    }
-    .tk-map {
-      border-radius: var(--r-3);
     }
     .tk-eta-fig {
       font-size: 1.5rem;
-    }
-    /* On a 375px screen the demo pill and the next-turn banner both want the top of the map, and
-       they overlapped by about thirty pixels. The turn wins the top — it is the thing being
-       looked at — and the demo control, which is scaffolding, drops to the free bottom-left
-       corner. It keeps its own row there, clear of the zoom buttons and the attribution. */
-    .tk-speed {
-      top: auto;
-      bottom: 12px;
     }
     .tk-turn {
       max-width: calc(100% - 24px);
@@ -862,14 +1079,21 @@
     .tk-eta-mark,
     .tk-recentre,
     .tk-pill,
-    .tk-steps li.is-now .tk-step-dot,
+    .tk-live i,
+    .tk-steps li.is-now .tk-step-bar::after,
     .tk-pin.is-target::after,
     .tk-truck::before {
       animation: none;
     }
+    .tk-steps li.is-now .tk-step-bar {
+      background: color-mix(in oklab, var(--color-teal-700) 55%, var(--hair-2));
+    }
     .tk-pin.is-target::after {
       opacity: 0.6;
       transform: scale(1.4);
+    }
+    .tk-ring-fill {
+      transition: none;
     }
   }
 }

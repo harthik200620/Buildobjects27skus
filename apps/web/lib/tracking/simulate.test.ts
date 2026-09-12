@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { shortestTurn, smoothHeading } from '@/components/order/heading';
 import { CITIES } from './cities';
-import { plan, promiseMinutes, simMinutes, snapshot, trafficFactor, trapezoid } from './simulate';
+import { events, plan, promiseMinutes, simMinutes, snapshot, trafficFactor, trapezoid, trapezoidInverse } from './simulate';
 import type { Order } from './types';
 
 /* Fixed UTC instants; the functions read the clock in IST, so the hour they see is +5:30. */
@@ -253,6 +253,55 @@ describe('smoothHeading', () => {
       const h = smoothHeading(a, b, 16);
       expect(h).toBeGreaterThanOrEqual(0);
       expect(h).toBeLessThan(360);
+    }
+  });
+});
+
+describe('trapezoidInverse', () => {
+  it('undoes the curve everywhere on it, including both ramps', () => {
+    for (let t = 0; t <= 1; t += 0.01) expect(trapezoidInverse(trapezoid(t))).toBeCloseTo(t, 6);
+  });
+});
+
+describe('events', () => {
+  const p = plan({ regionId: 'hyd', placedAt: NOON });
+  const order = { id: 'BO-TEST', placedAt: NOON, lines: [{ sku: 'X', name: 'cement', qty: 12, unit: 'bag' }] };
+  const { marks } = p;
+
+  it('starts with the order confirmed and nothing else', () => {
+    const e = events(p, order, 0);
+    expect(e).toHaveLength(1);
+    expect(e[0].text).toMatch(/confirmed/);
+  });
+
+  it('only ever grows, newest first, and every line has a time no later than now', () => {
+    let last = 0;
+    for (let m = 0; m <= marks.delivered + 1; m += 0.1) {
+      const e = events(p, order, m);
+      expect(e.length).toBeGreaterThanOrEqual(last);
+      last = e.length;
+      for (let i = 1; i < e.length; i++) expect(e[i - 1].at).toBeGreaterThanOrEqual(e[i].at);
+      for (const x of e) expect(x.at).toBeLessThanOrEqual(NOON + m * 60_000 + 1);
+    }
+  });
+
+  it('reports the yard, the load and the door at the marks the snapshot uses', () => {
+    const texts = events(p, order, marks.delivered).map((e) => e.text);
+    expect(texts.some((t) => /reached the/.test(t))).toBe(true);
+    expect(texts.some((t) => /Loaded .* 12 bag cement/.test(t))).toBe(true);
+    expect(texts[0]).toMatch(/^Delivered/);
+    expect(events(p, order, marks.loaded - 0.01).some((e) => /Loaded/.test(e.text))).toBe(false);
+  });
+
+  it('names a turn only once the truck has taken it', () => {
+    const turnsAt = (m: number) => events(p, order, m).filter((e) => /turned onto|joined/.test(e.text)).length;
+    expect(turnsAt(marks.loaded)).toBe(0);
+    expect(turnsAt(marks.delivered)).toBeGreaterThan(0);
+    /* Every turn named in the feed is a road the router named on that leg. */
+    const roads = new Set(p.legs[1].steps.map((s) => s.road).filter(Boolean));
+    for (const e of events(p, order, marks.delivered)) {
+      const m = /(?:turned onto|joined) (.+)$/.exec(e.text);
+      if (m) expect(roads.has(m[1]), m[1]).toBe(true);
     }
   });
 });

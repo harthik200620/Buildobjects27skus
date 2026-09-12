@@ -298,6 +298,13 @@ export const IconChat = (p: IconProps) => (
   </Ico>
 );
 
+/** A handset — the order tracker's Call. */
+export const IconPhone = (p: IconProps) => (
+  <Ico {...p}>
+    <path d="M5 4h3.6l1.8 4.4-2.2 1.4a10 10 0 0 0 5.8 5.8l1.4-2.2L20 15.2V19a1.6 1.6 0 0 1-1.6 1.6A14.4 14.4 0 0 1 3.4 5.6 1.6 1.6 0 0 1 5 4z" />
+  </Ico>
+);
+
 /* Send. A stroke leaving to the right with its tail behind it: the only icon in the set that is
    pure diagonal, which is what makes it findable in a row of boxes at 16px. */
 export const IconSend = (p: IconProps) => (

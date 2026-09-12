@@ -222,11 +222,6 @@ async function main() {
         if (s.done < dones) railOk = false;
         dones = s.done;
         if (s.partner && !partnerAt) partnerAt = s.phase;
-        if (s.phase === 'on_the_way' && !sample) {
-          roadBefore = s.road;
-          sample = (await page.evaluate(SAMPLE)) as typeof sample;
-          roadAfter = (await state(page)).road;
-        }
         if (s.phase === 'delivered') break;
         await page.waitForTimeout(200);
       }
@@ -237,6 +232,30 @@ async function main() {
       check('eta', 'the ETA never goes up', 6, falls, `${etas[0]} → ${etas.at(-1)} over ${etas.length} reads`);
       check('eta', 'it ends on Delivered', 3, phases.at(-1) === 'delivered' && etas.at(-1) === 0);
 
+      /*
+       * THE MOTION SAMPLE IS TAKEN ON ITS OWN PAGE, NOT INSIDE THE PHASE WALK.
+       *
+       * It used to run the moment the walk first saw on_the_way. A hundred and eighty frames at
+       * headless Chromium's 20 Hz is nine seconds, and once the routes were shortened the whole
+       * of `arriving` — two seconds at 40× — came and went inside that pause, so the walk
+       * reported five phases for a page that rendered six. A sample and a poll cannot share one
+       * page; this one is seeded a minute into the delivery leg, where the truck is driving
+       * whatever the harness's frame rate.
+       */
+      {
+        const { page: p2, ctx: c2 } = await openPage(browser, { viewport: 'desktop', motion: 'no-preference' });
+        p2.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
+        /* At 12×, not 40: the shortened delivery leg is ten seconds at 40× and a 180-frame sample
+           is nine, so the sample ran off the end into `delivered` — a parked truck (median 0 px)
+           and one 53 px jump where the camera flew to the door. At 12× the leg is thirty-seven. */
+        await open(p2, 12, expect.marks.loaded + 0.5);
+        await p2.waitForSelector('.tk-truck', { timeout: 20_000 });
+        await p2.waitForTimeout(600);
+        roadBefore = (await state(p2)).road;
+        sample = (await p2.evaluate(SAMPLE)) as typeof sample;
+        roadAfter = (await state(p2)).road;
+        await c2.close();
+      }
       if (sample) {
         const gaps = sample.gaps;
         const steps = sample.xy.slice(1).map(([x, y], i) => Math.hypot(x - sample.xy[i][0], y - sample.xy[i][1]));
@@ -306,7 +325,9 @@ async function main() {
     {
       const { page, ctx } = await openPage(browser, { viewport: 'desktop', motion: 'no-preference' });
       page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-      await open(page, 12, 6);
+      /* Mid-leg on purpose: `at_yard` is two minutes — ten seconds at 12× — and seeding a minute
+         before it ended left one second for two page loads. The delivery leg is forty. */
+      await open(page, 12, expect.marks.loaded + 1);
       await page.waitForSelector('.tk-truck', { timeout: 20_000 });
       const before = await state(page);
       await page.reload({ waitUntil: 'domcontentloaded' });
