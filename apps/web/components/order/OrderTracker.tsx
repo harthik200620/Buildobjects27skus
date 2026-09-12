@@ -19,6 +19,43 @@ const TrackingMap = dynamic(() => import('./TrackingMap'), { ssr: false, loading
 const STEPS = ['Confirmed', 'Partner on the way', 'Picked up', 'Delivered'];
 const STEP: Record<Phase, number> = { confirmed: 0, assigned: 1, at_yard: 1, on_the_way: 2, arriving: 2, delivered: 3 };
 
+/** The router's manoeuvre vocabulary, in words a person would use. */
+const MOVE: Record<string, string> = {
+  'turn-left': 'Turn left',
+  'turn-right': 'Turn right',
+  'turn-slight left': 'Bear left',
+  'turn-slight right': 'Bear right',
+  'turn-sharp left': 'Sharp left',
+  'turn-sharp right': 'Sharp right',
+  'turn-straight': 'Carry straight on',
+  'end of road-left': 'Left at the end of the road',
+  'end of road-right': 'Right at the end of the road',
+  'end of road-straight': 'Straight on at the end of the road',
+  'fork-left': 'Keep left at the fork',
+  'fork-right': 'Keep right at the fork',
+  'roundabout-left': 'Into the roundabout',
+  'roundabout-right': 'Into the roundabout',
+  'exit roundabout-left': 'Leave the roundabout',
+  'exit roundabout-right': 'Leave the roundabout',
+  'exit roundabout-slight left': 'Leave the roundabout',
+  'exit roundabout-slight right': 'Leave the roundabout',
+  'merge-left': 'Merge left',
+  'merge-right': 'Merge right',
+  'ramp-left': 'Take the ramp on the left',
+  'ramp-right': 'Take the ramp on the right',
+  'new name-straight': 'Carry straight on',
+  'continue-uturn': 'Turn back',
+  arrive: 'Arrive',
+};
+
+/** "Turn right onto HITEC City Road in 400 m" — or without the road where it has no name. */
+function directionLine(next: { move: string; road: string; inM: number }): string {
+  const move = MOVE[next.move] ?? MOVE[next.move.split('-')[0]] ?? 'Carry on';
+  const where = next.road ? `${move} onto ${next.road}` : move;
+  const far = next.inM >= 1000 ? `${(next.inM / 1000).toFixed(1)} km` : `${Math.max(10, Math.round(next.inM / 10) * 10)} m`;
+  return `${where} in ${far}`;
+}
+
 function headline(phase: Phase, first: string, yard: string, drop: string): [string, string] {
   switch (phase) {
     case 'confirmed':
@@ -92,6 +129,14 @@ function Tracker({ order, onChange }: { order: Order; onChange: (o: Order) => vo
       </section>
 
       <div className="tk-map-wrap">
+        {/* The partner's own next move, from the router's turn-by-turn. It sits on the map
+            because that is what it describes, and it is the answer to "where has he got to". */}
+        {snap.directions?.next && (
+          <p className="tk-turn" aria-live="polite">
+            <span className="tk-turn-move">{directionLine(snap.directions.next)}</span>
+            {snap.directions.road && <span className="tk-turn-now">on {snap.directions.road}</span>}
+          </p>
+        )}
         <TrackingMap plan={plan} snap={snap} subscribe={subscribe} />
         {!done && (
           <button

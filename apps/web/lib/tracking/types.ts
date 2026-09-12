@@ -45,11 +45,27 @@ export interface Order {
   clock: { simMs: number; wallMs: number; speed: number };
 }
 
+/** One manoeuvre from the router: how far it runs, what the driver does, the road it joins. */
+export interface Step {
+  m: number;
+  move: string;
+  road: string;
+}
+
 /** One road leg as routed: GeoJSON order, [lng, lat]. `min` is free-flow driving time. */
 export interface Leg {
   km: number;
   min: number;
   coords: [number, number][];
+  steps: Step[];
+}
+
+/** What the driver is doing now and what they do next — the tracker's turn-by-turn line. */
+export interface Directions {
+  /** The road under the truck, empty where the router had no name for it. */
+  road: string;
+  /** Null on the last step, where the next thing that happens is arriving. */
+  next: { move: string; road: string; inM: number } | null;
 }
 
 export interface Snapshot {
@@ -65,4 +81,6 @@ export interface Snapshot {
   done: number;
   /** The road still ahead on the current leg. */
   remaining: [number, number][];
+  /** Where the driver is in the turn-by-turn; null before a partner is on the road. */
+  directions: Directions | null;
 }

@@ -41,32 +41,71 @@ const HOME = pinSvg('#f2f8f9', '<path d="M18 8l9 8h-3v8h-4v-5h-4v5h-4v-8h-3z" fi
 
 const latLngs = (coords: [number, number][]) => coords.map(([lng, lat]) => L.latLng(lat, lng));
 
+/**
+ * Share of the remaining distance the camera closes each SECOND while chasing the truck.
+ *
+ * Per second, not per frame, for the reason spelled out in heading.ts: a fraction applied once a
+ * frame is a different speed on a 30 Hz display than on a 120 Hz one, and the two should look
+ * alike. This file had the per-frame form until the heading was fixed and the same bug was found
+ * sitting here.
+ */
+const CAMERA_CATCH_UP = 0.92;
+/** How far into the frame the truck may drift before the camera starts to follow, as a share of the smaller side. */
+const DEAD_ZONE = 0.3;
+
 interface Layers {
   map: L.Map;
   truck: L.Marker;
-  ahead: L.Polyline;
-  glow: L.Polyline;
+  /** The stretch still to drive, painted twice: a bright line and a soft halo under it. */
+  ahead: [L.Polyline, L.Polyline];
+  /** The whole leg, faint, so the shape of the trip is visible before it is driven. */
   behind: L.Polyline;
   pins: [L.Marker, L.Marker];
 }
 
 type View = 'trip' | 'yard' | 'home' | 'door';
 
+/** Which leg a view is looking at. The whole-trip view is framed on both but tracks the first. */
+const legOf = (view: View): 0 | 1 => (view === 'trip' || view === 'yard' ? 0 : 1);
+
 /** Frame what matters now: the whole trip before there is a truck, the leg being driven, the door at the end. */
 function frame(r: Layers, plan: Plan, view: View, calm: boolean) {
   const { city, legs } = plan;
-  const anim = { animate: !calm, duration: 1 };
-  if (view === 'door') r.map.flyTo([city.drop.lat, city.drop.lng], 16, anim);
-  else {
-    const coords = view === 'trip' ? [...legs[0].coords, ...legs[1].coords] : legs[view === 'yard' ? 0 : 1].coords;
-    /* Wider padding sideways than up and down, because a pin carries its name beside it and a
-       pin fitted snugly against the edge has its label clipped by the map's own overflow. On a
-       375px phone the yard's label ran off the right edge at the tightest fit. */
-    r.map.fitBounds(L.latLngBounds(latLngs(coords)), { paddingTopLeft: [72, 40], paddingBottomRight: [72, 56], maxZoom: 16, ...anim });
+  const move = { animate: !calm, duration: 1 };
+
+  if (view === 'door') {
+    r.map.flyTo([city.drop.lat, city.drop.lng], 16, move);
+  } else {
+    const shown = view === 'trip' ? [...legs[0].coords, ...legs[1].coords] : legs[legOf(view)].coords;
+    /* Wider padding sideways than up and down, because a pin carries its name beside it and a pin
+       fitted snugly against the edge has its label clipped by the map's own overflow. On a 375px
+       phone the yard's label ran off the right edge at the tightest fit. */
+    r.map.fitBounds(L.latLngBounds(latLngs(shown)), { paddingTopLeft: [72, 40], paddingBottomRight: [72, 56], maxZoom: 16, ...move });
   }
-  r.behind.setLatLngs(latLngs(legs[view === 'yard' ? 0 : 1].coords));
+
+  r.behind.setLatLngs(latLngs(legs[legOf(view)].coords));
   r.pins[0].getElement()?.classList.toggle('is-target', view === 'yard');
   r.pins[1].getElement()?.classList.toggle('is-target', view === 'home');
+}
+
+/**
+ * Nudge the map so the truck stays inside the middle of the frame.
+ *
+ * The dead zone is what stops it being seasick: inside it the camera does not move at all and the
+ * truck drifts across a still map, which is how a person reads where it is going. Only when it
+ * reaches the edge does the map start to travel, and then it eases rather than jumps.
+ */
+function follow(map: L.Map, at: L.LatLng, dt: number) {
+  const size = map.getSize();
+  const p = map.latLngToContainerPoint(at);
+  const margin = Math.min(size.x, size.y) * DEAD_ZONE;
+  const dx = Math.max(0, margin - p.x) - Math.max(0, p.x - (size.x - margin));
+  const dy = Math.max(0, margin - p.y) - Math.max(0, p.y - (size.y - margin));
+  if (!dx && !dy) return;
+
+  const k = 1 - (1 - CAMERA_CATCH_UP) ** dt;
+  const centre = map.latLngToContainerPoint(map.getCenter());
+  map.panTo(map.containerPointToLatLng(L.point(centre.x - dx * k, centre.y - dy * k)), { animate: false });
 }
 
 export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; snap: Snapshot; subscribe: (fn: (f: Snapshot) => void) => () => void }) {
@@ -97,11 +136,22 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
     L.control.zoom({ position: 'bottomright' }).addTo(map);
     L.tileLayer(TILES, { maxZoom: 19, attribution: ATTR }).addTo(map);
 
+    /*
+     * `smoothFactor: 0` — DRAW EVERY POINT THE ROUTER GAVE US.
+     *
+     * Leaflet's default of 1 runs Douglas–Peucker over the polyline before painting and threw
+     * away more than half of a 130-point leg. What that looks like on screen is a line that
+     * shaves the corner off a junction and crosses the block beside it: the data is on the road
+     * and the drawing is not, which is precisely "it is going on some other road". A hundred and
+     * thirty points is nothing to paint, and the honesty is worth far more than the saving.
+     */
     const road = (cls: string, weight: number, opacity: number) =>
-      L.polyline([], { className: cls, color: '#56d3d8', weight, opacity, lineCap: 'round', lineJoin: 'round', interactive: false }).addTo(map);
+      L.polyline([], { className: cls, color: '#56d3d8', weight, opacity, lineCap: 'round', lineJoin: 'round', interactive: false, smoothFactor: 0 }).addTo(
+        map,
+      );
     const behind = road('tk-road-behind', 5, 0.22);
-    const glow = road('tk-road-glow', 16, 0.16);
-    const ahead = road('tk-road', 5, 0.95);
+    /* Halo first so the bright line sits on top of it. */
+    const ahead: Layers['ahead'] = [road('tk-road-glow', 16, 0.16), road('tk-road', 5, 0.95)];
 
     /*
      * `keyboard: false` ON EVERY MARKER HERE, and it is not a nicety.
@@ -134,7 +184,7 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
     });
     const ro = new ResizeObserver(() => map.invalidateSize());
     ro.observe(el);
-    layers.current = { map, truck, ahead, glow, behind, pins };
+    layers.current = { map, truck, ahead, behind, pins };
     return () => {
       ro.disconnect();
       map.remove();
@@ -150,28 +200,45 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
     setAwayUi(false);
   }, [plan, view, calm]);
 
-  /* Sixty times a second: move the truck, turn it, shorten the road ahead, keep it in view. */
+  /*
+   * Every frame: place the truck, turn it, shorten the road ahead, and ease the camera after it.
+   *
+   * THE CAMERA IS DRIVEN FROM HERE RATHER THAN HANDED TO `panTo`'s ANIMATION. Leaflet's pan
+   * transforms the map pane over its own 800 ms while this callback keeps repositioning the
+   * marker inside that pane on every frame. Two clocks, so through every pan the truck visibly
+   * slid off the road and back on — the defect that reads as "it is driving through the
+   * buildings". Placing the truck and moving the map in the same tick is what makes them agree.
+   */
   React.useEffect(() => {
-    let lastPan = 0;
+    /* The road ahead is only re-set when it actually changes shape. Re-projecting 130 points
+       sixty times a second, for a difference of one, is most of a frame's budget for nothing. */
+    let drawnPoints = -1;
+    let last = performance.now();
+
     return subscribe((f) => {
       const r = layers.current;
       if (!r || !f.at) return;
-      const ll = L.latLng(f.at.lat, f.at.lng);
-      if (!r.map.hasLayer(r.truck)) r.truck.addTo(r.map);
-      r.truck.setLatLng(ll);
-      const body = r.truck.getElement()?.firstElementChild as HTMLElement | null;
-      if (body) body.style.transform = `rotate(${f.heading}deg)`;
-      const rest = latLngs(f.remaining);
-      r.ahead.setLatLngs(rest);
-      r.glow.setLatLngs(rest);
 
-      if (away.current || Date.now() - lastPan < 900) return;
-      const p = r.map.latLngToContainerPoint(ll);
-      const s = r.map.getSize();
-      if (p.x < s.x * 0.18 || p.x > s.x * 0.82 || p.y < s.y * 0.18 || p.y > s.y * 0.82) {
-        r.map.panTo(ll, { animate: !calm, duration: 0.8 });
-        lastPan = Date.now();
+      const now = performance.now();
+      const dt = Math.min(0.1, (now - last) / 1000);
+      last = now;
+
+      const at = L.latLng(f.at.lat, f.at.lng);
+      if (!r.map.hasLayer(r.truck)) r.truck.addTo(r.map);
+      r.truck.setLatLng(at);
+
+      /* rotate3d, not rotate: it keeps the sprite on the compositor instead of repainting the
+         marker layer on every one of sixty frames. */
+      const body = r.truck.getElement()?.firstElementChild as HTMLElement | null;
+      if (body) body.style.transform = `rotate3d(0,0,1,${f.heading.toFixed(1)}deg)`;
+
+      if (f.remaining.length !== drawnPoints) {
+        drawnPoints = f.remaining.length;
+        const rest = latLngs(f.remaining);
+        for (const line of r.ahead) line.setLatLngs(rest);
       }
+
+      if (!away.current && !calm) follow(r.map, at, dt);
     });
   }, [subscribe, calm]);
 

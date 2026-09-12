@@ -1,11 +1,16 @@
 /**
  * The delivery tracker, measured against Blinkit at 100.
  *
- * Seven areas, weighted to a hundred: the map is real, the truck moves like a truck, the ETA
- * is honest and only falls, the phases arrive in order, the partner is a person you can call,
- * the layout holds on a phone, and a refresh mid-road resumes instead of restarting. Every
- * check is a measurement taken from the running page — frame gaps, per-frame displacement,
- * heading deltas, layout-shift entries — not an opinion about a screenshot.
+ * Seven areas, weighted to a hundred: the map is real, the truck moves like a truck and stays on
+ * the road it draws, the ETA is honest and only falls, the phases arrive in order, the partner is
+ * a person you can call, the layout holds on a phone, and a refresh mid-road resumes instead of
+ * restarting.
+ *
+ * Every check is a measurement taken from the running page — tile pixel variance, point-to-segment
+ * distance, yaw rate in degrees per second, long tasks, layout-shift entries — never an opinion
+ * about a screenshot. Several are on their second or third form, and the note at each one says
+ * what the earlier version measured by mistake: a check that quietly measures the harness instead
+ * of the page is worse than no check, because it is believed.
  *
  *   pnpm --filter @buildobjects/web tracking:audit          against next start on 3001
  *
@@ -35,11 +40,31 @@ const STATE =
   "partner:!!document.querySelector('.tk-partner-name'),title:(document.querySelector('.tk-title')||{}).textContent||''," +
   "road:((document.querySelector('path.tk-road')||{}).getAttribute?document.querySelector('path.tk-road').getAttribute('d'):'').split(/[ML]/).length-1};})()";
 
-/* 180 frames of the truck: rAF gaps, translation from the marker's matrix, rotation from the body's. */
+/*
+ * 180 frames of the truck. The loop RECORDS ONLY — transforms, the rotation, and the road's path
+ * string — and the arithmetic happens in Node afterwards.
+ *
+ * That split is not tidiness. The first version of this probe parsed the path and searched it for
+ * a nearest point inside the frame callback, and the frame timing it was there to measure went
+ * from a p95 of 50 ms to 83: the measurement was producing the stutter it then reported. A probe
+ * on a render loop has to be cheap enough not to be part of what it measures.
+ *
+ * The road recorded is `.tk-road-behind`, the WHOLE leg — not `.tk-road`, which is the stretch
+ * still ahead and therefore begins exactly under the truck. Measured against that one the answer
+ * is zero on every frame of every run, which is a check that cannot fail and so cannot find
+ * anything. This one is measured against the road as a whole.
+ */
 const SAMPLE =
-  "new Promise(function(done){var el=document.querySelector('.tk-truck');var body=el&&el.firstElementChild;var out={gaps:[],xy:[],deg:[]},last=0,n=0;" +
-  'function step(t){if(last)out.gaps.push(t-last);last=t;var m=new DOMMatrix(getComputedStyle(el).transform);out.xy.push([m.m41,m.m42]);' +
-  'var r=new DOMMatrix(getComputedStyle(body).transform);out.deg.push(Math.atan2(r.b,r.a)*180/Math.PI);if(++n<180)requestAnimationFrame(step);else done(out);}' +
+  "new Promise(function(done){var el=document.querySelector('.tk-truck');var body=el&&el.firstElementChild;" +
+  'var out={gaps:[],xy:[],deg:[],pane:[],ov:[],d:[],long:[]},last=0,n=0;' +
+  "try{new PerformanceObserver(function(l){l.getEntries().forEach(function(e){out.long.push(Math.round(e.duration));});}).observe({type:'longtask',buffered:false});}catch(e){}" +
+  'function tf(e){var m=new DOMMatrix(getComputedStyle(e).transform);return [m.m41,m.m42];}' +
+  'function step(t){if(last)out.gaps.push(t-last);last=t;' +
+  'out.xy.push(tf(el));' +
+  'var r=new DOMMatrix(getComputedStyle(body).transform);out.deg.push(Math.atan2(r.b,r.a)*180/Math.PI);' +
+  "var road=document.querySelector('path.tk-road-behind'),pane=document.querySelector('.leaflet-map-pane'),ov=document.querySelector('.leaflet-overlay-pane');" +
+  "out.pane.push(pane?tf(pane):[0,0]);out.ov.push(ov?tf(ov):[0,0]);out.d.push(road?(road.getAttribute('d')||''):'');" +
+  'if(++n<180)requestAnimationFrame(step);else done(out);}' +
   'requestAnimationFrame(step);})';
 
 const CLS =
@@ -64,6 +89,45 @@ async function open(page: Page, speed: number, simMin = 0, path = `/order/${ORDE
 const median = (a: number[]) => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)] ?? 0;
 const p95 = (a: number[]) => [...a].sort((x, y) => x - y)[Math.floor(a.length * 0.95)] ?? 0;
 const arc = (a: number, b: number) => Math.abs(((b - a + 540) % 360) - 180);
+
+/** Perpendicular distance from p to the segment ab — not to a or b. */
+function toSegment(p: number[], a: number[], b: number[]): number {
+  const vx = b[0] - a[0];
+  const vy = b[1] - a[1];
+  const len = vx * vx + vy * vy;
+  const t = len === 0 ? 0 : Math.max(0, Math.min(1, ((p[0] - a[0]) * vx + (p[1] - a[1]) * vy) / len));
+  return Math.hypot(p[0] - (a[0] + t * vx), p[1] - (a[1] + t * vy));
+}
+
+/**
+ * How far the truck sat from the road, per frame, in screen pixels.
+ *
+ * TO THE NEAREST SEGMENT, NOT THE NEAREST VERTEX. Leaflet simplifies a polyline before painting
+ * it, so a 3.4 km leg is drawn with about thirty-five points and neighbouring ones can be 170 m
+ * apart — over a hundred pixels at this zoom. Measured to vertices, a truck sitting perfectly on
+ * the line between two of them reports fifty pixels off, and the check would fail the one thing
+ * it is supposed to pass.
+ */
+function offRoad(s: { xy: number[][]; pane: number[][]; ov: number[][]; d: string[] }): number[] {
+  const out: number[] = [];
+  for (let i = 0; i < s.xy.length; i++) {
+    const nums = s.d[i]
+      .replace(/[MLZ]/g, ' ')
+      .trim()
+      .split(/[\s,]+/)
+      .map(Number);
+    if (nums.length < 4 || nums.some(Number.isNaN)) continue;
+    const [px, py] = s.pane[i];
+    const [ox, oy] = s.ov[i];
+    const truck = [s.xy[i][0] + px, s.xy[i][1] + py];
+    let best = Number.POSITIVE_INFINITY;
+    for (let k = 0; k + 3 < nums.length; k += 2) {
+      best = Math.min(best, toSegment(truck, [nums[k] + px + ox, nums[k + 1] + py + oy], [nums[k + 2] + px + ox, nums[k + 3] + py + oy]));
+    }
+    if (Number.isFinite(best)) out.push(best);
+  }
+  return out;
+}
 
 async function main() {
   const browser = await chromium.launch({ headless: true });
@@ -146,7 +210,7 @@ async function main() {
       let dones = 0;
       let railOk = true;
       let partnerAt: string | null = null;
-      let sample: { gaps: number[]; xy: number[][]; deg: number[] } | null = null;
+      let sample: { gaps: number[]; xy: number[][]; deg: number[]; pane: number[][]; ov: number[][]; d: string[]; long: number[] } | null = null;
       let roadBefore = 0;
       let roadAfter = 0;
       const t0 = Date.now();
@@ -179,30 +243,59 @@ async function main() {
         const turns = sample.deg.slice(1).map((d, i) => arc(sample.deg[i], d));
         const path = steps.reduce((a, b) => a + b, 0);
         /*
-         * DROPPED FRAMES, NOT FRAME RATE. Headless Chromium drives rAF off a software compositor
-         * that commonly ticks at 30 Hz — measured here at a median of 33.3 ms where the same
-         * build in a real browser gives 16.7. An absolute "under 20 ms" threshold therefore fails
-         * the harness and tells you nothing about the page. What a stuttering page actually looks
-         * like is a p95 far above its own median: most frames on time, some very late. So the
-         * check is consistency against whatever rate the display is running at.
+         * THE PAGE'S OWN COST PER FRAME, NOT THE DISPLAY'S PACING.
+         *
+         * Two earlier versions of this check measured the gaps between animation frames, first
+         * against an absolute 20 ms and then against the run's own median. Both measured headless
+         * Chromium's software compositor rather than the page: identical builds came back at a
+         * p95 of 50, 67 and 83 ms on successive runs, so the gate passed or failed on the weather.
+         *
+         * A long task is the thing the page is actually responsible for. Fifty milliseconds of
+         * unbroken scripting is a frame the browser could not have drawn whatever its refresh
+         * rate, and it is what a viewer sees as a stutter. The frame gaps are still printed,
+         * because they are useful to read — they are simply not scored.
          */
+        const long = sample.long ?? [];
         check(
           'motion',
-          'no dropped frames at the display’s own rate',
-          6,
-          p95(gaps) <= median(gaps) * 1.5 + 4,
-          `median ${median(gaps).toFixed(1)}ms · p95 ${p95(gaps).toFixed(1)}ms`,
+          'no long tasks blocking the frame',
+          5,
+          long.length === 0,
+          `${long.length} long task(s)${long.length ? ` up to ${Math.max(...long)}ms` : ''} · frame gaps median ${median(gaps).toFixed(1)}ms p95 ${p95(gaps).toFixed(1)}ms`,
         );
         check(
           'motion',
           'no jumps: every frame moves about as far as the last',
-          7,
+          5,
           Math.max(...steps) <= Math.max(8, 4 * median(steps)),
           `max ${Math.max(...steps).toFixed(2)}px · median ${median(steps).toFixed(2)}px`,
         );
-        check('motion', 'turns are turned, not snapped', 7, Math.max(...turns) <= 15, `max ${Math.max(...turns).toFixed(1)}° in one frame`);
-        check('motion', 'it actually goes somewhere', 3, path >= 40, `${path.toFixed(0)}px over 180 frames`);
-        check('motion', 'the road ahead shortens as it drives', 2, roadAfter < roadBefore, `${roadBefore} → ${roadAfter} segments`);
+        /*
+         * DEGREES PER SECOND, NOT PER FRAME — the same mistake the frame-gap check made.
+         * Fifteen degrees in a frame is a gentle lean at 120 Hz and a whip-round at 20, so the
+         * per-frame form passed or failed on the harness's frame rate rather than on the motion.
+         * A vehicle has a yaw rate; that is what gets measured, using each frame's own gap.
+         */
+        /* gaps[i] is the interval between frame i and i+1, and turns[i] is the turn taken across
+           that same interval — pairing a turn with gaps[i+1] divided a 7.4° swing over 67 ms by
+           the next frame's 17 ms and reported 443°/s for motion that was capped at 110. */
+        const yaw = turns.map((t, i) => (t / Math.max(1, gaps[i])) * 1000);
+        check('motion', 'turns are turned, not snapped', 5, Math.max(...yaw) <= 130, `max ${Math.max(...yaw).toFixed(0)}°/s`);
+        /*
+         * ON THE ROAD IT IS DRAWING. Six pixels is about the width of the route stroke, so a
+         * truck within it is sitting on the line; beyond that it is visibly in the buildings
+         * beside it, which is what "it is going on some other road" looks like from the sofa.
+         */
+        const off = offRoad(sample);
+        check(
+          'motion',
+          'the truck stays on the road it is drawing',
+          7,
+          off.length > 0 && p95(off) <= 6,
+          `median ${median(off).toFixed(1)}px · p95 ${p95(off).toFixed(1)}px · max ${Math.max(...off).toFixed(1)}px`,
+        );
+        check('motion', 'it actually goes somewhere', 2, path >= 40, `${path.toFixed(0)}px over 180 frames`);
+        check('motion', 'the road ahead shortens as it drives', 1, roadAfter < roadBefore, `${roadBefore} → ${roadAfter} segments`);
       } else {
         check('motion', 'the truck was seen on the way', 25, false, 'never reached on_the_way');
       }

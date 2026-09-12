@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { shortestTurn, smoothHeading } from '@/components/order/heading';
 import { CITIES } from './cities';
 import { plan, promiseMinutes, simMinutes, snapshot, trafficFactor, trapezoid } from './simulate';
 import type { Order } from './types';
@@ -105,6 +106,100 @@ describe('snapshot', () => {
       const turn = Math.abs(((h - prev + 540) % 360) - 180);
       expect(turn).toBeLessThan(60);
       prev = h;
+    }
+  });
+});
+
+describe('directions', () => {
+  const p = plan({ regionId: 'hyd', placedAt: NOON });
+
+  it('has none before a partner is assigned, and none once delivered', () => {
+    expect(snapshot(p, 0).directions).toBeNull();
+    expect(snapshot(p, p.marks.delivered).directions).toBeNull();
+  });
+
+  it('counts down to the next manoeuvre, then moves on to the one after', () => {
+    let seen = 0;
+    let last = Number.POSITIVE_INFINITY;
+    for (let m = p.marks.loaded; m < p.marks.delivered; m += 0.02) {
+      const d = snapshot(p, m).directions;
+      if (!d?.next) continue;
+      /* Within one manoeuvre the distance falls; when it jumps up we have reached it and are
+         counting down to the next one. */
+      if (d.next.inM > last) seen++;
+      last = d.next.inM;
+      expect(d.next.inM).toBeGreaterThanOrEqual(0);
+    }
+    expect(seen).toBeGreaterThan(2);
+  });
+
+  it('never announces a turn onto the road already under the truck', () => {
+    /* OSM spells this corridor two ways, so the raw steps produced "carry straight on onto HITEC
+       City–Kondapur Main Road" while driving Hitec City - Kondapur Main Road. */
+    const flat = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+    for (let m = p.marks.loaded; m < p.marks.delivered; m += 0.02) {
+      const d = snapshot(p, m).directions;
+      if (d?.next?.road) expect(flat(d.next.road), `${m.toFixed(2)} min`).not.toBe(flat(d.road));
+    }
+  });
+
+  it('announces something the driver has to do, not the road renaming itself', () => {
+    for (let m = p.marks.loaded; m < p.marks.delivered; m += 0.05) {
+      const d = snapshot(p, m).directions;
+      if (!d?.next) continue;
+      const asksSomething = /left|right|uturn|roundabout|ramp|merge|fork|arrive/.test(d.next.move) || d.next.road !== '';
+      expect(asksSomething, `${d.next.move} onto "${d.next.road}"`).toBe(true);
+    }
+  });
+
+  it('names roads the router named, and invents none', () => {
+    const roads = new Set<string>();
+    for (let m = p.marks.loaded; m < p.marks.delivered; m += 0.05) {
+      const d = snapshot(p, m).directions;
+      if (d?.next?.road) roads.add(d.next.road);
+    }
+    const known = new Set(p.legs[1].steps.map((s) => s.road).filter(Boolean));
+    for (const r of roads) expect(known.has(r), r).toBe(true);
+  });
+});
+
+describe('smoothHeading', () => {
+  /* Run a filter from `from` towards `to` for one second, in steps of `dt` ms. */
+  const settle = (from: number, to: number, dt: number) => {
+    let h = from;
+    for (let t = 0; t < 1000; t += dt) h = smoothHeading(h, to, dt);
+    return h;
+  };
+
+  it('takes the shortest way round, not the long way', () => {
+    expect(shortestTurn(350, 10)).toBe(20);
+    expect(shortestTurn(10, 350)).toBe(-20);
+    /* Turning from 350° towards 10° must go up through 360, never down through 180. */
+    const h = smoothHeading(350, 10, 16);
+    expect(h > 350 || h < 10).toBe(true);
+  });
+
+  it('turns the same amount per second whatever the frame rate', () => {
+    /* The reason the filter takes dt at all: 30 Hz and 120 Hz must look alike. */
+    const slow = settle(0, 90, 1000 / 30);
+    const fast = settle(0, 90, 1000 / 120);
+    expect(Math.abs(slow - fast)).toBeLessThan(1);
+  });
+
+  it('starts pointing the right way instead of spinning up from zero', () => {
+    expect(smoothHeading(Number.NaN, 217, 16)).toBe(217);
+  });
+
+  it('always lands inside one turn of the compass', () => {
+    for (const [a, b] of [
+      [350, 10],
+      [10, 350],
+      [0, 180],
+      [179, 181],
+    ]) {
+      const h = smoothHeading(a, b, 16);
+      expect(h).toBeGreaterThanOrEqual(0);
+      expect(h).toBeLessThan(360);
     }
   });
 });

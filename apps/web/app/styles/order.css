@@ -212,6 +212,39 @@
   .tk-map-wrap {
     position: relative;
   }
+
+  /* The next manoeuvre, over the map's top edge. Two lines: what the driver does next, and the
+     road under the truck now — the same two things a satnav puts in front of a windscreen. */
+  .tk-turn {
+    position: absolute;
+    z-index: 3;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    max-width: min(340px, calc(100% - 140px));
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--hair-brand);
+    background: color-mix(in oklab, var(--color-canvas) 92%, var(--color-teal-700));
+    box-shadow: var(--sh-1);
+    text-align: center;
+  }
+  .tk-turn-move {
+    font-size: var(--t-cap);
+    line-height: var(--t-cap-lh);
+    font-weight: 600;
+    color: var(--ink-1);
+    text-wrap: balance;
+  }
+  .tk-turn-now {
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    color: var(--ink-3);
+  }
   .tk-map {
     position: relative;
     isolation: isolate;
@@ -638,6 +671,17 @@
     }
     .tk-eta-fig {
       font-size: 1.5rem;
+    }
+    /* On a 375px screen the demo pill and the next-turn banner both want the top of the map, and
+       they overlapped by about thirty pixels. The turn wins the top — it is the thing being
+       looked at — and the demo control, which is scaffolding, drops to the free bottom-left
+       corner. It keeps its own row there, clear of the zoom buttons and the attribution. */
+    .tk-speed {
+      top: auto;
+      bottom: 12px;
+    }
+    .tk-turn {
+      max-width: calc(100% - 24px);
     }
   }
 
