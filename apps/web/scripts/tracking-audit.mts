@@ -29,6 +29,8 @@ const checks: Check[] = [];
 const check = (area: string, name: string, weight: number, ok: boolean, detail = '') => checks.push({ area, name, weight, ok, detail });
 
 const ORDER_ID = 'BO-AUDIT1';
+/** How long the phone is watched for its per-second cost. */
+const COST_WINDOW_MS = 3000;
 const LINES = "[{sku:'CEM-ULT-PPC50',name:'UltraTech PPC 50 kg',qty:12,unit:'bag'},{sku:'TIL-KAJ-GP00215',name:'Kajaria GP00215 tile',qty:4,unit:'box'}]";
 /** An order at `simMin` into its trip, running at `speed`. */
 const seed = (speed: number, simMin = 0) =>
@@ -53,9 +55,14 @@ const STATE =
  * still ahead and therefore begins exactly under the truck. Measured against that one the answer
  * is zero on every frame of every run, which is a check that cannot fail and so cannot find
  * anything. This one is measured against the road as a whole.
+ *
+ * The rotation is read from `.tk-truck-in` BY NAME. It was read from the marker's first child,
+ * and when a pop-in wrapper was put between the two the first child's transform became a
+ * constant identity: every yaw came back as zero, and a turn check that cannot see a turn passes
+ * whatever the truck does.
  */
 const SAMPLE =
-  "new Promise(function(done){var el=document.querySelector('.tk-truck');var body=el&&el.firstElementChild;" +
+  "new Promise(function(done){var el=document.querySelector('.tk-truck');var body=document.querySelector('.tk-truck-in');" +
   'var out={gaps:[],xy:[],deg:[],pane:[],ov:[],d:[],long:[]},last=0,n=0;' +
   "try{new PerformanceObserver(function(l){l.getEntries().forEach(function(e){out.long.push(Math.round(e.duration));});}).observe({type:'longtask',buffered:false});}catch(e){}" +
   'function tf(e){var m=new DOMMatrix(getComputedStyle(e).transform);return [m.m41,m.m42];}' +
@@ -212,6 +219,7 @@ async function main() {
       let partnerAt: string | null = null;
       let sample: { gaps: number[]; xy: number[][]; deg: number[]; pane: number[][]; ov: number[][]; d: string[]; long: number[] } | null = null;
       let roadBefore = 0;
+      let cost: { layouts: number; styles: number; scriptMs: number; taskMs: number } | null = null;
       let roadAfter = 0;
       const t0 = Date.now();
       while (Date.now() - t0 < 60_000) {
@@ -256,6 +264,37 @@ async function main() {
         roadAfter = (await state(p2)).road;
         await c2.close();
       }
+      /*
+       * WHAT THE PAGE COSTS PER SECOND WHILE THE TRUCK DRIVES, on the phone, for three seconds of
+       * wall time: the renderer's own counters for layouts, style recalculations and main-thread
+       * time, read through the DevTools protocol before and after.
+       *
+       * Per SECOND and on the PHONE, deliberately. The first version divided by the desktop
+       * sample's frames, and the desktop page runs at nine frames a second in this harness, so
+       * three ordinary re-renders a second came out as a third of a layout per frame and failed a
+       * chase that never laid anything out. The phone viewport runs at sixty here, and the two
+       * builds being told apart are twenty-two layouts a second and five.
+       */
+      {
+        const { page: p3, ctx: c3 } = await openPage(browser, { viewport: 'mobile', motion: 'no-preference' });
+        await open(p3, 12, expect.marks.loaded + 0.5);
+        await p3.waitForSelector('.tk-truck', { timeout: 20_000 });
+        await p3.waitForTimeout(1500);
+        const cdp = await c3.newCDPSession(p3);
+        await cdp.send('Performance.enable');
+        const before = (await cdp.send('Performance.getMetrics')).metrics;
+        await p3.waitForTimeout(COST_WINDOW_MS);
+        const after = (await cdp.send('Performance.getMetrics')).metrics;
+        const delta = (k: string) => (after.find((m) => m.name === k)?.value ?? 0) - (before.find((m) => m.name === k)?.value ?? 0);
+        const s = COST_WINDOW_MS / 1000;
+        cost = {
+          layouts: delta('LayoutCount') / s,
+          styles: delta('RecalcStyleCount') / s,
+          scriptMs: (delta('ScriptDuration') * 1000) / s,
+          taskMs: (delta('TaskDuration') * 1000) / s,
+        };
+        await c3.close();
+      }
       if (sample) {
         const gaps = sample.gaps;
         const steps = sample.xy.slice(1).map(([x, y], i) => Math.hypot(x - sample.xy[i][0], y - sample.xy[i][1]));
@@ -278,9 +317,27 @@ async function main() {
         check(
           'motion',
           'no long tasks blocking the frame',
-          5,
+          3,
           long.length === 0,
           `${long.length} long task(s)${long.length ? ` up to ${Math.max(...long)}ms` : ''} · frame gaps median ${median(gaps).toFixed(1)}ms p95 ${p95(gaps).toFixed(1)}ms`,
+        );
+        /*
+         * THE CHASE MUST NOT LAY THE PAGE OUT. Moving the truck and the camera is two transforms
+         * a frame; a layout in the middle of it means something asked the browser to measure the
+         * document again. That was the case: the camera followed the truck with `panTo`, which
+         * resets Leaflet's whole view, and the phone laid the page out twenty-two times a second
+         * while spending a fifth of the main thread on it. Ten a second allows the cards' own
+         * re-renders (two or three a second: a new distance, a new speed) and tiles arriving, and
+         * not a camera. The rest is printed beside it; main-thread time is the number to watch.
+         */
+        check(
+          'motion',
+          'the chase does not lay the page out',
+          2,
+          cost !== null && cost.layouts <= 10,
+          cost
+            ? `${cost.layouts.toFixed(1)} layouts/s · ${cost.styles.toFixed(0)} restyles/s · script ${cost.scriptMs.toFixed(0)}ms/s · main thread ${cost.taskMs.toFixed(0)}ms/s`
+            : 'no counters',
         );
         check(
           'motion',

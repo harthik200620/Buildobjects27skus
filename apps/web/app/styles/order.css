@@ -28,6 +28,39 @@
   .tk-rate {
     padding: var(--s-5);
   }
+  /* The sheet rises in as a sequence, sixty milliseconds apart, and the two cards that re-render
+     while the truck drives keep their layout to themselves: a new ETA is a change inside the
+     head, not a reason to lay the page out again. */
+  .tk-partner,
+  .tk-feed,
+  .tk-route,
+  .tk-lines,
+  .tk-rate,
+  .tk-cta {
+    animation: tk-rise var(--dur-5) var(--ease-out) both;
+    animation-delay: var(--stagger, 0ms);
+  }
+  .tk-partner {
+    --stagger: 60ms;
+  }
+  .tk-feed {
+    --stagger: 120ms;
+  }
+  .tk-route {
+    --stagger: 180ms;
+  }
+  .tk-lines {
+    --stagger: 240ms;
+  }
+  .tk-rate,
+  .tk-cta {
+    --stagger: 300ms;
+  }
+  .tk-head,
+  .tk-partner,
+  .tk-feed {
+    contain: layout;
+  }
   .tk-nowrap {
     white-space: nowrap;
   }
@@ -145,19 +178,32 @@
     color: var(--ink-2);
   }
   .tk-live i {
+    position: relative;
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: var(--ok);
+  }
+  /* The beat is a ring that grows and fades — transform and opacity, which the compositor does
+     alone. It was a box-shadow growing from 0 to 7px, which is a repaint of the pill on every
+     frame of every second the page is open. */
+  .tk-live i::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ok);
     animation: tk-beat 1.6s ease-out infinite;
   }
   @keyframes tk-beat {
-    0% {
-      box-shadow: 0 0 0 0 rgb(86 224 140 / 60%);
+    from {
+      transform: scale(1);
+      opacity: 0.8;
     }
     70%,
-    100% {
-      box-shadow: 0 0 0 7px rgb(86 224 140 / 0%);
+    to {
+      transform: scale(2.6);
+      opacity: 0;
     }
   }
   .tk-recentre {
@@ -309,7 +355,7 @@
     color: var(--color-teal-700);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-    animation: tk-tick var(--dur-3) var(--ease-out) both;
+    animation: tk-tick var(--dur-4) var(--ease-spring) both;
   }
   .tk-eta-mark {
     display: grid;
@@ -361,10 +407,12 @@
       transform: translateY(6px);
     }
   }
+  /* A new ETA rolls up into place, like a digit on a counter. Keyed on its value, so it plays
+     only when the number changes. */
   @keyframes tk-tick {
     from {
       opacity: 0;
-      transform: translateY(-4px);
+      transform: translateY(0.45em);
     }
   }
   @keyframes tk-pop {
@@ -448,6 +496,13 @@
   .tk-canvas {
     position: absolute;
     inset: 0;
+    animation: tk-materialise var(--dur-5) var(--ease-out) both;
+  }
+  @keyframes tk-materialise {
+    from {
+      opacity: 0;
+      transform: scale(1.03);
+    }
   }
   .tk-canvas:focus-visible {
     outline: 2px solid var(--color-teal-700);
@@ -559,6 +614,28 @@
   .tk-pin.is-target::after {
     animation: tk-ring 1.8s var(--ease-out) infinite;
   }
+  /* At the door: three rings and done, rather than a pulse that never stops on a finished trip. */
+  .tk-pin.is-done::after {
+    animation: tk-ring 1.4s var(--ease-out) 3;
+  }
+  /* The pins drop onto the map when it opens. On the child, never the marker: Leaflet places
+     the marker with an inline transform and an animation on it would win for as long as it ran. */
+  .tk-pin-in {
+    display: block;
+    width: 36px;
+    height: 44px;
+    transform-origin: 50% 100%;
+    animation: tk-drop var(--dur-5) var(--ease-spring) both;
+  }
+  @keyframes tk-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-28px) scale(0.7);
+    }
+    60% {
+      opacity: 1;
+    }
+  }
   @keyframes tk-ring {
     from {
       transform: scale(0.4);
@@ -569,13 +646,27 @@
       opacity: 0;
     }
   }
-  .tk-truck::before {
+  /* The halo sits on the pop wrapper and NOT on the marker: the marker's transform is rewritten
+     every frame, and an animation on a pseudo-element of an element being restyled has its
+     current value re-resolved on the main thread on every one of those frames — eleven
+     milliseconds a second, measured, for a glow. One element down, nothing rewrites it. */
+  .tk-truck-pop::before {
     content: "";
     position: absolute;
     inset: 4px;
     border-radius: 50%;
     background: radial-gradient(circle, rgb(86 211 216 / 38%), transparent 70%);
     animation: tk-halo 2.4s var(--ease-inout) infinite;
+  }
+  /* Three layers under the marker: the pop (once, on arrival), then the body (turned to the
+     heading every frame, leaning into turns), and inside it the trail that stretches with speed.
+     The perspective is what turns the body's small rotation about its long axis into a lean. */
+  .tk-truck-pop {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    perspective: 140px;
+    animation: tk-pop var(--dur-4) var(--ease-spring) both;
   }
   .tk-truck-in {
     position: relative;
@@ -584,6 +675,28 @@
     transform-origin: 50% 50%;
     will-change: transform;
     filter: drop-shadow(0 3px 4px rgb(0 0 0 / 55%));
+  }
+  .tk-truck-in svg {
+    position: relative;
+    display: block;
+  }
+  /* The trail: a soft streak behind the tail, its length set by `--v` (0 at rest, 1 at speed)
+     from the frame loop. A transform on one element, so it costs nothing to keep. */
+  .tk-trail {
+    position: absolute;
+    left: 50%;
+    top: 34px;
+    width: 12px;
+    height: 44px;
+    margin-left: -6px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgb(86 211 216 / 55%), rgb(86 211 216 / 0%));
+    transform-origin: 50% 0;
+    transform: scaleY(var(--v, 0));
+    opacity: var(--v, 0);
+    transition:
+      transform var(--dur-3) var(--ease-out),
+      opacity var(--dur-3) var(--ease-out);
   }
   @keyframes tk-halo {
     50% {
@@ -740,6 +853,21 @@
     font-size: var(--t-cap);
     line-height: var(--t-cap-lh);
     color: var(--ink-2);
+    /* Each line is keyed on its time, so only a NEW line mounts and plays this: an update
+       arrives by sliding into the top of the list. On load the first few arrive in turn. */
+    animation: tk-rise var(--dur-4) var(--ease-out) both;
+  }
+  .tk-feed-list li:nth-child(2) {
+    animation-delay: 50ms;
+  }
+  .tk-feed-list li:nth-child(3) {
+    animation-delay: 100ms;
+  }
+  .tk-feed-list li:nth-child(4) {
+    animation-delay: 150ms;
+  }
+  .tk-feed-list li:nth-child(n + 5) {
+    animation-delay: 200ms;
   }
   .tk-feed-list time {
     font-size: var(--t-fine);
@@ -1079,11 +1207,25 @@
     .tk-eta-mark,
     .tk-recentre,
     .tk-pill,
-    .tk-live i,
+    .tk-live i::after,
     .tk-steps li.is-now .tk-step-bar::after,
     .tk-pin.is-target::after,
-    .tk-truck::before {
+    .tk-pin.is-done::after,
+    .tk-pin-in,
+    .tk-truck-pop::before,
+    .tk-truck-pop,
+    .tk-canvas,
+    .tk-partner,
+    .tk-feed,
+    .tk-route,
+    .tk-lines,
+    .tk-rate,
+    .tk-cta,
+    .tk-feed-list li {
       animation: none;
+    }
+    .tk-trail {
+      transition: none;
     }
     .tk-steps li.is-now .tk-step-bar {
       background: color-mix(in oklab, var(--color-teal-700) 55%, var(--hair-2));

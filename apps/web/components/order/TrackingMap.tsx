@@ -1,9 +1,13 @@
 'use client';
 
+import along from '@turf/along';
+import { lineString } from '@turf/helpers';
+import length from '@turf/length';
 import L from 'leaflet';
 import React from 'react';
 import type { Plan } from '@/lib/tracking/simulate';
 import type { Snapshot } from '@/lib/tracking/types';
+import { shortestTurn } from './heading';
 
 /*
  * OpenStreetMap's own tiles, turned dark by a filter on the tile pane (see `.tk-map
@@ -52,6 +56,16 @@ const latLngs = (coords: [number, number][]) => coords.map(([lng, lat]) => L.lat
 const CAMERA_CATCH_UP = 0.92;
 /** How far into the frame the truck may drift before the camera starts to follow, as a share of the smaller side. */
 const DEAD_ZONE = 0.3;
+/** The camera's pull grows over this much of the side past the dead zone's edge, so it starts gliding rather than grabbing. */
+const SOFT_EDGE = 0.08;
+/** The camera keeps this much road AHEAD of the truck in view: it frames where the truck is going, not the truck. */
+const LOOK_AHEAD = 0.14;
+/** How far the map pane may drift, as a share of the side, before the drift is folded back into Leaflet's view. */
+const COMMIT_AT = 0.3;
+/** The truck parks this far short of the door, in kilometres, so it is seen beside the pin and not under it. */
+const PARK_SHORT_KM = 0.014;
+/** Speed the trail behind the truck is at full length, km/h. */
+const TRAIL_FULL_KMH = 35;
 
 interface Layers {
   map: L.Map;
@@ -61,6 +75,12 @@ interface Layers {
   /** The whole leg, faint, so the shape of the trip is visible before it is driven. */
   behind: L.Polyline;
   pins: [L.Marker, L.Marker];
+  /** True from `movestart` to `moveend` of one of Leaflet's own animated moves; the chase waits. */
+  settling: boolean;
+  /** True through Leaflet's CSS zoom transition, when every marker is mid-tween and must not be written to. */
+  zooming: boolean;
+  /** A draw-on of the route is owed once the framing move has landed. */
+  drawOwed: boolean;
 }
 
 type View = 'trip' | 'yard' | 'home' | 'door';
@@ -68,11 +88,42 @@ type View = 'trip' | 'yard' | 'home' | 'door';
 /** Which leg a view is looking at. The whole-trip view is framed on both but tracks the first. */
 const legOf = (view: View): 0 | 1 => (view === 'trip' || view === 'yard' ? 0 : 1);
 
+/**
+ * Draw a route on: the line sweeps from its start to its end over `ms`, the way a route appears
+ * in a maps app rather than simply being there.
+ *
+ * Done with the stroke's dash, which is the only way to reveal an SVG path progressively. It is
+ * inline style, not a class, because Leaflet rewrites the path's attributes on every view change
+ * and an inline dash survives that. The styles are cleared afterwards so the line is a plain line
+ * again — a dasharray left behind would shorten the road ahead as its `d` shrank.
+ */
+function drawOn(line: L.Polyline, ms: number) {
+  const path = line.getElement() as SVGPathElement | null;
+  if (!path?.getTotalLength) return;
+  const len = path.getTotalLength();
+  if (!len) return;
+  path.style.transition = 'none';
+  path.style.strokeDasharray = `${len}`;
+  path.style.strokeDashoffset = `${len}`;
+  requestAnimationFrame(() => {
+    path.style.transition = `stroke-dashoffset ${ms}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+    path.style.strokeDashoffset = '0';
+    setTimeout(() => {
+      path.style.transition = '';
+      path.style.strokeDasharray = '';
+      path.style.strokeDashoffset = '';
+    }, ms + 60);
+  });
+}
+
 /** Frame what matters now: the whole trip before there is a truck, the leg being driven, the door at the end. */
 function frame(r: Layers, plan: Plan, view: View, calm: boolean) {
   const { city, legs } = plan;
   const move = { animate: !calm, duration: 1 };
 
+  /* Owed BEFORE the move is asked for: a move that has nothing to do fires `moveend` on the spot,
+     and a flag set afterwards would have been left waiting for the next drag to pay it. */
+  r.drawOwed = !calm && view !== 'door';
   if (view === 'door') {
     r.map.flyTo([city.drop.lat, city.drop.lng], 16, move);
   } else {
@@ -83,29 +134,76 @@ function frame(r: Layers, plan: Plan, view: View, calm: boolean) {
     r.map.fitBounds(L.latLngBounds(latLngs(shown)), { paddingTopLeft: [72, 40], paddingBottomRight: [72, 56], maxZoom: 16, ...move });
   }
 
-  r.behind.setLatLngs(latLngs(legs[legOf(view)].coords));
+  /* Before there is a truck the faint line is the whole trip, both legs: the reader is being
+     shown the shape of what is about to happen. Once driving, it is the leg in hand. */
+  r.behind.setLatLngs(latLngs(view === 'trip' ? [...legs[0].coords, ...legs[1].coords] : legs[legOf(view)].coords));
   r.pins[0].getElement()?.classList.toggle('is-target', view === 'yard');
   r.pins[1].getElement()?.classList.toggle('is-target', view === 'home');
+  r.pins[1].getElement()?.classList.toggle('is-done', view === 'door');
 }
 
 /**
- * Nudge the map so the truck stays inside the middle of the frame.
+ * Move the map pane by a few pixels WITHOUT telling Leaflet the view changed.
+ *
+ * This is the whole difference between a chase that costs a frame and one that costs nothing.
+ * `panTo(…, {animate: false})` resets the view: it re-projects every point of every route line,
+ * re-places every marker and tooltip, and re-checks the tile grid — the page laid itself out
+ * twenty-two times a second on a phone and spent a fifth of the main thread doing it. Leaflet's
+ * own animated pan does not do any of that: it slides the pane with a transform and settles up
+ * once at the end. This does the same by hand, one transform per frame, with `commit` as the
+ * settling-up. `move` is still fired so the tile layer keeps loading tiles at the leading edge.
+ */
+function rawPan(map: L.Map, by: L.Point) {
+  const pane = map.getPane('mapPane');
+  if (!pane) return;
+  L.DomUtil.setPosition(pane, L.DomUtil.getPosition(pane).subtract(by));
+  map.fire('move');
+}
+
+/** How far the pane has drifted from where Leaflet last set the view. */
+const drift = (map: L.Map) => L.point(0, 0).subtract(map.containerPointToLayerPoint(L.point(0, 0)));
+
+/** Fold the drift back into the view: one real view reset, after which the pane sits at zero again. */
+function commit(map: L.Map) {
+  map.setView(map.getCenter(), map.getZoom(), { animate: false });
+}
+
+/**
+ * Nudge the map so the truck — and the road just ahead of it — stays inside the middle of the
+ * frame.
  *
  * The dead zone is what stops it being seasick: inside it the camera does not move at all and the
- * truck drifts across a still map, which is how a person reads where it is going. Only when it
- * reaches the edge does the map start to travel, and then it eases rather than jumps.
+ * truck drifts across a still map, which is how a person reads where it is going. Past its edge
+ * the pull comes in gradually rather than at full strength, and the point being kept in frame is
+ * a little way AHEAD of the truck along its heading, so the map shows the turn before the truck
+ * takes it. Returns whether it moved.
  */
-function follow(map: L.Map, at: L.LatLng, dt: number) {
+function follow(map: L.Map, at: L.LatLng, heading: number, dt: number): boolean {
   const size = map.getSize();
-  const p = map.latLngToContainerPoint(at);
-  const margin = Math.min(size.x, size.y) * DEAD_ZONE;
+  const side = Math.min(size.x, size.y);
+  const rad = (heading * Math.PI) / 180;
+  const p = map.latLngToContainerPoint(at).add(L.point(Math.sin(rad), -Math.cos(rad)).multiplyBy(side * LOOK_AHEAD));
+  const margin = side * DEAD_ZONE;
   const dx = Math.max(0, margin - p.x) - Math.max(0, p.x - (size.x - margin));
   const dy = Math.max(0, margin - p.y) - Math.max(0, p.y - (size.y - margin));
-  if (!dx && !dy) return;
+  if (!dx && !dy) return false;
 
-  const k = 1 - (1 - CAMERA_CATCH_UP) ** dt;
-  const centre = map.latLngToContainerPoint(map.getCenter());
-  map.panTo(map.containerPointToLatLng(L.point(centre.x - dx * k, centre.y - dy * k)), { animate: false });
+  const past = Math.min(1, Math.hypot(dx, dy) / (side * SOFT_EDGE));
+  const soft = past * past * (3 - 2 * past);
+  const k = (1 - (1 - CAMERA_CATCH_UP) ** dt) * soft;
+  rawPan(map, L.point(-dx * k, -dy * k));
+
+  const d = drift(map);
+  if (Math.abs(d.x) > size.x * COMMIT_AT || Math.abs(d.y) > size.y * COMMIT_AT) commit(map);
+  return true;
+}
+
+/** Where the truck stands once delivered: a few metres short of the door, on the road it arrived by. */
+function parkedAt(plan: Plan): L.LatLng {
+  const line = lineString(plan.legs[1].coords);
+  const km = length(line);
+  const [lng, lat] = along(line, Math.max(0, km - PARK_SHORT_KM)).geometry.coordinates;
+  return L.latLng(lat, lng);
 }
 
 export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; snap: Snapshot; subscribe: (fn: (f: Snapshot) => void) => () => void }) {
@@ -130,11 +228,24 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
      * defers them to the map's `load` event, so the tile layer and the pins survive it and only
      * the camera blows up, which is why this took a delivered order to show. Centring on the drop
      * makes every later move a refinement of a live view rather than the first one.
+     *
+     * The renderer is given a wide margin because the chase slides the pane under it: with the
+     * default tenth the route was clipped at the edge of the drawing before the drift was
+     * committed. `COMMIT_AT` must stay inside this padding.
      */
-    const map = L.map(el, { center: [plan.city.drop.lat, plan.city.drop.lng], zoom: 13, zoomControl: false, scrollWheelZoom: false, zoomSnap: 0.25 });
+    const map = L.map(el, {
+      center: [plan.city.drop.lat, plan.city.drop.lng],
+      zoom: 13,
+      zoomControl: false,
+      scrollWheelZoom: false,
+      zoomSnap: 0.25,
+      renderer: L.svg({ padding: 0.45 }),
+    });
     map.attributionControl.setPrefix(false);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
-    L.tileLayer(TILES, { maxZoom: 19, attribution: ATTR }).addTo(map);
+    /* `updateWhenIdle: false` on phones too — Leaflet's mobile default loads tiles only at
+       `moveend`, and the chase fires none until it commits, so the leading edge went blank. */
+    L.tileLayer(TILES, { maxZoom: 19, attribution: ATTR, updateWhenIdle: false, keepBuffer: 3 }).addTo(map);
 
     /*
      * `smoothFactor: 0` — DRAW EVERY POINT THE ROUTER GAVE US.
@@ -161,13 +272,18 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
      * pressed — so the default put three focusable controls in the tab order that announce
      * themselves as buttons and then have no action. Turning it off is what makes
      * `interactive: false` true all the way down rather than only for the mouse.
+     *
+     * Every icon's picture is one element DOWN from the marker element, never the marker itself:
+     * Leaflet positions the marker with an inline transform, and a CSS animation on that same
+     * element would win over it and put the pin at the map's origin for as long as it played.
+     * The drop, the pop and the rotation all live on children.
      */
     /* The door's label sits ABOVE its pin. The route is framed so the door is near the bottom of
        the map, and on a phone the sheet rises over that edge — a label hung below the pin was the
        first thing it swallowed. The yard, framed near the top, keeps its label below. */
     const pin = (p: { lat: number; lng: number }, html: string, label: string, direction: 'top' | 'bottom') =>
       L.marker([p.lat, p.lng], {
-        icon: L.divIcon({ className: 'tk-pin', html, iconSize: [36, 44], iconAnchor: [18, 42] }),
+        icon: L.divIcon({ className: 'tk-pin', html: `<div class="tk-pin-in">${html}</div>`, iconSize: [36, 44], iconAnchor: [18, 42] }),
         interactive: false,
         keyboard: false,
       })
@@ -175,7 +291,12 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
         .addTo(map);
     const pins: [L.Marker, L.Marker] = [pin(plan.city.yard, YARD, plan.city.yard.name, 'bottom'), pin(plan.city.drop, HOME, 'Your site', 'top')];
     const truck = L.marker([0, 0], {
-      icon: L.divIcon({ className: 'tk-truck', html: `<div class="tk-truck-in">${TRUCK}</div>`, iconSize: [44, 44], iconAnchor: [22, 22] }),
+      icon: L.divIcon({
+        className: 'tk-truck',
+        html: `<div class="tk-truck-pop"><div class="tk-truck-in"><i class="tk-trail"></i>${TRUCK}</div></div>`,
+        iconSize: [44, 44],
+        iconAnchor: [22, 22],
+      }),
       interactive: false,
       keyboard: false,
       zIndexOffset: 1000,
@@ -185,9 +306,27 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
       away.current = true;
       setAwayUi(true);
     });
+    const r: Layers = { map, truck, ahead, behind, pins, settling: false, zooming: false, drawOwed: false };
+    map.on('movestart', () => {
+      r.settling = true;
+    });
+    map.on('moveend', () => {
+      r.settling = false;
+      if (r.drawOwed) {
+        r.drawOwed = false;
+        const lines = r.map.hasLayer(r.truck) ? r.ahead : [r.behind];
+        for (const line of lines) drawOn(line, 1100);
+      }
+    });
+    map.on('zoomanim', () => {
+      r.zooming = true;
+    });
+    map.on('zoomend', () => {
+      r.zooming = false;
+    });
     const ro = new ResizeObserver(() => map.invalidateSize());
     ro.observe(el);
-    layers.current = { map, truck, ahead, behind, pins };
+    layers.current = r;
     return () => {
       ro.disconnect();
       map.remove();
@@ -217,6 +356,10 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
        sixty times a second, for a difference of one, is most of a frame's budget for nothing. */
     let drawnPoints = -1;
     let last = performance.now();
+    let heading = Number.NaN;
+    let lean = 0;
+    let trail = -1;
+    let parked = false;
 
     return subscribe((f) => {
       const r = layers.current;
@@ -226,14 +369,48 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
 
-      const at = L.latLng(f.at.lat, f.at.lng);
+      const body = r.truck.getElement()?.querySelector<HTMLElement>('.tk-truck-in') ?? null;
+      const done = f.phase === 'delivered';
+      const at = done ? parkedAt(plan) : L.latLng(f.at.lat, f.at.lng);
       if (!r.map.hasLayer(r.truck)) r.truck.addTo(r.map);
-      r.truck.setLatLng(at);
 
-      /* rotate3d, not rotate: it keeps the sprite on the compositor instead of repainting the
-         marker layer on every one of sixty frames. */
-      const body = r.truck.getElement()?.firstElementChild as HTMLElement | null;
-      if (body) body.style.transform = `rotate3d(0,0,1,${f.heading.toFixed(1)}deg)`;
+      /*
+       * THROUGH A ZOOM TRANSITION, LEAVE THE TRUCK TO LEAFLET. For the quarter-second of a zoom
+       * Leaflet has already placed every marker where it will be at the new zoom and is tweening
+       * it there with a CSS transition; a position written now, in the old zoom's coordinates,
+       * restarts that tween towards the wrong place, and the truck was seen to drift off the road
+       * at every zoom and snap back when it ended.
+       */
+      if (!r.zooming) {
+        r.truck.setLatLng(at);
+        /* Leaflet rounds a marker to whole pixels; at walking pace the truck advanced in
+           one-pixel ticks. The same position is written again unrounded — one style write,
+           on the same element, in the same frame. */
+        const icon = r.truck.getElement();
+        if (icon) L.DomUtil.setPosition(icon, r.map.project(at).subtract(r.map.getPixelOrigin()));
+      }
+
+      if (body) {
+        /*
+         * The body turns to the heading and LEANS INTO THE TURN: a few degrees about its long
+         * axis, in proportion to how fast it is yawing, eased in and out. rotate3d rather than
+         * rotate keeps the sprite on the compositor instead of repainting the marker layer on
+         * every one of sixty frames.
+         */
+        const yaw = Number.isNaN(heading) ? 0 : shortestTurn(heading, f.heading) / Math.max(dt, 1 / 120);
+        heading = f.heading;
+        const want = calm || done ? 0 : Math.max(-8, Math.min(8, yaw * 0.07));
+        lean += (want - lean) * (1 - Math.exp(-8 * dt));
+        body.style.transform = `rotate3d(0,0,1,${f.heading.toFixed(1)}deg) rotate3d(0,1,0,${lean.toFixed(1)}deg)`;
+
+        /* The trail's length follows the speed, in twentieths, so it is a style change a few
+           times a second and not one a frame. */
+        const v = Math.round(Math.min(1, f.kmh / TRAIL_FULL_KMH) * 20) / 20;
+        if (v !== trail) {
+          trail = v;
+          body.style.setProperty('--v', v.toFixed(2));
+        }
+      }
 
       if (f.remaining.length !== drawnPoints) {
         drawnPoints = f.remaining.length;
@@ -241,9 +418,14 @@ export default function TrackingMap({ plan, snap, subscribe }: { plan: Plan; sna
         for (const line of r.ahead) line.setLatLngs(rest);
       }
 
-      if (!away.current && !calm) follow(r.map, at, dt);
+      if (done && !parked) {
+        parked = true;
+        for (const line of r.ahead) line.setLatLngs([]);
+      }
+
+      if (!away.current && !calm && !r.settling && !r.zooming && !done) follow(r.map, at, f.heading, dt);
     });
-  }, [subscribe, calm]);
+  }, [subscribe, calm, plan]);
 
   return (
     <div className="tk-map">
